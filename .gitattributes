@@ -1,0 +1,7 @@
+# Frozen patch artifacts are byte-exact evidence. Line-ending conversion would
+# corrupt them and invalidate patch-application and integrity verification.
+*.patch -text
+*.diff -text
+
+# Trajectories and records are compared across runs; keep them byte-stable too.
+*.jsonl -text
