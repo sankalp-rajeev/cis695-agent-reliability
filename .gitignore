@@ -10,3 +10,8 @@ __pycache__/
 runs/
 reports/figures/
 reports/tables/
+
+# SWE-bench harness writes here relative to CWD; contains gold patches and
+# oracle test output, so it must never be committed. The Phase 8.3 leakage
+# audit has to cover this path as well as runs/.
+logs/
