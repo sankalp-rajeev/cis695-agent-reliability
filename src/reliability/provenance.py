@@ -21,6 +21,8 @@ from typing import Any
 
 import yaml
 
+from reliability.env import interpreter_environment
+
 REQUIRED_FIELDS = (
     "task_manifest_hash",
     "git_commit",
@@ -37,6 +39,14 @@ REQUIRED_FIELDS = (
     "docker_image",
     "swebench_version",
     "timestamp_utc",
+    # Interpreter import state. Recorded because a contaminated sys.path can
+    # shadow a pinned dependency inside an agent or verifier run, and nothing
+    # else in the record would reveal it afterwards. See reliability.env.
+    "python_version",
+    "python_executable",
+    "pythonpath",
+    "sys_path",
+    "foreign_sys_path_entries",
 )
 
 
@@ -63,9 +73,28 @@ class RunProvenance:
     docker_image: str
     swebench_version: str
     timestamp_utc: str
+    python_version: str
+    python_executable: str
+    pythonpath: list[str]
+    sys_path: list[str]
+    foreign_sys_path_entries: list[str]
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
+
+    @property
+    def interpreter_is_clean(self) -> bool:
+        return not self.foreign_sys_path_entries
+
+    @classmethod
+    def capture(cls, **fields: Any) -> RunProvenance:
+        """Build a block, filling the interpreter fields from this process.
+
+        Callers supply the experiment-specific values; the import state is read
+        here rather than passed in, so it cannot be reported as clean by a caller
+        that never looked.
+        """
+        return cls(**fields, **interpreter_environment())
 
 
 def git_commit(repo_root: Path | None = None) -> str:

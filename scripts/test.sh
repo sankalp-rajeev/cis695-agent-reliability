@@ -14,5 +14,7 @@
 # replace this with a list of `-p no:<plugin>` flags, which only masks pytest.
 set -euo pipefail
 
+unset PYTHONPATH
+
 cd "$(dirname "$0")/.."
 exec env -u PYTHONPATH .venv/bin/python -m pytest "$@"

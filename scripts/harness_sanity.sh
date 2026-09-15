@@ -8,6 +8,12 @@
 # prebuilt images, so "image build" is really a registry pull.
 set -uo pipefail
 
+# ROS 2 Jazzy exports PYTHONPATH into every shell on this host, leaking Python
+# 3.12 packages into the 3.11 venv. Cleared at every entry point, not just the
+# test runner: a shadowed import inside a harness run would be near-invisible
+# afterwards. reliability.env records the resulting import state per run.
+unset PYTHONPATH
+
 RUN_LABEL="$1"
 PREDICTIONS="$2"
 

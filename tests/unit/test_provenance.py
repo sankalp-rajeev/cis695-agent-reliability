@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import sys
+
 import pytest
 import yaml
 
@@ -32,6 +34,11 @@ def make_provenance(**overrides) -> RunProvenance:
         docker_image="swebench/sweb.eval.x86_64.django_1776_django-12304:latest",
         swebench_version="5.0.2",
         timestamp_utc="2026-09-15T00:00:00+00:00",
+        python_version="3.11.9",
+        python_executable="/home/x/proj/.venv/bin/python",
+        pythonpath=[],
+        sys_path=["/home/x/proj/src"],
+        foreign_sys_path_entries=[],
     )
     base.update(overrides)
     return RunProvenance(**base)
@@ -91,6 +98,39 @@ def test_refuses_to_silently_overwrite(tmp_path):
         write_meta(tmp_path, make_provenance())
     write_meta(tmp_path, make_provenance(git_dirty=True), overwrite=True)
     assert read_meta(tmp_path)["git_dirty"] is True
+
+
+def test_empty_interpreter_lists_are_the_clean_state_not_an_absence():
+    """A cleared PYTHONPATH is an empty list, which must validate."""
+    block = make_provenance(pythonpath=[], foreign_sys_path_entries=[]).to_dict()
+    validate(block)
+    assert make_provenance().interpreter_is_clean is True
+
+
+def test_contamination_is_recorded_not_rejected(tmp_path):
+    """A contaminated run must still be written, or the evidence is lost."""
+    ros = "/opt/ros/jazzy/lib/python3.12/site-packages"
+    prov = make_provenance(pythonpath=[ros], foreign_sys_path_entries=[ros])
+    path = write_meta(tmp_path, prov)
+
+    assert prov.interpreter_is_clean is False
+    assert yaml.safe_load(path.read_text())["foreign_sys_path_entries"] == [ros]
+
+
+def test_capture_fills_interpreter_fields_from_this_process():
+    fields = {
+        k: make_provenance().to_dict()[k]
+        for k in REQUIRED_FIELDS
+        if k not in {
+            "python_version", "python_executable", "pythonpath",
+            "sys_path", "foreign_sys_path_entries",
+        }
+    }
+    prov = RunProvenance.capture(**fields)
+
+    validate(prov.to_dict())
+    assert prov.python_version == ".".join(map(str, sys.version_info[:3]))
+    assert prov.python_executable == sys.executable
 
 
 def test_unexpected_field_is_rejected():

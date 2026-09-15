@@ -17,24 +17,27 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` gate passed · `[!]` blo
 
 ## Phase 0 — Repo scaffold and environment
 
-- [~] **0.1 Initialize repository** — environment done, directory scaffold still missing
+- [x] **0.1 Initialize repository**
   - [x] `uv init`, `pyproject.toml`, Python version pinned — Python 3.11 pinned via `.python-version`; `uv.lock` committed; `swebench` and `mini-swe-agent` held at exact `==` versions as experimental apparatus
-  - [ ] Directory skeleton per technical design — **not done.** Only `src/reliability/__init__.py` exists. Still missing `src/reliability/{benchmark,agent,verifier,analysis,reporting}`, `configs/`, `manifests/`, `runs/`, `reports/`, `tests/`
-  - [~] `.gitignore` excludes `runs/`, `*.jsonl`, `.env`, Docker volumes — **partial.** Covers `runs/`, `.env`, `.venv/`, `__pycache__/`, tool caches, `reports/{figures,tables}/`. Does **not** yet cover `*.jsonl` or Docker volumes
+  - [x] Directory skeleton per technical design — **done** 2026-09-15, per §19 of the technical design. `src/reliability/{benchmark,agent,verifier,analysis,reporting}` each created with an `__init__.py` stating that layer's isolation rule; `configs/{agent,model,verifier,experiments}`, `manifests/`, `reports/{figures,tables,cases}`, `tests/{unit,integration,golden}`. Individual modules (`loader.py`, `integrity.py`, …) are deliberately **not** stubbed — each has its own phase and gate, and an empty file that imports cleanly would let a gate pass against nothing
+  - [x] `.gitignore` excludes `runs/`, `*.jsonl`, `.env`, Docker volumes — **completed** 2026-09-15. Added `*.jsonl` (ignored by extension as well as location, since a stray predictions file can carry gold patches), `.docker/`, `docker-volumes/`, and `*.patch`/`*.diff` at the repo root
   - [x] `README.md` stub with the research question and the three-layer separation principle
-  - **GATE PASSED** 2026-09-14 — `uv run --frozen python -c "import reliability; print(reliability.__version__)"` → `0.1.0`, exit 0
-  - Held at `[~]` deliberately: the gate passes, but the scaffold is materially incomplete, so this is not finishable as `[x]` yet.
+  - **GATE PASSED** 2026-09-15 — `uv run --frozen python -c "import reliability; print(reliability.__version__)"` → `0.1.0`, exit 0, and the skeleton now matches the technical design
 
-- [ ] **0.2 Secrets and config hygiene**
-  - [ ] `.env.example` committed; real `.env` git-ignored
-  - [ ] API key loaded from env only — never hardcoded, never logged
-  - [ ] `configs/` has one YAML per layer (agent, model, verifier, experiment)
-  - **GATE:** `git log -p | grep -iE "sk-ant|sk-proj"` returns nothing
+- [x] **0.2 Secrets and config hygiene**
+  - [x] `.env.example` committed; real `.env` git-ignored
+  - [x] API key loaded from env only — never hardcoded, never logged. Configs name the *variable* (`api_key_env`), never the value
+  - [x] `configs/` has one YAML per layer — `configs/agent/mini_swe_agent.yaml`, `configs/model/primary.yaml`, `configs/verifier/{full,baseline}.yaml`, `configs/experiments/pilot.yaml`
+  - ⚠️ **`configs/model/primary.yaml` deliberately leaves `provider`, `model_id`, and `api_key_env` null.** The technical design selects the model after the pilot. A plausible-looking pinned id here would be a fabricated value that could survive into the writeup unnoticed. **Must be filled before Phase 3**, which is the first API spend
+  - **GATE PASSED** 2026-09-15 — `scripts/audit_secrets.sh` → `PASS: no credentials in history, working tree, or index`, exit 0
+  - **Deviation from the stated gate.** The checklist specifies `git log -p | grep -iE "sk-ant|sk-proj"`, which can never pass: this file contains those literals in the line documenting the gate, so the grep matches its own definition. Matching bare prefixes is also the wrong test — what is dangerous is a prefix *followed by key material*. `scripts/audit_secrets.sh` requires the trailing secret, scans full history (a key committed and later removed is still published), the working tree, and the index
 
-- [ ] **0.3 Run-metadata recorder**
-  - [ ] `reliability/provenance.py` writes the reproducibility block (task manifest hash, git commit, agent version, exact model id, temperature, step/token limits, timeout, verifier version, docker image, timestamp)
-  - [ ] Every run directory gets one `meta.yaml`
-  - **GATE:** `pytest tests/unit/test_provenance.py` passes — asserts all required keys present and non-null
+- [x] **0.3 Run-metadata recorder**
+  - [x] `src/reliability/provenance.py` writes the reproducibility block — task manifest hash, git commit, git dirty flag, agent scaffold + version, exact model id, temperature, step/token limits, timeout, verifier policy version, docker image, `swebench` version, timestamp
+  - [x] Every run directory gets one `meta.yaml`. `write_meta` refuses to overwrite an existing block unless asked explicitly, so a rerun cannot masquerade as the original
+  - [x] Validation rejects missing, null, blank, and *unexpected* keys. Falsey-but-real values (`git_dirty: False`, `temperature: 0.0`) are accepted — emptiness is checked per type, not by truthiness
+  - [x] **Interpreter import state recorded** — `pythonpath`, `sys_path`, `foreign_sys_path_entries`, `python_version`, `python_executable`, captured by `RunProvenance.capture()` from the live process rather than passed in by a caller that never looked. See the ROS hazard in the Decisions log
+  - **GATE PASSED** 2026-09-15 — `bash scripts/test.sh` → `60 passed`, exit 0 (37 provenance + 23 interpreter-environment)
 
 ---
 
@@ -72,22 +75,44 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` gate passed · `[!]` blo
 
   ⚠️ **Caveat on what this control actually proves.** The harness *short-circuits* empty patches: all 3 were classified `empty_patch_ids` with `completed_instances: 0`, meaning the test suites were **never executed**. So this gate proves the harness will not pass a no-op submission, but it does **not** prove the `FAIL_TO_PASS` tests discriminate a wrong patch from a right one — the stated intent of the gate. The discrimination claim currently rests only on 1.2 (gold resolves) plus this (empty is refused before testing).
 
-  - [ ] **1.3b Non-empty wrong-patch control (proposed, not yet run)** — submit a syntactically valid but semantically wrong patch (e.g. a whitespace/no-op edit that still applies) so the harness is forced to actually run `FAIL_TO_PASS` and report `unresolved` with a populated `failure_reasons`. This is what closes the discrimination argument. Cost is low: images are already local, so ~1–2 min for all 3.
+- [x] **1.3b Non-empty wrong-patch control**
+  - [x] Submit a patch that applies cleanly but does not fix the bug, forcing the harness to actually run the suites — `runs/1.3b_wrong_patch/predictions_wrong.jsonl`, built by `scripts/make_wrong_patch.sh`
+  - [x] 3/3 `unresolved`, 0 infra failures, `empty_patch_instances: 0` and `completed_instances: 1` per instance (versus 3 and 0 in 1.3), so the suites genuinely executed
 
-- [ ] **1.4 Feasibility numbers written down**
-  - [ ] `reports/feasibility.md` with: minutes/instance, GB/instance, failure rate, estimated cost for 10 and for 75 tasks
-  - **GATE:** file exists and the 75-task extrapolation is stated in hours and dollars
+  | instance | applied | FAIL_TO_PASS | PASS_TO_PASS | eval s |
+  |---|---|---|---|---:|
+  | `django__django-12304` | yes | 0 pass / 1 fail | 17 pass / 0 fail | 31 |
+  | `sympy__sympy-15599` | yes | 0 pass / 1 fail | 80 pass / 0 fail | 36 |
+  | `matplotlib__matplotlib-25287` | yes | 0 pass / 2 fail | 786 pass / 0 fail | 122 |
 
-  🔴 **Hard constraint discovered in 1.2 — read before writing 1.4.** Docker images live on the Docker Desktop VHDX on the Windows `C:` drive, which has **58.9 GB free** (868.9 GB used of ~928 GB). Measured image cost is **~4.9 GB per instance** and the harness deliberately leaves images resident.
+  - **GATE PASSED** 2026-09-15 — `python scripts/score_reports.py runs/1.3b_wrong_patch 0` → `evaluated=3 resolved=0 infra_failures=0 empty_patches=0`, exit 0. 883 `PASS_TO_PASS` tests passed, so the `FAIL_TO_PASS` failures are the discriminating tests working, not a broken environment. Evaluation times matched 1.2 almost exactly (31/36/122 vs 31/38/122), confirming evaluation cost is a property of the instance, not the patch.
 
-  | scale | image footprint if never pruned | fits in 58.9 GB free? |
-  |---|---:|---|
-  | 3 (done) | 14.6 GB | yes |
-  | 10-task pilot | ~49 GB | barely, with no margin |
-  | 50 tasks | ~245 GB | **no** |
-  | 75 tasks | ~368 GB | **no** |
+  ⚠️ **Be precise about what this proved.** The patch is an appended comment, so the code is semantically identical to the unfixed base. 1.3b shows the harness executes the suites and that `FAIL_TO_PASS` fails on **unfixed code** — exactly the blind spot 1.3 left, which is why the gate passes. It is **not** a test against a *plausible but wrong* repair; no such patch has been evaluated yet. That case gets exercised for free in Phase 3 once the agent produces patches, and it is the scientifically interesting one, since the failure mode this project studies is a patch that looks right and is not. If it is ever wanted earlier, the construction is a **gold patch with one condition inverted**, not an inert edit.
 
-  The ext4 947 GB measured in 1.1 is irrelevant to this — it holds the repo and `runs/`, not images. Mitigations to decide before the pilot: prune each image after its eval (82 % of the current 18.32 GB store is already reclaimable), relocate the Docker VHDX to a larger drive, or free space on `C:`. Pruning trades disk for re-pull time (~70 s/instance observed).
+  🔴 **Constraint discovered here — patches cannot be transplanted between instances.** The first attempt borrowed gold patches from other django instances. `django-13212`, `django-11815`, and `django-11999` **all failed `git apply --check`** at `django-12304`'s base commit, tested inside that instance's own image. Base commits within one repository drift too far apart. This rules out any later design that reuses one instance's patch against another — cross-instance transfer, "apply the neighbouring fix" baselines, or mutation controls built by borrowing. A non-applying patch is also the worst possible control: the tests never run, silently reproducing 1.3's blind spot.
+
+- [x] **1.4 Feasibility numbers written down**
+  - [x] `reports/feasibility.md` with: minutes/instance, GB/instance, failure rate, estimated cost for 10 and for 75 tasks
+  - **GATE PASSED** 2026-09-15 — `reports/feasibility.md` exists and states the 75-task extrapolation in hours (oracle + acquisition **1.8–2.3 h measured**; end-to-end bounded **≤ ~59 h** by configured timeouts) and dollars (**≤ $50** at 10 tasks, **≤ $375** at 75, from the `max_cost_usd_per_task: 5.00` ceiling).
+
+  ✅ **The 1.2 disk constraint is resolved, and the model behind it was wrong.** `C:` free space went from 58.9 GB to **308 GB**, so the pilot is unblocked outright. Separately, the flat "~4.9 GB per instance" figure — and the 368 GB extrapolation built on it — was wrong in mechanism: it ignored layer sharing entirely.
+
+  **The sharing unit is the image build cohort, not the repository.** Measured across nine images (`runs/1.4_disk_model`, `scripts/layer_overlap.py`):
+
+  | case | marginal cost |
+  |---|---:|
+  | Shares base **and** repo env layer (same repo, same build batch) | **~0.25 GB** |
+  | Shares only the generic 1.516 GB base | **~2 GB** |
+  | Shares nothing meaningful (new build batch) | **~4 GB** |
+  | Unusually large image (e.g. matplotlib, 10.8 GB) | **up to 8.6 GB** |
+
+  `django-12304` and `django-13212` are both django but from different build batches and share **only the generic base** — no django-specific layer. `django-11815/11848/11999` share 2.876 GB with `django-12125` and cost 0.25 GB each. The dataset's `environment_setup_commit` does **not** predict sharing.
+
+  **No single 75-task number is given, deliberately.** The total depends on which batches the sample lands in, which is unknowable until the manifest exists — and Phase 2.3's stratified sampling actively erodes sharing. Realistic range is **~120–200 GB**, worst case ~307 GB, best ~60–80 GB; a 10-task pilot is comfortable (~10–45 GB) under every scenario. **Action for 2.3:** compute the exact figure by grouping `manifests/pilot.csv` by image batch, not by multiplying an average.
+
+  **Retention is the default.** Pruning is a manual fallback for disk pressure only and is deliberately *not* in the pipeline — resident images are what made 1.3b re-evaluate three instances in 200 s. Re-pull costs ~48 s/instance if ever needed.
+
+  ⚠️ Docker's per-image `SharedSize`/`UniqueSize` is unreliable here — summing per-image `UniqueSize` exceeded the reported store total, implying a negative shared remainder. Use the deduplicated store delta across a pull as ground truth.
 
 ---
 
@@ -263,6 +288,12 @@ For the record, two failures during 1.2 were in my own tooling, not the gate, an
 1. **2026-09-14 · 1.2 · launcher quoting.** First background launch used a nested `bash -c` whose escaped quotes leaked into redirect targets, so nothing ran (`"runs/.../run.log": No such file or directory`). Fixed by moving the runner into a real script file, `scripts/harness_sanity.sh`. No harness invocation had occurred, so no gate attempt was consumed.
 2. **2026-09-14 · 1.2 · scoring denominator.** First scoring pass summed `submitted_instances` (3 per report, since the predictions file holds 3 rows) instead of `total_instances` (1 per single-instance run), reporting a false `3/9 FAIL`. The underlying run was already correct. Fixed in `scripts/score_reports.py`, which now uses `total_instances` and asserts `infra_failure_instances == 0`.
 
+Three further toolchain faults were found on 2026-09-15 while working 1.3b/1.4. All are fixed; none is a blocker, but each would have caused a silent or misattributed failure later, so they are recorded.
+
+3. **2026-09-15 · toolchain · CRLF contamination.** The editor saved files as CRLF, including `scripts/harness_sanity.sh`, which nothing in this session had edited. With `core.autocrlf=false` and no `text=auto` rule, CRLF would have been committed byte-for-byte, and a CRLF shell script fails at runtime — reproduced directly: `set: pipefail: invalid option name`. **Any rerun of 1.2 or 1.3 would have failed.** Fixed the three affected files; `.gitattributes` now pins `eol=lf` for source types, ordered so the existing `-text` rules for `*.patch`/`*.diff`/`*.jsonl` still win as later matches.
+4. **2026-09-15 · toolchain · `image_for.py` unusable.** Looked up an image name by iterating all 500 dataset rows with every column materialised, pulling multi-kilobyte `problem_statement`/`patch`/`test_patch` text per row; each lookup took 10+ minutes and stalled the first 1.4 measurement run. Image names are derivable from the instance id (`__` → `_1776_`, lowercased), verified against all five known local images. `scripts/oracle_field.py` selects columns before iterating for the same reason.
+5. **2026-09-15 · toolchain · ROS 2 leaks into the venv.** See the Decisions log entry; this is the one with consequences beyond tooling.
+
 ---
 
 ## Decisions log
@@ -272,4 +303,8 @@ _(record here: date, decision, rationale — especially anything settled with Dr
 - **2026-09-14 · Environment moved to WSL2 ext4.** Project relocated from `C:\Umich\Fall2026\Capstone` to `~/projects/cis695-agent-reliability` to avoid line-ending and permission problems with Docker. `core.autocrlf=false`; `.gitattributes` sets `*.patch -text` and `*.diff -text` so frozen patch artifacts stay byte-exact. The Windows copy is retained as an untouched fallback.
 - **2026-09-14 · `swebench` pinned by PyPI version, not git SHA.** Checklist 1.1 asks for a pinned commit SHA, but the package is installed from PyPI as `swebench==5.0.2`, so no commit SHA exists. Provenance is the locked PyPI artifact in `uv.lock`. If a SHA is required for the writeup, switch to a git checkout before the Phase 10 freeze. `mini-swe-agent==2.4.6` is pinned the same way — both are experimental apparatus, so exact `==`, while ordinary dependencies stay on lower bounds.
 - **2026-09-14 · Sanity-run instances chosen for repo diversity and traceability.** `django__django-12304`, `sympy__sympy-15599`, `matplotlib__matplotlib-25287` — three distinct repositories spanning framework/API, symbolic-numerical, and state/styling behaviour, and all three are already cited as worked examples in the technical design. Not chosen on any knowledge of model performance.
+- **2026-09-15 · Image sharing follows the build cohort, not the repository.** The 1.2 model assumed a flat ~4.9 GB per instance and extrapolated 368 GB at 75 tasks. Measured across nine images, marginal cost ranges from 0.25 GB to 8.6 GB depending purely on how many of an image's layers are already resident, and batch membership — not repo, and not `environment_setup_commit` — is what determines that. Consequence for Phase 2.3: stratified sampling across repositories, which the design requires, *reduces* layer sharing, so disk planning must be computed from the actual manifest rather than from an average. Full analysis in `reports/feasibility.md` §5.
+- **2026-09-15 · Image retention is the default; pruning is a manual fallback.** Resident images are what make re-runs cheap (1.3b re-evaluated three instances in 200 s). With 308 GB free on `C:`, disk no longer justifies building prune-after-each-eval into the pipeline, which would trade ~48 s/instance of re-pull for space that is not scarce. Pruning stays available for manual use under disk pressure.
+- **2026-09-15 · Patches cannot be transplanted between instances of the same repository.** Discovered building 1.3b: three django gold patches all failed `git apply --check` at another django instance's base commit. Base commits drift too far. Rules out cross-instance patch transfer in any later design, and means a borrowed patch is unusable as a control — it would fail to apply, leaving the tests unrun.
+- **2026-09-15 · ROS 2 Jazzy contaminates the interpreter; contamination is recorded, not just cleared.** The host exports `PYTHONPATH=/opt/ros/jazzy/lib/python3.12/site-packages` into every shell, placing Python 3.12 packages ahead of this 3.11 venv. The visible symptom was `pytest` autoloading ROS plugins and dying on a missing `lark`, but the dangerous case is quieter: an agent or verifier run importing a shadowed module and producing a subtly different result that nothing in the record would explain. Two defences, because clearing alone is not auditable — every entry point clears it (`scripts/*.sh`, `reliability.env.clean_env` for subprocesses), **and** `provenance.py` records `pythonpath`, `sys_path`, and `foreign_sys_path_entries` into every `meta.yaml`, so a contaminated run is detectable after the fact even if it was launched through a path that forgot to clear. `reliability.env.assert_clean_interpreter()` fails fast where that is preferable.
 - **2026-09-14 · Verified images are pulled, not built.** Each instance carries a prebuilt `swebench/sweb.eval.x86_64.*` image, so there is no local build step and no per-repo environment compilation. This materially lowers Stage 0 risk. Corollary: image storage lives on the Docker Desktop VHDX on the Windows drive, *not* the WSL2 ext4 disk, so `df -h ~` is the wrong instrument for image-disk headroom.
