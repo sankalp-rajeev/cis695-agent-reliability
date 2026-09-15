@@ -22,6 +22,9 @@ based on a wrong cost model. Free space on the Docker VHDX drive went from
 58.9 GB to **308 GB**, and the per-instance image cost is lower and far more
 variable than the flat ~4.9 GB previously assumed.
 
+**The 10-task pilot needs ~31 GB**, computed exactly from the drawn manifest
+rather than extrapolated (§5). That is under 11 % of free space.
+
 Nothing here has cost money yet. No API key has been used, and no model has been
 selected.
 
@@ -160,28 +163,61 @@ The real determinant is how many of an image's layers are already on disk:
 | Shares nothing meaningful (new batch) | **~4 GB** |
 | Unusually large image (e.g. matplotlib) | **up to 8.6 GB** |
 
-### Why no single extrapolation is given
+### The pilot manifest: measured, not extrapolated
 
-The total depends on which batches the sampled instances happen to land in, and
-that is not knowable until the manifest exists. Worse, Phase 2.3 requires
-stratified sampling across repositories and task types, which **actively erodes
-layer sharing** — the sampling strategy and the cheap-disk case pull in opposite
-directions.
+**The 10-task pilot needs ~31 GB.** This is computed from the actual manifest
+(`manifests/pilot.csv`, `sha256:f03000ed…`) rather than by multiplying an
+average, using `scripts/manifest_disk_cost.py`. Full output in
+`runs/2.3_manifest_disk/pilot_disk_cost.txt`.
+
+Method: `docker manifest inspect` resolves every image's real layer list from the
+registry **without pulling**, giving each layer's digest and compressed size. The
+union of distinct digests is an exact count of what the manifest will download.
+
+| quantity | value |
+|---|---:|
+| Naive per-image sum (counts shared layers repeatedly) | 13.902 GB compressed |
+| **Exact union of distinct layers** | **8.590 GB compressed** |
+| Saved by layer sharing | 5.312 GB (38 %) |
+| Expansion ratio, compressed → on disk | **3.615×** |
+| **Pilot footprint on disk** | **~31 GB** |
+
+The pilot's ten instances fall into **two build cohorts**: nine share the same
+seven base layers, and `astropy-12907` stands alone sharing only two. That the
+sample spans eight repositories but just two cohorts confirms the §5 finding —
+cohort membership is independent of repository.
+
+The expansion ratio is calibrated, not assumed: the nine images already local
+have a compressed union of 6.984 GB and occupy a measured 25.25 GB on disk. A
+consistency check supports it — `matplotlib-26113` is 2.64× the median
+compressed size, matching the 2.58× ratio between the matplotlib and django
+images already resident.
+
+Against 308 GB free, the pilot is comfortable by an order of magnitude.
+
+### Why no single 75-task number is given
+
+The pilot figure is exact because the manifest exists. A 75-task figure is not,
+because the total depends on which cohorts the sample lands in, and the main
+study's manifest has not been drawn. Phase 2.3's stratification also **actively
+erodes layer sharing** — the sampling strategy and the cheap-disk case pull in
+opposite directions, which is precisely why the pilot spans eight repositories
+yet still only two cohorts.
 
 Bounding cases for 75 tasks:
 
 | scenario | footprint | fits 308 GB? |
 |---|---:|---|
-| Every instance a fresh batch (~4.1 GB each) | ~307 GB | marginal |
-| Realistic: ~12 repos × 2–3 batches, remainder clustered | ~120–200 GB | yes |
-| Heavy clustering within few batches | ~60–80 GB | yes |
+| Every instance a fresh cohort (~4.1 GB each) | ~307 GB | marginal |
+| Realistic: ~12 repos across a handful of cohorts | ~120–200 GB | yes |
+| Heavy clustering within few cohorts | ~60–80 GB | yes |
 
-A 10-task pilot is comfortable under every scenario (~10–45 GB).
+The pilot's measured 3.1 GB per instance sits at the low end of that range, which
+is evidence for the middle scenario rather than the pessimistic one.
 
-**Action for Phase 2.3:** once `manifests/pilot.csv` exists, compute the exact
-figure by grouping the sampled instance ids by image batch and applying the table
-above, rather than multiplying by an average. The stated deliverable of this
-section is the cost *model*, not a single number the model does not support.
+**Action at main-study freeze:** rerun `scripts/manifest_disk_cost.py` against
+`manifests/main_frozen.csv` for an exact figure, the same way the pilot number
+was obtained here.
 
 ### Retention policy
 

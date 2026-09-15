@@ -132,12 +132,32 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` gate passed · `[!]` blo
 
   ⚠️ **The gate as stated has a false-positive trap.** Asserting the bare string `patch` is absent from the payload fails on honest input — a real issue text may legitimately say "the attached patch fixes…". The test therefore checks *field names* against a controlled synthetic task, and checks real instances against the actual oracle **values** (the gold patch text, and every `FAIL_TO_PASS`/`PASS_TO_PASS` test name), which is what would do harm if an agent saw it. Sampled across the dataset, not just one instance.
 
-- [ ] **2.3 Stratified sample of 10**
-  - [ ] Sampler draws across repositories and task types (framework/API, ORM/DB, numerical, state/behavior, system/runtime)
-  - [ ] Seeded and deterministic
-  - [ ] No selection based on known model performance
-  - [ ] Written to `manifests/pilot.csv` with a content hash
-  - **GATE:** rerunning the sampler with the same seed reproduces the identical hash; manifest spans ≥3 distinct repositories
+- [x] **2.3 Stratified sample of 10**
+  - [x] Sampler draws across repositories and task types — `src/reliability/benchmark/sampler.py`. Task types filled round-robin so no category is crowded out by django's 46 % share; within a type, repositories are visited round-robin before any is reused
+  - [x] Seeded and deterministic — seed 695. Every collection is sorted before use and the only randomness is a seeded `random.Random`, so set/dict iteration order never reaches an ordering decision
+  - [x] **No selection based on known model performance.** Stronger property: selection uses *only agent-visible fields*. Task type is derived from `repo` and `problem_statement`, never from the gold patch's touched paths — the obvious classifier, but one that would make the sample a function of oracle data. `sampler.py` does not import `OracleRecord`
+  - [x] Written to `manifests/pilot.csv` with a content hash, plus sidecar `manifests/pilot.csv.sha256`
+
+  | instance | repo | task type |
+  |---|---|---|
+  | `astropy__astropy-12907` | astropy/astropy | numerical |
+  | `django__django-14373` | django/django | ORM/DB |
+  | `django__django-14725` | django/django | ORM/DB |
+  | `django__django-16899` | django/django | framework/API |
+  | `matplotlib__matplotlib-26113` | matplotlib/matplotlib | state/behavior |
+  | `mwaskom__seaborn-3187` | mwaskom/seaborn | state/behavior |
+  | `psf__requests-1921` | psf/requests | framework/API |
+  | `pylint-dev__pylint-6386` | pylint-dev/pylint | system/runtime |
+  | `scikit-learn__scikit-learn-12973` | scikit-learn/scikit-learn | numerical |
+  | `sphinx-doc__sphinx-10449` | sphinx-doc/sphinx | system/runtime |
+
+  - **GATE PASSED** 2026-09-15 — rerunning `scripts/build_manifest.py` reproduces `sha256:f03000ed3228b9ffff62a91ba29e84e70a42892f3f8bb4ffa0150465b0494873`; verified identical across five fresh processes. Manifest spans **8 distinct repositories** (requirement ≥3) and all **5 task types, exactly 2 each**. `bash scripts/test.sh tests/unit/test_sampler.py` → 17 passed, including determinism under reversed input order.
+
+  **Exact disk cost for this manifest: ~31 GB** (`scripts/manifest_disk_cost.py`, output in `runs/2.3_manifest_disk/`). Computed by resolving every image's real layer list from the registry via `docker manifest inspect` — **no pull** — and taking the union of distinct layer digests: 8.590 GB compressed against a naive per-image sum of 13.902 GB, so sharing saves 38 %. Applying the 3.615× compressed→on-disk ratio calibrated from the nine local images (6.984 GB compressed → 25.25 GB measured) gives ~31 GB, under 11 % of the 308 GB free.
+
+  The ten instances span 8 repositories but only **2 build cohorts** (nine share seven base layers; `astropy-12907` shares two), which independently confirms the 1.4 finding that cohort membership is unrelated to repository.
+
+  ⚠️ One transient failure worth noting: the first run of `test_sampler.py` errored in every dataset-backed fixture with `TypeError` inside `re/_parser.py`, from a first-call path in `datasets`. It has not recurred across eight subsequent runs, and hash stability was confirmed across five fresh interpreter processes. Recorded rather than dismissed, since this phase's whole claim is determinism.
 
 ---
 
