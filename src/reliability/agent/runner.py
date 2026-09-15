@@ -21,6 +21,7 @@ what lets Phases 3.2-3.4 be gated while the model decision is still pending.
 from __future__ import annotations
 
 import json
+import logging
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
@@ -39,6 +40,8 @@ from reliability.agent.records import (
 )
 from reliability.benchmark.loader import AgentTask, load_instance
 from reliability.benchmark.manifest import Manifest, ManifestEntry
+
+logger = logging.getLogger(__name__)
 
 
 class AgentConfigurationError(RuntimeError):
@@ -92,9 +95,10 @@ class MiniSweAgentBackend:
     """
 
     model_id: str | None
+    agent_config_path: Path | None = None
+    model_kwargs: dict[str, Any] = field(default_factory=dict)
     scaffold: str = "mini-swe-agent"
     version: str = "2.4.6"
-    _limits: AgentLimits = field(default_factory=AgentLimits)
 
     def __post_init__(self) -> None:
         if not self.model_id:
@@ -105,10 +109,119 @@ class MiniSweAgentBackend:
             )
 
     def run(self, task: AgentTask, workdir: Path, limits: AgentLimits) -> AgentOutcome:
-        raise NotImplementedError(
-            "live mini-SWE-agent execution is pending the model decision; "
-            "Phase 3.1's gate is deferred (see docs/checklist.md)"
+        # Imported lazily: mini-SWE-agent pulls in litellm and prints a startup
+        # banner, which the model-independent unit tests should not pay for.
+        import litellm
+        import yaml
+        from minisweagent.agents.default import DefaultAgent
+        from minisweagent.config import builtin_config_dir
+        from minisweagent.models import get_model
+        from minisweagent.run.benchmarks.swebench import get_sb_environment
+
+        config_path = self.agent_config_path or (
+            Path(builtin_config_dir) / "benchmarks" / "swebench.yaml"
         )
+        config = yaml.safe_load(Path(config_path).read_text())
+        config.setdefault("agent", {})["step_limit"] = limits.max_steps
+        config["environment"]["timeout"] = limits.per_command_timeout_s
+
+        model_config = {**config.get("model", {}), **self.model_kwargs}
+        model_config["model_name"] = self.model_id
+        model = get_model(self.model_id, model_config)
+
+        # Only instance_id is needed: mini-SWE-agent derives the image name from
+        # it by the same rule the harness uses, so no oracle field is read here.
+        env = get_sb_environment(config, {"instance_id": task.instance_id})
+
+        agent_config = {k: v for k, v in config["agent"].items()}
+        agent_config["wall_time_limit_seconds"] = limits.per_task_timeout_s
+        agent = DefaultAgent(model, env, **agent_config)
+
+        rate_limited = False
+        try:
+            result = agent.run(task.problem_statement)
+            exit_status = result.get("exit_status", "")
+            submission = result.get("submission", "") or ""
+        except litellm.exceptions.RateLimitError:
+            # The scaffold already retried with exponential backoff and still
+            # could not get through. Reported as throttling, not agent failure.
+            rate_limited, exit_status, submission = True, "RateLimited", ""
+        except Exception as exc:  # noqa: BLE001 - recorded, not swallowed
+            exit_status, submission = f"{type(exc).__name__}: {exc}"[:500], ""
+        finally:
+            try:
+                env.cleanup()
+            except Exception as exc:  # noqa: BLE001 - must not mask the result
+                # A leaked container is a disk problem, not a run outcome, so it
+                # is logged rather than raised over whatever the agent produced.
+                logger.warning("container cleanup failed for %s: %s",
+                               task.instance_id, exc)
+
+        claim_text, patch_bytes = _split_submission(submission)
+        (workdir / "submission_raw.txt").write_text(submission, encoding="utf-8")
+
+        return AgentOutcome(
+            final_output=claim_text,
+            patch=patch_bytes,
+            termination=_termination_for(exit_status, rate_limited),
+            commands_run=_commands_from(agent.messages),
+            tests_run=(),
+            tokens_in=_sum_tokens(agent.messages, "prompt_tokens"),
+            tokens_out=_sum_tokens(agent.messages, "completion_tokens"),
+            api_cost_usd=float(getattr(agent, "cost", 0.0)),
+            trajectory=tuple(_serialisable(m) for m in agent.messages),
+        )
+
+
+#: Separates the model's claim from its patch inside a single submitted output.
+CLAIM_DELIMITER = "<<<END_CLAIM>>>"
+
+
+def _split_submission(submission: str) -> tuple[str, bytes]:
+    """Split a submission into claim text and patch bytes.
+
+    The configured prompt emits `claim … <<<END_CLAIM>>> … patch`. If the
+    delimiter is absent the agent did not follow the submission format, so the
+    whole output is treated as the patch and also handed to the claim parser -
+    which will report UNPARSEABLE unless the markers happen to appear inline.
+    """
+    if CLAIM_DELIMITER in submission:
+        claim, _, patch = submission.partition(CLAIM_DELIMITER)
+        return claim, patch.lstrip("\n").encode("utf-8")
+    return submission, submission.encode("utf-8")
+
+
+def _termination_for(exit_status: str, rate_limited: bool) -> Termination:
+    if rate_limited:
+        return Termination.RATE_LIMITED
+    return {
+        "Submitted": Termination.COMPLETED,
+        "LimitsExceeded": Termination.STEP_LIMIT,
+        "TimeExceeded": Termination.TIMEOUT,
+    }.get(exit_status, Termination.ERROR)
+
+
+def _sum_tokens(messages: list[dict[str, Any]], field_name: str) -> int:
+    total = 0
+    for message in messages:
+        usage = (message.get("extra", {}).get("response", {}) or {}).get("usage") or {}
+        if isinstance(usage, dict):
+            total += int(usage.get(field_name) or 0)
+    return total
+
+
+def _commands_from(messages: list[dict[str, Any]]) -> tuple[str, ...]:
+    commands = []
+    for message in messages:
+        for action in message.get("extra", {}).get("actions", []) or []:
+            if isinstance(action, dict) and (cmd := action.get("command")):
+                commands.append(cmd)
+    return tuple(commands)
+
+
+def _serialisable(message: dict[str, Any]) -> dict[str, Any]:
+    """Round-trip a message through JSON, stringifying anything exotic."""
+    return json.loads(json.dumps(message, default=str))
 
 
 def _utc_now() -> str:

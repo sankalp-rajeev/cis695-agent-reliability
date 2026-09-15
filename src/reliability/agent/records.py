@@ -40,11 +40,20 @@ class RunRole(str, Enum):
 
 
 class Termination(str, Enum):
-    """How the agent's run ended."""
+    """How the agent's run ended.
+
+    `RATE_LIMITED` is deliberately separate from `ERROR`. The agent loop makes
+    many calls per instance and throttled tiers will exhaust the scaffold's retry
+    budget, producing a truncated trajectory that looks exactly like an agent
+    that gave up. That is a throughput result about the API quota, not a finding
+    about the model's repair ability or a scaffold/model mismatch, and folding it
+    into `ERROR` would license exactly that misreading.
+    """
 
     COMPLETED = "completed"
     STEP_LIMIT = "step_limit"
     TIMEOUT = "timeout"
+    RATE_LIMITED = "rate_limited"
     ERROR = "error"
 
 

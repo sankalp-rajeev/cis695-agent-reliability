@@ -1,0 +1,63 @@
+# Model layer — SMOKE TEST ONLY. Not the study model.
+#
+# This config exists to prove the pipeline end to end before the primary model is
+# chosen. configs/model/primary.yaml stays null until advisor approval; nothing
+# here influences that decision, and no run using this file may be cited as a
+# pilot or main-study result. The runner enforces that separately by stamping
+# run_role: smoke on every record, because a number copied into a table loses
+# the config file it came from.
+layer: model
+role: smoke
+
+# Verified against the installed packages on 2026-09-15, not from memory:
+#   - litellm 1.100.1 exposes LlmProviders.GEMINI and routes `gemini/<model>`
+#     to provider `gemini`, reading GEMINI_API_KEY (or GOOGLE_API_KEY).
+#   - mini-swe-agent 2.4.6 `get_model_class()` falls through to LitellmModel for
+#     any model name without a special-cased class, so `gemini/...` is supported
+#     without a custom model class.
+#   - LitellmModel issues every request with tools=[BASH_TOOL], so the model must
+#     support function calling. Confirmed live: this model returned a well-formed
+#     tool call on the first attempt.
+#
+# Model choice is constrained by what the API actually still serves. As of
+# 2026-09-15 the Gemini 2.0 and 2.5 families return 404 "no longer available"
+# on this key despite 2.5 still appearing in the ListModels response, so the
+# 2.x ids in litellm's cost map are dead ends. gemini-3.8-flash is the current
+# flash generation and was confirmed working end to end.
+provider: gemini
+model_id: gemini/gemini-3.8-flash
+api_key_env: GEMINI_API_KEY
+
+temperature: 0.0
+top_p: 1.0
+
+model_kwargs:
+  # litellm silently drops params the provider rejects rather than erroring.
+  drop_params: true
+
+# COST IS NOMINAL, NOT ACTUAL. litellm prices every call from its static cost
+# map, which carries list prices. This key is on the free tier, so real spend is
+# $0.00 while records will show a small positive figure. Recorded as-is rather
+# than zeroed: the number is a useful per-task cost estimate for Phase 10.2
+# budgeting, and silently rewriting it to 0 would make smoke records
+# indistinguishable from a broken cost tracker. Do not read it as money spent.
+cost_is_nominal_not_actual: true
+
+# Free tier throttles aggressively and the agent loop makes many calls per
+# instance. mini-swe-agent retries on RateLimitError (it is absent from
+# LitellmModel.abort_exceptions) with tenacity: 10 attempts, exponential backoff
+# 4-60s. A run that exhausts those retries has been rate limited, which is a
+# throughput result and not an agent or scaffold failure — the runner classifies
+# it separately so it cannot be misread as the model failing the task.
+rate_limit:
+  retry_attempts: 10
+  backoff_min_s: 4
+  backoff_max_s: 60
+
+limits:
+  # Far below the study ceilings. A smoke test proves plumbing, not repair
+  # ability, and every extra step is another chance to hit the daily free-tier
+  # quota without learning anything new about the pipeline.
+  max_steps: 40
+  max_cost_usd_per_task: 1.00
+  request_timeout_s: 600

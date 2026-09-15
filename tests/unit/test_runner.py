@@ -11,13 +11,16 @@ from pathlib import Path
 
 import pytest
 
-from reliability.agent.claim_parser import ClaimStatus
+from reliability.agent.claim_parser import ClaimStatus, parse_claim
 from reliability.agent.records import RepairRecord, RunRole, Termination
 from reliability.agent.runner import (
+    CLAIM_DELIMITER,
     AgentConfigurationError,
     AgentLimits,
     AgentOutcome,
     MiniSweAgentBackend,
+    _split_submission,
+    _termination_for,
     run_manifest,
     run_task,
 )
@@ -244,12 +247,67 @@ def test_backend_refuses_to_construct_without_a_model():
             MiniSweAgentBackend(model_id=missing)
 
 
-def test_live_backend_is_wired_but_not_runnable_yet():
+def test_live_backend_is_wired():
     backend = MiniSweAgentBackend(model_id="some-model")
     assert backend.scaffold == "mini-swe-agent"
     assert backend.version == "2.4.6"
-    with pytest.raises(NotImplementedError, match="pending the model decision"):
-        backend.run(FIXTURE_TASKS["django__django-14373"], Path("/tmp"), AgentLimits())
+    assert callable(backend.run)
+
+
+# --- submission parsing ----------------------------------------------------
+
+
+def test_claim_and_patch_are_split_on_the_delimiter():
+    claim, patch = _split_submission(
+        "FINAL_STATUS: RESOLVED\nVALIDATION_EVIDENCE: ran pytest\n"
+        f"{CLAIM_DELIMITER}\n"
+        "diff --git a/x.py b/x.py\n+new\n"
+    )
+    assert "FINAL_STATUS: RESOLVED" in claim
+    assert patch.startswith(b"diff --git")
+    assert CLAIM_DELIMITER.encode() not in patch
+
+
+def test_patch_bytes_survive_the_split_exactly():
+    body = "diff --git a/x b/x\n--- a/x\n+++ b/x\n@@ -1 +1 @@\n-a\n+b\n"
+    _, patch = _split_submission(f"FINAL_STATUS: UNRESOLVED\n{CLAIM_DELIMITER}\n{body}")
+    assert patch == body.encode()
+
+
+def test_missing_delimiter_falls_back_without_inventing_a_claim():
+    """An agent that ignored the submission format must not parse as a claim."""
+    claim, patch = _split_submission("diff --git a/x.py b/x.py\n+new\n")
+    assert patch.startswith(b"diff --git")
+    assert parse_claim(claim).status is ClaimStatus.UNPARSEABLE
+
+
+def test_empty_submission_yields_an_empty_patch():
+    claim, patch = _split_submission("")
+    assert patch == b""
+    assert parse_claim(claim).status is ClaimStatus.UNPARSEABLE
+
+
+# --- termination mapping ---------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "exit_status,expected",
+    [
+        ("Submitted", Termination.COMPLETED),
+        ("LimitsExceeded", Termination.STEP_LIMIT),
+        ("TimeExceeded", Termination.TIMEOUT),
+        ("RepeatedFormatError", Termination.ERROR),
+        ("SomethingUnexpected", Termination.ERROR),
+    ],
+)
+def test_exit_status_maps_to_termination(exit_status, expected):
+    assert _termination_for(exit_status, rate_limited=False) is expected
+
+
+def test_rate_limiting_is_not_reported_as_agent_failure():
+    """A throttled run is a throughput result, not a finding about the model."""
+    for exit_status in ["", "LimitsExceeded", "RepeatedFormatError"]:
+        assert _termination_for(exit_status, rate_limited=True) is Termination.RATE_LIMITED
 
 
 # --- record validity -------------------------------------------------------
