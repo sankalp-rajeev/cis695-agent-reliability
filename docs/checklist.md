@@ -118,14 +118,19 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` gate passed · `[!]` blo
 
 ## Phase 2 — Pilot task manifest
 
-- [ ] **2.1 Load SWE-bench Verified**
-  - [ ] `benchmark/loader.py` loads the 500-instance split
-  - **GATE:** `pytest tests/unit/test_loader.py` — asserts exactly 500 instances and required fields present
+- [x] **2.1 Load SWE-bench Verified**
+  - [x] `src/reliability/benchmark/loader.py` loads the 500-instance split. `load_verified()` raises `DatasetIntegrityError` unless the population is exactly 500 with all required columns — a different count means the wrong dataset or revision, which would silently change the population every downstream number is computed over
+  - **GATE PASSED** 2026-09-15 — `bash scripts/test.sh tests/unit/test_loader.py` → 10 passed, exit 0. Asserts exactly 500 instances, unique ids, required agent and oracle columns present, every instance yielding a populated task with a 40-char base commit, and ≥3 distinct repositories (which Phase 2.3's stratification needs)
 
-- [ ] **2.2 Oracle-field quarantine (critical)**
-  - [ ] Loader returns two separate objects: `AgentTask` (issue, repo, base_commit) and `OracleRecord` (patch, test_patch, FAIL_TO_PASS, PASS_TO_PASS)
-  - [ ] `AgentTask` is a frozen dataclass with no oracle fields reachable
-  - **GATE:** `pytest tests/unit/test_no_leakage.py` — serializes an `AgentTask` to JSON and asserts the strings `patch`, `test_patch`, `FAIL_TO_PASS`, `PASS_TO_PASS` do not appear anywhere in the payload
+- [x] **2.2 Oracle-field quarantine (critical)**
+  - [x] `load_instance()` returns two separate objects — `AgentTask` (instance_id, repo, base_commit, problem_statement) and `OracleRecord`. Both are returned so a caller must choose a half explicitly; there is no combined object that could be passed along by mistake
+  - [x] `AgentTask` is a **frozen, slotted** dataclass. Slots mean no `__dict__`, so the raw dataset row cannot be stashed on an instance even privately. Verified directly: `setattr(task, "_row", …)` raises `TypeError`, field mutation raises `FrozenInstanceError`
+  - [x] Built by explicit field reads rather than `**row`, so a new upstream column is ignored by default instead of silently becoming agent-visible (`test_unexpected_columns_do_not_reach_the_agent`)
+  - **GATE PASSED** 2026-09-15 — `bash scripts/test.sh tests/unit/test_no_leakage.py` → 7 passed, exit 0. Written and shown failing (`ModuleNotFoundError: reliability.benchmark.loader`) before the loader existed
+
+  **Two extra columns are withheld beyond the four the gate names.** `eval_script` carries the harness's own evaluation commands, and `hints_text` is free-text discussion from the originating pull request that frequently contains the fix or a direct description of it. `hints_text` is not ground truth, which is exactly why it is the easiest leak to overlook; it is withheld with the oracle fields. `environment_setup_commit`, `image`, and `log_parser` are execution metadata the harness needs and the agent does not, so they stay oracle-side too.
+
+  ⚠️ **The gate as stated has a false-positive trap.** Asserting the bare string `patch` is absent from the payload fails on honest input — a real issue text may legitimately say "the attached patch fixes…". The test therefore checks *field names* against a controlled synthetic task, and checks real instances against the actual oracle **values** (the gold patch text, and every `FAIL_TO_PASS`/`PASS_TO_PASS` test name), which is what would do harm if an agent saw it. Sampled across the dataset, not just one instance.
 
 - [ ] **2.3 Stratified sample of 10**
   - [ ] Sampler draws across repositories and task types (framework/API, ORM/DB, numerical, state/behavior, system/runtime)
