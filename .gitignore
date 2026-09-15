@@ -15,3 +15,16 @@ reports/tables/
 # oracle test output, so it must never be committed. The Phase 8.3 leakage
 # audit has to cover this path as well as runs/.
 logs/
+
+# Prediction and trajectory files. Ignored by extension as well as by location,
+# because a stray predictions file outside runs/ would otherwise be committable
+# and these can carry gold patches.
+*.jsonl
+
+# Docker bind-mount and volume scratch space used by the evaluation harness.
+.docker/
+docker-volumes/
+
+# Frozen patch artifacts are recorded in run directories, never at the repo root.
+*.patch
+*.diff

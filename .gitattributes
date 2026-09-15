@@ -1,7 +1,29 @@
+# Source and text files are LF in the repository and LF in the working tree.
+# This project runs its harness inside Linux containers from a WSL2 checkout, and
+# a CRLF shell script fails at runtime ("set: pipefail: invalid option name"), so
+# LF is enforced explicitly rather than left to core.autocrlf. Editors on the
+# Windows side have rewritten files as CRLF on save, which is what this prevents.
+* text=auto eol=lf
+
+*.py   text eol=lf
+*.sh   text eol=lf
+*.md   text eol=lf
+*.toml text eol=lf
+*.yaml text eol=lf
+*.yml  text eol=lf
+*.csv  text eol=lf
+*.tsv  text eol=lf
+
 # Frozen patch artifacts are byte-exact evidence. Line-ending conversion would
 # corrupt them and invalidate patch-application and integrity verification.
+# These must follow the general rule above so that they win as the later match.
 *.patch -text
 *.diff -text
 
 # Trajectories and records are compared across runs; keep them byte-stable too.
 *.jsonl -text
+
+# Binary documents carry no line endings and must never be normalised.
+*.pptx binary
+*.png  binary
+*.pdf  binary

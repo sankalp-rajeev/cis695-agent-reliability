@@ -1,0 +1,25 @@
+# Model layer. The exact model id is provenance-critical: a silent provider-side
+# upgrade would invalidate cross-run comparison, so the id is pinned to a dated
+# snapshot rather than a floating alias, and recorded in every run's meta.yaml.
+layer: model
+
+# UNSET. The technical design selects the primary model after the pilot, and the
+# candidates are GPT-5.4, Claude Opus 4.6, with GPT-5.4-mini as the cost fallback.
+# Fill both fields with the provider's exact dated snapshot id (not a floating
+# alias such as "-latest") before the first Phase 3 run, which is the first API spend.
+provider: null
+model_id: null
+api_key_env: null
+
+# Deterministic decoding for the main study. Temperature is recorded per run;
+# if sampling k patches per task is adopted after the pilot (see Phase 10.3),
+# this becomes the only value that changes.
+temperature: 0.0
+top_p: 1.0
+max_output_tokens: 8192
+
+# Hard ceilings so a runaway trajectory cannot silently consume the budget.
+limits:
+  max_input_tokens_per_task: 400000
+  max_cost_usd_per_task: 5.00
+  request_timeout_s: 600

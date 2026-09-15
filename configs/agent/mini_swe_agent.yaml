@@ -1,0 +1,29 @@
+# Agent layer. Consumes AgentTask only; oracle fields are unreachable from here
+# by construction (Phase 2.2). The agent never sees the verifier's decision.
+layer: agent
+
+scaffold: mini-swe-agent
+version: 2.4.6
+
+# Step and time ceilings bound both cost and the failure mode where an agent
+# loops on a broken command until the task times out.
+limits:
+  max_steps: 50
+  per_command_timeout_s: 120
+  per_task_timeout_s: 1800
+
+# Phase 3.2: the agent must end with a structured claim. A missing or malformed
+# claim is recorded as UNPARSEABLE and never silently defaulted to UNRESOLVED,
+# because claim capture rate is itself a measured quantity (Phase 9.3).
+final_claim:
+  required: true
+  status_field: FINAL_STATUS
+  allowed_values: [RESOLVED, UNRESOLVED]
+  evidence_field: VALIDATION_EVIDENCE
+  on_missing: UNPARSEABLE
+
+sandbox:
+  backend: docker
+  network: none
+  mount_host_home: false
+  mount_ssh: false

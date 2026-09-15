@@ -1,0 +1,41 @@
+# Verifier layer. Operates on the frozen patch and the repository alone.
+#
+# The policy version string is recorded in every decision (Phase 7.1). Changing
+# any value here requires bumping policy_version, otherwise two runs carrying the
+# same version string could reflect different rules.
+layer: verifier
+policy_version: v1.0.0-full
+
+# Phase 4: patch integrity. These are disqualifying, not advisory.
+integrity:
+  must_apply_to_base: true
+  reject_conflict_markers: true
+  reject_binary_blobs: true
+  reject_harness_file_edits: true
+  reject_test_deletion_or_weakening: true
+  reject_unexpected_config_edits: true
+
+# Phase 5: regression tests. Selection is derived from the patch and repo only.
+# It must not consult PASS_TO_PASS; overlap with PASS_TO_PASS is computed after
+# the fact as analysis (Phase 5.3) and never fed back into selection.
+regression:
+  selection_policy: docs/VERIFIER_POLICY.md
+  consult_pass_to_pass: false
+  timeout_s: 900
+  # A crashed or timed-out suite is never scored as a pass.
+  outcomes: [PASS, FAIL, ERROR, TIMEOUT, NOT_AVAILABLE]
+
+# Phase 6: static and build checks. Missing tooling is NOT_AVAILABLE, not PASS.
+static:
+  checks: [syntax, import, lint, typecheck, build]
+  unavailable_is_pass: false
+
+# Phase 4.2: recorded as features for analysis; these do not auto-fail a patch.
+risk_features:
+  - files_changed
+  - loc_added
+  - loc_removed
+  - source_to_test_ratio
+  - unrelated_dirs_touched
+  - broad_except_introduced
+  - public_api_surface_changed
