@@ -46,7 +46,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` gate passed · `[!]` blo
 > This is the phase that decides whether the semester plan is viable. Do it before anything else that costs API money.
 
 - [x] **1.1 Docker + harness install**
-  - [x] Docker daemon running, non-root access confirmed — Docker Desktop 28.5.1 with WSL2 integration; `docker` runs as user `rajee` with no `sudo`. Daemon reports `OSType=linux`, `x86_64`, 32 CPU, 16.6 GB RAM
+  - [x] Docker daemon running, non-root access confirmed — Docker Desktop 28.5.1 with WSL2 integration; `docker` runs as user `rajee` with no `sudo`. Daemon reports `OSType=linux`, `x86_64`, 32 CPU. **RAM 10.42 GB as of 2026-09-15** (was 16.6 GB), following the WSL2 memory cap — see Decisions log
   - [~] SWE-bench installed at a pinned commit (record the SHA) — **deviation, see Decisions log.** Installed from PyPI as `swebench==5.0.2`, not a git checkout, so no commit SHA exists. Provenance is the locked PyPI artifact recorded in `uv.lock`
   - [x] Free disk measured and recorded — **947 GB free** of 1007 GB on `/dev/sdd` (WSL2 ext4), 1 % used, measured 2026-09-14. ⚠️ Note: this is *not* where Docker images land — see Blockers/notes on the separate Docker VHDX
   - **GATE PASSED** 2026-09-14 — `docker run --rm hello-world` → exit 0 (as non-root); `python -m swebench.harness.run_evaluation --help` → exit 0
@@ -159,28 +159,46 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` gate passed · `[!]` blo
 
   ⚠️ One transient failure worth noting: the first run of `test_sampler.py` errored in every dataset-backed fixture with `TypeError` inside `re/_parser.py`, from a first-call path in `datasets`. It has not recurred across eight subsequent runs, and hash stability was confirmed across five fresh interpreter processes. Recorded rather than dismissed, since this phase's whole claim is determinism.
 
+  ✅ **Not a live risk.** The manifest is now a frozen artifact: downstream code reads `manifests/pilot.csv` and never re-runs the sampler, so a sampling fault cannot affect a run. The worst it could do is produce a *different* manifest, which the committed content hash would expose immediately. `sampler.py` is provenance — the record of how the manifest was derived — not a runtime dependency.
+
 ---
 
 ## Phase 3 — Repair agent runner
 
-- [ ] **3.1 mini-SWE-agent integration**
-  - [ ] Installed at a pinned version
-  - [ ] Runs one instance end-to-end in Docker and emits a patch
-  - **GATE:** a non-empty `.patch` file exists for one pilot instance and `git apply --check` succeeds against the base commit
+> **Design constraints applying to everything in this phase and downstream.** Both are cheap now and expensive to retrofit.
+> - **Count-agnostic.** Nothing downstream of the manifest may hardcode `10` or `pilot.csv`. `run_manifest()` takes a `Manifest` and iterates whatever it holds; there is no default manifest path in `runner.py` or `manifest.py`. Gated by `test_runner.py::test_runs_whatever_size_manifest_it_is_given` (parametrised 1/2/3) and `test_manifest.py::test_loads_a_manifest_of_any_size` (parametrised 1/10/75/500). The 75-task main study runs this code unchanged.
+> - **Parallel-safe.** Each task owns `tasks/<instance_id>/` and writes only inside it. No shared mutable file exists — no appended log, no aggregate JSON rewritten per task — so concurrent tasks never contend. `max_workers` defaults to 1 for the serial pilot; raising it requires no other change. Gated by `test_concurrent_execution_produces_the_same_records` (serial vs. 3 workers, identical records and patch hashes) and `test_each_task_writes_only_inside_its_own_directory`.
 
-- [ ] **3.2 Structured final claim**
-  - [ ] Prompt modified to require `FINAL_STATUS: RESOLVED | UNRESOLVED` plus `VALIDATION_EVIDENCE`
-  - [ ] `agent/claim_parser.py` parses it; missing or malformed claim → explicit `UNPARSEABLE`, never a silent default
-  - **GATE:** `pytest tests/unit/test_claim_parser.py` passes on a fixture set of well-formed, malformed, missing, and adversarial ("I think it's resolved") outputs
+- [ ] **3.1 mini-SWE-agent integration** — ⏸️ **live run deferred: pending the model decision (advisor approval Thursday).** Everything model-independent is built and gated.
+  - [x] Runner wired — `src/reliability/agent/runner.py`. `AgentBackend` is a protocol, so orchestration (freeze → parse → record) is gated against recorded fixtures rather than a live API call. `MiniSweAgentBackend` is wired and pinned at scaffold version 2.4.6
+  - [x] Refuses to run without an explicit model — constructing `MiniSweAgentBackend(model_id=None)` raises `AgentConfigurationError`. `configs/model/primary.yaml` deliberately holds `provider: null`, `model_id: null`, and a silent fallback would put an unrecorded model into the provenance block
+  - [x] Run directory layout and resume — per-task dirs hold `patch.diff`, `trajectory.jsonl`, `agent_output.txt`, `repair_record.json`; the run root holds only `manifest.csv` + `manifest.sha256`. Tasks with an existing record are skipped, so an interrupted run resumes without overwriting evidence (`test_interrupted_run_resumes_without_redoing_work`)
+  - [ ] Installed at a pinned version, runs one instance end-to-end in Docker and emits a patch
+  - **GATE (deferred):** a non-empty `.patch` file exists for one pilot instance and `git apply --check` succeeds against the base commit. **Blocked on the model decision — this is the first API spend.** `pytest tests/unit/test_runner.py` (15 passed) gates everything around it in the meantime
 
-- [ ] **3.3 Repair record schema**
-  - [ ] Writes the full record: patch path, trajectory path, commands run, tests run, claim, duration, tokens in/out, API cost
-  - **GATE:** `pytest tests/unit/test_repair_record.py` validates the schema; one real record from 3.1 validates against it
+- [x] **3.2 Structured final claim** — **GATE PASSED**, `pytest tests/unit/test_claim_parser.py` → **35 passed**
+  - [x] `src/reliability/agent/claim_parser.py` parses `FINAL_STATUS: RESOLVED | UNRESOLVED` plus `VALIDATION_EVIDENCE`; missing or malformed gives an explicit `UNPARSEABLE` carrying an `UnparseableReason` (`missing` / `invalid_value` / `ambiguous` / `empty_output`), never a silent default. `test_never_silently_defaults_to_unresolved` states that failure mode directly
+  - [x] Fixtures cover all four required classes: **well-formed** (7 cases incl. markdown-wrapped, tight spacing, lowercase), **malformed** (5 invalid values + conflicting markers), **missing** (empty, whitespace, `None`, prose-only, evidence-without-status), **adversarial** (8 cases incl. "I think it's resolved", bare `RESOLVED`, `Status: resolved`, `final status: resolved`)
+  - [ ] Prompt modified to require the markers — deferred with 3.1, since the prompt is only exercised by a live run
+  - Three parsing decisions recorded in the module docstring, each defensible the other way: formatting is forgiven but structure is not; **conflicting markers are `UNPARSEABLE`, not last-wins** (taking the last would fabricate a resolution to real ambiguity); and missing evidence does not void an otherwise well-formed status, since claim capture rate (9.3) and evidence quality are different measurements
+  - ⚠️ Known boundary, pinned by a test rather than left implicit: an agent that writes the marker while *explaining* the format ("I should end with FINAL_STATUS: RESOLVED") is read as claiming it. Separating mention from use needs the final message alone, which is what the runner passes
 
-- [ ] **3.4 Patch freeze**
-  - [ ] Patch is hashed and written read-only once the agent terminates
-  - [ ] Any downstream write to a frozen patch raises
-  - **GATE:** `pytest tests/unit/test_freeze.py` — asserts mutation attempt raises and hash is stable
+- [x] **3.3 Repair record schema** — **GATE PASSED**, `pytest tests/unit/test_repair_record.py` → **30 passed**
+  - [x] `src/reliability/agent/records.py` — pydantic, `frozen=True`, `extra="forbid"`. Records patch (path + sha256 + size), trajectory path, commands run, tests run, claim, termination, duration, tokens in/out, API cost
+  - [x] Strict validation: every identity field required and non-empty, negative tokens/cost/duration rejected, unexpected keys rejected (the renamed-field-silently-loses-its-value failure), patch digest must be a well-formed `sha256:`. **`usage` is required, not defaulted — an unrecorded cost is not a zero cost**, and Phase 10.2 extrapolates the main-study budget from exactly these numbers
+  - [x] `run_role` (`smoke` / `pilot` / `main`) has **no default**; `is_citable_as_result` is `False` for smoke runs, so a pipeline-proving run cannot be cited as a pilot result
+  - [x] `termination` (`completed` / `step_limit` / `timeout` / `error`) is kept distinct from the claim: an agent killed at its step limit has *not* claimed `UNRESOLVED`, and collapsing the two would corrupt the 9.3 capture rate
+  - [x] `load_records()` reads per-task files rather than a shared aggregate; `summarise()` computes the Phase 9 counts from disk with no model calls
+  - ⏸️ "One real record from 3.1 validates against it" — pending the model decision. A record written by the full runner path validates today (`test_runner.py::test_written_record_validates_against_the_schema`), on a fixture backend
+
+- [x] **3.4 Patch freeze** — **GATE PASSED**, `pytest tests/unit/test_freeze.py` → **19 passed**
+  - [x] `src/reliability/agent/freeze.py` — patch written `0o444` and hashed on termination. Mutation raises: `open(w)`, `open(a)`, and `write_bytes` all raise `PermissionError` (three separate tests)
+  - [x] Enforced twice, because either alone is weak. Permissions stop a stray writer anywhere in the codebase without it knowing about this module; the **content hash makes tampering detectable after the fact**, since a determined caller can `chmod` or replace the file. `verify()` catches content replacement, a patch left writable, and a deleted patch
+  - [x] Bytes end to end, no text round-trip — `git apply` turns on exact line endings, so a CRLF patch round-trips byte-identical (`test_bytes_are_preserved_exactly`). Same reason `.gitattributes` marks `*.patch`/`*.diff` as `-text`
+  - [x] `freeze_patch` refuses to overwrite an existing patch: a second freeze means a rerun writing over evidence, or a bug
+  - [x] An empty patch is a real outcome, not an error — recorded with `is_empty`, since "the agent produced no diff" is a finding
+
+**Supporting module.** `src/reliability/benchmark/manifest.py` (gated by `test_manifest.py`, **15 passed**) is the boundary between Phase 2 and everything after it. It recomputes the content hash from the file's bytes rather than trusting the sidecar, so a manifest edited after it was drawn fails loudly instead of running a different task set under the recorded identity. The committed `manifests/pilot.csv` loads and verifies against its recorded hash `sha256:f03000ed…` in the test suite.
 
 ---
 
@@ -328,6 +346,10 @@ _(record here: date, decision, rationale — especially anything settled with Dr
 - **2026-09-14 · Environment moved to WSL2 ext4.** Project relocated from `C:\Umich\Fall2026\Capstone` to `~/projects/cis695-agent-reliability` to avoid line-ending and permission problems with Docker. `core.autocrlf=false`; `.gitattributes` sets `*.patch -text` and `*.diff -text` so frozen patch artifacts stay byte-exact. The Windows copy is retained as an untouched fallback.
 - **2026-09-14 · `swebench` pinned by PyPI version, not git SHA.** Checklist 1.1 asks for a pinned commit SHA, but the package is installed from PyPI as `swebench==5.0.2`, so no commit SHA exists. Provenance is the locked PyPI artifact in `uv.lock`. If a SHA is required for the writeup, switch to a git checkout before the Phase 10 freeze. `mini-swe-agent==2.4.6` is pinned the same way — both are experimental apparatus, so exact `==`, while ordinary dependencies stay on lower bounds.
 - **2026-09-14 · Sanity-run instances chosen for repo diversity and traceability.** `django__django-12304`, `sympy__sympy-15599`, `matplotlib__matplotlib-25287` — three distinct repositories spanning framework/API, symbolic-numerical, and state/styling behaviour, and all three are already cited as worked examples in the technical design. Not chosen on any knowledge of model performance.
+- **2026-09-15 · The end-to-end smoke run is not pilot data, and the schema enforces it.** Once Phase 3 is gated, one or two instances will run on a cheap or open model purely to prove the pipeline end to end. Those runs go in `runs/3.1_smoke_<model>/` with `run_role: smoke` on every record, and `is_citable_as_result` returns `False` for them. The marker is on each record rather than only in the directory name because a number, once copied into a table, loses its directory. A smoke run says something about the plumbing and nothing about any model's repair ability, and it is on a model the study does not use.
+- **2026-09-15 · The model backend refuses to guess.** `MiniSweAgentBackend` raises rather than falling back to a default when `model_id` is unset. `configs/model/primary.yaml` stays `null` until advisor approval, and a fabricated pin is exactly the kind of thing that survives into a report unnoticed — the same reasoning that kept the config null in the first place. The failure is at construction, before any API call, so it cannot be discovered mid-run.
+- **2026-09-15 · WSL2 memory capped at 10 GB; cap is active.** The host crashed during a multi-image pull. WSL2 defaults to claiming up to half of host RAM (~16 GB of 32 GB here) and image extraction is memory-hungry, so WSL and Windows were competing. `%UserProfile%\.wslconfig` now sets `memory=10GB`, `swap=8GB` (so an extraction spike degrades into swap rather than an OOM kill) and `autoMemoryReclaim=gradual` (freed page cache returns to Windows instead of the VM holding its high-water mark). Applied via `wsl --shutdown` and **verified active** 2026-09-15: `free -h` reports 9.7 GiB with 8 GB swap, and Docker's daemon allocation moved from 16.6 GB to 10.42 GB. The cap governs the `docker-desktop` VM too, since that is also a WSL2 distro — intended, and the reason the daemon figure changed.
+- **2026-09-15 · The pilot manifest is a frozen artifact; the sampler is not a runtime dependency.** Downstream code reads `manifests/pilot.csv` and never re-runs the sampler. `sampler.py` exists to document and reproduce how the manifest was drawn, not to draw it again at run time. Consequence: the transient `datasets` failure recorded under 2.3 cannot affect any run — a sampling fault could only ever produce a *different manifest*, which the committed content hash would immediately expose. The manifest and its hash are the provenance; the sampler is the derivation.
 - **2026-09-15 · Image sharing follows the build cohort, not the repository.** The 1.2 model assumed a flat ~4.9 GB per instance and extrapolated 368 GB at 75 tasks. Measured across nine images, marginal cost ranges from 0.25 GB to 8.6 GB depending purely on how many of an image's layers are already resident, and batch membership — not repo, and not `environment_setup_commit` — is what determines that. Consequence for Phase 2.3: stratified sampling across repositories, which the design requires, *reduces* layer sharing, so disk planning must be computed from the actual manifest rather than from an average. Full analysis in `reports/feasibility.md` §5.
 - **2026-09-15 · Image retention is the default; pruning is a manual fallback.** Resident images are what make re-runs cheap (1.3b re-evaluated three instances in 200 s). With 308 GB free on `C:`, disk no longer justifies building prune-after-each-eval into the pipeline, which would trade ~48 s/instance of re-pull for space that is not scarce. Pruning stays available for manual use under disk pressure.
 - **2026-09-15 · Patches cannot be transplanted between instances of the same repository.** Discovered building 1.3b: three django gold patches all failed `git apply --check` at another django instance's base commit. Base commits drift too far. Rules out cross-instance patch transfer in any later design, and means a borrowed patch is unusable as a control — it would fail to apply, leaving the tests unrun.

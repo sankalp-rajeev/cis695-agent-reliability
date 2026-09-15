@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import subprocess
 from dataclasses import asdict, dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -113,7 +113,7 @@ def git_dirty(repo_root: Path | None = None) -> bool:
 
 
 def utc_now() -> str:
-    return datetime.now(timezone.utc).isoformat(timespec="seconds")
+    return datetime.now(UTC).isoformat(timespec="seconds")
 
 
 def validate(block: dict[str, Any]) -> None:

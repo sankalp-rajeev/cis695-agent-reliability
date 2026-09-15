@@ -11,7 +11,7 @@ from collections import defaultdict
 
 warnings.filterwarnings("ignore")
 
-from datasets import load_dataset  # noqa: E402
+from datasets import load_dataset
 
 repo = sys.argv[1]
 ds = load_dataset("SWE-bench/SWE-bench_Verified", split="test")

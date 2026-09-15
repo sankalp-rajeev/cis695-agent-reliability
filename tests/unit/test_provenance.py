@@ -18,28 +18,28 @@ from reliability.provenance import (
 
 
 def make_provenance(**overrides) -> RunProvenance:
-    base = dict(
-        task_manifest_hash="sha256:0d1f" + "a" * 60,
-        git_commit="9a95e38c4b1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f",
-        git_dirty=False,
-        agent_scaffold="mini-swe-agent",
-        agent_version="2.4.6",
-        model_id="example-model-2026-01-01",
-        temperature=0.0,
-        max_steps=50,
-        max_input_tokens_per_task=400000,
-        max_output_tokens=8192,
-        per_task_timeout_s=1800,
-        verifier_policy_version="v1.0.0-full",
-        docker_image="swebench/sweb.eval.x86_64.django_1776_django-12304:latest",
-        swebench_version="5.0.2",
-        timestamp_utc="2026-09-15T00:00:00+00:00",
-        python_version="3.11.9",
-        python_executable="/home/x/proj/.venv/bin/python",
-        pythonpath=[],
-        sys_path=["/home/x/proj/src"],
-        foreign_sys_path_entries=[],
-    )
+    base = {
+        "task_manifest_hash": "sha256:0d1f" + "a" * 60,
+        "git_commit": "9a95e38c4b1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f",
+        "git_dirty": False,
+        "agent_scaffold": "mini-swe-agent",
+        "agent_version": "2.4.6",
+        "model_id": "example-model-2026-01-01",
+        "temperature": 0.0,
+        "max_steps": 50,
+        "max_input_tokens_per_task": 400000,
+        "max_output_tokens": 8192,
+        "per_task_timeout_s": 1800,
+        "verifier_policy_version": "v1.0.0-full",
+        "docker_image": "swebench/sweb.eval.x86_64.django_1776_django-12304:latest",
+        "swebench_version": "5.0.2",
+        "timestamp_utc": "2026-09-15T00:00:00+00:00",
+        "python_version": "3.11.9",
+        "python_executable": "/home/x/proj/.venv/bin/python",
+        "pythonpath": [],
+        "sys_path": ["/home/x/proj/src"],
+        "foreign_sys_path_entries": [],
+    }
     base.update(overrides)
     return RunProvenance(**base)
 

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import dataclasses
 
 import pytest
 
@@ -11,7 +12,6 @@ from reliability.benchmark.sampler import (
     MANIFEST_COLUMNS,
     ORM_DB,
     TASK_TYPES,
-    ManifestRow,
     SamplingError,
     build_pilot_manifest,
     classify,
@@ -155,5 +155,5 @@ def test_oversized_request_fails_loudly(tasks):
 
 
 def test_manifest_row_is_immutable(sample):
-    with pytest.raises(Exception):
+    with pytest.raises(dataclasses.FrozenInstanceError):
         sample[0].repo = "x"  # type: ignore[misc]

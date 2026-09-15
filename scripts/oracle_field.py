@@ -17,7 +17,7 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-from datasets import load_dataset  # noqa: E402
+from datasets import load_dataset
 
 instance_id, field = sys.argv[1], sys.argv[2]
 

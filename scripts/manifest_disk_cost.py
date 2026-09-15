@@ -30,7 +30,6 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from reliability.benchmark.loader import load_verified  # noqa: E402
 
 NAMESPACE = "swebench/sweb.eval.x86_64"
 
@@ -110,9 +109,11 @@ for instance_id, layers in per_image.items():
 naive = sum(sum(s for _, s in layers) for layers in per_image.values())
 exact = union_bytes(per_image)
 
+layer_size = {d: s for layers in per_image.values() for d, s in layers}
+
 print(f"\n=== build cohorts: {len(cohorts)} ===")
 for i, (key, members) in enumerate(sorted(cohorts.items(), key=lambda kv: -len(kv[1])), 1):
-    shared_gb = gb(sum(dict((d, s) for layers in per_image.values() for d, s in layers)[d] for d in key))
+    shared_gb = gb(sum(layer_size[d] for d in key))
     print(f"  cohort {i}: n={len(members)} shared_layers={len(key)} shared={shared_gb}GB")
     for m in sorted(members):
         print(f"      {m}")

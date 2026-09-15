@@ -19,7 +19,8 @@ empty = 0
 rows = []
 
 for path in sorted(glob.glob(f"{run_dir}/*.json")):
-    d = json.load(open(path))
+    with open(path) as fh:
+        d = json.load(fh)
     evaluated += d["total_instances"]
     resolved += d["resolved_instances"]
     infra += d["infra_failure_instances"]
