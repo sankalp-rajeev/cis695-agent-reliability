@@ -27,19 +27,32 @@ PATTERNS=(
 joined="$(IFS='|'; echo "${PATTERNS[*]}")"
 found=0
 
+# Matches are reported by location only, never by value. A script that prints
+# the secret it found leaves the secret in terminal scrollback, in any log that
+# captured the run, and in whatever pastes into a chat or an issue — so the
+# audit would itself become a disclosure channel.
 echo "scanning full git history for committed credentials..."
-if git log -p --all 2>/dev/null | grep -nEi "$joined"; then
+if git log -p --all 2>/dev/null | grep -cEi "$joined" | grep -qv '^0$'; then
   echo "FAIL: credential-shaped string found in git history" >&2
+  echo "      run: git log -p --all | grep -nEi '<pattern>' to locate it" >&2
   found=1
 fi
 
-echo "scanning working tree (excluding .git, .venv, runs, logs)..."
-if grep -rnEi "$joined" . \
-     --exclude-dir=.git --exclude-dir=.venv --exclude-dir=runs \
-     --exclude-dir=logs --exclude-dir=__pycache__ 2>/dev/null; then
-  echo "FAIL: credential-shaped string found in working tree" >&2
-  found=1
-fi
+# Ignored files are excluded because a real .env holding a live key is the
+# expected local state - this script's own contract, asserted below, is that it
+# must never be *tracked*, not that it must not exist. Scanning it would fail
+# every developer machine that is correctly configured, which is the fastest way
+# to get a security gate disabled.
+echo "scanning tracked and untracked-but-not-ignored files..."
+while IFS= read -r file; do
+  [ -f "$file" ] || continue
+  case "$file" in .venv/*|runs/*|logs/*|*/__pycache__/*) continue ;; esac
+  if grep -qEi "$joined" "$file" 2>/dev/null; then
+    echo "FAIL: credential-shaped string in $file (line $(
+      grep -nEi "$joined" "$file" | head -1 | cut -d: -f1))" >&2
+    found=1
+  fi
+done < <(git ls-files --cached --others --exclude-standard 2>/dev/null)
 
 # A real .env is expected to exist locally; it must never be tracked.
 if git ls-files --error-unmatch .env > /dev/null 2>&1; then
