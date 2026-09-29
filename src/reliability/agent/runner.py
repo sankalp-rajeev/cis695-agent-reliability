@@ -50,11 +50,12 @@ class AgentConfigurationError(RuntimeError):
 
 @dataclass(frozen=True, slots=True)
 class AgentLimits:
-    """Ceilings from configs/agent/*.yaml."""
+    """Ceilings from configs/agent/*.yaml and configs/model/*.yaml."""
 
     max_steps: int = 50
     per_command_timeout_s: int = 120
     per_task_timeout_s: int = 1800
+    max_cost_usd: float = 5.0
 
 
 @dataclass(frozen=True, slots=True)
@@ -123,6 +124,7 @@ class MiniSweAgentBackend:
         )
         config = yaml.safe_load(Path(config_path).read_text())
         config.setdefault("agent", {})["step_limit"] = limits.max_steps
+        config["agent"]["cost_limit"] = limits.max_cost_usd
         config["environment"]["timeout"] = limits.per_command_timeout_s
 
         model_config = {**config.get("model", {}), **self.model_kwargs}

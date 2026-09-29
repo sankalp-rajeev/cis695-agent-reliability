@@ -28,6 +28,19 @@ from reliability.verifier.regression import RunResult, TestResult, TestStatus
 
 NAMESPACE = "swebench/sweb.eval.x86_64"
 WORKDIR = "/testbed"
+_DOCKER_CLI = Path("/mnt/wsl/docker-desktop/cli-tools/usr/bin/docker")
+
+
+def _docker_bin() -> str:
+    """Resolve the docker CLI even when Docker Desktop is not on PATH."""
+    import shutil
+
+    found = shutil.which("docker")
+    if found and Path(found).exists():
+        return found
+    if _DOCKER_CLI.exists():
+        return str(_DOCKER_CLI)
+    return "docker"
 
 
 def image_for(instance_id: str) -> str:
@@ -73,7 +86,7 @@ class TaskContainer:
 
     def start(self) -> None:
         proc = subprocess.run(
-            ["docker", "run", "-d", "--name", self.name, "-w", WORKDIR,
+            [_docker_bin(), "run", "-d", "--name", self.name, "-w", WORKDIR,
              "--network", "none", self.image, "sleep", "infinity"],
             capture_output=True, text=True, env=clean_env(), check=False,
         )
@@ -84,7 +97,7 @@ class TaskContainer:
     def stop(self) -> None:
         if not self._started:
             return
-        subprocess.run(["docker", "rm", "-f", self.name],
+        subprocess.run([_docker_bin(), "rm", "-f", self.name],
                        capture_output=True, env=clean_env(), check=False)
         self._started = False
 
@@ -97,7 +110,7 @@ class TaskContainer:
         script = command if isinstance(command, str) else shlex.join(command)
         try:
             proc = subprocess.run(
-                ["docker", "exec", "-w", WORKDIR, self.name,
+                [_docker_bin(), "exec", "-w", WORKDIR, self.name,
                  "bash", "-lc", script],
                 capture_output=True, text=True, timeout=timeout_s,
                 env=clean_env(), check=False,
@@ -129,7 +142,7 @@ class TaskContainer:
     def _apply(self, *, reverse: bool) -> tuple[int, str]:
         flag = "-R" if reverse else ""
         proc = subprocess.run(
-            ["docker", "exec", "-i", "-w", WORKDIR, self.name,
+            [_docker_bin(), "exec", "-i", "-w", WORKDIR, self.name,
              "bash", "-lc", f"git apply {flag} -"],
             input=self.patch_text, capture_output=True, text=True,
             env=clean_env(), check=False,
