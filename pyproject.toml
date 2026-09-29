@@ -56,6 +56,13 @@ packages = ["src/reliability"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
+# The suite is entirely function-based. Disabling class collection stops pytest
+# trying to collect domain types whose names legitimately begin with "Test"
+# (TestResult, TestStatus, TestExecutor in the verifier), which it would
+# otherwise warn about on every run. Renaming those to suit the test runner
+# would be the tail wagging the dog.
+python_classes = []
+filterwarnings = ["error::pytest.PytestCollectionWarning"]
 
 [tool.ruff]
 line-length = 100

@@ -1,15 +1,38 @@
 # Model layer. The exact model id is provenance-critical: a silent provider-side
-# upgrade would invalidate cross-run comparison, so the id is pinned to a dated
+# upgrade would invalidate cross-run comparison, so the id is pinned to a concrete
 # snapshot rather than a floating alias, and recorded in every run's meta.yaml.
 layer: model
+role: primary
 
-# UNSET. The technical design selects the primary model after the pilot, and the
-# candidates are GPT-5.4, Claude Opus 4.6, with GPT-5.4-mini as the cost fallback.
-# Fill both fields with the provider's exact dated snapshot id (not a floating
-# alias such as "-latest") before the first Phase 3 run, which is the first API spend.
-provider: null
-model_id: null
-api_key_env: null
+# DECIDED 2026-09-29: open-weight. DeepSeek V4 Flash via LiteLLM's native
+# `deepseek/` route, which reads DEEPSEEK_API_KEY.
+#
+# Open weights matter here beyond cost. The study's claim is about an agent's
+# self-assessment, and a model whose weights can be re-obtained keeps the
+# apparatus reproducible after a provider retires an endpoint — which is not
+# hypothetical: the Gemini 2.0 and 2.5 families were withdrawn mid-project and
+# took the Phase 3.1 smoke configuration with them.
+provider: deepseek
+model_id: deepseek/deepseek-v4-flash
+api_key_env: DEEPSEEK_API_KEY
+
+# VERIFICATION STATUS: pending a live tool-calling request.
+#
+# Appearing in litellm's cost map is NOT evidence a model serves. gemini-2.5-flash
+# was present in both litellm's cost map and the provider's own ListModels
+# response while returning 404 on a real request. This pin is not considered
+# validated until scripts/verify_model.py succeeds against it, which requires
+# DEEPSEEK_API_KEY. The runner will fail at construction rather than mid-run if
+# the key is absent, so an unvalidated pin cannot quietly consume budget.
+verified:
+  status: pending
+  method: scripts/verify_model.py
+  requires: DEEPSEEK_API_KEY
+
+# mini-swe-agent's LitellmModel sends tools=[BASH_TOOL] on every request, so
+# function calling is mandatory, not optional. This is the first thing the
+# verification script checks.
+requires_tool_calling: true
 
 # Deterministic decoding for the main study. Temperature is recorded per run;
 # if sampling k patches per task is adopted after the pilot (see Phase 10.3),
@@ -18,8 +41,13 @@ temperature: 0.0
 top_p: 1.0
 max_output_tokens: 8192
 
+model_kwargs:
+  # litellm drops provider-unsupported params rather than erroring.
+  drop_params: true
+
 # Hard ceilings so a runaway trajectory cannot silently consume the budget.
 limits:
+  max_steps: 50
   max_input_tokens_per_task: 400000
   max_cost_usd_per_task: 5.00
   request_timeout_s: 600

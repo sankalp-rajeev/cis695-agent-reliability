@@ -1,0 +1,325 @@
+"""Verifier V2: baseline pass and outcome classification (Phase 5.2).
+
+Implements `docs/VERIFIER_POLICY.md` §3.2, §4, and §4.1.
+
+**The baseline pass is the whole point of this module.** Selected tests run twice:
+once on the unpatched base commit, once on the patched tree. Only a test that
+*passed on base and failed on patch* is a regression. Repositories carry
+pre-existing failures — environment-dependent tests, skips that resolve
+differently, tests simply broken at that commit — and without a baseline every
+one of them would be blamed on the candidate patch. That would inflate the
+rejection rate with noise and make the verifier look far more discriminating
+than it is, which is precisely the error the study is trying to measure rather
+than commit.
+
+The baseline is cached per instance. The base commit never changes, so it is
+computed once and reused across verifier configurations and ablations — which
+also makes ablations comparable, since they then differ only in the patched pass.
+
+**Unexecuted tests are never passes.** `NOT_RUN` and `TIMEOUT` are outcomes in
+their own right. A verifier that treated work it did not do as evidence of
+correctness would accept patches on the strength of nothing, and the regression
+signal requires at least one test to have actually executed before it can say
+anything at all.
+"""
+
+from __future__ import annotations
+
+import json
+import time
+from dataclasses import dataclass, field
+from enum import Enum
+from pathlib import Path
+from typing import Protocol
+
+from reliability.verifier.selection import Selection
+
+
+class TestStatus(str, Enum):
+    """Raw result of running one test once."""
+
+    PASSED = "passed"
+    FAILED = "failed"
+    ERROR = "error"        # collection or import failure, not an assertion
+    SKIPPED = "skipped"
+    TIMEOUT = "timeout"
+    NOT_RUN = "not_run"
+
+
+class Outcome(str, Enum):
+    """Classification after comparing base and patched runs (policy §4)."""
+
+    PASS = "PASS"                            # passed on base and on patch
+    REGRESSION = "REGRESSION"                # passed on base, failed on patch
+    PRE_EXISTING_FAIL = "PRE_EXISTING_FAIL"  # failed on base; excluded from signal
+    NEWLY_PASSING = "NEWLY_PASSING"          # failed on base, passes on patch
+    FLAKY = "FLAKY"                          # regression that vanished on re-run
+    ERROR = "ERROR"
+    TIMEOUT = "TIMEOUT"
+    NOT_RUN = "NOT_RUN"
+
+    @property
+    def counts_as_regression(self) -> bool:
+        return self is Outcome.REGRESSION
+
+    @property
+    def executed(self) -> bool:
+        """Whether this outcome reflects a test that actually ran to completion."""
+        return self not in (Outcome.NOT_RUN, Outcome.TIMEOUT)
+
+
+class Signal(str, Enum):
+    """The regression verdict for an instance (policy §4, §5)."""
+
+    PASS = "PASS"
+    FAIL = "FAIL"
+    NOT_AVAILABLE = "NOT_AVAILABLE"            # nothing ran; can never ACCEPT
+    BASELINE_UNRELIABLE = "BASELINE_UNRELIABLE"  # §5.5
+
+
+#: Policy §5.5 — above this share of baseline failures the environment is
+#: suspect rather than the repository.
+BASELINE_FAILURE_THRESHOLD = 0.5
+
+
+@dataclass(frozen=True, slots=True)
+class TestResult:
+    test_id: str
+    status: TestStatus
+    duration_s: float = 0.0
+    message: str = ""
+
+
+@dataclass(frozen=True, slots=True)
+class RunResult:
+    """One pass over the selected tests."""
+
+    results: tuple[TestResult, ...] = ()
+    timed_out: bool = False
+    duration_s: float = 0.0
+
+    def by_id(self) -> dict[str, TestResult]:
+        return {r.test_id: r for r in self.results}
+
+
+class TestExecutor(Protocol):
+    """Runs tests in the task container.
+
+    An interface so the classification logic is gated against fixtures rather
+    than requiring Docker in the unit suite — the same pattern as the agent
+    backend in Phase 3.
+    """
+
+    def run(
+        self, tests: tuple[str, ...], *, patched: bool, timeout_s: int
+    ) -> RunResult: ...
+
+
+@dataclass(frozen=True, slots=True)
+class RegressionConfig:
+    per_pass_timeout_s: int = 300     # policy §3.4: five minutes per pass
+    per_instance_timeout_s: int = 600  # ten minutes including baseline
+    rerun_flaky: bool = True           # policy §4.1
+    baseline_cache_dir: Path | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class RegressionReport:
+    instance_id: str
+    signal: Signal
+    outcomes: dict[str, Outcome] = field(default_factory=dict)
+    selection: Selection | None = None
+    baseline_from_cache: bool = False
+    n_executed: int = 0
+    duration_s: float = 0.0
+    notes: tuple[str, ...] = ()
+
+    @property
+    def regressions(self) -> tuple[str, ...]:
+        return tuple(sorted(t for t, o in self.outcomes.items() if o.counts_as_regression))
+
+    @property
+    def n_regressions(self) -> int:
+        return len(self.regressions)
+
+    def count(self, outcome: Outcome) -> int:
+        return sum(1 for o in self.outcomes.values() if o is outcome)
+
+    @property
+    def summary(self) -> dict[str, int]:
+        return {o.value: self.count(o) for o in Outcome if self.count(o)}
+
+
+def _cache_path(config: RegressionConfig, instance_id: str) -> Path | None:
+    if config.baseline_cache_dir is None:
+        return None
+    return config.baseline_cache_dir / f"{instance_id}.baseline.json"
+
+
+def load_cached_baseline(config: RegressionConfig, instance_id: str) -> RunResult | None:
+    path = _cache_path(config, instance_id)
+    if path is None or not path.exists():
+        return None
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    return RunResult(
+        results=tuple(
+            TestResult(r["test_id"], TestStatus(r["status"]), r.get("duration_s", 0.0),
+                       r.get("message", ""))
+            for r in payload["results"]
+        ),
+        timed_out=payload.get("timed_out", False),
+        duration_s=payload.get("duration_s", 0.0),
+    )
+
+
+def save_baseline(config: RegressionConfig, instance_id: str, run: RunResult) -> None:
+    """Persist a baseline. Per-instance file: no shared mutable state.
+
+    Written to a temporary name and moved into place so a concurrent reader
+    never sees a half-written cache entry.
+    """
+    path = _cache_path(config, instance_id)
+    if path is None:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "instance_id": instance_id,
+        "timed_out": run.timed_out,
+        "duration_s": run.duration_s,
+        "results": [
+            {"test_id": r.test_id, "status": r.status.value,
+             "duration_s": r.duration_s, "message": r.message}
+            for r in run.results
+        ],
+    }
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    tmp.replace(path)
+
+
+def classify(
+    test_id: str,
+    base: TestResult | None,
+    patched: TestResult | None,
+) -> Outcome:
+    """Compare one test's base and patched results (policy §4).
+
+    A test missing from a pass is `NOT_RUN`, never an implicit pass. This is the
+    single most important line in the module: absence of evidence is recorded as
+    absence, not as success.
+    """
+    if patched is None or patched.status is TestStatus.NOT_RUN:
+        return Outcome.NOT_RUN
+    if patched.status is TestStatus.TIMEOUT:
+        return Outcome.TIMEOUT
+    if base is None or base.status is TestStatus.NOT_RUN:
+        # Never ran on base, so no transition can be established. Not a pass.
+        return Outcome.NOT_RUN
+    if base.status is TestStatus.TIMEOUT:
+        return Outcome.TIMEOUT
+
+    # Errors are collection/import failures rather than assertion failures, and
+    # are reported as such wherever they appear.
+    if TestStatus.ERROR in (base.status, patched.status):
+        return Outcome.ERROR
+
+    base_ok = base.status in (TestStatus.PASSED, TestStatus.SKIPPED)
+    patched_ok = patched.status in (TestStatus.PASSED, TestStatus.SKIPPED)
+
+    if base_ok and patched_ok:
+        return Outcome.PASS
+    if base_ok and not patched_ok:
+        return Outcome.REGRESSION
+    if not base_ok and patched_ok:
+        return Outcome.NEWLY_PASSING
+    return Outcome.PRE_EXISTING_FAIL
+
+
+def run_regression(
+    instance_id: str,
+    selection: Selection,
+    executor: TestExecutor,
+    config: RegressionConfig | None = None,
+) -> RegressionReport:
+    """Run the baseline and patched passes and classify every selected test."""
+    config = config or RegressionConfig()
+    started = time.monotonic()
+    notes: list[str] = []
+
+    if selection.is_empty:
+        # Policy §5.1/§5.2 — no tests discovered is NOT_AVAILABLE, never a pass.
+        return RegressionReport(
+            instance_id=instance_id, signal=Signal.NOT_AVAILABLE, selection=selection,
+            notes=("no tests selected",),
+        )
+
+    baseline = load_cached_baseline(config, instance_id)
+    from_cache = baseline is not None
+    if baseline is None:
+        baseline = executor.run(
+            selection.tests, patched=False, timeout_s=config.per_pass_timeout_s)
+        save_baseline(config, instance_id, baseline)
+    else:
+        notes.append("baseline loaded from cache")
+
+    base_by_id = baseline.by_id()
+
+    # Policy §5.5: a mostly-red baseline indicts the environment, not the patch.
+    executed_base = [r for r in baseline.results
+                     if r.status not in (TestStatus.NOT_RUN, TestStatus.TIMEOUT)]
+    if executed_base:
+        failed_base = sum(
+            1 for r in executed_base
+            if r.status in (TestStatus.FAILED, TestStatus.ERROR))
+        if failed_base / len(executed_base) > BASELINE_FAILURE_THRESHOLD:
+            return RegressionReport(
+                instance_id=instance_id, signal=Signal.BASELINE_UNRELIABLE,
+                selection=selection, baseline_from_cache=from_cache,
+                duration_s=time.monotonic() - started,
+                notes=(
+                    (f"{failed_base}/{len(executed_base)} selected tests fail on the "
+                     f"base commit; environment is suspect"),
+                ),
+            )
+
+    patched = executor.run(
+        selection.tests, patched=True, timeout_s=config.per_pass_timeout_s)
+    patched_by_id = patched.by_id()
+
+    outcomes = {
+        test: classify(test, base_by_id.get(test), patched_by_id.get(test))
+        for test in selection.tests
+    }
+
+    # Policy §4.1: re-run regressions once in isolation. Rejecting a correct
+    # patch over a nondeterministic test lands in the false-rejection rate and
+    # distorts the risk-coverage curve directly.
+    if config.rerun_flaky:
+        suspects = tuple(t for t, o in outcomes.items() if o is Outcome.REGRESSION)
+        if suspects:
+            rerun = executor.run(
+                suspects, patched=True, timeout_s=config.per_pass_timeout_s).by_id()
+            for test in suspects:
+                result = rerun.get(test)
+                if result is not None and result.status is TestStatus.PASSED:
+                    outcomes[test] = Outcome.FLAKY
+                    notes.append(f"{test}: failed then passed on re-run, marked FLAKY")
+
+    n_executed = sum(1 for o in outcomes.values() if o.executed)
+    n_regressions = sum(1 for o in outcomes.values() if o.counts_as_regression)
+
+    if n_executed == 0:
+        # Tests were selected but none actually ran. Not a pass.
+        signal = Signal.NOT_AVAILABLE
+        notes.append("tests were selected but none executed")
+    elif n_regressions > 0:
+        signal = Signal.FAIL
+    else:
+        signal = Signal.PASS
+
+    return RegressionReport(
+        instance_id=instance_id, signal=signal, outcomes=outcomes,
+        selection=selection, baseline_from_cache=from_cache,
+        n_executed=n_executed, duration_s=time.monotonic() - started,
+        notes=tuple(notes),
+    )

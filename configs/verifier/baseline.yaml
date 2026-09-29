@@ -17,8 +17,36 @@ integrity:
 regression:
   selection_policy: docs/VERIFIER_POLICY.md
   consult_pass_to_pass: false
-  timeout_s: 900
-  outcomes: [PASS, FAIL, ERROR, TIMEOUT, NOT_AVAILABLE]
+
+  # Selection tiers, per VERIFIER_POLICY.md §3.3 and the decision recorded
+  # against §8 open question 1. Tier 0 runs the whole suite: it maximises
+  # evidence but also maximises overlap with PASS_TO_PASS, which makes the
+  # regression signal hardest to tell apart from half the oracle's criterion.
+  # Capped at Tier 2 for interpretive cleanliness; Tier 0 stays available as a
+  # flag so the ablation needs no code change.
+  enable_tier0: false
+  max_tier: 2
+
+  # VERIFIER_POLICY.md §5.3 — tests written by the agent are its own claim about
+  # correctness, not independent evidence.
+  exclude_agent_authored_tests: true
+
+  # §3.4: five minutes per pass, ten per instance including the baseline.
+  per_pass_timeout_s: 300
+  per_instance_timeout_s: 600
+
+  # §3.2. Only pass-to-fail transitions count as regressions; the baseline is
+  # cached per instance because the base commit never changes, which also keeps
+  # ablations comparable by holding the baseline fixed across them.
+  baseline_pass: true
+  baseline_cache_dir: runs/_baseline_cache
+
+  # §4.1 — a flaky rejection would land in the false-rejection rate.
+  rerun_flaky: true
+
+  # §4. NOT_RUN and TIMEOUT are never counted as passes.
+  outcomes: [PASS, REGRESSION, PRE_EXISTING_FAIL, NEWLY_PASSING, FLAKY, ERROR, TIMEOUT, NOT_RUN]
+  signals: [PASS, FAIL, NOT_AVAILABLE, BASELINE_UNRELIABLE]
 
 static:
   enabled: false

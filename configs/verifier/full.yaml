@@ -21,9 +21,28 @@ integrity:
 regression:
   selection_policy: docs/VERIFIER_POLICY.md
   consult_pass_to_pass: false
-  timeout_s: 900
-  # A crashed or timed-out suite is never scored as a pass.
-  outcomes: [PASS, FAIL, ERROR, TIMEOUT, NOT_AVAILABLE]
+
+  # Tiers per VERIFIER_POLICY.md §3.3, capped at Tier 2 (§8 open question 1
+  # decided). Tier 0 whole-suite stays a flag so enabling the ablation later
+  # needs no code change. Flipping either value requires a policy_version bump.
+  enable_tier0: false
+  max_tier: 2
+  exclude_agent_authored_tests: true   # §5.3
+
+  # §3.4
+  per_pass_timeout_s: 300
+  per_instance_timeout_s: 600
+
+  # §3.2 — only pass-to-fail transitions are regressions; baseline cached per
+  # instance, since the base commit is fixed.
+  baseline_pass: true
+  baseline_cache_dir: runs/_baseline_cache
+
+  rerun_flaky: true                     # §4.1
+
+  # §4. A crashed, timed-out, or unexecuted test is never scored as a pass.
+  outcomes: [PASS, REGRESSION, PRE_EXISTING_FAIL, NEWLY_PASSING, FLAKY, ERROR, TIMEOUT, NOT_RUN]
+  signals: [PASS, FAIL, NOT_AVAILABLE, BASELINE_UNRELIABLE]
 
 # Phase 6: static and build checks. Missing tooling is NOT_AVAILABLE, not PASS.
 static:

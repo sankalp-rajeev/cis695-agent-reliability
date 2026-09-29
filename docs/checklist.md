@@ -208,32 +208,46 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` gate passed · `[!]` blo
 
 ## Phase 4 — Verifier V1: patch integrity
 
-- [ ] **4.1 Integrity checks implemented**
-  - [ ] Applies cleanly to base commit
-  - [ ] No conflict markers, no binary blobs
-  - [ ] No modification of harness/benchmark files
-  - [ ] No deletion or weakening of existing project tests
-  - [ ] No unexpected config manipulation
-  - [ ] Modifications within allowed scope
-  - **GATE:** `pytest tests/unit/test_integrity.py` passes against handcrafted fixture patches — one clean, one with conflict markers, one deleting a test file, one touching config, one that won't apply
+- [x] **4.1 Integrity checks implemented** — **GATE PASSED**, `pytest tests/unit/test_integrity.py` → **37 passed**, including all five handcrafted fixtures the gate names (clean, conflict markers, deletes a test file, touches config, won't apply)
+  - [x] Applies cleanly to base commit — `git apply --check` against a real git repository built in the test, since that is the only honest way to test the property
+  - [x] No conflict markers — checked on **added lines only**: a marker in removed content means the patch is *cleaning one up*, which is the opposite of the problem
+  - [x] No binary blobs — `GIT binary patch` and `Binary files … differ`
+  - [x] No modification of harness/benchmark files — `conftest.py`, `.github/`, `tox.ini`, `swebench/`, `run_evaluation`. A patch touching these is editing the exam, not the code
+  - [x] No deletion or weakening of existing project tests — deletion rejects outright; weakening catches **two shapes**: removing assertions without replacing them (net loss of strength), and adding `skip`/`xfail` to an existing test, which leaves it "passing" while switched off
+  - [x] No unexpected config manipulation — `setup.py`, `setup.cfg`, `pyproject.toml`, `pytest.ini`, `requirements*.txt`, `Makefile`. Editing these can green a suite without fixing behaviour (e.g. `addopts = --ignore=…`)
+  - [x] Modifications within allowed scope — optional `allowed_paths` prefix whitelist
+  - [x] **Malformed input rejects rather than passing vacuously.** The dangerous failure is a garbage patch parsing as "no changes", which every downstream check then passes. `parse_patch` raises on diff content with no file header, and an empty patch is its own violation
+  - ⚠️ Finding worth carrying: `git apply` rejects thin-context hunks even when their line counts are self-consistent and the content matches — realistic surrounding context is required. Related to the borrowed-patch failure recorded under 1.3b, and the reason the "applies cleanly" fixture carries full context
 
-- [ ] **4.2 Risk features recorded (not auto-failing)**
-  - [ ] files changed, LOC ±, source/test ratio, unrelated dirs touched, broad `except`, API surface change
-  - **GATE:** fixture patch produces the expected feature vector
+- [x] **4.2 Risk features recorded (not auto-failing)** — **GATE PASSED**, fixture patch produces the expected feature vector (`test_expected_feature_vector`)
+  - [x] files changed, LOC ±, net lines, source/test ratio, directories touched, unrelated dirs touched, broad `except` added, API surface change, adds-new-files, deletes-files
+  - [x] **The separation is structural, not conventional.** `IntegrityReport.decision` is computed from `findings` alone and never reads `risk`; `compute_risk_features` is a pure measurement that cannot reject anything. `test_a_maximally_risky_patch_still_passes` pins it with a patch carrying a broad except, an API change and an unrelated directory, which returns PASS
+  - Why it must not reject: the study needs to know whether these features *predict* failure, and that cannot be learned from a pipeline that rejects on them a priori
+  - [x] "Unrelated" is measured relative to the patch's centre of mass — the top-level directory holding the most changed lines — rather than a hardcoded source root, which varies by repository. Private (`_`-prefixed) definitions do not count toward API surface
 
 ---
 
 ## Phase 5 — Verifier V2: regression tests
 
-- [ ] **5.1 Test-selection policy — written before code**
-  - [ ] Policy documented in `docs/VERIFIER_POLICY.md`: how the relevant test set is chosen from the *patch and repo alone*
-  - [ ] Explicitly **does not** consult PASS_TO_PASS
-  - **GATE:** policy doc reviewed and committed; a reader can apply it by hand and get the same test set
+- [x] **5.1 Test-selection policy — written before code** — **GATE PASSED**, `pytest tests/unit/test_selection.py` → **22 passed**. Policy committed at `docs/VERIFIER_POLICY.md`; `src/reliability/verifier/selection.py` implements it, and where the two could diverge the policy wins
+  - [x] Selection reads only the candidate patch and the base-commit tree
+  - [x] Explicitly **does not** consult PASS_TO_PASS — and this is enforced structurally rather than by discipline. `select_tests` takes exactly `(patch, tree, config)`; there is **no parameter through which an oracle field could be supplied**, `SelectionConfig` has no such field, and the `RepoTree` interface exposes only `list_files`/`read_text` with no dataset row behind it. `test_select_tests_cannot_be_given_oracle_data` asserts the signature
+  - [x] **§3.1 convention discovery** — test layout is derived per repository (sibling / mirrored / suffix / flat) by sampling source files and scoring which layout locates a matching test most often. Winner and hit rate are returned for the verification record, so the mapping used is auditable after the fact. Below a 0.2 hit rate the repo is `CONVENTION_UNKNOWN` and falls through to Tier 2 only
+  - [x] **§3.3 tiers, capped at Tier 2 (decision on §8 open question 1).** Tier 1 direct correspondence, Tier 2 symbol reference. **Tier 0 whole-suite is behind `enable_tier0`, defaulted off**, and Tier 3 behind `max_tier` — both flags, so enabling either as an ablation later needs no code change. The trade: Tier 0 maximises evidence but also maximises overlap with `PASS_TO_PASS`, making the regression signal least distinguishable from half the oracle's criterion. Capped for interpretive cleanliness
+  - [x] Tier 2 earns its place — `test_tier2_finds_the_cross_module_test` covers the ORM case where a compiler change is exercised through a queryset test that naming convention alone would never find
+  - [x] Tests are unioned **in tier order**, so a budget cut drops the weakest evidence rather than an arbitrary slice (§3.4)
+  - [x] **§5.3** agent-authored tests are excluded from the regression set — they are the agent's own claim about correctness, and admitting them would let it write its own acceptance criteria
+  - [x] Config and code cannot drift: `test_shipped_configs_match_code_defaults` asserts `configs/verifier/{full,baseline}.yaml` match `SelectionConfig()` defaults, so a config claiming `enable_tier0: false` against a code default of true would fail the suite
 
-- [ ] **5.2 Runner implemented**
-  - [ ] Selects tests per policy, runs in the task container with a timeout
-  - [ ] Distinguishes `PASS` / `FAIL` / `ERROR` / `TIMEOUT` / `NOT_AVAILABLE` — a crashed suite is never counted as a pass
-  - **GATE:** `pytest tests/unit/test_regression.py` covers all five outcomes on fixtures
+- [x] **5.2 Runner implemented** — **GATE PASSED**, `pytest tests/unit/test_regression.py` → **32 passed**, covering every outcome
+  - [x] Selects tests per policy and runs them with a timeout. The executor is a protocol, so classification is gated against fixtures rather than requiring Docker in the unit suite — same pattern as the Phase 3 agent backend
+  - [x] **§3.2 baseline pass implemented.** Selected tests run twice, on the unpatched base and on the patched tree, and **only pass-to-fail transitions count as regressions**. Without it, every pre-existing failure — environment-dependent tests, skips resolving differently, tests simply broken at that commit — would be blamed on the candidate patch, inflating the rejection rate with noise and making the verifier look far more discriminating than it is
+  - [x] **Baseline cached per instance** (`runs/_baseline_cache/<instance_id>.baseline.json`, written via temp-file-and-rename so a concurrent reader never sees a partial file). The base commit never changes, so it is computed once and reused across verifier configurations — which also keeps ablations comparable, since they then differ only in the patched pass
+  - [x] Outcomes distinguish `PASS` / `REGRESSION` / `PRE_EXISTING_FAIL` / `NEWLY_PASSING` / `FLAKY` / `ERROR` / `TIMEOUT` / `NOT_RUN`; signals are `PASS` / `FAIL` / `NOT_AVAILABLE` / `BASELINE_UNRELIABLE`
+  - [x] **Unexecuted tests are never passes.** `NOT_RUN` and `TIMEOUT` are outcomes in their own right; a test missing from either pass is `NOT_RUN`, and a test with no baseline result is `NOT_RUN` rather than a pass because no transition can be established. The signal is `PASS` only when regressions are zero **and** at least one test actually executed — `test_signal_pass_requires_both_zero_regressions_and_execution` pins that zero-regressions alone is not sufficient
+  - [x] **§4.1 flake handling** — a `REGRESSION` is re-run once in isolation and marked `FLAKY` if it then passes, with the disagreement recorded. Rejecting a correct patch over a nondeterministic test would land in the false-rejection rate and distort the risk–coverage curve directly
+  - [x] **§5.5 `BASELINE_UNRELIABLE`** — above half the selected tests failing on base, the environment is suspect rather than the repository; routed away from `PASS`
+  - [x] **§8 open question 4** — `NEWLY_PASSING` is recorded but does not drive the signal, matching the policy's current position
 
 - [ ] **5.3 Overlap audit**
   - [ ] Log how much the selected set overlaps PASS_TO_PASS (**analysis only, after the fact — never fed back into selection**)
@@ -350,6 +364,8 @@ _(record here: date, decision, rationale — especially anything settled with Dr
 - **2026-09-14 · Environment moved to WSL2 ext4.** Project relocated from `C:\Umich\Fall2026\Capstone` to `~/projects/cis695-agent-reliability` to avoid line-ending and permission problems with Docker. `core.autocrlf=false`; `.gitattributes` sets `*.patch -text` and `*.diff -text` so frozen patch artifacts stay byte-exact. The Windows copy is retained as an untouched fallback.
 - **2026-09-14 · `swebench` pinned by PyPI version, not git SHA.** Checklist 1.1 asks for a pinned commit SHA, but the package is installed from PyPI as `swebench==5.0.2`, so no commit SHA exists. Provenance is the locked PyPI artifact in `uv.lock`. If a SHA is required for the writeup, switch to a git checkout before the Phase 10 freeze. `mini-swe-agent==2.4.6` is pinned the same way — both are experimental apparatus, so exact `==`, while ordinary dependencies stay on lower bounds.
 - **2026-09-14 · Sanity-run instances chosen for repo diversity and traceability.** `django__django-12304`, `sympy__sympy-15599`, `matplotlib__matplotlib-25287` — three distinct repositories spanning framework/API, symbolic-numerical, and state/styling behaviour, and all three are already cited as worked examples in the technical design. Not chosen on any knowledge of model performance.
+- **2026-09-29 · Model decision settled: open-weight, DeepSeek V4 Flash via LiteLLM.** `configs/model/primary.yaml` pins `deepseek/deepseek-v4-flash` on litellm's native `deepseek/` route, reading `DEEPSEEK_API_KEY`. Open weights matter beyond cost here: the study's claim is about an agent's self-assessment, and a model whose weights can be re-obtained keeps the apparatus reproducible after a provider retires an endpoint — not hypothetical, since the Gemini 2.0 and 2.5 families were withdrawn mid-project and took the 3.1 smoke configuration with them. ⚠️ **The pin carries `verified.status: pending` until a live tool-calling request succeeds.** `scripts/verify_model.py` performs that check and currently fails with "DEEPSEEK_API_KEY is not set"; presence in litellm's cost map is explicitly *not* accepted as evidence, for the reason recorded below.
+- **2026-09-29 · Selection capped at Tier 2; Tier 0 is a flag, not a code path.** Answers §8 open question 1 of the verifier policy. Running the whole suite where it fits maximises evidence, but it also maximises overlap with `PASS_TO_PASS` and makes the regression signal least distinguishable from half the oracle's own criterion. The cap trades evidential strength for interpretive cleanliness, and because Tier 0 sits behind `enable_tier0` (default false) the opposite choice can be run later as an ablation with a config edit and a `policy_version` bump — no code change, and therefore no risk that the ablation differs from the main run in some other way.
 - **2026-09-15 · Free tier cannot run the pilot: 20 requests per day, per model.** Gemini's free tier caps `GenerateRequestsPerDayPerProjectPerModel-FreeTier` at 20, and an agent loop spends 10–40 model calls per instance. That is roughly one instance per model per day, so the 10-task pilot is infeasible on free keys regardless of patience. The quota is *per model*, which is why the throttled smoke run could be retried immediately on a different one — a useful trick for smoke tests, not a strategy for a study, since varying the model varies the thing being measured. The pilot needs a paid key; this constrains scheduling, not design.
 - **2026-09-15 · A listed model is not a servable model.** `gemini-2.5-flash` appears in the live `ListModels` response and in litellm's cost map, yet returns `404 … no longer available` on this key. Availability was verified by issuing real tool-calling requests to each candidate rather than trusting either listing. Any later model pin should be validated the same way, since a config naming a dead model fails only at first API spend.
 - **2026-09-15 · The end-to-end smoke run is not pilot data, and the schema enforces it.** Once Phase 3 is gated, one or two instances will run on a cheap or open model purely to prove the pipeline end to end. Those runs go in `runs/3.1_smoke_<model>/` with `run_role: smoke` on every record, and `is_citable_as_result` returns `False` for them. The marker is on each record rather than only in the directory name because a number, once copied into a table, loses its directory. A smoke run says something about the plumbing and nothing about any model's repair ability, and it is on a model the study does not use.
