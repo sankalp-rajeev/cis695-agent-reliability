@@ -49,6 +49,36 @@ static:
   checks: [syntax, import, lint, typecheck, build]
   unavailable_is_pass: false
 
+  # Syntax, import and build are properties of the patched tree alone. Lint and
+  # typecheck are compared against the base commit, so pre-existing violations
+  # are not attributed to the patch — the same reasoning as the §3.2 baseline.
+  absolute_checks: [syntax, import, build]
+  relative_checks: [lint, typecheck]
+  compare_baseline: true
+  timeout_s: 120
+  scope_to_patch: true
+
+# Phase 7: the combining rule. Implemented in verifier/decision.py, which
+# imports no signal module; adapters live in verifier/evidence.py.
+decision:
+  policy: full
+
+  # Technical design §12, implemented literally.
+  reject_if: [patch_does_not_apply, integrity_failed, regression_failed, prohibited_manipulation]
+  accept_if: [integrity_pass, regression_pass, reproduction_pass, no_high_severity_risk]
+  otherwise: FLAG
+
+  # V4 issue-derived reproduction tests are not built yet. An absent signal has
+  # not met its ACCEPT condition, so under this policy every otherwise-clean
+  # patch currently resolves to FLAG rather than ACCEPT. This is intentional:
+  # absence of a check is never evidence of correctness. ACCEPT becomes
+  # reachable when V4 lands, with no change to the rule.
+  require_reproduction: true
+  reproduction_implemented: false
+
+  # Raising a flag downgrades ACCEPT to FLAG; it never rejects (Phase 4.2).
+  high_severity_risk_features: [deletes_files, broad_excepts_added]
+
 # Phase 4.2: recorded as features for analysis; these do not auto-fail a patch.
 risk_features:
   - files_changed

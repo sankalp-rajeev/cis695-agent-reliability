@@ -51,4 +51,19 @@ regression:
 static:
   enabled: false
 
+# Phase 7.2. Not the full policy with layers switched off: the baseline does not
+# require an issue-specific signal, so it can ACCEPT evidence the full policy
+# only FLAGs. That asymmetry is the measurement — a weaker verifier accepting
+# more is the false-acceptance difference the study exists to quantify.
+#
+# It ignores the static and reproduction signals outright rather than reading
+# them as NOT_AVAILABLE, so enabling those layers later cannot perturb baseline
+# decisions and invalidate the comparison.
+decision:
+  policy: baseline
+  reject_if: [patch_does_not_apply, integrity_failed, regression_failed, prohibited_manipulation]
+  accept_if: [integrity_pass, regression_pass]
+  otherwise: FLAG
+  ignores: [static, reproduction, high_severity_risk]
+
 risk_features: []

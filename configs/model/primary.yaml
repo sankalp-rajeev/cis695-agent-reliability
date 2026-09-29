@@ -16,18 +16,21 @@ provider: deepseek
 model_id: deepseek/deepseek-v4-flash
 api_key_env: DEEPSEEK_API_KEY
 
-# VERIFICATION STATUS: pending a live tool-calling request.
+# VERIFICATION STATUS: verified 2026-09-29 by a live tool-calling request.
+# The model responded with a well-formed `bash` tool call, finish_reason
+# tool_calls, 308 in / 54 out tokens.
 #
 # Appearing in litellm's cost map is NOT evidence a model serves. gemini-2.5-flash
 # was present in both litellm's cost map and the provider's own ListModels
-# response while returning 404 on a real request. This pin is not considered
-# validated until scripts/verify_model.py succeeds against it, which requires
-# DEEPSEEK_API_KEY. The runner will fail at construction rather than mid-run if
-# the key is absent, so an unvalidated pin cannot quietly consume budget.
+# response while returning 404 on a real request, which is why this block is
+# written only by scripts/verify_model.py after an actual request succeeds, and
+# never by hand. Re-run it if the pin changes.
 verified:
-  status: pending
+  status: ok
   method: scripts/verify_model.py
-  requires: DEEPSEEK_API_KEY
+  checked: 2026-09-29
+  model_id: deepseek/deepseek-v4-flash
+  tool_calling: true
 
 # mini-swe-agent's LitellmModel sends tools=[BASH_TOOL] on every request, so
 # function calling is mandatory, not optional. This is the first thing the

@@ -20,6 +20,8 @@ import argparse
 import os
 import pathlib
 import sys
+from datetime import UTC, datetime
+from pathlib import Path
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "src"))
 
@@ -130,15 +132,53 @@ def main() -> int:
     print("\nPASS  model serves and emits well-formed tool calls.")
 
     if args.update:
-        cfg["verified"] = {
-            "status": "ok",
-            "method": "scripts/verify_model.py",
-            "checked": __import__("datetime").date.today().isoformat(),
-            "tool_calling": True,
-        }
-        config_path.write_text(yaml.dump(cfg, sort_keys=False, width=100))
+        record_verified(config_path, model_id)
         print(f"      recorded verified.status: ok in {args.config}")
     return 0
+
+
+def record_verified(config_path: Path, model_id: str) -> None:
+    """Rewrite only the `verified:` block, leaving the rest of the file alone.
+
+    A `yaml.safe_load` / `yaml.dump` round-trip would be far simpler, but it
+    discards every comment in the file. The comments in `configs/model/*.yaml`
+    carry the rationale for the pin — why open weights, why this route, why a
+    listing is not evidence a model serves — and that rationale is the
+    provenance. Losing it to a verification step would be a poor trade for four
+    lines of convenience.
+    """
+    today = datetime.now(tz=UTC).date().isoformat()
+    block = (
+        "verified:\n"
+        f"  status: ok\n"
+        f"  method: scripts/verify_model.py\n"
+        f"  checked: {today}\n"
+        f"  model_id: {model_id}\n"
+        f"  tool_calling: true\n"
+    )
+
+    lines = config_path.read_text().splitlines(keepends=True)
+    out, i = [], 0
+    replaced = False
+    while i < len(lines):
+        if lines[i].startswith("verified:"):
+            out.append(block)
+            i += 1
+            # Drop the old block's indented body; comments above it are kept,
+            # since they explain the pin rather than the verification result.
+            while i < len(lines) and (lines[i].startswith((" ", "\t")) or not lines[i].strip()):
+                if not lines[i].strip():
+                    break
+                i += 1
+            replaced = True
+            continue
+        out.append(lines[i])
+        i += 1
+
+    if not replaced:
+        raise SystemExit(f"{config_path} has no `verified:` block to update")
+
+    config_path.write_text("".join(out))
 
 
 if __name__ == "__main__":
