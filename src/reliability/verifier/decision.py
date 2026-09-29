@@ -22,16 +22,16 @@ The rule is from the technical design §12:
 
     FLAG otherwise
 
-**Consequence worth stating plainly: with V4 out of scope, ACCEPT is
-unreachable under the full policy.** The third ACCEPT condition requires an
-issue-specific execution signal, and the only such signal is V4's issue-derived
-reproduction tests, which are not built yet. Rather than quietly dropping the
-condition — which would weaken the policy in a way no reader of the design would
-expect — an absent reproduction signal is treated as what it is: a condition not
-met, so the decision falls through to FLAG. This is the same principle as
-`NOT_RUN` in Phase 5 and `NOT_AVAILABLE` in Phase 6: absence of a check is never
-evidence of correctness. When V4 lands, ACCEPT becomes reachable with no change
-to this rule.
+**V4 is load-bearing, not optional.** The third ACCEPT condition requires an
+issue-specific execution signal, and that signal is V4's issue-derived
+reproduction tests. Until the layer ships, an absent reproduction signal is
+treated as what it is: a condition not met, so the decision falls through to
+FLAG. Quietly dropping the condition would weaken the policy in a way no reader
+of the design would expect. This is the same principle as `NOT_RUN` in Phase 5
+and `NOT_AVAILABLE` in Phase 6: absence of a check is never evidence of
+correctness. The ACCEPT path is already wired; when V4 reports, it becomes
+reachable with no change to this rule. Nothing here is built around V4's
+permanent absence.
 
 The baseline policy is deliberately different, not a degraded copy — see
 `BaselinePolicy`.
@@ -75,14 +75,14 @@ class Evidence:
     """Everything a policy is allowed to see.
 
     Signals default to `NOT_AVAILABLE` so a policy evaluated before a layer
-    exists behaves correctly rather than raising — which is what lets the
-    pipeline run today with V4 unbuilt.
+    reports behaves correctly rather than raising. V4 occupies this slot the
+    same way the others do; an unbuilt layer is an absence, not a missing field.
     """
 
     integrity: SignalOutcome = SignalOutcome.NOT_AVAILABLE
     regression: SignalOutcome = SignalOutcome.NOT_AVAILABLE
     static: SignalOutcome = SignalOutcome.NOT_AVAILABLE
-    reproduction: SignalOutcome = SignalOutcome.NOT_AVAILABLE   # V4, not yet built
+    reproduction: SignalOutcome = SignalOutcome.NOT_AVAILABLE   # V4; FLAG until it reports
     high_severity_risk: bool = False
     prohibited_manipulation: bool = False
     patch_applies: bool = True

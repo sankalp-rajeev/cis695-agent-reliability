@@ -10,6 +10,7 @@ evidence.
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
 import pytest
 from pydantic import ValidationError
@@ -351,3 +352,54 @@ def test_records_are_frozen():
     record = make_record()
     with pytest.raises((ValidationError, dataclasses.FrozenInstanceError)):
         record.instance_id = "other"
+
+
+# --- the named gate: a real record validates -------------------------------
+
+
+REAL_RECORD = Path(
+    "runs/3.1_smoke_gemini-3.1-flash-lite/tasks/"
+    "psf__requests-1921/verification_record.full.json"
+)
+
+
+def test_a_real_record_validates():
+    """The other half of the 7.3 gate: a record the pipeline actually wrote.
+
+    This is the absent-signal case the schema was built for — V4 is in scope
+    and occupies its field, but this run predates the layer, so the field says
+    `NOT_AVAILABLE (not_implemented)` rather than being omitted. A fixture
+    would agree with the schema by construction; this one cannot.
+    """
+    if not REAL_RECORD.is_file():
+        pytest.skip(f"no stored verification record at {REAL_RECORD}")
+
+    record = VerificationRecord.read(REAL_RECORD)
+
+    assert record.instance_id == "psf__requests-1921"
+    assert record.verifier_config == "full"
+    assert record.patch_sha256.startswith("sha256:")
+    assert len(record.patch_sha256) == len("sha256:") + 64
+
+    # Every layer occupies its slot. None of the four may be missing.
+    assert set(record.signals) == set(SignalKind)
+
+    assert record.integrity.outcome is PASS
+    assert record.integrity.absence is None
+
+    # Container layers were not invoked; that is a named disable, not a pass.
+    assert record.regression.outcome is NA
+    assert record.regression.absence is SignalAbsence.DISABLED
+    assert record.static.outcome is NA
+    assert record.static.absence is SignalAbsence.DISABLED
+
+    # V4 is load-bearing: the slot is present, the absence is attributed, and
+    # the decision names the unmet condition rather than pretending it passed.
+    assert record.reproduction.outcome is NA
+    assert record.reproduction.absence is SignalAbsence.NOT_IMPLEMENTED
+    assert record.decision.decision is Decision.FLAG
+    assert any("issue-specific" in r for r in record.decision.reasons)
+    assert not record.is_complete
+
+    rebuilt = FullPolicy().decide(evidence_from_record(record))
+    assert rebuilt.decision is record.decision.decision

@@ -149,11 +149,12 @@ def test_full_policy_accepts_only_with_a_reproduction_signal():
 
 
 def test_full_policy_cannot_accept_while_v4_is_absent():
-    """The consequence of implementing §12 literally, pinned so it is not lost.
+    """Build-order state, not a design position. V4 is in scope and load-bearing.
 
-    With no issue-specific execution signal, the third ACCEPT condition is never
-    met and every otherwise-acceptable patch falls through to FLAG. When V4
-    lands this test should be updated, not deleted.
+    Until the layer reports, the third ACCEPT condition is unmet and every
+    otherwise-acceptable patch falls through to FLAG. Update this test when V4
+    ships — do not delete it, and do not drop the condition to make ACCEPT
+    reachable in the meantime.
     """
     decisions = {
         FullPolicy().decide(e).decision

@@ -210,7 +210,7 @@ def test_absent_integrity_does_not_invent_a_risk_flag():
 
 
 def test_reproduction_is_passed_through_as_a_raw_outcome():
-    """V4 has no report type yet; the adapter must not pretend otherwise."""
+    """V4's report type is not invented here; the adapter leaves a typed slot."""
     assert build_evidence(reproduction=PASS).reproduction is PASS
 
 
