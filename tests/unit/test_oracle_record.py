@@ -19,9 +19,11 @@ import pytest
 from pydantic import ValidationError
 
 from reliability.oracle.records import (
+    HARNESS_ORIGINAL,
     OracleOutcome,
     OracleRecord,
     TestSuiteResult,
+    exclude_task_as_infrastructure,
     load_records,
     outcome_from_report,
     record_from_report,
@@ -331,3 +333,57 @@ def test_load_reads_per_task_files(tmp_path):
 def test_record_rejects_unexpected_fields(field):
     with pytest.raises(ValidationError):
         make_record(**{field: "x"})
+
+
+# --- excluding a verdict the harness should have called an infrastructure error ---
+
+
+def _unresolved_task(tmp_path):
+    record = OracleRecord(
+        instance_id="psf__requests-1921", experiment_id="x", patch_sha256="sha256:" + "a" * 64,
+        outcome=OracleOutcome.UNRESOLVED, resolved=False,
+        fail_to_pass=TestSuiteResult(success=("f1",)),
+        pass_to_pass=TestSuiteResult(success=("p1",), failure=("p2",)),
+        evaluated_at="2026-09-30T00:00:00Z")
+    task = tmp_path / "tasks" / "psf__requests-1921"
+    record.write(task / "oracle_record.json")
+    return task, record
+
+
+def test_an_exclusion_is_no_verdict_not_a_relabel(tmp_path):
+    task, _ = _unresolved_task(tmp_path)
+    excluded = exclude_task_as_infrastructure(task, "httpbin.org answered 502")
+    assert excluded.outcome is OracleOutcome.INFRA_ERROR
+    assert excluded.resolved is None          # not False, and never True
+    assert excluded.infrastructure_error is True
+    assert "502" in excluded.error_detail
+    assert "'unresolved'" in excluded.error_detail   # what the harness said survives
+    assert excluded.pass_to_pass.failure == ("p2",)  # the harness's data is untouched
+    assert OracleRecord.read(task / "oracle_record.json") == excluded
+
+
+def test_the_harness_original_is_kept_verbatim(tmp_path):
+    task, original = _unresolved_task(tmp_path)
+    before = (task / "oracle_record.json").read_text()
+    exclude_task_as_infrastructure(task, "reason")
+    kept = task / HARNESS_ORIGINAL
+    assert kept.read_text() == before
+    assert OracleRecord.read(kept) == original
+
+
+def test_an_exclusion_leaves_the_resolution_rate_and_counts_it_separately(tmp_path):
+    task, _ = _unresolved_task(tmp_path)
+    exclude_task_as_infrastructure(task, "reason")
+    summary = summarise(load_records(tmp_path))
+    assert summary["n_infrastructure_error"] == 1
+    assert summary["n_unresolved"] == 0
+    assert summary["n_evaluated"] == 0
+
+
+def test_an_exclusion_cannot_be_applied_twice_or_without_a_reason(tmp_path):
+    task, _ = _unresolved_task(tmp_path)
+    with pytest.raises(ValueError, match="reason"):
+        exclude_task_as_infrastructure(task, "  ")
+    exclude_task_as_infrastructure(task, "reason")
+    with pytest.raises(FileExistsError):
+        exclude_task_as_infrastructure(task, "reason again")

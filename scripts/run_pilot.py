@@ -184,7 +184,7 @@ def main() -> int:
                 model_cfg["limits"]["max_input_tokens_per_task"]),
             max_output_tokens=int(model_cfg.get("max_output_tokens", 8192)),
             per_task_timeout_s=limits.per_task_timeout_s,
-            verifier_policy_version="v1.2.1-full+v1.2.1-baseline",
+            verifier_policy_version="v1.2.2-full+v1.2.2-baseline",
             docker_image="swebench/sweb.eval.x86_64.<instance>:latest (derived)",
             swebench_version="5.0.2",
             timestamp_utc=utc_now(),
@@ -199,6 +199,7 @@ def main() -> int:
             reproduction_generator_max_steps=reproduction.budget.generator_max_steps,
             reproduction_generator_max_cost_usd=(
                 reproduction.budget.generator_max_cost_usd),
+            reproduction_runner_sha256=reproduction.identity()["runner_sha256"],
         ))
 
     (run_root / "manifest.csv").write_bytes(manifest.path.read_bytes())

@@ -4,7 +4,7 @@
 # any value here requires bumping policy_version, otherwise two runs carrying the
 # same version string could reflect different rules.
 layer: verifier
-policy_version: v1.2.1-full
+policy_version: v1.2.2-full
 
 # Phase 4: patch integrity. These are disqualifying, not advisory.
 integrity:
@@ -86,6 +86,9 @@ reproduction:
     screen_runs: 2             # base commit; all must be AssertionError to keep
     patched_runs: 2            # only a repeated pass or AssertionError counts;
                                # flaky, error and timeout drop the test (v1.2.1)
+  # v1.2.2: an AssertionError is recognised by the exit code of a fixed runner
+  # (src/reliability/verifier/reproduction_freeze.py: RUNNER_SOURCE), never by
+  # parsing output. The runner's hash is recorded with every result.
     per_run_timeout_s: 120
     max_test_bytes: 65536
 

@@ -224,6 +224,54 @@ def record_from_report(
     )
 
 
+#: The harness's own record, kept verbatim beside an exclusion.
+HARNESS_ORIGINAL = "oracle_record.harness_original.json"
+
+
+def excluded_as_infrastructure(record: OracleRecord, reason: str) -> OracleRecord:
+    """The same harness data, reclassified as no verdict.
+
+    The test lists the harness reported are kept as they were. Only the
+    conclusion drawn from them changes: `outcome` becomes INFRA_ERROR and
+    `resolved` becomes None, which `summarise()` counts under
+    `n_infrastructure_error` and leaves out of the resolution rate. Nothing is
+    set to `True`: an excluded record is never relabelled as resolved.
+    """
+    if not reason.strip():
+        raise ValueError("an exclusion without a reason cannot be audited")
+    if record.outcome is OracleOutcome.INFRA_ERROR:
+        raise ValueError(f"{record.instance_id} is already an infrastructure error")
+    detail = (
+        f"EXCLUDED after the harness ran. Harness verdict was "
+        f"{record.outcome.value!r} (resolved={record.resolved!r}); the harness "
+        f"itself reported no infrastructure failure. Reason: {reason.strip()}"
+    )
+    return record.model_copy(update={
+        "outcome": OracleOutcome.INFRA_ERROR,
+        "resolved": None,
+        "infrastructure_error": True,
+        "error_detail": detail,
+    })
+
+
+def exclude_task_as_infrastructure(task_dir: Path, reason: str) -> OracleRecord:
+    """Replace a task's oracle record with its exclusion, keeping the original.
+
+    Refuses to run twice: the preserved original must stay the harness's own.
+    """
+    path = Path(task_dir) / "oracle_record.json"
+    original_path = Path(task_dir) / HARNESS_ORIGINAL
+    if original_path.exists():
+        raise FileExistsError(
+            f"{original_path} exists; this record has already been excluded")
+    record = OracleRecord.read(path)
+    excluded = excluded_as_infrastructure(record, reason)
+    OracleRecord.model_validate(excluded.model_dump())  # the invariants still hold
+    original_path.write_text(path.read_text(encoding="utf-8"), encoding="utf-8")
+    path.write_text(excluded.to_json(), encoding="utf-8")
+    return excluded
+
+
 def load_records(run_dir: Path) -> list[OracleRecord]:
     """Load every oracle record under a run directory."""
     return [OracleRecord.read(p)
@@ -259,9 +307,12 @@ def summarise(records: list[OracleRecord]) -> dict[str, Any]:
 
 
 __all__ = [
+    "HARNESS_ORIGINAL",
     "OracleOutcome",
     "OracleRecord",
     "TestSuiteResult",
+    "exclude_task_as_infrastructure",
+    "excluded_as_infrastructure",
     "load_records",
     "outcome_from_report",
     "record_from_report",

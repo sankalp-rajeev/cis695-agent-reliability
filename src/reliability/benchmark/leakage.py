@@ -76,6 +76,7 @@ FROZEN_TEST_PATTERN = "test_repro_*.py"
 #: documented decision rather than an accident of the allowlist.
 OUT_OF_SCOPE = (
     "oracle_record.json",
+    "oracle_record.harness_original.json",
     "oracle_verdict.json",
     "harness.log",
     "predictions.jsonl",

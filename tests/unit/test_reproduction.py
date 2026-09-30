@@ -42,6 +42,10 @@ from reliability.verifier.reproduction import (
     signal_from_reproduction,
 )
 from reliability.verifier.reproduction_freeze import (
+    ASSERTION_RETURNCODE,
+    RUNNER_PATH,
+    RUNNER_SHA256,
+    RUNNER_SOURCE,
     DropReason,
     GenerationOutcome,
     GeneratorModel,
@@ -106,20 +110,26 @@ class LocalSandbox:
     def __init__(self, root: Path) -> None:
         self.root = root
 
+    def _at(self, path: str) -> Path:
+        # An absolute path (the runner's) is placed under the root, so the
+        # tests never write outside tmp_path.
+        return self.root / path.lstrip("/")
+
     def write_file(self, path: str, data: bytes) -> None:
-        target = self.root / path
+        target = self._at(path)
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(data)
 
     def sha256(self, path: str) -> str | None:
-        target = self.root / path
+        target = self._at(path)
         if not target.is_file():
             return None
         return "sha256:" + hashlib.sha256(target.read_bytes()).hexdigest()
 
     def run_test(self, path: str, timeout_s: int) -> tuple[int, str]:
         proc = subprocess.run(
-            [sys.executable, path], cwd=self.root, capture_output=True, text=True,
+            [sys.executable, str(self._at(RUNNER_PATH)), path],
+            cwd=self.root, capture_output=True, text=True,
             timeout=timeout_s, check=False,
             env={"PATH": os.environ.get("PATH", ""), "PYTHONPATH": str(self.root)})
         return proc.returncode, proc.stdout + proc.stderr
@@ -447,7 +457,8 @@ def test_bytes_that_do_not_land_are_an_error_not_a_run(tmp_path):
 
     class Swallowing(LocalSandbox):
         def write_file(self, path, data):
-            super().write_file(path, b"raise SystemExit(0)\n")
+            super().write_file(
+                path, data if path == RUNNER_PATH else b"raise SystemExit(0)\n")
 
     patched = evaluate_frozen(suite, FIX, Swallowing(trees._copy()), make_setup())
     assert patched[0].verdict == "not_in_place"
@@ -496,16 +507,113 @@ def test_the_signal_carries_the_test_hashes(tmp_path):
     assert signal.findings["suite_sha256"].startswith("sha256:")
 
 
-@pytest.mark.parametrize("rc, output, outcome", [
-    (0, "", RunOutcome.PASS),
-    (1, "Traceback...\nAssertionError: value is 1\n", RunOutcome.ASSERTION_FAILURE),
-    (1, "Traceback...\nAssertionError\n", RunOutcome.ASSERTION_FAILURE),
-    (1, "Traceback...\nImportError: no module\n", RunOutcome.ERROR),
-    (2, "AssertionError\n", RunOutcome.ERROR),
-    (124, "", RunOutcome.TIMEOUT),
+@pytest.mark.parametrize("rc, outcome", [
+    (0, RunOutcome.PASS),
+    (ASSERTION_RETURNCODE, RunOutcome.ASSERTION_FAILURE),
+    (1, RunOutcome.ERROR),
+    (2, RunOutcome.ERROR),
+    (124, RunOutcome.TIMEOUT),
+    (137, RunOutcome.ERROR),
 ])
-def test_classify(rc, output, outcome):
-    assert classify(rc, output) is outcome
+def test_classify_reads_the_exit_code_alone(rc, outcome):
+    assert classify(rc) is outcome
+
+
+def test_classify_cannot_be_given_output():
+    """The pilot_14 bug was reading output. There is no output to read."""
+    assert _params(classify) == {"returncode"}
+
+
+# --- the exit-code runner (pilot_14: six real tests dropped as "not an assertion") ---
+
+#: Ends its output with an array diff, not with the AssertionError line: the
+#: shape of numpy's "Arrays are not equal" message that astropy's tests raised.
+MULTILINE_ASSERTION = b"""import mod
+assert mod.value == 2, "\\n".join([
+    "Arrays are not equal", "", "Mismatched elements: 2 / 16 (12.5%)",
+    " x: array([[ True,  True, False, False],", "       [ True,  True, False, False]])"])
+"""
+#: The message is a docstring-like block ending in `None`, as sphinx's did.
+ASSERTION_ENDING_IN_NONE = b"""import mod
+raise AssertionError("Parameters:\\n  x (int)\\n\\nReturn type:\\n   None")
+"""
+#: Prints what an assertion prints, then fails some other way.
+IMITATES_AN_ASSERTION = b"""import sys
+print("AssertionError: looks like one", file=sys.stderr)
+sys.exit(1)
+"""
+
+
+def _screen(tmp_path, script):
+    suite, _ = freeze(tmp_path, Trees(tmp_path), {repro_path(1): script})
+    return suite.tests[0]
+
+
+@pytest.mark.parametrize("script", [MULTILINE_ASSERTION, ASSERTION_ENDING_IN_NONE])
+def test_a_multiline_assertion_message_is_still_an_assertion_failure(tmp_path, script):
+    test = _screen(tmp_path, script)
+    assert [r.outcome for r in test.base_runs] == [RunOutcome.ASSERTION_FAILURE] * 2
+    assert all(r.returncode == ASSERTION_RETURNCODE for r in test.base_runs)
+    assert test.kept is True
+    assert "AssertionError" in test.base_runs[0].tail
+
+
+def test_output_that_imitates_an_assertion_is_not_one(tmp_path):
+    test = _screen(tmp_path, IMITATES_AN_ASSERTION)
+    assert test.drop_reason is DropReason.NOT_AN_ASSERTION
+    assert test.base_runs[0].returncode == 1
+
+
+def test_the_runner_preserves_what_python_would_do_unwrapped():
+    """Only an uncaught AssertionError is remapped; the rest exits as usual."""
+    import subprocess
+    import tempfile
+
+    def run(body: str) -> int:
+        with tempfile.TemporaryDirectory() as tmp:
+            runner, script = Path(tmp) / "runner.py", Path(tmp) / "t.py"
+            runner.write_text(RUNNER_SOURCE)
+            script.write_text(body)
+            return subprocess.run([sys.executable, str(runner), str(script)],
+                                  capture_output=True, check=False).returncode
+
+    assert run("pass\n") == 0
+    assert run("assert False\n") == ASSERTION_RETURNCODE
+    assert run("raise AttributeError('x')\n") == 1
+    assert run("import no_such_module_anywhere\n") == 1
+    assert run("import sys\nsys.exit(3)\n") == 3
+    assert run("if __name__ == '__main__':\n    raise AssertionError('main')\n") == ASSERTION_RETURNCODE
+    assert run("import sys\nassert sys.argv[1:] == []\n") == 0
+    assert run("import os\nassert os.path.basename(__file__) == 't.py'\n") == 0
+
+
+def test_the_runner_is_installed_and_hashed_before_every_run(tmp_path):
+    trees = Trees(tmp_path)
+    sandbox = LocalSandbox(trees._copy())
+    (sandbox.root / RUNNER_PATH.lstrip("/")).parent.mkdir(parents=True)
+    (sandbox.root / RUNNER_PATH.lstrip("/")).write_text("raise SystemExit(0)\n")  # a stale runner
+    suite, _ = freeze(tmp_path, trees, {repro_path(1): GOOD})
+    evaluate_frozen(suite, FIX, sandbox, make_setup())
+    assert sandbox.sha256(RUNNER_PATH) == RUNNER_SHA256
+
+
+def test_a_runner_that_does_not_land_runs_nothing(tmp_path):
+    from reliability.verifier.reproduction_freeze import run_frozen
+
+    class Stale(LocalSandbox):
+        def write_file(self, path, data):
+            if path != RUNNER_PATH:
+                super().write_file(path, data)
+
+    results, reason = run_frozen(Stale(Trees(tmp_path)._copy()), repro_path(1), GOOD,
+                                 runs=2, timeout_s=10)
+    assert results == [] and "runner" in reason
+
+
+def test_the_runner_hash_is_part_of_the_setup_identity():
+    identity = make_setup().identity()
+    assert identity["runner_sha256"] == RUNNER_SHA256
+    assert identity["assertion_returncode"] == ASSERTION_RETURNCODE
 
 
 def test_the_shipped_budget_is_fixed_and_loads():

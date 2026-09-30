@@ -38,6 +38,7 @@ from reliability.verifier.decision import SignalOutcome
 from reliability.verifier.patch import parse_patch
 from reliability.verifier.record import SignalAbsence, SignalKind, SignalRecord
 from reliability.verifier.reproduction_freeze import (
+    RUNNER_PATH,
     FrozenSuite,
     ReproductionSetup,
     RunOutcome,
@@ -70,7 +71,7 @@ class ContainerSandbox:
     def run_test(self, path: str, timeout_s: int) -> tuple[int, str]:
         return self.container.exec(
             f"PYTHONPATH=/testbed timeout -k 5 {int(timeout_s)} "
-            f"python {shlex.quote(path)}",
+            f"python {RUNNER_PATH} {shlex.quote(path)}",
             timeout_s=timeout_s + 30)
 
     def set_patched(self, patched: bool) -> None:

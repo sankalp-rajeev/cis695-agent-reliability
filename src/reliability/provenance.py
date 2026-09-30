@@ -66,6 +66,8 @@ REQUIRED_FIELDS = (
     "reproduction_retries",
     "reproduction_generator_max_steps",
     "reproduction_generator_max_cost_usd",
+    # The exit-code runner that decides what counts as an AssertionError.
+    "reproduction_runner_sha256",
 )
 
 
@@ -107,6 +109,7 @@ class RunProvenance:
     reproduction_retries: int
     reproduction_generator_max_steps: int
     reproduction_generator_max_cost_usd: float
+    reproduction_runner_sha256: str
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)

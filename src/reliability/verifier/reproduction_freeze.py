@@ -24,7 +24,6 @@ import base64
 import hashlib
 import json
 import logging
-import re
 import shlex
 from collections.abc import Callable
 from contextlib import AbstractContextManager
@@ -175,6 +174,9 @@ class ReproductionSetup:
             "budget": self.budget.as_dict(),
             "prompt_path": self.prompt_path,
             "prompt_sha256": self.prompt_sha256,
+            # How outcomes are read is part of what produced the result.
+            "runner_sha256": RUNNER_SHA256,
+            "assertion_returncode": ASSERTION_RETURNCODE,
         }
 
 
@@ -313,16 +315,47 @@ class Sandbox(Protocol):
 #: `timeout` exits 124 on expiry. The container runner wraps each run with it
 #: so a hung test is killed inside the container, not just abandoned.
 TIMEOUT_RETURNCODE = 124
-_ASSERTION_LINE = re.compile(r"^AssertionError\b")
+
+#: Exit code the runner uses for an uncaught AssertionError, and only for that.
+#: An earlier version read the last line of the output for "AssertionError",
+#: which dropped every test whose message ran over several lines (a numpy array
+#: diff, a docstring) — six real tests in pilot_14, two instances.
+ASSERTION_RETURNCODE = 97
+
+#: Where the runner is installed. Outside the repository, so no patch can
+#: reach it, and written after the patch is applied.
+RUNNER_PATH = "/opt/v4/run_test.py"
+
+#: Runs a script as `__main__`, the way `python script.py` would, and turns an
+#: uncaught AssertionError into ASSERTION_RETURNCODE. Every other exception
+#: exits 1 as it would unwrapped, and SystemExit keeps the script's own code.
+#: Plain Python 3.6 syntax: it runs inside every SWE-bench image.
+RUNNER_SOURCE = """\
+import os
+import runpy
+import sys
+import traceback
+
+script = sys.argv[1]
+sys.argv = [script]
+sys.path.insert(0, os.path.dirname(os.path.abspath(script)))
+try:
+    runpy.run_path(script, run_name="__main__")
+except AssertionError:
+    traceback.print_exc()
+    sys.stderr.flush()
+    sys.exit(__RC__)
+""".replace("__RC__", str(ASSERTION_RETURNCODE))
+RUNNER_SHA256 = "sha256:" + hashlib.sha256(RUNNER_SOURCE.encode("utf-8")).hexdigest()
 
 
-def classify(returncode: int, output: str) -> RunOutcome:
+def classify(returncode: int) -> RunOutcome:
+    """Only the exit code decides. Nothing in the output can make a failure an assertion."""
     if returncode == 0:
         return RunOutcome.PASS
     if returncode == TIMEOUT_RETURNCODE:
         return RunOutcome.TIMEOUT
-    lines = [line for line in output.splitlines() if line.strip()]
-    if returncode == 1 and lines and _ASSERTION_LINE.match(lines[-1]):
+    if returncode == ASSERTION_RETURNCODE:
         return RunOutcome.ASSERTION_FAILURE
     return RunOutcome.ERROR
 
@@ -346,8 +379,13 @@ def run_frozen(
     Returns the runs and, if the bytes on disk did not hash to the frozen
     digest, the reason no run happened. The write happens immediately before
     the runs, so whatever the working tree held at `path` — including a
-    version the patch wrote — is replaced.
+    version the patch wrote — is replaced. The runner is installed and checked
+    the same way, and `sandbox.run_test` must execute `path` through it.
     """
+    runner = RUNNER_SOURCE.encode("utf-8")
+    sandbox.write_file(RUNNER_PATH, runner)
+    if (on_disk := sandbox.sha256(RUNNER_PATH)) != RUNNER_SHA256:
+        return [], f"runner at {RUNNER_PATH} hashes to {on_disk}, not {RUNNER_SHA256}"
     sandbox.write_file(path, data)
     on_disk = sandbox.sha256(path)
     if on_disk != _sha256(data):
@@ -358,7 +396,7 @@ def run_frozen(
             rc, out = sandbox.run_test(path, timeout_s)
         except TimeoutError:
             rc, out = TIMEOUT_RETURNCODE, "host timeout"
-        results.append(RunResult(classify(rc, out), rc, out[-600:]))
+        results.append(RunResult(classify(rc), rc, out[-600:]))
     return results, None
 
 
