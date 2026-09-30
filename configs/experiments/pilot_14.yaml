@@ -1,0 +1,32 @@
+# Experiment layer: the 10-task pilot, first run with V4 (verifier v1.2.1).
+#
+# pilot_10 had network and is not citable; pilot_11..pilot_13 ran without V4.
+# This id reuses none of them. Nothing here may be changed mid-run.
+layer: experiment
+experiment_id: pilot_14
+
+benchmark:
+  dataset: SWE-bench/SWE-bench_Verified
+  split: test
+  manifest: manifests/pilot.csv
+
+agent: configs/agent/swebench_claim.yaml
+model: configs/model/primary.yaml
+reproduction_generator: configs/model/generator.yaml
+verifiers:
+  - configs/verifier/full.yaml
+  - configs/verifier/baseline.yaml
+
+sampling:
+  n_tasks: 10
+  seed: 695
+  stratify_by: [repo, task_type]
+  min_distinct_repos: 3
+
+execution:
+  single_pass: true
+  retries: 0
+  gates:
+    min_completed_without_infra_failure: 8
+    min_parseable_claims: 9
+    min_resolved_claims: 4
