@@ -239,7 +239,7 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` gate passed · `[!]` blo
   - [x] **§5.3** agent-authored tests are excluded from the regression set — they are the agent's own claim about correctness, and admitting them would let it write its own acceptance criteria
   - [x] Config and code cannot drift: `test_shipped_configs_match_code_defaults` asserts `configs/verifier/{full,baseline}.yaml` match `SelectionConfig()` defaults, so a config claiming `enable_tier0: false` against a code default of true would fail the suite
 
-- [x] **5.2 Runner implemented** — **GATE PASSED**, `pytest tests/unit/test_regression.py` → **32 passed**, covering every outcome
+- [x] **5.2 Runner implemented** — **GATE PASSED** on fixtures (`test_regression.py` → 32). Live-patch half attempted on the pilot and **did not produce executed outcomes**. On 9 verified patches: 7 recorded `NOT_AVAILABLE (nothing_to_check)` because selection returned no tests (`convention: unknown`); 2 selected file paths (62 + 118) and every one came back `NOT_RUN` — the executor always calls `pytest`, which is the wrong runner for Django and produced no parseable results. The schema recorded absence correctly. There is no `PASS`/`REGRESSION`/`PRE_EXISTING_FAIL` from a test that actually ran. See `reports/pilot_summary.md`
   - [x] Selects tests per policy and runs them with a timeout. The executor is a protocol, so classification is gated against fixtures rather than requiring Docker in the unit suite — same pattern as the Phase 3 agent backend
   - [x] **§3.2 baseline pass implemented.** Selected tests run twice, on the unpatched base and on the patched tree, and **only pass-to-fail transitions count as regressions**. Without it, every pre-existing failure — environment-dependent tests, skips resolving differently, tests simply broken at that commit — would be blamed on the candidate patch, inflating the rejection rate with noise and making the verifier look far more discriminating than it is
   - [x] **Baseline cached per instance** (`runs/_baseline_cache/<instance_id>.baseline.json`, written via temp-file-and-rename so a concurrent reader never sees a partial file). The base commit never changes, so it is computed once and reused across verifier configurations — which also keeps ablations comparable, since they then differ only in the patched pass
@@ -248,10 +248,11 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` gate passed · `[!]` blo
   - [x] **§4.1 flake handling** — a `REGRESSION` is re-run once in isolation and marked `FLAKY` if it then passes, with the disagreement recorded. Rejecting a correct patch over a nondeterministic test would land in the false-rejection rate and distort the risk–coverage curve directly
   - [x] **§5.5 `BASELINE_UNRELIABLE`** — above half the selected tests failing on base, the environment is suspect rather than the repository; routed away from `PASS`
   - [x] **§8 open question 4** — `NEWLY_PASSING` is recorded but does not drive the signal, matching the policy's current position
+  - [ ] **Live-patch execution (pilot_10).** 7/9 verified instances selected no tests; 2 selected file paths and every one was `NOT_RUN`. No `PASS`/`REGRESSION`/`PRE_EXISTING_FAIL` from a test that ran. Schema recorded absence. Not an executed regression signal. See `reports/pilot_summary.md`
 
-- [ ] **5.3 Overlap audit**
-  - [ ] Log how much the selected set overlaps PASS_TO_PASS (**analysis only, after the fact — never fed back into selection**)
-  - **GATE:** overlap number computed and recorded for one instance. This is the number Dr. Hassan will ask about.
+- [x] **5.3 Overlap audit** — **number recorded**, `reports/pilot_summary.md` and `runs/pilot_10/summary.json`
+  - [x] Computed after the fact from stored records only (`reliability.analysis.overlap`). Selection never saw `PASS_TO_PASS`
+  - **GATE:** **0 / 180** selected paths also appear in `PASS_TO_PASS` (`fraction_of_selected = 0.0`). Honest but not yet interpretable: 7/9 verified instances selected nothing (`convention: unknown`), and the 180 hits are whole test-module paths from two fall-throughs, which cannot match SWE-bench node ids. Recompute after selection produces node ids. **This pilot is also invalidated by 8.3** (see blockers)
 
 ---
 
@@ -264,13 +265,13 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` gate passed · `[!]` blo
   - [x] **Absolute vs relative checks.** Syntax, import and build are properties of the patched tree alone and need no baseline — a tree that will not compile is broken regardless of the base commit. Lint and typecheck are compared against the base, because repositories carry pre-existing violations and attributing them to the candidate patch would be the same mistake the §3.2 baseline pass exists to prevent
   - [x] Config and code cannot drift: `test_shipped_config_matches_the_absolute_relative_split` asserts `configs/verifier/full.yaml` matches `ABSOLUTE_CHECKS` / `RELATIVE_CHECKS` and `StaticConfig()` defaults
 
-- [ ] **6.2 Executed inside the task container** — wiring built and gated, `pytest tests/unit/test_container.py` → **22 passed**. `src/reliability/verifier/container.py`
+- [x] **6.2 Executed inside the task container** — wiring gated, `test_container.py` → 22. Live results on **9/10** pilot instances (sphinx crashed)
   - [x] `TaskContainer` runs one container per instance from the prebuilt `swebench/sweb.eval.x86_64.*` image, named uniquely, `--network none`, removed on exit even when a check raises. Parallel-safe by construction: nothing is shared between concurrent verifications
   - [x] The image is **derived from the instance id**, not looked up in the dataset, so standing a container up touches no oracle surface (`test_image_derivation_reads_no_oracle_field`)
   - [x] `set_patched()` moves the tree between the base and patched states by applying and reverting the frozen patch, which is what makes both Phase 5's baseline pass and Phase 6's relative checks affordable in a single container
   - [x] `ContainerRepoTree` exposes exactly `list_files` / `read_text` — selection cannot reach anything else through it (`test_repo_tree_satisfies_the_selection_protocol`)
   - [x] `ContainerTestExecutor` returns a result for **every requested test**; anything pytest never reported on comes back `NOT_RUN` rather than being dropped from the set, which is precisely where an unexecuted test would otherwise stop counting
-  - **GATE (pending):** static checks produce results for all 10 pilot instances with availability tallied per repo. Needs the pilot images pulled and a real agent run to produce patches; deferred with Phase 5's live run
+  - **GATE:** static results for **9/10** instances, tallied per repo in `reports/pilot_summary.md`. Sphinx never got a verification record (UTF-8 crash in `read_text`). Syntax and import PASS on every non-empty patch. Lint/typecheck mostly pre-existing FAIL or NOT_AVAILABLE. **Build FAIL is listed as a new failure on every non-empty patch** — almost certainly `python -m build` missing from the eval image, recorded as FAIL instead of `NOT_AVAILABLE`. That overstates what the static layer rejected.
 
 ---
 
@@ -334,19 +335,18 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` gate passed · `[!]` blo
 
 ## Phase 9 — 10-task pilot
 
-- [ ] **9.1 Dry run on 2 tasks**
-  - [ ] Full chain: agent → freeze → verifier → oracle → records
-  - **GATE:** 2/2 produce all four records with no manual intervention
+- [ ] **9.1 Dry run on 2 tasks** — skipped at request; the 10-task pass ran directly. The network leak 8.3 caught is exactly what this dry run existed to find.
 
-- [ ] **9.2 Full pilot run**
-  - [ ] All 10 tasks, single pass, no retries, no config changes mid-run
-  - **GATE:** ≥8/10 complete without infrastructure failure. Below that, fix infrastructure and rerun — do not analyze a broken pilot.
+- [x] **9.2 Full pilot run** — **numeric gate passed, run invalidated by 8.3**. `runs/pilot_10/`, DeepSeek V4 Flash, single pass, retries=0
+  - [x] All 10 tasks attempted, no retries, no config changes mid-run
+  - **GATE:** **9/10** complete without infrastructure failure (need ≥8). `pylint-6386` empty-patch / step-limit (agent outcome). `sphinx-10449` verifier `UnicodeDecodeError` — no verification or oracle record
+  - ⚠️ **Do not cite.** Agent containers had network. 8.3 recorded 55 confirmed leaks. Next attempt is a new `experiment_id`
 
-- [ ] **9.3 Claim capture rate**
-  - **GATE:** ≥9/10 produce a parseable `FINAL_STATUS`. Below that, revise the prompt and rerun.
+- [x] **9.3 Claim capture rate** — **9/10** parseable `FINAL_STATUS` (need ≥9). The miss is `pylint-6386` (`UNPARSEABLE` at step limit). Same citation ban as 9.2
 
-- [ ] **9.4 Enough RESOLVED claims to study**
-  - **GATE:** ≥4/10 agent `RESOLVED` claims. Below that, the model is too weak for the reliability question — trigger Gate 2 and escalate model before freeze.
+- [x] **9.4 Enough RESOLVED claims to study** — **9/10** (need ≥4). Same citation ban as 9.2. An 8/8 oracle resolve rate after the model curled GitHub is not a reliability measurement
+
+Full table, cost, wall-clock, V4 FLAG note, 5.2/5.3/6.2 numbers: `reports/pilot_summary.md`
 
 ---
 
@@ -374,7 +374,9 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` gate passed · `[!]` blo
 
 _(record here: date, task id, what failed, what was tried)_
 
-**None open.** No gate has failed twice for the same reason.
+**Open: 2026-09-30 · 8.3 on `pilot_10`.** `scripts/audit_leakage.sh runs` exits 1, **55 confirmed findings**. Agent containers were launched without `--network none`. The requests trajectory shows `curl` to `raw.githubusercontent.com` and the GitHub issues API, then “verify against the upstream fix”. Field names `FAIL_TO_PASS` / `PASS_TO_PASS` appear in trajectories. **This invalidates `pilot_10` as a citable result.** Fix: pass `network: none` through the environment mini-SWE-agent actually starts (`get_sb_environment`), confirm with a 2-task dry run and a clean 8.3, then a new `experiment_id`. First failure of this gate — not yet a twice-failed blocker, but no Phase 10 analysis of this run.
+
+**None otherwise.** No other gate has failed twice for the same reason.
 
 For the record, two failures during 1.2 were in my own tooling, not the gate, and are not blockers:
 
@@ -396,6 +398,7 @@ _(record here: date, decision, rationale — especially anything settled with Dr
 - **2026-09-14 · Environment moved to WSL2 ext4.** Project relocated from `C:\Umich\Fall2026\Capstone` to `~/projects/cis695-agent-reliability` to avoid line-ending and permission problems with Docker. `core.autocrlf=false`; `.gitattributes` sets `*.patch -text` and `*.diff -text` so frozen patch artifacts stay byte-exact. The Windows copy is retained as an untouched fallback.
 - **2026-09-14 · `swebench` pinned by PyPI version, not git SHA.** Checklist 1.1 asks for a pinned commit SHA, but the package is installed from PyPI as `swebench==5.0.2`, so no commit SHA exists. Provenance is the locked PyPI artifact in `uv.lock`. If a SHA is required for the writeup, switch to a git checkout before the Phase 10 freeze. `mini-swe-agent==2.4.6` is pinned the same way — both are experimental apparatus, so exact `==`, while ordinary dependencies stay on lower bounds.
 - **2026-09-14 · Sanity-run instances chosen for repo diversity and traceability.** `django__django-12304`, `sympy__sympy-15599`, `matplotlib__matplotlib-25287` — three distinct repositories spanning framework/API, symbolic-numerical, and state/styling behaviour, and all three are already cited as worked examples in the technical design. Not chosen on any knowledge of model performance.
+- **2026-09-30 · `pilot_10` numeric gates passed and the run is void.** 9/10 complete, 9/10 parseable claims, 9/10 RESOLVED, $0.2548, 1638 s. Every clean patch was FLAG (V4 `not_implemented` + regression `NOT_AVAILABLE`) as designed. Then 8.3 failed: the agent had network and fetched upstream. An 8/8 oracle resolve rate under those conditions is not a finding about self-assessment. Recorded in `reports/pilot_summary.md`. The next pilot is a new experiment, not a retry of this one.
 - **2026-09-29 · Model decision settled: open-weight, DeepSeek V4 Flash via LiteLLM.** `configs/model/primary.yaml` pins `deepseek/deepseek-v4-flash` on litellm's native `deepseek/` route, reading `DEEPSEEK_API_KEY`. Open weights matter beyond cost here: the study's claim is about an agent's self-assessment, and a model whose weights can be re-obtained keeps the apparatus reproducible after a provider retires an endpoint — not hypothetical, since the Gemini 2.0 and 2.5 families were withdrawn mid-project and took the 3.1 smoke configuration with them. ✅ **Verified 2026-09-29 by a live tool-calling request** — the model returned a well-formed `bash` tool call with `finish_reason: tool_calls` (308 in / 54 out tokens, $0.00012). Presence in litellm's cost map was explicitly *not* accepted as evidence, for the reason recorded below. The `verified:` block is written only by `scripts/verify_model.py` after a real request succeeds, never by hand, and that write is a surgical edit of the block alone — an earlier `yaml.dump` round-trip stripped every rationale comment from this file, which is exactly the provenance the config exists to carry.
 - **2026-09-29 · V4 is load-bearing, not optional, and the policy was written for its presence.** Technical design §12 makes ACCEPT conditional on "at least one issue-specific execution signal supports repair" — that is V4's issue-derived reproduction tests. When the decision policy was built, V4 had not been started, and the choice was between dropping the condition so ACCEPT stayed reachable or treating the missing signal as a condition not met. The second was chosen: dropping it would silently weaken the policy in a way no reader of the design would detect from its output, and treating an absent check as satisfied is the precise error `NOT_RUN` (Phase 5) and `NOT_AVAILABLE` (Phase 6) exist to prevent. **Scope correction 2026-09-29: V4 is back in scope.** So this is a build-order state, not a design position — nothing is built around V4's absence, and the ACCEPT path is already wired and tested (`test_the_same_run_accepts_once_v4_reports`). **Until the layer ships, the full verifier emits REJECT and FLAG only, and a FLAG of that kind means a layer has not run yet rather than that the patch looked suspicious.** Every verification record states which layers reported, so those FLAGs are identifiable rather than having to be inferred. The baseline condition is unaffected — it never required that signal — which is why the two policies stay comparable meanwhile.
 - **2026-09-29 · An absent signal is recorded with a reason, not as a bare gap.** `SignalAbsence` separates `not_implemented` (the layer does not exist yet) from `not_configured` (this repository has no such tooling), `disabled`, `nothing_to_check`, `error` and `timeout`. All six are equally "not a pass" to the decision policy, so the distinction buys nothing there — it exists for the analysis. Records written before V4 shipped must be findable and excludable later, rather than being averaged in with runs where V4 genuinely had nothing to check; without attribution that difference is unrecoverable once the runs are finished. The schema refuses a `NOT_AVAILABLE` with no reason for exactly that purpose.
