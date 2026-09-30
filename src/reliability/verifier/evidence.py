@@ -106,9 +106,8 @@ def build_evidence(
     """Assemble the evidence bundle a policy will judge.
 
     Any signal passed as `None` is `NOT_AVAILABLE`. `reproduction` is taken as a
-    raw outcome until V4's report type exists; inventing one here would guess at
-    an interface the implementation should choose. The slot is required either
-    way — V4 is load-bearing in the policy, not an optional extra.
+    raw outcome: V4's mapping to one lives in
+    `reliability.verifier.reproduction.signal_from_reproduction`.
     """
     return Evidence(
         integrity=(

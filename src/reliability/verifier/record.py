@@ -184,8 +184,24 @@ class VerificationRecord(BaseModel):
     #: Which program runs those node ids, and the evidence for that choice.
     selection_runner: str = ""
 
+    #: The V4 test generator's pin — model id, the served model name and
+    #: fingerprint from its live verification, the prompt hash, and the fixed
+    #: budget. A second experimental variable, so it is recorded here even when
+    #: V4 produced no signal. Empty only on records written before V4 existed.
+    reproduction_generator: dict[str, Any] = Field(default_factory=dict)
+
     duration_s: float = Field(default=0.0, ge=0.0)
     verified_at: str = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def _generator_is_recorded(self) -> VerificationRecord:
+        predates_v4 = self.reproduction.absence is SignalAbsence.NOT_IMPLEMENTED
+        if not predates_v4 and not (
+                self.reproduction_generator.get("generator") or {}).get("model_id"):
+            raise ValueError(
+                "a record written with V4 must carry reproduction_generator "
+                "with the generator's model_id")
+        return self
 
     @field_validator("patch_sha256")
     @classmethod

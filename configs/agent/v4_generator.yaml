@@ -1,0 +1,131 @@
+# V4 test-generator prompt. The generator runs in a fresh base-commit container
+# with --network none and is shown the issue text only: `{{task}}` is the single
+# placeholder, and tests/unit/test_reproduction.py asserts that. It never sees a
+# candidate patch, the gold patch or test patch, FAIL_TO_PASS, PASS_TO_PASS, or
+# the repair agent's trajectory.
+#
+# Only files at v4_repro/test_repro_<1..max_tests>.py are read back out. The
+# budget (max_tests, retries, step and cost limits) lives in
+# configs/verifier/full.yaml under `reproduction:`, not here; the step and cost
+# values below are overwritten from it at run time.
+agent:
+  system_template: |
+    You are a helpful assistant that can interact with a computer shell to write tests for a bug report.
+  instance_template: |
+    <issue>
+    {{task}}
+    </issue>
+
+    <instructions>
+    # Task
+
+    The repository in /testbed is checked out at the commit where the issue above
+    was reported, so the problem it describes is present. Your job is to write
+    reproduction tests for it. Do NOT fix the problem, and do not modify any
+    existing file: every change outside v4_repro/ is discarded.
+
+    Write between one and three standalone Python scripts, at exactly these paths:
+
+        /testbed/v4_repro/test_repro_1.py
+        /testbed/v4_repro/test_repro_2.py
+        /testbed/v4_repro/test_repro_3.py
+
+    Each script must:
+
+    - assert, with `assert` statements, the CORRECT behaviour the issue asks for,
+      so that it fails with AssertionError on the current code and exits 0 once
+      the issue is fixed. If the problem is an unwanted exception, catch that
+      exception and raise AssertionError instead.
+    - be self-contained: import only the repository's own code, the standard
+      library, and packages already installed. Do not read any other file you
+      created. Configure any framework settings the code needs inside the script.
+    - be deterministic, need no network (there is none), and finish within 60 seconds.
+    - be a plain script, not a pytest module; it is not run under pytest.
+
+    Each script is run exactly like this, twice:
+
+        cd /testbed && PYTHONPATH=/testbed python v4_repro/test_repro_N.py
+
+    Run each script that way yourself and confirm it fails with AssertionError
+    before you submit. A script is discarded if it passes on the current code, if
+    it fails any other way (ImportError, SyntaxError, a TypeError before the
+    assertion, a timeout), or if its two runs disagree.
+
+    ## Command execution
+
+    Every response must contain reasoning text and at least one bash tool call.
+    Each command runs in a new subshell, so `cd` and environment variables do not
+    persist between commands. Use non-interactive commands only. Keep command
+    output short; use head, tail, sed or grep to view parts of large files.
+
+    ## Submission
+
+    When the scripts are written and you have run each one, submit with exactly
+    this command, on its own:
+
+        echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT
+
+    You cannot run anything after submitting.
+    </instructions>
+  step_limit: 40
+  cost_limit: 1.0
+environment:
+  cwd: /testbed
+  timeout: 60
+  interpreter:
+  - bash
+  - -c
+  env:
+    PAGER: cat
+    MANPAGER: cat
+    LESS: -R
+    PIP_PROGRESS_BAR: 'off'
+    TQDM_DISABLE: '1'
+    BASH_ENV: /root/.bashrc
+  environment_class: docker
+  run_args:
+  - --rm
+  - --network
+  - none
+model:
+  observation_template: |
+    {% if output.exception_info -%}
+    <exception>{{output.exception_info}}</exception>
+    {% endif -%}
+    <returncode>{{output.returncode}}</returncode>
+    {% if output.output | length < 10000 -%}
+    <output>
+    {{ output.output -}}
+    </output>
+    {%- else -%}
+    <warning>
+    The output of your last command was too long. Use head, tail, sed or a more selective grep.
+    </warning>
+    {%- set elided_chars = output.output | length - 10000 -%}
+    <output_head>
+    {{ output.output[:5000] }}
+    </output_head>
+    <elided_chars>
+    {{ elided_chars }} characters elided
+    </elided_chars>
+    <output_tail>
+    {{ output.output[-5000:] }}
+    </output_tail>
+    {%- endif %}
+  format_error_template: |
+    {% if finish_reason is defined and (finish_reason == "length" or (finish_reason == "tool_calls" and not has_tool_calls)) -%}
+    Your previous response reached the output token limit (finish_reason={{ finish_reason }}) before you produced a tool call, so it was cut off. Respond more concisely and finish with exactly one bash tool call.
+    {%- else -%}
+    Tool call error:
+
+    <error>
+    {{error}}
+    </error>
+
+    Every response needs to use the 'bash' tool at least once. Call it with your command as the argument: {"command": "your_command_here"}
+
+    When you are done, submit with: echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT
+    {%- endif %}
+  model_kwargs:
+    drop_params: true
+    temperature: 0.0

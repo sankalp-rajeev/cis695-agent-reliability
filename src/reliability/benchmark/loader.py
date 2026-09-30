@@ -175,6 +175,16 @@ def load_instance(instance_id: str, dataset=None) -> tuple[AgentTask, OracleReco
     return agent_task_from_row(row), oracle_record_from_row(row)
 
 
+def load_agent_task(instance_id: str, dataset=None) -> AgentTask:
+    """One instance's agent-visible half only; no OracleRecord is built."""
+    dataset = load_verified() if dataset is None else dataset
+    index = _index_by_instance_id(dataset._fingerprint, dataset)
+    if instance_id not in index:
+        raise KeyError(f"no such instance in {DATASET_NAME}: {instance_id}")
+    projection = dataset.select_columns(list(AGENT_VISIBLE_COLUMNS))
+    return agent_task_from_row(projection[index[instance_id]])
+
+
 def load_agent_tasks(dataset=None) -> tuple[AgentTask, ...]:
     """Every instance as an AgentTask, with no oracle data loaded at all."""
     dataset = load_verified() if dataset is None else dataset

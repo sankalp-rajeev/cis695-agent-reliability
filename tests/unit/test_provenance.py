@@ -41,6 +41,15 @@ def make_provenance(**overrides) -> RunProvenance:
         "sys_path": ["/home/x/proj/src"],
         "foreign_sys_path_entries": [],
         "agent_network_mode": "none",
+        "reproduction_generator_model_id": "deepseek/deepseek-v4-flash",
+        "reproduction_generator_served_model": "deepseek-flash",
+        "reproduction_generator_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+        "reproduction_generator_verified_on": "2026-09-30",
+        "reproduction_generator_prompt_sha256": "sha256:" + "c" * 64,
+        "reproduction_max_tests": 3,
+        "reproduction_retries": 0,
+        "reproduction_generator_max_steps": 40,
+        "reproduction_generator_max_cost_usd": 1.0,
     }
     base.update(overrides)
     return RunProvenance(**base)

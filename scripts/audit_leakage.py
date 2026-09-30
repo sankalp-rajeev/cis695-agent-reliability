@@ -52,7 +52,9 @@ def main() -> int:
         return 1
 
     task_dirs = find_task_dirs(runs_root)
-    print(f"scope: {len(task_dirs)} agent task directories under {runs_root}")
+    n_generator = sum(1 for d in task_dirs if d.parent.name == "_reproduction_cache")
+    print(f"scope: {len(task_dirs) - n_generator} agent task directories and "
+          f"{n_generator} V4 generator directories under {runs_root}")
 
     if not task_dirs:
         print("FAIL: no agent task directories found. An audit that scanned "
@@ -75,6 +77,15 @@ def main() -> int:
         print(f"\n{len(result.review)} finding(s) need review. These are not "
               "automatic failures, but each must be explained before the run "
               "is cited.")
+
+    awareness = result.benchmark_awareness
+    if awareness:
+        searches = [f for f in awareness if f.kind == "answer-key-search"]
+        recalled = [f for f in awareness if f.kind == "benchmark-awareness"]
+        print(f"\n{len(recalled)} benchmark-awareness finding(s) and "
+              f"{len(searches)} answer-key search(es). The model produced "
+              "these field names itself; nothing delivered them. Counted, "
+              "and they do not fail the gate.")
 
     incomplete = (
         not content_ok
@@ -159,6 +170,8 @@ def load_probes(task_dirs) -> tuple[dict, bool]:
 
     probes = {}
     for task_dir in task_dirs:
+        if task_dir.name in probes:
+            continue
         try:
             task, oracle = load_instance(task_dir.name, dataset)
         except KeyError:

@@ -131,13 +131,22 @@ def main() -> int:
 
     print("\nPASS  model serves and emits well-formed tool calls.")
 
+    served_model = getattr(response, "model", None) or "unreported"
+    fingerprint = getattr(response, "system_fingerprint", None) or "unreported"
+    print(f"  served model : {served_model}")
+    print(f"  fingerprint  : {fingerprint}")
+
     if args.update:
-        record_verified(config_path, model_id)
+        record_verified(config_path, model_id,
+                        served_model=served_model, system_fingerprint=fingerprint)
         print(f"      recorded verified.status: ok in {args.config}")
     return 0
 
 
-def record_verified(config_path: Path, model_id: str) -> None:
+def record_verified(
+    config_path: Path, model_id: str, *,
+    served_model: str = "unreported", system_fingerprint: str = "unreported",
+) -> None:
     """Rewrite only the `verified:` block, leaving the rest of the file alone.
 
     A `yaml.safe_load` / `yaml.dump` round-trip would be far simpler, but it
@@ -155,6 +164,8 @@ def record_verified(config_path: Path, model_id: str) -> None:
         f"  checked: {today}\n"
         f"  model_id: {model_id}\n"
         f"  tool_calling: true\n"
+        f"  served_model: {served_model}\n"
+        f"  system_fingerprint: {system_fingerprint}\n"
     )
 
     lines = config_path.read_text().splitlines(keepends=True)

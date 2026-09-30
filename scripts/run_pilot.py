@@ -46,7 +46,7 @@ from reliability.verifier.record import (
 from reliability.verifier.record import (
     load_records as load_verification,
 )
-from reliability.verifier.run import verify_task
+from reliability.verifier.run import default_reproduction_setup, verify_task
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
 
@@ -109,6 +109,13 @@ def main() -> int:
     key_env = model_cfg["api_key_env"]
     if not os.environ.get(key_env):
         raise SystemExit(f"{key_env} is not set")
+
+    # V4's generator is pinned and verified separately from the repair model.
+    reproduction = default_reproduction_setup()
+    generator_cfg = yaml.safe_load(
+        (REPO_ROOT / "configs/model/generator.yaml").read_text())
+    if not os.environ.get(generator_cfg["api_key_env"]):
+        raise SystemExit(f"{generator_cfg['api_key_env']} is not set")
 
     agent_limits_cfg = yaml.safe_load(
         (REPO_ROOT / "configs/agent/mini_swe_agent.yaml").read_text())["limits"]
@@ -177,11 +184,21 @@ def main() -> int:
                 model_cfg["limits"]["max_input_tokens_per_task"]),
             max_output_tokens=int(model_cfg.get("max_output_tokens", 8192)),
             per_task_timeout_s=limits.per_task_timeout_s,
-            verifier_policy_version="v1.1.0-full+v1.1.0-baseline",
+            verifier_policy_version="v1.2.1-full+v1.2.1-baseline",
             docker_image="swebench/sweb.eval.x86_64.<instance>:latest (derived)",
             swebench_version="5.0.2",
             timestamp_utc=utc_now(),
             agent_network_mode=agent_network_mode,
+            reproduction_generator_model_id=reproduction.model.model_id,
+            reproduction_generator_served_model=reproduction.model.served_model,
+            reproduction_generator_fingerprint=reproduction.model.system_fingerprint,
+            reproduction_generator_verified_on=reproduction.model.verified_on,
+            reproduction_generator_prompt_sha256=reproduction.prompt_sha256,
+            reproduction_max_tests=reproduction.budget.max_tests,
+            reproduction_retries=reproduction.budget.retries,
+            reproduction_generator_max_steps=reproduction.budget.generator_max_steps,
+            reproduction_generator_max_cost_usd=(
+                reproduction.budget.generator_max_cost_usd),
         ))
 
     (run_root / "manifest.csv").write_bytes(manifest.path.read_bytes())
@@ -194,8 +211,11 @@ def main() -> int:
           f"({len(manifest)} tasks)")
     print(f"run root   : {run_root.relative_to(REPO_ROOT)}")
     print(f"step limit : {limits.max_steps}")
-    print("single pass, retries=0. FLAG on a clean patch is the V4 build-order "
-          "state, not a finding.\n", flush=True)
+    print(f"generator  : {reproduction.model.model_id} "
+          f"(served {reproduction.model.served_model}), "
+          f"max_tests={reproduction.budget.max_tests} "
+          f"retries={reproduction.budget.retries}")
+    print("single pass, retries=0.\n", flush=True)
 
     log_path = run_root / "pilot.log"
     started = time.monotonic()
@@ -206,7 +226,7 @@ def main() -> int:
               f"{image_for(entry.instance_id)} =====", flush=True)
         row = _run_one(
             entry, backend, run_root, experiment_id, manifest.content_hash,
-            limits, log_path)
+            limits, log_path, reproduction)
         per_task.append(row)
         print(f"  agent={row.get('agent_termination')} "
               f"claim={row.get('claim')} "
@@ -224,7 +244,8 @@ def main() -> int:
     return 0 if summary["gates"]["all_passed"] else 1
 
 
-def _run_one(entry, backend, run_root, experiment_id, manifest_hash, limits, log_path) -> dict:
+def _run_one(entry, backend, run_root, experiment_id, manifest_hash, limits, log_path,
+             reproduction) -> dict:
     """Run one task through the chain. Never retries. Catches and records."""
     t0 = time.monotonic()
     task_dir = run_root / "tasks" / entry.instance_id
@@ -264,7 +285,8 @@ def _run_one(entry, backend, run_root, experiment_id, manifest_hash, limits, log
 
     try:
         if not (task_dir / "verification_record.full.json").exists():
-            verify_task(task_dir, configs=("full", "baseline"), use_container=True)
+            verify_task(task_dir, configs=("full", "baseline"), use_container=True,
+                        reproduction=reproduction)
         full = VerificationRecord.read(task_dir / "verification_record.full.json")
         baseline = VerificationRecord.read(
             task_dir / "verification_record.baseline.json")
@@ -282,11 +304,11 @@ def _run_one(entry, backend, run_root, experiment_id, manifest_hash, limits, log
             "reproduction": full.reproduction.outcome.value,
             "reproduction_absence": (
                 full.reproduction.absence.value if full.reproduction.absence else None),
+            "reproduction_detail": full.reproduction.detail,
+            "reproduction_suite_sha256": full.reproduction.findings.get("suite_sha256"),
+            "reproduction_generation_cost_usd": (
+                full.reproduction.findings.get("generation") or {}).get("cost_usd", 0.0),
             "n_selected": len(full.selected_tests),
-            "v4_build_order_flag": (
-                full.decision.decision.value == "FLAG"
-                and any("issue-specific" in r for r in full.decision.reasons)
-            ),
         })
     except Exception as exc:  # noqa: BLE001
         _log(log_path, entry.instance_id, "verifier", exc)
@@ -378,12 +400,12 @@ def _summarise(run_root, per_task: list[dict], elapsed: float, experiment: dict)
         "gates": gates,
         "agent": agent_sum,
         "oracle": o_sum,
-        "v4_build_order": {
-            "note": ("FLAG on an otherwise-clean patch is the V4 build-order "
-                     "state: reproduction is NOT_AVAILABLE (not_implemented). "
-                     "Not a finding about the patch."),
-            "n_flag_for_missing_v4": sum(
-                1 for r in per_task if r.get("v4_build_order_flag")),
+        "reproduction": {
+            "outcomes": _count(
+                f"{r.get('reproduction')}:{r.get('reproduction_absence') or 'reported'}"
+                for r in per_task if r.get("reproduction")),
+            "generation_cost_usd": round(sum(
+                r.get("reproduction_generation_cost_usd") or 0 for r in per_task), 4),
         },
         "overlap": {
             "n_instances": len(overlaps),
@@ -396,6 +418,13 @@ def _summarise(run_root, per_task: list[dict], elapsed: float, experiment: dict)
         "static_availability": static_availability,
         "per_task": per_task,
     }
+
+
+def _count(keys) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for key in keys:
+        counts[key] = counts.get(key, 0) + 1
+    return counts
 
 
 def _print_summary(summary: dict) -> None:
@@ -417,7 +446,9 @@ def _print_summary(summary: dict) -> None:
           f"{'PASS' if gates['resolved_claims']['passed'] else 'FAIL'}")
     print(f"total cost             : ${summary['total_cost_usd']:.4f}")
     print(f"wall clock             : {summary['elapsed_s']:.0f}s")
-    print(f"V4 build-order FLAGs   : {summary['v4_build_order']['n_flag_for_missing_v4']}")
+    rep = summary["reproduction"]
+    print(f"V4 reproduction        : {rep['outcomes']}  "
+          f"(generation ${rep['generation_cost_usd']:.4f}, not in total cost)")
     olap = summary["overlap"]
     print(f"P2P overlap (5.3)      : {olap['n_overlap_total']}/{olap['n_selected_total']}"
           f" selected tests also in PASS_TO_PASS"

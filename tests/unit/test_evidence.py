@@ -214,8 +214,8 @@ def test_reproduction_is_passed_through_as_a_raw_outcome():
     assert build_evidence(reproduction=PASS).reproduction is PASS
 
 
-def test_a_clean_run_today_flags_for_want_of_v4():
-    """End to end through the adapter: the best evidence available right now."""
+def test_a_clean_run_without_a_reproduction_signal_flags():
+    """End to end through the adapter: V4 kept no test, so ACCEPT is unmet."""
     evidence = build_evidence(
         integrity=integrity(),
         regression=regression(Signal.PASS, n_executed=12),
@@ -229,7 +229,7 @@ def test_a_clean_run_today_flags_for_want_of_v4():
     ),)
 
 
-def test_the_same_run_accepts_once_v4_reports():
+def test_the_same_run_accepts_when_v4_passes():
     evidence = build_evidence(
         integrity=integrity(),
         regression=regression(Signal.PASS, n_executed=12),

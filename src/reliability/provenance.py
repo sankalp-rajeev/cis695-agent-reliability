@@ -53,6 +53,19 @@ REQUIRED_FIELDS = (
     # Never the value requested in config: a run must not record isolation it
     # did not have.
     "agent_network_mode",
+    # V4's generator is a second experimental variable, pinned separately from
+    # the repair model even when it is the same one, and its budget is fixed
+    # per run. The served model and fingerprint come from the live verification
+    # request, not from config.
+    "reproduction_generator_model_id",
+    "reproduction_generator_served_model",
+    "reproduction_generator_fingerprint",
+    "reproduction_generator_verified_on",
+    "reproduction_generator_prompt_sha256",
+    "reproduction_max_tests",
+    "reproduction_retries",
+    "reproduction_generator_max_steps",
+    "reproduction_generator_max_cost_usd",
 )
 
 
@@ -85,6 +98,15 @@ class RunProvenance:
     sys_path: list[str]
     foreign_sys_path_entries: list[str]
     agent_network_mode: str
+    reproduction_generator_model_id: str
+    reproduction_generator_served_model: str
+    reproduction_generator_fingerprint: str
+    reproduction_generator_verified_on: str
+    reproduction_generator_prompt_sha256: str
+    reproduction_max_tests: int
+    reproduction_retries: int
+    reproduction_generator_max_steps: int
+    reproduction_generator_max_cost_usd: float
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)

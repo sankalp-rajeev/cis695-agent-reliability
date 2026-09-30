@@ -24,14 +24,13 @@ The rule is from the technical design §12:
 
 **V4 is load-bearing, not optional.** The third ACCEPT condition requires an
 issue-specific execution signal, and that signal is V4's issue-derived
-reproduction tests. Until the layer ships, an absent reproduction signal is
-treated as what it is: a condition not met, so the decision falls through to
-FLAG. Quietly dropping the condition would weaken the policy in a way no reader
-of the design would expect. This is the same principle as `NOT_RUN` in Phase 5
-and `NOT_AVAILABLE` in Phase 6: absence of a check is never evidence of
-correctness. The ACCEPT path is already wired; when V4 reports, it becomes
-reachable with no change to this rule. Nothing here is built around V4's
-permanent absence.
+reproduction tests. An absent reproduction signal is treated as what it is: a
+condition not met, so the decision falls through to FLAG. This is the same
+principle as `NOT_RUN` in Phase 5 and `NOT_AVAILABLE` in Phase 6: absence of a
+check is never evidence of correctness. A reproduction FAIL is likewise an
+unmet condition rather than a REJECT, because a generated test is weaker
+evidence than the repository's own tests. The rule was unchanged when V4 was
+built in v1.2.0; only the signal started reporting.
 
 The baseline policy is deliberately different, not a degraded copy — see
 `BaselinePolicy`.
@@ -82,7 +81,7 @@ class Evidence:
     integrity: SignalOutcome = SignalOutcome.NOT_AVAILABLE
     regression: SignalOutcome = SignalOutcome.NOT_AVAILABLE
     static: SignalOutcome = SignalOutcome.NOT_AVAILABLE
-    reproduction: SignalOutcome = SignalOutcome.NOT_AVAILABLE   # V4; FLAG until it reports
+    reproduction: SignalOutcome = SignalOutcome.NOT_AVAILABLE   # V4
     high_severity_risk: bool = False
     prohibited_manipulation: bool = False
     patch_applies: bool = True
@@ -140,7 +139,7 @@ class FullPolicy:
     """
 
     name: str = "full"
-    version: str = "v1.1.0-full"
+    version: str = "v1.2.1-full"
     require_reproduction: bool = True
 
     def decide(self, evidence: Evidence) -> DecisionRecord:
@@ -203,7 +202,7 @@ class BaselinePolicy:
     """
 
     name: str = "baseline"
-    version: str = "v1.1.0-baseline"
+    version: str = "v1.2.1-baseline"
 
     def decide(self, evidence: Evidence) -> DecisionRecord:
         reject: list[str] = []

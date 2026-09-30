@@ -7,9 +7,12 @@ in the study survives it.
 Two kinds of check, because either alone is insufficient:
 
 **Field names.** `FAIL_TO_PASS`, `test_patch`, `hints_text` and friends appearing
-in a prompt or a verifier input means oracle plumbing reached somewhere it
-should not. Cheap, and catches the structural mistakes — a dataset row passed
-whole, a debug dump left in.
+in a prompt, a tool result, or a verifier input means oracle plumbing reached
+somewhere it should not. The same words in the model's own message are
+benchmark-awareness: counted, and not a failure, because nothing in the run
+delivered them. A command the model itself issued to search the disk for one
+of those names is recorded separately as an answer-key search, and is also
+not a failure of this gate.
 
 **Field content.** A leak does not have to carry its label. Gold patch text
 pasted into a prompt, or a `FAIL_TO_PASS` test name appearing in a repository
@@ -46,6 +49,8 @@ from pathlib import Path
 #: of scope until added here on purpose.
 IN_SCOPE = (
     "trajectory.jsonl",      # the full agent conversation, prompts included
+    "generation_trajectory.jsonl",  # the V4 test generator's conversation
+    "frozen.json",           # V4's freeze manifest: hashes and base-screen output
     "agent_output.txt",
     "submission_raw.txt",
     "repair_record.json",
@@ -56,6 +61,15 @@ IN_SCOPE = (
 
 #: Verification records are in scope too, matched by pattern.
 IN_SCOPE_PATTERNS = ("verification_record.*.json",)
+
+#: Conversations, classified by who first said a name. The generator's is read
+#: by exactly the same rules as the repair agent's.
+TRAJECTORY_FILES = ("trajectory.jsonl", "generation_trajectory.jsonl")
+
+#: V4's frozen tests are generator output and verifier input. They sit in a
+#: `tests/` subdirectory of the generator's cache directory.
+FROZEN_TESTS_DIR = "tests"
+FROZEN_TEST_PATTERN = "test_repro_*.py"
 
 #: Deliberately *not* scanned: these are the oracle's own output and are
 #: supposed to contain ground truth. Listed explicitly so the exclusion is a
@@ -92,15 +106,19 @@ MAX_PROBES = 40
 class Severity(str, Enum):
     """How much a finding implies.
 
-    `CONFIRMED` means oracle content or an oracle field name was found where it
-    cannot legitimately be. `REVIEW` means a match that has an innocent
-    explanation worth ruling out by hand. Only `CONFIRMED` fails the gate, so a
-    reviewable finding cannot be quietly ignored but also cannot block on a
-    coincidence.
+    `CONFIRMED` means oracle content, or an oracle field name that was delivered
+    to the model, was found where it cannot legitimately be. `REVIEW` means a
+    match that has an innocent explanation worth ruling out by hand.
+    `BENCHMARK_AWARENESS` means the model itself produced the field name — in
+    its own reasoning, or in a command it issued to search the disk for one —
+    and nothing delivered to it contained the name first. It is counted and it
+    does not fail the gate: a model that remembers how SWE-bench is shaped is
+    not a leak of this run's oracle. Only `CONFIRMED` fails the gate.
     """
 
     CONFIRMED = "confirmed"
     REVIEW = "review"
+    BENCHMARK_AWARENESS = "benchmark-awareness"
 
 
 @dataclass(frozen=True, slots=True)
@@ -162,6 +180,11 @@ class AuditResult:
     @property
     def review(self) -> list[Finding]:
         return [f for f in self.findings if f.severity is Severity.REVIEW]
+
+    @property
+    def benchmark_awareness(self) -> list[Finding]:
+        """Field names the model produced itself. Counted, and not a failure."""
+        return [f for f in self.findings if f.severity is Severity.BENCHMARK_AWARENESS]
 
     @property
     def passed(self) -> bool:
@@ -259,7 +282,11 @@ def in_scope(path: Path) -> bool:
 
 
 def scan_files(task_dir: Path) -> list[Path]:
-    return sorted(p for p in task_dir.iterdir() if p.is_file() and in_scope(p))
+    files = [p for p in task_dir.iterdir() if p.is_file() and in_scope(p)]
+    frozen = task_dir / FROZEN_TESTS_DIR
+    if (task_dir / "generation_trajectory.jsonl").is_file() and frozen.is_dir():
+        files.extend(p for p in frozen.glob(FROZEN_TEST_PATTERN) if p.is_file())
+    return sorted(files)
 
 
 #: Output the verifier produces itself. It is a list of test node ids, and node
@@ -289,6 +316,129 @@ def _field_name_text(path: Path, text: str) -> str:
     return text
 
 
+#: A command that looks for an oracle field on disk, as opposed to mentioning it.
+_SEARCH_CMD = re.compile(r"(?<![A-Za-z0-9_])(?:find|grep|rg|ag)(?![A-Za-z0-9_])")
+#: Repair-record fields the model wrote. A field name anywhere else in that
+#: record was not the model's own words and stays a confirmed leak.
+_MODEL_RECORD_KEYS = ("commands_run", "tests_run", "claim")
+
+
+def _names_in(text: str) -> tuple[str, ...]:
+    return tuple(name for name, token in _FIELD_TOKEN.items() if token.search(text))
+
+
+def _confirmed_name(path: Path, name: str, line_no: int | None) -> Finding:
+    return Finding(
+        severity=Severity.CONFIRMED, kind="oracle-field-name", path=str(path),
+        detail=f"{name!r} appears in an in-scope artifact", line_no=line_no,
+    )
+
+
+def _awareness(path: Path, name: str, *, search: bool, line_no: int | None) -> Finding:
+    if search:
+        return Finding(
+            severity=Severity.BENCHMARK_AWARENESS, kind="answer-key-search",
+            path=str(path), line_no=line_no,
+            detail=(f"{name!r} is in a command the model issued to search the "
+                    "disk for an oracle field; nothing delivered the name"),
+        )
+    return Finding(
+        severity=Severity.BENCHMARK_AWARENESS, kind="benchmark-awareness",
+        path=str(path), line_no=line_no,
+        detail=(f"{name!r} is the model's own wording; nothing delivered the name"),
+    )
+
+
+def _scan_confirmed_lines(path: Path, text: str) -> list[Finding]:
+    findings = []
+    for line_no, line in enumerate(text.splitlines(), start=1):
+        for name in _names_in(line):
+            findings.append(_confirmed_name(path, name, line_no))
+    return findings
+
+
+def _scan_trajectory_field_names(path: Path, text: str) -> list[Finding]:
+    """Classify field names by the first message in the trajectory that has them.
+
+    File order is the whole trajectory, not one turn. A name whose first
+    appearance is the model's own message is benchmark-awareness, and a later
+    tool result that merely echoes it is not a delivery. A name whose first
+    appearance is a user, system, or tool message was handed to the model and
+    stays confirmed, including when the model repeats it afterwards. A line
+    that is not a message has no speaker, so its names stay confirmed.
+    """
+    parsed: list[tuple[int, str, dict | None]] = []
+    findings: list[Finding] = []
+    for line_no, raw in enumerate(text.splitlines(), start=1):
+        message: dict | None = None
+        try:
+            loaded = json.loads(raw)
+        except json.JSONDecodeError:
+            loaded = None
+        if isinstance(loaded, dict):
+            message = loaded
+        else:
+            for name in _names_in(raw):
+                findings.append(_confirmed_name(path, name, line_no))
+            continue
+        parsed.append((line_no, raw, message))
+
+    first: dict[str, str] = {}
+    for line_no, _raw, message in parsed:
+        role = message.get("role")
+        strings = _message_strings(message)
+        calls = _message_strings(message.get("tool_calls"))
+        for name in _names_in("\n".join(strings)):
+            search = role == "assistant" and any(
+                name in call and _SEARCH_CMD.search(call) for call in calls
+            )
+            if name not in first:
+                first[name] = role if isinstance(role, str) else ""
+            if first[name] == "assistant" and role == "assistant":
+                findings.append(_awareness(path, name, search=search, line_no=line_no))
+            elif first[name] == "assistant":
+                continue
+            else:
+                findings.append(_confirmed_name(path, name, line_no))
+    return findings
+
+
+def _scan_repair_record_field_names(path: Path, text: str) -> list[Finding]:
+    """The model's commands and claim are its own words. The rest of the record is not."""
+    try:
+        payload = json.loads(text)
+    except json.JSONDecodeError:
+        return _scan_confirmed_lines(path, text)
+    if not isinstance(payload, dict):
+        return _scan_confirmed_lines(path, text)
+
+    findings: list[Finding] = []
+    for key in ("commands_run", "tests_run"):
+        commands = payload.get(key) or ()
+        if not isinstance(commands, list):
+            continue
+        for command in commands:
+            if not isinstance(command, str):
+                continue
+            search = bool(_SEARCH_CMD.search(command))
+            for name in _names_in(command):
+                findings.append(_awareness(
+                    path, name, search=search, line_no=_line_of(text, command[:80])))
+    for name in _names_in("\n".join(_message_strings(payload.get("claim")))):
+        findings.append(_awareness(path, name, search=False, line_no=None))
+
+    rest = {k: v for k, v in payload.items() if k not in _MODEL_RECORD_KEYS}
+    findings.extend(_scan_confirmed_lines(path, json.dumps(rest)))
+    return findings
+
+
+def _line_of(text: str, fragment: str) -> int | None:
+    for line_no, line in enumerate(text.splitlines(), start=1):
+        if fragment and fragment in line:
+            return line_no
+    return None
+
+
 def scan_field_names(path: Path, text: str) -> list[Finding]:
     """Look for oracle column names in an agent-visible or verifier-input file.
 
@@ -296,19 +446,17 @@ def scan_field_names(path: Path, text: str) -> list[Finding]:
     `test_patch` inside `test_patch_extractor_fit` is a test's name. Boundaries
     are identifier characters, so `*test_patch*`, `"FAIL_TO_PASS"` and prose
     that names the column all still match.
+
+    Where the name sits decides the severity. The model's own message is
+    benchmark-awareness. A user, tool, or system message, a prompt, or a
+    verifier record is confirmed: the name was somewhere it can shape a result.
     """
-    findings = []
-    for line_no, line in enumerate(_field_name_text(path, text).splitlines(), start=1):
-        for name, token in _FIELD_TOKEN.items():
-            if token.search(line):
-                findings.append(Finding(
-                    severity=Severity.CONFIRMED,
-                    kind="oracle-field-name",
-                    path=str(path),
-                    detail=f"{name!r} appears in an in-scope artifact",
-                    line_no=line_no,
-                ))
-    return findings
+    text = _field_name_text(path, text)
+    if path.name in TRAJECTORY_FILES:
+        return _scan_trajectory_field_names(path, text)
+    if path.name == "repair_record.json":
+        return _scan_repair_record_field_names(path, text)
+    return _scan_confirmed_lines(path, text)
 
 
 def _message_strings(value: object) -> list[str]:
@@ -343,8 +491,9 @@ def agent_authored_lines(task_dir: Path, probes: OracleProbes) -> frozenset[str]
     message contains before any user or tool message does is suppressed, so a
     later `git diff` of a fix the model wrote itself is not read as a leak.
     """
-    path = task_dir / "trajectory.jsonl"
-    if not path.exists():
+    path = next((task_dir / name for name in TRAJECTORY_FILES
+                 if (task_dir / name).exists()), None)
+    if path is None:
         return frozenset()
     probes_of_interest = probes.patch_lines + probes.test_patch_lines
     if not probes_of_interest:
@@ -483,14 +632,20 @@ def audit(
 
 
 def find_task_dirs(runs_root: Path) -> list[Path]:
-    """Every agent-produced task directory under a runs root.
+    """Every agent-produced task directory under a runs root, and every V4 generator directory.
+
+    A generator directory is `<exp>/_reproduction_cache/<instance_id>/`, named
+    by instance like a task directory, so it gets the same oracle probes.
 
     Keyed on the presence of a repair record, which excludes the Phase 1 harness
     controls. Those legitimately contain gold patches — they exist to evaluate
     them — and scanning them would produce a guaranteed hit that trains the
     reader to ignore this audit.
     """
-    return sorted(p.parent for p in runs_root.glob("*/tasks/*/repair_record.json"))
+    return sorted(
+        {p.parent for p in runs_root.glob("*/tasks/*/repair_record.json")}
+        | {p.parent for p in runs_root.glob(
+            "*/_reproduction_cache/*/generation_trajectory.jsonl")})
 
 
 __all__ = [

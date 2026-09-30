@@ -1,0 +1,41 @@
+# Model layer, V4 test generator. A second experimental variable, pinned and
+# recorded separately from the repair model even though it is the same model
+# today: a result about V4 is a result about this generator, and a later change
+# of either pin must be visible on its own in every record.
+#
+# Recorded in every verification record (`reproduction_generator`) and in each
+# run's meta.yaml (`reproduction_generator_*`).
+layer: model
+role: generator
+
+provider: deepseek
+model_id: deepseek/deepseek-v4-flash
+api_key_env: DEEPSEEK_API_KEY
+
+# Written only by scripts/verify_model.py after a real tool-calling request
+# succeeds. `served_model` is the model name the provider reported back on that
+# request. It is `deepseek-flash`, not the `deepseek-v4-flash` we request, so it
+# does not identify a version. `system_fingerprint` is the only candidate.
+# Checked 2026-09-30: it was identical on every one of 1,663 responses — all
+# 1,636 in the pilot_10..pilot_13 trajectories (2026-09-29 23:46 UTC to
+# 2026-09-30 ~16:30 UTC), the 14 in the dry_v4_1 generator run, and 13
+# back-to-back probe calls with 5 different prompts (logs/fingerprint_check.py).
+# Stable enough to use as the version identifier. Whether it would change with
+# the weights has not been observed, because it has never changed.
+verified:
+  status: ok
+  method: scripts/verify_model.py
+  checked: 2026-09-30
+  model_id: deepseek/deepseek-v4-flash
+  tool_calling: true
+  served_model: deepseek-flash
+  system_fingerprint: aeb56401ca74e127821c4f9126dcb669
+
+requires_tool_calling: true
+
+temperature: 0.0
+top_p: 1.0
+max_output_tokens: 8192
+
+model_kwargs:
+  drop_params: true

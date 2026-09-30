@@ -369,6 +369,139 @@ def test_a_leak_into_a_verifier_input_is_caught(tmp_path, probes):
     assert any(f.kind == "oracle-field-name" for f in findings)
 
 
+def test_the_models_own_field_name_is_benchmark_awareness(tmp_path, probes):
+    """pilot_13: reasoning about SWE-bench is not a delivery of the oracle."""
+    files = dict(CLEAN)
+    files["trajectory.jsonl"] = json.dumps({
+        "role": "assistant",
+        "reasoning_content": "SWE-bench runs the FAIL_TO_PASS tests from the commit.",
+    }) + "\n"
+    task = make_task(tmp_path, files)
+
+    findings, _ = audit_task(task, probes)
+    result = audit([task], {"psf__requests-1921": probes})
+
+    assert any(f.kind == "benchmark-awareness" for f in findings)
+    assert not any(f.severity is Severity.CONFIRMED for f in findings)
+    assert result.passed
+    assert result.benchmark_awareness
+
+
+def test_a_search_command_the_model_issued_is_its_own_category(tmp_path, probes):
+    """Running find/grep for the column is active search, not passive recall."""
+    files = dict(CLEAN)
+    files["trajectory.jsonl"] = "\n".join([
+        json.dumps({
+            "role": "assistant",
+            "reasoning_content": "The hidden tests are probably named somewhere.",
+            "tool_calls": [{"function": {"arguments": json.dumps({
+                "command": "grep -R -l \"FAIL_TO_PASS\" /root /tmp",
+            })}}],
+        }),
+        json.dumps({"role": "tool", "content": "grep: /root: no matches for FAIL_TO_PASS"}),
+    ]) + "\n"
+    findings, _ = audit_task(make_task(tmp_path, files), probes)
+
+    assert any(f.kind == "answer-key-search" for f in findings)
+    assert not any(f.severity is Severity.CONFIRMED for f in findings)
+
+
+def test_a_search_command_recorded_on_the_repair_record_is_not_a_leak(tmp_path, probes):
+    files = dict(CLEAN)
+    files["repair_record.json"] = json.dumps({
+        "commands_run": ["grep -R -l \"FAIL_TO_PASS\" /root /tmp"],
+        "claim": {"status": "RESOLVED", "evidence": "", "raw_output": ""},
+    })
+    findings, _ = audit_task(make_task(tmp_path, files), probes)
+    assert any(f.kind == "answer-key-search" for f in findings)
+    assert not any(f.severity is Severity.CONFIRMED for f in findings)
+
+
+def test_a_field_name_delivered_before_the_model_repeats_it_is_confirmed(tmp_path, probes):
+    files = dict(CLEAN)
+    files["trajectory.jsonl"] = "\n".join([
+        json.dumps({"role": "tool", "content": "row keys: FAIL_TO_PASS, PASS_TO_PASS"}),
+        json.dumps({"role": "assistant", "content": "The FAIL_TO_PASS list is what I should satisfy."}),
+    ]) + "\n"
+    findings, _ = audit_task(make_task(tmp_path, files), probes)
+    assert any(f.severity is Severity.CONFIRMED and f.kind == "oracle-field-name" for f in findings)
+
+
+# --- the V4 generator's directory is watched by the same rules --------------
+
+GOLD_LINE = "none_keys = [k for (k, v) in merged_setting.items() if v is None]"
+
+
+def make_generator_dir(tmp_path, trajectory: str, tests: dict[str, str] | None = None,
+                       instance="psf__requests-1921"):
+    gen_dir = tmp_path / "exp" / "_reproduction_cache" / instance
+    (gen_dir / "tests").mkdir(parents=True)
+    (gen_dir / "generation_trajectory.jsonl").write_text(trajectory)
+    (gen_dir / "frozen.json").write_text(json.dumps({"instance_id": instance, "tests": []}))
+    for name, content in (tests or {}).items():
+        (gen_dir / "tests" / name).write_text(content)
+    return gen_dir
+
+
+def test_generator_directories_are_in_audit_scope(tmp_path):
+    make_task(tmp_path, CLEAN)
+    gen_dir = make_generator_dir(tmp_path, '{"role":"user","content":"issue"}\n')
+    assert gen_dir in find_task_dirs(tmp_path)
+
+
+def test_the_generators_trajectory_frozen_manifest_and_tests_are_scanned(tmp_path, probes):
+    gen_dir = make_generator_dir(
+        tmp_path, '{"role":"user","content":"issue"}\n',
+        {"test_repro_1.py": "assert True\n"})
+    findings, n_files = audit_task(gen_dir, probes)
+    assert findings == []
+    assert n_files == 3
+
+
+def test_gold_content_fetched_into_the_generator_is_confirmed(tmp_path, probes):
+    """What pilot_10's repair agent did, done by the generator instead."""
+    make_task(tmp_path, CLEAN)
+    make_generator_dir(tmp_path, _trajectory(
+        {"role": "tool", "content": "fetched upstream fix:\n+" + GOLD_LINE}))
+    result = audit(find_task_dirs(tmp_path), {"psf__requests-1921": probes})
+    assert any(f.kind == "gold-patch-content" and "generation_trajectory" in f.path
+               for f in result.confirmed)
+    assert not result.passed
+
+
+def test_the_generators_own_field_name_is_benchmark_awareness(tmp_path, probes):
+    gen_dir = make_generator_dir(tmp_path, _trajectory({
+        "role": "assistant",
+        "reasoning_content": "SWE-bench grades by FAIL_TO_PASS; I only have the issue.",
+    }))
+    findings, _ = audit_task(gen_dir, probes)
+    assert [f.kind for f in findings] == ["benchmark-awareness"]
+
+
+def test_a_field_name_delivered_to_the_generator_is_confirmed(tmp_path, probes):
+    gen_dir = make_generator_dir(tmp_path, _trajectory(
+        {"role": "tool", "content": "row keys: FAIL_TO_PASS"}))
+    findings, _ = audit_task(gen_dir, probes)
+    assert any(f.severity is Severity.CONFIRMED for f in findings)
+
+
+def test_a_gold_test_line_in_a_frozen_test_is_confirmed_unless_the_generator_wrote_it(
+        tmp_path, probes):
+    line = "assert session.headers.get('Accept-Encoding') is None"
+    fetched = make_generator_dir(
+        tmp_path, _trajectory({"role": "tool", "content": line}),
+        {"test_repro_1.py": line + "\n"}, instance="a__a-1")
+    written = make_generator_dir(
+        tmp_path, _trajectory({"role": "assistant", "content": "cat > t.py: " + line}),
+        {"test_repro_1.py": line + "\n"}, instance="b__b-2")
+
+    fetched_findings, _ = audit_task(fetched, probes)
+    written_findings, _ = audit_task(written, probes)
+    assert any(f.kind == "test-patch-content" and f.path.endswith("test_repro_1.py")
+               for f in fetched_findings)
+    assert not any(f.severity is Severity.CONFIRMED for f in written_findings)
+
+
 def test_a_leak_fails_the_audit(tmp_path, probes):
     files = dict(CLEAN)
     files["trajectory.jsonl"] = "PASS_TO_PASS leaked here\n"

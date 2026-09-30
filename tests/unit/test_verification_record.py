@@ -39,6 +39,11 @@ FAIL = SignalOutcome.FAIL
 NA = SignalOutcome.NOT_AVAILABLE
 
 
+GENERATOR = {"generator": {"model_id": "deepseek/deepseek-v4-flash",
+                           "served_model": "deepseek-flash"},
+             "budget": {"max_tests": 3, "retries": 0}}
+
+
 def signal(kind, outcome=PASS, **kwargs) -> SignalRecord:
     return SignalRecord(kind=kind, outcome=outcome, **kwargs)
 
@@ -60,6 +65,7 @@ def make_record(**overrides) -> VerificationRecord:
         "decision": DecisionEntry(
             decision=Decision.ACCEPT, policy_name="full",
             policy_version="v1.0.0-full", reasons=("all accept conditions met",)),
+        "reproduction_generator": GENERATOR,
         "verified_at": "2026-09-29T00:00:00Z",
     }
     fields.update(overrides)
@@ -67,6 +73,18 @@ def make_record(**overrides) -> VerificationRecord:
 
 
 # --- the named gate: absent signals are represented, not assumed -----------
+
+
+def test_a_v4_record_must_name_its_generator():
+    """The generator is an experimental variable; a V4 result without it is unattributable."""
+    for reproduction in (signal(SignalKind.REPRODUCTION),
+                         absent(SignalKind.REPRODUCTION, SignalAbsence.NOTHING_TO_CHECK)):
+        with pytest.raises(ValidationError, match="reproduction_generator"):
+            make_record(reproduction=reproduction, reproduction_generator={})
+
+
+def test_a_record_from_before_v4_needs_no_generator():
+    make_record(reproduction=absent(SignalKind.REPRODUCTION), reproduction_generator={})
 
 
 def test_every_signal_is_a_required_field():

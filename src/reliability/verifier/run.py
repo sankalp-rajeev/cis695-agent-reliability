@@ -8,11 +8,13 @@ decided from one layer pass instead of running the tests twice.
 from __future__ import annotations
 
 import time
+from contextlib import contextmanager
 from datetime import UTC, datetime
 from pathlib import Path
 
 from reliability.agent.freeze import FrozenPatch, read_patch
 from reliability.agent.records import RepairRecord
+from reliability.benchmark.loader import load_agent_task
 from reliability.verifier.container import (
     ContainerCommandExecutor,
     ContainerError,
@@ -43,6 +45,22 @@ from reliability.verifier.regression import (
     Signal,
     run_regression,
 )
+from reliability.verifier.reproduction import (
+    ContainerSandbox,
+    base_container_sandbox,
+    evaluate_frozen,
+    not_run,
+    signal_before_patch,
+    signal_from_reproduction,
+)
+from reliability.verifier.reproduction_freeze import (
+    BaseSandboxFactory,
+    MiniSweGenerator,
+    ReproductionConfigError,
+    ReproductionSetup,
+    ReproGenerator,
+    freeze_tests,
+)
 from reliability.verifier.selection import SelectionConfig, select_tests
 from reliability.verifier.static_checks import (
     CheckStatus,
@@ -51,10 +69,14 @@ from reliability.verifier.static_checks import (
     run_static_checks,
 )
 
-#: V4 issue-derived reproduction tests. The layer occupies a required field in
-#: every record; flipping this is the only change needed when the implementation
-#: lands. Until then the absence is attributed so those records can be found.
-REPRODUCTION_IMPLEMENTED = False
+REPO_ROOT = Path(__file__).resolve().parents[3]
+
+
+def default_reproduction_setup() -> ReproductionSetup:
+    return ReproductionSetup.load(
+        verifier_config=REPO_ROOT / "configs/verifier/full.yaml",
+        repo_root=REPO_ROOT,
+    )
 
 
 def verify_task(
@@ -63,6 +85,8 @@ def verify_task(
     configs: tuple[str, ...] = ("full", "baseline"),
     use_container: bool = True,
     replace: bool = False,
+    reproduction: ReproductionSetup | None = None,
+    generator: ReproGenerator | None = None,
 ) -> list[VerificationRecord]:
     """Verify one frozen patch. Writes one record per policy configuration.
 
@@ -70,6 +94,7 @@ def verify_task(
     the baseline-versus-full comparison a difference of rules rather than a
     difference of what was measured.
     """
+    setup = reproduction or default_reproduction_setup()
     task_dir = Path(task_dir).resolve()
     record = RepairRecord.read(task_dir / "repair_record.json")
     frozen = FrozenPatch(
@@ -100,6 +125,15 @@ def verify_task(
         if container is not None:
             container.stop()
 
+    signals[SignalKind.REPRODUCTION] = run_reproduction(
+        record.instance_id, patch_text, setup,
+        use_container=use_container,
+        patch_applies=bool(
+            signals[SignalKind.INTEGRITY].findings.get("patch_applies", True)),
+        cache_dir=task_dir.parent.parent / "_reproduction_cache",
+        generator=generator,
+    )
+
     evidence = _evidence_from(signals)
     written: list[VerificationRecord] = []
     for name in configs:
@@ -121,6 +155,7 @@ def verify_task(
             selection_convention_hit_rate=extras["selection_convention_hit_rate"],
             selection_convention_scores=extras["selection_convention_scores"],
             selection_runner=extras["selection_runner"],
+            reproduction_generator=setup.identity(),
             duration_s=time.monotonic() - started,
             verified_at=datetime.now(tz=UTC).isoformat(),
         )
@@ -221,13 +256,82 @@ def run_layers(
             static = run_static_checks(patch, tree, command_executor, StaticConfig())
             signals[SignalKind.STATIC] = signal_from_static(static)
 
-    if REPRODUCTION_IMPLEMENTED:  # pragma: no cover - flipped when V4 ships
-        raise NotImplementedError("wire the V4 layer here")
+    # V4 runs in its own containers, from verify_task; see run_reproduction.
     signals[SignalKind.REPRODUCTION] = SignalRecord.absent(
-        SignalKind.REPRODUCTION, SignalAbsence.NOT_IMPLEMENTED,
-        "V4 issue-derived reproduction tests are not built yet",
+        SignalKind.REPRODUCTION, SignalAbsence.DISABLED,
+        "reproduction is run by verify_task, not by run_layers",
     )
     return signals, extras
+
+
+def run_reproduction(
+    instance_id: str,
+    patch_text: str,
+    setup: ReproductionSetup,
+    *,
+    use_container: bool,
+    patch_applies: bool,
+    cache_dir: Path,
+    generator: ReproGenerator | None = None,
+    base_sandbox: BaseSandboxFactory = base_container_sandbox,
+    patched_sandbox=None,
+    issue_text: str | None = None,
+) -> SignalRecord:
+    """V4: freeze issue-derived tests at the base commit, then run them patched.
+
+    `patched_sandbox(instance_id, patch_text)` opens a context yielding a
+    sandbox whose tree the patch has been applied to; the default is a fresh
+    verifier container.
+    """
+    if not use_container:
+        return not_run(SignalAbsence.DISABLED,
+                       "no container; run with --container", setup)
+    if not patch_text.strip():
+        return not_run(SignalAbsence.NOTHING_TO_CHECK, "patch is empty", setup)
+    if not patch_applies:
+        return not_run(SignalAbsence.NOTHING_TO_CHECK,
+                       "patch does not apply to the base commit", setup)
+
+    started = time.monotonic()
+    try:
+        suite = freeze_tests(
+            issue_text if issue_text is not None
+            else load_agent_task(instance_id).problem_statement,
+            instance_id,
+            setup=setup, cache_dir=cache_dir,
+            generator=generator or MiniSweGenerator(setup, REPO_ROOT),
+            base_sandbox=base_sandbox,
+        )
+    except ReproductionConfigError:
+        raise
+    except Exception as exc:  # noqa: BLE001 - the layer broke; recorded as ERROR
+        return not_run(SignalAbsence.ERROR,
+                       f"freeze failed: {type(exc).__name__}: {exc}"[:400], setup)
+
+    early = signal_before_patch(
+        suite, setup, duration_s=time.monotonic() - started)
+    if early is not None:
+        return early
+
+    opener = patched_sandbox or _patched_container_sandbox
+    try:
+        with opener(instance_id, patch_text) as sandbox:
+            patched = evaluate_frozen(suite, patch_text, sandbox, setup)
+    except ReproductionConfigError:
+        raise
+    except Exception as exc:  # noqa: BLE001
+        return not_run(SignalAbsence.ERROR,
+                       f"patched run failed: {type(exc).__name__}: {exc}"[:400],
+                       setup)
+    return signal_from_reproduction(
+        suite, patched, setup, duration_s=time.monotonic() - started)
+
+
+@contextmanager
+def _patched_container_sandbox(instance_id: str, patch_text: str):
+    with TaskContainer(instance_id=instance_id, patch_text=patch_text) as container:
+        container.set_patched(True)
+        yield ContainerSandbox(container)
 
 
 def signal_from_regression(report: RegressionReport) -> SignalRecord:

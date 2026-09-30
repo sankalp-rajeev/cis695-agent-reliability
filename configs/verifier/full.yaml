@@ -4,7 +4,7 @@
 # any value here requires bumping policy_version, otherwise two runs carrying the
 # same version string could reflect different rules.
 layer: verifier
-policy_version: v1.1.0-full
+policy_version: v1.2.1-full
 
 # Phase 4: patch integrity. These are disqualifying, not advisory.
 integrity:
@@ -63,6 +63,32 @@ static:
   timeout_s: 120
   scope_to_patch: true
 
+# V4: issue-derived reproduction tests. The generator sees the issue text and
+# the base-commit tree only, with --network none. Tests are read out, hashed and
+# frozen on the host before any patch is applied, kept only if every screening
+# run fails with AssertionError on the base commit, and run against the patched
+# tree from the frozen bytes, written over whatever the patch left at that path.
+#
+# The budget is fixed. It is not adapted per instance, and there is no retry
+# when no test survives the screen: that instance records NOT_AVAILABLE
+# (nothing_to_check). Changing any value requires a policy_version bump.
+reproduction:
+  generator_model: configs/model/generator.yaml
+  generator_prompt: configs/agent/v4_generator.yaml
+  cache_dir: runs/<experiment_id>/_reproduction_cache
+  budget:
+    max_tests: 3               # files the generator may write; extra files ignored
+    retries: 0                 # one generation attempt per instance, always
+    generator_max_steps: 40
+    generator_max_cost_usd: 1.00
+    generator_timeout_s: 1200
+    per_command_timeout_s: 60
+    screen_runs: 2             # base commit; all must be AssertionError to keep
+    patched_runs: 2            # only a repeated pass or AssertionError counts;
+                               # flaky, error and timeout drop the test (v1.2.1)
+    per_run_timeout_s: 120
+    max_test_bytes: 65536
+
 # Phase 7: the combining rule. Implemented in verifier/decision.py, which
 # imports no signal module; adapters live in verifier/evidence.py.
 decision:
@@ -73,13 +99,11 @@ decision:
   accept_if: [integrity_pass, regression_pass, reproduction_pass, no_high_severity_risk]
   otherwise: FLAG
 
-  # V4 issue-derived reproduction tests are not built yet. An absent signal has
-  # not met its ACCEPT condition, so under this policy every otherwise-clean
-  # patch currently resolves to FLAG rather than ACCEPT. This is intentional:
-  # absence of a check is never evidence of correctness. ACCEPT becomes
-  # reachable when V4 lands, with no change to the rule.
+  # ACCEPT needs a reproduction PASS. A reproduction FAIL is an unmet ACCEPT
+  # condition (FLAG), not a REJECT: a generated test is weaker evidence than
+  # the repository's own. NOT_AVAILABLE is never treated as a pass.
   require_reproduction: true
-  reproduction_implemented: false
+  reproduction_implemented: true
 
   # Raising a flag downgrades ACCEPT to FLAG; it never rejects (Phase 4.2).
   high_severity_risk_features: [deletes_files, broad_excepts_added]

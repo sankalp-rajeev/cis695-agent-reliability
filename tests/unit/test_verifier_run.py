@@ -26,7 +26,7 @@ def test_without_a_container_regression_and_static_are_disabled():
     assert signals[SignalKind.INTEGRITY].outcome is SignalOutcome.PASS
     assert signals[SignalKind.REGRESSION].absence is SignalAbsence.DISABLED
     assert signals[SignalKind.STATIC].absence is SignalAbsence.DISABLED
-    assert signals[SignalKind.REPRODUCTION].absence is SignalAbsence.NOT_IMPLEMENTED
+    assert signals[SignalKind.REPRODUCTION].absence is SignalAbsence.DISABLED
 
 
 def test_empty_patch_is_nothing_to_check_not_a_pass():

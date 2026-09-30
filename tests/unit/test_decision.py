@@ -149,12 +149,12 @@ def test_full_policy_accepts_only_with_a_reproduction_signal():
 
 
 def test_full_policy_cannot_accept_while_v4_is_absent():
-    """Build-order state, not a design position. V4 is in scope and load-bearing.
+    """V4 is built, and an absent reproduction signal still cannot ACCEPT.
 
-    Until the layer reports, the third ACCEPT condition is unmet and every
-    otherwise-acceptable patch falls through to FLAG. Update this test when V4
-    ships — do not delete it, and do not drop the condition to make ACCEPT
-    reachable in the meantime.
+    Once the build-order state; now the case where V4 ran but kept no test
+    (nothing failed deterministically on the base commit), could not place the
+    frozen bytes, or broke. The third ACCEPT condition is unmet either way and
+    every otherwise-acceptable patch falls through to FLAG.
     """
     decisions = {
         FullPolicy().decide(e).decision
@@ -305,10 +305,17 @@ def test_shipped_config_version_matches_the_policy(name, policy):
     assert cfg["decision"]["policy"] == policy.name
 
 
-def test_full_config_records_that_reproduction_is_unimplemented():
+def test_full_config_records_that_reproduction_is_implemented():
     decision = load_config("full")["decision"]
     assert decision["require_reproduction"] is FullPolicy().require_reproduction
-    assert decision["reproduction_implemented"] is False
+    assert decision["reproduction_implemented"] is True
+
+
+def test_reproduction_fail_flags_rather_than_rejects():
+    """A generated test is weaker evidence than the repository's own tests."""
+    record = FullPolicy().decide(
+        Evidence(integrity=PASS, regression=PASS, static=PASS, reproduction=FAIL))
+    assert record.decision is Decision.FLAG
 
 
 def test_baseline_config_declares_what_it_ignores():

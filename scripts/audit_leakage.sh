@@ -15,7 +15,9 @@
 #   2. audit_leakage.py, which compares against the instance's actual oracle
 #      values and so catches a leak that was reformatted on the way in
 #
-# Scope is agent-produced task directories only. The Phase 1 harness controls in
+# Scope is agent-produced task directories, plus each V4 generator directory
+# (<exp>/_reproduction_cache/<instance_id>/: its conversation, freeze manifest,
+# and frozen tests), read by the same rules. The Phase 1 harness controls in
 # runs/1.2_gold_sanity and runs/1.3b_wrong_patch legitimately contain gold
 # patches — evaluating them is what they are for — so scanning them would
 # guarantee a hit and train the reader to ignore this gate.
@@ -44,6 +46,10 @@ echo "--- layer 1: oracle field names ---"
 # <runs_root>/<experiment>/tasks/<instance_id>/repair_record.json
 mapfile -t TASK_DIRS < <(find "$RUNS_ROOT" -mindepth 4 -maxdepth 4 \
   -name repair_record.json -printf '%h\n' 2>/dev/null | sort)
+# <runs_root>/<experiment>/_reproduction_cache/<instance_id>/generation_trajectory.jsonl
+mapfile -t GEN_DIRS < <(find "$RUNS_ROOT" -mindepth 4 -maxdepth 4 \
+  -path '*/_reproduction_cache/*' -name generation_trajectory.jsonl \
+  -printf '%h\n' 2>/dev/null | sort)
 
 if [ "${#TASK_DIRS[@]}" -eq 0 ]; then
   echo "FAIL: no agent task directories found under $RUNS_ROOT." >&2
@@ -51,10 +57,11 @@ if [ "${#TASK_DIRS[@]}" -eq 0 ]; then
   exit 1
 fi
 
-echo "scope: ${#TASK_DIRS[@]} agent task directories"
+echo "scope: ${#TASK_DIRS[@]} agent task directories, ${#GEN_DIRS[@]} V4 generator directories"
 
 IN_SCOPE=(trajectory.jsonl agent_output.txt submission_raw.txt \
-          repair_record.json patch.diff prompt.txt system_prompt.txt)
+          repair_record.json patch.diff prompt.txt system_prompt.txt \
+          generation_trajectory.jsonl frozen.json)
 # Whole identifiers only: `test_patch` inside `test_patch_extractor_fit` is a
 # test's name. Identifier characters are the boundary, so `*test_patch*`,
 # `"FAIL_TO_PASS"` and prose naming the column still match.
@@ -62,14 +69,20 @@ NAMES='FAIL_TO_PASS|PASS_TO_PASS|test_patch|hints_text|eval_script|environment_s
 FIELDS="(^|[^A-Za-z0-9_])($NAMES)([^A-Za-z0-9_]|\$)"
 
 scanned=0
-for dir in "${TASK_DIRS[@]}"; do
+for dir in "${TASK_DIRS[@]}" "${GEN_DIRS[@]}"; do
   for name in "${IN_SCOPE[@]}"; do
     [ -f "$dir/$name" ] || continue
     scanned=$((scanned + 1))
     if grep -nE "$FIELDS" "$dir/$name" > /dev/null 2>&1; then
-      echo "FAIL: oracle field name in $dir/$name" >&2
-      grep -nE "$FIELDS" "$dir/$name" | head -5 >&2
-      failed=1
+      echo "field name present in $dir/$name (layer 2 classifies it)"
+      grep -nE "$FIELDS" "$dir/$name" | head -3
+    fi
+  done
+  for ft in "$dir"/tests/test_repro_*.py; do
+    [ -f "$ft" ] || continue
+    scanned=$((scanned + 1))
+    if grep -nE "$FIELDS" "$ft" > /dev/null 2>&1; then
+      echo "field name present in $ft (layer 2 classifies it)"
     fi
   done
   for vr in "$dir"/verification_record.*.json; do
@@ -79,8 +92,7 @@ for dir in "${TASK_DIRS[@]}"; do
     # is not scanned; every other key in the record is.
     if "$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); d.pop("selected_tests",None); print(json.dumps(d,indent=2))' "$vr" 2>/dev/null \
         | grep -nE "$FIELDS" > /dev/null 2>&1; then
-      echo "FAIL: oracle field name in $vr" >&2
-      failed=1
+      echo "field name present in $vr (layer 2 classifies it)"
     fi
   done
 done
@@ -89,8 +101,7 @@ if [ "$scanned" -eq 0 ]; then
   echo "FAIL: task directories exist but contain no in-scope artifacts." >&2
   exit 1
 fi
-echo "scanned $scanned in-scope artifacts; field-name check $(
-  [ "$failed" -eq 0 ] && echo clean || echo FAILED)"
+echo "scanned $scanned in-scope artifacts; field-name occurrences are classified by layer 2"
 
 # --- layer 2: actual oracle values ------------------------------------------
 # A leak need not carry its label. This compares against the real gold patch,
