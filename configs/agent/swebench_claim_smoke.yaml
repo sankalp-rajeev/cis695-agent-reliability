@@ -102,6 +102,10 @@ environment:
     TQDM_DISABLE: '1'
     BASH_ENV: /root/.bashrc
   environment_class: docker
+  run_args:
+  - --rm
+  - --network
+  - none
 model:
   observation_template: '<budget>Step {{n_model_calls}} of {{step_limit}}. {% if step_limit - n_model_calls
     <= 2 %}SUBMIT NOW: write claim.txt, then run the submit command.{% else %}{{ step_limit - n_model_calls

@@ -302,6 +302,103 @@ def test_unavailable_result_has_no_baseline():
     assert not result.is_new_failure
 
 
+class _OutputExecutor:
+    """Returns a scripted (code, output) for one command key."""
+
+    def __init__(self, outputs: dict[str, tuple[int, str]]):
+        self.outputs = outputs
+
+    def run(self, command, *, patched: bool, timeout_s: int):
+        joined = " ".join(command)
+        for key, value in self.outputs.items():
+            if key in joined:
+                return value
+        return 0, ""
+
+
+def test_missing_build_module_is_not_available_not_a_new_failure(fully_configured_repo):
+    """python -m build absent from the image must not fail every patch."""
+    executor = _OutputExecutor({
+        "py_compile": (0, ""),
+        "-c": (0, ""),
+        "ruff": (0, ""),
+        "mypy": (0, ""),
+        "build": (1, "/usr/bin/python: No module named build"),
+    })
+    report = run_static_checks(PATCH, fully_configured_repo, executor)
+    build = report.by_kind()[CheckKind.BUILD]
+
+    assert build.status is CheckStatus.NOT_AVAILABLE
+    assert build.status is not CheckStatus.FAIL
+    assert "No module named build" in build.detail
+    assert build not in report.new_failures
+    assert "build" not in {r.kind for r in report.new_failures}
+
+
+@pytest.mark.parametrize(
+    "key,kind,config_file,config_body,output",
+    [
+        ("ruff", CheckKind.LINT, "ruff.toml", "\n", "ruff: command not found"),
+        ("flake8", CheckKind.LINT, ".flake8", "[flake8]\n", "flake8: command not found"),
+        ("pylint", CheckKind.LINT, ".pylintrc", "\n", "pylint: command not found"),
+        ("mypy", CheckKind.TYPECHECK, "mypy.ini", "\n",
+         "/usr/bin/python: No module named mypy"),
+        ("pyright", CheckKind.TYPECHECK, "pyrightconfig.json", "{}\n",
+         "pyright: not found"),
+    ],
+)
+def test_absent_external_tool_is_not_available(
+    tmp_path, key, kind, config_file, config_body, output
+):
+    """The same class of error as a missing build module, for every Phase 6 tool."""
+    repo = make_repo(tmp_path / key, {
+        "src/pkg/core.py": "def compute(x):\n    return x * 2\n",
+        config_file: config_body,
+    })
+    executor = _OutputExecutor({
+        key: (127, output),
+        "py_compile": (0, ""),
+        "-c": (0, ""),
+    })
+    report = run_static_checks(PATCH, repo, executor)
+    result = report.by_kind()[kind]
+    assert result.status is CheckStatus.NOT_AVAILABLE
+    assert result.tool == key
+    assert result not in report.new_failures
+    assert key in result.detail
+
+
+def test_import_failure_of_the_patched_module_stays_fail(bare_repo):
+    """A missing project module is a real failure; only a missing tool is not."""
+    executor = _OutputExecutor({
+        "py_compile": (0, ""),
+        "-c": (1, "ModuleNotFoundError: No module named 'src.pkg.core'"),
+    })
+    report = run_static_checks(PATCH, bare_repo, executor)
+    assert report.by_kind()[CheckKind.IMPORT].status is CheckStatus.FAIL
+    assert report.by_kind()[CheckKind.IMPORT] in report.new_failures
+
+
+def test_syntax_error_stays_fail(bare_repo):
+    executor = _OutputExecutor({
+        "py_compile": (1, "Sorry: SyntaxError: invalid syntax"),
+        "-c": (0, ""),
+    })
+    report = run_static_checks(PATCH, bare_repo, executor)
+    assert report.by_kind()[CheckKind.SYNTAX].status is CheckStatus.FAIL
+
+
+def test_missing_interpreter_is_not_available(bare_repo):
+    executor = _OutputExecutor({
+        "py_compile": (127, "python: command not found"),
+        "-c": (127, "python: command not found"),
+    })
+    report = run_static_checks(PATCH, bare_repo, executor)
+    assert report.by_kind()[CheckKind.SYNTAX].status is CheckStatus.NOT_AVAILABLE
+    assert report.by_kind()[CheckKind.IMPORT].status is CheckStatus.NOT_AVAILABLE
+    assert report.new_failures == ()
+
+
 # --- config and code must not drift ----------------------------------------
 
 

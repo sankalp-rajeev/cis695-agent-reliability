@@ -43,6 +43,9 @@ class Hunk:
     added: tuple[str, ...]
     removed: tuple[str, ...]
     context: tuple[str, ...]
+    #: Text after the closing ``@@``: git's guess at the enclosing definition,
+    #: e.g. ``class BaseModelAdminChecks:``. Empty when git printed none.
+    section: str = ""
 
 
 @dataclass(frozen=True, slots=True)
@@ -107,6 +110,7 @@ class Patch:
 _DIFF_HEADER = re.compile(r"^diff --git a/(?P<a>.+?) b/(?P<b>.+?)$")
 _HUNK_HEADER = re.compile(
     r"^@@ -(?P<old>\d+)(?:,(?P<oldn>\d+))? \+(?P<new>\d+)(?:,(?P<newn>\d+))? @@"
+    r"(?: ?(?P<section>.*))?$"
 )
 
 
@@ -139,7 +143,7 @@ def parse_patch(text: str | bytes) -> Patch:
             hunks.append(Hunk(
                 old_start=hunk["old_start"], new_start=hunk["new_start"],
                 added=tuple(hunk["added"]), removed=tuple(hunk["removed"]),
-                context=tuple(hunk["context"]),
+                context=tuple(hunk["context"]), section=hunk["section"],
             ))
             hunk = None
 
@@ -196,6 +200,7 @@ def parse_patch(text: str | bytes) -> Patch:
             hunk = {
                 "old_start": int(hh.group("old")), "new_start": int(hh.group("new")),
                 "added": [], "removed": [], "context": [],
+                "section": (hh.group("section") or "").strip(),
             }
         elif hunk is not None:
             if line.startswith("+"):
@@ -224,8 +229,11 @@ def touched_symbols(patch: Patch) -> tuple[str, ...]:
     added and removed lines: a patch that deletes a function still changes the
     behaviour of whatever referenced it.
 
-    Also picks up the enclosing definition from hunk context, because the common
-    case is a change to a line *inside* a function rather than to its `def`.
+    Also picks up the enclosing definition from hunk context and from the hunk
+    header, because the common case is a change to a line *inside* a function
+    rather than to its `def`. The header is often the only place the enclosing
+    name appears: a method-body edit in ``BaseModelAdminChecks`` names the class
+    nowhere else in the diff.
     """
     pattern = re.compile(r"^\s*(?:async\s+)?(?:def|class)\s+([A-Za-z_]\w*)")
     names: set[str] = set()
@@ -233,7 +241,7 @@ def touched_symbols(patch: Patch) -> tuple[str, ...]:
         if change.is_binary:
             continue
         for hunk in change.hunks:
-            for line in (*hunk.added, *hunk.removed, *hunk.context):
+            for line in (hunk.section, *hunk.added, *hunk.removed, *hunk.context):
                 if (m := pattern.match(line)) is not None:
                     names.add(m.group(1))
     return tuple(sorted(names))

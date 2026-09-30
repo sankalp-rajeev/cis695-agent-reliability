@@ -118,6 +118,9 @@ def verify_task(
             risk_features=extras["risk_features"],
             selected_tests=extras["selected_tests"],
             selection_convention=extras["selection_convention"],
+            selection_convention_hit_rate=extras["selection_convention_hit_rate"],
+            selection_convention_scores=extras["selection_convention_scores"],
+            selection_runner=extras["selection_runner"],
             duration_s=time.monotonic() - started,
             verified_at=datetime.now(tz=UTC).isoformat(),
         )
@@ -147,6 +150,9 @@ def run_layers(
         "risk_features": {},
         "selected_tests": (),
         "selection_convention": "",
+        "selection_convention_hit_rate": None,
+        "selection_convention_scores": {},
+        "selection_runner": "",
     }
 
     integrity = check_integrity(patch_text)
@@ -180,6 +186,15 @@ def run_layers(
         extras["selection_convention"] = (
             selection.convention.convention.value if selection.convention else ""
         )
+        if selection.convention is not None:
+            extras["selection_convention_hit_rate"] = round(selection.convention.hit_rate, 4)
+            extras["selection_convention_scores"] = dict(selection.convention.scores)
+        extras["selection_runner"] = (
+            f"{selection.runner.name}: {selection.runner.evidence}"
+            if selection.runner else ""
+        )
+        if test_executor is not None and hasattr(test_executor, "runner"):
+            test_executor.runner = selection.runner
 
         if test_executor is None:
             signals[SignalKind.REGRESSION] = (
@@ -222,7 +237,9 @@ def signal_from_regression(report: RegressionReport) -> SignalRecord:
         if report.signal is Signal.BASELINE_UNRELIABLE:
             absence = SignalAbsence.ERROR
         elif report.selection and report.selection.tests:
-            absence = SignalAbsence.DISABLED
+            # Tests were selected and none ran: the runner broke. That is the
+            # layer failing, not the layer being switched off.
+            absence = SignalAbsence.ERROR
         else:
             absence = SignalAbsence.NOTHING_TO_CHECK
     detail = "; ".join(report.notes) or (
@@ -252,12 +269,24 @@ def signal_from_static(report: StaticReport) -> SignalRecord:
             absence = SignalAbsence.NOT_CONFIGURED
         else:
             absence = SignalAbsence.NOTHING_TO_CHECK
+    notes = [
+        f"{r.kind.value}: {r.detail}"
+        for r in report.results
+        if r.status is CheckStatus.NOT_AVAILABLE and r.detail
+    ]
     return SignalRecord(
         kind=SignalKind.STATIC, outcome=outcome, absence=absence,
-        detail=f"{report.n_ran}/{report.n_available} checks ran",
+        detail="; ".join(
+            [f"{report.n_ran}/{report.n_available} checks ran", *notes]
+        ),
         findings={
             "summary": report.summary,
             "new_failures": [r.kind.value for r in report.new_failures],
+            "unavailable": [
+                {"kind": r.kind.value, "tool": r.tool, "reason": r.detail}
+                for r in report.results
+                if r.status is CheckStatus.NOT_AVAILABLE
+            ],
         },
     )
 

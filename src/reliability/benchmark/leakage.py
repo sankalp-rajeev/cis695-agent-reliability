@@ -36,6 +36,7 @@ Two scoping decisions that matter for the result to mean anything:
 
 from __future__ import annotations
 
+import json
 import re
 from dataclasses import dataclass, field
 from enum import Enum
@@ -173,13 +174,19 @@ class AuditResult:
         return self.scanned_files > 0 and not self.confirmed
 
 
-def distinctive_lines(text: str, *, limit: int = MAX_PROBES) -> tuple[str, ...]:
+def distinctive_lines(
+    text: str, *, limit: int = MAX_PROBES, added_only: bool = False
+) -> tuple[str, ...]:
     """Pull searchable lines out of a diff or a free-text field.
 
     Added and removed lines are stripped of their diff marker, because a leak
     would be reproduced as source, not as a diff. Lines shorter than
     `MIN_PROBE_LENGTH` are dropped: `)` and `return None` appear in every
     repository and would make every run look like a leak.
+
+    `added_only` keeps lines the diff introduces. Context and removed lines
+    are the file at the base commit; an agent that read the file will
+    reproduce them, and that is not oracle content.
     """
     seen: list[str] = []
     for raw in text.splitlines():
@@ -187,7 +194,12 @@ def distinctive_lines(text: str, *, limit: int = MAX_PROBES) -> tuple[str, ...]:
         # another diff, so they are dropped rather than stripped.
         if raw.startswith(("+++", "---", "@@", "diff --git", "index ")):
             continue
-        line = (raw[1:] if raw[:1] in "+-" else raw).strip()
+        if added_only:
+            if not raw.startswith("+"):
+                continue
+            line = raw[1:].strip()
+        else:
+            line = (raw[1:] if raw[:1] in "+-" else raw).strip()
         if len(line) < MIN_PROBE_LENGTH:
             continue
         if line not in seen:
@@ -211,12 +223,30 @@ def probes_from_oracle(record, problem_statement: str = "") -> OracleProbes:
     return OracleProbes(
         instance_id=record.instance_id,
         patch_lines=_not_in_problem_statement(
-            distinctive_lines(record.patch), problem_statement),
+            distinctive_lines(record.patch, added_only=True), problem_statement),
         test_patch_lines=_not_in_problem_statement(
-            distinctive_lines(record.test_patch), problem_statement),
+            distinctive_lines(record.test_patch, added_only=True), problem_statement),
         fail_to_pass=tuple(record.fail_to_pass),
         hints_lines=_not_in_problem_statement(
             distinctive_lines(record.hints_text, limit=10), problem_statement),
+    )
+
+
+def without_base_lines(probes: OracleProbes, present: set[str]) -> OracleProbes:
+    """Drop probes that already exist in the repository at the base commit.
+
+    An added test-patch line can still be a docstring in another file. Finding
+    it after the agent read that file is not evidence the test patch was shown.
+    """
+    if not present:
+        return probes
+    return OracleProbes(
+        instance_id=probes.instance_id,
+        patch_lines=tuple(line for line in probes.patch_lines if line not in present),
+        test_patch_lines=tuple(
+            line for line in probes.test_patch_lines if line not in present),
+        fail_to_pass=probes.fail_to_pass,
+        hints_lines=probes.hints_lines,
     )
 
 
@@ -232,12 +262,45 @@ def scan_files(task_dir: Path) -> list[Path]:
     return sorted(p for p in task_dir.iterdir() if p.is_file() and in_scope(p))
 
 
+#: Output the verifier produces itself. It is a list of test node ids, and node
+#: ids are named after tests: `test_patch_extractor_fit` is a scikit-learn test,
+#: not the `test_patch` column. Nothing in it is dataset data, so it is not
+#: scanned for field names at all. Content checks still read the whole file.
+VERIFIER_OWN_OUTPUT_KEYS = ("selected_tests",)
+
+_FIELD_TOKEN = {
+    name: re.compile(rf"(?<![A-Za-z0-9_]){re.escape(name)}(?![A-Za-z0-9_])")
+    for name in ORACLE_FIELD_NAMES
+}
+
+
+def _field_name_text(path: Path, text: str) -> str:
+    """The text to search for field names, with our own output removed."""
+    if not path.name.startswith("verification_record."):
+        return text
+    try:
+        payload = json.loads(text)
+    except json.JSONDecodeError:
+        return text
+    if isinstance(payload, dict):
+        for key in VERIFIER_OWN_OUTPUT_KEYS:
+            payload.pop(key, None)
+        return json.dumps(payload, indent=2)
+    return text
+
+
 def scan_field_names(path: Path, text: str) -> list[Finding]:
-    """Look for oracle column names in an agent-visible or verifier-input file."""
+    """Look for oracle column names in an agent-visible or verifier-input file.
+
+    A name matches as a whole identifier, not as a substring of a longer one:
+    `test_patch` inside `test_patch_extractor_fit` is a test's name. Boundaries
+    are identifier characters, so `*test_patch*`, `"FAIL_TO_PASS"` and prose
+    that names the column all still match.
+    """
     findings = []
-    for line_no, line in enumerate(text.splitlines(), start=1):
-        for name in ORACLE_FIELD_NAMES:
-            if name in line:
+    for line_no, line in enumerate(_field_name_text(path, text).splitlines(), start=1):
+        for name, token in _FIELD_TOKEN.items():
+            if token.search(line):
                 findings.append(Finding(
                     severity=Severity.CONFIRMED,
                     kind="oracle-field-name",
@@ -248,25 +311,93 @@ def scan_field_names(path: Path, text: str) -> list[Finding]:
     return findings
 
 
-def scan_content(path: Path, text: str, probes: OracleProbes) -> list[Finding]:
+def _message_strings(value: object) -> list[str]:
+    """Every string in a message, decoded, including JSON carried inside a string.
+
+    Tool-call arguments are a JSON document in a string field, so they are
+    decoded a second time.
+    """
+    if isinstance(value, str):
+        strings = [value]
+        stripped = value.lstrip()
+        if stripped[:1] in ("{", "["):
+            try:
+                strings.extend(_message_strings(json.loads(value)))
+            except json.JSONDecodeError:
+                pass
+        return strings
+    if isinstance(value, dict):
+        return [s for v in value.values() for s in _message_strings(v)]
+    if isinstance(value, list):
+        return [s for v in value for s in _message_strings(v)]
+    return []
+
+
+def agent_authored_lines(task_dir: Path, probes: OracleProbes) -> frozenset[str]:
+    """Added oracle lines whose first appearance, in the whole trajectory, is the model's own message.
+
+    The walk is file order from the first message to the last. It is not
+    reset per turn. A tool result that contains the line, followed later by
+    the model restating it, is not agent-authored: the earlier tool message
+    already showed the line to the model. Only a line that the assistant
+    message contains before any user or tool message does is suppressed, so a
+    later `git diff` of a fix the model wrote itself is not read as a leak.
+    """
+    path = task_dir / "trajectory.jsonl"
+    if not path.exists():
+        return frozenset()
+    probes_of_interest = probes.patch_lines + probes.test_patch_lines
+    if not probes_of_interest:
+        return frozenset()
+    authored: set[str] = set()
+    seen: set[str] = set()
+    try:
+        raw_lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
+    except OSError:
+        return frozenset()
+    for raw in raw_lines:
+        try:
+            message = json.loads(raw)
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(message, dict):
+            continue
+        role = message.get("role")
+        # Decoded text, not the raw JSON line: a probe with a quote or a
+        # backslash is stored escaped and never matches the raw line.
+        text = "\n".join(_message_strings(message))
+        for probe in probes_of_interest:
+            if probe in seen or probe not in text:
+                continue
+            seen.add(probe)
+            if role == "assistant":
+                authored.add(probe)
+    return frozenset(authored)
+
+
+def scan_content(
+    path: Path,
+    text: str,
+    probes: OracleProbes,
+    agent_authored: frozenset[str] = frozenset(),
+) -> list[Finding]:
     """Look for actual oracle values, which a leak need not have labelled."""
     findings = []
 
-    # hints_text is REVIEW rather than CONFIRMED. It is discussion from the same
-    # pull-request thread the problem statement was drawn from, so it restates
-    # the issue in the issue's own vocabulary, and an agent reproducing the bug
-    # writes similar lines independently. Observed on the first real run of this
-    # audit: hints carried `s.headers['Accept-Encoding'] = None` while the
-    # problem statement carried `session.headers['Accept-Encoding'] = None`, so
-    # subtracting the problem statement did not catch it and the agent's own
-    # abbreviation matched. The gold patch and test patch have no such overlap —
-    # they are the fix and the grading tests — so those stay CONFIRMED.
+    # The gold patch and the test patch stay CONFIRMED, but only their added
+    # lines, and not a line the agent wrote itself before any tool showed it
+    # back. A one-line repair that matches the gold patch is the outcome under
+    # test, not a leak, once the trajectory shows the model produced it.
+    # `agent_authored` is that set. A line that arrives in a user or tool
+    # message first — the prompt, or a fetched patch — is still confirmed.
     for label, lines, severity in (
         ("gold-patch", probes.patch_lines, Severity.CONFIRMED),
         ("test-patch", probes.test_patch_lines, Severity.CONFIRMED),
         ("hints-text", probes.hints_lines, Severity.REVIEW),
     ):
         for probe in lines:
+            if probe in agent_authored:
+                continue
             if probe in text:
                 findings.append(Finding(
                     severity=severity,
@@ -306,6 +437,7 @@ def audit_task(
     """Audit one task directory. Returns its findings and how many files it read."""
     findings: list[Finding] = []
     files = scan_files(task_dir)
+    authored = agent_authored_lines(task_dir, probes) if probes is not None else frozenset()
 
     for path in files:
         try:
@@ -319,7 +451,7 @@ def audit_task(
 
         findings.extend(scan_field_names(path, text))
         if probes is not None and not probes.is_empty:
-            findings.extend(scan_content(path, text, probes))
+            findings.extend(scan_content(path, text, probes, authored))
 
     return findings, len(files)
 
@@ -367,10 +499,12 @@ __all__ = [
     "Finding",
     "OracleProbes",
     "Severity",
+    "agent_authored_lines",
     "audit",
     "audit_task",
     "distinctive_lines",
     "find_task_dirs",
     "in_scope",
     "probes_from_oracle",
+    "without_base_lines",
 ]

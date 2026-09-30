@@ -97,6 +97,13 @@ environment:
     TQDM_DISABLE: '1'
     BASH_ENV: /root/.bashrc
   environment_class: docker
+  # Spliced into `docker run` by mini-SWE-agent. The runner also injects this
+  # if it is missing, then refuses to continue unless docker inspect reports
+  # NetworkMode=none.
+  run_args:
+  - --rm
+  - --network
+  - none
 model:
   observation_template: '{% if output.exception_info -%}
 

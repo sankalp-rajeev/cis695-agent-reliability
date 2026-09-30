@@ -188,6 +188,30 @@ def test_no_cache_dir_means_no_caching(tmp_path):
     assert not list(tmp_path.iterdir())
 
 
+def test_a_baseline_in_which_nothing_ran_is_not_cached(tmp_path):
+    """Caching it would hand every later run the same empty answer."""
+    config = RegressionConfig(baseline_cache_dir=tmp_path)
+    broken = ScriptedExecutor({}, {})
+
+    report = run_regression("inst", selection(), broken, config)
+
+    assert report.signal is Signal.NOT_AVAILABLE
+    assert load_cached_baseline(config, "inst") is None
+
+
+def test_a_runner_that_reported_nothing_says_why_in_the_notes():
+    class Crashed:
+        def run(self, tests, *, patched, timeout_s):
+            return RunResult(
+                results=tuple(result(t, TestStatus.NOT_RUN) for t in tests),
+                note="the test runner reported no results; output ended: TypeError")
+
+    report = run_regression("inst", selection(), Crashed(), RegressionConfig())
+
+    assert any("baseline: the test runner reported no results" in n for n in report.notes)
+    assert any("patched: the test runner reported no results" in n for n in report.notes)
+
+
 # --- §4.1 flake handling ---------------------------------------------------
 
 

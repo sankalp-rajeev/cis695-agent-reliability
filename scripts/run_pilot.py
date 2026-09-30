@@ -23,6 +23,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "src"))
 import yaml
 
 from reliability.agent.claim_parser import ClaimStatus
+from reliability.agent.isolation import probe_agent_network
 from reliability.agent.records import RepairRecord, RunRole, load_records, summarise
 from reliability.agent.runner import AgentLimits, MiniSweAgentBackend, run_task
 from reliability.analysis.overlap import overlap_from_records
@@ -34,6 +35,7 @@ from reliability.provenance import (
     RunProvenance,
     git_commit,
     git_dirty,
+    require_clean_tree,
     utc_now,
     write_meta,
 )
@@ -82,6 +84,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--experiment", default="configs/experiments/pilot.yaml")
     parser.add_argument("--run-root", default=None)
+    parser.add_argument(
+        "--allow-dirty", action="store_true",
+        help="run from uncommitted code; dry_* experiments only")
     args = parser.parse_args()
 
     os.environ.setdefault("MSWEA_SILENT_STARTUP", "1")
@@ -114,7 +119,17 @@ def main() -> int:
 
     manifest = load_manifest(REPO_ROOT / experiment["benchmark"]["manifest"])
     experiment_id = experiment["experiment_id"]
+    if experiment_id == "pilot_10":
+        raise SystemExit(
+            "pilot_10 is invalidated and must not be reused; pick a new experiment_id"
+        )
+    require_clean_tree(
+        git_dirty(REPO_ROOT), experiment_id=experiment_id, allow_dirty=args.allow_dirty)
     run_root = REPO_ROOT / (args.run_root or f"runs/{experiment_id}")
+    if (run_root / "meta.yaml").exists():
+        raise SystemExit(
+            f"{run_root} already holds a run; a single-pass experiment is not "
+            "resumed or re-run. Pick a new experiment_id")
     run_root.mkdir(parents=True, exist_ok=True)
 
     limits = AgentLimits(
@@ -137,6 +152,17 @@ def main() -> int:
         },
     )
 
+    if not manifest.entries:
+        raise SystemExit("manifest is empty")
+    # Inspect a container launched the way the agent launches one, and record
+    # that NetworkMode. Writing the configured string here would let a run
+    # claim isolation it did not have.
+    print(f"probing agent network on {manifest.entries[0].instance_id}...",
+          flush=True)
+    agent_network_mode = probe_agent_network(
+        agent_config, manifest.entries[0].instance_id)
+    print(f"agent network mode (inspected): {agent_network_mode}", flush=True)
+
     if not (run_root / "meta.yaml").exists():
         write_meta(run_root, RunProvenance.capture(
             task_manifest_hash=manifest.content_hash,
@@ -151,10 +177,11 @@ def main() -> int:
                 model_cfg["limits"]["max_input_tokens_per_task"]),
             max_output_tokens=int(model_cfg.get("max_output_tokens", 8192)),
             per_task_timeout_s=limits.per_task_timeout_s,
-            verifier_policy_version="v1.0.0-full+v1.0.0-baseline",
+            verifier_policy_version="v1.1.0-full+v1.1.0-baseline",
             docker_image="swebench/sweb.eval.x86_64.<instance>:latest (derived)",
             swebench_version="5.0.2",
             timestamp_utc=utc_now(),
+            agent_network_mode=agent_network_mode,
         ))
 
     (run_root / "manifest.csv").write_bytes(manifest.path.read_bytes())
@@ -344,7 +371,7 @@ def _summarise(run_root, per_task: list[dict], elapsed: float, experiment: dict)
         static_availability[key] = static_availability.get(key, 0) + 1
 
     return {
-        "experiment_id": "pilot_10",
+        "experiment_id": experiment["experiment_id"],
         "n_tasks": n,
         "elapsed_s": round(elapsed, 1),
         "total_cost_usd": round(sum(r.get("cost_usd") or 0 for r in per_task), 4),
@@ -374,13 +401,18 @@ def _summarise(run_root, per_task: list[dict], elapsed: float, experiment: dict)
 def _print_summary(summary: dict) -> None:
     print("\n========== PILOT SUMMARY ==========")
     gates = summary["gates"]
-    print(f"complete without infra : {gates['complete_without_infra']['got']}/10"
+    n = summary["n_tasks"]
+    print(f"complete without infra : {gates['complete_without_infra']['got']}/{n}"
           f"  (need ≥{gates['complete_without_infra']['need']})  "
           f"{'PASS' if gates['complete_without_infra']['passed'] else 'FAIL'}")
-    print(f"parseable FINAL_STATUS : {gates['parseable_claims']['got']}/10"
+    print(f"parseable FINAL_STATUS : {gates['parseable_claims']['got']}/{n}"
           f"  (need ≥{gates['parseable_claims']['need']})  "
           f"{'PASS' if gates['parseable_claims']['passed'] else 'FAIL'}")
-    print(f"RESOLVED claims        : {gates['resolved_claims']['got']}/10"
+    ag = summary["agent"]
+    print(f"  unparseable, split   : never finished {ag['never_finished']} "
+          f"{ag['never_finished_by_termination']}, "
+          f"finished but badly stated {ag['unparseable_after_finishing']}")
+    print(f"RESOLVED claims        : {gates['resolved_claims']['got']}/{n}"
           f"  (need ≥{gates['resolved_claims']['need']})  "
           f"{'PASS' if gates['resolved_claims']['passed'] else 'FAIL'}")
     print(f"total cost             : ${summary['total_cost_usd']:.4f}")

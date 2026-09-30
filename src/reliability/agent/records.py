@@ -48,10 +48,18 @@ class Termination(str, Enum):
     that gave up. That is a throughput result about the API quota, not a finding
     about the model's repair ability or a scaffold/model mismatch, and folding it
     into `ERROR` would license exactly that misreading.
+
+    `STEP_LIMIT` and `COST_LIMIT` are separate from each other and from
+    `COMPLETED`. A run stopped by its budget never reached submission, so it has
+    no final status to parse; counting it as a badly formatted status would send
+    the fix to the wrong place (a parser, rather than a budget or a scaffold fit).
+    mini-SWE-agent raises one exception for both budgets, so the runner tells
+    them apart from the call count.
     """
 
     COMPLETED = "completed"
     STEP_LIMIT = "step_limit"
+    COST_LIMIT = "cost_limit"
     TIMEOUT = "timeout"
     RATE_LIMITED = "rate_limited"
     ERROR = "error"
@@ -184,9 +192,30 @@ def load_records(run_dir: Path) -> list[RepairRecord]:
 
 
 def summarise(records: list[RepairRecord]) -> dict[str, Any]:
-    """Counts used by the Phase 9 gates. Computed from disk, no model calls."""
+    """Counts used by the Phase 9 gates. Computed from disk, no model calls.
+
+    An unparseable claim is split by cause. `never_finished` is a run that did
+    not reach submission (budget, timeout, throttling, error), so there was
+    nothing to parse. `unparseable_after_finishing` is a run that did submit and
+    stated its status badly. They are fixed differently and are reported apart.
+    """
+    never_finished = [
+        r for r in records
+        if r.claim.reason is UnparseableReason.NEVER_FINISHED
+    ]
+    terminations: dict[str, int] = {}
+    for r in records:
+        terminations[r.termination.value] = terminations.get(r.termination.value, 0) + 1
     return {
         "n": len(records),
+        "terminations": dict(sorted(terminations.items())),
+        "never_finished": len(never_finished),
+        "never_finished_by_termination": dict(sorted(
+            _count(r.termination.value for r in never_finished).items())),
+        "unparseable_after_finishing": sum(
+            not r.claim.is_parseable
+            and r.claim.reason is not UnparseableReason.NEVER_FINISHED
+            for r in records),
         "parseable_claims": sum(r.claim.is_parseable for r in records),
         "resolved_claims": sum(r.claim.status is ClaimStatus.RESOLVED for r in records),
         "empty_patches": sum(r.patch.is_empty for r in records),
@@ -195,6 +224,13 @@ def summarise(records: list[RepairRecord]) -> dict[str, Any]:
         "total_tokens": sum(r.usage.total_tokens for r in records),
         "roles": sorted({r.run_role.value for r in records}),
     }
+
+
+def _count(values) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for v in values:
+        counts[v] = counts.get(v, 0) + 1
+    return counts
 
 
 __all__ = [

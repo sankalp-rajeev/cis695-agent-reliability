@@ -11,8 +11,9 @@ from pathlib import Path
 
 import pytest
 
-from reliability.agent.claim_parser import ClaimStatus, parse_claim
+from reliability.agent.claim_parser import ClaimStatus, UnparseableReason, parse_claim
 from reliability.agent.records import RepairRecord, RunRole, Termination
+from reliability.agent.records import summarise as summarise_records
 from reliability.agent.runner import (
     CLAIM_DELIMITER,
     AgentConfigurationError,
@@ -20,6 +21,7 @@ from reliability.agent.runner import (
     AgentOutcome,
     MiniSweAgentBackend,
     _split_submission,
+    _step_limit_reached,
     _termination_for,
     run_manifest,
     run_task,
@@ -302,6 +304,76 @@ def test_empty_submission_yields_an_empty_patch():
 )
 def test_exit_status_maps_to_termination(exit_status, expected):
     assert _termination_for(exit_status, rate_limited=False) is expected
+
+
+def test_a_cost_stop_is_not_reported_as_a_step_stop():
+    """mini-SWE-agent raises one LimitsExceeded for both budgets."""
+    assert _termination_for(
+        "LimitsExceeded", False, step_limit_reached=True) is Termination.STEP_LIMIT
+    assert _termination_for(
+        "LimitsExceeded", False, step_limit_reached=False) is Termination.COST_LIMIT
+    # Undetermined stays the step limit, the check that runs first in the agent.
+    assert _termination_for("LimitsExceeded", False) is Termination.STEP_LIMIT
+
+
+@pytest.mark.parametrize("n_calls,expected", [(50, True), (49, False), (51, True)])
+def test_step_limit_is_read_from_the_call_count(n_calls, expected):
+    class Agent:
+        pass
+
+    agent = Agent()
+    agent.n_calls = n_calls
+    assert _step_limit_reached(agent, 50) is expected
+    assert _step_limit_reached(Agent(), 50) is None
+
+
+def test_a_budget_stop_is_never_finished_not_a_bad_status(tmp_path):
+    """No submission means nothing to parse. The reason says so."""
+    manifest = make_manifest(tmp_path, ["django__django-14373"])
+    backend = RecordedBackend(outcome=AgentOutcome(
+        final_output="", patch=b"", termination=Termination.STEP_LIMIT))
+
+    record = run_task(manifest.entries[0], backend, tmp_path / "run",
+                      experiment_id="t", run_role=RunRole.SMOKE,
+                      manifest_hash=manifest.content_hash)
+
+    assert record.claim.status is ClaimStatus.UNPARSEABLE
+    assert record.claim.reason is UnparseableReason.NEVER_FINISHED
+    assert record.termination is Termination.STEP_LIMIT
+
+
+def test_a_finished_run_with_a_bad_status_keeps_its_parse_reason(tmp_path):
+    manifest = make_manifest(tmp_path, ["django__django-14373"])
+    backend = RecordedBackend(outcome=AgentOutcome(
+        final_output="I think it's resolved.", patch=PATCH,
+        termination=Termination.COMPLETED))
+
+    record = run_task(manifest.entries[0], backend, tmp_path / "run",
+                      experiment_id="t", run_role=RunRole.SMOKE,
+                      manifest_hash=manifest.content_hash)
+
+    assert record.claim.reason is UnparseableReason.MISSING
+
+
+def test_summary_separates_never_finished_from_badly_stated(tmp_path):
+    manifest = make_manifest(tmp_path, ["django__django-14373", "psf__requests-1921"])
+    outcomes = [
+        AgentOutcome(final_output="", patch=b"", termination=Termination.STEP_LIMIT),
+        AgentOutcome(final_output="looks fine", patch=PATCH,
+                     termination=Termination.COMPLETED),
+    ]
+    records = []
+    for entry, outcome in zip(manifest.entries, outcomes, strict=True):
+        records.append(run_task(entry, RecordedBackend(outcome=outcome), tmp_path / "run",
+                                experiment_id="t", run_role=RunRole.SMOKE,
+                                manifest_hash=manifest.content_hash))
+    summary = summarise_records(records)
+
+    assert summary["parseable_claims"] == 0
+    assert summary["never_finished"] == 1
+    assert summary["never_finished_by_termination"] == {"step_limit": 1}
+    assert summary["unparseable_after_finishing"] == 1
+    assert summary["terminations"] == {"completed": 1, "step_limit": 1}
 
 
 def test_rate_limiting_is_not_reported_as_agent_failure():

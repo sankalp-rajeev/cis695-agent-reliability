@@ -60,6 +60,10 @@ class UnparseableReason(str, Enum):
     INVALID_VALUE = "invalid_value"  # marker present, value not a valid status
     AMBIGUOUS = "ambiguous"      # conflicting markers
     EMPTY_OUTPUT = "empty_output"
+    # Set by the runner, never by the parser: the run ended before submission
+    # (step or cost limit, timeout, throttling, error), so there was no final
+    # output to read. Not a formatting failure.
+    NEVER_FINISHED = "never_finished"
 
 
 #: Tolerates markdown emphasis and backticks around the key, and `:` or `=`.

@@ -8,6 +8,8 @@ oracle's own outputs are out of scope, and an audit that scanned nothing fails.
 
 from __future__ import annotations
 
+import json
+
 import pytest
 
 from reliability.benchmark.leakage import (
@@ -101,6 +103,111 @@ def test_a_gold_patch_in_the_trajectory_is_caught(tmp_path, probes):
 
     confirmed = [f for f in findings if f.severity is Severity.CONFIRMED]
     assert any(f.kind == "gold-patch-content" for f in confirmed)
+
+
+def test_context_and_removed_lines_are_not_probes():
+    """Reading the file at the base commit must not look like a gold-patch leak."""
+    probes = probes_from_oracle(FakeOracle())
+    assert not any("request_setting.items()" in line for line in probes.patch_lines)
+    assert any("none_keys" in line for line in probes.patch_lines)
+
+
+def test_a_fix_the_agent_wrote_is_not_confirmed(tmp_path, probes):
+    """The model producing the gold line, then seeing it in git diff, is the repair."""
+    line = "none_keys = [k for (k, v) in merged_setting.items() if v is None]"
+    files = dict(CLEAN)
+    files["trajectory.jsonl"] = (
+        '{"role":"assistant","content":"change it to ' + line + '"}\n'
+        '{"role":"tool","content":"diff +' + line + '"}\n'
+    )
+    files["patch.diff"] = "diff --git a/a.py b/a.py\n+" + line + "\n"
+    findings, _ = audit_task(make_task(tmp_path, files), probes)
+    assert not any(
+        f.kind == "gold-patch-content" and f.severity is Severity.CONFIRMED
+        for f in findings
+    )
+
+
+def test_a_gold_line_fetched_before_the_agent_wrote_it_is_confirmed(tmp_path, probes):
+    line = "none_keys = [k for (k, v) in merged_setting.items() if v is None]"
+    files = dict(CLEAN)
+    files["trajectory.jsonl"] = '{"role":"tool","content":"' + line + '"}\n'
+    findings, _ = audit_task(make_task(tmp_path, files), probes)
+    assert any(f.kind == "gold-patch-content" for f in findings)
+
+
+QUOTED = 'if hasattr(axis.major.formatter, "set_useOffset"):'
+QUOTED_PROBES = OracleProbes(instance_id="psf__requests-1921", patch_lines=(QUOTED,))
+
+
+def _trajectory(*messages: dict) -> str:
+    return "".join(json.dumps(m) + "\n" for m in messages)
+
+
+def _audit_quoted(tmp_path, *messages: dict):
+    files = dict(CLEAN)
+    files["trajectory.jsonl"] = _trajectory(*messages)
+    files["patch.diff"] = "diff --git a/a.py b/a.py\n+" + QUOTED + "\n"
+    findings, _ = audit_task(make_task(tmp_path, files), QUOTED_PROBES)
+    return [f for f in findings
+            if f.kind == "gold-patch-content" and f.severity is Severity.CONFIRMED]
+
+
+def test_a_quoted_line_the_model_wrote_is_cleared(tmp_path):
+    """Stored as \\" in JSON. Matching the raw line never saw it (seaborn-3187)."""
+    assert not _audit_quoted(
+        tmp_path,
+        {"role": "user", "content": "fix the bug"},
+        {"role": "assistant", "content": "", "reasoning_content": f"I will add {QUOTED}"},
+        {"role": "tool", "content": f"+    {QUOTED}"},
+    )
+
+
+def test_a_quoted_line_in_a_tool_call_argument_counts_as_the_models(tmp_path):
+    """Arguments are JSON inside a JSON string, so the quote is escaped twice."""
+    args = json.dumps({"command": f"sed -i 's/x/{QUOTED}/' a.py"})
+    assert not _audit_quoted(
+        tmp_path,
+        {"role": "assistant", "content": "", "tool_calls": [
+            {"function": {"name": "bash", "arguments": args}}]},
+        {"role": "tool", "content": "ok"},
+    )
+
+
+def test_a_quoted_line_fetched_first_is_still_confirmed(tmp_path):
+    assert _audit_quoted(
+        tmp_path,
+        {"role": "tool", "content": f"upstream has {QUOTED}"},
+        {"role": "assistant", "content": f"applying {QUOTED}"},
+    )
+
+
+def test_an_earlier_tool_result_still_confirms_when_the_model_restates_it_later(tmp_path, probes):
+    """First appearance is across the whole trajectory, not the first role inside a turn.
+
+    A tool result that contains the gold line, then a later assistant message
+    that repeats it, is still a leak. The restatement must not reclassify the
+    line as something the model authored.
+    """
+    line = "none_keys = [k for (k, v) in merged_setting.items() if v is None]"
+    files = dict(CLEAN)
+    files["trajectory.jsonl"] = (
+        '{"role":"assistant","content":"I will look up the upstream fix."}\n'
+        '{"role":"tool","content":"' + line + '"}\n'
+        '{"role":"assistant","content":"Applying what came back: ' + line + '"}\n'
+    )
+    findings, _ = audit_task(make_task(tmp_path, files), probes)
+    confirmed = [f for f in findings if f.severity is Severity.CONFIRMED]
+    assert any(f.kind == "gold-patch-content" for f in confirmed)
+
+
+def test_a_line_present_at_base_is_not_a_probe(probes):
+    from reliability.benchmark.leakage import without_base_lines
+
+    line = next(line for line in probes.test_patch_lines if "test_header_remove" in line)
+    reduced = without_base_lines(probes, {line})
+    assert line not in reduced.test_patch_lines
+    assert probes.patch_lines == reduced.patch_lines
 
 
 def test_a_leak_without_its_label_is_still_caught(tmp_path, probes):
@@ -203,6 +310,52 @@ def test_every_oracle_field_name_is_caught(tmp_path, name, probes):
     findings, _ = audit_task(make_task(tmp_path, files), probes)
 
     assert any(f.kind == "oracle-field-name" and name in f.detail for f in findings)
+
+
+def test_a_test_named_after_a_field_is_not_the_field(tmp_path, probes):
+    """scikit-learn ships test_patch_extractor_*; that is a test, not a column."""
+    files = dict(CLEAN)
+    files["trajectory.jsonl"] = (
+        '{"role":"tool","content":"sklearn/feature_extraction/tests/test_image.py'
+        '::test_patch_extractor_fit PASSED"}\n'
+    )
+    findings, _ = audit_task(make_task(tmp_path, files), probes)
+    assert not any(f.kind == "oracle-field-name" for f in findings)
+
+
+@pytest.mark.parametrize("text", [
+    'find / -iname "*test_patch*"',
+    '{"test_patch": "diff --git"}',
+    "the FAIL_TO_PASS tests are hidden",
+    "row['PASS_TO_PASS']",
+])
+def test_a_field_name_as_a_whole_token_is_still_caught(tmp_path, probes, text):
+    files = dict(CLEAN)
+    files["trajectory.jsonl"] = json.dumps({"role": "tool", "content": text}) + "\n"
+    findings, _ = audit_task(make_task(tmp_path, files), probes)
+    assert any(f.kind == "oracle-field-name" for f in findings)
+
+
+def test_selected_test_ids_are_not_scanned_for_field_names(tmp_path, probes):
+    """Our own output. Node ids carry test names, and a name is not a column."""
+    files = dict(CLEAN)
+    files["verification_record.full.json"] = json.dumps({
+        "selected_tests": ["sklearn/tests/test_image.py::test_patch_extractor_fit"],
+        "selection_convention": "unknown",
+    })
+    findings, _ = audit_task(make_task(tmp_path, files), probes)
+    assert not any(f.kind == "oracle-field-name" for f in findings)
+
+
+def test_a_field_name_elsewhere_in_a_verification_record_is_still_caught(tmp_path, probes):
+    """Skipping selected_tests must not open the rest of the record."""
+    files = dict(CLEAN)
+    files["verification_record.full.json"] = json.dumps({
+        "selected_tests": ["a.py::test_patch_extractor_fit"],
+        "risk_features": {"PASS_TO_PASS": ["test_a"]},
+    })
+    findings, _ = audit_task(make_task(tmp_path, files), probes)
+    assert any(f.kind == "oracle-field-name" and "PASS_TO_PASS" in f.detail for f in findings)
 
 
 def test_a_leak_into_a_verifier_input_is_caught(tmp_path, probes):

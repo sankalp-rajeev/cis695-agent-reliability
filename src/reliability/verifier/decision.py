@@ -140,7 +140,7 @@ class FullPolicy:
     """
 
     name: str = "full"
-    version: str = "v1.0.0-full"
+    version: str = "v1.1.0-full"
     require_reproduction: bool = True
 
     def decide(self, evidence: Evidence) -> DecisionRecord:
@@ -203,7 +203,7 @@ class BaselinePolicy:
     """
 
     name: str = "baseline"
-    version: str = "v1.0.0-baseline"
+    version: str = "v1.1.0-baseline"
 
     def decide(self, evidence: Evidence) -> DecisionRecord:
         reject: list[str] = []

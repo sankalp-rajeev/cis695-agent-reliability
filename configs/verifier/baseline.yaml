@@ -4,7 +4,7 @@
 # It shares the full policy's settings for the layers it keeps, so any difference
 # in outcome is attributable to the disabled layer rather than to drift.
 layer: verifier
-policy_version: v1.0.0-baseline
+policy_version: v1.1.0-baseline
 
 integrity:
   must_apply_to_base: true
@@ -30,6 +30,11 @@ regression:
   # VERIFIER_POLICY.md §5.3 — tests written by the agent are its own claim about
   # correctness, not independent evidence.
   exclude_agent_authored_tests: true
+
+  # §3.1. Seeded random sample across the whole tree; best-scoring layout wins
+  # with no hit-rate floor, and every layout's score is recorded.
+  convention_sample_size: 200
+  convention_seed: 695
 
   # §3.4: five minutes per pass, ten per instance including the baseline.
   per_pass_timeout_s: 300

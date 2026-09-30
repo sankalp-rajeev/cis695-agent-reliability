@@ -6,9 +6,11 @@ missing model id or an unrecorded verifier policy version makes a run
 uninterpretable rather than merely under-documented. Validation therefore
 rejects `None` and empty strings instead of filling defaults.
 
-`git_dirty` is recorded rather than enforced. Refusing to run on a dirty tree
-would be hostile during development, but a result produced from uncommitted code
-is not reproducible from `git_commit` alone and must be visible as such.
+`git_dirty` is recorded on every run and enforced for experiments: a result
+produced from uncommitted code is not reproducible from `git_commit` alone.
+`pilot_12` ran dirty with `max_steps` changed between runs and cannot be
+compared to anything. Dry runs (`dry_*`) may override with an explicit flag,
+and still record `git_dirty: true`.
 """
 
 from __future__ import annotations
@@ -47,6 +49,10 @@ REQUIRED_FIELDS = (
     "pythonpath",
     "sys_path",
     "foreign_sys_path_entries",
+    # HostConfig.NetworkMode read off a container this run actually started.
+    # Never the value requested in config: a run must not record isolation it
+    # did not have.
+    "agent_network_mode",
 )
 
 
@@ -78,6 +84,7 @@ class RunProvenance:
     pythonpath: list[str]
     sys_path: list[str]
     foreign_sys_path_entries: list[str]
+    agent_network_mode: str
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -110,6 +117,31 @@ def git_dirty(repo_root: Path | None = None) -> bool:
         cwd=repo_root, capture_output=True, text=True, check=True,
     ).stdout
     return bool(out.strip())
+
+
+DRY_RUN_PREFIX = "dry_"
+
+
+def require_clean_tree(dirty: bool, *, experiment_id: str, allow_dirty: bool) -> None:
+    """Refuse to start an experiment from uncommitted code.
+
+    The override exists for dry runs, which prove the chain and are never
+    cited. It is refused for anything else rather than warned about, because
+    a warning on a 70-minute run is read after the run.
+    """
+    if not dirty:
+        return
+    if not allow_dirty:
+        raise SystemExit(
+            "the working tree is dirty; commit before running. A run from "
+            "uncommitted code is not reproducible from git_commit. "
+            f"--allow-dirty is accepted for {DRY_RUN_PREFIX}* experiments only."
+        )
+    if not experiment_id.startswith(DRY_RUN_PREFIX):
+        raise SystemExit(
+            f"--allow-dirty is only accepted for dry runs ({DRY_RUN_PREFIX}*), "
+            f"not {experiment_id}"
+        )
 
 
 def utc_now() -> str:

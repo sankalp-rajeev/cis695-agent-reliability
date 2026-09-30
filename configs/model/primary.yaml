@@ -50,7 +50,11 @@ model_kwargs:
 
 # Hard ceilings so a runaway trajectory cannot silently consume the budget.
 limits:
-  max_steps: 50
+  # 50 -> 100 before pilot_12. All four pilot_11 step-limit stops (django-14725,
+  # matplotlib-26113, pylint-6386, sphinx-10449) had edited and were testing when
+  # they hit 50, with no repeated commands. The run records this value in
+  # provenance as `max_steps`; scripts/run_pilot.py reads it from here.
+  max_steps: 100
   max_input_tokens_per_task: 400000
   max_cost_usd_per_task: 5.00
   request_timeout_s: 600

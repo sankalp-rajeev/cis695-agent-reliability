@@ -44,6 +44,18 @@ def test_unreliable_baseline_is_an_error_absence():
     assert rec.absence is SignalAbsence.ERROR
 
 
+def test_selected_tests_that_never_ran_are_an_error_not_a_disabled_layer():
+    """sklearn-12973: 2387 selected, none executed. The runner broke; nobody switched it off."""
+    from reliability.verifier.selection import Selection
+
+    rec = signal_from_regression(RegressionReport(
+        instance_id="x", signal=Signal.NOT_AVAILABLE,
+        selection=Selection(tests=("a.py::t",)),
+        notes=("tests were selected but none executed",)))
+    assert rec.outcome is SignalOutcome.NOT_AVAILABLE
+    assert rec.absence is SignalAbsence.ERROR
+
+
 def test_static_with_no_tools_is_not_configured():
     report = StaticReport(results=tuple(
         CheckResult(kind=k, status=CheckStatus.NOT_AVAILABLE) for k in CheckKind))

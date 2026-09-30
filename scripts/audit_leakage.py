@@ -31,6 +31,7 @@ from reliability.benchmark.leakage import (
     audit,
     find_task_dirs,
     probes_from_oracle,
+    without_base_lines,
 )
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -98,6 +99,48 @@ def main() -> int:
     return 0
 
 
+def lines_present_at_base(instance_id: str, lines: tuple[str, ...]) -> set[str]:
+    """Which probe lines already occur in the instance image at the base commit.
+
+    A failure to search does not drop probes. Dropping them on a failed search
+    would let a real leak through.
+    """
+    if not lines:
+        return set()
+    import subprocess
+
+    from reliability.agent.isolation import docker_bin
+    from reliability.verifier.container import image_for
+
+    try:
+        proc = subprocess.run(
+            [docker_bin(), "run", "--rm", "--network", "none", "-i",
+             "-w", "/testbed", "--entrypoint", "git", image_for(instance_id),
+             "grep", "-F", "-I", "-f", "/dev/stdin", "--", "."],
+            input="\n".join(lines) + "\n",
+            capture_output=True, text=True, errors="replace",
+            timeout=180, check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        print(f"  WARNING: could not search the base tree of {instance_id}: {exc}")
+        return set()
+    # `git grep` exits 1 with no output when nothing matched. Exit 1 with
+    # anything on stderr is a failure that happens to share the code (a missing
+    # docker CLI shim does exactly this), and it must not read as "no matches".
+    searched = proc.returncode == 0 or (proc.returncode == 1 and not proc.stderr.strip())
+    if not searched:
+        print(f"  WARNING: base-tree search failed for {instance_id} "
+              f"(exit {proc.returncode}): {proc.stderr.strip()[:120]}; probes are not reduced")
+        return set()
+    found = set()
+    for raw in proc.stdout.splitlines():
+        content = raw.split(":", 1)[-1]
+        for line in lines:
+            if line in content:
+                found.add(line)
+    return found
+
+
 def load_probes(task_dirs) -> tuple[dict, bool]:
     """Load the oracle values to search for.
 
@@ -124,7 +167,12 @@ def load_probes(task_dirs) -> tuple[dict, bool]:
             continue
         # The problem statement is passed in to subtract probes, never to search
         # for: a string the agent was legitimately given cannot evidence a leak.
-        probes[task_dir.name] = probes_from_oracle(oracle, task.problem_statement)
+        built = probes_from_oracle(oracle, task.problem_statement)
+        probes[task_dir.name] = without_base_lines(
+            built,
+            lines_present_at_base(
+                task_dir.name, built.patch_lines + built.test_patch_lines),
+        )
 
     return probes, True
 

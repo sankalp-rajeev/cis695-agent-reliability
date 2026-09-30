@@ -4,7 +4,7 @@
 # any value here requires bumping policy_version, otherwise two runs carrying the
 # same version string could reflect different rules.
 layer: verifier
-policy_version: v1.0.0-full
+policy_version: v1.1.0-full
 
 # Phase 4: patch integrity. These are disqualifying, not advisory.
 integrity:
@@ -28,6 +28,11 @@ regression:
   enable_tier0: false
   max_tier: 2
   exclude_agent_authored_tests: true   # §5.3
+
+  # §3.1. Seeded random sample across the whole tree; best-scoring layout wins
+  # with no hit-rate floor, and every layout's score is recorded.
+  convention_sample_size: 200
+  convention_seed: 695
 
   # §3.4
   per_pass_timeout_s: 300

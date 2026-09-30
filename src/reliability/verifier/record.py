@@ -177,6 +177,12 @@ class VerificationRecord(BaseModel):
     #: PASS_TO_PASS after the fact — the only point at which the two may meet.
     selected_tests: tuple[str, ...] = ()
     selection_convention: str = ""
+    #: The winner's hit rate over the sampled source files, and every probed
+    #: layout's. Discovery has no floor, so a weak winner is visible only here.
+    selection_convention_hit_rate: float | None = None
+    selection_convention_scores: dict[str, float] = Field(default_factory=dict)
+    #: Which program runs those node ids, and the evidence for that choice.
+    selection_runner: str = ""
 
     duration_s: float = Field(default=0.0, ge=0.0)
     verified_at: str = Field(min_length=1)

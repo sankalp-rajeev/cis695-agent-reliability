@@ -1,0 +1,30 @@
+# Phase 9.1: two-task dry run. Not a citable pilot.
+# Exists to prove the chain (agent, freeze, verifier, oracle) and a clean
+# leakage audit before any new full pass. Do not reuse pilot_10.
+layer: experiment
+experiment_id: dry_9_1
+
+benchmark:
+  dataset: SWE-bench/SWE-bench_Verified
+  split: test
+  manifest: manifests/dry_9_1.csv
+
+agent: configs/agent/swebench_claim.yaml
+model: configs/model/primary.yaml
+verifiers:
+  - configs/verifier/full.yaml
+  - configs/verifier/baseline.yaml
+
+sampling:
+  n_tasks: 2
+  seed: 695
+  stratify_by: [repo, task_type]
+  min_distinct_repos: 2
+
+execution:
+  single_pass: true
+  retries: 0
+  gates:
+    min_completed_without_infra_failure: 2
+    min_parseable_claims: 2
+    min_resolved_claims: 0

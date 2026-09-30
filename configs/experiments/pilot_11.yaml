@@ -1,0 +1,31 @@
+# Experiment layer: the 10-task pilot after pilot_10 was voided.
+#
+# pilot_10 had network and is not citable. dry_9_1 was the two-task dry run.
+# This id is neither of those. Nothing here may be changed mid-run.
+layer: experiment
+experiment_id: pilot_11
+
+benchmark:
+  dataset: SWE-bench/SWE-bench_Verified
+  split: test
+  manifest: manifests/pilot.csv
+
+agent: configs/agent/swebench_claim.yaml
+model: configs/model/primary.yaml
+verifiers:
+  - configs/verifier/full.yaml
+  - configs/verifier/baseline.yaml
+
+sampling:
+  n_tasks: 10
+  seed: 695
+  stratify_by: [repo, task_type]
+  min_distinct_repos: 3
+
+execution:
+  single_pass: true
+  retries: 0
+  gates:
+    min_completed_without_infra_failure: 8
+    min_parseable_claims: 9
+    min_resolved_claims: 4

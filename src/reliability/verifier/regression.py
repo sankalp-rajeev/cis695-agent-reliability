@@ -97,6 +97,8 @@ class RunResult:
     results: tuple[TestResult, ...] = ()
     timed_out: bool = False
     duration_s: float = 0.0
+    #: Why nothing ran, when the runner reported no results at all.
+    note: str = ""
 
     def by_id(self) -> dict[str, TestResult]:
         return {r.test_id: r for r in self.results}
@@ -258,7 +260,11 @@ def run_regression(
     if baseline is None:
         baseline = executor.run(
             selection.tests, patched=False, timeout_s=config.per_pass_timeout_s)
-        save_baseline(config, instance_id, baseline)
+        if any(r.status not in (TestStatus.NOT_RUN, TestStatus.TIMEOUT)
+               for r in baseline.results):
+            # A pass in which nothing ran is not a baseline, and caching it
+            # would hand the same empty answer to every later run.
+            save_baseline(config, instance_id, baseline)
     else:
         notes.append("baseline loaded from cache")
 
@@ -312,6 +318,10 @@ def run_regression(
         # Tests were selected but none actually ran. Not a pass.
         signal = Signal.NOT_AVAILABLE
         notes.append("tests were selected but none executed")
+        notes.extend(
+            f"{label}: {run.note}" for label, run in (("baseline", baseline), ("patched", patched))
+            if run.note
+        )
     elif n_regressions > 0:
         signal = Signal.FAIL
     else:

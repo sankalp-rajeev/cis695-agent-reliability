@@ -55,7 +55,11 @@ echo "scope: ${#TASK_DIRS[@]} agent task directories"
 
 IN_SCOPE=(trajectory.jsonl agent_output.txt submission_raw.txt \
           repair_record.json patch.diff prompt.txt system_prompt.txt)
-FIELDS='FAIL_TO_PASS|PASS_TO_PASS|test_patch|hints_text|eval_script|environment_setup_commit|gold_patch|golden_patch'
+# Whole identifiers only: `test_patch` inside `test_patch_extractor_fit` is a
+# test's name. Identifier characters are the boundary, so `*test_patch*`,
+# `"FAIL_TO_PASS"` and prose naming the column still match.
+NAMES='FAIL_TO_PASS|PASS_TO_PASS|test_patch|hints_text|eval_script|environment_setup_commit|gold_patch|golden_patch'
+FIELDS="(^|[^A-Za-z0-9_])($NAMES)([^A-Za-z0-9_]|\$)"
 
 scanned=0
 for dir in "${TASK_DIRS[@]}"; do
@@ -71,7 +75,10 @@ for dir in "${TASK_DIRS[@]}"; do
   for vr in "$dir"/verification_record.*.json; do
     [ -f "$vr" ] || continue
     scanned=$((scanned + 1))
-    if grep -nE "$FIELDS" "$vr" > /dev/null 2>&1; then
+    # selected_tests is our own output (test node ids, named after tests) and
+    # is not scanned; every other key in the record is.
+    if "$PY" -c 'import json,sys; d=json.load(open(sys.argv[1])); d.pop("selected_tests",None); print(json.dumps(d,indent=2))' "$vr" 2>/dev/null \
+        | grep -nE "$FIELDS" > /dev/null 2>&1; then
       echo "FAIL: oracle field name in $vr" >&2
       failed=1
     fi

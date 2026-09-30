@@ -25,6 +25,7 @@ time for no extra signal about this patch.
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Protocol
@@ -44,8 +45,11 @@ class CheckKind(str, Enum):
 class CheckStatus(str, Enum):
     """Outcome of one static check.
 
-    `NOT_AVAILABLE` means the tool is not configured for this repository. It is
-    not a pass, not a failure, and must never be collapsed into either.
+    `NOT_AVAILABLE` means the tool is not configured for this repository, or
+    the configured tool is not installed in the environment. It is not a pass,
+    not a failure, and must never be collapsed into either. A missing
+    interpreter or linter is this status; a finding about the patched code is
+    `FAIL`.
     """
 
     PASS = "PASS"
@@ -259,6 +263,47 @@ def _status_from(returncode: int) -> CheckStatus:
     return CheckStatus.FAIL
 
 
+def _missing_tool_reason(
+    kind: CheckKind, spec: ToolSpec, returncode: int, output: str
+) -> str | None:
+    """Why this invocation failed because the tool is absent, or None.
+
+    An absolute check (syntax, import, build) has no baseline, so a nonzero
+    exit would otherwise be a new failure on every patch. That is the wrong
+    outcome when the image simply does not contain the tool. Import failures
+    of the patched module stay FAIL: those are about the code, not the tool,
+    except when the interpreter itself is missing (exit 127).
+    """
+    text = output or ""
+    snippet = next((line.strip() for line in text.splitlines() if line.strip()), "")
+    snippet = snippet[:300]
+
+    if returncode == 127:
+        return snippet or "exit 127"
+
+    if kind is CheckKind.IMPORT:
+        return None
+
+    names = [spec.name]
+    if kind is CheckKind.SYNTAX:
+        names.append("py_compile")
+    if kind is CheckKind.BUILD:
+        names.append("build")
+
+    for name in names:
+        if re.search(
+            rf"No module named ['\"]?{re.escape(name)}(?:['\"]|\b)", text
+        ):
+            return snippet or f"No module named {name}"
+        if re.search(
+            rf"(?:^|\b){re.escape(name)}: (?:command )?not found\b", text
+        ):
+            return snippet or f"{name}: not found"
+        if re.search(rf"command not found: {re.escape(name)}\b", text):
+            return snippet or f"command not found: {name}"
+    return None
+
+
 def run_static_checks(
     patch: Patch,
     tree: RepoTree,
@@ -298,6 +343,16 @@ def run_static_checks(
         except TimeoutError:
             results.append(CheckResult(kind, CheckStatus.TIMEOUT, spec.name,
                                        "timed out"))
+            continue
+
+        missing = _missing_tool_reason(kind, spec, returncode, output)
+        if missing is not None:
+            # Absent tool, not a defect in the patch. Absolute checks have no
+            # baseline, so leaving this as FAIL would flag every patch.
+            results.append(CheckResult(
+                kind=kind, status=CheckStatus.NOT_AVAILABLE, tool=spec.name,
+                detail=f"{spec.name} is not installed: {missing}",
+            ))
             continue
 
         status = _status_from(returncode)

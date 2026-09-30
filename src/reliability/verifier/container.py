@@ -15,7 +15,7 @@ it, removed on exit. Nothing is shared between concurrent verifications.
 
 from __future__ import annotations
 
-import json
+import re
 import shlex
 import subprocess
 import uuid
@@ -25,6 +25,7 @@ from typing import Self
 
 from reliability.env import clean_env
 from reliability.verifier.regression import RunResult, TestResult, TestStatus
+from reliability.verifier.selection import TestRunner, django_label
 
 NAMESPACE = "swebench/sweb.eval.x86_64"
 WORKDIR = "/testbed"
@@ -112,8 +113,28 @@ class TaskContainer:
             proc = subprocess.run(
                 [_docker_bin(), "exec", "-w", WORKDIR, self.name,
                  "bash", "-lc", script],
-                capture_output=True, text=True, timeout=timeout_s,
+                capture_output=True, text=True, errors="replace", timeout=timeout_s,
                 env=clean_env(), check=False,
+            )
+        except subprocess.TimeoutExpired as exc:
+            raise TimeoutError(f"command timed out after {timeout_s}s") from exc
+        return proc.returncode, (proc.stdout or "") + (proc.stderr or "")
+
+    def exec_input(self, command: str, data: str, timeout_s: int = 60) -> tuple[int, str]:
+        """Run a command with `data` on stdin.
+
+        Used to place the selected node ids in the container without putting
+        them on the docker exec argument list, which overflows when a patch
+        touches a widely referenced symbol.
+        """
+        if not self._started:
+            raise ContainerError("container is not running")
+        try:
+            proc = subprocess.run(
+                [_docker_bin(), "exec", "-i", "-w", WORKDIR, self.name,
+                 "bash", "-lc", command],
+                input=data, capture_output=True, text=True, errors="replace",
+                timeout=timeout_s, env=clean_env(), check=False,
             )
         except subprocess.TimeoutExpired as exc:
             raise TimeoutError(f"command timed out after {timeout_s}s") from exc
@@ -144,7 +165,7 @@ class TaskContainer:
         proc = subprocess.run(
             [_docker_bin(), "exec", "-i", "-w", WORKDIR, self.name,
              "bash", "-lc", f"git apply {flag} -"],
-            input=self.patch_text, capture_output=True, text=True,
+            input=self.patch_text, capture_output=True, text=True, errors="replace",
             env=clean_env(), check=False,
         )
         return proc.returncode, (proc.stdout or "") + (proc.stderr or "")
@@ -178,76 +199,195 @@ class ContainerCommandExecutor:
         return self.container.exec(tuple(command), timeout_s=timeout_s)
 
 
+_IDS_PATH = "/tmp/verifier_ids"
+_OUT_LOG = "/tmp/verifier_out.txt"
+
+#: Runs inside the container, under whatever Python the image ships. SWE-bench
+#: images go back to Python 3.6, so nothing here may need 3.7 or later: no
+#: `text=`, no `capture_output=`. Output is read as bytes and decoded by hand.
+#:
+#: Node ids arrive in a file, not on argv, and run in batches so one widely
+#: referenced symbol cannot overflow exec. No pytest plugin is required: results
+#: come from pytest's own `-v` lines, which every version prints.
+#:
+#: Pytest exits 4 and runs nothing in a batch when one id does not resolve. A
+#: batch that does that is split in half and each half run again, so one bad id
+#: costs its own result and not its neighbours'. The splitting is capped so a
+#: usage error cannot turn into hundreds of runs.
+_BATCH_DRIVER = r'''
+import pathlib, subprocess, sys
+kind = sys.argv[1]
+ids = [line.strip() for line in pathlib.Path("/tmp/verifier_ids").read_text(encoding="utf-8", errors="replace").splitlines() if line.strip()]
+log = pathlib.Path("/tmp/verifier_out.txt")
+log.write_text("", encoding="utf-8")
+budget = [200]
+
+def run(part):
+    if kind == "django":
+        cmd = ["python", "tests/runtests.py", "--verbosity=2"] + part
+    else:
+        cmd = ["python", "-m", "pytest"] + part + ["-p", "no:cacheprovider", "-v"]
+    proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    text = proc.stdout.decode("utf-8", "replace")
+    with log.open("a", encoding="utf-8") as fh:
+        fh.write(text)
+    print(text, end="")
+    return proc.returncode
+
+def execute(part):
+    code = run(part)
+    if kind == "pytest" and code == 4 and len(part) > 1 and budget[0] > 0:
+        budget[0] -= 1
+        mid = len(part) // 2
+        execute(part[:mid])
+        execute(part[mid:])
+
+for start in range(0, len(ids), 25):
+    execute(ids[start:start + 25])
+'''
+
+
 @dataclass
 class ContainerTestExecutor:
     """Phase 5 TestExecutor backed by a live container.
 
-    Results are read from pytest's JSON report where available, falling back to
-    parsing the short summary. Tests that pytest never reported on are returned
-    as NOT_RUN rather than omitted, so the classifier sees an explicit absence
-    instead of inferring one.
+    The command is the runner discovered for this repository. Pytest results
+    are read from its own ``-v`` lines, so no plugin has to exist in the image;
+    Django's ``tests/runtests.py`` is parsed from its verbose lines. Tests the
+    runner never reported on are returned as NOT_RUN rather than omitted, so
+    the classifier sees an explicit absence instead of inferring one. When
+    nothing at all was reported, the tail of the runner's output rides along on
+    the result, so a broken runner says why instead of reading as an empty run.
     """
 
     container: TaskContainer
-    report_path: str = "/tmp/verifier_report.json"
+    runner: TestRunner | None = None
 
     def run(self, tests: tuple[str, ...], *, patched: bool, timeout_s: int) -> RunResult:
         if not tests:
             return RunResult()
 
         self.container.set_patched(patched)
-        target = " ".join(shlex.quote(t) for t in tests)
-        command = (
-            f"python -m pytest {target} -p no:cacheprovider -q "
-            f"--json-report --json-report-file={self.report_path} || true"
+        runner = self.runner or TestRunner("pytest", "default")
+        native = (
+            tuple(django_label(test) for test in tests)
+            if runner.name == "django" else tests
         )
-
+        command = f"python /tmp/verifier_driver.py {runner.name}"
         try:
+            # The ids go through stdin. Embedding them in `docker exec` argv is
+            # what raised E2BIG once a short symbol selected a large tier-2 set.
+            self.container.exec_input(
+                f"cat > {_IDS_PATH}", "\n".join(native) + "\n", timeout_s=60)
+            self.container.exec_input(
+                "cat > /tmp/verifier_driver.py", _BATCH_DRIVER, timeout_s=60)
             _, output = self.container.exec(command, timeout_s=timeout_s)
         except TimeoutError:
+            try:
+                statuses = self._partial_statuses(runner, tests)
+            except TimeoutError:
+                statuses = {}
             return RunResult(
-                results=tuple(TestResult(t, TestStatus.TIMEOUT) for t in tests),
+                results=tuple(
+                    TestResult(t, statuses.get(t, TestStatus.TIMEOUT)) for t in tests
+                ),
                 timed_out=True,
             )
 
-        statuses = self._parse_report() or self._parse_summary(output, tests)
+        statuses = _parse_output(runner, output, tests)
 
-        # Anything pytest did not report on is NOT_RUN, never an implicit pass.
-        return RunResult(results=tuple(
-            TestResult(t, statuses.get(t, TestStatus.NOT_RUN)) for t in tests
-        ))
+        # Anything the runner did not report on is NOT_RUN, never an implicit pass.
+        return RunResult(
+            results=tuple(
+                TestResult(t, statuses.get(t, TestStatus.NOT_RUN)) for t in tests
+            ),
+            note="" if statuses else _no_results_note(output),
+        )
 
-    def _parse_report(self) -> dict[str, TestStatus]:
-        rc, out = self.container.exec(("cat", self.report_path), timeout_s=60)
-        if rc != 0:
-            return {}
-        try:
-            payload = json.loads(out)
-        except json.JSONDecodeError:
-            return {}
-        mapping = {
-            "passed": TestStatus.PASSED, "failed": TestStatus.FAILED,
-            "error": TestStatus.ERROR, "skipped": TestStatus.SKIPPED,
-        }
-        return {
-            t["nodeid"]: mapping.get(t.get("outcome", ""), TestStatus.ERROR)
-            for t in payload.get("tests", [])
-        }
+    def _partial_statuses(self, runner: TestRunner, tests) -> dict:
+        """Read whatever a timed-out run managed to write to its log."""
+        rc, logged = self.container.exec(("cat", _OUT_LOG), timeout_s=30)
+        return _parse_output(runner, logged, tests) if rc == 0 else {}
 
-    def _parse_summary(self, output: str, tests: tuple[str, ...]) -> dict[str, TestStatus]:
-        """Fallback for images without pytest-json-report installed."""
-        statuses: dict[str, TestStatus] = {}
-        markers = {
-            "PASSED": TestStatus.PASSED, "FAILED": TestStatus.FAILED,
-            "ERROR": TestStatus.ERROR, "SKIPPED": TestStatus.SKIPPED,
-        }
-        for line in output.splitlines():
-            for marker, status in markers.items():
-                if marker in line:
-                    for test in tests:
-                        if test in line:
-                            statuses[test] = status
-        return statuses
+
+def _parse_output(runner: TestRunner, output: str, tests: tuple[str, ...]) -> dict:
+    if runner.name == "django":
+        return _parse_django(output, tests)
+    return _parse_pytest(output, tests)
+
+
+def _no_results_note(output: str) -> str:
+    lines = [ln.strip() for ln in output.splitlines() if ln.strip()]
+    if not lines:
+        return "the test runner produced no output"
+    return "the test runner reported no results; output ended: " + " | ".join(lines[-3:])[:400]
+
+
+_PYTEST_LINE = re.compile(
+    r"^(?P<id>\S.*?::\S.*?) (?P<outcome>PASSED|FAILED|ERROR|SKIPPED|XFAIL|XPASS)\b"
+)
+_PYTEST_OUTCOME = {
+    "PASSED": TestStatus.PASSED,
+    "XPASS": TestStatus.PASSED,      # non-strict unexpected pass; strict is reported FAILED
+    "FAILED": TestStatus.FAILED,
+    "ERROR": TestStatus.ERROR,
+    "SKIPPED": TestStatus.SKIPPED,
+    "XFAIL": TestStatus.SKIPPED,     # an expected failure neither passed nor regressed
+}
+#: A test can print PASSED and then ERROR at teardown. The worse one stands.
+_PYTEST_SEVERITY = {
+    TestStatus.SKIPPED: 0, TestStatus.PASSED: 1, TestStatus.FAILED: 2, TestStatus.ERROR: 3,
+}
+
+
+def _parse_pytest(output: str, tests: tuple[str, ...]) -> dict[str, TestStatus]:
+    """Read ``pytest -v`` lines. Only ids that were asked for are accepted."""
+    wanted = set(tests)
+    statuses: dict[str, TestStatus] = {}
+    for line in output.splitlines():
+        match = _PYTEST_LINE.match(line.strip())
+        if match is None or match.group("id") not in wanted:
+            continue
+        test, status = match.group("id"), _PYTEST_OUTCOME[match.group("outcome")]
+        earlier = statuses.get(test)
+        if earlier is None or _PYTEST_SEVERITY[status] >= _PYTEST_SEVERITY[earlier]:
+            statuses[test] = status
+    return statuses
+
+
+_DJANGO_LINE = re.compile(
+    r"^(?P<name>\w+) \((?P<label>[^)]+)\) \.\.\. (?P<outcome>ok|FAIL|ERROR|skipped)\b",
+    re.IGNORECASE,
+)
+_DJANGO_OUTCOME = {
+    "ok": TestStatus.PASSED,
+    "fail": TestStatus.FAILED,
+    "error": TestStatus.ERROR,
+    "skipped": TestStatus.SKIPPED,
+}
+
+
+def _parse_django(output: str, tests: tuple[str, ...]) -> dict[str, TestStatus]:
+    """Map ``tests/runtests.py --verbosity=2`` lines back onto node ids."""
+    by_label = {django_label(test): test for test in tests}
+    statuses: dict[str, TestStatus] = {}
+    for line in output.splitlines():
+        match = _DJANGO_LINE.match(line.strip())
+        if match is None:
+            continue
+        label = match.group("label")
+        status = _DJANGO_OUTCOME[match.group("outcome").lower()]
+        node = by_label.get(label)
+        if node is None:
+            # Django sometimes prints ``module.Class`` without the method.
+            node = next(
+                (test for lab, test in by_label.items()
+                 if lab == f"{label}.{match.group('name')}" or lab.endswith("." + label)),
+                None,
+            )
+        if node is not None:
+            statuses[node] = status
+    return statuses
 
 
 def verify_in_container(

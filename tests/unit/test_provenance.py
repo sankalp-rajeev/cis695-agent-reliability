@@ -12,6 +12,7 @@ from reliability.provenance import (
     ProvenanceError,
     RunProvenance,
     read_meta,
+    require_clean_tree,
     validate,
     write_meta,
 )
@@ -39,6 +40,7 @@ def make_provenance(**overrides) -> RunProvenance:
         "pythonpath": [],
         "sys_path": ["/home/x/proj/src"],
         "foreign_sys_path_entries": [],
+        "agent_network_mode": "none",
     }
     base.update(overrides)
     return RunProvenance(**base)
@@ -86,10 +88,30 @@ def test_blank_string_is_rejected():
         validate(block)
 
 
-def test_dirty_tree_is_recorded_not_rejected(tmp_path):
-    """A result from uncommitted code must be visible, but is not blocked."""
+def test_dirty_tree_is_recorded_in_meta(tmp_path):
+    """A dry run allowed to start dirty must still say so."""
     path = write_meta(tmp_path, make_provenance(git_dirty=True))
     assert yaml.safe_load(path.read_text())["git_dirty"] is True
+
+
+def test_an_experiment_refuses_a_dirty_tree():
+    with pytest.raises(SystemExit, match="dirty"):
+        require_clean_tree(True, experiment_id="pilot_13", allow_dirty=False)
+
+
+def test_the_dirty_override_is_refused_outside_dry_runs():
+    with pytest.raises(SystemExit, match="dry runs"):
+        require_clean_tree(True, experiment_id="pilot_13", allow_dirty=True)
+
+
+def test_a_dry_run_may_start_dirty_with_the_override():
+    require_clean_tree(True, experiment_id="dry_9_2", allow_dirty=True)
+    with pytest.raises(SystemExit):
+        require_clean_tree(True, experiment_id="dry_9_2", allow_dirty=False)
+
+
+def test_a_clean_tree_needs_no_override():
+    require_clean_tree(False, experiment_id="pilot_13", allow_dirty=False)
 
 
 def test_refuses_to_silently_overwrite(tmp_path):

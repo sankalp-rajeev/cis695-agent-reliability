@@ -11,13 +11,16 @@ import inspect
 
 import pytest
 
-from reliability.verifier.patch import parse_patch
+from reliability.verifier.patch import parse_patch, touched_symbols
 from reliability.verifier.selection import (
     Convention,
     LocalRepoTree,
     SelectionConfig,
     Tier,
     discover_convention,
+    discover_runner,
+    django_label,
+    node_ids,
     select_tests,
 )
 
@@ -87,7 +90,7 @@ def test_sibling_layout_is_discovered(tmp_path):
 
 
 def test_unknown_convention_when_nothing_matches(tmp_path):
-    """Policy §3.1: below the hit-rate floor, fall through to Tier 2 only."""
+    """Policy §3.1: a layout that locates nothing is not a layout; Tier 2 only."""
     (tmp_path / "weird").mkdir()
     for i in range(10):
         (tmp_path / "weird" / f"mod{i}.py").write_text("x = 1\n")
@@ -108,20 +111,54 @@ def test_convention_is_reported_for_the_record(mirrored_repo):
 
 def test_tier1_finds_the_corresponding_test(mirrored_repo):
     selection = select_tests(COMPILER_PATCH, mirrored_repo)
-    assert "tests/pkg/test_compiler.py" in selection.by_tier[Tier.DIRECT_CORRESPONDENCE.value]
+    assert "tests/pkg/test_compiler.py::test_as_sql" in selection.by_tier[Tier.DIRECT_CORRESPONDENCE.value]
 
 
 def test_tier2_finds_the_cross_module_test(mirrored_repo):
     """The ORM case: behaviour changed in one module, exercised from another."""
     selection = select_tests(COMPILER_PATCH, mirrored_repo)
     tier2 = selection.by_tier[Tier.SYMBOL_REFERENCE.value]
-    assert "tests/pkg/test_queryset.py" in tier2
+    assert "tests/pkg/test_queryset.py::test_queryset_uses_compiler" in tier2
     assert "SQLCompiler" in selection.symbols
+
+
+def test_enclosing_class_named_only_in_the_hunk_header_is_a_symbol(mirrored_repo):
+    """django-16899: a method-body edit names its class only after the second @@."""
+    patch = parse_patch("""diff --git a/src/pkg/compiler.py b/src/pkg/compiler.py
+index 1..2 100644
+--- a/src/pkg/compiler.py
++++ b/src/pkg/compiler.py
+@@ -2,2 +2,2 @@ class SQLCompiler:
+     def as_sql(self):
+-        return ''
++        return 'SELECT 1'
+""")
+    assert patch.files[0].hunks[0].section == "class SQLCompiler:"
+    selection = select_tests(patch, mirrored_repo)
+    assert "SQLCompiler" in selection.symbols
+    assert ("tests/pkg/test_queryset.py::test_queryset_uses_compiler"
+            in selection.by_tier[Tier.SYMBOL_REFERENCE.value])
+
+
+def test_hunk_header_without_a_definition_adds_no_symbol():
+    patch = parse_patch("""diff --git a/a.py b/a.py
+index 1..2 100644
+--- a/a.py
++++ b/a.py
+@@ -10,2 +10,2 @@ default: :rc:`scatter.edgecolors`
+-x = 1
++x = 2
+@@ -20 +20 @@
+-y = 1
++y = 2
+""")
+    assert [h.section for h in patch.files[0].hunks] == ["default: :rc:`scatter.edgecolors`", ""]
+    assert touched_symbols(patch) == ()
 
 
 def test_unrelated_tests_are_not_selected(mirrored_repo):
     selection = select_tests(COMPILER_PATCH, mirrored_repo)
-    assert "tests/pkg/test_unrelated.py" not in selection.tests
+    assert "tests/pkg/test_unrelated.py::test_nothing" not in selection.tests
 
 
 # --- the tier cap ----------------------------------------------------------
@@ -131,7 +168,7 @@ def test_tier0_is_off_by_default(mirrored_repo):
     """Whole-suite must not run unless explicitly enabled."""
     selection = select_tests(COMPILER_PATCH, mirrored_repo)
     assert Tier.WHOLE_SUITE.value not in selection.by_tier
-    assert "tests/pkg/test_unrelated.py" not in selection.tests
+    assert "tests/pkg/test_unrelated.py::test_nothing" not in selection.tests
 
 
 def test_tier0_can_be_enabled_by_config_without_code_changes(mirrored_repo):
@@ -139,7 +176,7 @@ def test_tier0_can_be_enabled_by_config_without_code_changes(mirrored_repo):
     selection = select_tests(
         COMPILER_PATCH, mirrored_repo, SelectionConfig(enable_tier0=True))
     assert Tier.WHOLE_SUITE.value in selection.by_tier
-    assert "tests/pkg/test_unrelated.py" in selection.tests
+    assert "tests/pkg/test_unrelated.py::test_nothing" in selection.tests
 
 
 def test_default_cap_is_tier2(mirrored_repo):
@@ -156,8 +193,8 @@ def test_tier3_only_when_max_tier_raised(mirrored_repo):
 def test_tier_ordering_puts_strongest_evidence_first(mirrored_repo):
     """Policy §3.4: a budget cut must drop the weakest evidence."""
     selection = select_tests(COMPILER_PATCH, mirrored_repo)
-    assert selection.tests[0] == "tests/pkg/test_compiler.py"
-    assert selection.tier_of("tests/pkg/test_compiler.py") == Tier.DIRECT_CORRESPONDENCE.value
+    assert selection.tests[0] == "tests/pkg/test_compiler.py::test_as_sql"
+    assert selection.tier_of("tests/pkg/test_compiler.py::test_as_sql") == Tier.DIRECT_CORRESPONDENCE.value
 
 
 def test_unknown_convention_still_yields_tier2(tmp_path):
@@ -178,7 +215,7 @@ index 1..2 100644
 """)
     selection = select_tests(patch, LocalRepoTree(tmp_path))
     assert selection.convention.convention is Convention.UNKNOWN
-    assert "odd/test_somewhere.py" in selection.tests
+    assert "odd/test_somewhere.py::test_it" in selection.tests
 
 
 # --- §5.3 agent-authored tests are excluded -------------------------------
@@ -205,8 +242,8 @@ index 3..4 100644
      assert True
 """)
     selection = select_tests(patch, mirrored_repo)
-    assert "tests/pkg/test_compiler.py" not in selection.tests
-    assert "tests/pkg/test_compiler.py" in selection.excluded_agent_tests
+    assert "tests/pkg/test_compiler.py::test_as_sql" not in selection.tests
+    assert "tests/pkg/test_compiler.py::test_as_sql" in selection.excluded_agent_tests
 
 
 # --- §5.2 nothing to select ------------------------------------------------
@@ -252,6 +289,79 @@ def test_selection_is_deterministic(mirrored_repo):
         assert select_tests(COMPILER_PATCH, mirrored_repo).tests == first.tests
 
 
+def test_selection_resolves_to_node_ids_not_module_paths(mirrored_repo):
+    selection = select_tests(COMPILER_PATCH, mirrored_repo)
+    assert selection.tests
+    assert all("::" in test for test in selection.tests)
+    assert "tests/pkg/test_compiler.py" not in selection.tests
+
+
+def test_class_methods_become_class_node_ids(tmp_path):
+    text = (
+        "class DateFormatTests:\n"
+        "    def test_year(self):\n"
+        "        assert True\n"
+        "    def helper(self):\n"
+        "        pass\n"
+    )
+    assert node_ids("tests/utils_tests/test_dateformat.py", text) == (
+        "tests/utils_tests/test_dateformat.py::DateFormatTests::test_year",
+    )
+
+
+def test_django_label_drops_the_tests_prefix_and_uses_dots():
+    node = "tests/utils_tests/test_dateformat.py::DateFormatTests::test_year"
+    assert django_label(node) == "utils_tests.test_dateformat.DateFormatTests.test_year"
+
+
+def test_django_tree_discovers_runtests(tmp_path):
+    (tmp_path / "django").mkdir()
+    (tmp_path / "tests" / "utils_tests").mkdir(parents=True)
+    (tmp_path / "django" / "__init__.py").write_text("")
+    (tmp_path / "django" / "utils" / "dateformat.py").parent.mkdir()
+    (tmp_path / "django" / "utils" / "dateformat.py").write_text(
+        "class DateFormat:\n    def Y(self):\n        return self.data.year\n"
+    )
+    (tmp_path / "tests" / "runtests.py").write_text("raise SystemExit('runner')\n")
+    (tmp_path / "tests" / "utils_tests" / "test_dateformat.py").write_text(
+        "class DateFormatTests:\n"
+        "    def test_year(self):\n"
+        "        assert DateFormat\n"
+    )
+    tree = LocalRepoTree(tmp_path)
+    runner = discover_runner(tree)
+    assert runner.name == "django"
+    assert "runtests.py" in runner.evidence
+
+    patch = parse_patch("""diff --git a/django/utils/dateformat.py b/django/utils/dateformat.py
+index 1..2 100644
+--- a/django/utils/dateformat.py
++++ b/django/utils/dateformat.py
+@@ -1,3 +1,3 @@
+ class DateFormat:
+     def Y(self):
+-        return self.data.year
++        return '%04d' % self.data.year
+""")
+    selection = select_tests(patch, tree)
+    assert selection.runner is not None and selection.runner.name == "django"
+    assert "tests/utils_tests/test_dateformat.py::DateFormatTests::test_year" in selection.tests
+    command = selection.runner.command(selection.tests, "/tmp/report.json")
+    assert command.startswith("python tests/runtests.py")
+    assert "utils_tests.test_dateformat.DateFormatTests.test_year" in command
+    assert "pytest" not in command
+
+
+def test_pytest_config_is_recorded(tmp_path):
+    (tmp_path / "pkg").mkdir()
+    (tmp_path / "pkg" / "core.py").write_text("def f():\n    return 1\n")
+    (tmp_path / "pytest.ini").write_text("[pytest]\n")
+    (tmp_path / "test_core.py").write_text("def test_f():\n    assert True\n")
+    runner = discover_runner(LocalRepoTree(tmp_path))
+    assert runner.name == "pytest"
+    assert "pytest.ini" in runner.evidence
+
+
 # --- config and code must not drift ---------------------------------------
 
 
@@ -270,6 +380,8 @@ def test_shipped_configs_match_code_defaults(config_file):
     assert cfg["enable_tier0"] == defaults.enable_tier0
     assert cfg["max_tier"] == defaults.max_tier
     assert cfg["exclude_agent_authored_tests"] == defaults.exclude_agent_authored_tests
+    assert cfg["convention_sample_size"] == defaults.convention_sample_size
+    assert cfg["convention_seed"] == defaults.convention_seed
     assert cfg["consult_pass_to_pass"] is False
 
 

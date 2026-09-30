@@ -28,8 +28,13 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Protocol
 
-from reliability.agent.claim_parser import parse_claim
+from reliability.agent.claim_parser import ClaimStatus, UnparseableReason, parse_claim
 from reliability.agent.freeze import freeze_patch
+from reliability.agent.isolation import (
+    IsolationError,
+    assert_network_none,
+    prepare_environment,
+)
 from reliability.agent.records import (
     ClaimRecord,
     PatchRecord,
@@ -125,7 +130,10 @@ class MiniSweAgentBackend:
         config = yaml.safe_load(Path(config_path).read_text())
         config.setdefault("agent", {})["step_limit"] = limits.max_steps
         config["agent"]["cost_limit"] = limits.max_cost_usd
-        config["environment"]["timeout"] = limits.per_command_timeout_s
+        config.setdefault("environment", {})["timeout"] = limits.per_command_timeout_s
+        # --network none has to be in run_args. mini-SWE-agent splices that
+        # list into docker run; a network key anywhere else never arrives.
+        prepare_environment(config)
 
         model_config = {**config.get("model", {}), **self.model_kwargs}
         model_config["model_name"] = self.model_id
@@ -134,6 +142,19 @@ class MiniSweAgentBackend:
         # Only instance_id is needed: mini-SWE-agent derives the image name from
         # it by the same rule the harness uses, so no oracle field is read here.
         env = get_sb_environment(config, {"instance_id": task.instance_id})
+        try:
+            if not env.container_id:
+                raise IsolationError("agent container did not start")
+            # Inspect the container Docker started. A flag that only exists in
+            # the config we passed is not isolation.
+            assert_network_none(env.container_id)
+        except IsolationError:
+            try:
+                env.cleanup()
+            except Exception as exc:  # noqa: BLE001
+                logger.warning("cleanup after isolation failure for %s: %s",
+                               task.instance_id, exc)
+            raise
 
         agent_config = {k: v for k, v in config["agent"].items()}
         agent_config["wall_time_limit_seconds"] = limits.per_task_timeout_s
@@ -165,7 +186,9 @@ class MiniSweAgentBackend:
         return AgentOutcome(
             final_output=claim_text,
             patch=patch_bytes,
-            termination=_termination_for(exit_status, rate_limited),
+            termination=_termination_for(
+                exit_status, rate_limited,
+                step_limit_reached=_step_limit_reached(agent, limits.max_steps)),
             commands_run=_commands_from(agent.messages),
             tests_run=(),
             tokens_in=_sum_tokens(agent.messages, "prompt_tokens"),
@@ -193,9 +216,23 @@ def _split_submission(submission: str) -> tuple[str, bytes]:
     return submission, submission.encode("utf-8")
 
 
-def _termination_for(exit_status: str, rate_limited: bool) -> Termination:
+def _step_limit_reached(agent: Any, max_steps: int) -> bool | None:
+    """Whether the call count hit the step limit. None if it cannot be told."""
+    n_calls = getattr(agent, "n_calls", None)
+    if not isinstance(n_calls, int) or max_steps <= 0:
+        return None
+    return n_calls >= max_steps
+
+
+def _termination_for(
+    exit_status: str, rate_limited: bool, *, step_limit_reached: bool | None = None
+) -> Termination:
     if rate_limited:
         return Termination.RATE_LIMITED
+    if exit_status == "LimitsExceeded":
+        # One exception covers both budgets. The step check runs first in the
+        # agent, so a run that did not reach the step limit hit the cost limit.
+        return Termination.COST_LIMIT if step_limit_reached is False else Termination.STEP_LIMIT
     return {
         "Submitted": Termination.COMPLETED,
         "LimitsExceeded": Termination.STEP_LIMIT,
@@ -272,6 +309,10 @@ def run_task(
     (workdir / "agent_output.txt").write_text(outcome.final_output, encoding="utf-8")
 
     claim = parse_claim(outcome.final_output)
+    claim_reason = claim.reason
+    if claim.status is ClaimStatus.UNPARSEABLE and outcome.termination is not Termination.COMPLETED:
+        # The run ended before it submitted. That is not a status stated badly.
+        claim_reason = UnparseableReason.NEVER_FINISHED
 
     record = RepairRecord(
         instance_id=entry.instance_id,
@@ -292,7 +333,7 @@ def run_task(
         claim=ClaimRecord(
             status=claim.status,
             evidence=claim.evidence,
-            reason=claim.reason,
+            reason=claim_reason,
             raw_output=outcome.final_output,
         ),
         termination=outcome.termination,

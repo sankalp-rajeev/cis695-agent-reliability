@@ -8,7 +8,7 @@ version: 2.4.6
 # Step and time ceilings bound both cost and the failure mode where an agent
 # loops on a broken command until the task times out.
 limits:
-  max_steps: 50
+  max_steps: 100   # not read by the runner; configs/model/primary.yaml governs. Kept equal.
   per_command_timeout_s: 120
   per_task_timeout_s: 1800
 
