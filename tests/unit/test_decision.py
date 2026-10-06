@@ -118,9 +118,8 @@ def test_reject_conditions(policy, evidence, reason):
     assert any(reason in r for r in record.reasons)
 
 
-@pytest.mark.parametrize("policy", [FullPolicy(), BaselinePolicy()], ids=["full", "baseline"])
-def test_reject_dominates_every_other_signal(policy):
-    """A rejecting condition rejects no matter how good everything else looks."""
+def test_reject_dominates_every_other_signal_baseline():
+    """Baseline has no V4 signal, so every reject condition still dominates."""
     for evidence in every_evidence():
         rejecting = (
             not evidence.patch_applies
@@ -129,7 +128,30 @@ def test_reject_dominates_every_other_signal(policy):
             or evidence.prohibited_manipulation
         )
         if rejecting:
-            assert policy.decide(evidence).decision is Decision.REJECT, evidence
+            assert BaselinePolicy().decide(evidence).decision is Decision.REJECT, evidence
+
+
+def test_reject_dominates_every_other_signal_full_except_v4_disagreement():
+    """Full: every reject condition dominates, *except* a regression FAIL that
+    V4's reproduction signal disagrees with (v1.3.0, §5.6) — that one case
+    FLAGs instead. Every other combination that would have rejected still does.
+    """
+    for evidence in every_evidence():
+        other_rejecting = (
+            not evidence.patch_applies
+            or evidence.integrity.is_fail
+            or evidence.prohibited_manipulation
+        )
+        regression_disagreement = (
+            evidence.regression.is_fail and evidence.reproduction.is_pass
+        )
+        decision = FullPolicy().decide(evidence).decision
+        if other_rejecting:
+            assert decision is Decision.REJECT, evidence
+        elif evidence.regression.is_fail and not regression_disagreement:
+            assert decision is Decision.REJECT, evidence
+        elif regression_disagreement:
+            assert decision is not Decision.REJECT, evidence
 
 
 @pytest.mark.parametrize("policy", [FullPolicy(), BaselinePolicy()], ids=["full", "baseline"])
@@ -242,17 +264,61 @@ def test_baseline_ignores_risk():
     assert record.decision is Decision.ACCEPT
 
 
+#: v1.3.0, §5.6: the one evidence combination where this invariant is now
+#: expected to break, named so a failure elsewhere stays a real failure.
+V4_DISAGREEMENT = Evidence(regression=FAIL, reproduction=PASS)
+
+
+def _is_v4_disagreement(evidence: Evidence) -> bool:
+    return evidence.regression.is_fail and evidence.reproduction.is_pass
+
+
+def _other_reject_condition(evidence: Evidence) -> bool:
+    """A reject reason neither policy's v1.3.0 exception touches."""
+    return (
+        not evidence.patch_applies
+        or evidence.integrity.is_fail
+        or evidence.prohibited_manipulation
+    )
+
+
 def test_baseline_never_rejects_where_full_accepts():
-    """The two policies must agree on rejection; they differ only above it."""
+    """The two policies must agree on rejection *outside* the one named
+    v1.3.0 exception (§5.6): full never ACCEPTs on a regression FAIL, but it
+    does FLAG a V4 disagreement that baseline — which cannot see V4 — still
+    REJECTs. That specific divergence is covered and pinned separately by
+    `test_baseline_is_never_stricter_than_full_except_the_named_v4_disagreement`.
+    """
     for evidence in every_evidence():
+        if _is_v4_disagreement(evidence) and not _other_reject_condition(evidence):
+            continue
         if FullPolicy().decide(evidence).decision is not Decision.REJECT:
             assert BaselinePolicy().decide(evidence).decision is not Decision.REJECT
 
 
-def test_baseline_is_never_stricter_than_full():
+def test_baseline_is_never_stricter_than_full_except_the_named_v4_disagreement():
+    """v1.3.0, §5.6: baseline can reject what full only flags, in exactly one
+    case — regression FAIL disagreeing with a V4 PASS, and nothing else wrong.
+    Baseline has no V4 signal to disagree with regression, so it stays strict;
+    full does, and is deliberately more lenient. Recorded as the measurement
+    working as intended, not as a broken invariant. Any *other* reject
+    condition present at the same time still dominates both policies equally,
+    so the ordering holds there too. Every remaining combination holds the
+    original ordering unchanged.
+    """
     for evidence in every_evidence():
-        assert RANK[BaselinePolicy().decide(evidence).decision] >= \
-            RANK[FullPolicy().decide(evidence).decision], evidence
+        baseline_rank = RANK[BaselinePolicy().decide(evidence).decision]
+        full_rank = RANK[FullPolicy().decide(evidence).decision]
+        if _is_v4_disagreement(evidence) and not _other_reject_condition(evidence):
+            assert baseline_rank < full_rank, evidence
+        else:
+            assert baseline_rank >= full_rank, evidence
+
+
+def test_baseline_rejects_the_v4_disagreement_full_only_flags():
+    """Pin the one exception concretely, not just inside the sweep above."""
+    assert BaselinePolicy().decide(V4_DISAGREEMENT).decision is Decision.REJECT
+    assert FullPolicy().decide(V4_DISAGREEMENT).decision is Decision.FLAG
 
 
 # --- module boundary -------------------------------------------------------
@@ -316,6 +382,82 @@ def test_reproduction_fail_flags_rather_than_rejects():
     record = FullPolicy().decide(
         Evidence(integrity=PASS, regression=PASS, static=PASS, reproduction=FAIL))
     assert record.decision is Decision.FLAG
+
+
+# --- v1.3.0, §5.6: regression/reproduction disagreement ---------------------
+#
+# Validated against the two real cases: django__django-16899 (pilot_14 and
+# pilot_15, regression FAIL on the admin.E035 wording, reproduction PASS,
+# oracle resolved) and sphinx-doc__sphinx-10449 under the Tier 0 ablation
+# (regression FAIL on its own FAIL_TO_PASS test once Tier 0 selects it,
+# reproduction PASS, oracle resolved). Both REJECTed under v1.2.2; both FLAG
+# under this rule. See the decisions log, 2026-10-05.
+
+
+def test_regression_fail_with_reproduction_pass_flags_not_rejects():
+    """The exact case this policy version exists for."""
+    record = FullPolicy().decide(
+        Evidence(integrity=PASS, regression=FAIL, static=PASS, reproduction=PASS))
+    assert record.decision is Decision.FLAG
+
+
+def test_disagreement_reason_is_recorded_verbatim():
+    record = FullPolicy().decide(
+        Evidence(integrity=PASS, regression=FAIL, static=PASS, reproduction=PASS))
+    assert "signals disagree: regression FAIL, reproduction PASS" in record.reasons
+
+
+@pytest.mark.parametrize("reproduction", [FAIL, NA])
+def test_regression_fail_still_rejects_when_v4_does_not_pass(reproduction):
+    """No second signal to disagree with regression means the old rule holds."""
+    record = FullPolicy().decide(
+        Evidence(integrity=PASS, regression=FAIL, static=PASS,
+                 reproduction=reproduction))
+    assert record.decision is Decision.REJECT
+    assert any("regression" in r for r in record.reasons)
+
+
+def test_disagreement_never_reaches_accept():
+    """FLAG escalates the disagreement; it is not a second vote for ACCEPT."""
+    for static, risk in itertools.product(ALL_OUTCOMES, BOOLS):
+        record = FullPolicy().decide(Evidence(
+            integrity=PASS, regression=FAIL, static=static, reproduction=PASS,
+            high_severity_risk=risk))
+        assert record.decision is Decision.FLAG
+
+
+@pytest.mark.parametrize("other_reject", [
+    Evidence(patch_applies=False, regression=FAIL, reproduction=PASS),
+    Evidence(integrity=FAIL, regression=FAIL, reproduction=PASS),
+    Evidence(prohibited_manipulation=True, regression=FAIL, reproduction=PASS),
+])
+def test_other_reject_conditions_still_dominate_a_v4_disagreement(other_reject):
+    """The exception is narrow: it only ever softens regression-FAIL-alone."""
+    record = FullPolicy().decide(other_reject)
+    assert record.decision is Decision.REJECT
+
+
+def test_baseline_is_unaffected_by_the_disagreement_rule():
+    """Baseline ignores reproduction entirely; it has no signal to disagree
+    with regression, so it must still reject on regression FAIL alone."""
+    for reproduction in ALL_OUTCOMES:
+        record = BaselinePolicy().decide(
+            Evidence(integrity=PASS, regression=FAIL, reproduction=reproduction))
+        assert record.decision is Decision.REJECT
+
+
+def test_disagreement_rule_does_not_change_decisions_where_v4_is_absent_or_fails():
+    """Exhaustive check over every combination: swapping reproduction between
+    FAIL and NOT_AVAILABLE while holding everything else fixed must never
+    change the decision when regression is FAIL. The rule only has an effect
+    through the PASS case."""
+    for evidence in every_evidence():
+        if not evidence.regression.is_fail:
+            continue
+        as_fail = replace(evidence, reproduction=FAIL)
+        as_na = replace(evidence, reproduction=NA)
+        assert FullPolicy().decide(as_fail).decision == \
+            FullPolicy().decide(as_na).decision, evidence
 
 
 def test_baseline_config_declares_what_it_ignores():

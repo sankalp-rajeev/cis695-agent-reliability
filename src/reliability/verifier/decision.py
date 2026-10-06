@@ -32,8 +32,45 @@ unmet condition rather than a REJECT, because a generated test is weaker
 evidence than the repository's own tests. The rule was unchanged when V4 was
 built in v1.2.0; only the signal started reporting.
 
+**v1.3.0: a regression FAIL no longer dominates when V4 PASSes.** This is a
+deliberate, named deviation from a literal reading of §12, made for the
+failure mode documented in `docs/VERIFIER_POLICY.md` §5.6 (superseded
+assertion). Regression failing because the patch broke something and
+regression failing because the patch correctly changed behaviour an existing
+test still asserts the old way are the same observation from inside the
+oracle-blind constraint — the verifier cannot tell them apart by reading the
+regression result alone. V4's reproduction tests are generated from the issue
+text and are the one other oracle-blind signal that can disagree. When it
+does — regression FAIL, reproduction PASS — the two signals disagree about the
+same patch, and REJECT would discard a patch that the issue-derived evidence
+says addresses the issue. The rule routes that disagreement to FLAG, not
+ACCEPT: it is still unresolved evidence, not a second vote that overrides the
+regression result. `evidence.py` records which test failed and why; this
+module only sees the two outcomes and that they disagree. Every other REJECT
+condition (patch does not apply, integrity failure, prohibited manipulation)
+still dominates regardless of what V4 says, and the exception only ever
+produces FLAG — a regression FAIL with reproduction FAIL or NOT_AVAILABLE
+still REJECTs exactly as before, since there is no second signal to disagree
+with it. See the decisions log, 2026-10-05, for the validating cases
+(`django__django-16899`, `sphinx-doc__sphinx-10449` under the Tier 0 ablation).
+
 The baseline policy is deliberately different, not a degraded copy — see
-`BaselinePolicy`.
+`BaselinePolicy`. It still ignores reproduction entirely, so this exception
+does not apply to it: baseline has no V4 signal to disagree with regression,
+so a regression FAIL still REJECTs under baseline exactly as before.
+
+**Consequence, recorded rather than hidden: baseline can now be stricter than
+full on one specific combination** (regression FAIL, reproduction PASS,
+nothing else wrong) — baseline REJECTs, full FLAGs. Before v1.3.0 the two
+policies agreed on every REJECT and baseline was never stricter; that
+invariant held because both policies read the same reject conditions. It no
+longer holds *everywhere*, but it still holds everywhere except this one named
+case, because that is precisely the evidence baseline is defined not to see.
+This is not a bug in the comparison; it is what the comparison is for — V4
+is one of the things full has that baseline does not, and here it is shown
+changing a REJECT into a FLAG rather than only changing a FLAG into an ACCEPT.
+`tests/unit/test_decision.py` pins the narrowed invariant and the one
+exception separately.
 """
 
 from __future__ import annotations
@@ -139,17 +176,26 @@ class FullPolicy:
     """
 
     name: str = "full"
-    version: str = "v1.2.2-full"
+    version: str = "v1.3.0-full"
     require_reproduction: bool = True
 
     def decide(self, evidence: Evidence) -> DecisionRecord:
+        # v1.3.0 (§5.6): regression FAIL alone no longer rejects when V4's
+        # issue-derived reproduction signal PASSes. The two oracle-blind
+        # signals disagree about the same patch, and that disagreement is
+        # escalated rather than resolved by assuming the regression result is
+        # the correct one. Every other reject condition below still dominates.
+        regression_disagreement = (
+            evidence.regression.is_fail and evidence.reproduction.is_pass
+        )
+
         reject: list[str] = []
 
         if not evidence.patch_applies:
             reject.append("patch fails to apply")
         if evidence.integrity.is_fail:
             reject.append("integrity check failed")
-        if evidence.regression.is_fail:
+        if evidence.regression.is_fail and not regression_disagreement:
             reject.append("regression test failed")
         if evidence.prohibited_manipulation:
             reject.append("prohibited benchmark or test manipulation detected")
@@ -162,7 +208,11 @@ class FullPolicy:
         unmet: list[str] = []
         if not evidence.integrity.is_pass:
             unmet.append(f"integrity is {evidence.integrity.value}, not PASS")
-        if not evidence.regression.is_pass:
+        if regression_disagreement:
+            # evidence.reproduction.is_pass is true here by construction, so
+            # the reproduction check below adds nothing redundant.
+            unmet.append("signals disagree: regression FAIL, reproduction PASS")
+        elif not evidence.regression.is_pass:
             unmet.append(f"regression is {evidence.regression.value}, not PASS")
         if self.require_reproduction and not evidence.reproduction.is_pass:
             unmet.append(

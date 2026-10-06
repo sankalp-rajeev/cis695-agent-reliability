@@ -1,0 +1,105 @@
+# Experiment layer: 3-worker concurrency calibration.
+#
+# PROPOSED 2026-10-05, NOT RUN. Six pilot_15 instances, re-run through the
+# full chain (agent -> freeze -> verifier -> oracle) with --max-workers 3
+# instead of serially, to check what concurrency itself changes before
+# main_100 is ever launched at max_workers > 1. Writes to its own run_root
+# (runs/calib_3w), not runs/pilot_15 — pilot_15's records are never touched.
+#
+# This reuses pilot_15 instances deliberately, unlike main_100 (which excludes
+# them): the question here is not verifier generalisation, it is "does running
+# three of these at once change the result for the *same* instance", and
+# pilot_15 already has a serial-run answer for every one of these six to
+# compare against.
+#
+# Selection (configs/experiments/pilot.yaml rows, docs/checklist.md 2026-10-05):
+#   django__django-14373            ORM/DB          serial: ACCEPT, fast, small image (~4.3GB)
+#   scikit-learn__scikit-learn-12973 numerical       serial: ACCEPT, mid image (~5.35GB)
+#   matplotlib__matplotlib-26113    state/behavior   serial oracle timed out at 1909s against an
+#                                                     1800s cap (pilot_15, infra_error) on the
+#                                                     LARGEST image (~10.8GB on disk) -- the
+#                                                     resource-contention stress case: WSL2's
+#                                                     Docker VM is capped at 10.42GB RAM
+#                                                     (docs/checklist.md, 2026-09-15), so three
+#                                                     concurrent heavy containers is the scenario
+#                                                     most likely to turn a marginal timeout into
+#                                                     a reproducible one, or vice versa.
+#   psf__requests-1921              framework/API    serial: FLAG (selection-policy gap, §5.1);
+#                                                     smallest image (~3.8GB); its PASS_TO_PASS
+#                                                     set has a real external-network dependency
+#                                                     history (docs/checklist.md, 2026-09-30) --
+#                                                     checks whether concurrent runs disturb
+#                                                     --network none isolation or its timing.
+#   pylint-dev__pylint-6386         system/runtime   serial: FLAG (V4 budget exhausted); confirmed
+#                                                     the slowest regression suite under the Tier 0
+#                                                     ablation (300s per-pass budget binding,
+#                                                     docs/checklist.md 2026-10-05) -- the
+#                                                     CPU-contention stress case.
+#   mwaskom__seaborn-3187           state/behavior   serial: REJECT (empty patch) in pilot_15, but
+#                                                     ACCEPT with a real patch in pilot_14 -- one of
+#                                                     the two instances already confirmed to diverge
+#                                                     between pilot_14/pilot_15 by model sampling at
+#                                                     temperature 0, not budget (docs/checklist.md,
+#                                                     2026-10-05 non-determinism diagnosis). Included
+#                                                     *because* it is already a known-noisy case: it
+#                                                     calibrates how much difference is normal
+#                                                     sampling variance versus a new, concurrency-
+#                                                     specific effect.
+#
+# Spans 5 of 5 task types (state/behavior twice), the smallest and the
+# largest image in the pilot, and both of the two already-documented sources
+# of apparent nondeterminism (model sampling; a marginal infra timeout).
+#
+# What gets compared against pilot_15 (not yet computed; this run has not
+# happened):
+#   - decisions: full_decision + reasons, baseline_decision, and every signal
+#     outcome (integrity/regression/static/reproduction), per instance.
+#     Expected to match pilot_15 only where the agent's new patch is
+#     byte-identical to the one on disk; a differing patch is scored as
+#     fresh evidence, not as disagreement.
+#   - executed-test counts: n_selected / n_executed from the regression
+#     signal. Selection is a deterministic function of the patch and the
+#     fixed convention_seed (695, configs/verifier/full.yaml), so a different
+#     count on an identical patch would point at a concurrency bug in
+#     selection or execution, not at noise.
+#   - durations: wall_s per task (serial vs. concurrent -- individual tasks
+#     are expected to run *slower* under 3-way contention even though the
+#     batch finishes faster) and total elapsed_s for the 6-task batch
+#     (expected to improve, bounded by how much contention eats the gain).
+#   - reproduction (V4) outcomes and cost, since generation is itself an
+#     agent run subject to the same contention.
+#
+# Gates are deliberately absent: a 6-task comparison run is diagnostic, not a
+# scored experiment, and gating it would invite treating it as one.
+layer: experiment
+experiment_id: calib_3w
+
+benchmark:
+  dataset: SWE-bench/SWE-bench_Verified
+  split: test
+  manifest: manifests/calib_3w.csv
+
+agent: configs/agent/swebench_claim.yaml
+model: configs/model/primary.yaml
+reproduction_generator: configs/model/generator.yaml
+verifiers:
+  - configs/verifier/full.yaml
+  - configs/verifier/baseline.yaml
+
+sampling:
+  n_tasks: 6
+  seed: null   # hand-picked, not drawn; see the per-instance rationale above
+  stratify_by: [repo, task_type]
+  min_distinct_repos: 5
+
+execution:
+  single_pass: true
+  retries: 0
+  max_workers: 3
+  # Floored at 0: run_pilot.py's _summarise() requires this block, but a
+  # 6-task comparison run is diagnostic, not a scored experiment, so nothing
+  # here is meant to gate it -- every threshold is set to always pass.
+  gates:
+    min_completed_without_infra_failure: 0
+    min_parseable_claims: 0
+    min_resolved_claims: 0

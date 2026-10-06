@@ -49,6 +49,18 @@ class Termination(str, Enum):
     about the model's repair ability or a scaffold/model mismatch, and folding it
     into `ERROR` would license exactly that misreading.
 
+    `INSUFFICIENT_BALANCE` is separate again, from both `ERROR` and
+    `RATE_LIMITED`. The provider's own account ran out of funds mid-call (DeepSeek
+    returns HTTP 402, body `"Insufficient Balance"`) — a billing state, not a
+    throughput limit and not a finding about the model or the repair. Folding it
+    into `RATE_LIMITED` would misreport a run that cannot be retried by waiting as
+    one that can; folding it into `ERROR` would misreport a billing failure as an
+    agent or scaffold failure. The pre-run billing guard (`src/reliability/
+    billing.py`, called from `scripts/run_pilot.py` before any task starts) exists
+    to make this outcome rare; this value is for the case it still happens
+    mid-run (the balance was adequate at the guard check and was spent by
+    concurrent or prior tasks before this one's call went out).
+
     `STEP_LIMIT` and `COST_LIMIT` are separate from each other and from
     `COMPLETED`. A run stopped by its budget never reached submission, so it has
     no final status to parse; counting it as a badly formatted status would send
@@ -62,6 +74,7 @@ class Termination(str, Enum):
     COST_LIMIT = "cost_limit"
     TIMEOUT = "timeout"
     RATE_LIMITED = "rate_limited"
+    INSUFFICIENT_BALANCE = "insufficient_balance"
     ERROR = "error"
 
 

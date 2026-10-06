@@ -58,6 +58,36 @@ def test_rows_are_in_canonical_order(sample):
     assert [r.instance_id for r in sample] == sorted(r.instance_id for r in sample)
 
 
+# --- exclusion --------------------------------------------------------------
+
+
+def test_excluded_instances_never_appear(tasks, sample):
+    """The pilot's own instances must be excludable from a later draw."""
+    pilot_ids = frozenset(r.instance_id for r in sample)
+    later = stratified_sample(tasks, n=10, seed=SEED + 1000, exclude=pilot_ids)
+    assert not (pilot_ids & {r.instance_id for r in later})
+
+
+def test_exclusion_shrinks_the_population_not_the_request(tasks, sample):
+    """A request for n must still return n once exclusions are applied."""
+    pilot_ids = frozenset(r.instance_id for r in sample)
+    later = stratified_sample(tasks, n=10, seed=SEED + 1000, exclude=pilot_ids)
+    assert len(later) == 10
+
+
+def test_excluding_everything_fails_loudly(tasks):
+    all_ids = frozenset(t.instance_id for t in tasks)
+    with pytest.raises(SamplingError, match="no instances available"):
+        stratified_sample(tasks, n=1, seed=SEED, exclude=all_ids)
+
+
+def test_no_exclusion_is_the_default(tasks):
+    """Omitting `exclude` must reproduce the pre-existing, cited manifest."""
+    assert content_hash(manifest_bytes(stratified_sample(tasks, n=10, seed=SEED))) == (
+        content_hash(manifest_bytes(
+            stratified_sample(tasks, n=10, seed=SEED, exclude=frozenset()))))
+
+
 # --- determinism -----------------------------------------------------------
 
 

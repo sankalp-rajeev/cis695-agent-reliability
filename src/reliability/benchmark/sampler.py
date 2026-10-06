@@ -99,6 +99,7 @@ def stratified_sample(
     n: int = 10,
     seed: int = 695,
     min_distinct_repos: int = 3,
+    exclude: frozenset[str] = frozenset(),
 ) -> list[ManifestRow]:
     """Draw `n` tasks spread across task types, then across repositories.
 
@@ -106,11 +107,21 @@ def stratified_sample(
     share of the population. Within a type, repositories are visited round-robin
     before any repository is used twice, which is what pushes repository
     diversity above the required minimum rather than merely meeting it.
+
+    `exclude` removes instances from the population before sampling, not after:
+    a later main-study manifest excludes the pilot's instances because the
+    verifier was tuned looking at them (selection policy, V4 budget, the
+    v1.3.0 decision rule), so drawing the same instances again would measure
+    the tuning rather than test it. Excluding after the draw would silently
+    shrink `n`; excluding before means a request for `n` either succeeds at
+    `n` from the remaining population or fails loudly.
     """
     rng = random.Random(seed)
 
     by_type: dict[str, dict[str, list[str]]] = {t: {} for t in TASK_TYPES}
     for task in sorted(tasks, key=lambda t: t.instance_id):
+        if task.instance_id in exclude:
+            continue
         by_type[classify(task)].setdefault(task.repo, []).append(task.instance_id)
 
     available = [t for t in TASK_TYPES if by_type[t]]
@@ -206,8 +217,9 @@ def write_manifest(path: Path, rows: list[ManifestRow]) -> str:
 
 
 def build_pilot_manifest(
-    path: Path, *, n: int = 10, seed: int = 695, dataset=None
+    path: Path, *, n: int = 10, seed: int = 695, dataset=None,
+    exclude: frozenset[str] = frozenset(),
 ) -> tuple[list[ManifestRow], str]:
     tasks = load_agent_tasks(dataset)
-    rows = stratified_sample(tasks, n=n, seed=seed)
+    rows = stratified_sample(tasks, n=n, seed=seed, exclude=exclude)
     return rows, write_manifest(path, rows)

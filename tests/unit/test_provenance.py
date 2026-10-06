@@ -51,6 +51,7 @@ def make_provenance(**overrides) -> RunProvenance:
         "reproduction_generator_max_steps": 40,
         "reproduction_generator_max_cost_usd": 1.0,
         "reproduction_runner_sha256": "sha256:" + "d" * 64,
+        "max_workers": 1,
     }
     base.update(overrides)
     return RunProvenance(**base)

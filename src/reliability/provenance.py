@@ -68,6 +68,13 @@ REQUIRED_FIELDS = (
     "reproduction_generator_max_cost_usd",
     # The exit-code runner that decides what counts as an AssertionError.
     "reproduction_runner_sha256",
+    # Concurrency the run actually used (ThreadPoolExecutor workers in
+    # reliability.agent.runner / scripts/run_pilot.py). 1 is the pilot's
+    # serial default; this is recorded for every run, including serial ones,
+    # so a later comparison of durations or decisions never has to guess
+    # whether a difference came from concurrency. See the 3-worker
+    # calibration proposal, docs/checklist.md, 2026-10-05.
+    "max_workers",
 )
 
 
@@ -110,6 +117,7 @@ class RunProvenance:
     reproduction_generator_max_steps: int
     reproduction_generator_max_cost_usd: float
     reproduction_runner_sha256: str
+    max_workers: int
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)

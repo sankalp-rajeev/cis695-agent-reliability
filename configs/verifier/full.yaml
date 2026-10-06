@@ -4,7 +4,7 @@
 # any value here requires bumping policy_version, otherwise two runs carrying the
 # same version string could reflect different rules.
 layer: verifier
-policy_version: v1.2.2-full
+policy_version: v1.3.0-full
 
 # Phase 4: patch integrity. These are disqualifying, not advisory.
 integrity:
@@ -97,8 +97,14 @@ reproduction:
 decision:
   policy: full
 
-  # Technical design §12, implemented literally.
-  reject_if: [patch_does_not_apply, integrity_failed, regression_failed, prohibited_manipulation]
+  # Technical design §12, with one named exception (v1.3.0, §5.6): a
+  # regression failure does not reject when reproduction (V4) passes for the
+  # same patch — the two oracle-blind signals disagree, and that disagreement
+  # routes to FLAG ("signals disagree: regression FAIL, reproduction PASS"),
+  # not REJECT. Every other reject condition is unaffected and still
+  # dominates. A regression FAIL with reproduction FAIL or NOT_AVAILABLE still
+  # REJECTs exactly as before.
+  reject_if: [patch_does_not_apply, integrity_failed, regression_failed_without_v4_pass, prohibited_manipulation]
   accept_if: [integrity_pass, regression_pass, reproduction_pass, no_high_severity_risk]
   otherwise: FLAG
 

@@ -20,6 +20,7 @@ from reliability.agent.runner import (
     AgentLimits,
     AgentOutcome,
     MiniSweAgentBackend,
+    _is_insufficient_balance,
     _split_submission,
     _step_limit_reached,
     _termination_for,
@@ -380,6 +381,48 @@ def test_rate_limiting_is_not_reported_as_agent_failure():
     """A throttled run is a throughput result, not a finding about the model."""
     for exit_status in ["", "LimitsExceeded", "RepeatedFormatError"]:
         assert _termination_for(exit_status, rate_limited=True) is Termination.RATE_LIMITED
+
+
+def test_insufficient_balance_is_its_own_termination_reason():
+    """A drained account is a billing state, distinct from a repair failure
+    and from RATE_LIMITED (not a throughput limit; waiting does not fix it)."""
+    for exit_status in ["", "LimitsExceeded", "RepeatedFormatError"]:
+        result = _termination_for(
+            exit_status, rate_limited=False, insufficient_balance=True)
+        assert result is Termination.INSUFFICIENT_BALANCE
+        assert result is not Termination.RATE_LIMITED
+        assert result is not Termination.ERROR
+
+
+def test_insufficient_balance_dominates_rate_limited():
+    """Both flags should never be set together in practice, but if they were,
+    the more specific, non-retryable reason is reported, not the throttle."""
+    assert _termination_for(
+        "", rate_limited=True, insufficient_balance=True
+    ) is Termination.INSUFFICIENT_BALANCE
+
+
+@pytest.mark.parametrize(
+    "status_code,message,expected",
+    [
+        (402, "payment required", True),
+        (None, "Error code: 402 - {'error': {'message': 'Insufficient Balance'}}", True),
+        (None, "DeepSeekException - insufficient_balance", True),
+        (429, "rate limit exceeded", False),
+        (400, "invalid_request_error: bad model name", False),
+        (None, "connection reset by peer", False),
+    ],
+)
+def test_is_insufficient_balance_detects_by_status_code_or_message(
+    status_code, message, expected,
+):
+    class FakeAPIError(Exception):
+        def __init__(self, msg, code):
+            super().__init__(msg)
+            self.status_code = code
+
+    exc = FakeAPIError(message, status_code)
+    assert _is_insufficient_balance(exc) is expected
 
 
 # --- record validity -------------------------------------------------------

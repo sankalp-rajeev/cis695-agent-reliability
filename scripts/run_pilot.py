@@ -28,6 +28,11 @@ from reliability.agent.records import RepairRecord, RunRole, load_records, summa
 from reliability.agent.runner import AgentLimits, MiniSweAgentBackend, run_task
 from reliability.analysis.overlap import overlap_from_records
 from reliability.benchmark.manifest import load_manifest
+from reliability.billing import (
+    fetch_deepseek_balance_usd,
+    projected_cost_usd,
+    require_sufficient_balance,
+)
 from reliability.env import assert_clean_interpreter
 from reliability.oracle.records import load_records as load_oracle
 from reliability.oracle.runner import run_oracle
@@ -40,6 +45,7 @@ from reliability.provenance import (
     write_meta,
 )
 from reliability.verifier.container import image_for
+from reliability.verifier.decision import get_policy
 from reliability.verifier.record import (
     VerificationRecord,
 )
@@ -87,7 +93,17 @@ def main() -> int:
     parser.add_argument(
         "--allow-dirty", action="store_true",
         help="run from uncommitted code; dry_* experiments only")
+    parser.add_argument(
+        "--max-workers", type=int, default=1,
+        help="tasks run concurrently via ThreadPoolExecutor; 1 is serial "
+             "(pilot default). Recorded in meta.yaml regardless of value.")
+    parser.add_argument(
+        "--balance-usd", type=float, default=None,
+        help="override the provider balance check (billing guard) instead of "
+             "querying DEEPSEEK_API_KEY's account balance")
     args = parser.parse_args()
+    if args.max_workers < 1:
+        raise SystemExit("--max-workers must be >= 1")
 
     os.environ.setdefault("MSWEA_SILENT_STARTUP", "1")
     load_env_file(REPO_ROOT / ".env")
@@ -139,6 +155,28 @@ def main() -> int:
             "resumed or re-run. Pick a new experiment_id")
     run_root.mkdir(parents=True, exist_ok=True)
 
+    # Billing guard: abort before any task starts if the account cannot cover
+    # this run's worst-case cost. Checked against the provider's own balance
+    # endpoint when the model is deepseek (it has one); otherwise --balance-usd
+    # is required, since the guard needs a number from somewhere.
+    projected = projected_cost_usd(
+        len(manifest.entries),
+        max_cost_usd_per_task=float(model_cfg["limits"]["max_cost_usd_per_task"]),
+        generator_max_cost_usd=float(reproduction.budget.generator_max_cost_usd),
+    )
+    if args.balance_usd is not None:
+        balance = args.balance_usd
+    elif model_cfg.get("provider") == "deepseek":
+        balance = fetch_deepseek_balance_usd(os.environ[model_cfg["api_key_env"]])
+    else:
+        raise SystemExit(
+            f"no balance endpoint known for provider {model_cfg.get('provider')!r}; "
+            "pass --balance-usd explicitly")
+    print(f"billing guard: ${balance:.2f} available, ${projected:.2f} projected "
+          f"({len(manifest.entries)} tasks) ... ", end="", flush=True)
+    require_sufficient_balance(balance, projected)
+    print("OK", flush=True)
+
     limits = AgentLimits(
         max_steps=model_cfg["limits"]["max_steps"],
         per_command_timeout_s=agent_limits_cfg["per_command_timeout_s"],
@@ -184,7 +222,8 @@ def main() -> int:
                 model_cfg["limits"]["max_input_tokens_per_task"]),
             max_output_tokens=int(model_cfg.get("max_output_tokens", 8192)),
             per_task_timeout_s=limits.per_task_timeout_s,
-            verifier_policy_version="v1.2.2-full+v1.2.2-baseline",
+            verifier_policy_version=(
+                f"{get_policy('full').version}+{get_policy('baseline').version}"),
             docker_image="swebench/sweb.eval.x86_64.<instance>:latest (derived)",
             swebench_version="5.0.2",
             timestamp_utc=utc_now(),
@@ -200,6 +239,7 @@ def main() -> int:
             reproduction_generator_max_cost_usd=(
                 reproduction.budget.generator_max_cost_usd),
             reproduction_runner_sha256=reproduction.identity()["runner_sha256"],
+            max_workers=args.max_workers,
         ))
 
     (run_root / "manifest.csv").write_bytes(manifest.path.read_bytes())
@@ -216,26 +256,60 @@ def main() -> int:
           f"(served {reproduction.model.served_model}), "
           f"max_tests={reproduction.budget.max_tests} "
           f"retries={reproduction.budget.retries}")
-    print("single pass, retries=0.\n", flush=True)
+    print(f"single pass, retries=0, max_workers={args.max_workers}.\n", flush=True)
 
     log_path = run_root / "pilot.log"
     started = time.monotonic()
     per_task: list[dict] = []
 
-    for i, entry in enumerate(manifest, 1):
-        print(f"\n===== [{i}/{len(manifest)}] {entry.instance_id}  "
-              f"{image_for(entry.instance_id)} =====", flush=True)
-        row = _run_one(
-            entry, backend, run_root, experiment_id, manifest.content_hash,
-            limits, log_path, reproduction)
-        per_task.append(row)
-        print(f"  agent={row.get('agent_termination')} "
-              f"claim={row.get('claim')} "
-              f"full={row.get('full_decision')} "
-              f"oracle={row.get('oracle_outcome')} "
-              f"cost=${row.get('cost_usd', 0):.4f} "
-              f"wall={row.get('wall_s', 0):.0f}s",
-              flush=True)
+    if args.max_workers == 1:
+        # Unchanged from before --max-workers existed: serial, print as each
+        # task finishes, in manifest order.
+        for i, entry in enumerate(manifest, 1):
+            print(f"\n===== [{i}/{len(manifest)}] {entry.instance_id}  "
+                  f"{image_for(entry.instance_id)} =====", flush=True)
+            row = _run_one(
+                entry, backend, run_root, experiment_id, manifest.content_hash,
+                limits, log_path, reproduction)
+            per_task.append(row)
+            print(f"  agent={row.get('agent_termination')} "
+                  f"claim={row.get('claim')} "
+                  f"full={row.get('full_decision')} "
+                  f"oracle={row.get('oracle_outcome')} "
+                  f"cost=${row.get('cost_usd', 0):.4f} "
+                  f"wall={row.get('wall_s', 0):.0f}s",
+                  flush=True)
+    else:
+        # Each task owns `tasks/<instance_id>/` and writes only inside it
+        # (agent/runner.py's run_manifest relies on the same property), so
+        # concurrent tasks here do not contend. Printed as each completes,
+        # which is arrival order, not manifest order; per_task itself is
+        # still written out sorted by instance_id below for a deterministic
+        # summary.json regardless of how many workers produced it.
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+        print(f"running {len(manifest)} tasks across {args.max_workers} workers "
+              "(completion order, not manifest order):", flush=True)
+        with ThreadPoolExecutor(max_workers=args.max_workers) as pool:
+            futures = {
+                pool.submit(
+                    _run_one, entry, backend, run_root, experiment_id,
+                    manifest.content_hash, limits, log_path, reproduction,
+                ): entry
+                for entry in manifest
+            }
+            for future in as_completed(futures):
+                entry = futures[future]
+                row = future.result()
+                per_task.append(row)
+                print(f"  [{len(per_task)}/{len(manifest)}] {entry.instance_id} "
+                      f"agent={row.get('agent_termination')} "
+                      f"claim={row.get('claim')} "
+                      f"full={row.get('full_decision')} "
+                      f"oracle={row.get('oracle_outcome')} "
+                      f"cost=${row.get('cost_usd', 0):.4f} "
+                      f"wall={row.get('wall_s', 0):.0f}s",
+                      flush=True)
+        per_task.sort(key=lambda r: r["instance_id"])
 
     elapsed = time.monotonic() - started
     summary = _summarise(run_root, per_task, elapsed, experiment)

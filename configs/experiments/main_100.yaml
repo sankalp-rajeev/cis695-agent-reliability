@@ -1,0 +1,59 @@
+# Experiment layer: the 100-task main study.
+#
+# Drawn to exclude every pilot_14/pilot_15 instance: the verifier's selection
+# policy, V4's budget, and the v1.3.0 decision rule were all tuned looking at
+# those ten tasks (docs/checklist.md, 2026-10-05), so including them here would
+# measure the tuning rather than test it. manifests/main_100.csv is a fresh,
+# independently seeded stratified draw from the remaining 490 instances (seed
+# 20261005, deliberately not 695, drawn before any task in it was run or
+# scored). Verified disjoint from manifests/pilot.csv by set difference.
+#
+# NOT YET RUN. Prepared per the 2026-10-05 request: manifest drawn, Docker disk
+# cost computed, billing guard added, exclusion rules written into
+# docs/VERIFIER_POLICY.md. The 3-worker calibration run (below) is proposed,
+# not executed, and must run and be checked against pilot_15 before this
+# experiment is launched at max_workers > 1.
+layer: experiment
+experiment_id: main_100
+
+benchmark:
+  dataset: SWE-bench/SWE-bench_Verified
+  split: test
+  manifest: manifests/main_100.csv
+
+agent: configs/agent/swebench_claim.yaml
+model: configs/model/primary.yaml
+reproduction_generator: configs/model/generator.yaml
+verifiers:
+  - configs/verifier/full.yaml
+  - configs/verifier/baseline.yaml
+
+sampling:
+  n_tasks: 100
+  seed: 20261005
+  stratify_by: [repo, task_type]
+  min_distinct_repos: 3
+  exclude_manifest: manifests/pilot.csv
+
+execution:
+  single_pass: true
+  retries: 0
+  # Scaled x10 from pilot_15's gates (8/10, 9/10, 4/10), unvalidated at this
+  # size. Revisit after the 3-worker calibration (below) if its 6-task sample
+  # suggests the pilot's rates do not hold at n=100.
+  gates:
+    min_completed_without_infra_failure: 80
+    min_parseable_claims: 90
+    min_resolved_claims: 40
+
+# Phase-prepared, not yet run (see billing guard, src/reliability/billing.py).
+billing_guard:
+  provider_balance_endpoint: "https://api.deepseek.com/user/balance"
+  # Worst-case ceiling, not the empirical estimate: n_tasks * (agent
+  # max_cost_usd_per_task + V4 generator_max_cost_usd), read from
+  # configs/model/primary.yaml and configs/verifier/full.yaml at run time.
+  # pilot_15's actual combined mean was $0.0849/task ($8.49 projected,
+  # empirically, for 100 tasks); the ceiling below is deliberately far above
+  # that estimate so the guard aborts only on a real shortfall, not on normal
+  # variance.
+  projected_cost_usd: 600.00   # 100 * (5.00 + 1.00), see configs/model/primary.yaml

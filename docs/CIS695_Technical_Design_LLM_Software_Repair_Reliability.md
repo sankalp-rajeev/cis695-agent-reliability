@@ -693,6 +693,8 @@ The oracle's test information is **not copied back into agent or verifier inputs
 
 # 15. Metrics
 
+Every denominator below counts `oracle = UNRESOLVED` and `Verifier ACCEPT` as written, on the instances that remain after the exclusions in `docs/VERIFIER_POLICY.md` §8 (infrastructure exclusions, V4 no-signal counting, the empty-patch exclusion) — settled 2026-10-05, before the main study, so which instances count is fixed ahead of any result rather than decided per instance after seeing it.
+
 ## 15.1 Base false-success rate
 
 For tasks where the agent claims `RESOLVED`:

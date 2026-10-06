@@ -161,6 +161,7 @@ class MiniSweAgentBackend:
         agent = DefaultAgent(model, env, **agent_config)
 
         rate_limited = False
+        insufficient_balance = False
         try:
             result = agent.run(task.problem_statement)
             exit_status = result.get("exit_status", "")
@@ -170,7 +171,15 @@ class MiniSweAgentBackend:
             # could not get through. Reported as throttling, not agent failure.
             rate_limited, exit_status, submission = True, "RateLimited", ""
         except Exception as exc:  # noqa: BLE001 - recorded, not swallowed
-            exit_status, submission = f"{type(exc).__name__}: {exc}"[:500], ""
+            if _is_insufficient_balance(exc):
+                # DeepSeek's HTTP 402 for a drained account has no litellm
+                # exception type of its own; it surfaces as a generic APIError
+                # with status_code 402. Caught by status code and message, not
+                # by type, since that is all the provider gives it.
+                insufficient_balance = True
+                exit_status, submission = "InsufficientBalance", ""
+            else:
+                exit_status, submission = f"{type(exc).__name__}: {exc}"[:500], ""
         finally:
             try:
                 env.cleanup()
@@ -188,6 +197,7 @@ class MiniSweAgentBackend:
             patch=patch_bytes,
             termination=_termination_for(
                 exit_status, rate_limited,
+                insufficient_balance=insufficient_balance,
                 step_limit_reached=_step_limit_reached(agent, limits.max_steps)),
             commands_run=_commands_from(agent.messages),
             tests_run=(),
@@ -224,9 +234,30 @@ def _step_limit_reached(agent: Any, max_steps: int) -> bool | None:
     return n_calls >= max_steps
 
 
+#: Substrings of a DeepSeek 402 body that identify an exhausted account rather
+#: than some other bad-request shape. Matched case-insensitively against the
+#: exception's string form, since litellm maps this to a generic `APIError`
+#: with no provider-specific type (deepseek is in `litellm.openai_compatible_
+#: providers`, so it goes through the generic status-code fallback, and 402 has
+#: no branch of its own there — see `.venv/.../exception_mapping_utils.py`).
+_INSUFFICIENT_BALANCE_MARKERS = ("insufficient balance", "insufficient_balance")
+
+
+def _is_insufficient_balance(exc: BaseException) -> bool:
+    status_code = getattr(exc, "status_code", None)
+    if status_code == 402:
+        return True
+    text = str(exc).lower()
+    return any(marker in text for marker in _INSUFFICIENT_BALANCE_MARKERS)
+
+
 def _termination_for(
-    exit_status: str, rate_limited: bool, *, step_limit_reached: bool | None = None
+    exit_status: str, rate_limited: bool, *,
+    insufficient_balance: bool = False,
+    step_limit_reached: bool | None = None,
 ) -> Termination:
+    if insufficient_balance:
+        return Termination.INSUFFICIENT_BALANCE
     if rate_limited:
         return Termination.RATE_LIMITED
     if exit_status == "LimitsExceeded":
