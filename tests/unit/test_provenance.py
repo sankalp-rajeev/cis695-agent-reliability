@@ -11,8 +11,10 @@ from reliability.provenance import (
     REQUIRED_FIELDS,
     ProvenanceError,
     RunProvenance,
+    append_resume,
     read_meta,
     require_clean_tree,
+    require_resumable,
     validate,
     write_meta,
 )
@@ -52,6 +54,7 @@ def make_provenance(**overrides) -> RunProvenance:
         "reproduction_generator_max_cost_usd": 1.0,
         "reproduction_runner_sha256": "sha256:" + "d" * 64,
         "max_workers": 1,
+        "config_hash": "sha256:" + "e" * 64,
     }
     base.update(overrides)
     return RunProvenance(**base)
@@ -164,6 +167,32 @@ def test_capture_fills_interpreter_fields_from_this_process():
     validate(prov.to_dict())
     assert prov.python_version == ".".join(map(str, sys.version_info[:3]))
     assert prov.python_executable == sys.executable
+
+
+def test_resume_appends_to_meta_without_replacing_it(tmp_path):
+    write_meta(tmp_path, make_provenance())
+    original = yaml.safe_load((tmp_path / "meta.yaml").read_text())
+    require_resumable(
+        dirty=False,
+        head=original["git_commit"],
+        recorded_head=original["git_commit"],
+        config_hash=original["config_hash"],
+        recorded_config_hash=original["config_hash"],
+    )
+    entry = {
+        "timestamp_utc": "2026-10-07T21:00:00+00:00",
+        "git_commit": original["git_commit"],
+        "config_hash": original["config_hash"],
+    }
+    append_resume(tmp_path, entry)
+    block = yaml.safe_load((tmp_path / "meta.yaml").read_text())
+    assert block["git_commit"] == original["git_commit"]
+    assert block["model_id"] == original["model_id"]
+    assert block["resumes"] == [entry]
+    append_resume(tmp_path, {**entry, "timestamp_utc": "2026-10-07T22:00:00+00:00"})
+    again = yaml.safe_load((tmp_path / "meta.yaml").read_text())
+    assert len(again["resumes"]) == 2
+    assert again["git_commit"] == original["git_commit"]
 
 
 def test_unexpected_field_is_rejected():

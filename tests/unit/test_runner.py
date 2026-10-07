@@ -402,6 +402,24 @@ def test_insufficient_balance_dominates_rate_limited():
     ) is Termination.INSUFFICIENT_BALANCE
 
 
+def test_litellm_bad_request_insufficient_balance_payload_is_detected():
+    """DeepSeek's drained account arrives as LiteLLM BadRequestError, status
+    400, with the text "Insufficient Balance". HTTP 402 is not required."""
+    import litellm
+
+    exc = litellm.BadRequestError(
+        message="Insufficient Balance",
+        model="deepseek/deepseek-v4-flash",
+        llm_provider="deepseek",
+        body={"error": {"message": "Insufficient Balance"}},
+    )
+    assert type(exc).__name__ == "BadRequestError"
+    assert exc.status_code == 400
+    assert exc.status_code != 402
+    assert "Insufficient Balance" in str(exc)
+    assert _is_insufficient_balance(exc) is True
+
+
 @pytest.mark.parametrize(
     "status_code,message,expected",
     [

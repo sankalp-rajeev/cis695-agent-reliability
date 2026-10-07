@@ -60,7 +60,7 @@ class AgentLimits:
     max_steps: int = 50
     per_command_timeout_s: int = 120
     per_task_timeout_s: int = 1800
-    max_cost_usd: float = 5.0
+    max_cost_usd: float = 0.50
 
 
 @dataclass(frozen=True, slots=True)
@@ -105,6 +105,7 @@ class MiniSweAgentBackend:
     model_kwargs: dict[str, Any] = field(default_factory=dict)
     scaffold: str = "mini-swe-agent"
     version: str = "2.4.6"
+    experiment_id: str = ""
 
     def __post_init__(self) -> None:
         if not self.model_id:
@@ -133,7 +134,7 @@ class MiniSweAgentBackend:
         config.setdefault("environment", {})["timeout"] = limits.per_command_timeout_s
         # --network none has to be in run_args. mini-SWE-agent splices that
         # list into docker run; a network key anywhere else never arrives.
-        prepare_environment(config)
+        prepare_environment(config, experiment_id=self.experiment_id)
 
         model_config = {**config.get("model", {}), **self.model_kwargs}
         model_config["model_name"] = self.model_id
@@ -172,10 +173,10 @@ class MiniSweAgentBackend:
             rate_limited, exit_status, submission = True, "RateLimited", ""
         except Exception as exc:  # noqa: BLE001 - recorded, not swallowed
             if _is_insufficient_balance(exc):
-                # DeepSeek's HTTP 402 for a drained account has no litellm
-                # exception type of its own; it surfaces as a generic APIError
-                # with status_code 402. Caught by status code and message, not
-                # by type, since that is all the provider gives it.
+                # DeepSeek's drained-account response is not only HTTP 402.
+                # Through LiteLLM it is a BadRequestError (status_code 400)
+                # whose text is "Insufficient Balance". Caught from that text
+                # as well as from status 402.
                 insufficient_balance = True
                 exit_status, submission = "InsufficientBalance", ""
             else:
@@ -234,21 +235,26 @@ def _step_limit_reached(agent: Any, max_steps: int) -> bool | None:
     return n_calls >= max_steps
 
 
-#: Substrings of a DeepSeek 402 body that identify an exhausted account rather
-#: than some other bad-request shape. Matched case-insensitively against the
-#: exception's string form, since litellm maps this to a generic `APIError`
-#: with no provider-specific type (deepseek is in `litellm.openai_compatible_
-#: providers`, so it goes through the generic status-code fallback, and 402 has
-#: no branch of its own there — see `.venv/.../exception_mapping_utils.py`).
+#: Substrings that identify an exhausted account. Matched case-insensitively
+#: against the exception text and, when present, its `message` and `body`.
+#: LiteLLM surfaces DeepSeek's "Insufficient Balance" as
+#: `litellm.BadRequestError` with status_code 400, not only as HTTP 402.
 _INSUFFICIENT_BALANCE_MARKERS = ("insufficient balance", "insufficient_balance")
+
+
+def _error_text(exc: BaseException) -> str:
+    parts = [str(exc), str(getattr(exc, "message", "") or "")]
+    body = getattr(exc, "body", None)
+    if body is not None:
+        parts.append(str(body))
+    return "\n".join(parts).lower()
 
 
 def _is_insufficient_balance(exc: BaseException) -> bool:
     status_code = getattr(exc, "status_code", None)
     if status_code == 402:
         return True
-    text = str(exc).lower()
-    return any(marker in text for marker in _INSUFFICIENT_BALANCE_MARKERS)
+    return any(marker in _error_text(exc) for marker in _INSUFFICIENT_BALANCE_MARKERS)
 
 
 def _termination_for(

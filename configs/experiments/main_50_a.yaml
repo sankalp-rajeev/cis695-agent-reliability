@@ -1,0 +1,53 @@
+# First half of the main study. Serial: execution.max_workers is 1, and the
+# runner walks this file top to bottom.
+#
+# File order is the seeded shuffle (20261007) with the pytest, xarray and
+# flask rows that landed here written first. pallets__flask-5014 is the only
+# flask task in main_100, and it landed in this half.
+#
+# Same model, agent, and verifier configs as main_50_b.yaml. Those files do
+# not change between the halves (docs/VERIFIER_POLICY.md §8.5).
+layer: experiment
+experiment_id: main_50_a
+
+benchmark:
+  dataset: SWE-bench/SWE-bench_Verified
+  split: test
+  manifest: manifests/main_50_a.csv
+
+agent: configs/agent/swebench_claim.yaml
+model: configs/model/primary.yaml
+reproduction_generator: configs/model/generator.yaml
+verifiers:
+  - configs/verifier/full.yaml
+  - configs/verifier/baseline.yaml
+
+sampling:
+  n_tasks: 50
+  seed: 20261007
+  stratify_by: [repo, task_type]
+  per_type: 10
+  source_manifest: manifests/main_100.csv
+  exclude_manifest: manifests/pilot.csv
+
+execution:
+  single_pass: true
+  retries: 0
+  max_workers: 1
+  first10_checkpoint: true
+  gates:
+    # At most 10 of 50 infrastructure failures.
+    min_completed_without_infra_failure: 40
+    max_infrastructure_failures: 10
+    # At least 90% parseable claims.
+    min_parseable_claims: 45
+    # Not an interim threshold. Present because the summariser reads the key.
+    min_resolved_claims: 0
+    max_mean_cost_usd: 0.15
+    require_leakage_audit: true
+
+billing_guard:
+  provider_balance_endpoint: "https://api.deepseek.com/user/balance"
+  start_threshold: "measured_mean * n * 1.5"
+  measured_mean_usd_per_task: 0.084863757
+  repair_cap_usd_per_task: 0.50

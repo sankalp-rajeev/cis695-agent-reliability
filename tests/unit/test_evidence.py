@@ -75,6 +75,18 @@ def test_does_not_apply_sets_patch_applies_false():
     assert FullPolicy().decide(evidence).decision is Decision.REJECT
 
 
+def test_an_empty_patch_still_reads_patch_applies_true():
+    """EMPTY is an integrity violation. It is not DOES_NOT_APPLY, so the
+    patch_applies flag stays at its default of true."""
+    from reliability.verifier.integrity import check_integrity
+
+    report = check_integrity("")
+    evidence = build_evidence(integrity=report)
+    assert Violation.EMPTY in report.violations
+    assert Violation.DOES_NOT_APPLY not in report.violations
+    assert evidence.patch_applies is True
+
+
 @pytest.mark.parametrize("violation", [
     Violation.HARNESS_FILE_EDIT,
     Violation.TEST_DELETED,

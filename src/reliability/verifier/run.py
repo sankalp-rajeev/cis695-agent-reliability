@@ -21,6 +21,7 @@ from reliability.verifier.container import (
     ContainerRepoTree,
     ContainerTestExecutor,
     TaskContainer,
+    experiment_id_var,
 )
 from reliability.verifier.decision import SignalOutcome, get_policy
 from reliability.verifier.evidence import (
@@ -109,7 +110,8 @@ def verify_task(
     try:
         if use_container:
             container = TaskContainer(
-                instance_id=record.instance_id, patch_text=patch_text)
+                instance_id=record.instance_id, patch_text=patch_text,
+                experiment_id=record.experiment_id)
             container.start()
             tree = ContainerRepoTree(container)
             command_executor = ContainerCommandExecutor(container)
@@ -132,6 +134,7 @@ def verify_task(
             signals[SignalKind.INTEGRITY].findings.get("patch_applies", True)),
         cache_dir=task_dir.parent.parent / "_reproduction_cache",
         generator=generator,
+        experiment_id=record.experiment_id,
     )
 
     evidence = _evidence_from(signals)
@@ -276,6 +279,7 @@ def run_reproduction(
     base_sandbox: BaseSandboxFactory = base_container_sandbox,
     patched_sandbox=None,
     issue_text: str | None = None,
+    experiment_id: str = "",
 ) -> SignalRecord:
     """V4: freeze issue-derived tests at the base commit, then run them patched.
 
@@ -293,6 +297,21 @@ def run_reproduction(
                        "patch does not apply to the base commit", setup)
 
     started = time.monotonic()
+    token = experiment_id_var.set(experiment_id)
+    try:
+        return _run_reproduction_labeled(
+            instance_id, patch_text, setup, started,
+            cache_dir=cache_dir, generator=generator, base_sandbox=base_sandbox,
+            patched_sandbox=patched_sandbox, issue_text=issue_text,
+        )
+    finally:
+        experiment_id_var.reset(token)
+
+
+def _run_reproduction_labeled(
+    instance_id, patch_text, setup, started, *,
+    cache_dir, generator, base_sandbox, patched_sandbox, issue_text,
+):
     try:
         suite = freeze_tests(
             issue_text if issue_text is not None
@@ -329,7 +348,10 @@ def run_reproduction(
 
 @contextmanager
 def _patched_container_sandbox(instance_id: str, patch_text: str):
-    with TaskContainer(instance_id=instance_id, patch_text=patch_text) as container:
+    with TaskContainer(
+        instance_id=instance_id, patch_text=patch_text,
+        experiment_id=experiment_id_var.get(),
+    ) as container:
         container.set_patched(True)
         yield ContainerSandbox(container)
 

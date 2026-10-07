@@ -178,6 +178,11 @@ class FullPolicy:
     name: str = "full"
     version: str = "v1.3.0-full"
     require_reproduction: bool = True
+    #: Primary rule. The pre-declared secondary policy
+    #: (`RelaxedPolicy`, `v1.3.0-relaxed`) sets this False: regression
+    #: NOT_AVAILABLE then does not block ACCEPT when V4 PASSes. It is not
+    #: selected by any experiment config.
+    unavailable_regression_blocks_accept: bool = True
 
     def decide(self, evidence: Evidence) -> DecisionRecord:
         # v1.3.0 (§5.6): regression FAIL alone no longer rejects when V4's
@@ -213,7 +218,16 @@ class FullPolicy:
             # the reproduction check below adds nothing redundant.
             unmet.append("signals disagree: regression FAIL, reproduction PASS")
         elif not evidence.regression.is_pass:
-            unmet.append(f"regression is {evidence.regression.value}, not PASS")
+            # Secondary policy only: an unavailable regression is not a failed
+            # one, and a V4 PASS is enough for this condition. Primary v1.3.0
+            # leaves the flag True, so NOT_AVAILABLE still blocks ACCEPT.
+            relaxed_gap = (
+                not self.unavailable_regression_blocks_accept
+                and evidence.regression is SignalOutcome.NOT_AVAILABLE
+                and evidence.reproduction.is_pass
+            )
+            if not relaxed_gap:
+                unmet.append(f"regression is {evidence.regression.value}, not PASS")
         if self.require_reproduction and not evidence.reproduction.is_pass:
             unmet.append(
                 f"no issue-specific execution signal supports repair "
@@ -233,6 +247,20 @@ class FullPolicy:
             decision=decision, policy_name=self.name,
             policy_version=self.version, reasons=reasons, evidence=evidence,
         )
+
+
+@dataclass(frozen=True, slots=True)
+class RelaxedPolicy(FullPolicy):
+    """Secondary policy, pre-declared before either half is scored.
+
+    Same rules as `FullPolicy` except a regression signal of NOT_AVAILABLE
+    does not block ACCEPT when reproduction (V4) is PASS. A regression FAIL
+    is unchanged. Not the policy the halves run under.
+    """
+
+    name: str = "relaxed"
+    version: str = "v1.3.0-relaxed"
+    unavailable_regression_blocks_accept: bool = False
 
 
 @dataclass(frozen=True, slots=True)
@@ -288,7 +316,11 @@ class BaselinePolicy:
 
 
 #: Registry so a run can name its policy in config rather than importing one.
-POLICIES: dict[str, type] = {"full": FullPolicy, "baseline": BaselinePolicy}
+POLICIES: dict[str, type] = {
+    "full": FullPolicy,
+    "baseline": BaselinePolicy,
+    "relaxed": RelaxedPolicy,
+}
 
 
 def get_policy(name: str) -> DecisionPolicy:

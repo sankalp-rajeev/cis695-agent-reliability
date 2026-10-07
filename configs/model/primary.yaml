@@ -56,5 +56,8 @@ limits:
   # provenance as `max_steps`; scripts/run_pilot.py reads it from here.
   max_steps: 100
   max_input_tokens_per_task: 400000
-  max_cost_usd_per_task: 5.00
+  # Lowered from 5.00 before either half. pilot_15's agent mean was $0.059
+  # and its dearest task was $0.125, so $0.50 still clears the observed
+  # repair spend without leaving the old $5 ceiling in place.
+  max_cost_usd_per_task: 0.50
   request_timeout_s: 600

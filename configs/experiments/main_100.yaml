@@ -8,11 +8,10 @@
 # 20261005, deliberately not 695, drawn before any task in it was run or
 # scored). Verified disjoint from manifests/pilot.csv by set difference.
 #
-# NOT YET RUN. Prepared per the 2026-10-05 request: manifest drawn, Docker disk
-# cost computed, billing guard added, exclusion rules written into
-# docs/VERIFIER_POLICY.md. The 3-worker calibration run (below) is proposed,
-# not executed, and must run and be checked against pilot_15 before this
-# experiment is launched at max_workers > 1.
+# NOT LAUNCHED AS ONE RUN. Split, before any task in it was scored, into
+# manifests/main_50_a.csv and manifests/main_50_b.csv (seed 20261007, 10 tasks
+# of each bug type per half). Launch those: configs/experiments/main_50_a.yaml
+# then main_50_b.yaml. Do not launch this file.
 layer: experiment
 experiment_id: main_100
 
@@ -46,14 +45,9 @@ execution:
     min_parseable_claims: 90
     min_resolved_claims: 40
 
-# Phase-prepared, not yet run (see billing guard, src/reliability/billing.py).
+# The start gate is the measured per-task mean times n times 1.5
+# (src/reliability/billing.py). It is not a $600 ceiling.
 billing_guard:
   provider_balance_endpoint: "https://api.deepseek.com/user/balance"
-  # Worst-case ceiling, not the empirical estimate: n_tasks * (agent
-  # max_cost_usd_per_task + V4 generator_max_cost_usd), read from
-  # configs/model/primary.yaml and configs/verifier/full.yaml at run time.
-  # pilot_15's actual combined mean was $0.0849/task ($8.49 projected,
-  # empirically, for 100 tasks); the ceiling below is deliberately far above
-  # that estimate so the guard aborts only on a real shortfall, not on normal
-  # variance.
-  projected_cost_usd: 600.00   # 100 * (5.00 + 1.00), see configs/model/primary.yaml
+  start_threshold: "measured_mean * n * 1.5"
+  measured_mean_usd_per_task: 0.084863757

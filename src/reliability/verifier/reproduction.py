@@ -33,7 +33,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from reliability.verifier.container import TaskContainer
+from reliability.verifier.container import TaskContainer, experiment_id_var
 from reliability.verifier.decision import SignalOutcome
 from reliability.verifier.patch import parse_patch
 from reliability.verifier.record import SignalAbsence, SignalKind, SignalRecord
@@ -81,7 +81,10 @@ class ContainerSandbox:
 @contextmanager
 def base_container_sandbox(instance_id: str) -> Iterator[ContainerSandbox]:
     """A base-commit container with no patch text at all."""
-    with TaskContainer(instance_id=instance_id, patch_text="") as container:
+    with TaskContainer(
+        instance_id=instance_id, patch_text="",
+        experiment_id=experiment_id_var.get(),
+    ) as container:
         yield ContainerSandbox(container)
 
 

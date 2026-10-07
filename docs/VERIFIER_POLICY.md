@@ -180,7 +180,7 @@ Checklist item 5.3 measures this overlap per instance and reports it. The measur
 
 ## 8. Exclusion rules for the main study
 
-Written 2026-10-05, before `main_100` (the 100-task main study, `configs/experiments/main_100.yaml`) is launched. Every exclusion below was first applied ad hoc, after seeing a specific instance's result (`psf__requests-1921`, `matplotlib__matplotlib-26113` under `pilot_14`; `docs/checklist.md`, 2026-09-30). Writing the criteria down now, before any `main_100` result exists, is what keeps the next exclusion a mechanical application of a pre-registered rule rather than a judgement call made with the outcome already in hand. These rules bind the metrics in `docs/CIS695_Technical_Design_LLM_Software_Repair_Reliability.md` §15 (`FAR_verifier`, `Coverage`); that document's formulas are unchanged, and this section is the precise definition of their denominators.
+Written 2026-10-05, before `main_100` is launched, and extended 2026-10-07 before either half (`main_50_a`, `main_50_b`) has a result. `main_100` is not launched as one run. Every exclusion below was first applied ad hoc, after seeing a specific instance's result (`psf__requests-1921`, `matplotlib__matplotlib-26113` under `pilot_14`; `docs/checklist.md`, 2026-09-30). Writing the criteria down now, before any `main_100` result exists, is what keeps the next exclusion a mechanical application of a pre-registered rule rather than a judgement call made with the outcome already in hand. These rules bind the metrics in `docs/CIS695_Technical_Design_LLM_Software_Repair_Reliability.md` §15 (`FAR_verifier`, `Coverage`); that document's formulas are unchanged, and this section is the precise definition of their denominators.
 
 ### 8.1 Infrastructure exclusions
 
@@ -188,17 +188,42 @@ An instance is excluded from the oracle resolution rate, and therefore from `FAR
 
 1. **Harness timeout.** The SWE-bench harness's test-execution step did not finish inside its own time cap and produced no report. (`matplotlib__matplotlib-26113`, `pilot_15`: 1,909 s against an 1,800 s cap, `outcome: infra_error`.)
 2. **No report produced, for any other reason.** The harness process did not complete and no `report.json` exists to read a verdict from — a crash, an OOM, a container that never started. Distinct from (1) only in cause; identical in consequence (nothing to score).
-3. **A `PASS_TO_PASS` or `FAIL_TO_PASS` test's own failure output shows a network call to a host outside the container**, in a harness container that already runs with no network. (`psf__requests-1921`, `pilot_14`: `test_HTTP_302_ALLOW_REDIRECT_GET` and `test_cookie_removed_on_expire` fail against `httpbin.org`, which the container cannot reach; the harness's own infrastructure detection reported zero failures on that run, which is why this is written down here rather than left to that detection.)
+3. **A `PASS_TO_PASS` or `FAIL_TO_PASS` test's own failure output matches the network-error signature**, in a harness container that already runs with no network. The signature is the text, not the repository. An instance is not excluded because it belongs to `psf/requests` or to any other repo. It is excluded when a failing test's own output contains one of these substrings: `Name or service not known`, `Temporary failure in name resolution`, `Network is unreachable`, `Failed to establish a new connection`, `NewConnectionError`, `ConnectTimeout`, `Max retries exceeded`, `Connection refused`. The same rule covers the proxy form seen when the container cannot reach a public host and the failure is an HTTP status rather than an errno: the output names `httpbin.org` (or another non-loopback host) together with `502`. (`psf__requests-1921`, `pilot_14`: `test_HTTP_302_ALLOW_REDIRECT_GET` and `test_cookie_removed_on_expire` fail against `httpbin.org`; the harness's own infrastructure detection reported zero failures on that run, which is why the signature is written down here rather than left to that detection.)
 
-What does **not** qualify: a test failing for a reason internal to the repository (a real regression, a flaky test that the harness's own re-run already resolved, an assertion the patch's own behaviour change supersedes — §5.6). Exclusion (3) is read from that failing test's own output, specifically — a network error string or an unreachable-host error — never from the instance merely belonging to a repository (`psf/requests`) known to have one network-dependent test elsewhere. Each exclusion is recorded with `scripts/exclude_oracle_record.py`, which writes the harness's original verdict verbatim alongside the override (`oracle_record.harness_original.json`) and refuses to run twice on the same record; nothing is overridden silently, and nothing is excluded on a second attempt once already decided.
+What does **not** qualify: a test failing for a reason internal to the repository (a real regression, a flaky test that the harness's own re-run already resolved, an assertion the patch's own behaviour change supersedes — §5.6). Exclusion (3) is read from that failing test's own output. Repository membership is not a signature. Each exclusion is recorded with `scripts/exclude_oracle_record.py`, which writes the harness's original verdict verbatim alongside the override (`oracle_record.harness_original.json`) and refuses to run twice on the same record; nothing is overridden silently, and nothing is excluded on a second attempt once already decided.
 
 ### 8.2 V4 no-signal counting
 
 `reproduction = NOT_AVAILABLE` (`SignalOutcome`, `src/reliability/verifier/decision.py`) is not a V4 outcome and must never be read as one. It occurs when every candidate test the generator wrote failed the base-commit screen, or when the generator wrote none (budget exhaustion; `django__django-14725` and `pylint-dev__pylint-6386` in both pilots). It is counted separately from `PASS` and `FAIL` in every V4-specific rate — a "V4 hit rate" or "V4 availability rate" reported for the main study divides by instances where V4 reported `PASS` or `FAIL`, with the `NOT_AVAILABLE` count stated beside it, not folded into either side. This is the same principle §4 and §6 already state for the regression signal (`NOT_AVAILABLE` is never a pass) and `require_reproduction`'s decision-level handling (`decision.py`: an absent reproduction signal is an unmet ACCEPT condition, routing to FLAG, not a vote either way) — written here once more because the main study will aggregate across instances, where it is easy to let a per-instance absence silently become a population-level zero.
 
+That separation is only for V4-specific rates. **`NOT_AVAILABLE` stays in the coverage denominator.** Coverage is `#(Verifier ACCEPT) / #(valid patches)` (§15.3). A valid patch whose reproduction signal is `NOT_AVAILABLE` is still a valid patch: it is not an infrastructure exclusion (§8.1) and it is not an empty patch (§8.3), so dropping it would shrink the denominator by the verifier's own blind spot. It remains in the denominator and, under the primary policy, cannot contribute an ACCEPT.
+
 ### 8.3 Empty-patch exclusion
 
 An instance whose frozen patch is empty (`patch.diff` is zero bytes, or contains no hunks) never reaches a verifier judgement that could be right or wrong about repair quality — the integrity check fails it (`patch fails to apply` or an equivalent structural violation) before regression, static, or V4 ever run, and the full policy's `REJECT` on an empty patch is not a claim about repair correctness. Such instances are excluded from `FAR_verifier`'s and `Coverage`'s denominators, both of which are about verifier judgement on an attempted repair, and are reported separately as their own rate — an **empty-patch rate**, which is a finding about the repair agent (`FSR_agent`'s territory: did it finish, did it submit something), not about the verifier. `mwaskom__seaborn-3187` (`pilot_15`) is the one instance of this so far: empty patch, `REJECT` ("integrity check failed"), oracle `outcome: empty_patch` (not scored resolved/unresolved), excluded from the resolution rate and reported in its own count.
+
+### 8.4 Primary policy, and the pre-declared secondary
+
+Written 2026-10-07, before `main_50_a` or `main_50_b` has a result. The halves are the launch units (`configs/experiments/main_50_a.yaml`, `main_50_b.yaml`); `main_100` is not launched as one run.
+
+**Primary policy is v1.3.0** (`FullPolicy`, `v1.3.0-full`, `configs/verifier/full.yaml`). A regression FAIL with a V4 PASS is FLAG, not REJECT (§5.6). A regression that is `NOT_AVAILABLE` still blocks ACCEPT. Every number reported as the study's decision uses this policy. Baseline stays `v1.2.2-baseline` and is the comparison, not a second primary.
+
+**Secondary policy, pre-declared and not used for those numbers:** `RelaxedPolicy` (`v1.3.0-relaxed` in `src/reliability/verifier/decision.py`). It is the primary rule with one change: a regression signal of `NOT_AVAILABLE` does not block ACCEPT when V4 PASSes. A regression FAIL is unchanged, including the §5.6 FLAG. No experiment config selects it. It exists so that, if the primary coverage is later described under that relaxation, the rule was fixed before either half was scored and was not written to fit the scores.
+
+### 8.5 Interim thresholds for each half
+
+These are the gates for a half of 50, fixed before either half runs. They are not revised after `main_50_a` is scored and before `main_50_b` starts.
+
+- At most 10 of 50 infrastructure failures (§8.1).
+- At least 90% parseable claims (45 of 50).
+- Mean cost at or below $0.15 per task, agent spend plus V4 generation spend.
+- The leakage audit passes (`scripts/audit_leakage.py` on that half's run directory).
+
+**No policy change and no config change between the halves.** The two experiment files differ in `experiment_id` and in the manifest path. They name the same model config, the same agent config, and the same verifier configs. Those shared files, `FullPolicy.version`, and `BaselinePolicy.version` stay as they are from the start of `main_50_a` through the end of `main_50_b`.
+
+### 8.6 First-10 checkpoint
+
+Inside a half, stop after ten tasks — before the other forty start — if any of the following is true: more than 2 infrastructure failures, mean cost per task above $0.15, the leakage audit fails, or any task terminated for billing (`insufficient_balance`) or rate limit (`rate_limited`). This is stricter than §8.5 and is a halt, not a number to report past. It is `execution.first10_checkpoint` on the half configs.
 
 ---
 

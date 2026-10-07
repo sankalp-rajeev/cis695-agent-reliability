@@ -15,6 +15,7 @@ and still record `git_dirty: true`.
 
 from __future__ import annotations
 
+import hashlib
 import subprocess
 from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
@@ -75,7 +76,16 @@ REQUIRED_FIELDS = (
     # whether a difference came from concurrency. See the 3-worker
     # calibration proposal, docs/checklist.md, 2026-10-05.
     "max_workers",
+    # Hash of the experiment file and every config and manifest it names.
+    # A resume refuses to continue when this no longer matches, so a config
+    # edit between the start and the resume cannot be applied silently.
+    "config_hash",
 )
+
+#: Written by a resume, not by the original capture. Allowed on read so
+#: recording a resume does not fail validation, and not required so a run
+#: that has never been resumed still validates.
+OPTIONAL_FIELDS = ("resumes",)
 
 
 class ProvenanceError(ValueError):
@@ -118,6 +128,7 @@ class RunProvenance:
     reproduction_generator_max_cost_usd: float
     reproduction_runner_sha256: str
     max_workers: int
+    config_hash: str
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -202,9 +213,12 @@ def validate(block: dict[str, Any]) -> None:
     if blank:
         raise ProvenanceError(f"blank provenance fields: {sorted(blank)}")
 
-    extra = sorted(set(block) - set(REQUIRED_FIELDS))
+    extra = sorted(set(block) - set(REQUIRED_FIELDS) - set(OPTIONAL_FIELDS))
     if extra:
         raise ProvenanceError(f"unexpected provenance fields: {extra}")
+    resumes = block.get("resumes")
+    if resumes is not None and not isinstance(resumes, list):
+        raise ProvenanceError("resumes must be a list")
 
 
 def write_meta(run_dir: Path, provenance: RunProvenance, *, overwrite: bool = False) -> Path:
@@ -230,3 +244,72 @@ def read_meta(run_dir: Path) -> dict[str, Any]:
     block = yaml.safe_load((run_dir / "meta.yaml").read_text(encoding="utf-8"))
     validate(block)
     return block
+
+
+def hash_experiment_config(repo_root: Path, experiment_path: Path) -> str:
+    """Hash the experiment file and every config and manifest it names.
+
+    Order is the experiment file, then model, agent, reproduction generator,
+    verifier configs in the order listed, then the task manifest. A byte
+    change in any of them changes the hash.
+    """
+    repo_root = repo_root.resolve()
+    experiment_path = experiment_path.resolve()
+    experiment = yaml.safe_load(experiment_path.read_text(encoding="utf-8"))
+    paths = [experiment_path]
+    for key in ("model", "agent", "reproduction_generator"):
+        named = experiment.get(key)
+        if named:
+            paths.append((repo_root / named).resolve())
+    for named in experiment.get("verifiers") or []:
+        paths.append((repo_root / named).resolve())
+    manifest = (experiment.get("benchmark") or {}).get("manifest")
+    if manifest:
+        paths.append((repo_root / manifest).resolve())
+
+    digest = hashlib.sha256()
+    for path in paths:
+        if not path.is_file():
+            raise ProvenanceError(f"config hash input is missing: {path}")
+        digest.update(path.relative_to(repo_root).as_posix().encode())
+        digest.update(b"\0")
+        digest.update(path.read_bytes())
+        digest.update(b"\0")
+    return "sha256:" + digest.hexdigest()
+
+
+def require_resumable(
+    *,
+    dirty: bool,
+    head: str,
+    recorded_head: str,
+    config_hash: str,
+    recorded_config_hash: str,
+) -> None:
+    """Refuse a resume unless the tree, HEAD, and config hash all match."""
+    if dirty:
+        raise SystemExit(
+            "refusing to resume: the working tree is dirty. Commit or "
+            "discard the changes so the resume is the recorded commit."
+        )
+    if head != recorded_head:
+        raise SystemExit(
+            f"refusing to resume: HEAD {head} does not match the recorded "
+            f"git_commit {recorded_head}."
+        )
+    if config_hash != recorded_config_hash:
+        raise SystemExit(
+            f"refusing to resume: config hash {config_hash} does not match "
+            f"the recorded config_hash {recorded_config_hash}."
+        )
+
+
+def append_resume(run_dir: Path, entry: dict[str, Any]) -> None:
+    """Record one resume on the existing meta.yaml without replacing it."""
+    path = run_dir / "meta.yaml"
+    block = yaml.safe_load(path.read_text(encoding="utf-8"))
+    resumes = list(block.get("resumes") or [])
+    resumes.append(entry)
+    block["resumes"] = resumes
+    validate(block)
+    path.write_text(yaml.safe_dump(block, sort_keys=True), encoding="utf-8")

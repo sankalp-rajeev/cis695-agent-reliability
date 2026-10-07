@@ -15,6 +15,7 @@ it, removed on exit. Nothing is shared between concurrent verifications.
 
 from __future__ import annotations
 
+import contextvars
 import re
 import shlex
 import subprocess
@@ -29,6 +30,11 @@ from reliability.verifier.selection import TestRunner, django_label
 
 NAMESPACE = "swebench/sweb.eval.x86_64"
 WORKDIR = "/testbed"
+#: Set by a run around container launch. The base-sandbox callable stays
+#: `(instance_id)` so it cannot be handed a patch; the label is not a patch.
+experiment_id_var: contextvars.ContextVar[str] = contextvars.ContextVar(
+    "reliability_experiment_id", default="",
+)
 _DOCKER_CLI = Path("/mnt/wsl/docker-desktop/cli-tools/usr/bin/docker")
 
 
@@ -69,12 +75,15 @@ class TaskContainer:
     patch_text: str
     image: str | None = None
     name: str = field(default="")
+    experiment_id: str = ""
     _started: bool = field(default=False, init=False)
     _patch_applied: bool = field(default=False, init=False)
 
     def __post_init__(self) -> None:
         self.image = self.image or image_for(self.instance_id)
-        self.name = self.name or f"verify_{self.instance_id}_{uuid.uuid4().hex[:8]}".lower()
+        if not self.name:
+            label = f"{self.experiment_id}_" if self.experiment_id else ""
+            self.name = f"verify_{label}{self.instance_id}_{uuid.uuid4().hex[:8]}".lower()
 
     # -- lifecycle ---------------------------------------------------------
 
@@ -85,10 +94,17 @@ class TaskContainer:
     def __exit__(self, *exc_info) -> None:
         self.stop()
 
+    def run_args(self) -> list[str]:
+        """The `docker run` argv, including the experiment label when set."""
+        cmd = [_docker_bin(), "run", "-d", "--name", self.name]
+        if self.experiment_id:
+            cmd.extend(["--label", f"experiment_id={self.experiment_id}"])
+        cmd.extend(["-w", WORKDIR, "--network", "none", self.image, "sleep", "infinity"])
+        return cmd
+
     def start(self) -> None:
         proc = subprocess.run(
-            [_docker_bin(), "run", "-d", "--name", self.name, "-w", WORKDIR,
-             "--network", "none", self.image, "sleep", "infinity"],
+            self.run_args(),
             capture_output=True, text=True, env=clean_env(), check=False,
         )
         if proc.returncode != 0:
@@ -401,7 +417,8 @@ def verify_in_container(
     The caller is responsible for stopping the container; use `TaskContainer` as
     a context manager directly where possible.
     """
-    container = TaskContainer(instance_id=instance_id, patch_text=patch_text, image=image)
+    container = TaskContainer(
+        instance_id=instance_id, patch_text=patch_text, image=image)
     container.start()
     return (
         container,

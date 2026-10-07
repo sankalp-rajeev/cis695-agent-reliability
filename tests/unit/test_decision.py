@@ -341,9 +341,15 @@ def test_decision_module_imports_no_signal_implementation():
 
 
 def test_registry_exposes_both_policies():
-    assert set(POLICIES) == {"full", "baseline"}
+    from reliability.verifier.decision import RelaxedPolicy
+
+    assert set(POLICIES) == {"full", "baseline", "relaxed"}
     assert isinstance(get_policy("full"), FullPolicy)
     assert isinstance(get_policy("baseline"), BaselinePolicy)
+    relaxed = get_policy("relaxed")
+    assert isinstance(relaxed, RelaxedPolicy)
+    assert relaxed.version == "v1.3.0-relaxed"
+    assert get_policy("full").version == "v1.3.0-full"
 
 
 def test_unknown_policy_raises():

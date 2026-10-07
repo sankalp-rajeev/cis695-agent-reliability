@@ -30,17 +30,22 @@ from reliability.analysis.overlap import overlap_from_records
 from reliability.benchmark.manifest import load_manifest
 from reliability.billing import (
     fetch_deepseek_balance_usd,
-    projected_cost_usd,
     require_sufficient_balance,
+    start_threshold_usd,
 )
+from reliability.checkpoint import first10_halt_reason
 from reliability.env import assert_clean_interpreter
 from reliability.oracle.records import load_records as load_oracle
 from reliability.oracle.runner import run_oracle
 from reliability.provenance import (
     RunProvenance,
+    append_resume,
     git_commit,
     git_dirty,
+    hash_experiment_config,
+    read_meta,
     require_clean_tree,
+    require_resumable,
     utc_now,
     write_meta,
 )
@@ -89,28 +94,36 @@ def ensure_docker() -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--experiment", default="configs/experiments/pilot.yaml")
+    parser.add_argument(
+        "--resume", default=None, metavar="EXPERIMENT",
+        help="continue an interrupted experiment by id or config path. "
+             "Refuses unless the tree is clean, HEAD matches meta.yaml, "
+             "and the config hash matches.")
     parser.add_argument("--run-root", default=None)
     parser.add_argument(
         "--allow-dirty", action="store_true",
         help="run from uncommitted code; dry_* experiments only")
     parser.add_argument(
-        "--max-workers", type=int, default=1,
-        help="tasks run concurrently via ThreadPoolExecutor; 1 is serial "
-             "(pilot default). Recorded in meta.yaml regardless of value.")
+        "--max-workers", type=int, default=None,
+        help="tasks run concurrently via ThreadPoolExecutor. Default is the "
+             "experiment file's execution.max_workers, or 1. main_50_* is "
+             "pinned to 1. Recorded in meta.yaml regardless of value.")
     parser.add_argument(
         "--balance-usd", type=float, default=None,
         help="override the provider balance check (billing guard) instead of "
              "querying DEEPSEEK_API_KEY's account balance")
     args = parser.parse_args()
-    if args.max_workers < 1:
-        raise SystemExit("--max-workers must be >= 1")
 
     os.environ.setdefault("MSWEA_SILENT_STARTUP", "1")
     load_env_file(REPO_ROOT / ".env")
     assert_clean_interpreter()
     ensure_docker()
 
-    experiment = yaml.safe_load((REPO_ROOT / args.experiment).read_text())
+    experiment_path = _resolve_experiment(args.resume or args.experiment)
+    resuming = args.resume is not None
+    experiment = yaml.safe_load(experiment_path.read_text())
+    from reliability.run_plan import resolve_max_workers
+    args.max_workers = resolve_max_workers(args.max_workers, experiment)
     if experiment.get("execution", {}).get("retries", 0) != 0:
         raise SystemExit("pilot.yaml must have retries: 0; refusing to run a retried pilot")
 
@@ -147,23 +160,40 @@ def main() -> int:
             "pilot_10 is invalidated and must not be reused; pick a new experiment_id"
         )
     require_clean_tree(
-        git_dirty(REPO_ROOT), experiment_id=experiment_id, allow_dirty=args.allow_dirty)
+        git_dirty(REPO_ROOT), experiment_id=experiment_id,
+        allow_dirty=args.allow_dirty and not resuming)
     run_root = REPO_ROOT / (args.run_root or f"runs/{experiment_id}")
-    if (run_root / "meta.yaml").exists():
+    config_hash = hash_experiment_config(REPO_ROOT, experiment_path)
+    if resuming:
+        if not (run_root / "meta.yaml").exists():
+            raise SystemExit(f"no run to resume at {run_root}")
+        recorded = read_meta(run_root)
+        require_resumable(
+            dirty=git_dirty(REPO_ROOT),
+            head=git_commit(REPO_ROOT),
+            recorded_head=recorded["git_commit"],
+            config_hash=config_hash,
+            recorded_config_hash=recorded["config_hash"],
+        )
+        append_resume(run_root, {
+            "timestamp_utc": utc_now(),
+            "git_commit": git_commit(REPO_ROOT),
+            "config_hash": config_hash,
+        })
+        print(f"resuming {experiment_id} at {git_commit(REPO_ROOT)}", flush=True)
+    elif (run_root / "meta.yaml").exists():
         raise SystemExit(
             f"{run_root} already holds a run; a single-pass experiment is not "
-            "resumed or re-run. Pick a new experiment_id")
+            "re-run. Continue it with --resume "
+            f"{experiment_id}")
     run_root.mkdir(parents=True, exist_ok=True)
 
     # Billing guard: abort before any task starts if the account cannot cover
     # this run's worst-case cost. Checked against the provider's own balance
     # endpoint when the model is deepseek (it has one); otherwise --balance-usd
     # is required, since the guard needs a number from somewhere.
-    projected = projected_cost_usd(
-        len(manifest.entries),
-        max_cost_usd_per_task=float(model_cfg["limits"]["max_cost_usd_per_task"]),
-        generator_max_cost_usd=float(reproduction.budget.generator_max_cost_usd),
-    )
+    n_spend = _tasks_still_spending(manifest, run_root) if resuming else len(manifest.entries)
+    projected = start_threshold_usd(n_spend)
     if args.balance_usd is not None:
         balance = args.balance_usd
     elif model_cfg.get("provider") == "deepseek":
@@ -172,8 +202,8 @@ def main() -> int:
         raise SystemExit(
             f"no balance endpoint known for provider {model_cfg.get('provider')!r}; "
             "pass --balance-usd explicitly")
-    print(f"billing guard: ${balance:.2f} available, ${projected:.2f} projected "
-          f"({len(manifest.entries)} tasks) ... ", end="", flush=True)
+    print(f"billing guard: ${balance:.2f} available, ${projected:.2f} start threshold "
+          f"(measured mean × {n_spend} × 1.5) ... ", end="", flush=True)
     require_sufficient_balance(balance, projected)
     print("OK", flush=True)
 
@@ -196,6 +226,7 @@ def main() -> int:
             "cost_tracking": "ignore_errors",
         },
     )
+    backend.experiment_id = experiment_id
 
     if not manifest.entries:
         raise SystemExit("manifest is empty")
@@ -205,7 +236,7 @@ def main() -> int:
     print(f"probing agent network on {manifest.entries[0].instance_id}...",
           flush=True)
     agent_network_mode = probe_agent_network(
-        agent_config, manifest.entries[0].instance_id)
+        agent_config, manifest.entries[0].instance_id, experiment_id=experiment_id)
     print(f"agent network mode (inspected): {agent_network_mode}", flush=True)
 
     if not (run_root / "meta.yaml").exists():
@@ -240,6 +271,7 @@ def main() -> int:
                 reproduction.budget.generator_max_cost_usd),
             reproduction_runner_sha256=reproduction.identity()["runner_sha256"],
             max_workers=args.max_workers,
+            config_hash=config_hash,
         ))
 
     (run_root / "manifest.csv").write_bytes(manifest.path.read_bytes())
@@ -263,9 +295,11 @@ def main() -> int:
     per_task: list[dict] = []
 
     if args.max_workers == 1:
-        # Unchanged from before --max-workers existed: serial, print as each
-        # task finishes, in manifest order.
-        for i, entry in enumerate(manifest, 1):
+        # File order. serial_ids does not sort, so the CSV is the schedule.
+        from reliability.run_plan import serial_ids
+        by_id = {entry.instance_id: entry for entry in manifest}
+        for i, instance_id in enumerate(serial_ids(manifest), 1):
+            entry = by_id[instance_id]
             print(f"\n===== [{i}/{len(manifest)}] {entry.instance_id}  "
                   f"{image_for(entry.instance_id)} =====", flush=True)
             row = _run_one(
@@ -279,6 +313,7 @@ def main() -> int:
                   f"cost=${row.get('cost_usd', 0):.4f} "
                   f"wall={row.get('wall_s', 0):.0f}s",
                   flush=True)
+            _check_first10(experiment, per_task, run_root)
     else:
         # Each task owns `tasks/<instance_id>/` and writes only inside it
         # (agent/runner.py's run_manifest relies on the same property), so
@@ -309,10 +344,26 @@ def main() -> int:
                       f"cost=${row.get('cost_usd', 0):.4f} "
                       f"wall={row.get('wall_s', 0):.0f}s",
                       flush=True)
+                if len(per_task) == 10:
+                    try:
+                        _check_first10(experiment, per_task, run_root)
+                    except SystemExit:
+                        for pending in futures:
+                            pending.cancel()
+                        raise
         per_task.sort(key=lambda r: r["instance_id"])
 
     elapsed = time.monotonic() - started
     summary = _summarise(run_root, per_task, elapsed, experiment)
+    gates_cfg = experiment["execution"]["gates"]
+    if gates_cfg.get("require_leakage_audit"):
+        failed = _audit_failed(run_root)
+        summary["gates"]["leakage_audit"] = {
+            "need": True, "got": not failed, "passed": not failed,
+        }
+        summary["gates"]["all_passed"] = all(
+            g["passed"] for g in summary["gates"].values() if isinstance(g, dict)
+        )
     (run_root / "summary.json").write_text(
         json.dumps(summary, indent=2), encoding="utf-8")
     _print_summary(summary)
@@ -330,9 +381,10 @@ def _run_one(entry, backend, run_root, experiment_id, manifest_hash, limits, log
         "started_at": datetime.now(tz=UTC).isoformat(),
     }
     try:
-        repair_path = task_dir / "repair_record.json"
-        if repair_path.exists():
-            repair = RepairRecord.read(repair_path)
+        from reliability.run_plan import pending_stages
+        pending = pending_stages(task_dir)
+        if "agent" not in pending:
+            repair = RepairRecord.read(task_dir / "repair_record.json")
             row["agent_skipped"] = True
         else:
             repair = run_task(
@@ -359,7 +411,7 @@ def _run_one(entry, backend, run_root, experiment_id, manifest_hash, limits, log
         return row
 
     try:
-        if not (task_dir / "verification_record.full.json").exists():
+        if "verifier" in pending:
             verify_task(task_dir, configs=("full", "baseline"), use_container=True,
                         reproduction=reproduction)
         full = VerificationRecord.read(task_dir / "verification_record.full.json")
@@ -392,7 +444,7 @@ def _run_one(entry, backend, run_root, experiment_id, manifest_hash, limits, log
         return row
 
     try:
-        if not (task_dir / "oracle_record.json").exists():
+        if "oracle" in pending:
             run_oracle(task_dir, timeout_s=1800, repo_root=REPO_ROOT)
         oracle = load_oracle(run_root)
         this = next(r for r in oracle if r.instance_id == entry.instance_id)
@@ -456,6 +508,23 @@ def _summarise(run_root, per_task: list[dict], elapsed: float, experiment: dict)
             "passed": resolved_claims >= gates_cfg["min_resolved_claims"],
         },
     }
+    if "max_infrastructure_failures" in gates_cfg:
+        from reliability.checkpoint import is_infrastructure_failure
+        n_infra = sum(1 for row in per_task if is_infrastructure_failure(row))
+        cap = gates_cfg["max_infrastructure_failures"]
+        gates["infrastructure_failures"] = {
+            "need": cap, "got": n_infra, "passed": n_infra <= cap,
+        }
+    if "max_mean_cost_usd" in gates_cfg:
+        from reliability.checkpoint import task_cost_usd
+        mean = (
+            sum(task_cost_usd(row) for row in per_task) / len(per_task)
+            if per_task else 0.0
+        )
+        ceiling = float(gates_cfg["max_mean_cost_usd"])
+        gates["mean_cost"] = {
+            "need": ceiling, "got": round(mean, 4), "passed": mean <= ceiling,
+        }
     gates["all_passed"] = all(g["passed"] for g in gates.values() if isinstance(g, dict))
 
     overlaps = [r["overlap"] for r in per_task if "overlap" in r]
@@ -519,6 +588,17 @@ def _print_summary(summary: dict) -> None:
     print(f"RESOLVED claims        : {gates['resolved_claims']['got']}/{n}"
           f"  (need ≥{gates['resolved_claims']['need']})  "
           f"{'PASS' if gates['resolved_claims']['passed'] else 'FAIL'}")
+    if "mean_cost" in gates:
+        print(f"mean cost / task       : ${gates['mean_cost']['got']:.4f}"
+              f"  (need ≤${gates['mean_cost']['need']:.2f})  "
+              f"{'PASS' if gates['mean_cost']['passed'] else 'FAIL'}")
+    if "infrastructure_failures" in gates:
+        g = gates["infrastructure_failures"]
+        print(f"infrastructure failures: {g['got']}"
+              f"  (need ≤{g['need']})  {'PASS' if g['passed'] else 'FAIL'}")
+    if "leakage_audit" in gates:
+        print(f"leakage audit          : "
+              f"{'PASS' if gates['leakage_audit']['passed'] else 'FAIL'}")
     print(f"total cost             : ${summary['total_cost_usd']:.4f}")
     print(f"wall clock             : {summary['elapsed_s']:.0f}s")
     rep = summary["reproduction"]
@@ -533,6 +613,54 @@ def _print_summary(summary: dict) -> None:
         print(f"  {r['instance_id']:<42} claim={r.get('claim')!s:<12} "
               f"cost=${(r.get('cost_usd') or 0):.4f}  wall={r.get('wall_s', 0):.0f}s  "
               f"oracle={r.get('oracle_outcome')}")
+
+
+def _resolve_experiment(value: str) -> pathlib.Path:
+    path = pathlib.Path(value)
+    if path.suffix in {".yaml", ".yml"} or "/" in value:
+        candidate = path if path.is_absolute() else REPO_ROOT / path
+    else:
+        candidate = REPO_ROOT / "configs" / "experiments" / f"{value}.yaml"
+    if not candidate.is_file():
+        raise SystemExit(f"no experiment config at {candidate}")
+    return candidate
+
+
+def _tasks_still_spending(manifest, run_root: pathlib.Path) -> int:
+    """Tasks that can still call a model: no repair record, or no V4 record."""
+    pending = 0
+    for entry in manifest.entries:
+        task_dir = run_root / "tasks" / entry.instance_id
+        if not (task_dir / "repair_record.json").is_file():
+            pending += 1
+            continue
+        if not (task_dir / "verification_record.full.json").is_file():
+            pending += 1
+    return pending
+
+
+def _audit_failed(run_root: pathlib.Path) -> bool:
+    import subprocess
+    proc = subprocess.run(
+        [sys.executable, str(REPO_ROOT / "scripts" / "audit_leakage.py"),
+         "--runs", str(run_root)],
+        cwd=REPO_ROOT, capture_output=True, text=True, check=False,
+    )
+    (run_root / "leakage_audit.log").write_text(
+        proc.stdout + "\n" + proc.stderr, encoding="utf-8")
+    return proc.returncode != 0
+
+
+def _check_first10(experiment: dict, per_task: list[dict], run_root: pathlib.Path) -> None:
+    if not experiment.get("execution", {}).get("first10_checkpoint"):
+        return
+    if len(per_task) != 10:
+        return
+    reason = first10_halt_reason(per_task, audit_failed=_audit_failed(run_root))
+    (run_root / "checkpoint.json").write_text(
+        json.dumps({"n": 10, "halt": reason}, indent=2), encoding="utf-8")
+    if reason:
+        raise SystemExit(reason)
 
 
 if __name__ == "__main__":

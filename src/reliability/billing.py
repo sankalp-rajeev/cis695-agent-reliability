@@ -18,16 +18,14 @@ provider without a balance endpoint cannot be queried this way, so an explicit
 balance is the required fallback — the guard needs a number from somewhere,
 and asking the operator for one beats skipping the check.
 
-**Projected cost** is the experiment's own worst-case ceiling, not an
-estimate: `n_tasks * (max_cost_usd_per_task + generator_max_cost_usd)`, read
-from `configs/model/primary.yaml` and `configs/verifier/full.yaml`. It is what
-the run's own limits already allow every task to spend, multiplied out, so it
-is knowable before any task runs and does not depend on this model happening
-to cost what it cost last time. It is deliberately not pilot_15's empirical
-mean (agent + V4 generation combined, $0.0849/task; `docs/checklist.md`,
-2026-10-05), which would make the guard a bet that this run behaves like the
-last one rather than a check against what the run is actually permitted to
-spend.
+**Start threshold** is the measured per-task mean times `n` times 1.5.
+The mean is pilot_15's agent cost plus V4 generation cost, $0.084863757 per
+task (10 tasks, combined total $0.84863757, measured from `runs/pilot_15` on
+2026-10-07; `docs/checklist.md` rounded the same figure to $0.0849). For a
+half of 50 that threshold is about $6.36. It is not the configured worst-case
+ceiling (`n * ($0.50 repair cap + V4 cap)`), and it is not a $600 ceiling.
+`projected_cost_usd` still computes that ceiling for inspection; the guard
+does not consult it.
 """
 
 from __future__ import annotations
@@ -37,6 +35,29 @@ import urllib.error
 import urllib.request
 
 DEEPSEEK_BALANCE_URL = "https://api.deepseek.com/user/balance"
+
+#: pilot_15 agent `api_cost_usd` + V4 `generation.cost_usd`, 10 tasks.
+#: 0.84863757 / 10. Do not replace this with the configured per-task cap.
+MEASURED_MEAN_COST_USD_PER_TASK = 0.084863757
+START_THRESHOLD_FACTOR = 1.5
+
+
+def start_threshold_usd(
+    n_tasks: int,
+    *,
+    mean_cost_usd_per_task: float = MEASURED_MEAN_COST_USD_PER_TASK,
+    factor: float = START_THRESHOLD_FACTOR,
+) -> float:
+    """Balance the run must hold before the first task: mean × n × 1.5.
+
+    Not the configured ceiling and not a flat $600. `n_tasks` is the number of
+    tasks about to spend, which on a resume is the number still unfinished.
+    """
+    if n_tasks < 0:
+        raise ValueError("n_tasks must be >= 0")
+    if mean_cost_usd_per_task < 0 or factor < 0:
+        raise ValueError("mean cost and factor must be >= 0")
+    return n_tasks * mean_cost_usd_per_task * factor
 
 
 def projected_cost_usd(

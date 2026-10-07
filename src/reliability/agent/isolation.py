@@ -84,20 +84,35 @@ def assert_network_none(container_id: str) -> str:
     return mode
 
 
-def prepare_environment(config: dict) -> dict:
+def label_experiment(run_args: list[str], experiment_id: str) -> list[str]:
+    """Add a Docker label naming the experiment, without dropping other args."""
+    if not experiment_id:
+        return list(run_args)
+    marker = f"experiment_id={experiment_id}"
+    if marker in run_args:
+        return list(run_args)
+    return [*run_args, "--label", marker]
+
+
+def prepare_environment(config: dict, *, experiment_id: str = "") -> dict:
     """Force the agent container onto ``--network none`` before it is started.
 
     mini-SWE-agent copies ``config["environment"]`` into the container it
     launches. Setting the flag here is what makes it part of that ``docker run``,
-    including when the yaml forgot ``run_args``.
+    including when the yaml forgot ``run_args``. `experiment_id` becomes a
+    Docker label on that same `run_args` list, which is how agent containers
+    are told apart when several experiments could be running.
     """
     env = config.setdefault("environment", {})
     env["executable"] = docker_bin()
-    env["run_args"] = isolate_run_args(list(env.get("run_args") or []))
+    env["run_args"] = label_experiment(
+        isolate_run_args(list(env.get("run_args") or [])), experiment_id)
     return config
 
 
-def probe_agent_network(agent_config_path: Path, instance_id: str) -> str:
+def probe_agent_network(
+    agent_config_path: Path, instance_id: str, *, experiment_id: str = "",
+) -> str:
     """Start the agent's real environment, read NetworkMode, then stop it.
 
     The returned string is what Docker attached, so provenance can record it
@@ -107,7 +122,7 @@ def probe_agent_network(agent_config_path: Path, instance_id: str) -> str:
     from minisweagent.run.benchmarks.swebench import get_sb_environment
 
     config = yaml.safe_load(Path(agent_config_path).read_text(encoding="utf-8"))
-    prepare_environment(config)
+    prepare_environment(config, experiment_id=experiment_id)
     env = get_sb_environment(config, {"instance_id": instance_id})
     try:
         if not env.container_id:
