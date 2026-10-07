@@ -10,11 +10,13 @@ From a clean tree, at the commit you intend to cite:
 scripts/launch_tmux.sh configs/experiments/main_50_a.yaml
 ```
 
-That opens tmux session `main_50_a` and runs:
+That opens tmux session `main_50_a` with two windows. The first runs:
 
 ```bash
 .venv/bin/python scripts/run_pilot.py --experiment configs/experiments/main_50_a.yaml
 ```
+
+The second runs `scripts/notify.sh`, which posts counts to ntfy.sh when `NTFY_TOPIC` is set in the environment or in `.env`. The runner starts even if that topic is unset; the notify window then exits without posting.
 
 `main_50_b` is the same command with `configs/experiments/main_50_b.yaml`, and only after `main_50_a` has met the interim thresholds in `docs/VERIFIER_POLICY.md` §8.5. Do not launch `configs/experiments/main_100.yaml`.
 

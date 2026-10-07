@@ -584,6 +584,13 @@ def test_unknown_artifacts_are_out_of_scope_until_added(tmp_path):
     assert not in_scope(tmp_path / "scratch_notes.txt")
 
 
+def test_an_experiment_directory_is_a_valid_audit_root(tmp_path):
+    """run_pilot passes runs/<experiment>, not the parent runs/ directory."""
+    make_task(tmp_path, CLEAN)
+    found = find_task_dirs(tmp_path / "exp")
+    assert [path.name for path in found] == ["psf__requests-1921"]
+
+
 def test_harness_controls_are_not_scanned(tmp_path):
     """runs/1.2_gold_sanity legitimately contains gold patches."""
     control = tmp_path / "1.2_gold_sanity"

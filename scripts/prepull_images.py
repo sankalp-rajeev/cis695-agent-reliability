@@ -15,6 +15,7 @@ case where the layer-union need exceeds free space minus 40 GB.
 from __future__ import annotations
 
 import argparse
+import shutil
 import subprocess
 import sys
 from datetime import UTC, datetime
@@ -23,6 +24,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from reliability.verifier.container import image_for
+
+#: 40 GiB. The C: volume is where the WSL disk lives, so a pull that grows
+#: the Docker data disk is charged against this number.
+MIN_FREE_BYTES = 40 * 1024 ** 3
+DISK_PATH = Path("/mnt/c")
 
 
 def _instances(path: Path) -> list[str]:
@@ -39,6 +45,8 @@ def main() -> int:
         "--failure-log", type=Path,
         default=Path("logs/prepull_failures.log"),
     )
+    parser.add_argument("--disk", type=Path, default=DISK_PATH)
+    parser.add_argument("--min-free-bytes", type=int, default=MIN_FREE_BYTES)
     args = parser.parse_args()
     if args.batch_size < 1:
         raise SystemExit("--batch-size must be >= 1")
@@ -46,10 +54,23 @@ def main() -> int:
     images = [image_for(instance_id) for instance_id in _instances(args.manifest)]
     args.failure_log.parent.mkdir(parents=True, exist_ok=True)
     failures = 0
+    pulled = 0
     for start in range(0, len(images), args.batch_size):
         batch = images[start:start + args.batch_size]
         print(f"batch {start // args.batch_size + 1}: {len(batch)} image(s)", flush=True)
         for image in batch:
+            free = shutil.disk_usage(args.disk).free
+            if free < args.min_free_bytes:
+                print(
+                    f"STOP {args.disk} free={free} bytes "
+                    f"is below {args.min_free_bytes}; no further pulls",
+                    flush=True,
+                )
+                print(
+                    f"pulled={pulled} failed={failures} stopped=disk "
+                    f"failure_log={args.failure_log}"
+                )
+                return 2
             proc = subprocess.run(
                 ["docker", "pull", image], check=False,
             )
@@ -63,6 +84,7 @@ def main() -> int:
                     fh.write(line)
                 print(f"  FAIL {image} (logged to {args.failure_log})", flush=True)
             else:
+                pulled += 1
                 print(f"  ok   {image}", flush=True)
     print(f"pulled={len(images) - failures} failed={failures} "
           f"failure_log={args.failure_log}")

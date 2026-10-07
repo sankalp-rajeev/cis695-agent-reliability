@@ -21,7 +21,10 @@ fi
 
 tmux new-session -d -s "$SESSION" -c "$ROOT" \
   "exec .venv/bin/python scripts/run_pilot.py --experiment '$EXP' 2>&1 | tee -a '$LOG_DIR/${SESSION}.tmux.log'"
+tmux new-window -d -t "$SESSION" -n notify -c "$ROOT" \
+  "exec '$ROOT/scripts/notify.sh' '$SESSION' '$SESSION'"
 
 echo "launched session $SESSION"
+echo "  windows: runner, notify"
 echo "  attach:  tmux attach -t $SESSION"
 echo "  resume:  .venv/bin/python scripts/run_pilot.py --resume $SESSION"

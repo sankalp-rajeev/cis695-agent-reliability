@@ -643,10 +643,18 @@ def find_task_dirs(runs_root: Path) -> list[Path]:
     them — and scanning them would produce a guaranteed hit that trains the
     reader to ignore this audit.
     """
-    return sorted(
-        {p.parent for p in runs_root.glob("*/tasks/*/repair_record.json")}
-        | {p.parent for p in runs_root.glob(
-            "*/_reproduction_cache/*/generation_trajectory.jsonl")})
+    # `runs/` holds many experiments (`*/tasks/...`). The runner and the
+    # interim report pass one experiment directory (`tasks/...`). Both are roots.
+    patterns = (
+        "*/tasks/*/repair_record.json",
+        "tasks/*/repair_record.json",
+        "*/_reproduction_cache/*/generation_trajectory.jsonl",
+        "_reproduction_cache/*/generation_trajectory.jsonl",
+    )
+    found: set[Path] = set()
+    for pattern in patterns:
+        found.update(path.parent for path in runs_root.glob(pattern))
+    return sorted(found)
 
 
 __all__ = [
