@@ -41,6 +41,7 @@ from __future__ import annotations
 
 import json
 import re
+import shlex
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
@@ -103,6 +104,22 @@ MIN_PROBE_LENGTH = 24
 #: How many distinctive lines to draw from each oracle text.
 MAX_PROBES = 40
 
+#: Conda's package cache. LLM containers mount an empty tmpfs here, so a
+#: successful content read means the mask did not apply.
+MASKED_CONDA_PKGS = "/opt/miniconda3/pkgs"
+#: Newer copies that cannot be hidden without breaking conda or pip.
+UNMASKABLE_PIP_VENDOR = "/pip/_vendor"
+UNMASKABLE_CONDA_LIB = "/opt/miniconda3/lib"
+UNMASKABLE_DIST_PACKAGES = "/usr/lib/python3/dist-packages"
+#: The task image's own install at the base commit. Reading it is legitimate.
+#: A `pip/_vendor` path under this tree is not: those still count.
+LEGITIMATE_TESTBED_ENV = "/opt/miniconda3/envs/testbed"
+#: Repository slug to import name, where they differ.
+IMPORT_NAME_ALIASES = {"scikit-learn": "sklearn"}
+#: First word of a command that only lists a path. `pip show` and `pip list`
+#: are listing too. Anything else, including an unknown verb, is a read.
+LISTING_VERBS = frozenset({"ls", "find", "stat", "du", "test", "[", "which"})
+
 
 class Severity(str, Enum):
     """How much a finding implies.
@@ -120,6 +137,9 @@ class Severity(str, Enum):
     CONFIRMED = "confirmed"
     REVIEW = "review"
     BENCHMARK_AWARENESS = "benchmark-awareness"
+    #: A newer-copy note that must not change pass/fail. Masked-cache reads
+    #: stay `CONFIRMED`; this value is only the unmaskable and listing tiers.
+    EXPOSED_COPY = "exposed-copy"
 
 
 @dataclass(frozen=True, slots=True)
@@ -581,6 +601,193 @@ def _test_symbol(node_id: str) -> str:
     return tail if tail.startswith("test") and len(tail) > 4 else ""
 
 
+def import_name_for_instance(instance_id: str) -> str:
+    """Import name for the repository named by a SWE-bench instance id.
+
+    `org__repo-123` yields `repo`, hyphens become underscores, and
+    `scikit-learn` is `sklearn`.
+    """
+    repo = instance_id.split("__", 1)[-1]
+    repo = re.sub(r"-\d+$", "", repo)
+    repo = IMPORT_NAME_ALIASES.get(repo, repo)
+    return repo.replace("-", "_")
+
+
+_ABS_PATH = re.compile(r"/[^\s'\"\\<>|;&]+")
+
+
+def _command_verb(command: str) -> str:
+    try:
+        tokens = shlex.split(command)
+    except ValueError:
+        tokens = command.split()
+    index = 0
+    while index < len(tokens) and "=" in tokens[index] and not tokens[index].startswith(("/", "-")):
+        index += 1
+    if index >= len(tokens):
+        return ""
+    verb = Path(tokens[index]).name
+    if verb == "pip" and index + 1 < len(tokens) and tokens[index + 1] in {"show", "list"}:
+        return "pip-list"
+    return verb
+
+
+def _is_listing(command: str) -> bool:
+    verb = _command_verb(command)
+    return verb in LISTING_VERBS or verb == "pip-list"
+
+
+def _is_masked_path(path: str) -> bool:
+    return path == MASKED_CONDA_PKGS or path.startswith(MASKED_CONDA_PKGS + "/")
+
+
+def _is_pip_vendor(path: str, import_name: str) -> bool:
+    needle = f"{UNMASKABLE_PIP_VENDOR}/{import_name}"
+    return f"{needle}/" in path or path.rstrip("/").endswith(needle)
+
+
+def _is_legitimate_testbed(path: str, import_name: str) -> bool:
+    """The image's own base-commit install. Vendor copies under it still count."""
+    if LEGITIMATE_TESTBED_ENV not in path or _is_pip_vendor(path, import_name):
+        return False
+    return re.search(
+        rf"/site-packages/{re.escape(import_name)}(?:/|$)", path
+    ) is not None
+
+
+def _is_unmaskable(path: str, import_name: str) -> bool:
+    if _is_pip_vendor(path, import_name):
+        return True
+    if path.startswith(UNMASKABLE_CONDA_LIB + "/") and LEGITIMATE_TESTBED_ENV not in path:
+        if re.search(
+            rf"/python[^/]*/site-packages/{re.escape(import_name)}(?:/|$)", path
+        ):
+            return True
+    needle = f"{UNMASKABLE_DIST_PACKAGES}/{import_name}"
+    return f"{needle}/" in path or path.rstrip("/").endswith(needle)
+
+
+def _path_tier(path: str, import_name: str) -> str | None:
+    """`masked`, `unmaskable`, or None when the path is not a newer copy."""
+    if _is_masked_path(path):
+        return "masked"
+    if _is_legitimate_testbed(path, import_name):
+        return None
+    if _is_unmaskable(path, import_name):
+        return "unmaskable"
+    return None
+
+
+def _observation(content: str) -> tuple[int | None, str]:
+    code_match = re.search(r"<returncode>\s*(-?\d+)\s*</returncode>", content)
+    output_match = re.search(r"<output>(.*?)</output>", content, re.DOTALL)
+    code = int(code_match.group(1)) if code_match else None
+    output = output_match.group(1).strip() if output_match else ""
+    return code, output
+
+
+def _bash_calls(message: dict) -> list[tuple[str, str]]:
+    calls = message.get("tool_calls") or []
+    found: list[tuple[str, str]] = []
+    if not isinstance(calls, list):
+        return found
+    for index, call in enumerate(calls):
+        if not isinstance(call, dict):
+            continue
+        function = call.get("function") or {}
+        if not isinstance(function, dict) or function.get("name") != "bash":
+            continue
+        arguments = function.get("arguments")
+        command = ""
+        if isinstance(arguments, str):
+            try:
+                parsed = json.loads(arguments)
+            except json.JSONDecodeError:
+                parsed = None
+            if isinstance(parsed, dict):
+                command = str(parsed.get("command") or "")
+        elif isinstance(arguments, dict):
+            command = str(arguments.get("command") or "")
+        if command:
+            found.append((str(call.get("id") or f"call-{index}"), command))
+    return found
+
+
+def scan_newer_copies(path: Path, text: str, instance_id: str) -> list[Finding]:
+    """Newer-copy reads in one agent or V4-generator trajectory.
+
+    A command counts only when its matching tool observation has returncode 0
+    and, for a read, non-empty output. Listing verbs (`ls`, `find`, `stat`,
+    `du`, `test`, `[`, `which`, and `pip show` / `pip list`) are recorded as
+    `newer-copy-listing` and do not fail the audit. Any other verb, including
+    one this list does not know, is a read.
+
+    A read under `MASKED_CONDA_PKGS` is a confirmed `newer-copy-path`: the
+    tmpfs mask should have made that impossible. A read of an unmaskable copy
+    is the same kind with severity `exposed-copy` and detail `exposed_copy`,
+    one per task, and is not a confirmed leak. The task's own install under
+    `LEGITIMATE_TESTBED_ENV` is ignored, except `pip/_vendor` paths there.
+    """
+    import_name = import_name_for_instance(instance_id)
+    pending: dict[str, str] = {}
+    findings: list[Finding] = []
+    exposed = False
+    for raw in text.splitlines():
+        try:
+            message = json.loads(raw)
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(message, dict):
+            continue
+        role = message.get("role")
+        if role == "assistant":
+            for call_id, command in _bash_calls(message):
+                pending[call_id] = command
+            continue
+        if role != "tool":
+            continue
+        call_id = str(message.get("tool_call_id") or "")
+        command = pending.pop(call_id, None)
+        if command is None:
+            continue
+        code, output = _observation(str(message.get("content") or ""))
+        if code != 0:
+            continue
+        tiers = {
+            _path_tier(candidate, import_name)
+            for candidate in _ABS_PATH.findall(command)
+        }
+        tiers.discard(None)
+        if not tiers:
+            continue
+        if _is_listing(command):
+            findings.append(Finding(
+                severity=Severity.EXPOSED_COPY,
+                kind="newer-copy-listing",
+                path=str(path),
+                detail=f"listing only: {command[:160]}",
+            ))
+            continue
+        if not output:
+            continue
+        if "masked" in tiers:
+            findings.append(Finding(
+                severity=Severity.CONFIRMED,
+                kind="newer-copy-path",
+                path=str(path),
+                detail=f"masked package cache returned content: {command[:160]}",
+            ))
+        if "unmaskable" in tiers and not exposed:
+            exposed = True
+            findings.append(Finding(
+                severity=Severity.EXPOSED_COPY,
+                kind="newer-copy-path",
+                path=str(path),
+                detail=f"exposed_copy {instance_id}",
+            ))
+    return findings
+
+
 def audit_task(
     task_dir: Path, probes: OracleProbes | None = None
 ) -> tuple[list[Finding], int]:
@@ -600,6 +807,8 @@ def audit_task(
             continue
 
         findings.extend(scan_field_names(path, text))
+        if path.name in TRAJECTORY_FILES:
+            findings.extend(scan_newer_copies(path, text, task_dir.name))
         if probes is not None and not probes.is_empty:
             findings.extend(scan_content(path, text, probes, authored))
 

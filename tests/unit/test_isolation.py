@@ -21,6 +21,11 @@ def test_already_isolated_args_are_left_alone():
     assert isolate_run_args(args) == args
 
 
+def test_extra_run_args_pass_through_unchanged():
+    args = ["--rm", "--network", "none", "--tmpfs", "/opt/miniconda3/pkgs"]
+    assert isolate_run_args(args) == args
+
+
 def test_any_other_network_is_refused():
     with pytest.raises(IsolationError, match="bridge"):
         isolate_run_args(["--rm", "--network", "bridge"])

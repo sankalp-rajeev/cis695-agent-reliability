@@ -104,6 +104,8 @@ environment:
   - --rm
   - --network
   - none
+  - --tmpfs
+  - /opt/miniconda3/pkgs
 model:
   observation_template: '{% if output.exception_info -%}
 
