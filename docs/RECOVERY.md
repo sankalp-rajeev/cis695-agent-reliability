@@ -13,7 +13,7 @@ scripts/launch_tmux.sh configs/experiments/main_50_a.yaml
 That opens tmux session `main_50_a` with two windows. The first runs:
 
 ```bash
-.venv/bin/python scripts/run_pilot.py --experiment configs/experiments/main_50_a.yaml
+env -u PYTHONPATH .venv/bin/python scripts/run_pilot.py --experiment configs/experiments/main_50_a.yaml
 ```
 
 The second runs `scripts/notify.sh`, which posts counts to ntfy.sh when `NTFY_TOPIC` is set in the environment or in `.env`. The runner starts even if that topic is unset; the notify window then exits without posting.
@@ -25,7 +25,7 @@ Attach with `tmux attach -t main_50_a`. Detach with `Ctrl-b` then `d`. The sessi
 ## Resume
 
 ```bash
-.venv/bin/python scripts/run_pilot.py --resume main_50_a
+env -u PYTHONPATH .venv/bin/python scripts/run_pilot.py --resume main_50_a
 ```
 
 `--resume` takes an experiment id or a config path. It refuses, and does not start a task, unless all three of these hold:

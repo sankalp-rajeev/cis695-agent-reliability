@@ -34,7 +34,7 @@ from reliability.billing import (
     start_threshold_usd,
 )
 from reliability.checkpoint import first10_halt_reason
-from reliability.env import assert_clean_interpreter
+from reliability.env import InterpreterContaminationError, assert_clean_interpreter
 from reliability.oracle.records import load_records as load_oracle
 from reliability.oracle.runner import run_oracle
 from reliability.provenance import (
@@ -116,7 +116,18 @@ def main() -> int:
 
     os.environ.setdefault("MSWEA_SILENT_STARTUP", "1")
     load_env_file(REPO_ROOT / ".env")
-    assert_clean_interpreter()
+    try:
+        assert_clean_interpreter()
+    except InterpreterContaminationError:
+        if args.resume is None:
+            raise
+        raise SystemExit(
+            "This resume was not started: PYTHONPATH is set and the "
+            "interpreter is contaminated.\n"
+            "Unset it and run:\n"
+            "  env -u PYTHONPATH .venv/bin/python scripts/run_pilot.py "
+            f"--resume {args.resume}"
+        ) from None
     ensure_docker()
 
     experiment_path = _resolve_experiment(args.resume or args.experiment)
