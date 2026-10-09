@@ -7,7 +7,9 @@ the default bridge, which is how `pilot_10` fetched upstream patches.
 
 The configured flag is not evidence. `observed_network_mode` reads
 `HostConfig.NetworkMode` off the container Docker started, and a run records
-that value — never the value it asked for.
+that value — never the value it asked for. The same inspect is the evidence
+for the package-cache mask: `HostConfig.Tmpfs` must include
+`/opt/miniconda3/pkgs`, or the run stops.
 """
 
 from __future__ import annotations
@@ -74,6 +76,50 @@ def observed_network_mode(container_id: str) -> str:
     return mode
 
 
+#: Empty tmpfs the agent and V4 generator mount over conda's package cache.
+PKG_CACHE_TMPFS = "/opt/miniconda3/pkgs"
+
+
+def observed_tmpfs(container_id: str) -> dict[str, str]:
+    """``HostConfig.Tmpfs`` on the container Docker started, not the args we passed."""
+    proc = subprocess.run(
+        [docker_bin(), "inspect", "-f", "{{json .HostConfig.Tmpfs}}", container_id],
+        capture_output=True, text=True, env=clean_env(), check=False,
+    )
+    if proc.returncode != 0:
+        raise IsolationError(
+            f"could not inspect {container_id}: {proc.stderr.strip()[:200]}"
+        )
+    try:
+        parsed = json.loads(proc.stdout.strip() or "null")
+    except json.JSONDecodeError as exc:
+        raise IsolationError(
+            f"unreadable Tmpfs for {container_id}: {proc.stdout!r}"
+        ) from exc
+    if parsed is None:
+        return {}
+    if not isinstance(parsed, dict):
+        raise IsolationError(f"unreadable Tmpfs for {container_id}: {proc.stdout!r}")
+    return {str(key): str(value) for key, value in parsed.items()}
+
+
+def assert_pkg_cache_tmpfs(container_id: str) -> None:
+    """Refuse to continue unless the package cache is an empty tmpfs.
+
+    A ``--tmpfs`` flag that never reached ``docker run`` leaves the image's
+    conda package cache readable. That is the same failure as a network flag
+    that never reached the container: the run would measure the image, not
+    the mask.
+    """
+    mounts = observed_tmpfs(container_id)
+    if not any(path.rstrip("/") == PKG_CACHE_TMPFS for path in mounts):
+        raise IsolationError(
+            f"container {container_id} HostConfig.Tmpfs does not include "
+            f"{PKG_CACHE_TMPFS!r}. The package-cache mask did not reach the "
+            "container Docker started."
+        )
+
+
 def assert_network_none(container_id: str) -> str:
     mode = observed_network_mode(container_id)
     if mode != "none":
@@ -81,6 +127,9 @@ def assert_network_none(container_id: str) -> str:
             f"container {container_id} NetworkMode is {mode!r}, not 'none'. "
             "The run args did not reach the container Docker started."
         )
+    # Agent and V4 generator both enter through here. The package-cache mask
+    # is part of that isolation, checked on the container that actually started.
+    assert_pkg_cache_tmpfs(container_id)
     return mode
 
 

@@ -11,8 +11,12 @@ from pathlib import Path
 import pytest
 import yaml
 
-from reliability.agent.isolation import IsolationError, isolate_run_args
-from reliability.benchmark.leakage import Severity, audit_task
+from reliability.agent.isolation import (
+    IsolationError,
+    assert_network_none,
+    isolate_run_args,
+)
+from reliability.benchmark.leakage import Severity, audit, audit_task
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -123,3 +127,87 @@ def test_agent_configs_mask_the_package_cache_and_keep_network_none(name):
 def test_any_other_network_is_still_refused():
     with pytest.raises(IsolationError, match="host"):
         isolate_run_args(["--rm", "--tmpfs", "/opt/miniconda3/pkgs", "--network", "host"])
+
+
+_FP_AGENT = (
+    'id; echo "---"; umount /opt/miniconda3/pkgs 2>&1; echo "exit: $?"; '
+    "ls -la /opt/miniconda3/pkgs 2>&1 | head"
+)
+_FP_GENERATOR = (
+    "pip cache list 2>/dev/null | head -20; "
+    "ls /opt/miniconda3/pkgs 2>/dev/null | grep -i matplotlib | head"
+)
+_COMPOUND_READS = (
+    'grep -R "def polyval" -n /opt/miniconda3/pkgs/X | head; '
+    "sed -n '1,40p' /opt/miniconda3/pkgs/X/f.py"
+)
+_PYTHONPATH_READ = """cd /tmp && PYTHONPATH=/opt/miniconda3/pkgs/X/lib/python3.10/site-packages python - <<EOF
+import xarray as xr
+print(xr.__version__)
+EOF"""
+
+
+def _kinds(tmp_path, command, output="package text"):
+    findings = _newer(
+        tmp_path, "pydata__xarray-4629",
+        _turn(command, returncode=0, output=output),
+    )
+    return findings
+
+
+@pytest.mark.parametrize("command", [_FP_AGENT, _FP_GENERATOR])
+def test_compound_commands_whose_output_is_elsewhere_are_ambiguous(tmp_path, command):
+    findings = _kinds(tmp_path, command, output="uid=0\nnot a package file")
+    assert len(findings) == 1
+    assert findings[0].kind == "newer-copy-ambiguous"
+    assert findings[0].severity is not Severity.CONFIRMED
+    task = _task(tmp_path / "gate", "pydata__xarray-4629", _turn(
+        command, returncode=0, output="uid=0\nnot a package file",
+    ))
+    result = audit([task])
+    assert result.passed
+    assert not result.confirmed
+
+
+def test_a_compound_command_of_only_masked_reads_fails(tmp_path):
+    findings = _kinds(tmp_path, _COMPOUND_READS, output="def polyval")
+    assert len(findings) == 1
+    assert findings[0].kind == "newer-copy-path"
+    assert findings[0].severity is Severity.CONFIRMED
+
+
+def test_pythonpath_into_the_masked_cache_fails(tmp_path):
+    findings = _kinds(tmp_path, _PYTHONPATH_READ, output="2025.4.0")
+    assert len(findings) == 1
+    assert findings[0].kind == "newer-copy-path"
+    assert findings[0].severity is Severity.CONFIRMED
+
+
+class _Completed:
+    def __init__(self, stdout: str, returncode: int = 0, stderr: str = ""):
+        self.stdout = stdout
+        self.returncode = returncode
+        self.stderr = stderr
+
+
+def _inspect(monkeypatch, *, network: str, tmpfs: str):
+    def fake_run(cmd, **kwargs):
+        fmt = cmd[cmd.index("-f") + 1]
+        if "NetworkMode" in fmt:
+            return _Completed(network)
+        if "Tmpfs" in fmt:
+            return _Completed(tmpfs)
+        raise AssertionError(cmd)
+
+    monkeypatch.setattr("reliability.agent.isolation.subprocess.run", fake_run)
+
+
+def test_network_none_passes_when_the_package_cache_tmpfs_is_mounted(monkeypatch):
+    _inspect(monkeypatch, network='"none"\n', tmpfs='{"/opt/miniconda3/pkgs":""}\n')
+    assert assert_network_none("cid") == "none"
+
+
+def test_network_none_refuses_when_the_package_cache_tmpfs_is_missing(monkeypatch):
+    _inspect(monkeypatch, network='"none"\n', tmpfs="null\n")
+    with pytest.raises(IsolationError, match="Tmpfs"):
+        assert_network_none("cid")

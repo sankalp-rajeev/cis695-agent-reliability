@@ -87,6 +87,12 @@ def main() -> int:
               "these field names itself; nothing delivered them. Counted, "
               "and they do not fail the gate.")
 
+    ambiguous = [f for f in result.findings if f.kind == "newer-copy-ambiguous"]
+    if ambiguous:
+        print(f"\n{len(ambiguous)} newer-copy-ambiguous finding(s). A masked "
+              "package path shares the command with another segment that can "
+              "produce the output. Counted, and they do not fail the gate.")
+
     incomplete = (
         not content_ok
         or result.content_checked_tasks < result.scanned_tasks

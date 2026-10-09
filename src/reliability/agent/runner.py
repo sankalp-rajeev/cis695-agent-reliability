@@ -147,7 +147,8 @@ class MiniSweAgentBackend:
             if not env.container_id:
                 raise IsolationError("agent container did not start")
             # Inspect the container Docker started. A flag that only exists in
-            # the config we passed is not isolation.
+            # the config we passed is not isolation: NetworkMode must be none,
+            # and the package-cache tmpfs must be mounted.
             assert_network_none(env.container_id)
         except IsolationError:
             try:
