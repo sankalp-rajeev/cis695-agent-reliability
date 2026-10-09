@@ -646,6 +646,67 @@ def _is_listing_verb(verb: str) -> bool:
     return verb in LISTING_VERBS or verb == "pip-list"
 
 
+_ERROR_LINE = re.compile(
+    r"no such file or directory|cannot access|permission denied|"
+    r"command not found|operation not permitted|not a directory", re.IGNORECASE)
+
+
+def _output_beyond_command(command: str, output: str) -> bool:
+    """Whether the output holds anything the command did not itself print.
+
+    A script that prints `BASE /root/.cache/pip`, an empty list, or an error
+    about a missing file produced that text without reading any content. Only
+    a line with words absent from the command can be file content.
+    """
+    echo_ok = _only_interpreters(command)
+    for line in output.splitlines():
+        if not re.search(r"[A-Za-z0-9]", line) or _ERROR_LINE.search(line):
+            continue
+        # Only a script can print text it contains. `grep`, `sed` and `cat`
+        # echo their own patterns, so for them a matching word is no evidence.
+        if echo_ok and all(token in command for token in line.split()):
+            continue
+        return True
+    return False
+
+
+_INTERPRETERS = frozenset({"python", "python3", "node", "perl", "ruby"})
+
+
+def _only_interpreters(command: str) -> bool:
+    """True when every command in the line is a script interpreter (or cd/echo/true)."""
+    verbs = [_command_verb(stage)
+             for stages in _split_command(command) for stage in stages]
+    verbs = [v for v in verbs if v and v not in _NO_OP_VERBS]
+    return bool(verbs) and all(v in _INTERPRETERS for v in verbs)
+
+
+_NAME_ONLY_GREP_LONG = frozenset({
+    "--files-with-matches", "--files-without-match", "--count", "--quiet", "--silent"})
+_NAME_ONLY_GREP_SHORT = frozenset("lLcq")
+
+
+def _is_name_only_grep(stage: str) -> bool:
+    """`grep -l/-L/-c/-q` print file names, counts or nothing, never content.
+
+    On an empty masked directory they cannot evidence a read of the fix, so they
+    are treated like `ls`. A plain `grep -R pattern <path>` is still a read.
+    """
+    if _command_verb(stage) not in {"grep", "egrep", "fgrep", "rg"}:
+        return False
+    try:
+        tokens = shlex.split(stage)
+    except ValueError:
+        tokens = stage.split()
+    for token in tokens:
+        if token in _NAME_ONLY_GREP_LONG:
+            return True
+        if (token.startswith("-") and not token.startswith("--")
+                and set(token[1:]) & _NAME_ONLY_GREP_SHORT):
+            return True
+    return False
+
+
 #: A segment whose only effect is text it was given, or a directory change.
 #: ``echo``, ``cd``, and ``true`` do not count as another producer of the
 #: observation.
@@ -840,7 +901,7 @@ def _masked_cache_decision(command: str) -> str | None:
             if names_masked:
                 seen_masked = True
                 touched = True
-                if _is_listing_verb(verb) or verb in _NO_OP_VERBS:
+                if _is_listing_verb(verb) or _is_name_only_grep(stage) or verb in _NO_OP_VERBS:
                     continue
                 masked_read = True
                 continue
@@ -986,6 +1047,8 @@ def scan_newer_copies(path: Path, text: str, instance_id: str) -> list[Finding]:
         # beside `id` or `pip cache list` is not a confirmed read.
         decision = _masked_cache_decision(command) if "masked" in tiers else None
         listing = _is_listing(command)
+        if decision == "fail" and not _output_beyond_command(command, output):
+            decision = "ambiguous"
         if decision == "fail" and output:
             findings.append(Finding(
                 severity=Severity.CONFIRMED,

@@ -259,3 +259,80 @@ def test_pip_cache_read_that_fails_on_the_mask_is_not_a_finding(tmp_path):
         _turn(_PIP_WHEEL_READ, returncode=1,
               output="FileNotFoundError: [Errno 2] No such file or directory\n"),
     ) == []
+
+
+def test_grep_plus_du_on_an_empty_masked_pip_cache_is_not_a_confirmed_read(tmp_path):
+    cmd = ('grep -R -l "class DecimalValidator" /root/.cache/pip 2>/dev/null | head; '
+           'du -sh /root/.cache/pip')
+    found = _newer(
+        tmp_path, "matplotlib__matplotlib-20676",
+        _turn(cmd, returncode=0, output="0\t/root/.cache/pip\n"),
+    )
+    assert all(f.severity.name != "CONFIRMED" for f in found)
+
+
+def test_plain_grep_content_read_of_the_pip_cache_is_still_confirmed(tmp_path):
+    found = _newer(
+        tmp_path, "matplotlib__matplotlib-20676",
+        _turn('grep -R "def new_axes" /root/.cache/pip/http-v2',
+              returncode=0, output="x.body:    def new_axes(self, ax):\n"),
+    )
+    assert any(f.severity.name == "CONFIRMED" for f in found)
+
+
+def test_listing_followed_by_a_sed_read_of_the_pip_cache_is_still_confirmed(tmp_path):
+    found = _newer(
+        tmp_path, "matplotlib__matplotlib-20676",
+        _turn("ls /root/.cache/pip; sed -n '1,5p' /root/.cache/pip/http-v2/a.body",
+              returncode=0, output="class SpanSelector:\n"),
+    )
+    assert any(f.severity.name == "CONFIRMED" for f in found)
+
+
+def test_grep_files_with_matches_on_the_pip_cache_is_not_confirmed(tmp_path):
+    found = _newer(
+        tmp_path, "matplotlib__matplotlib-20676",
+        _turn('grep -rl "SpanSelector" /root/.cache/pip',
+              returncode=0, output="/root/.cache/pip/http-v2/a.body\n"),
+    )
+    assert all(f.severity.name != "CONFIRMED" for f in found)
+
+
+def test_python_script_printing_only_headers_for_an_empty_masked_cache_is_not_confirmed(tmp_path):
+    cmd = ("python - <<'PY'\nimport glob\n"
+           "for base in ['/root/.cache/pip', '/tmp']:\n    print('BASE', base)\nPY")
+    found = _newer(
+        tmp_path, "django__django-16667",
+        _turn(cmd, returncode=0, output="BASE /root/.cache/pip\nBASE /tmp\n"),
+    )
+    assert all(f.severity.name != "CONFIRMED" for f in found)
+
+
+def test_error_text_from_a_pipeline_on_the_masked_pip_cache_is_not_confirmed(tmp_path):
+    cmd = "cat /root/.cache/pip/http-v2/4/a/0/4/f/4a04f599 | head -c 1000"
+    found = _newer(
+        tmp_path, "pylint-dev__pylint-4551",
+        _turn(cmd, returncode=0,
+              output="cat: /root/.cache/pip/http-v2/4/a/0/4/f/4a04f599: No such file or directory\n"),
+    )
+    assert all(f.severity.name != "CONFIRMED" for f in found)
+
+
+def test_python_that_prints_wheel_source_is_still_confirmed(tmp_path):
+    cmd = ("python - <<'PY'\nimport zipfile\n"
+           "z = zipfile.ZipFile('/root/.cache/pip/http-v2/a.body')\n"
+           "print(z.read('pylint/lint/run.py').decode()[:300])\nPY")
+    found = _newer(
+        tmp_path, "pylint-dev__pylint-4551",
+        _turn(cmd, returncode=0, output="def modify_sys_path() -> None:\n    seen = set()\n"),
+    )
+    assert any(f.severity.name == "CONFIRMED" for f in found)
+
+
+def test_grep_that_prints_only_its_own_pattern_is_still_confirmed(tmp_path):
+    found = _newer(
+        tmp_path, "matplotlib__matplotlib-20676",
+        _turn('grep -R "def new_axes" /root/.cache/pip/http-v2',
+              returncode=0, output="def new_axes\n"),
+    )
+    assert any(f.severity.name == "CONFIRMED" for f in found)

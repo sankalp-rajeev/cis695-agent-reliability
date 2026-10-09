@@ -155,7 +155,51 @@ def lines_present_at_base(instance_id: str, lines: tuple[str, ...]) -> set[str]:
         for line in lines:
             if line in content:
                 found.add(line)
+    # `git grep` sees only tracked files. A line can also sit in an installed
+    # dependency (numpy's docstring example for __array_ufunc__ did), and an
+    # agent that reads that library has not seen the test patch.
+    remaining = tuple(line for line in lines if line not in found)
+    if remaining:
+        found |= lines_in_testbed_site_packages(instance_id, remaining)
     return found
+
+
+#: The task image's own installed dependencies, as they were before any patch.
+#: Vendored copies (`pip/_vendor/requests`, ...) are excluded in the grep: the
+#: unmaskable requests copies are newer than the base commit and must still count.
+TESTBED_SITE_PACKAGES = "/opt/miniconda3/envs/testbed/lib/python*/site-packages"
+
+
+def lines_in_testbed_site_packages(instance_id: str, lines: tuple[str, ...]) -> set[str]:
+    """Probe lines that occur in the testbed env's site-packages, outside `_vendor`."""
+    if not lines:
+        return set()
+    import subprocess
+
+    from reliability.agent.isolation import docker_bin
+    from reliability.verifier.container import image_for
+
+    try:
+        proc = subprocess.run(
+            [docker_bin(), "run", "--rm", "--network", "none", "-i",
+             "--entrypoint", "bash", image_for(instance_id), "-c",
+             "grep -rFIsh --exclude-dir=_vendor -f /dev/stdin -- "
+             + TESTBED_SITE_PACKAGES],
+            input="\n".join(lines) + "\n",
+            capture_output=True, text=True, errors="replace",
+            timeout=300, check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        print(f"  WARNING: could not search site-packages of {instance_id}: {exc}")
+        return set()
+    # A line grep printed is a real match, even if grep also exited 2 over an
+    # unreadable file. With no output, an exit other than 0/1 is a failed search
+    # and drops nothing.
+    if proc.returncode not in (0, 1) and not proc.stdout:
+        print(f"  WARNING: site-packages search failed for {instance_id} "
+              f"(exit {proc.returncode}): {proc.stderr.strip()[:120]}; probes are not reduced")
+        return set()
+    return {line for line in lines if line in proc.stdout}
 
 
 def load_probes(task_dirs) -> tuple[dict, bool]:
