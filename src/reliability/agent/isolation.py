@@ -78,6 +78,10 @@ def observed_network_mode(container_id: str) -> str:
 
 #: Empty tmpfs the agent and V4 generator mount over conda's package cache.
 PKG_CACHE_TMPFS = "/opt/miniconda3/pkgs"
+#: pip's download cache. Its files are named by hash, and some images hold a
+#: newer release of the repo under test there (matplotlib 3.7.5 wheel).
+PIP_CACHE_TMPFS = "/root/.cache/pip"
+MASKED_TMPFS_PATHS = (PKG_CACHE_TMPFS, PIP_CACHE_TMPFS)
 
 
 def observed_tmpfs(container_id: str) -> dict[str, str]:
@@ -111,12 +115,13 @@ def assert_pkg_cache_tmpfs(container_id: str) -> None:
     that never reached the container: the run would measure the image, not
     the mask.
     """
-    mounts = observed_tmpfs(container_id)
-    if not any(path.rstrip("/") == PKG_CACHE_TMPFS for path in mounts):
+    mounted = {path.rstrip("/") for path in observed_tmpfs(container_id)}
+    missing = [path for path in MASKED_TMPFS_PATHS if path not in mounted]
+    if missing:
         raise IsolationError(
             f"container {container_id} HostConfig.Tmpfs does not include "
-            f"{PKG_CACHE_TMPFS!r}. The package-cache mask did not reach the "
-            "container Docker started."
+            f"{missing!r}. The cache mask did not reach the container "
+            "Docker started."
         )
 
 

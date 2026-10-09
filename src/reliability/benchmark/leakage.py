@@ -107,6 +107,10 @@ MAX_PROBES = 40
 #: Conda's package cache. LLM containers mount an empty tmpfs here, so a
 #: successful content read means the mask did not apply.
 MASKED_CONDA_PKGS = "/opt/miniconda3/pkgs"
+#: pip's download cache. LLM containers mount an empty tmpfs here too. Its
+#: files are named by hash, so any content read of it is a read of a wheel.
+MASKED_PIP_CACHE = "/root/.cache/pip"
+MASKED_PATHS = (MASKED_CONDA_PKGS, MASKED_PIP_CACHE)
 #: Newer copies that cannot be hidden without breaking conda or pip.
 UNMASKABLE_PIP_VENDOR = "/pip/_vendor"
 UNMASKABLE_CONDA_LIB = "/opt/miniconda3/lib"
@@ -851,7 +855,7 @@ def _masked_cache_decision(command: str) -> str | None:
 
 
 def _is_masked_path(path: str) -> bool:
-    return path == MASKED_CONDA_PKGS or path.startswith(MASKED_CONDA_PKGS + "/")
+    return any(path == m or path.startswith(m + "/") for m in MASKED_PATHS)
 
 
 def _is_pip_vendor(path: str, import_name: str) -> bool:

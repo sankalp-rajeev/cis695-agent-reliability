@@ -47,7 +47,7 @@ def test_network_none_is_on_the_launched_container():
     # Drop the network flag and let the runner inject it, so this does not
     # pass merely because the yaml was edited. Keep the package-cache tmpfs:
     # assert_network_none refuses a container that did not mount it.
-    config["environment"]["run_args"] = ["--rm", "--tmpfs", "/opt/miniconda3/pkgs"]
+    config["environment"]["run_args"] = ["--rm", "--tmpfs", "/opt/miniconda3/pkgs", "--tmpfs", "/root/.cache/pip"]
     prepare_environment(config)
 
     env = get_sb_environment(config, {"instance_id": INSTANCE_ID})

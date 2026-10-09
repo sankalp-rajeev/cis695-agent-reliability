@@ -89,6 +89,8 @@ environment:
   - none
   - --tmpfs
   - /opt/miniconda3/pkgs
+  - --tmpfs
+  - /root/.cache/pip
 model:
   observation_template: |
     {% if output.exception_info -%}

@@ -203,7 +203,8 @@ def _inspect(monkeypatch, *, network: str, tmpfs: str):
 
 
 def test_network_none_passes_when_the_package_cache_tmpfs_is_mounted(monkeypatch):
-    _inspect(monkeypatch, network='"none"\n', tmpfs='{"/opt/miniconda3/pkgs":""}\n')
+    _inspect(monkeypatch, network='"none"\n',
+             tmpfs='{"/opt/miniconda3/pkgs":"","/root/.cache/pip":""}\n')
     assert assert_network_none("cid") == "none"
 
 
@@ -211,3 +212,50 @@ def test_network_none_refuses_when_the_package_cache_tmpfs_is_missing(monkeypatc
     _inspect(monkeypatch, network='"none"\n', tmpfs="null\n")
     with pytest.raises(IsolationError, match="Tmpfs"):
         assert_network_none("cid")
+
+
+def test_network_none_refuses_when_only_the_conda_cache_is_masked(monkeypatch):
+    _inspect(monkeypatch, network='"none"\n', tmpfs='{"/opt/miniconda3/pkgs":""}\n')
+    with pytest.raises(IsolationError, match="/root/.cache/pip"):
+        assert_network_none("cid")
+
+
+@pytest.mark.parametrize("name", ["swebench_claim.yaml", "v4_generator.yaml"])
+def test_agent_configs_also_mask_the_pip_cache(name):
+    config = yaml.safe_load((ROOT / "configs" / "agent" / name).read_text())
+    args = config["environment"]["run_args"]
+    mounted = [args[i + 1] for i, a in enumerate(args) if a == "--tmpfs"]
+    assert "/opt/miniconda3/pkgs" in mounted
+    assert "/root/.cache/pip" in mounted
+
+
+_PIP_WHEEL_READ = """python - <<'PY'
+import zipfile
+z = zipfile.ZipFile('/root/.cache/pip/http-v2/2/b/e/8/d/2be8d32c.body')
+print(z.read('matplotlib/widgets.py').decode()[:200])
+PY"""
+
+
+def test_pip_cache_content_read_fails_the_audit(tmp_path):
+    found = _newer(
+        tmp_path, "matplotlib__matplotlib-20676",
+        _turn(_PIP_WHEEL_READ, returncode=0, output="class SpanSelector(_SelectorWidget):\n"),
+    )
+    assert [f.kind for f in found] == ["newer-copy-path"]
+
+
+def test_pip_cache_listing_is_a_non_failing_finding(tmp_path):
+    found = _newer(
+        tmp_path, "matplotlib__matplotlib-20676",
+        _turn("ls -la /root/.cache/pip", returncode=0, output=""),
+    )
+    assert [f.kind for f in found] == ["newer-copy-listing"]
+    assert all(f.severity.name != "CONFIRMED" for f in found)
+
+
+def test_pip_cache_read_that_fails_on_the_mask_is_not_a_finding(tmp_path):
+    assert _newer(
+        tmp_path, "matplotlib__matplotlib-20676",
+        _turn(_PIP_WHEEL_READ, returncode=1,
+              output="FileNotFoundError: [Errno 2] No such file or directory\n"),
+    ) == []
