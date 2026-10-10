@@ -1,0 +1,49 @@
+# Rerun of the three main_50_b tasks that ended in a network error because the
+# machine lost its internet connection near the end of the run (sympy-17318,
+# sympy-19783, sympy-24562, tasks 48 to 50). The harness recorded them as agent
+# errors; they are infrastructure failures.
+# Same model, agent, generator and verifier configs as main_50_b.
+# This result REPLACES the main_50_b result for these three tasks, whatever it is.
+# The gates below are inherited from main_50_b and are not meaningful at n=3;
+# only the leakage audit and the infrastructure-failure count are read.
+layer: experiment
+experiment_id: main_3_rerun_infra
+
+benchmark:
+  dataset: SWE-bench/SWE-bench_Verified
+  split: test
+  manifest: manifests/main_3_rerun_infra.csv
+
+agent: configs/agent/swebench_claim.yaml
+model: configs/model/primary.yaml
+reproduction_generator: configs/model/generator.yaml
+verifiers:
+  - configs/verifier/full.yaml
+  - configs/verifier/baseline.yaml
+
+sampling:
+  n_tasks: 3
+  seed: 20261007
+  stratify_by: [repo, task_type]
+  per_type: 10
+  source_manifest: manifests/main_50_b.csv
+  exclude_manifest: manifests/pilot.csv
+
+execution:
+  single_pass: true
+  retries: 0
+  max_workers: 1
+  first10_checkpoint: true
+  gates:
+    min_completed_without_infra_failure: 3
+    max_infrastructure_failures: 0
+    min_parseable_claims: 0
+    min_resolved_claims: 0
+    max_mean_cost_usd: 0.15
+    require_leakage_audit: true
+
+billing_guard:
+  provider_balance_endpoint: "https://api.deepseek.com/user/balance"
+  start_threshold: "measured_mean * n * 1.5"
+  measured_mean_usd_per_task: 0.084863757
+  repair_cap_usd_per_task: 0.50
