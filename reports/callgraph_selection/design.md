@@ -1,10 +1,16 @@
-# Offline call-graph selection experiment — design for review
+# Offline call-graph selection experiment — registered design and pending addenda
 
-**Phase 1 only. UNCOMMITTED DRAFT.** These parameters are specified before new
-selector outputs or oracle comparisons exist. They become frozen only when the
-user explicitly requests a commit of this file. No phase-2 selector work starts
-before phase-1 review; no new post-hoc oracle code may run before the design is
-committed and phase 3 is authorized.
+**Phase 1b accepted; selector execution remains gated.** The original design
+was registered in `05bdd11`. The omission amendment and secondary-variant
+specification were approved on **2026-10-21** and committed in `9a58037`.
+Amendment 2 and the success-criteria/extended-stratum appendices below are
+**uncommitted drafts for user review**, not implemented rules or measured
+selector results. The user commits design changes; this agent does not commit.
+Earlier source/patch availability findings in sections 3–4 are historical; the
+current artifact inventory below records the accepted graph state and verified
+export. No rebuild, changed-symbol rerun, selector or oracle evaluation occurs
+in this drafting step. Phase 2-lite requires the user's separate go after the
+four-graph rebuild/all-83 resolution review; phase 3 retains its separate gate.
 
 The prior V2 diagnostic is committed separately as `a4137d1`. Production V2,
 `VERIFIER_POLICY.md`, decisions, experiment configs, manifests, committed study
@@ -304,17 +310,23 @@ Phase 2, only after approval: graph/seed/ranking implementation and unit tests;
 ranked outputs, graph diagnostics, and an oracle-blind report. Phase 3 adds the
 isolated post-hoc module and report after its own approval.
 
-**Current stop:** present phase-1 design and unavailable-source evidence for
-review. Leave all new call-graph files uncommitted. Commit this design only when
-the user asks, and never run phase 3 before that commit exists.
+**Current stop:** show the pending design diff and artifact-only eligibility
+inventory, then stop. Do not commit, rebuild graphs, rerun changed-symbol
+resolution, run selectors or read oracle data in this drafting step. After the
+user commits the pending addenda, the next authorized execution is limited to
+the four SymPy rebuilds and all-83 changed-symbol resolution, followed by review.
+Phase 2-lite still waits for the user's separate go; phase 3 remains separately
+authorized after the required freeze.
 
 <!-- amendment-2026-10-21-draft -->
 
-## Draft amendment — 2026-10-21 — file-level AST-budget omissions
+## Amendment — 2026-10-21 — file-level AST-budget omissions
 
-**PENDING USER APPROVAL. NOT APPLIED.** This appendix does not change the
-pre-registered rules above, graph implementation, or accepted phase-1b artifacts.
-No selector work or oracle evaluation is authorized by this draft.
+**APPROVED 2026-10-21. NOT IMPLEMENTED.** This specification was committed in
+`9a58037`; approval does not mean the four graphs have been rebuilt. Amendment 2
+below is a pending accounting clarification and must be committed by the user
+before execution resumes. Accepted phase-1b artifacts remain unchanged. No
+selector or oracle execution is authorized at the present drafting stop.
 
 **Observed reason, without oracle information.** Four verified SymPy base
 snapshots cross the cumulative 5,000,000 inspected-AST-node limit. The existing
@@ -325,7 +337,7 @@ are documented in `sympy_limit_stops.csv` and `report.md`, using AST-only counte
 replay of archived base sources. No oracle, gold patch, official test list,
 repair correctness label, or selector outcome informs this proposal.
 
-**Revised proposal: largest-first whole-file omissions.** Before constructing
+**Approved specification: largest-first whole-file omissions.** Before constructing
 any graph, preflight every eligible regular base `.py` file with `ast.parse`
 and count the entries from `ast.walk`, including context/operator entries as
 in the current counter. Inspect files in ascending repository-relative POSIX
@@ -369,7 +381,7 @@ overlap evidence. References and changed symbols in omitted files remain
 unavailable/uncertain with an explicit file-omission reason. Never infer coverage
 or correctness from file size, omission, retention, or package proximity.
 
-**Explicit budget change requiring approval.** Today's 5,000,000 limit measures
+**Approved budget change; accounting clarification pending in Amendment 2.** Today's 5,000,000 limit measures
 all *inspected* nodes; simply moving its catch inside the loop would immediately
 stop again at the next file. This proposal therefore separates retained graph
 cost from inspection work. Freeze a proposed **10,000,000 inspected-AST-node
@@ -388,13 +400,16 @@ primary comparison. Preserve all accepted phase-1b graphs/statuses and report an
 approved future run as a separately versioned diagnostic with new code/input
 hashes. Do not overwrite the frozen study or reinterpret current resource
 stops as successes. Keep all distances, selection budgets, ranking features,
-cohorts and oracle separation unchanged. Approval of this amendment is required
-before implementation or any rerun under it; this draft authorizes neither.
+cohorts and oracle separation unchanged. The specification is approved; the
+current execution gate still requires the user's commit of pending Amendment 2
+before any rebuild, followed by review before selectors.
 
-## Draft secondary traversal variant — 2026-10-21
+## Secondary traversal variant — 2026-10-21
 
-**PENDING APPROVAL. NOT IMPLEMENTED.** Pre-register both variants before any
-selector outputs or post-hoc oracle evaluation. The primary design remains
+**APPROVED 2026-10-21. NOT IMPLEMENTED.** This specification was committed in
+`9a58037`. Approval of the specification does not authorize selector execution
+at the current stop. Freeze the pending success criteria before any selector
+outputs or post-hoc oracle evaluation. The primary design remains
 `PRIMARY_RESOLVED_ONLY`, following resolved call edges only. A separately named
 `SECONDARY_RESOLVED_PLUS_AMBIGUOUS` also follows each recorded candidate target
 of an ambiguous call site. Sites with no candidate targets and unresolved sites
@@ -433,3 +448,237 @@ fields, official tests or case-study hindsight. Phase-3 oracle analysis remains
 separate and requires the existing approval/freeze gate. Ambiguous reachability
 is a static possibility, not evidence that a selected test exercises changed
 code. No production verifier or policy behavior changes are proposed here.
+
+
+## Amendment 2 — 2026-10-21 — preflight node accounting and indexing visits
+
+**DRAFT FOR USER COMMIT. NOT IMPLEMENTED.** This amendment supersedes only the
+additional-inspection accounting language in the largest-first amendment. Do
+not rebuild any graph or rerun changed-symbol resolution before the user commits
+this amendment. No phase-2-lite execution is authorized by this draft.
+
+**Rule.** Count each AST node occurrence once toward the **10,000,000-node
+ceiling**, during the complete preflight. Use the existing AST-count convention
+(`ast.walk` entries, including context/operator occurrences); shared CPython
+operator/context objects still count at each tree occurrence. This is a count
+of preflighted AST input, not a cumulative count of later traversal visits.
+Files later omitted still contribute their full preflight cost. If preflight
+cannot finish within this ceiling, preserve the existing `resource_limited`
+hard stop; do not infer a global largest-first ranking from a prefix.
+
+Use preflighted ASTs for indexing the retained files. **Report indexing visits
+separately** from preflight node counts, together with the retained AST-node
+sum, omitted paths, reuse/reparse status and timing. Reusing a retained tree for
+indexing does not charge its nodes a second time against the preflight ceiling.
+The indexing input remains bounded by the **5,000,000 retained-AST-node quota**;
+that quota is not an extra allowance to retain additional files. Keep the
+**600-second per-task wall limit unchanged**, shared by preflight, omission,
+indexing and call resolution. Do not reset its timer between stages. This
+amendment does not permit an unreported rescan, hidden counter reset, increase
+in retained input, or a change to any other graph cap.
+
+**Reason, without outcomes or oracle information.** Literal double-counting of
+a full indexing traversal makes all four stopped SymPy tasks arithmetically
+unable to finish within the previous cumulative 10,000,000-inspection ceiling:
+preflight uses 6.96–9.55 million AST entries and the retained indexing input is
+4.76–4.98 million entries (up to the fixed five-million retained quota). The
+recorded preflight plus retained-input sums are:
+
+| Task | Preflight nodes | Retained AST nodes | Double-counted total |
+|---|---:|---:|---:|
+| sympy-13480 | 6,958,393 | 4,762,362 | 11,720,755 |
+| sympy-14711 | 7,106,521 | 4,910,490 | 12,017,011 |
+| sympy-17318 | 9,260,685 | 4,961,401 | 14,222,086 |
+| sympy-19783 | 9,551,134 | 4,976,923 | 14,528,057 |
+
+These are AST-input accounting sums, not measured implementation-specific
+indexer-visit totals or predictions of graph-build runtime. They come only from
+the verified base archives and deterministic largest-first preflight. No repair
+outcome, oracle information, gold patch, official test list or selector result
+informs this amendment. Separating input size from indexing visits makes both
+resource measures explicit; it does not establish dynamic coverage or success.
+
+All other largest-first omission rules, partial-graph labels/eligibility,
+primary resolved-only traversal, separately reported ambiguous-edge secondary,
+cohorts, distances, budgets, ranking formulas, provenance caps and oracle gates
+remain unchanged. After the user commits this amendment, perform only the four
+SymPy rebuilds and the all-83 changed-symbol resolution already requested, then
+stop for review. Phase 2-lite still requires the user's separate go.
+
+
+## Pre-registered success criteria — 2026-10-21
+
+**DRAFT FOR USER COMMIT. NOT EVALUATED.** Correction to the record: commit
+`9a58037` has the message "Pre-register SymPy largest-first omission, secondary
+variant and success criteria", but its `design.md` contains no explicit success
+criteria. The C1–C3 criteria are introduced in this appendix now, after stored
+source/graph feasibility and AST-size dry runs, but before any selector outputs
+or post-hoc oracle evaluation. Do not backdate them to that commit. Commit this
+appendix before running phase 2-lite; no outcome or oracle fields inform it.
+
+`git show --stat 9a58037` confirms that commit touched only
+`reports/callgraph_selection/design.md`: one file, 126 insertions. Its message
+does not establish that success criteria were present; the file content did not
+contain C1–C3 or a success-criteria appendix.
+
+**Primary eligibility:** a complete graph, a confirmed final-study candidate
+patch, and at least one resolved changed production seed. Confirm candidate
+bytes against the export manifest and use its `csv_source_run` as final-study
+provenance. Resource-limited, missing, partial, unconfirmed-patch and zero-resolved-
+seed tasks are unavailable for primary evaluation, not empty selections. Keep
+all fixed-cohort rows and reasons visible; do not replace an ineligible task.
+
+The fixed six large cases are django-13212, astropy-13977, django-12209,
+django-13297, django-14140 and django-14631 (full IDs in the inventory below).
+Only PRIMARY/resolved-only results decide the criteria. Interpret d<=2 as the
+fixed radius-2 configuration, and d<=3 as the fixed radius-3 configuration;
+do not choose a favorable depth after observing results.
+
+- **C1:** for **at least 5 of those fixed 6 tasks**, B PRIMARY with distance
+  <=2 returns a non-empty **unbudgeted** set containing **at most 250** tests.
+  Apply no top-K truncation to make the count fit. An ineligible task remains
+  one of the six fixed rows and cannot count toward the five successes.
+- **C2:** for **at least 5 of those fixed 6 tasks**, C PRIMARY's **top 100** at
+  distance configuration 2 contains **at least one stored V2 candidate** with
+  a resolved-only path of length <=2 to a resolved changed seed. Use the exact
+  stored V2 union and the existing ID-normalization/matching rules; no extra
+  candidate or fuzzy match may supply a hit. If fewer than 100 candidates
+  exist, inspect all returned candidates. Missing mappings remain unavailable,
+  never manufactured matches, and cannot count toward the five successes.
+- **C3:** for **at least half of the eligible tasks** in the fixed **13-task
+  NOT_AVAILABLE cohort**, B PRIMARY with distance <=3 selects at least one
+  pre-existing base test. Freeze the eligible denominator after the approved
+  four-graph rebuild and all-83 patch/seed resolution, before running selectors.
+  For n eligible tasks the threshold is ceil(n/2). If n=0, C3 is NOT_EVALUABLE,
+  not a vacuous pass. Report every excluded task and its reason.
+
+**Pre-registered decision map.** Define rank/filter support as C1 AND C2, and
+fallback support as C3. A single C1 or C2 pass is insufficient for rank/filter
+support. This makes partial combinations explicit without choosing afterward:
+
+| C1 AND C2 | C3 | Supported use from these criteria |
+|---|---|---|
+| pass | not passed | Rank/filter layer over Tier 2 |
+| not passed | pass | Fallback only |
+| pass | pass | Both rank/filter layer over Tier 2 and fallback |
+| not passed | not passed | Do not use on this experiment's evidence |
+
+Retain FAIL versus NOT_EVALUABLE in the underlying results; "not passed" in the
+decision table includes either and does not turn missing evidence into measured
+failure. The secondary ambiguous-edge variant is reported separately and never
+decides C1/C2/C3 pass/fail or rescues a primary criterion. The extended partial
+stratum below also never contributes to primary thresholds or recommendations.
+
+**"Replace Tier 2" cannot be supported by this experiment alone.** C uses the
+stored V2 union; tier membership was not serialized. Static reachability and
+these criteria do not establish dynamic execution, correctness, regression
+sensitivity or test-runtime savings. Nothing in the primary evaluation confirms
+that a selected test exercises the changed code. No primary/secondary result is
+evaluated during this drafting step.
+
+## Artifact-only graph inventory for the success cohorts — 2026-10-21
+
+This is the **current stored graph state**, not a forecast under an unexecuted
+amendment. Source: each task's `graphs/<instance_id>/diagnostics.json`, with
+baseline counters in `base_feasibility.csv`. NOT_AVAILABLE membership projects
+only identity, source run and `v2_outcome` from the committed V2 diagnostic CSV;
+no oracle columns are used. Graph completeness describes construction coverage,
+not proof that every call resolves or a test exercises changed code.
+
+All 83 exported final-study patch hashes and `csv_source_run` identities have
+been verified (`patch_export_verification_83.json`); the four alternative-run
+ambiguity notes remain recorded. Fresh all-83 changed-seed resolution has not
+run. Therefore completeness alone does not establish current primary eligibility
+or the final C3 denominator. Historical seed counts are not substituted for that
+pending resolution against the verified export.
+
+### Six large cases: five complete, one partial
+
+| Task | Stored graph state | Reason / evidence |
+|---|---|---|
+| [django__django-13212](graphs/django__django-13212/diagnostics.json) | complete | No recorded parse/omission/resource failure. |
+| [astropy__astropy-13977](graphs/astropy__astropy-13977/diagnostics.json) | complete | No recorded parse/omission/resource failure. |
+| [django__django-12209](graphs/django__django-12209/diagnostics.json) | complete | No recorded parse/omission/resource failure. |
+| [django__django-13297](graphs/django__django-13297/diagnostics.json) | complete | No recorded parse/omission/resource failure. |
+| [django__django-14140](graphs/django__django-14140/diagnostics.json) | complete | No recorded parse/omission/resource failure. |
+| [django__django-14631](graphs/django__django-14631/diagnostics.json) | partial | `tests/test_runner_apps/tagged/tests_syntax_error.py`: SyntaxError, line 11 (invalid decimal literal). |
+
+The five complete graphs satisfy the graph component of primary eligibility.
+Django-14631 cannot contribute a primary success while partial; its reason is
+permitted in the proposed extended stratum, subject to the same confirmed-patch
+and resolved-seed requirements. C1 and C2 still require five successes among
+the original six; do not silently shrink that fixed cohort.
+
+### Thirteen NOT_AVAILABLE cases: eight complete, one partial, four resource-limited
+
+| Task | Stored graph state | Reason / evidence |
+|---|---|---|
+| [astropy__astropy-14365](graphs/astropy__astropy-14365/diagnostics.json) | complete | No recorded parse/omission/resource failure. |
+| [astropy__astropy-14508](graphs/astropy__astropy-14508/diagnostics.json) | complete | No recorded parse/omission/resource failure. |
+| [matplotlib__matplotlib-14623](graphs/matplotlib__matplotlib-14623/diagnostics.json) | complete | No recorded parse/omission/resource failure. |
+| [matplotlib__matplotlib-25287](graphs/matplotlib__matplotlib-25287/diagnostics.json) | complete | No recorded parse/omission/resource failure. |
+| [astropy__astropy-13977](graphs/astropy__astropy-13977/diagnostics.json) | complete | No recorded parse/omission/resource failure. |
+| [matplotlib__matplotlib-24177](graphs/matplotlib__matplotlib-24177/diagnostics.json) | complete | No recorded parse/omission/resource failure. |
+| [pydata__xarray-4966](graphs/pydata__xarray-4966/diagnostics.json) | complete | No recorded parse/omission/resource failure. |
+| [pylint-dev__pylint-6903](graphs/pylint-dev__pylint-6903/diagnostics.json) | partial | 10 syntax/encoding parse failures plus 2 Python symlink omissions; full paths below. Not eligible for the proposed extended stratum. |
+| [sympy__sympy-13480](graphs/sympy__sympy-13480/diagnostics.json) | resource_limited | Original cumulative 5,000,000 AST-node cap; graph stopped before call resolution. Largest-first rebuild has not run. |
+| [sympy__sympy-14711](graphs/sympy__sympy-14711/diagnostics.json) | resource_limited | Original cumulative 5,000,000 AST-node cap; graph stopped before call resolution. Largest-first rebuild has not run. |
+| [sympy__sympy-17318](graphs/sympy__sympy-17318/diagnostics.json) | resource_limited | Original cumulative 5,000,000 AST-node cap; graph stopped before call resolution. Largest-first rebuild has not run. |
+| [sympy__sympy-19783](graphs/sympy__sympy-19783/diagnostics.json) | resource_limited | Original cumulative 5,000,000 AST-node cap; graph stopped before call resolution. Largest-first rebuild has not run. |
+| [sympy__sympy-24562](graphs/sympy__sympy-24562/diagnostics.json) | complete | No recorded parse/omission/resource failure. |
+
+Astropy-13977 appears in both cohorts; there are **18 distinct tasks** across the
+two tables. Resource-limited is a third state, not relabeled partial. The four
+SymPy preflights predict omission sets but are not rebuilt graphs. The eight
+complete NOT_AVAILABLE graphs are only a graph-complete pool; the final C3
+eligible denominator may be smaller after confirmed-patch/seed checks.
+
+Pylint-6903's exact stored partial reasons are:
+
+| File | Reason | Line |
+|---|---|---:|
+| `tests/functional/s/star/star_needs_assignment_target_py37.py` | SyntaxError | 15 |
+| `tests/functional/s/syntax/syntax_error.py` | SyntaxError | 1 |
+| `tests/functional/s/syntax/syntax_error_jython.py` | SyntaxError | 1 |
+| `tests/functional/t/tokenize_error.py` | SyntaxError | 6 |
+| `tests/functional/t/tokenize_error_jython.py` | SyntaxError | 7 |
+| `tests/functional/u/unknown_encoding_jython.py` | SyntaxError | 0 |
+| `tests/input/func_w0122_py_30.py` | SyntaxError | 5 |
+| `tests/regrtest_data/bad_package/__init__.py` | SyntaxError | 2 |
+| `tests/regrtest_data/descriptor_crash.py` | SyntaxError | 20 |
+| `tests/regrtest_data/syntax_error.py` | SyntaxError | 1 |
+| `tests/functional/s/symlink/_binding/__init__.py` | archive_link_or_special_file_not_followed |  |
+| `tests/functional/s/symlink/_binding/symlink_module.py` | archive_link_or_special_file_not_followed |  |
+
+The two symlink omissions independently disqualify pylint-6903 from an extended
+stratum restricted to unparseable-file and largest-first reasons. All reasons
+remain visible; do not drop the disqualifying reasons from eligibility checks.
+
+## Extended partial-graph stratum — 2026-10-21
+
+**DRAFT FOR USER COMMIT. SEPARATE, DESCRIPTIVE STRATUM.** Include a task only if:
+
+1. Its finished graph is explicitly partial, not resource-limited or missing.
+2. Every incompleteness reason is either a file that failed `ast.parse`
+   (SyntaxError/encoding, UnicodeError, ValueError or RecursionError at parsing)
+   or a whole-file `largest_first_retained_ast_quota` omission under the approved
+   rule. The full reason/path list is required; missing reasons do not qualify.
+3. Its final-study candidate patch is confirmed by export SHA-256 and CSV source
+   run, and at least one changed production seed resolves in retained base code.
+
+Exclude partials with symlink/special-file omissions, over-size blob omissions,
+other resource/failure reasons or incomplete provenance. Keep symbols in omitted
+or unparseable files unavailable with their reasons; do not infer them resolved.
+Current resource-limited SymPy artifacts do not qualify. A future successfully
+finished, largest-first partial graph may qualify only after its actual final
+reasons and seed mapping are checked. Do not forecast eligibility from preflight.
+
+This stratum contains **qualified partial graphs only**; complete graphs remain
+in PRIMARY_COMPLETE. Report EXTENDED_PARTIAL separately with task IDs, all
+omitted/unparseable paths, confirmed-patch and resolved-seed counts, selection
+metrics and its own denominators. Separate primary-edge and secondary-edge
+results within each stratum. Never pool its rows, numerator or denominator with
+the complete-graph primary, use it to meet C1/C2/C3, or substitute it for a missing
+primary task. Any parallel descriptive criterion counts are labeled extended,
+not primary pass/fail. Freeze strata after approved rebuild/seed resolution and
+before selector execution. No result-dependent reclassification or tuning.
