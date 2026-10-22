@@ -1,0 +1,473 @@
+{
+  "benchmark_code_execution": false,
+  "command": "env -u PYTHONPATH .venv/bin/python -B reports/callgraph_selection/build_graphs.py --refresh-accounting",
+  "edge_reason_counts": {
+    "attribute_or_inherited_member_not_resolved": 403050,
+    "decorated_or_conditional_definition": 130832,
+    "dynamic_receiver_or_callable": 425680,
+    "external_or_missing_module_attribute": 511080,
+    "global_or_nonlocal_binding": 256,
+    "inheritance_or_dynamic_receiver_dispatch": 1127296,
+    "instance_or_external_attribute_not_resolved": 36614,
+    "module_or_external_not_callable_definition": 4175,
+    "multiple_or_uncertain_bindings": 10527,
+    "name_not_statically_bound_or_builtin": 749539,
+    "star_import_may_bind_attribute": 226846,
+    "star_import_may_bind_name": 1977,
+    "uncertain_class_definition": 388017,
+    "uncertain_or_rebound_attribute": 15339,
+    "uncertain_or_rebound_name": 1756809,
+    "unique_static_binding": 1260582,
+    "unsupported_comprehension_lambda_or_annotation_scope": 136107
+  },
+  "graph_status_counts": {
+    "complete": 56,
+    "partial": 23,
+    "resource_limited": 4
+  },
+  "graphs_constructed": 83,
+  "limits": {
+    "ast_nodes": 5000000,
+    "call_sites": 2000000,
+    "definitions": 1000000,
+    "python_files": 50000,
+    "seconds": 600,
+    "source_blob_bytes": 2097152,
+    "source_bytes": 536870912
+  },
+  "network_access": false,
+  "oracle_analysis": false,
+  "patch_provenance_counts": {
+    "confirmed_study_snapshot": 19,
+    "local_final_identity_unverified": 6,
+    "missing": 58
+  },
+  "patch_status_counts": {
+    "available": 25,
+    "patch missing": 58
+  },
+  "per_repository": [
+    {
+      "ambiguous_edges": 18809,
+      "call_sites": 363205,
+      "changed_symbol_resolution_rate": 1.0,
+      "changed_symbols_ambiguous": 0,
+      "changed_symbols_resolved": 1,
+      "changed_symbols_total": 1,
+      "changed_symbols_unresolved": 0,
+      "definitions": 67607,
+      "edge_records": 363205,
+      "graph_runtime_seconds": 14.347038999999999,
+      "graph_status_counts": {
+        "complete": 4
+      },
+      "head": "7d7cf6d2d3e8b1e381e980278d071067b4b25241",
+      "nodes": 71140,
+      "omitted_files": 0,
+      "parse_failures": 0,
+      "parsed_files": 3533,
+      "patch_provenance_counts": {
+        "confirmed_study_snapshot": 1,
+        "missing": 3
+      },
+      "patch_status_counts": {
+        "available": 1,
+        "patch missing": 3
+      },
+      "python_files": 3533,
+      "repo": "astropy/astropy",
+      "resolved_edges": 49916,
+      "symbol_reason_counts": {},
+      "task_runtime_seconds": 19.120288000000002,
+      "tasks": 4,
+      "unresolved_edges": 294480
+    },
+    {
+      "ambiguous_edges": 337649,
+      "call_sites": 4599833,
+      "changed_symbol_resolution_rate": 0.7941176470588235,
+      "changed_symbols_ambiguous": 3,
+      "changed_symbols_resolved": 27,
+      "changed_symbols_total": 34,
+      "changed_symbols_unresolved": 4,
+      "definitions": 1091768,
+      "edge_records": 4599833,
+      "graph_runtime_seconds": 174.904261,
+      "graph_status_counts": {
+        "complete": 16,
+        "partial": 15
+      },
+      "head": "79502d08405dbf24efa39e8731320f31035b9e9c",
+      "nodes": 1174952,
+      "omitted_files": 0,
+      "parse_failures": 15,
+      "parsed_files": 83184,
+      "patch_provenance_counts": {
+        "confirmed_study_snapshot": 7,
+        "missing": 24
+      },
+      "patch_status_counts": {
+        "available": 7,
+        "patch missing": 24
+      },
+      "python_files": 83199,
+      "repo": "django/django",
+      "resolved_edges": 703541,
+      "symbol_reason_counts": {
+        "multiple_same_name_definitions_in_file": 3,
+        "symbol_absent_at_base_or_diff_context_name": 4
+      },
+      "task_runtime_seconds": 257.390877,
+      "tasks": 31,
+      "unresolved_edges": 3558643
+    },
+    {
+      "ambiguous_edges": 87403,
+      "call_sites": 1009872,
+      "changed_symbol_resolution_rate": 1.0,
+      "changed_symbols_ambiguous": 0,
+      "changed_symbols_resolved": 7,
+      "changed_symbols_total": 7,
+      "changed_symbols_unresolved": 0,
+      "definitions": 160000,
+      "edge_records": 1009872,
+      "graph_runtime_seconds": 39.473825000000005,
+      "graph_status_counts": {
+        "complete": 15
+      },
+      "head": "98dd0357aa1e6b9fd87148234d34c129167bb1cb",
+      "nodes": 173399,
+      "omitted_files": 0,
+      "parse_failures": 0,
+      "parsed_files": 13399,
+      "patch_provenance_counts": {
+        "confirmed_study_snapshot": 4,
+        "missing": 11
+      },
+      "patch_status_counts": {
+        "available": 4,
+        "patch missing": 11
+      },
+      "python_files": 13399,
+      "repo": "matplotlib/matplotlib",
+      "resolved_edges": 167056,
+      "symbol_reason_counts": {},
+      "task_runtime_seconds": 58.372212,
+      "tasks": 15,
+      "unresolved_edges": 755413
+    },
+    {
+      "ambiguous_edges": 1798,
+      "call_sites": 19464,
+      "changed_symbol_resolution_rate": 1.0,
+      "changed_symbols_ambiguous": 0,
+      "changed_symbols_resolved": 1,
+      "changed_symbols_total": 1,
+      "changed_symbols_unresolved": 0,
+      "definitions": 2640,
+      "edge_records": 19464,
+      "graph_runtime_seconds": 0.590311,
+      "graph_status_counts": {
+        "complete": 1
+      },
+      "head": "c1cb287835852406691aed60ea0c62710f2c6b18",
+      "nodes": 2790,
+      "omitted_files": 0,
+      "parse_failures": 0,
+      "parsed_files": 150,
+      "patch_provenance_counts": {
+        "confirmed_study_snapshot": 1
+      },
+      "patch_status_counts": {
+        "available": 1
+      },
+      "python_files": 150,
+      "repo": "mwaskom/seaborn",
+      "resolved_edges": 2223,
+      "symbol_reason_counts": {},
+      "task_runtime_seconds": 0.814571,
+      "tasks": 1,
+      "unresolved_edges": 15443
+    },
+    {
+      "ambiguous_edges": 112,
+      "call_sites": 3933,
+      "changed_symbol_resolution_rate": 1.0,
+      "changed_symbols_ambiguous": 0,
+      "changed_symbols_resolved": 1,
+      "changed_symbols_total": 1,
+      "changed_symbols_unresolved": 0,
+      "definitions": 1570,
+      "edge_records": 3933,
+      "graph_runtime_seconds": 0.135139,
+      "graph_status_counts": {
+        "complete": 1
+      },
+      "head": "d086db856be187255b8ec61ef409357393020f32",
+      "nodes": 1650,
+      "omitted_files": 0,
+      "parse_failures": 0,
+      "parsed_files": 80,
+      "patch_provenance_counts": {
+        "local_final_identity_unverified": 1
+      },
+      "patch_status_counts": {
+        "available": 1
+      },
+      "python_files": 80,
+      "repo": "pallets/flask",
+      "resolved_edges": 613,
+      "symbol_reason_counts": {},
+      "task_runtime_seconds": 0.217309,
+      "tasks": 1,
+      "unresolved_edges": 3208
+    },
+    {
+      "ambiguous_edges": 0,
+      "call_sites": 0,
+      "changed_symbol_resolution_rate": null,
+      "changed_symbols_ambiguous": 0,
+      "changed_symbols_resolved": 0,
+      "changed_symbols_total": 0,
+      "changed_symbols_unresolved": 0,
+      "definitions": 0,
+      "edge_records": 0,
+      "graph_runtime_seconds": 0,
+      "graph_status_counts": {},
+      "head": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "nodes": 0,
+      "omitted_files": 0,
+      "parse_failures": 0,
+      "parsed_files": 0,
+      "patch_provenance_counts": {},
+      "patch_status_counts": {},
+      "python_files": 0,
+      "repo": "psf/requests",
+      "resolved_edges": 0,
+      "symbol_reason_counts": {},
+      "task_runtime_seconds": 0,
+      "tasks": 0,
+      "unresolved_edges": 0
+    },
+    {
+      "ambiguous_edges": 7738,
+      "call_sites": 191067,
+      "changed_symbol_resolution_rate": 0.8,
+      "changed_symbols_ambiguous": 1,
+      "changed_symbols_resolved": 4,
+      "changed_symbols_total": 5,
+      "changed_symbols_unresolved": 0,
+      "definitions": 26881,
+      "edge_records": 191067,
+      "graph_runtime_seconds": 6.151339,
+      "graph_status_counts": {
+        "complete": 5
+      },
+      "head": "989e6fff271a5d1422d3bff9cb8402b14f1bad0a",
+      "nodes": 27665,
+      "omitted_files": 0,
+      "parse_failures": 0,
+      "parsed_files": 784,
+      "patch_provenance_counts": {
+        "local_final_identity_unverified": 3,
+        "missing": 2
+      },
+      "patch_status_counts": {
+        "available": 3,
+        "patch missing": 2
+      },
+      "python_files": 784,
+      "repo": "pydata/xarray",
+      "resolved_edges": 59736,
+      "symbol_reason_counts": {
+        "multiple_same_name_definitions_in_file": 1
+      },
+      "task_runtime_seconds": 8.454919,
+      "tasks": 5,
+      "unresolved_edges": 123593
+    },
+    {
+      "ambiguous_edges": 5152,
+      "call_sites": 84192,
+      "changed_symbol_resolution_rate": 0.8888888888888888,
+      "changed_symbols_ambiguous": 0,
+      "changed_symbols_resolved": 8,
+      "changed_symbols_total": 9,
+      "changed_symbols_unresolved": 1,
+      "definitions": 36478,
+      "edge_records": 84192,
+      "graph_runtime_seconds": 3.8363869999999998,
+      "graph_status_counts": {
+        "partial": 5
+      },
+      "head": "5e998f68711a72c2df97d84ae77e752408b32a32",
+      "nodes": 43356,
+      "omitted_files": 6,
+      "parse_failures": 53,
+      "parsed_files": 6878,
+      "patch_provenance_counts": {
+        "confirmed_study_snapshot": 3,
+        "missing": 2
+      },
+      "patch_status_counts": {
+        "available": 3,
+        "patch missing": 2
+      },
+      "python_files": 6931,
+      "repo": "pylint-dev/pylint",
+      "resolved_edges": 13852,
+      "symbol_reason_counts": {
+        "symbol_absent_at_base_or_diff_context_name": 1
+      },
+      "task_runtime_seconds": 6.287632,
+      "tasks": 5,
+      "unresolved_edges": 65188
+    },
+    {
+      "ambiguous_edges": 6536,
+      "call_sites": 123710,
+      "changed_symbol_resolution_rate": 1.0,
+      "changed_symbols_ambiguous": 0,
+      "changed_symbols_resolved": 5,
+      "changed_symbols_total": 5,
+      "changed_symbols_unresolved": 0,
+      "definitions": 33551,
+      "edge_records": 123710,
+      "graph_runtime_seconds": 4.23071,
+      "graph_status_counts": {
+        "complete": 4,
+        "partial": 3
+      },
+      "head": "c9bf1edf9e0d388f3e7bebc88576e608ffbc40a4",
+      "nodes": 35035,
+      "omitted_files": 0,
+      "parse_failures": 3,
+      "parsed_files": 1484,
+      "patch_provenance_counts": {
+        "confirmed_study_snapshot": 1,
+        "local_final_identity_unverified": 2,
+        "missing": 4
+      },
+      "patch_status_counts": {
+        "available": 3,
+        "patch missing": 4
+      },
+      "python_files": 1487,
+      "repo": "pytest-dev/pytest",
+      "resolved_edges": 16225,
+      "symbol_reason_counts": {},
+      "task_runtime_seconds": 6.394672,
+      "tasks": 7,
+      "unresolved_edges": 100949
+    },
+    {
+      "ambiguous_edges": 4742,
+      "call_sites": 342747,
+      "changed_symbol_resolution_rate": null,
+      "changed_symbols_ambiguous": 0,
+      "changed_symbols_resolved": 0,
+      "changed_symbols_total": 0,
+      "changed_symbols_unresolved": 0,
+      "definitions": 38396,
+      "edge_records": 342747,
+      "graph_runtime_seconds": 10.914792,
+      "graph_status_counts": {
+        "complete": 5
+      },
+      "head": "718eedb7af8678255de080d4748d9f67e321ba41",
+      "nodes": 42044,
+      "omitted_files": 0,
+      "parse_failures": 0,
+      "parsed_files": 3648,
+      "patch_provenance_counts": {
+        "missing": 5
+      },
+      "patch_status_counts": {
+        "patch missing": 5
+      },
+      "python_files": 3648,
+      "repo": "scikit-learn/scikit-learn",
+      "resolved_edges": 69504,
+      "symbol_reason_counts": {},
+      "task_runtime_seconds": 15.151391,
+      "tasks": 5,
+      "unresolved_edges": 268501
+    },
+    {
+      "ambiguous_edges": 5929,
+      "call_sites": 112762,
+      "changed_symbol_resolution_rate": 1.0,
+      "changed_symbols_ambiguous": 0,
+      "changed_symbols_resolved": 1,
+      "changed_symbols_total": 1,
+      "changed_symbols_unresolved": 0,
+      "definitions": 28213,
+      "edge_records": 112762,
+      "graph_runtime_seconds": 4.39828,
+      "graph_status_counts": {
+        "complete": 4
+      },
+      "head": "ecab3746cf4fe3f4f0e69e82cb4b5fc724053872",
+      "nodes": 30378,
+      "omitted_files": 0,
+      "parse_failures": 0,
+      "parsed_files": 2165,
+      "patch_provenance_counts": {
+        "confirmed_study_snapshot": 1,
+        "missing": 3
+      },
+      "patch_status_counts": {
+        "available": 1,
+        "patch missing": 3
+      },
+      "python_files": 2165,
+      "repo": "sphinx-doc/sphinx",
+      "resolved_edges": 24474,
+      "symbol_reason_counts": {},
+      "task_runtime_seconds": 6.900862000000001,
+      "tasks": 4,
+      "unresolved_edges": 82359
+    },
+    {
+      "ambiguous_edges": 33425,
+      "call_sites": 2262543,
+      "changed_symbol_resolution_rate": null,
+      "changed_symbols_ambiguous": 0,
+      "changed_symbols_resolved": 0,
+      "changed_symbols_total": 0,
+      "changed_symbols_unresolved": 0,
+      "definitions": 93097,
+      "edge_records": 333941,
+      "graph_runtime_seconds": 58.983589,
+      "graph_status_counts": {
+        "complete": 1,
+        "resource_limited": 4
+      },
+      "head": "263f29e9332661e24628e39ba0d4bd1fd729d2f9",
+      "nodes": 96060,
+      "omitted_files": 0,
+      "parse_failures": 0,
+      "parsed_files": 3772,
+      "patch_provenance_counts": {
+        "confirmed_study_snapshot": 1,
+        "missing": 4
+      },
+      "patch_status_counts": {
+        "available": 1,
+        "patch missing": 4
+      },
+      "python_files": 6650,
+      "repo": "sympy/sympy",
+      "resolved_edges": 153442,
+      "symbol_reason_counts": {},
+      "task_runtime_seconds": 64.410196,
+      "tasks": 5,
+      "unresolved_edges": 147074
+    }
+  ],
+  "phase": "1b_AST_graph_only",
+  "population": 83,
+  "sample": false,
+  "selection": false,
+  "test_execution": false
+}

@@ -28,3 +28,7 @@ docker-volumes/
 # Frozen patch artifacts are recorded in run directories, never at the repo root.
 *.patch
 *.diff
+
+# call-graph raw outputs (regenerable)
+reports/callgraph_selection/graphs/
+reports/callgraph_selection/provenance/
