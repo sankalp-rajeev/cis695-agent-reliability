@@ -1,0 +1,1361 @@
+POST-HOC ANALYSIS ONLY. Uses oracle fields. Must never feed back into any run.
+jsonl: None
+dataset: HuggingFace SWE-bench/SWE-bench_Verified via reliability.benchmark.loader.load_instance; named file local_swebench_verified.jsonl was NOT FOUND
+
+==============================================================================
+django__django-13212  [group1_false_accept]  run=main_50_a
+missing: []
+csv_disagreements: []
+csv: decision=ACCEPT oracle=unresolved int=PASS reg=PASS stat=PASS repro=PASS source_run=main_50_a
+oracle: outcome=unresolved resolved=False applied=True report=/home/sankalp/projects/cis695-agent-reliability/logs/run_evaluation/main_50_a__django__django-13212/deepseek_deepseek-v4-flash/django__django-13212/report.json
+  F2P fail n=2: ['test_value_placeholder_with_decimal_field (forms_tests.tests.test_validators.ValidatorCustomMessageTests)', 'test_value_placeholder_with_file_field (forms_tests.tests.test_validators.ValidatorCustomMessageTests)']
+  F2P ok   n=3: ['test_value_placeholder_with_char_field (forms_tests.tests.test_validators.ValidatorCustomMessageTests)', 'test_value_placeholder_with_integer_field (forms_tests.tests.test_validators.ValidatorCustomMessageTests)', 'test_value_placeholder_with_null_character (forms_tests.tests.test_validators.ValidatorCustomMessageTests)']
+  P2P fail n=0: []
+  P2P ok n=2
+official F2P n=5: ['test_value_placeholder_with_char_field (forms_tests.tests.test_validators.ValidatorCustomMessageTests)', 'test_value_placeholder_with_decimal_field (forms_tests.tests.test_validators.ValidatorCustomMessageTests)', 'test_value_placeholder_with_file_field (forms_tests.tests.test_validators.ValidatorCustomMessageTests)', 'test_value_placeholder_with_integer_field (forms_tests.tests.test_validators.ValidatorCustomMessageTests)', 'test_value_placeholder_with_null_character (forms_tests.tests.test_validators.ValidatorCustomMessageTests)']
+official P2P n=2
+decision=ACCEPT reasons=['all accept conditions met']
+integrity: PASS no violations
+regression: PASS 1137 executed, 0 regressions
+  findings.signal=PASS n_executed=1137 summary={'PASS': 1136, 'ERROR': 1, 'NOT_RUN': 246} notes=[]
+static: PASS 2/2 checks ran; lint: flake8 is not installed: bash: line 1: flake8: command not found; typecheck: no configuration found; build: build is not installed: /opt/miniconda3/envs/testbed/bin/python: No module named build
+reproduction: PASS 3/3 stable generated tests pass on the patched tree n_frozen=3
+  frozen n=3
+    frozen: path=v4_repro/test_repro_1.py name=None status=None {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:a06ce23fb43399a60214a61befcc351dd1c41a5f8fc9857c7846ee8cdb197a74', 'size_bytes': 2253, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': '3/envs/testbed/lib/python3.6/runpy.py", line 96, in _run_module_code\n    mod_name, mod_spec, pkg_name, script_name)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 85, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 43, in <module>\n    expect_message(regex_validator, "blah", "blah is not a number.")\n  File "v4_repro/test_repro_1.py", line 33, in expect_message\n    % (name, expected, exc.messages, getattr(exc, "params", None))\nAssertionError: RegexValidator: expected \'blah is not a number.\' but got [\'%(value)s is not a number.\'] (params=None)\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': '3/envs/testbed/lib/python3.6/runpy.py", line 96, in _run_module_code\n    mod_name, mod_spec, pkg_name, script_name)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 85, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 43, in <module>\n    expect_message(regex_validator, "blah", "blah is not a number.")\n  File "v4_repro/test_repro_1.py", line 33, in expect_message\n    % (name, expected, exc.messages, getattr(exc, "params", None))\nAssertionError: RegexValidator: expected \'blah is not a number.\' but got [\'%(value)s is not a number.\'] (params=None)\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_2.py name=None status=None {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:0f7db0010e5ea3eed244ad30161961d80cd4a98ec5be3bfcaa59d90dcb5df87b', 'size_bytes': 1436, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'g_name, script_name=fname)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 96, in _run_module_code\n    mod_name, mod_spec, pkg_name, script_name)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 85, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 39, in <module>\n    expect_value_param(validate_ipv4_address, "999.999.999.999")\n  File "v4_repro/test_repro_2.py", line 29, in expect_value_param\n    "%s raised without params for %r" % (name, value)\nAssertionError: validate_ipv4_address raised without params for \'999.999.999.999\'\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'g_name, script_name=fname)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 96, in _run_module_code\n    mod_name, mod_spec, pkg_name, script_name)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 85, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 39, in <module>\n    expect_value_param(validate_ipv4_address, "999.999.999.999")\n  File "v4_repro/test_repro_2.py", line 29, in expect_value_param\n    "%s raised without params for %r" % (name, value)\nAssertionError: validate_ipv4_address raised without params for \'999.999.999.999\'\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_3.py name=None status=None {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:c518d0ed435db6bcb0bb5c25c2755056f263b70f32447898f41c922ed0837adf', 'size_bytes': 1634, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'ipt_name=fname)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 96, in _run_module_code\n    mod_name, mod_spec, pkg_name, script_name)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 85, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 41, in <module>\n    DecimalValidator(max_digits=2, decimal_places=1), Decimal("123.45")\n  File "v4_repro/test_repro_3.py", line 33, in expect_value_param\n    % (name, params, value)\nAssertionError: DecimalValidator did not include the value in params: params={\'max\': 2} value=Decimal(\'123.45\')\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'ipt_name=fname)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 96, in _run_module_code\n    mod_name, mod_spec, pkg_name, script_name)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 85, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 41, in <module>\n    DecimalValidator(max_digits=2, decimal_places=1), Decimal("123.45")\n  File "v4_repro/test_repro_3.py", line 33, in expect_value_param\n    % (name, params, value)\nAssertionError: DecimalValidator did not include the value in params: params={\'max\': 2} value=Decimal(\'123.45\')\n'}], 'kept': True, 'drop_reason': None}
+  patched n=3
+    patched: {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:a06ce23fb43399a60214a61befcc351dd1c41a5f8fc9857c7846ee8cdb197a74', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'OK\n'}, {'outcome': 'pass', 'returncode': 0,
+    patched: {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:0f7db0010e5ea3eed244ad30161961d80cd4a98ec5be3bfcaa59d90dcb5df87b', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'OK\n'}, {'outcome': 'pass', 'returncode': 0,
+    patched: {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:c518d0ed435db6bcb0bb5c25c2755056f263b70f32447898f41c922ed0837adf', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'OK\n'}, {'outcome': 'pass', 'returncode': 0,
+n_selected=1383 convention=tests_tree runner=django: found tests/runtests.py in a Django tree
+  sel: tests/validators/tests.py::TestValidators::test_validators
+  sel: tests/validators/tests.py::TestValidators::test_single_message
+  sel: tests/validators/tests.py::TestValidators::test_message_list
+  sel: tests/validators/tests.py::TestValidators::test_message_dict
+  sel: tests/validators/tests.py::TestValidators::test_regex_validator_flags
+  sel: tests/validators/tests.py::TestValidators::test_max_length_validator_message
+  sel: tests/validators/tests.py::TestValidatorEquality::test_regex_equality
+  sel: tests/validators/tests.py::TestValidatorEquality::test_regex_equality_nocache
+  sel: tests/validators/tests.py::TestValidatorEquality::test_regex_equality_blank
+  sel: tests/validators/tests.py::TestValidatorEquality::test_email_equality
+  sel: tests/validators/tests.py::TestValidatorEquality::test_basic_equality
+  sel: tests/validators/tests.py::TestValidatorEquality::test_decimal_equality
+  sel: tests/validators/tests.py::TestValidatorEquality::test_file_extension_equality
+  sel: tests/validators/tests.py::TestValidatorEquality::test_prohibit_null_characters_validator_equality
+  sel: tests/validators/tests.py::DeprecationTests::test_whitelist
+  sel: tests/validators/tests.py::DeprecationTests::test_whitelist_warning
+  sel: tests/validators/tests.py::DeprecationTests::test_domain_whitelist
+  sel: tests/validators/tests.py::DeprecationTests::test_domain_whitelist_access_warning
+  sel: tests/validators/tests.py::DeprecationTests::test_domain_whitelist_set_warning
+  sel: tests/auth_tests/test_context_processors.py::PermWrapperTests::test_permwrapper_in
+  sel: tests/auth_tests/test_context_processors.py::PermWrapperTests::test_permlookupdict_in
+  sel: tests/auth_tests/test_context_processors.py::PermWrapperTests::test_iter
+  sel: tests/auth_tests/test_context_processors.py::AuthContextProcessorTests::test_session_not_accessed
+  sel: tests/auth_tests/test_context_processors.py::AuthContextProcessorTests::test_session_is_accessed
+  sel: tests/auth_tests/test_context_processors.py::AuthContextProcessorTests::test_perms_attrs
+  sel: tests/auth_tests/test_context_processors.py::AuthContextProcessorTests::test_perm_in_perms_attrs
+  sel: tests/auth_tests/test_context_processors.py::AuthContextProcessorTests::test_message_attrs
+  sel: tests/auth_tests/test_context_processors.py::AuthContextProcessorTests::test_user_attrs
+  sel: tests/auth_tests/test_decorators.py::LoginRequiredTestCase::test_callable
+  sel: tests/auth_tests/test_decorators.py::LoginRequiredTestCase::test_view
+  sel: tests/auth_tests/test_decorators.py::LoginRequiredTestCase::test_login_required
+  sel: tests/auth_tests/test_decorators.py::LoginRequiredTestCase::test_login_required_next_url
+  sel: tests/auth_tests/test_decorators.py::PermissionsRequiredDecoratorTest::test_many_permissions_pass
+  sel: tests/auth_tests/test_decorators.py::PermissionsRequiredDecoratorTest::test_many_permissions_in_set_pass
+  sel: tests/auth_tests/test_decorators.py::PermissionsRequiredDecoratorTest::test_single_permission_pass
+  sel: tests/auth_tests/test_decorators.py::PermissionsRequiredDecoratorTest::test_permissioned_denied_redirect
+  sel: tests/auth_tests/test_decorators.py::PermissionsRequiredDecoratorTest::test_permissioned_denied_exception_raised
+  sel: tests/backends/base/test_schema.py::SchemaEditorTests::test_effective_default_callable
+  sel: tests/basic/tests.py::ModelInstanceCreationTests::test_object_is_not_written_to_database_until_save_was_called
+  sel: tests/basic/tests.py::ModelInstanceCreationTests::test_can_initialize_model_instance_using_positional_arguments
+  ... +1343 more
+coverage: selected=1383 p2p=2 overlap_p2p=0 frac=0.0
+  failing_in_v2=[]
+  failing_f2p_in_v2=[]
+  failing_p2p_in_v2=[]
+v4 files: ['test_repro_1.py', 'test_repro_2.py', 'test_repro_3.py']
+lens: issue=468 agent=7385 gold=7779 test_patch=5326
+harness_report top keys: ['django__django-13212']
+==============================================================================
+django__django-16667  [group1_false_accept]  run=main_50_a
+missing: []
+csv_disagreements: []
+csv: decision=ACCEPT oracle=unresolved int=PASS reg=PASS stat=PASS repro=PASS source_run=main_50_a
+oracle: outcome=unresolved resolved=False applied=True report=/home/sankalp/projects/cis695-agent-reliability/logs/run_evaluation/main_50_a__django__django-16667/deepseek_deepseek-v4-flash/django__django-16667/report.json
+  F2P fail n=1: ['test_value_from_datadict (forms_tests.widget_tests.test_selectdatewidget.SelectDateWidgetTest.test_value_from_datadict)']
+  F2P ok   n=1: ['test_form_field (forms_tests.field_tests.test_datefield.DateFieldTest.test_form_field)']
+  P2P fail n=0: []
+  P2P ok n=24
+official F2P n=2: ['test_form_field (forms_tests.field_tests.test_datefield.DateFieldTest.test_form_field)', 'test_value_from_datadict (forms_tests.widget_tests.test_selectdatewidget.SelectDateWidgetTest.test_value_from_datadict)']
+official P2P n=24
+decision=ACCEPT reasons=['all accept conditions met']
+integrity: PASS no violations
+regression: PASS 192 executed, 0 regressions
+  findings.signal=PASS n_executed=192 summary={'PASS': 192, 'NOT_RUN': 80} notes=[]
+static: PASS 2/2 checks ran; lint: flake8 is not installed: bash: line 1: flake8: command not found; typecheck: no configuration found; build: build is not installed: /opt/miniconda3/envs/testbed/bin/python: No module named build
+reproduction: PASS 3/3 stable generated tests pass on the patched tree n_frozen=3
+  frozen n=3
+    frozen: path=v4_repro/test_repro_1.py name=None status=None {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:58c1c85edee12876dd3a8ee61bfd0019d4efcdf55c65877b7e1b65a1dc2ddaed', 'size_bytes': 1652, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'st.py", line 10, in <module>\n    runpy.run_path(script, run_name="__main__")\n  File "<frozen runpy>", line 291, in run_path\n  File "<frozen runpy>", line 98, in _run_module_code\n  File "<frozen runpy>", line 88, in _run_code\n  File "v4_repro/test_repro_1.py", line 47, in <module>\n    assert is_valid_without_crash(form) is False, (\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "v4_repro/test_repro_1.py", line 35, in is_valid_without_crash\n    raise AssertionError(\nAssertionError: SelectDateWidget.value_from_datadict leaked OverflowError: OverflowError(\'signed integer is greater than maximum\')\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'st.py", line 10, in <module>\n    runpy.run_path(script, run_name="__main__")\n  File "<frozen runpy>", line 291, in run_path\n  File "<frozen runpy>", line 98, in _run_module_code\n  File "<frozen runpy>", line 88, in _run_code\n  File "v4_repro/test_repro_1.py", line 47, in <module>\n    assert is_valid_without_crash(form) is False, (\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "v4_repro/test_repro_1.py", line 35, in is_valid_without_crash\n    raise AssertionError(\nAssertionError: SelectDateWidget.value_from_datadict leaked OverflowError: OverflowError(\'signed integer is greater than maximum\')\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_2.py name=None status=None {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:2db876b92afb24800cddb18e56992ab250ac5919714dae2c8f78f7f35f6d7bfe', 'size_bytes': 1234, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'le "/opt/v4/run_test.py", line 10, in <module>\n    runpy.run_path(script, run_name="__main__")\n  File "<frozen runpy>", line 291, in run_path\n  File "<frozen runpy>", line 98, in _run_module_code\n  File "<frozen runpy>", line 88, in _run_code\n  File "v4_repro/test_repro_2.py", line 38, in <module>\n    invalid = not is_valid_without_crash(form)\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "v4_repro/test_repro_2.py", line 26, in is_valid_without_crash\n    raise AssertionError(\nAssertionError: OverflowError escaped form validation: OverflowError(\'signed integer is greater than maximum\')\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'le "/opt/v4/run_test.py", line 10, in <module>\n    runpy.run_path(script, run_name="__main__")\n  File "<frozen runpy>", line 291, in run_path\n  File "<frozen runpy>", line 98, in _run_module_code\n  File "<frozen runpy>", line 88, in _run_code\n  File "v4_repro/test_repro_2.py", line 38, in <module>\n    invalid = not is_valid_without_crash(form)\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "v4_repro/test_repro_2.py", line 26, in is_valid_without_crash\n    raise AssertionError(\nAssertionError: OverflowError escaped form validation: OverflowError(\'signed integer is greater than maximum\')\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_3.py name=None status=None {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:03ea78227ac25161c80ac81b86b2cee17f8024501f0479402af46c627dfa8999', 'size_bytes': 1319, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'e "/opt/v4/run_test.py", line 10, in <module>\n    runpy.run_path(script, run_name="__main__")\n  File "<frozen runpy>", line 291, in run_path\n  File "<frozen runpy>", line 98, in _run_module_code\n  File "<frozen runpy>", line 88, in _run_code\n  File "v4_repro/test_repro_3.py", line 46, in <module>\n    assert is_valid_without_crash(form) is False, (\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "v4_repro/test_repro_3.py", line 29, in is_valid_without_crash\n    raise AssertionError(\nAssertionError: OverflowError escaped form validation: OverflowError(\'Python int too large to convert to C long\')\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'e "/opt/v4/run_test.py", line 10, in <module>\n    runpy.run_path(script, run_name="__main__")\n  File "<frozen runpy>", line 291, in run_path\n  File "<frozen runpy>", line 98, in _run_module_code\n  File "<frozen runpy>", line 88, in _run_code\n  File "v4_repro/test_repro_3.py", line 46, in <module>\n    assert is_valid_without_crash(form) is False, (\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "v4_repro/test_repro_3.py", line 29, in is_valid_without_crash\n    raise AssertionError(\nAssertionError: OverflowError escaped form validation: OverflowError(\'Python int too large to convert to C long\')\n'}], 'kept': True, 'drop_reason': None}
+  patched n=3
+    patched: {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:58c1c85edee12876dd3a8ee61bfd0019d4efcdf55c65877b7e1b65a1dc2ddaed', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'test_repro_1 passed\n'}, {'outcome': 'pass',
+    patched: {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:2db876b92afb24800cddb18e56992ab250ac5919714dae2c8f78f7f35f6d7bfe', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'test_repro_2 passed\n'}, {'outcome': 'pass',
+    patched: {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:03ea78227ac25161c80ac81b86b2cee17f8024501f0479402af46c627dfa8999', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'test_repro_3 passed\n'}, {'outcome': 'pass',
+n_selected=272 convention=tests_tree runner=django: found tests/runtests.py in a Django tree
+  sel: tests/forms_tests/tests/test_widgets.py::LiveWidgetTests::test_textarea_trailing_newlines
+  sel: tests/forms_tests/widget_tests/test_selectdatewidget.py::SelectDateWidgetTest::test_render_empty
+  sel: tests/forms_tests/widget_tests/test_selectdatewidget.py::SelectDateWidgetTest::test_render_none
+  sel: tests/forms_tests/widget_tests/test_selectdatewidget.py::SelectDateWidgetTest::test_render_string
+  sel: tests/forms_tests/widget_tests/test_selectdatewidget.py::SelectDateWidgetTest::test_render_datetime
+  sel: tests/forms_tests/widget_tests/test_selectdatewidget.py::SelectDateWidgetTest::test_render_invalid_date
+  sel: tests/forms_tests/widget_tests/test_selectdatewidget.py::SelectDateWidgetTest::test_custom_months
+  sel: tests/forms_tests/widget_tests/test_selectdatewidget.py::SelectDateWidgetTest::test_selectdate_required
+  sel: tests/forms_tests/widget_tests/test_selectdatewidget.py::SelectDateWidgetTest::test_selectdate_empty_label
+  sel: tests/forms_tests/widget_tests/test_selectdatewidget.py::SelectDateWidgetTest::test_l10n
+  sel: tests/forms_tests/widget_tests/test_selectdatewidget.py::SelectDateWidgetTest::test_custom_input_format
+  sel: tests/forms_tests/widget_tests/test_selectdatewidget.py::SelectDateWidgetTest::test_format_value
+  sel: tests/forms_tests/widget_tests/test_selectdatewidget.py::SelectDateWidgetTest::test_value_from_datadict
+  sel: tests/forms_tests/widget_tests/test_selectdatewidget.py::SelectDateWidgetTest::test_value_omitted_from_data
+  sel: tests/forms_tests/widget_tests/test_selectdatewidget.py::SelectDateWidgetTest::test_years_rendered_without_separator
+  sel: tests/forms_tests/widget_tests/test_selectdatewidget.py::SelectDateWidgetTest::test_fieldset
+  sel: tests/forms_tests/field_tests/test_datefield.py::DateFieldTest::test_form_field
+  sel: tests/forms_tests/field_tests/test_datefield.py::DateFieldTest::test_l10n_date_changed
+  sel: tests/forms_tests/field_tests/test_datefield.py::DateFieldTest::test_l10n_invalid_date_in
+  sel: tests/forms_tests/field_tests/test_datefield.py::DateFieldTest::test_form_label_association
+  sel: tests/forms_tests/field_tests/test_datefield.py::DateFieldTest::test_datefield_1
+  sel: tests/forms_tests/field_tests/test_datefield.py::DateFieldTest::test_datefield_2
+  sel: tests/forms_tests/field_tests/test_datefield.py::DateFieldTest::test_datefield_3
+  sel: tests/forms_tests/field_tests/test_datefield.py::DateFieldTest::test_datefield_4
+  sel: tests/forms_tests/field_tests/test_datefield.py::DateFieldTest::test_datefield_5
+  sel: tests/forms_tests/field_tests/test_datefield.py::DateFieldTest::test_datefield_changed
+  sel: tests/forms_tests/field_tests/test_datefield.py::DateFieldTest::test_datefield_strptime
+  sel: tests/i18n/tests.py::TranslationTests::test_plural
+  sel: tests/i18n/tests.py::TranslationTests::test_plural_null
+  sel: tests/i18n/tests.py::TranslationTests::test_multiple_plurals_per_language
+  sel: tests/i18n/tests.py::TranslationTests::test_override
+  sel: tests/i18n/tests.py::TranslationTests::test_override_decorator
+  sel: tests/i18n/tests.py::TranslationTests::test_override_exit
+  sel: tests/i18n/tests.py::TranslationTests::test_lazy_objects
+  sel: tests/i18n/tests.py::TranslationTests::test_lazy_pickle
+  sel: tests/i18n/tests.py::TranslationTests::test_ngettext_lazy
+  sel: tests/i18n/tests.py::TranslationTests::test_ngettext_lazy_format_style
+  sel: tests/i18n/tests.py::TranslationTests::test_ngettext_lazy_bool
+  sel: tests/i18n/tests.py::TranslationTests::test_ngettext_lazy_pickle
+  sel: tests/i18n/tests.py::TranslationTests::test_pgettext
+  ... +232 more
+coverage: selected=272 p2p=24 overlap_p2p=0 frac=0.0
+  failing_in_v2=[]
+  failing_f2p_in_v2=[]
+  failing_p2p_in_v2=[]
+v4 files: ['test_repro_1.py', 'test_repro_2.py', 'test_repro_3.py']
+lens: issue=1758 agent=635 gold=529 test_patch=2112
+harness_report top keys: ['django__django-16667']
+==============================================================================
+pylint-dev__pylint-7277  [group1_false_accept]  run=main_50_a
+missing: []
+csv_disagreements: []
+csv: decision=ACCEPT oracle=unresolved int=PASS reg=PASS stat=PASS repro=PASS source_run=main_50_a
+oracle: outcome=unresolved resolved=False applied=True report=/home/sankalp/projects/cis695-agent-reliability/logs/run_evaluation/main_50_a__pylint-dev__pylint-7277/deepseek_deepseek-v4-flash/pylint-dev__pylint-7277/report.json
+  F2P fail n=0: []
+  F2P ok   n=1: ['tests/test_self.py::TestRunTC::test_modify_sys_path']
+  P2P fail n=1: ['tests/test_self.py::TestRunTC::test_jobs_score']
+  P2P ok n=121
+official F2P n=1: ['tests/test_self.py::TestRunTC::test_modify_sys_path']
+official P2P n=122
+decision=ACCEPT reasons=['all accept conditions met']
+integrity: PASS no violations
+regression: PASS 57 executed, 0 regressions
+  findings.signal=PASS n_executed=57 summary={'PASS': 55, 'PRE_EXISTING_FAIL': 2, 'NOT_RUN': 13} notes=[]
+static: PASS 4/4 checks ran; build: build is not installed: /opt/miniconda3/envs/testbed/bin/python: No module named build
+reproduction: PASS 3/3 stable generated tests pass on the patched tree n_frozen=3
+  frozen n=3
+    frozen: path=v4_repro/test_repro_1.py name=None status=None {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:a7ad76d7c5db0a6d576a3909db7cceaf190ae859d51cf937703bed6c9620c804', 'size_bytes': 1076, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': ' return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 33, in <module>\n    main()\n  File "v4_repro/test_repro_1.py", line 24, in main\n    assert sys.path[0] == "something", (\nAssertionError: modify_sys_path() removed a custom leading sys.path entry; sys.path[:3] = [\'/testbed/v4_repro\', \'/opt/v4\', \'/testbed\']\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': ' return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 33, in <module>\n    main()\n  File "v4_repro/test_repro_1.py", line 24, in main\n    assert sys.path[0] == "something", (\nAssertionError: modify_sys_path() removed a custom leading sys.path entry; sys.path[:3] = [\'/testbed/v4_repro\', \'/opt/v4\', \'/testbed\']\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_2.py name=None status=None {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:1c9c519b87346c378f35a195c675d1109e84d7aa8979f97a822184a156811b65', 'size_bytes': 1285, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': '    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 39, in <module>\n    main()\n  File "v4_repro/test_repro_2.py", line 26, in main\n    assert "something" in sys.path, (\nAssertionError: runpy-launched pylint dropped the injected sys.path entry; sys.path[:3] = [\'/testbed/v4_repro\', \'/opt/v4\', \'/testbed\']\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': '    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 39, in <module>\n    main()\n  File "v4_repro/test_repro_2.py", line 26, in main\n    assert "something" in sys.path, (\nAssertionError: runpy-launched pylint dropped the injected sys.path entry; sys.path[:3] = [\'/testbed/v4_repro\', \'/opt/v4\', \'/testbed\']\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_3.py name=None status=None {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:a077071abcd660f3b0f35c1e1a27ae88e4cbdb2a8c5e791b90df6b94817fc6d0', 'size_bytes': 1595, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 52, in <module>\n    main()\n  File "v4_repro/test_repro_3.py", line 46, in main\n    assert result[0] == custom, (\nAssertionError: modify_sys_path() stripped a custom leading entry \'not_the_working_directory\'; sys.path[:3] = [\'/testbed/v4_repro\', \'/opt/v4\', \'/testbed\']\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 52, in <module>\n    main()\n  File "v4_repro/test_repro_3.py", line 46, in main\n    assert result[0] == custom, (\nAssertionError: modify_sys_path() stripped a custom leading entry \'not_the_working_directory\'; sys.path[:3] = [\'/testbed/v4_repro\', \'/opt/v4\', \'/testbed\']\n'}], 'kept': True, 'drop_reason': None}
+  patched n=3
+    patched: {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:a7ad76d7c5db0a6d576a3909db7cceaf190ae859d51cf937703bed6c9620c804', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': ''}, {'outcome': 'pass', 'returncode': 0, 'ta
+    patched: {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:1c9c519b87346c378f35a195c675d1109e84d7aa8979f97a822184a156811b65', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'pylint 2.15.0-a0\nastroid 2.12.13\nPython 3.
+    patched: {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:a077071abcd660f3b0f35c1e1a27ae88e4cbdb2a8c5e791b90df6b94817fc6d0', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': ''}, {'outcome': 'pass', 'returncode': 0, 'ta
+n_selected=70 convention=tests_tree runner=pytest: [tool:pytest] in setup.cfg; pytest referenced in tox.ini
+  sel: tests/test_self.py::TestRunTC::test_pkginfo
+  sel: tests/test_self.py::TestRunTC::test_all
+  sel: tests/test_self.py::TestRunTC::test_no_ext_file
+  sel: tests/test_self.py::TestRunTC::test_w0704_ignored
+  sel: tests/test_self.py::TestRunTC::test_exit_zero
+  sel: tests/test_self.py::TestRunTC::test_nonexistent_config_file
+  sel: tests/test_self.py::TestRunTC::test_error_missing_arguments
+  sel: tests/test_self.py::TestRunTC::test_no_out_encoding
+  sel: tests/test_self.py::TestRunTC::test_parallel_execution
+  sel: tests/test_self.py::TestRunTC::test_parallel_execution_missing_arguments
+  sel: tests/test_self.py::TestRunTC::test_abbreviations_are_not_supported
+  sel: tests/test_self.py::TestRunTC::test_enable_all_works
+  sel: tests/test_self.py::TestRunTC::test_wrong_import_position_when_others_disabled
+  sel: tests/test_self.py::TestRunTC::test_import_itself_not_accounted_for_relative_imports
+  sel: tests/test_self.py::TestRunTC::test_reject_empty_indent_strings
+  sel: tests/test_self.py::TestRunTC::test_json_report_when_file_has_syntax_error
+  sel: tests/test_self.py::TestRunTC::test_json_report_when_file_is_missing
+  sel: tests/test_self.py::TestRunTC::test_json_report_does_not_escape_quotes
+  sel: tests/test_self.py::TestRunTC::test_information_category_disabled_by_default
+  sel: tests/test_self.py::TestRunTC::test_error_mode_shows_no_score
+  sel: tests/test_self.py::TestRunTC::test_evaluation_score_shown_by_default
+  sel: tests/test_self.py::TestRunTC::test_confidence_levels
+  sel: tests/test_self.py::TestRunTC::test_bom_marker
+  sel: tests/test_self.py::TestRunTC::test_pylintrc_plugin_duplicate_options
+  sel: tests/test_self.py::TestRunTC::test_pylintrc_comments_in_values
+  sel: tests/test_self.py::TestRunTC::test_no_crash_with_formatting_regex_defaults
+  sel: tests/test_self.py::TestRunTC::test_getdefaultencoding_crashes_with_lc_ctype_utf8
+  sel: tests/test_self.py::TestRunTC::test_parseable_file_path
+  sel: tests/test_self.py::TestRunTC::test_stdin
+  sel: tests/test_self.py::TestRunTC::test_stdin_missing_modulename
+  sel: tests/test_self.py::TestRunTC::test_relative_imports
+  sel: tests/test_self.py::TestRunTC::test_stdin_syntax_error
+  sel: tests/test_self.py::TestRunTC::test_version
+  sel: tests/test_self.py::TestRunTC::test_fail_under
+  sel: tests/test_self.py::TestRunTC::test_fail_on
+  sel: tests/test_self.py::TestRunTC::test_fail_on_edge_case
+  sel: tests/test_self.py::TestRunTC::test_modify_sys_path
+  sel: tests/test_self.py::TestRunTC::test_do_not_import_files_from_local_directory
+  sel: tests/test_self.py::TestRunTC::test_import_plugin_from_local_directory_if_pythonpath_cwd
+  sel: tests/test_self.py::TestRunTC::test_allow_import_of_files_found_in_modules_during_parallel_check
+  ... +30 more
+coverage: selected=70 p2p=122 overlap_p2p=53 frac=0.4344
+  failing_in_v2=['tests/test_self.py::TestRunTC::test_jobs_score']
+  failing_f2p_in_v2=[]
+  failing_p2p_in_v2=['tests/test_self.py::TestRunTC::test_jobs_score']
+v4 files: ['test_repro_1.py', 'test_repro_2.py', 'test_repro_3.py']
+lens: issue=1087 agent=1252 gold=703 test_patch=992
+harness_report top keys: ['pylint-dev__pylint-7277']
+==============================================================================
+django__django-13297  [group1_false_accept]  run=main_50_b
+missing: []
+csv_disagreements: []
+csv: decision=ACCEPT oracle=unresolved int=PASS reg=PASS stat=PASS repro=PASS source_run=main_50_b
+oracle: outcome=unresolved resolved=False applied=True report=/home/sankalp/projects/cis695-agent-reliability/logs/run_evaluation/main_50_b__django__django-13297/deepseek_deepseek-v4-flash/django__django-13297/report.json
+  F2P fail n=0: []
+  F2P ok   n=1: ['test_template_params_filtering (generic_views.test_base.DeprecationTests)']
+  P2P fail n=1: ['test_template_params_warning (generic_views.test_base.DeprecationTests)']
+  P2P ok n=51
+official F2P n=1: ['test_template_params_filtering (generic_views.test_base.DeprecationTests)']
+official P2P n=52
+decision=ACCEPT reasons=['all accept conditions met']
+integrity: PASS no violations
+regression: PASS 1265 executed, 0 regressions
+  findings.signal=PASS n_executed=1265 summary={'PASS': 1265, 'TIMEOUT': 6890} notes=[]
+static: PASS 2/2 checks ran; lint: flake8 is not installed: bash: line 1: flake8: command not found; typecheck: no configuration found; build: build is not installed: /opt/miniconda3/envs/testbed/bin/python: No module named build
+reproduction: PASS 3/3 stable generated tests pass on the patched tree n_frozen=3
+  frozen n=3
+    frozen: path=v4_repro/test_repro_1.py name=None status=None {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:6212529759c5f627a8ca5ef6bbc14259b753715f3d552af991e9fdf194a352f8', 'size_bytes': 2326, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': ' "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 263, in run_path\n    pkg_name=pkg_name, script_name=fname)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 96, in _run_module_code\n    mod_name, mod_spec, pkg_name, script_name)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 85, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 71, in <module>\n    % (type(exc).__name__, exc)\nAssertionError: Using a TemplateView URL kwarg in an ORM lookup raised InterfaceError: Error binding parameter 0 - probably unsupported type.\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': ' "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 263, in run_path\n    pkg_name=pkg_name, script_name=fname)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 96, in _run_module_code\n    mod_name, mod_spec, pkg_name, script_name)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 85, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 71, in <module>\n    % (type(exc).__name__, exc)\nAssertionError: Using a TemplateView URL kwarg in an ORM lookup raised InterfaceError: Error binding parameter 0 - probably unsupported type.\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_2.py name=None status=None {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:f87b96453b7a6561acbd02ef0d75e508d9bc5c08e9efe7c95e6d0fb7f89bcaad', 'size_bytes': 2469, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'onda3/envs/testbed/lib/python3.6/runpy.py", line 263, in run_path\n    pkg_name=pkg_name, script_name=fname)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 96, in _run_module_code\n    mod_name, mod_spec, pkg_name, script_name)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 85, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 88, in <module>\n    "GET /offers/my-offer/ raised %s: %s" % (type(exc).__name__, exc)\nAssertionError: GET /offers/my-offer/ raised InterfaceError: Error binding parameter 0 - probably unsupported type.\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'onda3/envs/testbed/lib/python3.6/runpy.py", line 263, in run_path\n    pkg_name=pkg_name, script_name=fname)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 96, in _run_module_code\n    mod_name, mod_spec, pkg_name, script_name)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 85, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 88, in <module>\n    "GET /offers/my-offer/ raised %s: %s" % (type(exc).__name__, exc)\nAssertionError: GET /offers/my-offer/ raised InterfaceError: Error binding parameter 0 - probably unsupported type.\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_3.py name=None status=None {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:0e25d01f3f3311ff8cea8c308b7efd1590975382851c25948ccfe97d0ba042b8', 'size_bytes': 2068, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'in__")\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 263, in run_path\n    pkg_name=pkg_name, script_name=fname)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 96, in _run_module_code\n    mod_name, mod_spec, pkg_name, script_name)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 85, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 65, in <module>\n    % (type(exc).__name__, exc)\nAssertionError: get_object_or_404 with a URL kwarg raised InterfaceError: Error binding parameter 0 - probably unsupported type.\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'in__")\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 263, in run_path\n    pkg_name=pkg_name, script_name=fname)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 96, in _run_module_code\n    mod_name, mod_spec, pkg_name, script_name)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 85, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 65, in <module>\n    % (type(exc).__name__, exc)\nAssertionError: get_object_or_404 with a URL kwarg raised InterfaceError: Error binding parameter 0 - probably unsupported type.\n'}], 'kept': True, 'drop_reason': None}
+  patched n=3
+    patched: {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:6212529759c5f627a8ca5ef6bbc14259b753715f3d552af991e9fdf194a352f8', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'OK\n'}, {'outcome': 'pass', 'returncode': 0,
+    patched: {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:f87b96453b7a6561acbd02ef0d75e508d9bc5c08e9efe7c95e6d0fb7f89bcaad', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'OK\n'}, {'outcome': 'pass', 'returncode': 0,
+    patched: {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:0e25d01f3f3311ff8cea8c308b7efd1590975382851c25948ccfe97d0ba042b8', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'OK\n'}, {'outcome': 'pass', 'returncode': 0,
+n_selected=8155 convention=tests_tree runner=django: found tests/runtests.py in a Django tree
+  sel: tests/generic_views/test_base.py::ViewTest::test_no_init_kwargs
+  sel: tests/generic_views/test_base.py::ViewTest::test_no_init_args
+  sel: tests/generic_views/test_base.py::ViewTest::test_pathological_http_method
+  sel: tests/generic_views/test_base.py::ViewTest::test_get_only
+  sel: tests/generic_views/test_base.py::ViewTest::test_get_and_head
+  sel: tests/generic_views/test_base.py::ViewTest::test_setup_get_and_head
+  sel: tests/generic_views/test_base.py::ViewTest::test_head_no_get
+  sel: tests/generic_views/test_base.py::ViewTest::test_get_and_post
+  sel: tests/generic_views/test_base.py::ViewTest::test_invalid_keyword_argument
+  sel: tests/generic_views/test_base.py::ViewTest::test_calling_more_than_once
+  sel: tests/generic_views/test_base.py::ViewTest::test_class_attributes
+  sel: tests/generic_views/test_base.py::ViewTest::test_dispatch_decoration
+  sel: tests/generic_views/test_base.py::ViewTest::test_options
+  sel: tests/generic_views/test_base.py::ViewTest::test_options_for_get_view
+  sel: tests/generic_views/test_base.py::ViewTest::test_options_for_get_and_post_view
+  sel: tests/generic_views/test_base.py::ViewTest::test_options_for_post_view
+  sel: tests/generic_views/test_base.py::ViewTest::test_args_kwargs_request_on_self
+  sel: tests/generic_views/test_base.py::ViewTest::test_overridden_setup
+  sel: tests/generic_views/test_base.py::ViewTest::test_not_calling_parent_setup_error
+  sel: tests/generic_views/test_base.py::ViewTest::test_setup_adds_args_kwargs_request
+  sel: tests/generic_views/test_base.py::ViewTest::test_direct_instantiation
+  sel: tests/generic_views/test_base.py::TemplateViewTest::test_get
+  sel: tests/generic_views/test_base.py::TemplateViewTest::test_head
+  sel: tests/generic_views/test_base.py::TemplateViewTest::test_get_template_attribute
+  sel: tests/generic_views/test_base.py::TemplateViewTest::test_get_generic_template
+  sel: tests/generic_views/test_base.py::TemplateViewTest::test_template_name_required
+  sel: tests/generic_views/test_base.py::TemplateViewTest::test_template_engine
+  sel: tests/generic_views/test_base.py::TemplateViewTest::test_cached_views
+  sel: tests/generic_views/test_base.py::TemplateViewTest::test_content_type
+  sel: tests/generic_views/test_base.py::TemplateViewTest::test_resolve_view
+  sel: tests/generic_views/test_base.py::TemplateViewTest::test_resolve_login_required_view
+  sel: tests/generic_views/test_base.py::TemplateViewTest::test_extra_context
+  sel: tests/generic_views/test_base.py::RedirectViewTest::test_no_url
+  sel: tests/generic_views/test_base.py::RedirectViewTest::test_default_redirect
+  sel: tests/generic_views/test_base.py::RedirectViewTest::test_permanent_redirect
+  sel: tests/generic_views/test_base.py::RedirectViewTest::test_temporary_redirect
+  sel: tests/generic_views/test_base.py::RedirectViewTest::test_include_args
+  sel: tests/generic_views/test_base.py::RedirectViewTest::test_include_urlencoded_args
+  sel: tests/generic_views/test_base.py::RedirectViewTest::test_parameter_substitution
+  sel: tests/generic_views/test_base.py::RedirectViewTest::test_named_url_pattern
+  ... +8115 more
+coverage: selected=8155 p2p=52 overlap_p2p=0 frac=0.0
+  failing_in_v2=[]
+  failing_f2p_in_v2=[]
+  failing_p2p_in_v2=[]
+v4 files: ['test_repro_1.py', 'test_repro_2.py', 'test_repro_3.py']
+lens: issue=1384 agent=1770 gold=1114 test_patch=1989
+harness_report top keys: ['django__django-13297']
+==============================================================================
+matplotlib__matplotlib-23299  [group1_false_accept]  run=main_50_b
+missing: []
+csv_disagreements: []
+csv: decision=ACCEPT oracle=unresolved int=PASS reg=PASS stat=FAIL repro=PASS source_run=main_50_b
+oracle: outcome=unresolved resolved=False applied=True report=/home/sankalp/projects/cis695-agent-reliability/logs/run_evaluation/main_50_b__matplotlib__matplotlib-23299/deepseek_deepseek-v4-flash/matplotlib__matplotlib-23299/report.json
+  F2P fail n=1: ['lib/matplotlib/tests/test_rcparams.py::test_no_backend_reset_rccontext']
+  F2P ok   n=0: []
+  P2P fail n=0: []
+  P2P ok n=192
+official F2P n=1: ['lib/matplotlib/tests/test_rcparams.py::test_no_backend_reset_rccontext']
+official P2P n=192
+decision=ACCEPT reasons=['all accept conditions met']
+integrity: PASS no violations
+regression: PASS 37 executed, 0 regressions
+  findings.signal=PASS n_executed=37 summary={'PASS': 36, 'PRE_EXISTING_FAIL': 1, 'NOT_RUN': 9} notes=[]
+static: FAIL 3/3 checks ran; typecheck: no configuration found; build: build is not installed: /opt/miniconda3/envs/testbed/bin/python: No module named build.__main__; 'build' is a package and cannot be directly executed
+reproduction: PASS 3/3 stable generated tests pass on the patched tree n_frozen=3
+  frozen n=3
+    frozen: path=v4_repro/test_repro_1.py name=None status=None {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:a58546a884806570226abd098b6dd0c7ee5e3d489e24c8547a710e367aded3ee', 'size_bytes': 1572, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'Traceback (most recent call last):\n  File "/opt/v4/run_test.py", line 10, in <module>\n    runpy.run_path(script, run_name="__main__")\n  File "<frozen runpy>", line 291, in run_path\n  File "<frozen runpy>", line 98, in _run_module_code\n  File "<frozen runpy>", line 88, in _run_code\n  File "v4_repro/test_repro_1.py", line 41, in <module>\n    assert fig.number in after_keys, (\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: get_backend() removed a figure created inside rc_context from Gcf.figs: before=[1], after=[]\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'Traceback (most recent call last):\n  File "/opt/v4/run_test.py", line 10, in <module>\n    runpy.run_path(script, run_name="__main__")\n  File "<frozen runpy>", line 291, in run_path\n  File "<frozen runpy>", line 98, in _run_module_code\n  File "<frozen runpy>", line 88, in _run_code\n  File "v4_repro/test_repro_1.py", line 41, in <module>\n    assert fig.number in after_keys, (\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: get_backend() removed a figure created inside rc_context from Gcf.figs: before=[1], after=[]\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_2.py name=None status=None {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:62d027577eda92d83b608f3101694ffab389eda205f69f0e8e75048801a2a23b', 'size_bytes': 1076, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'Traceback (most recent call last):\n  File "/opt/v4/run_test.py", line 10, in <module>\n    runpy.run_path(script, run_name="__main__")\n  File "<frozen runpy>", line 291, in run_path\n  File "<frozen runpy>", line 98, in _run_module_code\n  File "<frozen runpy>", line 88, in _run_code\n  File "v4_repro/test_repro_2.py", line 30, in <module>\n    assert plt.fignum_exists(fig.number), (\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: after get_backend(), plt.fignum_exists() says the figure created in rc_context is gone\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'Traceback (most recent call last):\n  File "/opt/v4/run_test.py", line 10, in <module>\n    runpy.run_path(script, run_name="__main__")\n  File "<frozen runpy>", line 291, in run_path\n  File "<frozen runpy>", line 98, in _run_module_code\n  File "<frozen runpy>", line 88, in _run_code\n  File "v4_repro/test_repro_2.py", line 30, in <module>\n    assert plt.fignum_exists(fig.number), (\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: after get_backend(), plt.fignum_exists() says the figure created in rc_context is gone\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_3.py name=None status=None {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:12cd1222e29b288228f3a35d77980ea9e6161256c7d08df81e39cd45225b5c1b', 'size_bytes': 1142, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'Traceback (most recent call last):\n  File "/opt/v4/run_test.py", line 10, in <module>\n    runpy.run_path(script, run_name="__main__")\n  File "<frozen runpy>", line 291, in run_path\n  File "<frozen runpy>", line 98, in _run_module_code\n  File "<frozen runpy>", line 88, in _run_code\n  File "v4_repro/test_repro_3.py", line 33, in <module>\n    assert plt.gcf() is fig, (\n           ^^^^^^^^^^^^^^^^\nAssertionError: get_backend() caused pyplot to forget the current figure created in rc_context\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'Traceback (most recent call last):\n  File "/opt/v4/run_test.py", line 10, in <module>\n    runpy.run_path(script, run_name="__main__")\n  File "<frozen runpy>", line 291, in run_path\n  File "<frozen runpy>", line 98, in _run_module_code\n  File "<frozen runpy>", line 88, in _run_code\n  File "v4_repro/test_repro_3.py", line 33, in <module>\n    assert plt.gcf() is fig, (\n           ^^^^^^^^^^^^^^^^\nAssertionError: get_backend() caused pyplot to forget the current figure created in rc_context\n'}], 'kept': True, 'drop_reason': None}
+  patched n=3
+    patched: {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:a58546a884806570226abd098b6dd0c7ee5e3d489e24c8547a710e367aded3ee', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': ''}, {'outcome': 'pass', 'returncode': 0, 'ta
+    patched: {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:62d027577eda92d83b608f3101694ffab389eda205f69f0e8e75048801a2a23b', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': ''}, {'outcome': 'pass', 'returncode': 0, 'ta
+    patched: {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:12cd1222e29b288228f3a35d77980ea9e6161256c7d08df81e39cd45225b5c1b', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': ''}, {'outcome': 'pass', 'returncode': 0, 'ta
+n_selected=46 convention=sibling_tests runner=pytest: pytest.ini or conftest.py; pytest referenced in tox.ini
+  sel: lib/matplotlib/tests/test_pyplot.py::test_pyplot_up_to_date
+  sel: lib/matplotlib/tests/test_pyplot.py::test_copy_docstring_and_deprecators
+  sel: lib/matplotlib/tests/test_pyplot.py::test_pyplot_box
+  sel: lib/matplotlib/tests/test_pyplot.py::test_stackplot_smoke
+  sel: lib/matplotlib/tests/test_pyplot.py::test_nrows_error
+  sel: lib/matplotlib/tests/test_pyplot.py::test_ioff
+  sel: lib/matplotlib/tests/test_pyplot.py::test_ion
+  sel: lib/matplotlib/tests/test_pyplot.py::test_nested_ion_ioff
+  sel: lib/matplotlib/tests/test_pyplot.py::test_close
+  sel: lib/matplotlib/tests/test_pyplot.py::test_subplot_reuse
+  sel: lib/matplotlib/tests/test_pyplot.py::test_axes_kwargs
+  sel: lib/matplotlib/tests/test_pyplot.py::test_subplot_replace_projection
+  sel: lib/matplotlib/tests/test_pyplot.py::test_subplot_kwarg_collision
+  sel: lib/matplotlib/tests/test_pyplot.py::test_gca
+  sel: lib/matplotlib/tests/test_pyplot.py::test_subplot_projection_reuse
+  sel: lib/matplotlib/tests/test_pyplot.py::test_subplot_polar_normalization
+  sel: lib/matplotlib/tests/test_pyplot.py::test_subplot_change_projection
+  sel: lib/matplotlib/tests/test_pyplot.py::test_polar_second_call
+  sel: lib/matplotlib/tests/test_pyplot.py::test_fallback_position
+  sel: lib/matplotlib/tests/test_pyplot.py::test_set_current_figure_via_subfigure
+  sel: lib/matplotlib/tests/test_pyplot.py::test_set_current_axes_on_subfigure
+  sel: lib/matplotlib/tests/test_pyplot.py::test_pylab_integration
+  sel: lib/matplotlib/tests/test_pyplot.py::test_doc_pyplot_summary
+  sel: lib/matplotlib/tests/test_backend_qt.py::test_fig_close
+  sel: lib/matplotlib/tests/test_backend_qt.py::test_sigint
+  sel: lib/matplotlib/tests/test_backend_qt.py::test_other_signal_before_sigint
+  sel: lib/matplotlib/tests/test_backend_qt.py::test_fig_sigint_override
+  sel: lib/matplotlib/tests/test_backend_qt.py::test_correct_key
+  sel: lib/matplotlib/tests/test_backend_qt.py::test_device_pixel_ratio_change
+  sel: lib/matplotlib/tests/test_backend_qt.py::test_subplottool
+  sel: lib/matplotlib/tests/test_backend_qt.py::test_figureoptions
+  sel: lib/matplotlib/tests/test_backend_qt.py::test_figureoptions_with_datetime_axes
+  sel: lib/matplotlib/tests/test_backend_qt.py::test_double_resize
+  sel: lib/matplotlib/tests/test_backend_qt.py::test_canvas_reinit
+  sel: lib/matplotlib/tests/test_backend_qt.py::test_form_widget_get_with_datetime_and_date_fields
+  sel: lib/matplotlib/tests/test_backend_qt.py::test_enums_available
+  sel: lib/matplotlib/tests/test_backends_interactive.py::test_interactive_backend
+  sel: lib/matplotlib/tests/test_backends_interactive.py::test_interactive_thread_safety
+  sel: lib/matplotlib/tests/test_backends_interactive.py::test_lazy_auto_backend_selection
+  sel: lib/matplotlib/tests/test_backends_interactive.py::test_qt5backends_uses_qt5
+  ... +6 more
+coverage: selected=46 p2p=192 overlap_p2p=0 frac=0.0
+  failing_in_v2=[]
+  failing_f2p_in_v2=[]
+  failing_p2p_in_v2=[]
+v4 files: ['test_repro_1.py', 'test_repro_2.py', 'test_repro_3.py']
+lens: issue=1780 agent=1072 gold=646 test_patch=709
+harness_report top keys: ['matplotlib__matplotlib-23299']
+==============================================================================
+matplotlib__matplotlib-23476  [group1_false_accept]  run=main_50_b
+missing: []
+csv_disagreements: []
+csv: decision=ACCEPT oracle=unresolved int=PASS reg=PASS stat=PASS repro=PASS source_run=main_50_b
+oracle: outcome=unresolved resolved=False applied=True report=/home/sankalp/projects/cis695-agent-reliability/logs/run_evaluation/main_50_b__matplotlib__matplotlib-23476/deepseek_deepseek-v4-flash/matplotlib__matplotlib-23476/report.json
+  F2P fail n=1: ['lib/matplotlib/tests/test_figure.py::test_unpickle_with_device_pixel_ratio']
+  F2P ok   n=0: []
+  P2P fail n=0: []
+  P2P ok n=104
+official F2P n=1: ['lib/matplotlib/tests/test_figure.py::test_unpickle_with_device_pixel_ratio']
+official P2P n=104
+decision=ACCEPT reasons=['all accept conditions met']
+integrity: PASS no violations
+regression: PASS 380 executed, 0 regressions
+  findings.signal=PASS n_executed=380 summary={'PASS': 379, 'PRE_EXISTING_FAIL': 1, 'NOT_RUN': 316} notes=[]
+static: PASS 3/3 checks ran; typecheck: no configuration found; build: build is not installed: /opt/miniconda3/envs/testbed/bin/python: No module named build.__main__; 'build' is a package and cannot be directly executed
+reproduction: PASS 3/3 stable generated tests pass on the patched tree n_frozen=3
+  frozen n=3
+    frozen: path=v4_repro/test_repro_1.py name=None status=None {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:a3035c3b172851ac51e00177ff665baa4dbe8ad205b35d7727fc8c249eec9d73', 'size_bytes': 1412, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'Traceback (most recent call last):\n  File "/opt/v4/run_test.py", line 10, in <module>\n    runpy.run_path(script, run_name="__main__")\n  File "<frozen runpy>", line 291, in run_path\n  File "<frozen runpy>", line 98, in _run_module_code\n  File "<frozen runpy>", line 88, in _run_code\n  File "v4_repro/test_repro_1.py", line 41, in <module>\n    main()\n  File "v4_repro/test_repro_1.py", line 35, in main\n    assert fig.dpi == expected_dpi, (\n           ^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: after unpickling iteration 0, dpi is 400; expected it to stay 200\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'Traceback (most recent call last):\n  File "/opt/v4/run_test.py", line 10, in <module>\n    runpy.run_path(script, run_name="__main__")\n  File "<frozen runpy>", line 291, in run_path\n  File "<frozen runpy>", line 98, in _run_module_code\n  File "<frozen runpy>", line 88, in _run_code\n  File "v4_repro/test_repro_1.py", line 41, in <module>\n    main()\n  File "v4_repro/test_repro_1.py", line 35, in main\n    assert fig.dpi == expected_dpi, (\n           ^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: after unpickling iteration 0, dpi is 400; expected it to stay 200\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_2.py name=None status=None {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:28a5179584a8c3b58e27b49d23b1861fb271ef1bdc3ed4e7dd02578f177096b0', 'size_bytes': 810, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'Traceback (most recent call last):\n  File "/opt/v4/run_test.py", line 10, in <module>\n    runpy.run_path(script, run_name="__main__")\n  File "<frozen runpy>", line 291, in run_path\n  File "<frozen runpy>", line 98, in _run_module_code\n  File "<frozen runpy>", line 88, in _run_code\n  File "v4_repro/test_repro_2.py", line 30, in <module>\n    main()\n  File "v4_repro/test_repro_2.py", line 22, in main\n    assert fig.dpi == expected_dpi, (\n           ^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: after unpickling iteration 0, dpi is 400; expected it to stay 200\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'Traceback (most recent call last):\n  File "/opt/v4/run_test.py", line 10, in <module>\n    runpy.run_path(script, run_name="__main__")\n  File "<frozen runpy>", line 291, in run_path\n  File "<frozen runpy>", line 98, in _run_module_code\n  File "<frozen runpy>", line 88, in _run_code\n  File "v4_repro/test_repro_2.py", line 30, in <module>\n    main()\n  File "v4_repro/test_repro_2.py", line 22, in main\n    assert fig.dpi == expected_dpi, (\n           ^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: after unpickling iteration 0, dpi is 400; expected it to stay 200\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_3.py name=None status=None {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:6aea041b03f1806f0e3a4ad31b6c562287490b1cd28818c506ba8ca912c2fb83', 'size_bytes': 1113, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'Traceback (most recent call last):\n  File "/opt/v4/run_test.py", line 10, in <module>\n    runpy.run_path(script, run_name="__main__")\n  File "<frozen runpy>", line 291, in run_path\n  File "<frozen runpy>", line 98, in _run_module_code\n  File "<frozen runpy>", line 88, in _run_code\n  File "v4_repro/test_repro_3.py", line 34, in <module>\n    main()\n  File "v4_repro/test_repro_3.py", line 28, in main\n    assert fig2.dpi == 200, (\n           ^^^^^^^^^^^^^^^\nAssertionError: dpi after unpickling and re-applying the device pixel ratio is 400; expected 200\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'Traceback (most recent call last):\n  File "/opt/v4/run_test.py", line 10, in <module>\n    runpy.run_path(script, run_name="__main__")\n  File "<frozen runpy>", line 291, in run_path\n  File "<frozen runpy>", line 98, in _run_module_code\n  File "<frozen runpy>", line 88, in _run_code\n  File "v4_repro/test_repro_3.py", line 34, in <module>\n    main()\n  File "v4_repro/test_repro_3.py", line 28, in main\n    assert fig2.dpi == 200, (\n           ^^^^^^^^^^^^^^^\nAssertionError: dpi after unpickling and re-applying the device pixel ratio is 400; expected 200\n'}], 'kept': True, 'drop_reason': None}
+  patched n=3
+    patched: {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:a3035c3b172851ac51e00177ff665baa4dbe8ad205b35d7727fc8c249eec9d73', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': ''}, {'outcome': 'pass', 'returncode': 0, 'ta
+    patched: {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:28a5179584a8c3b58e27b49d23b1861fb271ef1bdc3ed4e7dd02578f177096b0', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': ''}, {'outcome': 'pass', 'returncode': 0, 'ta
+    patched: {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:6aea041b03f1806f0e3a4ad31b6c562287490b1cd28818c506ba8ca912c2fb83', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': ''}, {'outcome': 'pass', 'returncode': 0, 'ta
+n_selected=696 convention=sibling_tests runner=pytest: pytest.ini or conftest.py; pytest referenced in tox.ini
+  sel: lib/matplotlib/tests/test_backend_bases.py::test_uses_per_path
+  sel: lib/matplotlib/tests/test_backend_bases.py::test_canvas_ctor
+  sel: lib/matplotlib/tests/test_backend_bases.py::test_get_default_filename
+  sel: lib/matplotlib/tests/test_backend_bases.py::test_canvas_change
+  sel: lib/matplotlib/tests/test_backend_bases.py::test_non_gui_warning
+  sel: lib/matplotlib/tests/test_backend_bases.py::test_location_event_position
+  sel: lib/matplotlib/tests/test_backend_bases.py::test_pick
+  sel: lib/matplotlib/tests/test_backend_bases.py::test_interactive_zoom
+  sel: lib/matplotlib/tests/test_backend_bases.py::test_widgetlock_zoompan
+  sel: lib/matplotlib/tests/test_backend_bases.py::test_interactive_colorbar
+  sel: lib/matplotlib/tests/test_backend_bases.py::test_toolbar_zoompan
+  sel: lib/matplotlib/tests/test_backend_bases.py::test_draw
+  sel: lib/matplotlib/tests/test_backend_bases.py::test_interactive_pan
+  sel: lib/matplotlib/tests/test_figure.py::test_align_labels
+  sel: lib/matplotlib/tests/test_figure.py::test_align_labels_stray_axes
+  sel: lib/matplotlib/tests/test_figure.py::test_figure_label
+  sel: lib/matplotlib/tests/test_figure.py::test_fignum_exists
+  sel: lib/matplotlib/tests/test_figure.py::test_clf_keyword
+  sel: lib/matplotlib/tests/test_figure.py::test_figure
+  sel: lib/matplotlib/tests/test_figure.py::test_figure_legend
+  sel: lib/matplotlib/tests/test_figure.py::test_gca
+  sel: lib/matplotlib/tests/test_figure.py::test_add_subplot_subclass
+  sel: lib/matplotlib/tests/test_figure.py::test_add_subplot_invalid
+  sel: lib/matplotlib/tests/test_figure.py::test_suptitle
+  sel: lib/matplotlib/tests/test_figure.py::test_suptitle_fontproperties
+  sel: lib/matplotlib/tests/test_figure.py::test_alpha
+  sel: lib/matplotlib/tests/test_figure.py::test_too_many_figures
+  sel: lib/matplotlib/tests/test_figure.py::test_iterability_axes_argument
+  sel: lib/matplotlib/tests/test_figure.py::test_set_fig_size
+  sel: lib/matplotlib/tests/test_figure.py::test_axes_remove
+  sel: lib/matplotlib/tests/test_figure.py::test_figaspect
+  sel: lib/matplotlib/tests/test_figure.py::test_autofmt_xdate
+  sel: lib/matplotlib/tests/test_figure.py::test_change_dpi
+  sel: lib/matplotlib/tests/test_figure.py::test_invalid_figure_size
+  sel: lib/matplotlib/tests/test_figure.py::test_invalid_figure_add_axes
+  sel: lib/matplotlib/tests/test_figure.py::test_subplots_shareax_loglabels
+  sel: lib/matplotlib/tests/test_figure.py::test_savefig
+  sel: lib/matplotlib/tests/test_figure.py::test_savefig_warns
+  sel: lib/matplotlib/tests/test_figure.py::test_savefig_backend
+  sel: lib/matplotlib/tests/test_figure.py::test_savefig_pixel_ratio
+  ... +656 more
+coverage: selected=696 p2p=104 overlap_p2p=44 frac=0.4231
+  failing_in_v2=[]
+  failing_f2p_in_v2=[]
+  failing_p2p_in_v2=[]
+v4 files: ['test_repro_1.py', 'test_repro_2.py', 'test_repro_3.py']
+lens: issue=3251 agent=1277 gold=519 test_patch=702
+harness_report top keys: ['matplotlib__matplotlib-23476']
+==============================================================================
+pylint-dev__pylint-4661  [group1_false_accept]  run=main_50_b
+missing: []
+csv_disagreements: []
+csv: decision=ACCEPT oracle=unresolved int=PASS reg=PASS stat=PASS repro=PASS source_run=main_50_b
+oracle: outcome=unresolved resolved=False applied=True report=/home/sankalp/projects/cis695-agent-reliability/logs/run_evaluation/main_50_b__pylint-dev__pylint-4661/deepseek_deepseek-v4-flash/pylint-dev__pylint-4661/report.json
+  F2P fail n=1: ['tests/lint/unittest_lint.py::test_pylint_home']
+  F2P ok   n=0: []
+  P2P fail n=0: []
+  P2P ok n=0
+official F2P n=1: ['tests/lint/unittest_lint.py::test_pylint_home']
+official P2P n=0
+decision=ACCEPT reasons=['all accept conditions met']
+integrity: PASS no violations
+regression: PASS 4 executed, 0 regressions
+  findings.signal=PASS n_executed=4 summary={'PASS': 4} notes=[]
+static: PASS 4/4 checks ran; build: build is not installed: /opt/miniconda3/envs/testbed/bin/python: No module named build
+reproduction: PASS 3/3 stable generated tests pass on the patched tree n_frozen=3
+  frozen n=3
+    frozen: path=v4_repro/test_repro_1.py name=None status=None {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:99b0e82d9f6367100c6e36f43a527942859bcc9212969fa50817687f5b2d233d', 'size_bytes': 2013, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'lobals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 38, in <module>\n    assert pylint.config.PYLINT_HOME in valid_locations, (\nAssertionError: pylint data should be stored in an XDG data directory ([\'/tmp/pylint_xdg_x0o3z81h/home/.local/share/pylint\', \'/tmp/pylint_xdg_x0o3z81h/xdg_data/pylint\']), got \'/tmp/pylint_xdg_x0o3z81h/home/.pylint.d\'\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'lobals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 38, in <module>\n    assert pylint.config.PYLINT_HOME in valid_locations, (\nAssertionError: pylint data should be stored in an XDG data directory ([\'/tmp/pylint_xdg_u05tljtu/home/.local/share/pylint\', \'/tmp/pylint_xdg_u05tljtu/xdg_data/pylint\']), got \'/tmp/pylint_xdg_u05tljtu/home/.pylint.d\'\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_2.py name=None status=None {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:2342c7c5c4a3952f83e570da530c768261ad5975b94db28047fa78d9df72317f', 'size_bytes': 1367, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': '_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 30, in <module>\n    assert pylint.config.PYLINT_HOME == expected, (\nAssertionError: pylint data should default to the XDG data directory ($HOME/.local/share/pylint): expected \'/tmp/pylint_xdg_7wcyyod8/home/.local/share/pylint\', got \'/tmp/pylint_xdg_7wcyyod8/home/.pylint.d\'\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': '_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 30, in <module>\n    assert pylint.config.PYLINT_HOME == expected, (\nAssertionError: pylint data should default to the XDG data directory ($HOME/.local/share/pylint): expected \'/tmp/pylint_xdg_je090uig/home/.local/share/pylint\', got \'/tmp/pylint_xdg_je090uig/home/.pylint.d\'\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_3.py name=None status=None {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:fb01f8381746b52450a727faad457b0a6049e4b9cc84ab7f942eba71955df3c6', 'size_bytes': 2163, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'iniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 36, in <module>\n    assert pylint.config.PYLINT_HOME in valid_locations, (\nAssertionError: PYLINT_HOME should be an XDG data directory, got \'/tmp/pylint_xdg_vx8w0unq/home/.pylint.d\'\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'iniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 36, in <module>\n    assert pylint.config.PYLINT_HOME in valid_locations, (\nAssertionError: PYLINT_HOME should be an XDG data directory, got \'/tmp/pylint_xdg_48a8e4g4/home/.pylint.d\'\n'}], 'kept': True, 'drop_reason': None}
+  patched n=3
+    patched: {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:99b0e82d9f6367100c6e36f43a527942859bcc9212969fa50817687f5b2d233d', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'OK: PYLINT_HOME is an XDG data directory, no
+    patched: {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:2342c7c5c4a3952f83e570da530c768261ad5975b94db28047fa78d9df72317f', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'OK: PYLINT_HOME defaults to $HOME/.local/sha
+    patched: {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:fb01f8381746b52450a727faad457b0a6049e4b9cc84ab7f942eba71955df3c6', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'OK: persisted pylint results are stored in a
+n_selected=4 convention=tests_tree runner=pytest: [tool:pytest] in setup.cfg; pytest referenced in tox.ini
+  sel: tests/test_config.py::test_can_read_ini
+  sel: tests/test_config.py::test_can_read_setup_cfg
+  sel: tests/test_config.py::test_can_read_toml
+  sel: tests/test_config.py::test_can_read_toml_rich_types
+coverage: selected=4 p2p=0 overlap_p2p=0 frac=None
+  failing_in_v2=[]
+  failing_f2p_in_v2=[]
+  failing_p2p_in_v2=[]
+v4 files: ['test_repro_1.py', 'test_repro_2.py', 'test_repro_3.py']
+lens: issue=995 agent=2593 gold=1835 test_patch=633
+harness_report top keys: ['pylint-dev__pylint-4661']
+==============================================================================
+matplotlib__matplotlib-20676  [group2_false_flag]  run=main_2_rerun_mpl
+missing: []
+csv_disagreements: []
+csv: decision=FLAG oracle=unresolved int=PASS reg=PASS stat=FAIL repro=NOT_AVAILABLE source_run=main_2_rerun_mpl
+oracle: outcome=unresolved resolved=False applied=True report=/home/sankalp/projects/cis695-agent-reliability/logs/run_evaluation/main_2_rerun_mpl__matplotlib__matplotlib-20676/deepseek_deepseek-v4-flash/matplotlib__matplotlib-20676/report.json
+  F2P fail n=2: ['lib/matplotlib/tests/test_widgets.py::test_span_selector_bound[horizontal]', 'lib/matplotlib/tests/test_widgets.py::test_span_selector_bound[vertical]']
+  F2P ok   n=0: []
+  P2P fail n=0: []
+  P2P ok n=32
+official F2P n=2: ['lib/matplotlib/tests/test_widgets.py::test_span_selector_bound[horizontal]', 'lib/matplotlib/tests/test_widgets.py::test_span_selector_bound[vertical]']
+official P2P n=32
+decision=FLAG reasons=['no issue-specific execution signal supports repair (reproduction is NOT_AVAILABLE)']
+integrity: PASS no violations
+regression: PASS 340 executed, 0 regressions
+  findings.signal=PASS n_executed=340 summary={'PASS': 334, 'PRE_EXISTING_FAIL': 6, 'NOT_RUN': 396} notes=[]
+static: FAIL 3/3 checks ran; typecheck: no configuration found; build: build is not installed: /opt/miniconda3/envs/testbed/bin/python: No module named build.__main__; 'build' is a package and cannot be directly executed
+reproduction: NOT_AVAILABLE generator wrote no test files (LimitsExceeded) n_frozen=0
+  frozen n=0
+  patched n=0
+n_selected=736 convention=sibling_tests runner=pytest: pytest.ini or conftest.py; pytest referenced in tox.ini
+  sel: lib/matplotlib/tests/test_widgets.py::test_rectangle_selector
+  sel: lib/matplotlib/tests/test_widgets.py::test_rectangle_drag
+  sel: lib/matplotlib/tests/test_widgets.py::test_ellipse
+  sel: lib/matplotlib/tests/test_widgets.py::test_rectangle_handles
+  sel: lib/matplotlib/tests/test_widgets.py::test_span_selector
+  sel: lib/matplotlib/tests/test_widgets.py::test_span_selector_drag
+  sel: lib/matplotlib/tests/test_widgets.py::test_span_selector_direction
+  sel: lib/matplotlib/tests/test_widgets.py::test_tool_line_handle
+  sel: lib/matplotlib/tests/test_widgets.py::test_lasso_selector
+  sel: lib/matplotlib/tests/test_widgets.py::test_CheckButtons
+  sel: lib/matplotlib/tests/test_widgets.py::test_TextBox
+  sel: lib/matplotlib/tests/test_widgets.py::test_check_radio_buttons_image
+  sel: lib/matplotlib/tests/test_widgets.py::test_check_bunch_of_radio_buttons
+  sel: lib/matplotlib/tests/test_widgets.py::test_slider_slidermin_slidermax_invalid
+  sel: lib/matplotlib/tests/test_widgets.py::test_slider_slidermin_slidermax
+  sel: lib/matplotlib/tests/test_widgets.py::test_slider_valmin_valmax
+  sel: lib/matplotlib/tests/test_widgets.py::test_slider_valstep_snapping
+  sel: lib/matplotlib/tests/test_widgets.py::test_slider_horizontal_vertical
+  sel: lib/matplotlib/tests/test_widgets.py::test_range_slider
+  sel: lib/matplotlib/tests/test_widgets.py::test_polygon_selector
+  sel: lib/matplotlib/tests/test_widgets.py::test_MultiCursor
+  sel: lib/matplotlib/tests/test_widgets.py::test_rect_visibility
+  sel: lib/matplotlib/tests/test_widgets.py::test_polygon_selector_remove
+  sel: lib/matplotlib/tests/test_widgets.py::test_polygon_selector_remove_first_point
+  sel: lib/matplotlib/tests/test_widgets.py::test_polygon_selector_redraw
+  sel: lib/matplotlib/tests/test_axes.py::test_get_labels
+  sel: lib/matplotlib/tests/test_axes.py::test_label_loc_vertical
+  sel: lib/matplotlib/tests/test_axes.py::test_label_loc_horizontal
+  sel: lib/matplotlib/tests/test_axes.py::test_label_loc_rc
+  sel: lib/matplotlib/tests/test_axes.py::test_acorr
+  sel: lib/matplotlib/tests/test_axes.py::test_spy
+  sel: lib/matplotlib/tests/test_axes.py::test_spy_invalid_kwargs
+  sel: lib/matplotlib/tests/test_axes.py::test_matshow
+  sel: lib/matplotlib/tests/test_axes.py::test_formatter_ticker
+  sel: lib/matplotlib/tests/test_axes.py::test_funcformatter_auto_formatter
+  sel: lib/matplotlib/tests/test_axes.py::test_strmethodformatter_auto_formatter
+  sel: lib/matplotlib/tests/test_axes.py::test_twin_axis_locators_formatters
+  sel: lib/matplotlib/tests/test_axes.py::test_twinx_cla
+  sel: lib/matplotlib/tests/test_axes.py::test_twin_logscale
+  sel: lib/matplotlib/tests/test_axes.py::test_twinx_axis_scales
+  ... +696 more
+coverage: selected=736 p2p=32 overlap_p2p=16 frac=0.5
+  failing_in_v2=[]
+  failing_f2p_in_v2=[]
+  failing_p2p_in_v2=[]
+v4 files: []
+lens: issue=1645 agent=1183 gold=838 test_patch=1432
+harness_report top keys: ['matplotlib__matplotlib-20676']
+==============================================================================
+pylint-dev__pylint-6528  [group2_false_flag]  run=main_50_a
+missing: []
+csv_disagreements: []
+csv: decision=FLAG oracle=unresolved int=PASS reg=PASS stat=PASS repro=NOT_AVAILABLE source_run=main_50_a
+oracle: outcome=unresolved resolved=False applied=True report=/home/sankalp/projects/cis695-agent-reliability/logs/run_evaluation/main_50_a__pylint-dev__pylint-6528/deepseek_deepseek-v4-flash/pylint-dev__pylint-6528/report.json
+  F2P fail n=0: []
+  F2P ok   n=4: ['tests/lint/unittest_lint.py::test_recursive_ignore[--ignore-ignored_subdirectory]', 'tests/lint/unittest_lint.py::test_recursive_ignore[--ignore-patterns-ignored_*]', 'tests/test_self.py::TestRunTC::test_ignore_recursive', 'tests/test_self.py::TestRunTC::test_ignore_pattern_recursive']
+  P2P fail n=4: ['tests/lint/unittest_lint.py::test_custom_should_analyze_file', 'tests/lint/unittest_lint.py::test_multiprocessing[1]', 'tests/lint/unittest_lint.py::test_multiprocessing[2]', 'tests/test_self.py::TestRunTC::test_jobs_score']
+  P2P ok n=167
+official F2P n=4: ['tests/lint/unittest_lint.py::test_recursive_ignore[--ignore-ignored_subdirectory]', 'tests/lint/unittest_lint.py::test_recursive_ignore[--ignore-patterns-ignored_*]', 'tests/test_self.py::TestRunTC::test_ignore_recursive', 'tests/test_self.py::TestRunTC::test_ignore_pattern_recursive']
+official P2P n=171
+decision=FLAG reasons=['no issue-specific execution signal supports repair (reproduction is NOT_AVAILABLE)']
+integrity: PASS no violations
+regression: PASS 191 executed, 0 regressions
+  findings.signal=PASS n_executed=191 summary={'PASS': 189, 'PRE_EXISTING_FAIL': 2, 'NOT_RUN': 27} notes=[]
+static: PASS 4/4 checks ran; build: build is not installed: /opt/miniconda3/envs/testbed/bin/python: No module named build
+reproduction: NOT_AVAILABLE generator wrote no test files (LimitsExceeded) n_frozen=0
+  frozen n=0
+  patched n=0
+n_selected=218 convention=tests_tree runner=pytest: [tool:pytest] in setup.cfg; pytest referenced in tox.ini
+  sel: tests/lint/test_pylinter.py::test_crash_in_file
+  sel: tests/lint/test_pylinter.py::test_check_deprecation
+  sel: tests/lint/unittest_expand_modules.py::test__is_in_ignore_list_re_match
+  sel: tests/lint/unittest_expand_modules.py::TestExpandModules::test_expand_modules
+  sel: tests/lint/unittest_expand_modules.py::TestExpandModules::test_expand_modules_with_ignore
+  sel: doc/test_messages_documentation.py::test_code_examples
+  sel: tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_benchmark_j1
+  sel: tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_benchmark_j2
+  sel: tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_benchmark_check_parallel_j2
+  sel: tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_lots_of_files_j1
+  sel: tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_lots_of_files_j2
+  sel: tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_lots_of_files_j1_empty_checker
+  sel: tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_lots_of_files_j2_empty_checker
+  sel: tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_benchmark_j1_single_working_checker
+  sel: tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_benchmark_j2_single_working_checker
+  sel: tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_benchmark_j1_all_checks_single_file
+  sel: tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_benchmark_j1_all_checks_lots_of_files
+  sel: tests/checkers/unittest_base_checker.py::test_base_checker_doc
+  sel: tests/checkers/unittest_base_checker.py::test_base_checker_ordering
+  sel: tests/checkers/unittest_format.py::TestCheckSpace::test_encoding_token
+  sel: tests/checkers/unittest_format.py::test_disable_global_option_end_of_line
+  sel: tests/checkers/unittest_similar.py::test_ignore_comments
+  sel: tests/checkers/unittest_similar.py::test_ignore_docstrings
+  sel: tests/checkers/unittest_similar.py::test_ignore_imports
+  sel: tests/checkers/unittest_similar.py::test_multiline_imports
+  sel: tests/checkers/unittest_similar.py::test_ignore_multiline_imports
+  sel: tests/checkers/unittest_similar.py::test_ignore_signatures_fail
+  sel: tests/checkers/unittest_similar.py::test_ignore_signatures_pass
+  sel: tests/checkers/unittest_similar.py::test_ignore_signatures_class_methods_fail
+  sel: tests/checkers/unittest_similar.py::test_ignore_signatures_class_methods_pass
+  sel: tests/checkers/unittest_similar.py::test_ignore_signatures_empty_functions_fail
+  sel: tests/checkers/unittest_similar.py::test_ignore_signatures_empty_functions_pass
+  sel: tests/checkers/unittest_similar.py::test_no_hide_code_with_imports
+  sel: tests/checkers/unittest_similar.py::test_ignore_nothing
+  sel: tests/checkers/unittest_similar.py::test_lines_without_meaningful_content_do_not_trigger_similarity
+  sel: tests/checkers/unittest_similar.py::test_help
+  sel: tests/checkers/unittest_similar.py::test_no_args
+  sel: tests/checkers/unittest_similar.py::test_get_map_data
+  sel: tests/checkers/unittest_similar.py::test_set_duplicate_lines_to_zero
+  sel: tests/config/test_deprecations.py::TestDeprecationArgumentsManager::test_load_configuration
+  ... +178 more
+coverage: selected=218 p2p=171 overlap_p2p=91 frac=0.5322
+  failing_in_v2=['tests/lint/unittest_lint.py::test_custom_should_analyze_file', 'tests/test_self.py::TestRunTC::test_jobs_score']
+  failing_f2p_in_v2=[]
+  failing_p2p_in_v2=['tests/lint/unittest_lint.py::test_custom_should_analyze_file', 'tests/test_self.py::TestRunTC::test_jobs_score']
+v4 files: []
+lens: issue=2359 agent=3997 gold=3095 test_patch=5953
+harness_report top keys: ['pylint-dev__pylint-6528']
+==============================================================================
+astropy__astropy-13977  [group2_false_flag]  run=main_50_b
+missing: []
+csv_disagreements: []
+csv: decision=FLAG oracle=unresolved int=PASS reg=NOT_AVAILABLE stat=PASS repro=NOT_AVAILABLE source_run=main_50_b
+oracle: outcome=unresolved resolved=False applied=True report=/home/sankalp/projects/cis695-agent-reliability/logs/run_evaluation/main_50_b__astropy__astropy-13977/deepseek_deepseek-v4-flash/astropy__astropy-13977/report.json
+  F2P fail n=8: ['astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity0-quantity0-add]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity0-quantity0-multiply]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity0-quantity1-add]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity0-quantity1-multiply]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity1-quantity0-add]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity1-quantity0-multiply]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity1-quantity1-add]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity1-quantity1-multiply]']
+  F2P ok   n=12: ['astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[None-duck_quantity0-quantity0-add]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[None-duck_quantity0-quantity0-less]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[None-duck_quantity0-quantity1-add]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[None-duck_quantity0-quantity1-less]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[None-duck_quantity1-quantity0-add]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[None-duck_quantity1-quantity0-less]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[None-duck_quantity1-quantity1-add]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[None-duck_quantity1-quantity1-less]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity0-quantity0-less]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity0-quantity1-less]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity1-quantity0-less]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity1-quantity1-less]']
+  P2P fail n=0: []
+  P2P ok n=322
+official F2P n=20: ['astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[None-duck_quantity0-quantity0-add]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[None-duck_quantity0-quantity0-less]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[None-duck_quantity0-quantity1-add]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[None-duck_quantity0-quantity1-less]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[None-duck_quantity1-quantity0-add]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[None-duck_quantity1-quantity0-less]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[None-duck_quantity1-quantity1-add]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[None-duck_quantity1-quantity1-less]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity0-quantity0-add]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity0-quantity0-multiply]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity0-quantity0-less]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity0-quantity1-add]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity0-quantity1-multiply]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity0-quantity1-less]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity1-quantity0-add]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity1-quantity0-multiply]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity1-quantity0-less]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity1-quantity1-add]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity1-quantity1-multiply]', 'astropy/units/tests/test_quantity_ufuncs.py::TestUfuncReturnsNotImplemented::TestBinaryUfuncs::test_full[empty-duck_quantity1-quantity1-less]']
+official P2P n=322
+decision=FLAG reasons=['regression is NOT_AVAILABLE, not PASS', 'no issue-specific execution signal supports repair (reproduction is NOT_AVAILABLE)']
+integrity: PASS no violations
+regression: NOT_AVAILABLE tests were selected but none executed
+  findings.signal=NOT_AVAILABLE n_executed=0 summary={'TIMEOUT': 3082} notes=['tests were selected but none executed']
+static: PASS 2/2 checks ran; lint: flake8 is not installed: bash: line 1: flake8: command not found; typecheck: no configuration found; build: build is not installed: /opt/miniconda3/envs/testbed/bin/python: No module named build
+reproduction: NOT_AVAILABLE generator wrote no test files (LimitsExceeded) n_frozen=0
+  frozen n=0
+  patched n=0
+n_selected=3082 convention=sibling_tests runner=pytest: pytest.ini or conftest.py; [tool:pytest] in setup.cfg; pytest referenced in tox.ini
+  sel: astropy/units/tests/test_quantity.py::TestQuantityCreation::test_1
+  sel: astropy/units/tests/test_quantity.py::TestQuantityCreation::test_2
+  sel: astropy/units/tests/test_quantity.py::TestQuantityCreation::test_3
+  sel: astropy/units/tests/test_quantity.py::TestQuantityCreation::test_nan_inf
+  sel: astropy/units/tests/test_quantity.py::TestQuantityCreation::test_unit_property
+  sel: astropy/units/tests/test_quantity.py::TestQuantityCreation::test_preserve_dtype
+  sel: astropy/units/tests/test_quantity.py::TestQuantityCreation::test_numpy_style_dtype_inspect
+  sel: astropy/units/tests/test_quantity.py::TestQuantityCreation::test_float_dtype_promotion
+  sel: astropy/units/tests/test_quantity.py::TestQuantityCreation::test_copy
+  sel: astropy/units/tests/test_quantity.py::TestQuantityCreation::test_subok
+  sel: astropy/units/tests/test_quantity.py::TestQuantityCreation::test_order
+  sel: astropy/units/tests/test_quantity.py::TestQuantityCreation::test_ndmin
+  sel: astropy/units/tests/test_quantity.py::TestQuantityCreation::test_non_quantity_with_unit
+  sel: astropy/units/tests/test_quantity.py::TestQuantityCreation::test_creation_via_view
+  sel: astropy/units/tests/test_quantity.py::TestQuantityCreation::test_rshift_warns
+  sel: astropy/units/tests/test_quantity.py::TestQuantityOperations::test_addition
+  sel: astropy/units/tests/test_quantity.py::TestQuantityOperations::test_subtraction
+  sel: astropy/units/tests/test_quantity.py::TestQuantityOperations::test_multiplication
+  sel: astropy/units/tests/test_quantity.py::TestQuantityOperations::test_division
+  sel: astropy/units/tests/test_quantity.py::TestQuantityOperations::test_commutativity
+  sel: astropy/units/tests/test_quantity.py::TestQuantityOperations::test_power
+  sel: astropy/units/tests/test_quantity.py::TestQuantityOperations::test_matrix_multiplication
+  sel: astropy/units/tests/test_quantity.py::TestQuantityOperations::test_unary
+  sel: astropy/units/tests/test_quantity.py::TestQuantityOperations::test_abs
+  sel: astropy/units/tests/test_quantity.py::TestQuantityOperations::test_incompatible_units
+  sel: astropy/units/tests/test_quantity.py::TestQuantityOperations::test_non_number_type
+  sel: astropy/units/tests/test_quantity.py::TestQuantityOperations::test_dimensionless_operations
+  sel: astropy/units/tests/test_quantity.py::TestQuantityOperations::test_complicated_operation
+  sel: astropy/units/tests/test_quantity.py::TestQuantityOperations::test_comparison
+  sel: astropy/units/tests/test_quantity.py::TestQuantityOperations::test_numeric_converters
+  sel: astropy/units/tests/test_quantity.py::TestQuantityOperations::test_numeric_converter_to_index_in_practice
+  sel: astropy/units/tests/test_quantity.py::TestQuantityOperations::test_array_converters
+  sel: astropy/units/tests/test_quantity.py::test_quantity_conversion
+  sel: astropy/units/tests/test_quantity.py::test_quantity_ilshift
+  sel: astropy/units/tests/test_quantity.py::test_regression_12964
+  sel: astropy/units/tests/test_quantity.py::test_quantity_value_views
+  sel: astropy/units/tests/test_quantity.py::test_quantity_conversion_with_equiv
+  sel: astropy/units/tests/test_quantity.py::test_quantity_conversion_equivalency_passed_on
+  sel: astropy/units/tests/test_quantity.py::test_self_equivalency
+  sel: astropy/units/tests/test_quantity.py::test_si
+  ... +3042 more
+coverage: selected=3082 p2p=322 overlap_p2p=140 frac=0.4348
+  failing_in_v2=[]
+  failing_f2p_in_v2=[]
+  failing_p2p_in_v2=[]
+v4 files: []
+lens: issue=3762 agent=1096 gold=5777 test_patch=5645
+harness_report top keys: ['astropy__astropy-13977']
+==============================================================================
+django__django-16631  [group2_false_flag]  run=main_50_b
+missing: []
+csv_disagreements: []
+csv: decision=FLAG oracle=unresolved int=PASS reg=PASS stat=FAIL repro=NOT_AVAILABLE source_run=main_50_b
+oracle: outcome=unresolved resolved=False applied=True report=/home/sankalp/projects/cis695-agent-reliability/logs/run_evaluation/main_50_b__django__django-16631/deepseek_deepseek-v4-flash/django__django-16631/report.json
+  F2P fail n=1: ['test_get_user_fallback_secret (auth_tests.test_basic.TestGetUser.test_get_user_fallback_secret)']
+  F2P ok   n=0: []
+  P2P fail n=0: []
+  P2P ok n=12
+official F2P n=1: ['test_get_user_fallback_secret (auth_tests.test_basic.TestGetUser.test_get_user_fallback_secret)']
+official P2P n=12
+decision=FLAG reasons=['no issue-specific execution signal supports repair (reproduction is NOT_AVAILABLE)']
+integrity: PASS no violations
+regression: PASS 252 executed, 0 regressions
+  findings.signal=PASS n_executed=252 summary={'PASS': 252, 'NOT_RUN': 226} notes=[]
+static: FAIL 2/2 checks ran; lint: flake8 is not installed: bash: line 1: flake8: command not found; typecheck: no configuration found; build: build is not installed: /opt/miniconda3/envs/testbed/bin/python: No module named build
+reproduction: NOT_AVAILABLE generator wrote no test files (LimitsExceeded) n_frozen=0
+  frozen n=0
+  patched n=0
+n_selected=478 convention=tests_tree runner=django: found tests/runtests.py in a Django tree
+  sel: tests/auth_tests/test_auth_backends.py::BaseBackendTest::test_get_user_permissions
+  sel: tests/auth_tests/test_auth_backends.py::BaseBackendTest::test_get_group_permissions
+  sel: tests/auth_tests/test_auth_backends.py::BaseBackendTest::test_get_all_permissions
+  sel: tests/auth_tests/test_auth_backends.py::BaseBackendTest::test_has_perm
+  sel: tests/auth_tests/test_auth_backends.py::BaseBackendTest::test_has_perms_perm_list_invalid
+  sel: tests/auth_tests/test_auth_backends.py::BaseModelBackendTest::test_has_perm
+  sel: tests/auth_tests/test_auth_backends.py::BaseModelBackendTest::test_custom_perms
+  sel: tests/auth_tests/test_auth_backends.py::BaseModelBackendTest::test_has_no_object_perm
+  sel: tests/auth_tests/test_auth_backends.py::BaseModelBackendTest::test_anonymous_has_no_permissions
+  sel: tests/auth_tests/test_auth_backends.py::BaseModelBackendTest::test_inactive_has_no_permissions
+  sel: tests/auth_tests/test_auth_backends.py::BaseModelBackendTest::test_get_all_superuser_permissions
+  sel: tests/auth_tests/test_auth_backends.py::BaseModelBackendTest::test_authentication_timing
+  sel: tests/auth_tests/test_auth_backends.py::BaseModelBackendTest::test_authentication_without_credentials
+  sel: tests/auth_tests/test_auth_backends.py::ModelBackendTest::test_authenticate_inactive
+  sel: tests/auth_tests/test_auth_backends.py::ModelBackendTest::test_authenticate_user_without_is_active_field
+  sel: tests/auth_tests/test_auth_backends.py::CustomUserModelBackendAuthenticateTest::test_authenticate
+  sel: tests/auth_tests/test_auth_backends.py::UUIDUserTests::test_login
+  sel: tests/auth_tests/test_auth_backends.py::RowlevelBackendTest::test_has_perm
+  sel: tests/auth_tests/test_auth_backends.py::RowlevelBackendTest::test_get_all_permissions
+  sel: tests/auth_tests/test_auth_backends.py::RowlevelBackendTest::test_get_group_permissions
+  sel: tests/auth_tests/test_auth_backends.py::AnonymousUserBackendTest::test_has_perm
+  sel: tests/auth_tests/test_auth_backends.py::AnonymousUserBackendTest::test_has_perms
+  sel: tests/auth_tests/test_auth_backends.py::AnonymousUserBackendTest::test_has_perms_perm_list_invalid
+  sel: tests/auth_tests/test_auth_backends.py::AnonymousUserBackendTest::test_has_module_perms
+  sel: tests/auth_tests/test_auth_backends.py::AnonymousUserBackendTest::test_get_all_permissions
+  sel: tests/auth_tests/test_auth_backends.py::NoBackendsTest::test_raises_exception
+  sel: tests/auth_tests/test_auth_backends.py::InActiveUserBackendTest::test_has_perm
+  sel: tests/auth_tests/test_auth_backends.py::InActiveUserBackendTest::test_has_module_perms
+  sel: tests/auth_tests/test_auth_backends.py::PermissionDeniedBackendTest::test_permission_denied
+  sel: tests/auth_tests/test_auth_backends.py::PermissionDeniedBackendTest::test_authenticates
+  sel: tests/auth_tests/test_auth_backends.py::PermissionDeniedBackendTest::test_has_perm_denied
+  sel: tests/auth_tests/test_auth_backends.py::PermissionDeniedBackendTest::test_has_perm
+  sel: tests/auth_tests/test_auth_backends.py::ChangedBackendSettingsTest::test_changed_backend_settings
+  sel: tests/auth_tests/test_auth_backends.py::AuthenticateTests::test_type_error_raised
+  sel: tests/auth_tests/test_auth_backends.py::AuthenticateTests::test_authenticate_sensitive_variables
+  sel: tests/auth_tests/test_auth_backends.py::AuthenticateTests::test_clean_credentials_sensitive_variables
+  sel: tests/auth_tests/test_auth_backends.py::AuthenticateTests::test_skips_backends_without_arguments
+  sel: tests/auth_tests/test_auth_backends.py::AuthenticateTests::test_skips_backends_with_decorated_method
+  sel: tests/auth_tests/test_auth_backends.py::ImproperlyConfiguredUserModelTest::test_does_not_shadow_exception
+  sel: tests/auth_tests/test_auth_backends.py::ImportedBackendTests::test_backend_path
+  ... +438 more
+coverage: selected=478 p2p=12 overlap_p2p=0 frac=0.0
+  failing_in_v2=[]
+  failing_f2p_in_v2=[]
+  failing_p2p_in_v2=[]
+v4 files: []
+lens: issue=824 agent=2449 gold=2723 test_patch=1622
+harness_report top keys: ['django__django-16631']
+==============================================================================
+mwaskom__seaborn-3069  [group2_false_flag]  run=main_50_b
+missing: []
+csv_disagreements: []
+csv: decision=FLAG oracle=unresolved int=PASS reg=PASS stat=PASS repro=NOT_AVAILABLE source_run=main_50_b
+oracle: outcome=unresolved resolved=False applied=True report=/home/sankalp/projects/cis695-agent-reliability/logs/run_evaluation/main_50_b__mwaskom__seaborn-3069/deepseek_deepseek-v4-flash/mwaskom__seaborn-3069/report.json
+  F2P fail n=1: ['tests/_core/test_plot.py::TestScaling::test_nominal_y_axis_tweaks']
+  F2P ok   n=1: ['tests/_core/test_plot.py::TestScaling::test_nominal_x_axis_tweaks']
+  P2P fail n=0: []
+  P2P ok n=94
+official F2P n=2: ['tests/_core/test_plot.py::TestScaling::test_nominal_x_axis_tweaks', 'tests/_core/test_plot.py::TestScaling::test_nominal_y_axis_tweaks']
+official P2P n=94
+decision=FLAG reasons=['no issue-specific execution signal supports repair (reproduction is NOT_AVAILABLE)']
+integrity: PASS no violations
+regression: PASS 134 executed, 0 regressions
+  findings.signal=PASS n_executed=134 summary={'PASS': 70, 'NEWLY_PASSING': 64, 'NOT_RUN': 16} notes=[]
+static: PASS 4/4 checks ran; build: build is not installed: /opt/miniconda3/envs/testbed/bin/python: No module named build
+reproduction: NOT_AVAILABLE generator wrote no test files (LimitsExceeded) n_frozen=0
+  frozen n=0
+  patched n=0
+n_selected=150 convention=mirrored_tree runner=pytest: default; no repo-specific runner found
+  sel: tests/_core/test_plot.py::TestInit::test_empty
+  sel: tests/_core/test_plot.py::TestInit::test_data_only
+  sel: tests/_core/test_plot.py::TestInit::test_df_and_named_variables
+  sel: tests/_core/test_plot.py::TestInit::test_df_and_mixed_variables
+  sel: tests/_core/test_plot.py::TestInit::test_vector_variables_only
+  sel: tests/_core/test_plot.py::TestInit::test_vector_variables_no_index
+  sel: tests/_core/test_plot.py::TestInit::test_data_only_named
+  sel: tests/_core/test_plot.py::TestInit::test_positional_and_named_data
+  sel: tests/_core/test_plot.py::TestInit::test_positional_and_named_xy
+  sel: tests/_core/test_plot.py::TestInit::test_positional_data_x_y
+  sel: tests/_core/test_plot.py::TestInit::test_positional_x_y
+  sel: tests/_core/test_plot.py::TestInit::test_positional_data_x
+  sel: tests/_core/test_plot.py::TestInit::test_positional_x
+  sel: tests/_core/test_plot.py::TestInit::test_positional_too_many
+  sel: tests/_core/test_plot.py::TestInit::test_unknown_keywords
+  sel: tests/_core/test_plot.py::TestLayerAddition::test_without_data
+  sel: tests/_core/test_plot.py::TestLayerAddition::test_with_new_variable_by_name
+  sel: tests/_core/test_plot.py::TestLayerAddition::test_with_new_variable_by_vector
+  sel: tests/_core/test_plot.py::TestLayerAddition::test_with_late_data_definition
+  sel: tests/_core/test_plot.py::TestLayerAddition::test_with_new_data_definition
+  sel: tests/_core/test_plot.py::TestLayerAddition::test_drop_variable
+  sel: tests/_core/test_plot.py::TestLayerAddition::test_stat_default
+  sel: tests/_core/test_plot.py::TestLayerAddition::test_stat_nondefault
+  sel: tests/_core/test_plot.py::TestLayerAddition::test_orient
+  sel: tests/_core/test_plot.py::TestLayerAddition::test_variable_list
+  sel: tests/_core/test_plot.py::TestLayerAddition::test_type_checks
+  sel: tests/_core/test_plot.py::TestScaling::test_inference
+  sel: tests/_core/test_plot.py::TestScaling::test_inference_from_layer_data
+  sel: tests/_core/test_plot.py::TestScaling::test_inference_joins
+  sel: tests/_core/test_plot.py::TestScaling::test_inferred_categorical_converter
+  sel: tests/_core/test_plot.py::TestScaling::test_explicit_categorical_converter
+  sel: tests/_core/test_plot.py::TestScaling::test_categorical_as_datetime
+  sel: tests/_core/test_plot.py::TestScaling::test_faceted_log_scale
+  sel: tests/_core/test_plot.py::TestScaling::test_paired_single_log_scale
+  sel: tests/_core/test_plot.py::TestScaling::test_log_scale_name
+  sel: tests/_core/test_plot.py::TestScaling::test_mark_data_log_transform_is_inverted
+  sel: tests/_core/test_plot.py::TestScaling::test_mark_data_log_transfrom_with_stat
+  sel: tests/_core/test_plot.py::TestScaling::test_mark_data_from_categorical
+  sel: tests/_core/test_plot.py::TestScaling::test_mark_data_from_datetime
+  sel: tests/_core/test_plot.py::TestScaling::test_computed_var_ticks
+  ... +110 more
+coverage: selected=150 p2p=94 overlap_p2p=65 frac=0.6915
+  failing_in_v2=[]
+  failing_f2p_in_v2=[]
+  failing_p2p_in_v2=[]
+v4 files: []
+lens: issue=1188 agent=2895 gold=2235 test_patch=1045
+harness_report top keys: ['mwaskom__seaborn-3069']
+==============================================================================
+sympy__sympy-17318  [group2_false_flag]  run=main_3_rerun_infra
+missing: []
+csv_disagreements: []
+csv: decision=FLAG oracle=unresolved int=PASS reg=NOT_AVAILABLE stat=PASS repro=PASS source_run=main_3_rerun_infra
+oracle: outcome=unresolved resolved=False applied=True report=/home/sankalp/projects/cis695-agent-reliability/logs/run_evaluation/main_3_rerun_infra__sympy__sympy-17318/deepseek_deepseek-v4-flash/sympy__sympy-17318/report.json
+  F2P fail n=1: ['test_issue_12420']
+  F2P ok   n=0: []
+  P2P fail n=0: []
+  P2P ok n=10
+official F2P n=1: ['test_issue_12420']
+official P2P n=10
+decision=FLAG reasons=['regression is NOT_AVAILABLE, not PASS']
+integrity: PASS no violations
+regression: NOT_AVAILABLE tests were selected but none executed; baseline: the test runner reported no results; output ended: /opt/miniconda3/envs/testbed/bin/python: No module named pytest; patched: the test runner reported no results; output ended: /opt/miniconda3/envs/testbed/bin/python: No module named pytest
+  findings.signal=NOT_AVAILABLE n_executed=0 summary={'NOT_RUN': 21} notes=['tests were selected but none executed', 'baseline: the test runner reported no results; output ended: /opt/miniconda3/envs/testbed/bin/python: No module named pytest', 'patched: the test runner reported no results; output ended: /opt/miniconda3/envs/testbed/bin/python: No module named pytest']
+static: PASS 2/2 checks ran; lint: no configuration found; typecheck: no configuration found; build: build is not installed: /opt/miniconda3/envs/testbed/bin/python: No module named build
+reproduction: PASS 3/3 stable generated tests pass on the patched tree n_frozen=3
+  frozen n=3
+    frozen: path=v4_repro/test_repro_1.py name=None status=None {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:f5fcf0afbcffda8f3564e877d03a489eb268fc6552c6e6df1ce4276865e086f5', 'size_bytes': 1593, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'ne 288, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 37, in <module>\n    result = denest(expr)\n  File "v4_repro/test_repro_1.py", line 23, in denest\n    raise AssertionError(\nAssertionError: sqrtdenest(3/2 - sqrt(2)*sqrt(1 + 2*I)/2 + 3*I/2) raised IndexError: tuple index out of range\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'ne 288, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 37, in <module>\n    result = denest(expr)\n  File "v4_repro/test_repro_1.py", line 23, in denest\n    raise AssertionError(\nAssertionError: sqrtdenest(3/2 - sqrt(2)*sqrt(1 + 2*I)/2 + 3*I/2) raised IndexError: tuple index out of range\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_2.py name=None status=None {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:32a19ad07c34e3718bc72236adfd5e1fdcb17773152972982cc6dc2204e2195f', 'size_bytes': 1363, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'lib/python3.9/runpy.py", line 288, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 37, in <module>\n    result = denest(z)\n  File "v4_repro/test_repro_2.py", line 22, in denest\n    raise AssertionError(\nAssertionError: sqrtdenest(sqrt(1 + 2*I)) raised IndexError: tuple index out of range\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'lib/python3.9/runpy.py", line 288, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 37, in <module>\n    result = denest(z)\n  File "v4_repro/test_repro_2.py", line 22, in denest\n    raise AssertionError(\nAssertionError: sqrtdenest(sqrt(1 + 2*I)) raised IndexError: tuple index out of range\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_3.py name=None status=None {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:a756a17f83428406b60eb082e12a816e46e2f79f250888b62fe97fae6d479f7a', 'size_bytes': 1256, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'lib/python3.9/runpy.py", line 288, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 36, in <module>\n    result = denest(e)\n  File "v4_repro/test_repro_3.py", line 19, in denest\n    raise AssertionError(\nAssertionError: sqrtdenest(sqrt(1 + 2*I)) raised IndexError: tuple index out of range\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'lib/python3.9/runpy.py", line 288, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 36, in <module>\n    result = denest(e)\n  File "v4_repro/test_repro_3.py", line 19, in denest\n    raise AssertionError(\nAssertionError: sqrtdenest(sqrt(1 + 2*I)) raised IndexError: tuple index out of range\n'}], 'kept': True, 'drop_reason': None}
+  patched n=3
+    patched: {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:f5fcf0afbcffda8f3564e877d03a489eb268fc6552c6e6df1ce4276865e086f5', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': ''}, {'outcome': 'pass', 'returncode': 0, 'ta
+    patched: {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:32a19ad07c34e3718bc72236adfd5e1fdcb17773152972982cc6dc2204e2195f', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': ''}, {'outcome': 'pass', 'returncode': 0, 'ta
+    patched: {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:a756a17f83428406b60eb082e12a816e46e2f79f250888b62fe97fae6d479f7a', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': ''}, {'outcome': 'pass', 'returncode': 0, 'ta
+n_selected=21 convention=sibling_tests runner=pytest: pytest.ini or conftest.py
+  sel: sympy/simplify/tests/test_radsimp.py::test_radsimp
+  sel: sympy/simplify/tests/test_radsimp.py::test_radsimp_issue_3214
+  sel: sympy/simplify/tests/test_radsimp.py::test_collect_1
+  sel: sympy/simplify/tests/test_radsimp.py::test_collect_2
+  sel: sympy/simplify/tests/test_radsimp.py::test_collect_3
+  sel: sympy/simplify/tests/test_radsimp.py::test_collect_4
+  sel: sympy/simplify/tests/test_radsimp.py::test_collect_5
+  sel: sympy/simplify/tests/test_radsimp.py::test_collect_D
+  sel: sympy/simplify/tests/test_radsimp.py::test_collect_func
+  sel: sympy/simplify/tests/test_radsimp.py::test_collect_order
+  sel: sympy/simplify/tests/test_radsimp.py::test_rcollect
+  sel: sympy/simplify/tests/test_radsimp.py::test_collect_D_0
+  sel: sympy/simplify/tests/test_radsimp.py::test_collect_Wild
+  sel: sympy/simplify/tests/test_radsimp.py::test_collect_const
+  sel: sympy/simplify/tests/test_radsimp.py::test_issue_13143
+  sel: sympy/simplify/tests/test_radsimp.py::test_issue_6097
+  sel: sympy/simplify/tests/test_radsimp.py::test_fraction_expand
+  sel: sympy/simplify/tests/test_radsimp.py::test_fraction
+  sel: sympy/simplify/tests/test_radsimp.py::test_issue_5615
+  sel: sympy/simplify/tests/test_radsimp.py::test_issue_5933
+  sel: sympy/simplify/tests/test_radsimp.py::test_issue_14608
+coverage: selected=21 p2p=10 overlap_p2p=0 frac=0.0
+  failing_in_v2=[]
+  failing_f2p_in_v2=[]
+  failing_p2p_in_v2=[]
+v4 files: ['test_repro_1.py', 'test_repro_2.py', 'test_repro_3.py']
+lens: issue=2310 agent=495 gold=1427 test_patch=1004
+harness_report top keys: ['sympy__sympy-17318']
+==============================================================================
+matplotlib__matplotlib-25479  [group3_false_reject]  run=main_50_b
+missing: []
+csv_disagreements: []
+csv: decision=REJECT oracle=unresolved int=PASS reg=FAIL stat=PASS repro=NOT_AVAILABLE source_run=main_50_b
+oracle: outcome=unresolved resolved=False applied=True report=/home/sankalp/projects/cis695-agent-reliability/logs/run_evaluation/main_50_b__matplotlib__matplotlib-25479/deepseek_deepseek-v4-flash/matplotlib__matplotlib-25479/report.json
+  F2P fail n=2: ['lib/matplotlib/tests/test_colors.py::test_colormap_equals', 'lib/matplotlib/tests/test_colors.py::test_set_cmap_mismatched_name']
+  F2P ok   n=0: []
+  P2P fail n=1: ['lib/matplotlib/tests/test_colors.py::test_register_cmap']
+  P2P ok n=262
+official F2P n=2: ['lib/matplotlib/tests/test_colors.py::test_colormap_equals', 'lib/matplotlib/tests/test_colors.py::test_set_cmap_mismatched_name']
+official P2P n=263
+decision=REJECT reasons=['regression test failed']
+integrity: PASS no violations
+regression: FAIL 78 executed, 1 regressions
+  findings.signal=FAIL n_executed=78 summary={'PASS': 76, 'REGRESSION': 1, 'PRE_EXISTING_FAIL': 1, 'NOT_RUN': 10} notes=[]
+static: PASS 2/2 checks ran; lint: ruff is not installed: bash: line 1: ruff: command not found; typecheck: mypy is not installed: bash: line 1: mypy: command not found; build: build is not installed: /opt/miniconda3/envs/testbed/bin/python: No module named build.__main__; 'build' is a package and cannot be dire
+reproduction: NOT_AVAILABLE generator wrote no test files (LimitsExceeded) n_frozen=0
+  frozen n=0
+  patched n=0
+n_selected=88 convention=sibling_tests runner=pytest: pytest.ini or conftest.py; pytest referenced in tox.ini
+  sel: lib/matplotlib/tests/test_colors.py::test_create_lookup_table
+  sel: lib/matplotlib/tests/test_colors.py::test_index_dtype
+  sel: lib/matplotlib/tests/test_colors.py::test_resampled
+  sel: lib/matplotlib/tests/test_colors.py::test_register_cmap
+  sel: lib/matplotlib/tests/test_colors.py::test_colormaps_get_cmap
+  sel: lib/matplotlib/tests/test_colors.py::test_double_register_builtin_cmap
+  sel: lib/matplotlib/tests/test_colors.py::test_unregister_builtin_cmap
+  sel: lib/matplotlib/tests/test_colors.py::test_colormap_copy
+  sel: lib/matplotlib/tests/test_colors.py::test_colormap_equals
+  sel: lib/matplotlib/tests/test_colors.py::test_colormap_endian
+  sel: lib/matplotlib/tests/test_colors.py::test_colormap_invalid
+  sel: lib/matplotlib/tests/test_colors.py::test_colormap_return_types
+  sel: lib/matplotlib/tests/test_colors.py::test_BoundaryNorm
+  sel: lib/matplotlib/tests/test_colors.py::test_CenteredNorm
+  sel: lib/matplotlib/tests/test_colors.py::test_lognorm_invalid
+  sel: lib/matplotlib/tests/test_colors.py::test_LogNorm
+  sel: lib/matplotlib/tests/test_colors.py::test_LogNorm_inverse
+  sel: lib/matplotlib/tests/test_colors.py::test_PowerNorm
+  sel: lib/matplotlib/tests/test_colors.py::test_PowerNorm_translation_invariance
+  sel: lib/matplotlib/tests/test_colors.py::test_Normalize
+  sel: lib/matplotlib/tests/test_colors.py::test_FuncNorm
+  sel: lib/matplotlib/tests/test_colors.py::test_TwoSlopeNorm_autoscale
+  sel: lib/matplotlib/tests/test_colors.py::test_TwoSlopeNorm_autoscale_None_vmin
+  sel: lib/matplotlib/tests/test_colors.py::test_TwoSlopeNorm_autoscale_None_vmax
+  sel: lib/matplotlib/tests/test_colors.py::test_TwoSlopeNorm_scale
+  sel: lib/matplotlib/tests/test_colors.py::test_TwoSlopeNorm_scaleout_center
+  sel: lib/matplotlib/tests/test_colors.py::test_TwoSlopeNorm_scaleout_center_max
+  sel: lib/matplotlib/tests/test_colors.py::test_TwoSlopeNorm_Even
+  sel: lib/matplotlib/tests/test_colors.py::test_TwoSlopeNorm_Odd
+  sel: lib/matplotlib/tests/test_colors.py::test_TwoSlopeNorm_VminEqualsVcenter
+  sel: lib/matplotlib/tests/test_colors.py::test_TwoSlopeNorm_VmaxEqualsVcenter
+  sel: lib/matplotlib/tests/test_colors.py::test_TwoSlopeNorm_VminGTVcenter
+  sel: lib/matplotlib/tests/test_colors.py::test_TwoSlopeNorm_TwoSlopeNorm_VminGTVmax
+  sel: lib/matplotlib/tests/test_colors.py::test_TwoSlopeNorm_VcenterGTVmax
+  sel: lib/matplotlib/tests/test_colors.py::test_TwoSlopeNorm_premature_scaling
+  sel: lib/matplotlib/tests/test_colors.py::test_SymLogNorm
+  sel: lib/matplotlib/tests/test_colors.py::test_SymLogNorm_colorbar
+  sel: lib/matplotlib/tests/test_colors.py::test_SymLogNorm_single_zero
+  sel: lib/matplotlib/tests/test_colors.py::TestAsinhNorm::test_init
+  sel: lib/matplotlib/tests/test_colors.py::TestAsinhNorm::test_norm
+  ... +48 more
+coverage: selected=88 p2p=263 overlap_p2p=76 frac=0.289
+  failing_in_v2=['lib/matplotlib/tests/test_colors.py::test_colormap_equals', 'lib/matplotlib/tests/test_colors.py::test_register_cmap']
+  failing_f2p_in_v2=['lib/matplotlib/tests/test_colors.py::test_colormap_equals']
+  failing_p2p_in_v2=['lib/matplotlib/tests/test_colors.py::test_register_cmap']
+v4 files: []
+lens: issue=5785 agent=514 gold=1187 test_patch=1270
+harness_report top keys: ['matplotlib__matplotlib-25479']
+==============================================================================
+django__django-12209  [group4_right_old_tests_fail]  run=main_50_b
+missing: []
+csv_disagreements: []
+csv: decision=FLAG oracle=resolved int=PASS reg=FAIL stat=PASS repro=PASS source_run=main_50_b
+oracle: outcome=resolved resolved=True applied=True report=/home/sankalp/projects/cis695-agent-reliability/logs/run_evaluation/main_50_b__django__django-12209/deepseek_deepseek-v4-flash/django__django-12209/report.json
+  F2P fail n=0: []
+  F2P ok   n=1: ['partial(func, *args, **keywords) - new function with partial application']
+  P2P fail n=0: []
+  P2P ok n=0
+official F2P n=1: ['partial(func, *args, **keywords) - new function with partial application']
+official P2P n=0
+decision=FLAG reasons=['signals disagree: regression FAIL, reproduction PASS']
+integrity: PASS no violations
+regression: FAIL 2929 executed, 1 regressions
+  findings.signal=FAIL n_executed=2929 summary={'PASS': 2925, 'REGRESSION': 1, 'PRE_EXISTING_FAIL': 2, 'ERROR': 1, 'NOT_RUN': 390} notes=[]
+static: PASS 2/2 checks ran; lint: flake8 is not installed: bash: line 1: flake8: command not found; typecheck: no configuration found; build: build is not installed: /opt/miniconda3/envs/testbed/bin/python: No module named build
+reproduction: PASS 3/3 stable generated tests pass on the patched tree n_frozen=3
+  frozen n=3
+    frozen: path=v4_repro/test_repro_1.py name=None status=None {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:fa3db4f011a2137d73b236ec02bb7d6d9a69435d13c2f22f3dfce2a21f035bb4', 'size_bytes': 1957, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'e)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 96, in _run_module_code\n    mod_name, mod_spec, pkg_name, script_name)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 85, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 58, in <module>\n    \'of updating the existing row: %r\' % (exc,)\nAssertionError: Saving a model instance with an explicit, already existing primary key raised IntegrityError (a duplicate INSERT was attempted) instead of updating the existing row: IntegrityError(\'UNIQUE constraint failed: repro_sample.id\',)\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'e)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 96, in _run_module_code\n    mod_name, mod_spec, pkg_name, script_name)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 85, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 58, in <module>\n    \'of updating the existing row: %r\' % (exc,)\nAssertionError: Saving a model instance with an explicit, already existing primary key raised IntegrityError (a duplicate INSERT was attempted) instead of updating the existing row: IntegrityError(\'UNIQUE constraint failed: repro_sample.id\',)\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_2.py name=None status=None {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:13a0f59c0c506b43ab3d778cf9197e0700e907a567341d714ebc974c11f249b8', 'size_bytes': 2342, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'kg_name, script_name=fname)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 96, in _run_module_code\n    mod_name, mod_spec, pkg_name, script_name)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 85, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 65, in <module>\n    \'existing row: %r\' % (exc,)\nAssertionError: Deserializing (as loaddata does) an object with an explicit, already existing primary key raised IntegrityError instead of updating the existing row: IntegrityError(\'UNIQUE constraint failed: contenttypes_sample.id\',)\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'kg_name, script_name=fname)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 96, in _run_module_code\n    mod_name, mod_spec, pkg_name, script_name)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 85, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 65, in <module>\n    \'existing row: %r\' % (exc,)\nAssertionError: Deserializing (as loaddata does) an object with an explicit, already existing primary key raised IntegrityError instead of updating the existing row: IntegrityError(\'UNIQUE constraint failed: contenttypes_sample.id\',)\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_3.py name=None status=None {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:bdfee3c3133b8042516d4f12929725eb02dddd80a83c5168f4f71de4c72e7b04', 'size_bytes': 2469, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'unpy.py", line 263, in run_path\n    pkg_name=pkg_name, script_name=fname)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 96, in _run_module_code\n    mod_name, mod_spec, pkg_name, script_name)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 85, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 61, in <module>\n    % (exc,)\nAssertionError: Saving a new instance with an explicit, existing primary key and update_fields raised IntegrityError instead of updating the row: IntegrityError(\'UNIQUE constraint failed: repro_sample.id\',)\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'unpy.py", line 263, in run_path\n    pkg_name=pkg_name, script_name=fname)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 96, in _run_module_code\n    mod_name, mod_spec, pkg_name, script_name)\n  File "/opt/miniconda3/envs/testbed/lib/python3.6/runpy.py", line 85, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 61, in <module>\n    % (exc,)\nAssertionError: Saving a new instance with an explicit, existing primary key and update_fields raised IntegrityError instead of updating the row: IntegrityError(\'UNIQUE constraint failed: repro_sample.id\',)\n'}], 'kept': True, 'drop_reason': None}
+  patched n=3
+    patched: {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:fa3db4f011a2137d73b236ec02bb7d6d9a69435d13c2f22f3dfce2a21f035bb4', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'OK: explicit primary key with a default upda
+    patched: {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:13a0f59c0c506b43ab3d778cf9197e0700e907a567341d714ebc974c11f249b8', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'OK: deserializing an object with an explicit
+    patched: {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:bdfee3c3133b8042516d4f12929725eb02dddd80a83c5168f4f71de4c72e7b04', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'OK: explicit primary key save performed an U
+n_selected=3319 convention=tests_tree runner=django: found tests/runtests.py in a Django tree
+  sel: tests/admin_utils/models.py::Article::test_from_model
+  sel: tests/admin_utils/models.py::Article::test_from_model_with_override
+  sel: tests/check_framework/test_model_checks.py::DuplicateDBTableTests::test_collision_in_same_app
+  sel: tests/check_framework/test_model_checks.py::DuplicateDBTableTests::test_collision_in_same_app_database_routers_installed
+  sel: tests/check_framework/test_model_checks.py::DuplicateDBTableTests::test_collision_across_apps
+  sel: tests/check_framework/test_model_checks.py::DuplicateDBTableTests::test_collision_across_apps_database_routers_installed
+  sel: tests/check_framework/test_model_checks.py::DuplicateDBTableTests::test_no_collision_for_unmanaged_models
+  sel: tests/check_framework/test_model_checks.py::DuplicateDBTableTests::test_no_collision_for_proxy_models
+  sel: tests/check_framework/test_model_checks.py::IndexNameTests::test_collision_in_same_model
+  sel: tests/check_framework/test_model_checks.py::IndexNameTests::test_collision_in_different_models
+  sel: tests/check_framework/test_model_checks.py::IndexNameTests::test_collision_abstract_model
+  sel: tests/check_framework/test_model_checks.py::IndexNameTests::test_no_collision_abstract_model_interpolation
+  sel: tests/check_framework/test_model_checks.py::IndexNameTests::test_collision_across_apps
+  sel: tests/check_framework/test_model_checks.py::IndexNameTests::test_no_collision_across_apps_interpolation
+  sel: tests/check_framework/test_model_checks.py::ConstraintNameTests::test_collision_in_same_model
+  sel: tests/check_framework/test_model_checks.py::ConstraintNameTests::test_collision_in_different_models
+  sel: tests/check_framework/test_model_checks.py::ConstraintNameTests::test_collision_abstract_model
+  sel: tests/check_framework/test_model_checks.py::ConstraintNameTests::test_no_collision_abstract_model_interpolation
+  sel: tests/check_framework/test_model_checks.py::ConstraintNameTests::test_collision_across_apps
+  sel: tests/check_framework/test_model_checks.py::ConstraintNameTests::test_no_collision_across_apps_interpolation
+  sel: tests/check_framework/test_model_field_deprecation.py::TestDeprecatedField::test_default_details
+  sel: tests/check_framework/test_model_field_deprecation.py::TestDeprecatedField::test_user_specified_details
+  sel: tests/check_framework/test_model_field_deprecation.py::TestRemovedField::test_default_details
+  sel: tests/check_framework/test_model_field_deprecation.py::TestRemovedField::test_user_specified_details
+  sel: tests/contenttypes_tests/test_models.py::ContentTypesTests::test_lookup_cache
+  sel: tests/contenttypes_tests/test_models.py::ContentTypesTests::test_get_for_models_creation
+  sel: tests/contenttypes_tests/test_models.py::ContentTypesTests::test_get_for_models_empty_cache
+  sel: tests/contenttypes_tests/test_models.py::ContentTypesTests::test_get_for_models_partial_cache
+  sel: tests/contenttypes_tests/test_models.py::ContentTypesTests::test_get_for_models_full_cache
+  sel: tests/contenttypes_tests/test_models.py::ContentTypesTests::test_get_for_model_create_contenttype
+  sel: tests/contenttypes_tests/test_models.py::ContentTypesTests::test_get_for_concrete_model
+  sel: tests/contenttypes_tests/test_models.py::ContentTypesTests::test_get_for_concrete_models
+  sel: tests/contenttypes_tests/test_models.py::ContentTypesTests::test_cache_not_shared_between_managers
+  sel: tests/contenttypes_tests/test_models.py::ContentTypesTests::test_missing_model
+  sel: tests/contenttypes_tests/test_models.py::ContentTypesTests::test_str
+  sel: tests/contenttypes_tests/test_models.py::ContentTypesTests::test_app_labeled_name
+  sel: tests/contenttypes_tests/test_models.py::ContentTypesTests::test_app_labeled_name_unknown_model
+  sel: tests/contenttypes_tests/test_models.py::ContentTypesMultidbTests::test_multidb
+  sel: tests/invalid_models_tests/test_backend_specific.py::BackendSpecificChecksTests::test_check_field
+  sel: tests/invalid_models_tests/test_custom_fields.py::CustomFieldTest::test_none_column
+  ... +3279 more
+coverage: selected=3319 p2p=0 overlap_p2p=0 frac=None
+  failing_in_v2=[]
+  failing_f2p_in_v2=[]
+  failing_p2p_in_v2=[]
+v4 files: ['test_repro_1.py', 'test_repro_2.py', 'test_repro_3.py']
+lens: issue=1200 agent=1235 gold=464 test_patch=1621
+harness_report top keys: ['django__django-12209']
+==============================================================================
+django__django-14140  [group4_right_old_tests_fail]  run=main_50_b
+missing: []
+csv_disagreements: []
+csv: decision=FLAG oracle=resolved int=PASS reg=FAIL stat=PASS repro=PASS source_run=main_50_b
+oracle: outcome=resolved resolved=True applied=True report=/home/sankalp/projects/cis695-agent-reliability/logs/run_evaluation/main_50_b__django__django-14140/deepseek_deepseek-v4-flash/django__django-14140/report.json
+  F2P fail n=0: []
+  F2P ok   n=4: ['test_deconstruct (queries.test_q.QTests)', 'test_deconstruct_boolean_expression (queries.test_q.QTests)', 'test_deconstruct_negated (queries.test_q.QTests)', 'test_boolean_expression_combined_with_empty_Q (expressions.tests.BasicExpressionsTests)']
+  P2P fail n=0: []
+  P2P ok n=199
+official F2P n=4: ['test_deconstruct (queries.test_q.QTests)', 'test_deconstruct_boolean_expression (queries.test_q.QTests)', 'test_deconstruct_negated (queries.test_q.QTests)', 'test_boolean_expression_combined_with_empty_Q (expressions.tests.BasicExpressionsTests)']
+official P2P n=199
+decision=FLAG reasons=['signals disagree: regression FAIL, reproduction PASS']
+integrity: PASS no violations
+regression: FAIL 1797 executed, 2 regressions
+  findings.signal=FAIL n_executed=1797 summary={'PASS': 1795, 'REGRESSION': 2, 'NOT_RUN': 537} notes=[]
+static: PASS 2/2 checks ran; lint: flake8 is not installed: bash: line 1: flake8: command not found; typecheck: no configuration found; build: build is not installed: /opt/miniconda3/envs/testbed/bin/python: No module named build
+reproduction: PASS 3/3 stable generated tests pass on the patched tree n_frozen=3
+  frozen n=3
+    frozen: path=v4_repro/test_repro_1.py name=None status=None {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:c30b2c97101baf6c5701bcb50b5d6e6985e4f1ec201292ac8600528cda3b5851', 'size_bytes': 1197, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'ile "/opt/v4/run_test.py", line 10, in <module>\n    runpy.run_path(script, run_name="__main__")\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 265, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 18, in <module>\n    assert args == ((\'x\', 1),), args\nAssertionError: ()\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'ile "/opt/v4/run_test.py", line 10, in <module>\n    runpy.run_path(script, run_name="__main__")\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 265, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 18, in <module>\n    assert args == ((\'x\', 1),), args\nAssertionError: ()\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_2.py name=None status=None {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:374e235f993b8e5cdcaf2143964461b4d40170b4bcb799a0b9b5fae88d4f830f', 'size_bytes': 1320, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 265, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 33, in <module>\n    raise AssertionError(\nAssertionError: deconstruct() raised TypeError for a non-subscriptable child: TypeError("\'Exists\' object is not subscriptable")\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 265, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 33, in <module>\n    raise AssertionError(\nAssertionError: deconstruct() raised TypeError for a non-subscriptable child: TypeError("\'Exists\' object is not subscriptable")\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_3.py name=None status=None {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:bf465f692df8924c8bae96bd4b5c347f45c72d309cb74b54e77d6ed41ef1ddd7', 'size_bytes': 1478, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'tbed/lib/python3.8/runpy.py", line 265, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 33, in <module>\n    raise AssertionError(\'Q() & Q(Exists(...)) raised TypeError: %r\' % (exc,))\nAssertionError: Q() & Q(Exists(...)) raised TypeError: TypeError("\'Exists\' object is not subscriptable")\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'tbed/lib/python3.8/runpy.py", line 265, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 33, in <module>\n    raise AssertionError(\'Q() & Q(Exists(...)) raised TypeError: %r\' % (exc,))\nAssertionError: Q() & Q(Exists(...)) raised TypeError: TypeError("\'Exists\' object is not subscriptable")\n'}], 'kept': True, 'drop_reason': None}
+  patched n=3
+    patched: {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:c30b2c97101baf6c5701bcb50b5d6e6985e4f1ec201292ac8600528cda3b5851', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'test_repro_1 passed\n'}, {'outcome': 'pass',
+    patched: {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:374e235f993b8e5cdcaf2143964461b4d40170b4bcb799a0b9b5fae88d4f830f', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'test_repro_2 passed\n'}, {'outcome': 'pass',
+    patched: {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:bf465f692df8924c8bae96bd4b5c347f45c72d309cb74b54e77d6ed41ef1ddd7', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'test_repro_3 passed\n'}, {'outcome': 'pass',
+n_selected=2334 convention=tests_tree runner=django: found tests/runtests.py in a Django tree
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_specified_ordering_by_f_expression
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_specified_ordering_by_f_expression_without_asc_desc
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_select_related_preserved
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_select_related_as_tuple
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_select_related_as_empty_tuple
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_get_select_related_custom_method
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_result_list_empty_changelist_value
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_result_list_set_empty_value_display_on_admin_site
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_result_list_set_empty_value_display_in_model_admin
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_result_list_html
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_result_list_editable_html
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_result_list_editable
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_custom_paginator
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_distinct_for_m2m_in_list_filter
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_distinct_for_through_m2m_in_list_filter
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_distinct_for_through_m2m_at_second_level_in_list_filter
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_distinct_for_inherited_m2m_in_list_filter
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_distinct_for_m2m_to_inherited_in_list_filter
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_distinct_for_non_unique_related_object_in_list_filter
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_changelist_search_form_validation
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_distinct_for_non_unique_related_object_in_search_fields
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_distinct_for_many_to_many_at_second_level_in_search_fields
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_pk_in_search_fields
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_builtin_lookup_in_search_fields
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_custom_lookup_in_search_fields
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_spanning_relations_with_custom_lookup_in_search_fields
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_custom_lookup_with_pk_shortcut
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_no_distinct_for_m2m_in_list_filter_without_params
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_pagination
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_computed_list_display_localization
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_dynamic_list_display
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_show_all
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_dynamic_list_display_links
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_no_list_display_links
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_clear_all_filters_link
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_clear_all_filters_link_callable_filter
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_no_clear_all_filters_link
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_tuple_list_display
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_multiuser_edit
+  sel: tests/admin_changelist/tests.py::ChangeListTests::test_get_edited_object_ids
+  ... +2294 more
+coverage: selected=2334 p2p=199 overlap_p2p=0 frac=0.0
+  failing_in_v2=[]
+  failing_f2p_in_v2=[]
+  failing_p2p_in_v2=[]
+v4 files: ['test_repro_1.py', 'test_repro_2.py', 'test_repro_3.py']
+lens: issue=1152 agent=1061 gold=1026 test_patch=3838
+harness_report top keys: ['django__django-14140']
+==============================================================================
+django__django-14631  [group4_right_old_tests_fail]  run=main_50_b
+missing: []
+csv_disagreements: []
+csv: decision=FLAG oracle=resolved int=PASS reg=FAIL stat=PASS repro=PASS source_run=main_50_b
+oracle: outcome=resolved resolved=True applied=True report=/home/sankalp/projects/cis695-agent-reliability/logs/run_evaluation/main_50_b__django__django-14631/deepseek_deepseek-v4-flash/django__django-14631/report.json
+  F2P fail n=0: []
+  F2P ok   n=2: ['The cleaned value for a form with a disabled DateTimeField and callable', 'Cleaning a form with a disabled DateTimeField and callable initial']
+  P2P fail n=0: []
+  P2P ok n=117
+official F2P n=2: ['The cleaned value for a form with a disabled DateTimeField and callable', 'Cleaning a form with a disabled DateTimeField and callable initial']
+official P2P n=117
+decision=FLAG reasons=['signals disagree: regression FAIL, reproduction PASS']
+integrity: PASS no violations
+regression: FAIL 2812 executed, 1 regressions
+  findings.signal=FAIL n_executed=2812 summary={'PASS': 2808, 'REGRESSION': 1, 'ERROR': 3, 'NOT_RUN': 1657} notes=[]
+static: PASS 2/2 checks ran; lint: flake8 is not installed: bash: line 1: flake8: command not found; typecheck: no configuration found; build: build is not installed: /opt/miniconda3/envs/testbed/bin/python: No module named build
+reproduction: PASS 3/3 stable generated tests pass on the patched tree n_frozen=3
+  frozen n=3
+    frozen: path=v4_repro/test_repro_1.py name=None status=None {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:cbcafe33efd2005bf622d6bea37d23c7a1dadada8eb0bbae350c7d67bbb0b7a9', 'size_bytes': 1109, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'ine 265, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 35, in <module>\n    assert form.cleaned_data["dt"] == bf.initial, (\nAssertionError: cleaned_data must equal the BoundField initial: datetime.datetime(2006, 10, 25, 14, 30, 45, 123456) != datetime.datetime(2006, 10, 25, 14, 30, 45)\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'ine 265, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 35, in <module>\n    assert form.cleaned_data["dt"] == bf.initial, (\nAssertionError: cleaned_data must equal the BoundField initial: datetime.datetime(2006, 10, 25, 14, 30, 45, 123456) != datetime.datetime(2006, 10, 25, 14, 30, 45)\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_2.py name=None status=None {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:324a3e456eab04e49a2aca6568be9a697f77a7b37498fb4a59346cb814dbd1b7', 'size_bytes': 1644, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'y", line 265, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 37, in <module>\n    assert form.cleaned_data[name] == bound_field.initial, (\nAssertionError: field \'dt\': cleaned_data datetime.datetime(2020, 1, 1, 1, 1, 1, 123456) != BoundField.initial datetime.datetime(2020, 1, 1, 1, 1, 1)\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'y", line 265, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 37, in <module>\n    assert form.cleaned_data[name] == bound_field.initial, (\nAssertionError: field \'dt\': cleaned_data datetime.datetime(2020, 1, 1, 1, 1, 1, 123456) != BoundField.initial datetime.datetime(2020, 1, 1, 1, 1, 1)\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_3.py name=None status=None {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:5c0f42416f773503d1c056223419034809dd0ac59cb3fe7dd20d83858f761842', 'size_bytes': 1983, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': ' run_name="__main__")\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 265, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 39, in <module>\n    assert bound_items is not None, "BaseForm has no _bound_items() helper"\nAssertionError: BaseForm has no _bound_items() helper\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': ' run_name="__main__")\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 265, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 39, in <module>\n    assert bound_items is not None, "BaseForm has no _bound_items() helper"\nAssertionError: BaseForm has no _bound_items() helper\n'}], 'kept': True, 'drop_reason': None}
+  patched n=3
+    patched: {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:cbcafe33efd2005bf622d6bea37d23c7a1dadada8eb0bbae350c7d67bbb0b7a9', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'OK test_repro_1\n'}, {'outcome': 'pass', 're
+    patched: {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:324a3e456eab04e49a2aca6568be9a697f77a7b37498fb4a59346cb814dbd1b7', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'OK test_repro_2\n'}, {'outcome': 'pass', 're
+    patched: {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:5c0f42416f773503d1c056223419034809dd0ac59cb3fe7dd20d83858f761842', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': 'OK test_repro_3\n'}, {'outcome': 'pass', 're
+n_selected=4469 convention=tests_tree runner=django: found tests/runtests.py in a Django tree
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_form
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_empty_dict
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_empty_querydict_args
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_unbound_form
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_unicode_values
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_cleaned_data_only_fields
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_optional_data
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_auto_id
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_auto_id_true
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_auto_id_false
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_id_on_field
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_auto_id_on_form_and_field
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_various_boolean_values
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_widget_output
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_forms_with_choices
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_forms_with_radio
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_form_with_iterable_boundfield
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_form_with_iterable_boundfield_id
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_iterable_boundfield_select
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_form_with_noniterable_boundfield
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_boundfield_slice
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_boundfield_invalid_index
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_boundfield_bool
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_forms_with_multiple_choice
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_form_with_disabled_fields
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_hidden_data
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_multiple_choice_checkbox
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_checkbox_auto_id
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_multiple_choice_list_data
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_multiple_hidden
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_escaping
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_validating_multiple_fields
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_update_error_dict
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_has_error
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_html_output_with_hidden_input_field_errors
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_dynamic_construction
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_validators_independence
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_hidden_widget
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_field_order
+  sel: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_explicit_field_order
+  ... +4429 more
+coverage: selected=4469 p2p=117 overlap_p2p=0 frac=0.0
+  failing_in_v2=[]
+  failing_f2p_in_v2=[]
+  failing_p2p_in_v2=[]
+v4 files: ['test_repro_1.py', 'test_repro_2.py', 'test_repro_3.py']
+lens: issue=1399 agent=4115 gold=5201 test_patch=2421
+harness_report top keys: ['django__django-14631']
+==============================================================================
+pytest-dev__pytest-5809  [group4_right_old_tests_fail]  run=main_50_a
+missing: []
+csv_disagreements: []
+csv: decision=FLAG oracle=resolved int=PASS reg=FAIL stat=PASS repro=PASS source_run=main_50_a
+oracle: outcome=resolved resolved=True applied=True report=/home/sankalp/projects/cis695-agent-reliability/logs/run_evaluation/main_50_a__pytest-dev__pytest-5809/deepseek_deepseek-v4-flash/pytest-dev__pytest-5809/report.json
+  F2P fail n=0: []
+  F2P ok   n=1: ['testing/test_pastebin.py::TestPaste::test_create_new_paste']
+  P2P fail n=0: []
+  P2P ok n=3
+official F2P n=1: ['testing/test_pastebin.py::TestPaste::test_create_new_paste']
+official P2P n=3
+decision=FLAG reasons=['signals disagree: regression FAIL, reproduction PASS']
+integrity: PASS no violations
+regression: FAIL 4 executed, 1 regressions
+  findings.signal=FAIL n_executed=4 summary={'PASS': 3, 'REGRESSION': 1, 'NOT_RUN': 3} notes=[]
+static: PASS 2/2 checks ran; lint: flake8 is not installed: bash: line 1: flake8: command not found; typecheck: no configuration found; build: build is not installed: /opt/miniconda3/envs/testbed/bin/python: No module named build
+reproduction: PASS 3/3 stable generated tests pass on the patched tree n_frozen=3
+  frozen n=3
+    frozen: path=v4_repro/test_repro_1.py name=None status=None {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:96c40eb71ce9bd089c1be5e1183fafbd728188241dee283b11675c62061abf7a', 'size_bytes': 1226, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'ain__")\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 41, in <module>\n    assert params.get("lexer") == ["text"], (\nAssertionError: pastebin should submit arbitrary pytest output with lexer=\'text\', got [\'python3\']\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'ain__")\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 41, in <module>\n    assert params.get("lexer") == ["text"], (\nAssertionError: pastebin should submit arbitrary pytest output with lexer=\'text\', got [\'python3\']\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_2.py name=None status=None {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:e648f1a3c1430a2150b50a7b752b1cfe3e6c16aa302d06df877a40f7216fbb1a', 'size_bytes': 1303, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'me="__main__")\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 34, in <module>\n    raise AssertionError(\nAssertionError: pastebin upload raised HTTP Error 400: Bad Request; it should submit with lexer=\'text\' instead\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'me="__main__")\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 34, in <module>\n    raise AssertionError(\nAssertionError: pastebin upload raised HTTP Error 400: Bad Request; it should submit with lexer=\'text\' instead\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_3.py name=None status=None {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:c9951565b68d509533ed6875abe93a9cb25c176f1d7533fa4eed6295326c66f8', 'size_bytes': 1368, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': '    runpy.run_path(script, run_name="__main__")\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 38, in <module>\n    raise AssertionError(\nAssertionError: pastebin rejected arbitrary output with HTTP 400: Bad Request\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': '    runpy.run_path(script, run_name="__main__")\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 38, in <module>\n    raise AssertionError(\nAssertionError: pastebin rejected arbitrary output with HTTP 400: Bad Request\n'}], 'kept': True, 'drop_reason': None}
+  patched n=3
+    patched: {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:96c40eb71ce9bd089c1be5e1183fafbd728188241dee283b11675c62061abf7a', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': ''}, {'outcome': 'pass', 'returncode': 0, 'ta
+    patched: {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:e648f1a3c1430a2150b50a7b752b1cfe3e6c16aa302d06df877a40f7216fbb1a', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': ''}, {'outcome': 'pass', 'returncode': 0, 'ta
+    patched: {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:c9951565b68d509533ed6875abe93a9cb25c176f1d7533fa4eed6295326c66f8', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': ''}, {'outcome': 'pass', 'returncode': 0, 'ta
+n_selected=7 convention=unknown runner=pytest: pytest referenced in tox.ini
+  sel: testing/test_pastebin.py::TestPasteCapture::test_failed
+  sel: testing/test_pastebin.py::TestPasteCapture::test_pass
+  sel: testing/test_pastebin.py::TestPasteCapture::test_fail
+  sel: testing/test_pastebin.py::TestPasteCapture::test_skip
+  sel: testing/test_pastebin.py::TestPasteCapture::test_all
+  sel: testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text
+  sel: testing/test_pastebin.py::TestPaste::test_create_new_paste
+coverage: selected=7 p2p=3 overlap_p2p=3 frac=1.0
+  failing_in_v2=[]
+  failing_f2p_in_v2=[]
+  failing_p2p_in_v2=[]
+v4 files: ['test_repro_1.py', 'test_repro_2.py', 'test_repro_3.py']
+lens: issue=971 agent=416 gold=657 test_patch=571
+harness_report top keys: ['pytest-dev__pytest-5809']
+==============================================================================
+sphinx-doc__sphinx-10435  [group4_right_old_tests_fail]  run=main_50_b
+missing: []
+csv_disagreements: []
+csv: decision=FLAG oracle=resolved int=PASS reg=FAIL stat=PASS repro=PASS source_run=main_50_b
+oracle: outcome=resolved resolved=True applied=True report=/home/sankalp/projects/cis695-agent-reliability/logs/run_evaluation/main_50_b__sphinx-doc__sphinx-10435/deepseek_deepseek-v4-flash/sphinx-doc__sphinx-10435/report.json
+  F2P fail n=0: []
+  F2P ok   n=1: ['tests/test_build_latex.py::test_latex_code_role']
+  P2P fail n=0: []
+  P2P ok n=74
+official F2P n=1: ['tests/test_build_latex.py::test_latex_code_role']
+official P2P n=74
+decision=FLAG reasons=['signals disagree: regression FAIL, reproduction PASS']
+integrity: PASS no violations
+regression: FAIL 86 executed, 1 regressions
+  findings.signal=FAIL n_executed=86 summary={'PASS': 84, 'REGRESSION': 1, 'PRE_EXISTING_FAIL': 1, 'NOT_RUN': 4} notes=[]
+static: PASS 2/2 checks ran; lint: flake8 is not installed: bash: line 1: flake8: command not found; typecheck: mypy is not installed: bash: line 1: mypy: command not found; build: build is not installed: /opt/miniconda3/envs/testbed/bin/python: No module named build
+reproduction: PASS 3/3 stable generated tests pass on the patched tree n_frozen=3
+  frozen n=3
+    frozen: path=v4_repro/test_repro_1.py name=None status=None {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:a235d4cba6c12ff1c0a1f8dbf801ce3cddc2d270c9c58dfb5a57928b77d34273', 'size_bytes': 2802, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': '_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 99, in <module>\n    main()\n  File "v4_repro/test_repro_1.py", line 84, in main\n    assert not body[0].isspace(), (\nAssertionError: highlighted inline code starts with whitespace; LaTeX will render an unwanted leading space.  Body starts with \'\\n\\\\PYG{k}{def} \\\\PYG{n+nf}{foo}\\\\PYG{p}{(}\\\\\'\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': '_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 99, in <module>\n    main()\n  File "v4_repro/test_repro_1.py", line 84, in main\n    assert not body[0].isspace(), (\nAssertionError: highlighted inline code starts with whitespace; LaTeX will render an unwanted leading space.  Body starts with \'\\n\\\\PYG{k}{def} \\\\PYG{n+nf}{foo}\\\\PYG{p}{(}\\\\\'\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_2.py name=None status=None {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:26d2b0a1ae8836c5d321684941b298276a5afe58ac9181369952c33a1f4f98ef', 'size_bytes': 2603, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': ', mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 84, in <module>\n    main()\n  File "v4_repro/test_repro_2.py", line 66, in main\n    assert bad_start is None, (\nAssertionError: highlighted inline code has whitespace immediately after the opening brace; LaTeX will render a leading space:\nion\\label{\\detokenize{index::doc}}\n\\sphinxAtStartPar\nInline \\sphinxcode{\\sphinxupquote{\n\\PYG{k}{def} \\PYG{n+nf}{foo}\\PYG{p}{(}\\PYG{l+m+mi}{1} \\PYG{o}{+} \\PYG{l+m+mi}{2} \\PYG{o}{+} \n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': ', mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 84, in <module>\n    main()\n  File "v4_repro/test_repro_2.py", line 66, in main\n    assert bad_start is None, (\nAssertionError: highlighted inline code has whitespace immediately after the opening brace; LaTeX will render a leading space:\nion\\label{\\detokenize{index::doc}}\n\\sphinxAtStartPar\nInline \\sphinxcode{\\sphinxupquote{\n\\PYG{k}{def} \\PYG{n+nf}{foo}\\PYG{p}{(}\\PYG{l+m+mi}{1} \\PYG{o}{+} \\PYG{l+m+mi}{2} \\PYG{o}{+} \n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_3.py name=None status=None {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:a4f33c103bcd7a7f03381f7794f4b4eca067534f3b498a818deb9837bf962fee', 'size_bytes': 2644, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 99, in <module>\n    main()\n  File "v4_repro/test_repro_3.py", line 84, in main\n    assert not body[0].isspace(), (\nAssertionError: inline code #1 starts with whitespace; LaTeX will render an unwanted leading space.  Body starts with \'\\n\\\\PYG{k}{def} \\\\PYG{n+nf}{foo}\\\\PYG{p}{(}\\\\PYG{l+m+mi\'\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 99, in <module>\n    main()\n  File "v4_repro/test_repro_3.py", line 84, in main\n    assert not body[0].isspace(), (\nAssertionError: inline code #1 starts with whitespace; LaTeX will render an unwanted leading space.  Body starts with \'\\n\\\\PYG{k}{def} \\\\PYG{n+nf}{foo}\\\\PYG{p}{(}\\\\PYG{l+m+mi\'\n'}], 'kept': True, 'drop_reason': None}
+  patched n=3
+    patched: {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:a235d4cba6c12ff1c0a1f8dbf801ce3cddc2d270c9c58dfb5a57928b77d34273', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': ''}, {'outcome': 'pass', 'returncode': 0, 'ta
+    patched: {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:26d2b0a1ae8836c5d321684941b298276a5afe58ac9181369952c33a1f4f98ef', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': ''}, {'outcome': 'pass', 'returncode': 0, 'ta
+    patched: {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:a4f33c103bcd7a7f03381f7794f4b4eca067534f3b498a818deb9837bf962fee', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': ''}, {'outcome': 'pass', 'returncode': 0, 'ta
+n_selected=90 convention=flat runner=pytest: [tool:pytest] in setup.cfg; pytest referenced in tox.ini
+  sel: tests/test_build_latex.py::test_build_latex_doc
+  sel: tests/test_build_latex.py::test_writer
+  sel: tests/test_build_latex.py::test_latex_warnings
+  sel: tests/test_build_latex.py::test_latex_basic
+  sel: tests/test_build_latex.py::test_latex_basic_manual
+  sel: tests/test_build_latex.py::test_latex_basic_howto
+  sel: tests/test_build_latex.py::test_latex_basic_manual_ja
+  sel: tests/test_build_latex.py::test_latex_basic_howto_ja
+  sel: tests/test_build_latex.py::test_latex_theme
+  sel: tests/test_build_latex.py::test_latex_theme_papersize
+  sel: tests/test_build_latex.py::test_latex_theme_options
+  sel: tests/test_build_latex.py::test_latex_additional_settings_for_language_code
+  sel: tests/test_build_latex.py::test_latex_additional_settings_for_greek
+  sel: tests/test_build_latex.py::test_latex_title_after_admonitions
+  sel: tests/test_build_latex.py::test_latex_release
+  sel: tests/test_build_latex.py::test_numref
+  sel: tests/test_build_latex.py::test_numref_with_prefix1
+  sel: tests/test_build_latex.py::test_numref_with_prefix2
+  sel: tests/test_build_latex.py::test_numref_with_language_ja
+  sel: tests/test_build_latex.py::test_latex_obey_numfig_is_false
+  sel: tests/test_build_latex.py::test_latex_obey_numfig_secnum_depth_is_zero
+  sel: tests/test_build_latex.py::test_latex_obey_numfig_secnum_depth_is_two
+  sel: tests/test_build_latex.py::test_latex_obey_numfig_but_math_numfig_false
+  sel: tests/test_build_latex.py::test_latex_add_latex_package
+  sel: tests/test_build_latex.py::test_babel_with_no_language_settings
+  sel: tests/test_build_latex.py::test_babel_with_language_de
+  sel: tests/test_build_latex.py::test_babel_with_language_ru
+  sel: tests/test_build_latex.py::test_babel_with_language_tr
+  sel: tests/test_build_latex.py::test_babel_with_language_ja
+  sel: tests/test_build_latex.py::test_babel_with_unknown_language
+  sel: tests/test_build_latex.py::test_polyglossia_with_language_de
+  sel: tests/test_build_latex.py::test_polyglossia_with_language_de_1901
+  sel: tests/test_build_latex.py::test_footnote
+  sel: tests/test_build_latex.py::test_reference_in_caption_and_codeblock_in_footnote
+  sel: tests/test_build_latex.py::test_footnote_referred_multiple_times
+  sel: tests/test_build_latex.py::test_latex_show_urls_is_inline
+  sel: tests/test_build_latex.py::test_latex_show_urls_is_footnote
+  sel: tests/test_build_latex.py::test_latex_show_urls_is_no
+  sel: tests/test_build_latex.py::test_latex_show_urls_footnote_and_substitutions
+  sel: tests/test_build_latex.py::test_image_in_section
+  ... +50 more
+coverage: selected=90 p2p=74 overlap_p2p=74 frac=1.0
+  failing_in_v2=[]
+  failing_f2p_in_v2=[]
+  failing_p2p_in_v2=[]
+v4 files: ['test_repro_1.py', 'test_repro_2.py', 'test_repro_3.py']
+lens: issue=2182 agent=789 gold=886 test_patch=642
+harness_report top keys: ['sphinx-doc__sphinx-10435']
+==============================================================================
+matplotlib__matplotlib-20676  [group2_false_flag_ORIGINAL_LEAK_OPEN]  run=main_50_a
+missing: []
+csv_disagreements: ["verifier_decision: csv='FLAG' record='ACCEPT'", "oracle: csv='unresolved' record='resolved'", "reproduction: csv='NOT_AVAILABLE' record='PASS'", "source_run: csv='main_2_rerun_mpl' used='main_50_a'"]
+csv: decision=FLAG oracle=unresolved int=PASS reg=PASS stat=FAIL repro=NOT_AVAILABLE source_run=main_2_rerun_mpl
+oracle: outcome=resolved resolved=True applied=True report=/home/sankalp/projects/cis695-agent-reliability/logs/run_evaluation/main_50_a__matplotlib__matplotlib-20676/deepseek_deepseek-v4-flash/matplotlib__matplotlib-20676/report.json
+  F2P fail n=0: []
+  F2P ok   n=2: ['lib/matplotlib/tests/test_widgets.py::test_span_selector_bound[horizontal]', 'lib/matplotlib/tests/test_widgets.py::test_span_selector_bound[vertical]']
+  P2P fail n=0: []
+  P2P ok n=32
+official F2P n=2: ['lib/matplotlib/tests/test_widgets.py::test_span_selector_bound[horizontal]', 'lib/matplotlib/tests/test_widgets.py::test_span_selector_bound[vertical]']
+official P2P n=32
+decision=ACCEPT reasons=['all accept conditions met']
+integrity: PASS no violations
+regression: PASS 17 executed, 0 regressions
+  findings.signal=PASS n_executed=17 summary={'PASS': 16, 'PRE_EXISTING_FAIL': 1, 'NOT_RUN': 8} notes=[]
+static: FAIL 3/3 checks ran; typecheck: no configuration found; build: build is not installed: /opt/miniconda3/envs/testbed/bin/python: No module named build.__main__; 'build' is a package and cannot be directly executed
+reproduction: PASS 3/3 stable generated tests pass on the patched tree n_frozen=3
+  frozen n=3
+    frozen: path=v4_repro/test_repro_1.py name=None status=None {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:597c97edafefd5be37e89d680d6487ec02e57d0a2898df82c4dad3d31a5fb34e', 'size_bytes': 855, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'script, run_name="__main__")\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 265, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 26, in <module>\n    assert xlim_after == xlim_before, (xlim_after, xlim_before)\nAssertionError: ((-1.0000000000000009, 21.0), (9.5, 20.5))\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'script, run_name="__main__")\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 265, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_1.py", line 26, in <module>\n    assert xlim_after == xlim_before, (xlim_after, xlim_before)\nAssertionError: ((-1.0000000000000009, 21.0), (9.5, 20.5))\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_2.py name=None status=None {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:9024adc8eeed91aeba45a9d0c517a228a7f9ea135fa74faf4d15fe18037a3255', 'size_bytes': 851, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'script, run_name="__main__")\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 265, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 27, in <module>\n    assert ylim_after == ylim_before, (ylim_after, ylim_before)\nAssertionError: ((-1.5000000000000009, 31.5), (9.0, 31.0))\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'script, run_name="__main__")\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 265, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_2.py", line 27, in <module>\n    assert ylim_after == ylim_before, (ylim_after, ylim_before)\nAssertionError: ((-1.5000000000000009, 31.5), (9.0, 31.0))\n'}], 'kept': True, 'drop_reason': None}
+    frozen: path=v4_repro/test_repro_3.py name=None status=None {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:05e91c07fe47221ee7e0e1268defb6db2d20b2532b029a1275344f67cf9e26b6', 'size_bytes': 1097, 'base_runs': [{'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'script, run_name="__main__")\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 265, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 32, in <module>\n    assert xlim_after == xlim_before, (xlim_after, xlim_before)\nAssertionError: ((-1.0000000000000009, 21.0), (9.5, 20.5))\n'}, {'outcome': 'assertion_failure', 'returncode': 97, 'tail': 'script, run_name="__main__")\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 265, in run_path\n    return _run_module_code(code, init_globals, run_name,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 97, in _run_module_code\n    _run_code(code, mod_globals, init_globals,\n  File "/opt/miniconda3/envs/testbed/lib/python3.8/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "v4_repro/test_repro_3.py", line 32, in <module>\n    assert xlim_after == xlim_before, (xlim_after, xlim_before)\nAssertionError: ((-1.0000000000000009, 21.0), (9.5, 20.5))\n'}], 'kept': True, 'drop_reason': None}
+  patched n=3
+    patched: {'path': 'v4_repro/test_repro_1.py', 'sha256': 'sha256:597c97edafefd5be37e89d680d6487ec02e57d0a2898df82c4dad3d31a5fb34e', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': ''}, {'outcome': 'pass', 'returncode': 0, 'ta
+    patched: {'path': 'v4_repro/test_repro_2.py', 'sha256': 'sha256:9024adc8eeed91aeba45a9d0c517a228a7f9ea135fa74faf4d15fe18037a3255', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': ''}, {'outcome': 'pass', 'returncode': 0, 'ta
+    patched: {'path': 'v4_repro/test_repro_3.py', 'sha256': 'sha256:05e91c07fe47221ee7e0e1268defb6db2d20b2532b029a1275344f67cf9e26b6', 'patch_touched_path': False, 'runs': [{'outcome': 'pass', 'returncode': 0, 'tail': ''}, {'outcome': 'pass', 'returncode': 0, 'ta
+n_selected=25 convention=sibling_tests runner=pytest: pytest.ini or conftest.py; pytest referenced in tox.ini
+  sel: lib/matplotlib/tests/test_widgets.py::test_rectangle_selector
+  sel: lib/matplotlib/tests/test_widgets.py::test_rectangle_drag
+  sel: lib/matplotlib/tests/test_widgets.py::test_ellipse
+  sel: lib/matplotlib/tests/test_widgets.py::test_rectangle_handles
+  sel: lib/matplotlib/tests/test_widgets.py::test_span_selector
+  sel: lib/matplotlib/tests/test_widgets.py::test_span_selector_drag
+  sel: lib/matplotlib/tests/test_widgets.py::test_span_selector_direction
+  sel: lib/matplotlib/tests/test_widgets.py::test_tool_line_handle
+  sel: lib/matplotlib/tests/test_widgets.py::test_lasso_selector
+  sel: lib/matplotlib/tests/test_widgets.py::test_CheckButtons
+  sel: lib/matplotlib/tests/test_widgets.py::test_TextBox
+  sel: lib/matplotlib/tests/test_widgets.py::test_check_radio_buttons_image
+  sel: lib/matplotlib/tests/test_widgets.py::test_check_bunch_of_radio_buttons
+  sel: lib/matplotlib/tests/test_widgets.py::test_slider_slidermin_slidermax_invalid
+  sel: lib/matplotlib/tests/test_widgets.py::test_slider_slidermin_slidermax
+  sel: lib/matplotlib/tests/test_widgets.py::test_slider_valmin_valmax
+  sel: lib/matplotlib/tests/test_widgets.py::test_slider_valstep_snapping
+  sel: lib/matplotlib/tests/test_widgets.py::test_slider_horizontal_vertical
+  sel: lib/matplotlib/tests/test_widgets.py::test_range_slider
+  sel: lib/matplotlib/tests/test_widgets.py::test_polygon_selector
+  sel: lib/matplotlib/tests/test_widgets.py::test_MultiCursor
+  sel: lib/matplotlib/tests/test_widgets.py::test_rect_visibility
+  sel: lib/matplotlib/tests/test_widgets.py::test_polygon_selector_remove
+  sel: lib/matplotlib/tests/test_widgets.py::test_polygon_selector_remove_first_point
+  sel: lib/matplotlib/tests/test_widgets.py::test_polygon_selector_redraw
+coverage: selected=25 p2p=32 overlap_p2p=16 frac=0.5
+  failing_in_v2=[]
+  failing_f2p_in_v2=[]
+  failing_p2p_in_v2=[]
+v4 files: ['test_repro_1.py', 'test_repro_2.py', 'test_repro_3.py']
+lens: issue=1645 agent=885 gold=838 test_patch=1432
+harness_report top keys: ['matplotlib__matplotlib-20676']

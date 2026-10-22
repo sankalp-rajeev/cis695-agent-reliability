@@ -1,0 +1,249 @@
+{
+  "notice": "POST-HOC ANALYSIS ONLY. This script uses oracle fields (FAIL_TO_PASS, PASS_TO_PASS, gold test_patch). It must never feed back into any run.",
+  "tasks": [
+    {
+      "instance_id": "django__django-12209",
+      "n_failing": 1,
+      "task_class": "NOT_ALL_SUPERSEDED",
+      "tests": [
+        {
+          "test_id": "tests/basic/tests.py::ModelInstanceCreationTests::test_save_primary_with_default",
+          "symbol": "test_save_primary_with_default",
+          "membership": "NEITHER",
+          "classification": "NOT_TOUCHED",
+          "n_hunks": 0,
+          "removed_lines": [],
+          "added_lines": [],
+          "removed_assertion_lines": [],
+          "added_assertion_lines": [],
+          "hunk_headers": [],
+          "paths": []
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-14140",
+      "n_failing": 2,
+      "task_class": "SUPERSEDED_ASSERTION",
+      "tests": [
+        {
+          "test_id": "tests/queries/test_q.py::QTests::test_deconstruct",
+          "symbol": "test_deconstruct",
+          "membership": "FAIL_TO_PASS",
+          "classification": "SUPERSEDED",
+          "n_hunks": 1,
+          "removed_lines": [
+            "        self.assertEqual(args, ())",
+            "        self.assertEqual(kwargs, {'price__gt': F('discounted_price')})",
+            "        self.assertEqual(args, ())",
+            "        self.assertEqual(kwargs, {",
+            "            'price__gt': F('discounted_price'),",
+            "            '_negated': True,",
+            "        })"
+          ],
+          "added_lines": [
+            "        self.assertEqual(args, (('price__gt', F('discounted_price')),))",
+            "        self.assertEqual(kwargs, {})",
+            "        self.assertEqual(args, (('price__gt', F('discounted_price')),))",
+            "        self.assertEqual(kwargs, {'_negated': True})"
+          ],
+          "removed_assertion_lines": [
+            "        self.assertEqual(args, ())",
+            "        self.assertEqual(kwargs, {'price__gt': F('discounted_price')})",
+            "        self.assertEqual(args, ())",
+            "        self.assertEqual(kwargs, {"
+          ],
+          "added_assertion_lines": [
+            "        self.assertEqual(args, (('price__gt', F('discounted_price')),))",
+            "        self.assertEqual(kwargs, {})",
+            "        self.assertEqual(args, (('price__gt', F('discounted_price')),))",
+            "        self.assertEqual(kwargs, {'_negated': True})"
+          ],
+          "hunk_headers": [
+            "@@ -39,17 +41,14 @@ def test_deconstruct(self):"
+          ],
+          "paths": [
+            "tests/queries/test_q.py"
+          ]
+        },
+        {
+          "test_id": "tests/queries/test_q.py::QTests::test_deconstruct_negated",
+          "symbol": "test_deconstruct_negated",
+          "membership": "FAIL_TO_PASS",
+          "classification": "SUPERSEDED",
+          "n_hunks": 1,
+          "removed_lines": [
+            "        self.assertEqual(args, ())",
+            "        self.assertEqual(kwargs, {'price__gt': F('discounted_price')})",
+            "        self.assertEqual(args, ())",
+            "        self.assertEqual(kwargs, {",
+            "            'price__gt': F('discounted_price'),",
+            "            '_negated': True,",
+            "        })"
+          ],
+          "added_lines": [
+            "        self.assertEqual(args, (('price__gt', F('discounted_price')),))",
+            "        self.assertEqual(kwargs, {})",
+            "        self.assertEqual(args, (('price__gt', F('discounted_price')),))",
+            "        self.assertEqual(kwargs, {'_negated': True})"
+          ],
+          "removed_assertion_lines": [
+            "        self.assertEqual(args, ())",
+            "        self.assertEqual(kwargs, {'price__gt': F('discounted_price')})",
+            "        self.assertEqual(args, ())",
+            "        self.assertEqual(kwargs, {"
+          ],
+          "added_assertion_lines": [
+            "        self.assertEqual(args, (('price__gt', F('discounted_price')),))",
+            "        self.assertEqual(kwargs, {})",
+            "        self.assertEqual(args, (('price__gt', F('discounted_price')),))",
+            "        self.assertEqual(kwargs, {'_negated': True})"
+          ],
+          "hunk_headers": [
+            "@@ -39,17 +41,14 @@ def test_deconstruct(self):"
+          ],
+          "paths": [
+            "tests/queries/test_q.py"
+          ]
+        }
+      ]
+    },
+    {
+      "instance_id": "django__django-14631",
+      "n_failing": 1,
+      "task_class": "SUPERSEDED_ASSERTION",
+      "tests": [
+        {
+          "test_id": "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled",
+          "symbol": "test_datetime_clean_initial_callable_disabled",
+          "membership": "NEITHER",
+          "classification": "SUPERSEDED",
+          "n_hunks": 1,
+          "removed_lines": [
+            "    def test_datetime_clean_initial_callable_disabled(self):",
+            "        now = datetime.datetime(2006, 10, 25, 14, 30, 45, 123456)",
+            "            dt = DateTimeField(initial=lambda: now, disabled=True)",
+            "        form = DateTimeForm({})",
+            "        self.assertEqual(form.cleaned_data, {'dt': now})"
+          ],
+          "added_lines": [
+            "    def get_datetime_form_with_callable_initial(self, disabled, microseconds=0):",
+            "        class FakeTime:",
+            "            def __init__(self):",
+            "                self.elapsed_seconds = 0",
+            "",
+            "            def now(self):",
+            "                self.elapsed_seconds += 1",
+            "                return datetime.datetime(",
+            "                    2006, 10, 25, 14, 30, 45 + self.elapsed_seconds,",
+            "                    microseconds,",
+            "                )",
+            "            dt = DateTimeField(initial=FakeTime().now, disabled=disabled)",
+            "",
+            "        return DateTimeForm({})",
+            "",
+            "    def test_datetime_clean_disabled_callable_initial_microseconds(self):",
+            "        \"\"\"",
+            "        Cleaning a form with a disabled DateTimeField and callable initial",
+            "        removes microseconds.",
+            "        \"\"\"",
+            "        form = self.get_datetime_form_with_callable_initial(",
+            "            disabled=True, microseconds=123456,",
+            "        )",
+            "        self.assertEqual(form.errors, {})",
+            "        self.assertEqual(form.cleaned_data, {",
+            "            'dt': datetime.datetime(2006, 10, 25, 14, 30, 46),",
+            "        })",
+            "    def test_datetime_clean_disabled_callable_initial_bound_field(self):",
+            "        \"\"\"",
+            "        The cleaned value for a form with a disabled DateTimeField and callable",
+            "        initial matches the bound field's cached initial value.",
+            "        \"\"\"",
+            "        form = self.get_datetime_form_with_callable_initial(disabled=True)",
+            "        cleaned = form.cleaned_data['dt']",
+            "        self.assertEqual(cleaned, datetime.datetime(2006, 10, 25, 14, 30, 46))",
+            "        bf = form['dt']",
+            "        self.assertEqual(cleaned, bf.initial)"
+          ],
+          "removed_assertion_lines": [
+            "        self.assertEqual(form.cleaned_data, {'dt': now})"
+          ],
+          "added_assertion_lines": [
+            "        self.assertEqual(form.errors, {})",
+            "        self.assertEqual(form.cleaned_data, {",
+            "        self.assertEqual(cleaned, datetime.datetime(2006, 10, 25, 14, 30, 46))",
+            "        self.assertEqual(cleaned, bf.initial)"
+          ],
+          "hunk_headers": [
+            "@@ -2112,15 +2112,47 @@ class DateTimeForm(Form):"
+          ],
+          "paths": [
+            "tests/forms_tests/tests/test_forms.py"
+          ]
+        }
+      ]
+    },
+    {
+      "instance_id": "pytest-dev__pytest-5809",
+      "n_failing": 1,
+      "task_class": "SUPERSEDED_ASSERTION",
+      "tests": [
+        {
+          "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+          "symbol": "test_create_new_paste",
+          "membership": "FAIL_TO_PASS",
+          "classification": "SUPERSEDED",
+          "n_hunks": 1,
+          "removed_lines": [
+            "        lexer = \"python3\" if sys.version_info[0] >= 3 else \"python\""
+          ],
+          "added_lines": [
+            "        lexer = \"text\""
+          ],
+          "removed_assertion_lines": [],
+          "added_assertion_lines": [],
+          "hunk_headers": [
+            "@@ -126,7 +126,7 @@ def test_create_new_paste(self, pastebin, mocked_urlopen):"
+          ],
+          "paths": [
+            "testing/test_pastebin.py"
+          ]
+        }
+      ]
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-10435",
+      "n_failing": 1,
+      "task_class": "SUPERSEDED_ASSERTION",
+      "tests": [
+        {
+          "test_id": "tests/test_build_latex.py::test_latex_code_role",
+          "symbol": "test_latex_code_role",
+          "membership": "FAIL_TO_PASS",
+          "classification": "SUPERSEDED",
+          "n_hunks": 1,
+          "removed_lines": [
+            "    assert (r'Inline \\sphinxcode{\\sphinxupquote{' + '\\n' +",
+            "            common_content + '\\n}} code block') in content"
+          ],
+          "added_lines": [
+            "    assert (r'Inline \\sphinxcode{\\sphinxupquote{%' + '\\n' +",
+            "            common_content + '%\\n}} code block') in content"
+          ],
+          "removed_assertion_lines": [
+            "    assert (r'Inline \\sphinxcode{\\sphinxupquote{' + '\\n' +"
+          ],
+          "added_assertion_lines": [
+            "    assert (r'Inline \\sphinxcode{\\sphinxupquote{%' + '\\n' +"
+          ],
+          "hunk_headers": [
+            "@@ -1623,7 +1623,7 @@ def test_latex_code_role(app):"
+          ],
+          "paths": [
+            "tests/test_build_latex.py"
+          ]
+        }
+      ]
+    }
+  ]
+}

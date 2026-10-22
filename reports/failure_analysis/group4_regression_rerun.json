@@ -1,0 +1,110 @@
+{
+  "notice": "POST-HOC ANALYSIS ONLY. This file names tests that failed the existing regression suite on oracle-resolved patches. It must never feed back into any run, policy, manifest, or config.",
+  "tasks": [
+    {
+      "instance_id": "django__django-12209",
+      "source_run": "main_50_b",
+      "signal": "FAIL",
+      "n_selected": 3319,
+      "n_executed": 2929,
+      "n_regressions": 1,
+      "notes": [
+        "baseline loaded from cache"
+      ],
+      "failing": [
+        "tests/basic/tests.py::ModelInstanceCreationTests::test_save_primary_with_default"
+      ],
+      "summary": {
+        "PASS": 2925,
+        "REGRESSION": 1,
+        "PRE_EXISTING_FAIL": 2,
+        "ERROR": 1,
+        "NOT_RUN": 390
+      },
+      "baseline_from_cache": true
+    },
+    {
+      "instance_id": "django__django-14140",
+      "source_run": "main_50_b",
+      "signal": "FAIL",
+      "n_selected": 2334,
+      "n_executed": 1797,
+      "n_regressions": 2,
+      "notes": [
+        "baseline loaded from cache"
+      ],
+      "failing": [
+        "tests/queries/test_q.py::QTests::test_deconstruct",
+        "tests/queries/test_q.py::QTests::test_deconstruct_negated"
+      ],
+      "summary": {
+        "PASS": 1795,
+        "REGRESSION": 2,
+        "NOT_RUN": 537
+      },
+      "baseline_from_cache": true
+    },
+    {
+      "instance_id": "django__django-14631",
+      "source_run": "main_50_b",
+      "signal": "FAIL",
+      "n_selected": 4469,
+      "n_executed": 2812,
+      "n_regressions": 1,
+      "notes": [
+        "baseline loaded from cache"
+      ],
+      "failing": [
+        "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled"
+      ],
+      "summary": {
+        "PASS": 2808,
+        "REGRESSION": 1,
+        "ERROR": 3,
+        "NOT_RUN": 1657
+      },
+      "baseline_from_cache": true
+    },
+    {
+      "instance_id": "pytest-dev__pytest-5809",
+      "source_run": "main_50_a",
+      "signal": "FAIL",
+      "n_selected": 7,
+      "n_executed": 4,
+      "n_regressions": 1,
+      "notes": [
+        "baseline loaded from cache"
+      ],
+      "failing": [
+        "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+      ],
+      "summary": {
+        "PASS": 3,
+        "REGRESSION": 1,
+        "NOT_RUN": 3
+      },
+      "baseline_from_cache": true
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-10435",
+      "source_run": "main_50_b",
+      "signal": "FAIL",
+      "n_selected": 90,
+      "n_executed": 86,
+      "n_regressions": 1,
+      "notes": [
+        "baseline loaded from cache"
+      ],
+      "failing": [
+        "tests/test_build_latex.py::test_latex_code_role"
+      ],
+      "summary": {
+        "PASS": 84,
+        "REGRESSION": 1,
+        "PRE_EXISTING_FAIL": 1,
+        "NOT_RUN": 4
+      },
+      "baseline_from_cache": true
+    }
+  ]
+}

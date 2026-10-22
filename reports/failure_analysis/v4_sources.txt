@@ -1,0 +1,2275 @@
+POST-HOC ANALYSIS ONLY. Uses oracle fields. Must never feed back into any run.
+
+==============================================================================
+django__django-13212  [group1_false_accept]
+----- test_repro_1.py -----
+"""Custom messages using %(value)s must render the provided value.
+
+Built-in validators should pass the value they were given to ValidationError
+via ``params`` so that a custom message can contain a ``%(value)s``
+placeholder (as documented in ref/validators "Writing validators").
+"""
+from django.conf import settings
+
+if not settings.configured:
+    settings.configure(USE_I18N=False, USE_L10N=False)
+
+from django.core.exceptions import ValidationError
+from django.core.validators import (
+    EmailValidator,
+    ProhibitNullCharactersValidator,
+    RegexValidator,
+    URLValidator,
+    int_list_validator,
+)
+
+
+def validator_name(validator):
+    return getattr(validator, "__name__", type(validator).__name__)
+
+
+def expect_message(validator, value, expected):
+    name = validator_name(validator)
+    try:
+        validator(value)
+    except ValidationError as exc:
+        assert exc.messages == [expected], (
+            "%s: expected %r but got %r (params=%r)"
+            % (name, expected, exc.messages, getattr(exc, "params", None))
+        )
+    else:
+        raise AssertionError("%s did not raise for %r" % (name, value))
+
+
+# RegexValidator must expose the value to the custom message.
+regex_validator = RegexValidator(
+    r"^[0-9]+$", message="%(value)s is not a number."
+)
+expect_message(regex_validator, "blah", "blah is not a number.")
+
+# EmailValidator must expose the value to the custom message.
+email_validator = EmailValidator(
+    message="%(value)s is not a valid email address."
+)
+expect_message(email_validator, "blah", "blah is not a valid email address.")
+
+# URLValidator must expose the value to the custom message.
+url_validator = URLValidator(message="%(value)s is not a valid URL.")
+expect_message(url_validator, "blah", "blah is not a valid URL.")
+
+# int_list_validator builds a RegexValidator, so it must too.
+list_validator = int_list_validator(
+    sep=",", message="%(value)s is not a valid list."
+)
+expect_message(list_validator, "blah", "blah is not a valid list.")
+
+# ProhibitNullCharactersValidator must expose the value to the custom message.
+null_validator = ProhibitNullCharactersValidator(
+    message="%(value)s is not valid."
+)
+expect_message(null_validator, "a\x00b", "a\x00b is not valid.")
+
+print("OK")
+
+
+----- test_repro_2.py -----
+"""Built-in validators must pass the provided value in ValidationError.params."""
+from django.conf import settings
+
+if not settings.configured:
+    settings.configure(USE_I18N=False, USE_L10N=False)
+
+from django.core.exceptions import ValidationError
+from django.core.validators import (
+    validate_email,
+    validate_integer,
+    validate_ipv4_address,
+    validate_ipv6_address,
+    validate_ipv46_address,
+    validate_slug,
+)
+
+
+def validator_name(validator):
+    return getattr(validator, "__name__", type(validator).__name__)
+
+
+def expect_value_param(validator, value):
+    name = validator_name(validator)
+    try:
+        validator(value)
+    except ValidationError as exc:
+        params = getattr(exc, "params", None)
+        assert params is not None, (
+            "%s raised without params for %r" % (name, value)
+        )
+        assert params.get("value") == value, (
+            "%s did not include the value in params: params=%r value=%r"
+            % (name, params, value)
+        )
+    else:
+        raise AssertionError("%s did not raise for %r" % (name, value))
+
+
+expect_value_param(validate_ipv4_address, "999.999.999.999")
+expect_value_param(validate_ipv6_address, "not-an-ipv6-address")
+expect_value_param(validate_ipv46_address, "not-an-ip-address")
+expect_value_param(validate_integer, "not-a-number")
+expect_value_param(validate_slug, "not a slug")
+expect_value_param(validate_email, "blah")
+
+print("OK")
+
+
+----- test_repro_3.py -----
+"""More built-in validators must include the provided value."""
+import types
+from decimal import Decimal
+
+from django.conf import settings
+
+if not settings.configured:
+    settings.configure(USE_I18N=False, USE_L10N=False)
+
+from django.core.exceptions import ValidationError
+from django.core.validators import (
+    DecimalValidator,
+    FileExtensionValidator,
+    URLValidator,
+)
+
+
+def validator_name(validator):
+    return getattr(validator, "__name__", type(validator).__name__)
+
+
+def expect_value_param(validator, value):
+    name = validator_name(validator)
+    try:
+        validator(value)
+    except ValidationError as exc:
+        params = getattr(exc, "params", None)
+        assert params is not None, (
+            "%s raised without params for %r" % (name, value)
+        )
+        assert params.get("value") == value, (
+            "%s did not include the value in params: params=%r value=%r"
+            % (name, params, value)
+        )
+    else:
+        raise AssertionError("%s did not raise for %r" % (name, value))
+
+
+# DecimalValidator keeps its own params, but must also include the value.
+expect_value_param(
+    DecimalValidator(max_digits=2, decimal_places=1), Decimal("123.45")
+)
+
+# FileExtensionValidator keeps its own params, but must also include the value.
+file_value = types.SimpleNamespace(name="file.exe")
+expect_value_param(
+    FileExtensionValidator(allowed_extensions=["txt"]), file_value
+)
+
+# URLValidator's later branches must include the value too.
+expect_value_param(URLValidator(), "http://[zzzz::1]")
+expect_value_param(URLValidator(), "http://" + ("a" * 63 + ".") * 4 + "com")
+
+print("OK")
+
+
+==============================================================================
+django__django-16667  [group1_false_accept]
+----- test_repro_1.py -----
+"""SelectDateWidget must not crash (OverflowError) on huge user-supplied
+year/month/day integers; the form should simply be invalid."""
+import datetime
+import sys
+
+import django
+from django.conf import settings
+
+if not settings.configured:
+    settings.configure(
+        USE_I18N=False,
+        USE_TZ=False,
+        INSTALLED_APPS=[],
+        DATABASES={},
+    )
+django.setup()
+
+from django import forms
+from django.forms import SelectDateWidget
+
+
+class ReproForm(forms.Form):
+    my_date = forms.DateField(widget=SelectDateWidget())
+
+
+def is_valid_without_crash(form):
+    """Return form.is_valid() but turn any OverflowError into an AssertionError.
+
+    On the buggy code the user-controlled integer overflows datetime.date,
+    which must not propagate out of validation.
+    """
+    try:
+        return form.is_valid()
+    except OverflowError as exc:
+        raise AssertionError(
+            "SelectDateWidget.value_from_datadict leaked OverflowError: %r" % (exc,)
+        )
+
+
+# The exact reproducer from the issue (GET-style data).
+data = {
+    "my_date_day": "1",
+    "my_date_month": "1",
+    "my_date_year": "1234567821345678",
+}
+form = ReproForm(data)
+assert is_valid_without_crash(form) is False, (
+    "A date with an out-of-range year must make the form invalid, not valid."
+)
+
+# A normal, in-range date must still validate successfully.
+good = {
+    "my_date_day": "1",
+    "my_date_month": "1",
+    "my_date_year": "2020",
+}
+form_good = ReproForm(good)
+assert is_valid_without_crash(form_good) is True, "A normal date must be valid."
+assert form_good.cleaned_data["my_date"] == datetime.date(2020, 1, 1)
+
+print("test_repro_1 passed")
+
+
+----- test_repro_2.py -----
+"""POST-style submission with an oversized year must not crash validation."""
+import django
+from django.conf import settings
+
+if not settings.configured:
+    settings.configure(
+        USE_I18N=False,
+        USE_TZ=False,
+        INSTALLED_APPS=[],
+        DATABASES={},
+    )
+django.setup()
+
+from django import forms
+from django.forms import SelectDateWidget
+
+
+class ReproForm(forms.Form):
+    my_date = forms.DateField(widget=SelectDateWidget())
+
+
+def is_valid_without_crash(form):
+    try:
+        return form.is_valid()
+    except OverflowError as exc:
+        raise AssertionError(
+            "OverflowError escaped form validation: %r" % (exc,)
+        )
+
+
+# POST data (dict) with a huge year, as described in the issue.
+post_data = {
+    "my_date_day": "1",
+    "my_date_month": "1",
+    "my_date_year": "1234567821345678",
+}
+form = ReproForm(post_data)
+invalid = not is_valid_without_crash(form)
+assert invalid, "An out-of-range year must yield an invalid form."
+
+# The form must record a real validation error rather than blow up.
+assert form.errors, "Expected a validation error for the out-of-range year."
+assert "my_date" in form.errors, "The error must be attached to the my_date field."
+
+print("test_repro_2 passed")
+
+
+----- test_repro_3.py -----
+"""Boundary tests: integers just beyond the C long range must not crash
+SelectDateWidget, for year, month and day positions alike."""
+import sys
+
+import django
+from django.conf import settings
+
+if not settings.configured:
+    settings.configure(
+        USE_I18N=False,
+        USE_TZ=False,
+        INSTALLED_APPS=[],
+        DATABASES={},
+    )
+django.setup()
+
+from django import forms
+from django.forms import SelectDateWidget
+
+
+class ReproForm(forms.Form):
+    my_date = forms.DateField(widget=SelectDateWidget())
+
+
+def is_valid_without_crash(form):
+    try:
+        return form.is_valid()
+    except OverflowError as exc:
+        raise AssertionError(
+            "OverflowError escaped form validation: %r" % (exc,)
+        )
+
+
+huge = str(sys.maxsize + 1)
+huge_negative = str(-(sys.maxsize + 1))
+
+cases = [
+    {"my_date_day": "1", "my_date_month": "1", "my_date_year": huge},
+    {"my_date_day": "1", "my_date_month": huge, "my_date_year": "2020"},
+    {"my_date_day": huge, "my_date_month": "1", "my_date_year": "2020"},
+    {"my_date_day": "1", "my_date_month": "1", "my_date_year": huge_negative},
+]
+
+for case in cases:
+    form = ReproForm(case)
+    assert is_valid_without_crash(form) is False, (
+        "Out-of-range component %r must make the form invalid." % (case,)
+    )
+
+print("test_repro_3 passed")
+
+
+==============================================================================
+pylint-dev__pylint-7277  [group1_false_accept]
+----- test_repro_1.py -----
+"""Repro 1: ``pylint.modify_sys_path()`` must not drop a custom leading entry.
+
+Issue: pylint removes the first item from ``sys.path`` unconditionally when it is
+executed, e.g. via ``runpy.run_module("pylint", run_name="__main__")``.  The
+first entry should only be removed when it actually denotes the current working
+directory, i.e. when it is ``""``, ``"."`` or ``os.getcwd()``.
+
+Here we call ``modify_sys_path()`` directly with a custom leading entry and
+assert that it survives.  On the buggy code ``sys.path.pop(0)`` removes it and
+the assertion fails.
+"""
+
+import sys
+
+import pylint
+
+
+def main() -> None:
+    original_path = list(sys.path)
+    try:
+        sys.path[:] = ["something"] + original_path
+        assert sys.path[0] == "something"
+        pylint.modify_sys_path()
+        assert sys.path[0] == "something", (
+            "modify_sys_path() removed a custom leading sys.path entry; "
+            "sys.path[:3] = %r" % (sys.path[:3],)
+        )
+    finally:
+        # Do not leave the interpreter state corrupted.
+        sys.path[:] = original_path
+
+
+main()
+
+
+----- test_repro_2.py -----
+"""Repro 2: end-to-end reproduction using ``runpy`` exactly as in the issue.
+
+The issue reports that running pylint through ``runpy.run_module`` removes the
+first ``sys.path`` entry even when it is an arbitrary user supplied directory
+(the extension bundled libraries in the report).  After the run the injected
+entry must still be present and still be the first entry.
+"""
+
+import runpy
+import sys
+
+
+def main() -> None:
+    original_path = list(sys.path)
+    original_argv = list(sys.argv)
+
+    sys.path.insert(0, "something")
+    sys.argv = ["pylint", "--version"]
+    try:
+        try:
+            runpy.run_module("pylint", run_name="__main__", alter_sys=True)
+        except SystemExit as exc:
+            # ``--version`` exits cleanly; that is fine.
+            assert exc.code in (0, None), "pylint exited with %r" % (exc.code,)
+
+        assert "something" in sys.path, (
+            "runpy-launched pylint dropped the injected sys.path entry; "
+            "sys.path[:3] = %r" % (sys.path[:3],)
+        )
+        assert sys.path[0] == "something", (
+            "runpy-launched pylint changed the leading sys.path entry; "
+            "sys.path[:3] = %r" % (sys.path[:3],)
+        )
+    finally:
+        sys.path[:] = original_path
+        sys.argv[:] = original_argv
+
+
+main()
+
+
+----- test_repro_3.py -----
+"""Repro 3: removal of the leading entry must be conditional.
+
+The fix requested by the issue is to only remove the first ``sys.path`` item
+when it is the working directory, represented by ``""``, ``"."`` or
+``os.getcwd()``.  This script verifies both halves of that contract:
+
+* the working-directory forms are stripped, and
+* any other leading entry is preserved.
+
+On the buggy code the very first check that uses a custom entry fails because
+the unconditional ``sys.path.pop(0)`` removes it.
+"""
+
+import os
+import sys
+
+import pylint
+
+
+def call_modify_sys_path_with(entry: str) -> list:
+    """Call ``modify_sys_path`` with ``entry`` first and return resulting path."""
+    original_path = list(sys.path)
+    try:
+        sys.path[:] = [entry] + original_path
+        assert sys.path[0] == entry
+        pylint.modify_sys_path()
+        return list(sys.path)
+    finally:
+        sys.path[:] = original_path
+
+
+def main() -> None:
+    cwd = os.getcwd()
+
+    # The working directory, however it is spelled, should be removed.
+    for entry in ("", ".", cwd):
+        result = call_modify_sys_path_with(entry)
+        assert result[0] != entry, (
+            "modify_sys_path() failed to strip the working-directory entry %r; "
+            "sys.path[:3] = %r" % (entry, result[:3])
+        )
+
+    # A non working-directory entry must be kept.
+    custom = "not_the_working_directory"
+    result = call_modify_sys_path_with(custom)
+    assert result[0] == custom, (
+        "modify_sys_path() stripped a custom leading entry %r; "
+        "sys.path[:3] = %r" % (custom, result[:3])
+    )
+
+
+main()
+
+
+==============================================================================
+django__django-13297  [group1_false_accept]
+----- test_repro_1.py -----
+"""Reproduction: TemplateView URL kwargs must be usable directly in the ORM.
+
+On Django 3.1, ``TemplateView.get()`` wraps URL kwargs in ``SimpleLazyObject``
+objects (to emit a deprecation warning when they are read from the context).
+Such a wrapper reaches ``get_context_data(**kwargs)`` and crashes when it is
+passed as a query parameter because sqlite cannot bind it:
+
+    django.db.utils.InterfaceError: Error binding parameter 0 -
+    probably unsupported type.
+
+The correct behaviour is that the URL kwargs received by ``get_context_data``
+are plain values that can be used directly (without an explicit ``str()``) in
+ORM lookups.  This script asserts that behaviour.
+"""
+import django
+from django.conf import settings
+
+settings.configure(
+    DEBUG=True,
+    SECRET_KEY="repro",
+    ALLOWED_HOSTS=["*"],
+    DATABASES={
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": ":memory:",
+        }
+    },
+    INSTALLED_APPS=["django.contrib.contenttypes"],
+    USE_TZ=True,
+)
+django.setup()
+
+from django.db import connection, models
+from django.http import HttpResponse
+from django.test import RequestFactory
+from django.views.generic import TemplateView
+
+
+class Account(models.Model):
+    slug = models.SlugField()
+
+    class Meta:
+        app_label = "contenttypes"
+
+
+with connection.schema_editor() as schema_editor:
+    schema_editor.create_model(Account)
+
+Account.objects.create(slug="my-offer")
+
+
+class OfferView(TemplateView):
+    template_name = "offers/offer.html"
+
+    def get_context_data(self, **kwargs):
+        offer_slug = kwargs.get("offer_slug", "")
+        # Must work without the explicit ``str(offer_slug)`` workaround.
+        offer = Account.objects.get(slug=offer_slug)
+        return {"offer": offer, "offer_slug": offer_slug}
+
+    def render_to_response(self, context, **response_kwargs):
+        return HttpResponse(context["offer"].slug)
+
+
+request = RequestFactory().get("/offers/my-offer/")
+try:
+    response = OfferView.as_view()(request, offer_slug="my-offer")
+except Exception as exc:
+    raise AssertionError(
+        "Using a TemplateView URL kwarg in an ORM lookup raised %s: %s"
+        % (type(exc).__name__, exc)
+    )
+
+assert response.status_code == 200, response.status_code
+assert response.content == b"my-offer", response.content
+print("OK")
+
+
+----- test_repro_2.py -----
+"""Reproduction through the full URL resolver and test client.
+
+Exactly like the issue report: a URL pattern ``<slug:offer_slug>`` routes to a
+``TemplateView`` whose ``get_context_data`` uses ``kwargs.get("offer_slug")``
+directly as an ORM lookup argument.  On Django 3.1 the kwarg is a
+``SimpleLazyObject`` and binding it fails; the correct behaviour is a normal
+string kwarg that the ORM accepts.
+"""
+import sys
+import types
+
+import django
+from django.conf import settings
+
+# A dynamic URLconf so the script stays self-contained.
+urlconf = types.ModuleType("repro_urls")
+sys.modules["repro_urls"] = urlconf
+
+settings.configure(
+    DEBUG=True,
+    SECRET_KEY="repro",
+    ALLOWED_HOSTS=["*"],
+    DATABASES={
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": ":memory:",
+        }
+    },
+    INSTALLED_APPS=["django.contrib.contenttypes"],
+    ROOT_URLCONF="repro_urls",
+    USE_TZ=True,
+    TEMPLATES=[
+        {
+            "BACKEND": "django.template.backends.django.DjangoTemplates",
+            "APP_DIRS": False,
+            "OPTIONS": {
+                "loaders": [
+                    (
+                        "django.template.loaders.locmem.Loader",
+                        {"offers/offer.html": "{{ offer.slug }}"},
+                    )
+                ]
+            },
+        }
+    ],
+)
+django.setup()
+
+from django.db import connection, models
+
+
+class Account(models.Model):
+    slug = models.SlugField()
+
+    class Meta:
+        app_label = "contenttypes"
+
+
+with connection.schema_editor() as schema_editor:
+    schema_editor.create_model(Account)
+
+Account.objects.create(slug="my-offer")
+
+from django.urls import path
+from django.views.generic import TemplateView
+
+
+class OfferView(TemplateView):
+    template_name = "offers/offer.html"
+
+    def get_context_data(self, **kwargs):
+        offer_slug = kwargs.get("offer_slug", "")
+        offer = Account.objects.get(slug=offer_slug)
+        return {"offer": offer, "offer_slug": offer_slug}
+
+
+urlconf.urlpatterns = [
+    path("offers/<slug:offer_slug>/", OfferView.as_view(), name="offer_view")
+]
+
+from django.test import Client
+
+client = Client()
+try:
+    response = client.get("/offers/my-offer/")
+except Exception as exc:
+    raise AssertionError(
+        "GET /offers/my-offer/ raised %s: %s" % (type(exc).__name__, exc)
+    )
+
+assert response.status_code == 200, response.status_code
+assert response.content == b"my-offer", response.content
+print("OK")
+
+
+----- test_repro_3.py -----
+"""Reproduction using ``get_object_or_404`` exactly as in the issue report.
+
+``offer_slug = kwargs.get("offer_slug", "")`` is handed straight to
+``get_object_or_404(Account, slug=offer_slug)``.  In Django 3.1 that value is a
+``SimpleLazyObject`` which the database backend cannot bind, so the lookup
+raises ``InterfaceError: Error binding parameter 0``.  The correct behaviour
+is that the lookup succeeds without an explicit ``str()`` conversion.
+"""
+import django
+from django.conf import settings
+
+settings.configure(
+    DEBUG=True,
+    SECRET_KEY="repro",
+    ALLOWED_HOSTS=["*"],
+    DATABASES={
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": ":memory:",
+        }
+    },
+    INSTALLED_APPS=["django.contrib.contenttypes"],
+    USE_TZ=True,
+)
+django.setup()
+
+from django.db import connection, models
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.test import RequestFactory
+from django.views.generic import TemplateView
+
+
+class Account(models.Model):
+    slug = models.SlugField()
+
+    class Meta:
+        app_label = "contenttypes"
+
+
+with connection.schema_editor() as schema_editor:
+    schema_editor.create_model(Account)
+
+Account.objects.create(slug="my-offer")
+
+
+class OfferView(TemplateView):
+    template_name = "offers/offer.html"
+
+    def get_context_data(self, **kwargs):
+        offer_slug = kwargs.get("offer_slug", "")
+        offer = get_object_or_404(Account, slug=offer_slug)
+        return {"offer": offer, "offer_slug": offer_slug}
+
+    def render_to_response(self, context, **response_kwargs):
+        return HttpResponse(context["offer_slug"])
+
+
+request = RequestFactory().get("/offers/my-offer/")
+try:
+    response = OfferView.as_view()(request, offer_slug="my-offer")
+except Exception as exc:
+    raise AssertionError(
+        "get_object_or_404 with a URL kwarg raised %s: %s"
+        % (type(exc).__name__, exc)
+    )
+
+assert response.status_code == 200, response.status_code
+assert response.content == b"my-offer", response.content
+print("OK")
+
+
+==============================================================================
+matplotlib__matplotlib-23299  [group1_false_accept]
+----- test_repro_1.py -----
+"""get_backend() must not clear figures created inside rc_context.
+
+This is the direct reproduction from the bug report: make the first pyplot
+figure inside an rc_context that starts while the backend is still the
+unresolved "auto" sentinel, then call get_backend().
+"""
+
+import os
+
+# Make this independent of any MPLBACKEND supplied by the calling environment:
+# the bug only occurs when the backend is still unresolved.
+os.environ.pop("MPLBACKEND", None)
+
+import matplotlib
+from matplotlib import _pylab_helpers, rcsetup
+
+# Ensure the global backend is in the state where it still needs to be
+# auto-resolved, regardless of any matplotlibrc/user configuration.
+dict.__setitem__(
+    matplotlib.rcParams, "backend", rcsetup._auto_backend_sentinel)
+
+import matplotlib.pyplot as plt  # noqa: E402
+from matplotlib import get_backend, rc_context  # noqa: E402
+
+
+with rc_context():
+    fig = plt.figure()
+
+Gcf = _pylab_helpers.Gcf
+before_keys = list(Gcf.figs)
+assert fig.number in before_keys, (
+    "precondition failed: the figure created in rc_context was not registered")
+before_active = Gcf.get_active()
+
+try:
+    get_backend()
+except Exception as exc:  # pragma: no cover - would be an unexpected failure
+    raise AssertionError(f"get_backend() raised {exc!r}") from exc
+
+after_keys = list(Gcf.figs)
+assert fig.number in after_keys, (
+    "get_backend() removed a figure created inside rc_context from "
+    f"Gcf.figs: before={before_keys}, after={after_keys}")
+assert Gcf.get_active() is before_active, (
+    "get_backend() changed the active pyplot figure manager")
+
+
+----- test_repro_2.py -----
+"""A figure created in rc_context must still be closeable after get_backend().
+
+This reproduces the user-visible consequence noted in the report:
+get_backend() must not make pyplot forget the figure, otherwise plt.close(fig)
+cannot find it.
+"""
+
+import os
+
+os.environ.pop("MPLBACKEND", None)
+
+import matplotlib
+from matplotlib import rcsetup
+
+dict.__setitem__(
+    matplotlib.rcParams, "backend", rcsetup._auto_backend_sentinel)
+
+import matplotlib.pyplot as plt  # noqa: E402
+from matplotlib import get_backend, rc_context  # noqa: E402
+
+
+with rc_context({"figure.dpi": 100}):
+    fig = plt.figure()
+
+assert plt.fignum_exists(fig.number), "figure was not registered by pyplot"
+
+get_backend()
+
+# The figure must still be known to pyplot at this point.
+assert plt.fignum_exists(fig.number), (
+    "after get_backend(), plt.fignum_exists() says the figure created in "
+    "rc_context is gone")
+
+# ...and therefore close(fig) must actually remove it.
+plt.close(fig)
+assert not plt.fignum_exists(fig.number), (
+    "plt.close(fig) did not close the figure created in rc_context")
+
+
+----- test_repro_3.py -----
+"""The active figure must survive get_backend() when created in rc_context.
+
+Nested rc_context blocks are used to make sure the restoration logic at each
+level leaves the resolved backend in a coherent state.
+"""
+
+import os
+
+os.environ.pop("MPLBACKEND", None)
+
+import matplotlib
+from matplotlib import rcsetup
+
+dict.__setitem__(
+    matplotlib.rcParams, "backend", rcsetup._auto_backend_sentinel)
+
+import matplotlib.pyplot as plt  # noqa: E402
+from matplotlib import get_backend, rc_context  # noqa: E402
+
+
+with rc_context():
+    with rc_context({"figure.dpi": 72}):
+        fig = plt.figure()
+
+assert plt.gcf() is fig, (
+    "precondition failed: the figure created in rc_context is not current")
+
+try:
+    get_backend()
+except Exception as exc:  # pragma: no cover - unexpected failure mode
+    raise AssertionError(f"get_backend() raised {exc!r}") from exc
+
+assert plt.gcf() is fig, (
+    "get_backend() caused pyplot to forget the current figure created in "
+    "rc_context")
+
+# Calling it again must be equally harmless.
+get_backend()
+assert plt.gcf() is fig, (
+    "repeated get_backend() calls lost the figure created in rc_context")
+
+
+==============================================================================
+matplotlib__matplotlib-23476  [group1_false_accept]
+----- test_repro_1.py -----
+"""Regression test: figure DPI must not double after pickling on high-DPI.
+
+The issue reports that on an M1 Mac (device pixel ratio 2), repeatedly
+pickling and unpickling a figure doubles its DPI each time.  The high-DPI
+backend re-applies the device pixel ratio to the newly attached canvas; the
+figure must remember the original (unscaled) DPI across pickling.
+"""
+
+import pickle
+
+import matplotlib
+matplotlib.use("Agg")
+
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+from matplotlib.figure import Figure
+
+
+def main():
+    fig = Figure(figsize=(4, 3), dpi=100)
+    fig.add_subplot(111)
+    FigureCanvasAgg(fig)
+
+    # Emulate a high-DPI display (for example, an Apple M1 Mac with a device
+    # pixel ratio of 2).
+    fig.canvas._set_device_pixel_ratio(2)
+    assert fig.dpi == 200, f"initial scaled dpi is {fig.dpi}, expected 200"
+    expected_dpi = fig.dpi
+
+    for i in range(5):
+        fig = pickle.loads(pickle.dumps(fig))
+        # When the unpickled figure is attached to the high-DPI backend, that
+        # backend applies its device pixel ratio, just as the MacOSX backend
+        # does when it creates the window for the restored figure.
+        fig.canvas._set_device_pixel_ratio(2)
+        assert fig.dpi == expected_dpi, (
+            f"after unpickling iteration {i}, dpi is {fig.dpi}; "
+            f"expected it to stay {expected_dpi}")
+
+
+if __name__ == "__main__":
+    main()
+
+
+----- test_repro_2.py -----
+"""Regression test for DPI doubling after unpickling with pyplot figures."""
+
+import pickle
+
+import matplotlib
+matplotlib.use("Agg")
+
+import matplotlib.pyplot as plt
+
+
+def main():
+    fig = plt.figure(figsize=(4, 3), dpi=100)
+    fig.canvas._set_device_pixel_ratio(2)
+    assert fig.dpi == 200, f"initial scaled dpi is {fig.dpi}, expected 200"
+    expected_dpi = fig.dpi
+
+    for i in range(5):
+        fig = pickle.loads(pickle.dumps(fig))
+        # The MacOSX backend calls this when the window for the restored
+        # figure is created.
+        fig.canvas._set_device_pixel_ratio(2)
+        assert fig.dpi == expected_dpi, (
+            f"after unpickling iteration {i}, dpi is {fig.dpi}; "
+            f"expected it to stay {expected_dpi}")
+
+    plt.close("all")
+
+
+if __name__ == "__main__":
+    main()
+
+
+----- test_repro_3.py -----
+"""Regression test for pickling a figure while a high-DPI scale is active.
+
+This uses the same generic canvas-reattachment path that ``Figure.__setstate__``
+uses during unpickling and then re-applies the device pixel ratio.
+"""
+
+import pickle
+
+import matplotlib
+matplotlib.use("Agg")
+
+from matplotlib.backend_bases import FigureCanvasBase
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+from matplotlib.figure import Figure
+
+
+def main():
+    fig = Figure(figsize=(4, 3), dpi=100)
+    canvas = FigureCanvasAgg(fig)
+    canvas._set_device_pixel_ratio(2)
+    assert fig.dpi == 200, f"initial scaled dpi is {fig.dpi}, expected 200"
+
+    fig2 = pickle.loads(pickle.dumps(fig))
+    # ``Figure.__setstate__`` uses ``FigureCanvasBase`` while restoring the
+    # figure.  Verify that this did not destroy the recorded unscaled DPI.
+    assert isinstance(fig2.canvas, FigureCanvasBase)
+    fig2.canvas._set_device_pixel_ratio(2)
+    assert fig2.dpi == 200, (
+        f"dpi after unpickling and re-applying the device pixel ratio is "
+        f"{fig2.dpi}; expected 200")
+
+
+if __name__ == "__main__":
+    main()
+
+
+==============================================================================
+pylint-dev__pylint-4661  [group1_false_accept]
+----- test_repro_1.py -----
+"""Reproduction test for: pylint should be XDG Base Directory compliant.
+
+Correct behaviour (per the issue): when ``PYLINTHOME`` is not set, pylint's
+persistent data directory must live in the XDG data directory instead of the
+legacy ``~/.pylint.d``.  A valid XDG data location is either
+``$XDG_DATA_HOME/pylint`` (when ``XDG_DATA_HOME`` is set) or its fallback
+``$HOME/.local/share/pylint``.
+
+On the buggy code ``PYLINT_HOME`` is ``$HOME/.pylint.d``, so this script
+fails with an AssertionError.
+"""
+
+import importlib
+import os
+import tempfile
+
+# Build a fully isolated / deterministic environment *before* importing pylint.
+_tmp = tempfile.mkdtemp(prefix="pylint_xdg_")
+_home = os.path.join(_tmp, "home")
+_xdg_data_home = os.path.join(_tmp, "xdg_data")
+os.makedirs(_home)
+os.makedirs(_xdg_data_home)
+
+os.environ["HOME"] = _home
+os.environ["XDG_DATA_HOME"] = _xdg_data_home
+os.environ.pop("PYLINTHOME", None)
+os.environ.pop("PYLINTRC", None)
+
+import pylint.config  # noqa: E402  (import has to happen after env setup)
+
+# Reload in case pylint.config was imported as a side effect of anything else.
+importlib.reload(pylint.config)
+
+valid_locations = {
+    os.path.join(_xdg_data_home, "pylint"),
+    os.path.join(_home, ".local", "share", "pylint"),
+}
+assert pylint.config.PYLINT_HOME in valid_locations, (
+    "pylint data should be stored in an XDG data directory "
+    f"({sorted(valid_locations)}), got {pylint.config.PYLINT_HOME!r}"
+)
+
+# It must no longer be the legacy ~/.pylint.d directory.
+legacy = os.path.join(_home, ".pylint.d")
+assert pylint.config.PYLINT_HOME != legacy, (
+    f"pylint data should not be stored in the legacy location {legacy!r}"
+)
+
+# The persisted statistics file must also be located there.
+data_file = pylint.config._get_pdata_path("somebase", 1)
+assert data_file.startswith(pylint.config.PYLINT_HOME + os.sep), (
+    "the statistics file should be stored inside the data directory, "
+    f"got {data_file!r}"
+)
+
+print("OK: PYLINT_HOME is an XDG data directory, not ~/.pylint.d")
+
+
+----- test_repro_2.py -----
+"""Reproduction test for: pylint should be XDG Base Directory compliant.
+
+Correct behaviour (per the issue): when neither ``PYLINTHOME`` nor
+``XDG_DATA_HOME`` is set, pylint's persistent data directory must default to
+``$HOME/.local/share/pylint`` (the XDG data directory fallback).
+
+On the buggy code ``PYLINT_HOME`` is ``$HOME/.pylint.d``, so this script
+fails with an AssertionError.
+"""
+
+import importlib
+import os
+import tempfile
+
+# Deterministic environment built before importing pylint.
+_tmp = tempfile.mkdtemp(prefix="pylint_xdg_")
+_home = os.path.join(_tmp, "home")
+os.makedirs(_home)
+
+os.environ["HOME"] = _home
+os.environ.pop("XDG_DATA_HOME", None)
+os.environ.pop("PYLINTHOME", None)
+os.environ.pop("PYLINTRC", None)
+
+import pylint.config  # noqa: E402
+
+importlib.reload(pylint.config)
+
+expected = os.path.join(_home, ".local", "share", "pylint")
+assert pylint.config.PYLINT_HOME == expected, (
+    "pylint data should default to the XDG data directory "
+    f"($HOME/.local/share/pylint): expected {expected!r}, "
+    f"got {pylint.config.PYLINT_HOME!r}"
+)
+
+# It must definitely no longer be the legacy ~/.pylint.d directory.
+legacy = os.path.join(_home, ".pylint.d")
+assert pylint.config.PYLINT_HOME != legacy, (
+    f"pylint data should not be stored in the legacy location {legacy!r}"
+)
+
+print("OK: PYLINT_HOME defaults to $HOME/.local/share/pylint")
+
+
+----- test_repro_3.py -----
+"""Reproduction test for: pylint should be XDG Base Directory compliant.
+
+This is a functional test: it drives pylint's result persistence API and
+checks that the files it writes actually end up inside an XDG data directory
+(``$XDG_DATA_HOME/pylint`` or the ``$HOME/.local/share/pylint`` fallback)
+instead of the legacy ``~/.pylint.d``.
+
+On the buggy code the file is written to ``$HOME/.pylint.d``, so this script
+fails with an AssertionError.
+"""
+
+import importlib
+import os
+import tempfile
+
+# Deterministic environment built before importing pylint.
+_tmp = tempfile.mkdtemp(prefix="pylint_xdg_")
+_home = os.path.join(_tmp, "home")
+_xdg_data_home = os.path.join(_tmp, "xdg_data")
+os.makedirs(_home)
+os.makedirs(_xdg_data_home)
+
+os.environ["HOME"] = _home
+os.environ["XDG_DATA_HOME"] = _xdg_data_home
+os.environ.pop("PYLINTHOME", None)
+os.environ.pop("PYLINTRC", None)
+
+import pylint.config  # noqa: E402
+
+importlib.reload(pylint.config)
+
+valid_locations = {
+    os.path.join(_xdg_data_home, "pylint"),
+    os.path.join(_home, ".local", "share", "pylint"),
+}
+assert pylint.config.PYLINT_HOME in valid_locations, (
+    f"PYLINT_HOME should be an XDG data directory, "
+    f"got {pylint.config.PYLINT_HOME!r}"
+)
+
+# Make sure the parent directory exists so that save_results can create the
+# data directory (the buggy code uses the parent folder for the legacy dir).
+os.makedirs(os.path.dirname(pylint.config.PYLINT_HOME), exist_ok=True)
+
+# Persist some data and make sure it lands inside the data directory.
+payload = {"run": 1, "stats": [1, 2, 3]}
+pylint.config.save_results(payload, "repro_check")
+
+data_file = pylint.config._get_pdata_path("repro_check", 1)
+assert data_file.startswith(pylint.config.PYLINT_HOME + os.sep), (
+    "the persisted statistics file should live inside the data directory, "
+    f"got {data_file!r}"
+)
+assert os.path.exists(data_file), f"expected data file {data_file!r} to exist"
+
+# And the data must still round-trip correctly.
+loaded = pylint.config.load_results("repro_check")
+assert loaded == payload, f"expected to load back {payload!r}, got {loaded!r}"
+
+print("OK: persisted pylint results are stored in an XDG data directory")
+
+
+==============================================================================
+matplotlib__matplotlib-20676  [group2_false_flag]
+NO V4 SOURCES ON DISK
+==============================================================================
+pylint-dev__pylint-6528  [group2_false_flag]
+NO V4 SOURCES ON DISK
+==============================================================================
+astropy__astropy-13977  [group2_false_flag]
+NO V4 SOURCES ON DISK
+==============================================================================
+django__django-16631  [group2_false_flag]
+NO V4 SOURCES ON DISK
+==============================================================================
+mwaskom__seaborn-3069  [group2_false_flag]
+NO V4 SOURCES ON DISK
+==============================================================================
+sympy__sympy-17318  [group2_false_flag]
+----- test_repro_1.py -----
+"""Reproduction for sympy issue #12420: sqrtdenest raises IndexError.
+
+The reported expression ``(3 - sqrt(2)*sqrt(4 + 3*I) + 3*I)/2`` is
+auto-simplified by sympy before sqrtdenest ever sees it, but the underlying
+bug is that sqrtdenest/split_surds cannot handle a radicand such as
+``1 + 2*I`` whose addends have rational squares yet contain no ``Pow``
+"surds".  In that case ``_split_gcd`` is called with no arguments and the
+whole simplification blows up with ``IndexError: tuple index out of range``.
+
+The behaviour requested by the issue is: if the expression cannot be
+denested, sqrtdenest must return it unchanged (and must not raise).
+"""
+
+from sympy import I, sqrt, sympify
+from sympy.core.function import expand_mul
+from sympy.simplify.sqrtdenest import sqrtdenest
+
+
+def denest(expr):
+    try:
+        return sqrtdenest(expr)
+    except Exception as exc:  # noqa: BLE001 - convert to a clean failure
+        raise AssertionError(
+            "sqrtdenest(%r) raised %s: %s"
+            % (expr, type(exc).__name__, exc))
+
+
+# The original issue expression, but with a complex radicand that sympy does
+# not automatically denest, so that the faulty code path is actually reached.
+expr = (3 - sqrt(2) * sqrt(1 + 2 * I) + 3 * I) / 2
+
+# ``sqrtdenest`` starts by expanding its argument; the "unchanged" result is
+# therefore the expanded input.
+expected = expand_mul(sympify(expr))
+assert expected == expr, (expected, expr)
+
+result = denest(expr)
+assert result == expr, (
+    "sqrtdenest should return an expression it cannot denest unchanged; "
+    "got %r instead of %r" % (result, expr))
+
+
+----- test_repro_2.py -----
+"""Reproduction for sympy issue #12420 (multiple non-denestable radicands).
+
+``sqrtdenest`` must never raise when it cannot denest an expression; it must
+return the input unchanged.  The complex numbers below are built from
+radicands of the form ``a + b*I`` whose addends have rational squares but
+contain no ``Pow`` surds, which used to make ``split_surds`` -> ``_split_gcd``
+index an empty tuple and raise ``IndexError``.
+
+A genuinely denestable expression is included as a control: the fix must not
+simply stop simplifying everything.
+"""
+
+from sympy import I, sqrt, sympify
+from sympy.core.function import expand_mul
+from sympy.simplify.sqrtdenest import sqrtdenest
+
+
+def denest(expr):
+    try:
+        return sqrtdenest(expr)
+    except Exception as exc:  # noqa: BLE001 - convert to a clean failure
+        raise AssertionError(
+            "sqrtdenest(%r) raised %s: %s"
+            % (expr, type(exc).__name__, exc))
+
+
+non_denestable = [
+    sqrt(1 + 2 * I),
+    sqrt(2 + 2 * I),
+    sqrt(1 + I),
+    sqrt(-1 + 2 * I),
+    sqrt(2 + 3 * I),
+]
+
+for z in non_denestable:
+    expected = expand_mul(sympify(z))
+    result = denest(z)
+    assert result == expected, (
+        "sqrtdenest(%r) should be unchanged, got %r" % (z, result))
+
+# Control: this one really can be denested and must still be.
+assert sqrtdenest(sqrt(5 + 2 * sqrt(6))) == sqrt(2) + sqrt(3)
+
+
+----- test_repro_3.py -----
+"""Reproduction for sympy issue #12420 (composite expressions).
+
+These expressions all contain ``sqrt(1 + 2*I)``, a square root that cannot be
+denested.  Before the fix, calling ``sqrtdenest`` on them raised
+``IndexError: tuple index out of range`` from ``_split_gcd``.  The requested
+behaviour is that an expression which cannot be denested is returned
+unchanged.
+"""
+
+from sympy import I, sqrt, sympify
+from sympy.core.function import expand_mul
+from sympy.simplify.sqrtdenest import sqrtdenest
+
+
+def denest(expr):
+    try:
+        return sqrtdenest(expr)
+    except Exception as exc:  # noqa: BLE001 - convert to a clean failure
+        raise AssertionError(
+            "sqrtdenest(%r) raised %s: %s"
+            % (expr, type(exc).__name__, exc))
+
+
+r = sqrt(1 + 2 * I)  # not denestable
+
+expressions = [
+    r,
+    sqrt(2) * r,
+    1 + r,
+    sqrt(2) + r,
+    (3 - sqrt(2) * r + 3 * I) / 2,
+]
+
+for e in expressions:
+    expected = expand_mul(sympify(e))
+    result = denest(e)
+    assert result == expected, (
+        "sqrtdenest(%r) should be unchanged, got %r" % (e, result))
+
+    # Idempotence: applying sqrtdenest again must not change anything either.
+    assert denest(result) == expected, (
+        "sqrtdenest is not idempotent on %r" % (e,))
+
+
+==============================================================================
+matplotlib__matplotlib-25479  [group3_false_reject]
+NO V4 SOURCES ON DISK
+==============================================================================
+django__django-12209  [group4_right_old_tests_fail]
+----- test_repro_1.py -----
+"""
+Regression test for ticket #31493.
+
+Saving a model instance that has an explicit primary key value must not be
+forced into an INSERT when the primary key field also has a default.  The
+correct (Django <= 2.2) behaviour is to try an UPDATE first and only INSERT
+when no matching row exists.
+
+This script fails with AssertionError on the buggy code (the second save
+raises IntegrityError because a duplicate INSERT is attempted) and exits 0
+once the behaviour is fixed.
+"""
+import uuid
+
+from django.conf import settings
+
+settings.configure(
+    DATABASES={
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        },
+    },
+    INSTALLED_APPS=[],
+    USE_TZ=True,
+)
+
+import django
+
+django.setup()
+
+from django.db import connection, models
+from django.db.utils import IntegrityError
+
+
+class Sample(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    name = models.CharField(blank=True, max_length=100)
+
+    class Meta:
+        app_label = 'repro'
+
+
+with connection.schema_editor() as schema_editor:
+    schema_editor.create_model(Sample)
+
+s0 = Sample.objects.create(name='Original')
+assert Sample.objects.count() == 1, 'setup failed: expected exactly one row'
+
+# Reuse the existing primary key explicitly.  This must UPDATE the row.
+s1 = Sample(pk=s0.pk, name='Test 1')
+try:
+    s1.save()
+except IntegrityError as exc:
+    raise AssertionError(
+        'Saving a model instance with an explicit, already existing primary '
+        'key raised IntegrityError (a duplicate INSERT was attempted) instead '
+        'of updating the existing row: %r' % (exc,)
+    )
+
+assert Sample.objects.count() == 1, (
+    'Saving with an explicit existing primary key inserted a duplicate row'
+)
+assert Sample.objects.get(pk=s0.pk).name == 'Test 1', (
+    'The existing row was not updated with the new value'
+)
+
+print('OK: explicit primary key with a default updated the existing row')
+
+
+----- test_repro_2.py -----
+"""
+Regression test for ticket #31493 (loaddata side effect).
+
+The ``loaddata`` management command deserializes fixture objects and saves
+them with ``save_base(raw=True)``.  When a fixture contains an explicit
+primary key for an object that already exists, the existing row must be
+updated rather than a duplicate INSERT being attempted.
+
+This script mimics that code path with Django's serializer deserializer (no
+files are read).  It fails with AssertionError on the buggy code and exits 0
+once the behaviour is fixed.
+"""
+import uuid
+
+from django.conf import settings
+
+settings.configure(
+    DATABASES={
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        },
+    },
+    INSTALLED_APPS=['django.contrib.contenttypes', 'django.contrib.auth'],
+    USE_TZ=True,
+)
+
+import django
+
+django.setup()
+
+from django.core import serializers
+from django.db import connection, models
+from django.db.utils import IntegrityError
+
+
+class Sample(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    name = models.CharField(blank=True, max_length=100)
+
+    class Meta:
+        app_label = 'contenttypes'
+
+
+with connection.schema_editor() as schema_editor:
+    schema_editor.create_model(Sample)
+
+s0 = Sample.objects.create(name='Original')
+assert Sample.objects.count() == 1
+
+# A fixture that reuses an already existing primary key, as loaddata would
+# be given when loading the same fixture a second time.
+fixture = (
+    '[{"model": "%s.%s", "pk": "%s", "fields": {"name": "Test 1"}}]'
+    % (Sample._meta.app_label, Sample._meta.model_name, s0.pk)
+)
+
+try:
+    for deserialized_obj in serializers.deserialize('json', fixture):
+        deserialized_obj.save()
+except IntegrityError as exc:
+    raise AssertionError(
+        'Deserializing (as loaddata does) an object with an explicit, already '
+        'existing primary key raised IntegrityError instead of updating the '
+        'existing row: %r' % (exc,)
+    )
+
+assert Sample.objects.count() == 1, (
+    'Loading a fixture with an explicit existing primary key inserted a '
+    'duplicate row'
+)
+assert Sample.objects.get(pk=s0.pk).name == 'Test 1', (
+    'The existing row was not updated while loading the fixture'
+)
+
+print('OK: deserializing an object with an explicit primary key updated the existing row')
+
+
+----- test_repro_3.py -----
+"""
+Regression test for ticket #31493 (update vs insert decision).
+
+When a primary key field has a default:
+  * a brand new object whose primary key was generated from the default must
+    still be INSERTed (the optimisation from #29260), and
+  * a new object that carries an explicit primary key value must take the
+    normal UPDATE-then-INSERT path, including when ``update_fields`` is used.
+
+This script fails with AssertionError on the buggy code (an explicit, already
+existing primary key is force-inserted) and exits 0 once fixed.
+"""
+import uuid
+
+from django.conf import settings
+
+settings.configure(
+    DATABASES={
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        },
+    },
+    INSTALLED_APPS=[],
+    USE_TZ=True,
+)
+
+import django
+
+django.setup()
+
+from django.db import connection, models
+from django.db.utils import IntegrityError
+
+
+class Sample(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    name = models.CharField(blank=True, max_length=100)
+
+    class Meta:
+        app_label = 'repro'
+
+
+with connection.schema_editor() as schema_editor:
+    schema_editor.create_model(Sample)
+
+pk = uuid.uuid4()
+
+# An explicit primary key that does not exist yet must be inserted.
+Sample(pk=pk, name='First').save()
+assert Sample.objects.count() == 1
+
+# A different instance carrying the same explicit primary key must update the
+# existing row, even when only some fields are saved.
+try:
+    Sample(pk=pk, name='Second').save(update_fields=['name'])
+except IntegrityError as exc:
+    raise AssertionError(
+        'Saving a new instance with an explicit, existing primary key and '
+        'update_fields raised IntegrityError instead of updating the row: %r'
+        % (exc,)
+    )
+
+assert Sample.objects.count() == 1, (
+    'Saving with an explicit existing primary key inserted a duplicate row'
+)
+assert Sample.objects.get(pk=pk).name == 'Second', (
+    'The existing row was not updated'
+)
+
+# A full save of yet another instance with the same explicit primary key must
+# also update the existing row.
+Sample(pk=pk, name='Third').save()
+assert Sample.objects.count() == 1
+assert Sample.objects.get(pk=pk).name == 'Third'
+
+# An object relying on the primary key default must still be inserted.
+Sample(name='Auto').save()
+assert Sample.objects.count() == 2
+assert Sample.objects.filter(name='Auto').exists()
+
+print('OK: explicit primary key save performed an UPDATE')
+
+
+==============================================================================
+django__django-14140  [group4_right_old_tests_fail]
+----- test_repro_1.py -----
+"""A single-child Q() must deconstruct its child into ``args``.
+
+Historically ``Q(x=1).deconstruct()`` returned ``(..., (), {'x': 1})`` while
+``Q(x=1, y=2).deconstruct()`` returned ``(..., (('x', 1), ('y', 2)), {})``.
+The special case is the root cause of the crash reported in the issue; the
+correct (fixed) behaviour is to always put the children into ``args``.
+"""
+from django.conf import settings
+
+if not settings.configured:
+    settings.configure()
+
+from django.db.models import F, Q  # noqa: E402
+
+
+path, args, kwargs = Q(x=1).deconstruct()
+assert path == 'django.db.models.Q', path
+assert args == (('x', 1),), args
+assert kwargs == {}, kwargs
+
+# A lookup/value pair must round-trip through deconstruct/reconstruct.
+q = Q(price__gt=F('discounted_price'))
+path, args, kwargs = q.deconstruct()
+assert args == (('price__gt', F('discounted_price')),), args
+assert kwargs == {}, kwargs
+assert Q(*args, **kwargs) == q
+
+# A negated single-child Q keeps the child in args, negation in kwargs.
+negated = ~Q(x=1)
+path, args, kwargs = negated.deconstruct()
+assert args == (('x', 1),), args
+assert kwargs == {'_negated': True}, kwargs
+assert Q(*args, **kwargs) == negated
+
+print('test_repro_1 passed')
+
+
+----- test_repro_2.py -----
+"""Deconstructing a single-child Q() with a non-subscriptable child.
+
+``Q(Exists(...))`` has one child which is not a subscriptable ``(key, value)``
+tuple.  The old special case for single-child Q() tried ``child[0]``/``child[1]``
+and crashed with ``TypeError``.  After the fix the child is simply stored in
+``args``.
+"""
+import django
+from django.conf import settings
+
+if not settings.configured:
+    settings.configure(
+        INSTALLED_APPS=['django.contrib.contenttypes', 'django.contrib.auth'],
+        DATABASES={
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': ':memory:',
+            },
+        },
+    )
+django.setup()
+
+from django.contrib.auth import get_user_model  # noqa: E402
+from django.db.models import Exists, Q  # noqa: E402
+
+
+child = Exists(get_user_model().objects.filter(username='jim'))
+q = Q(child)
+
+try:
+    path, args, kwargs = q.deconstruct()
+except TypeError as exc:
+    raise AssertionError(
+        'deconstruct() raised TypeError for a non-subscriptable child: %r' % (exc,)
+    )
+
+assert path == 'django.db.models.Q', path
+assert args == (child,), args
+assert kwargs == {}, kwargs
+
+# The reconstructed object must be equivalent to the original.
+rebuilt = Q(*args, **kwargs)
+assert rebuilt == q, rebuilt
+
+print('test_repro_2 passed')
+
+
+----- test_repro_3.py -----
+"""Combining an empty Q() with a boolean expression Q() must not crash.
+
+``Q() & Q(Exists(...))`` (and the ``|`` equivalent) takes the ``_combine``
+shortcut that deconstructs the non-empty operand.  With a non-subscriptable
+single child the old special case raised ``TypeError``; after the fix the
+combination succeeds and equals the non-empty Q().
+"""
+import django
+from django.conf import settings
+
+if not settings.configured:
+    settings.configure(
+        INSTALLED_APPS=['django.contrib.contenttypes', 'django.contrib.auth'],
+        DATABASES={
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': ':memory:',
+            },
+        },
+    )
+django.setup()
+
+from django.contrib.auth import get_user_model  # noqa: E402
+from django.db.models import Exists, Q  # noqa: E402
+
+
+child = Exists(get_user_model().objects.filter(username='jim'))
+q = Q(child)
+
+try:
+    combined_and = Q() & q
+except TypeError as exc:
+    raise AssertionError('Q() & Q(Exists(...)) raised TypeError: %r' % (exc,))
+
+try:
+    combined_or = Q() | q
+except TypeError as exc:
+    raise AssertionError('Q() | Q(Exists(...)) raised TypeError: %r' % (exc,))
+
+try:
+    combined_and_rev = q & Q()
+except TypeError as exc:
+    raise AssertionError('Q(Exists(...)) & Q() raised TypeError: %r' % (exc,))
+
+assert combined_and == q, combined_and
+assert combined_or == q, combined_or
+assert combined_and_rev == q, combined_and_rev
+
+print('test_repro_3 passed')
+
+
+==============================================================================
+django__django-14631  [group4_right_old_tests_fail]
+----- test_repro_1.py -----
+"""Repro for: BaseForm._clean_fields() should access values via BoundField.
+
+For a disabled field the value fed into field.clean() must come from the
+BoundField's ``initial`` (the same value that is passed to the widget), not
+from ``get_initial_for_field()``.  The two can differ, e.g. for an
+auto-generated datetime initial whose microseconds are stripped by
+BoundField.initial.
+"""
+import datetime
+
+from django.conf import settings
+
+settings.configure(USE_I18N=False)
+
+import django
+
+django.setup()
+
+from django import forms
+from django.forms import DateTimeField
+
+now = datetime.datetime(2006, 10, 25, 14, 30, 45, 123456)
+stripped = now.replace(microsecond=0)
+
+
+class DateTimeForm(forms.Form):
+    dt = DateTimeField(initial=lambda: now, disabled=True)
+
+
+form = DateTimeForm({})
+# Trigger validation/cleaning.
+assert form.errors == {}
+
+bf = form["dt"]
+assert form.cleaned_data["dt"] == bf.initial, (
+    "cleaned_data must equal the BoundField initial: "
+    "%r != %r" % (form.cleaned_data["dt"], bf.initial)
+)
+assert form.cleaned_data["dt"] == stripped, form.cleaned_data["dt"]
+
+print("OK test_repro_1")
+
+
+----- test_repro_2.py -----
+"""Repro for: BaseForm._clean_fields() should access values via BoundField.
+
+For disabled fields (regardless of whether their initial is a plain value or
+a callable), the cleaned value must equal ``form[name].initial``.
+"""
+import datetime
+
+from django.conf import settings
+
+settings.configure(USE_I18N=False)
+
+import django
+
+django.setup()
+
+from django import forms
+
+
+def callable_initial():
+    return datetime.datetime(2020, 1, 1, 1, 1, 1, 123456)
+
+
+class DisabledForm(forms.Form):
+    text = forms.CharField(initial="hello", disabled=True)
+    number = forms.IntegerField(initial=5, disabled=True)
+    dt = forms.DateTimeField(initial=callable_initial, disabled=True)
+    dt_plain = forms.DateTimeField(
+        initial=datetime.datetime(2021, 2, 3, 4, 5, 6, 789012), disabled=True
+    )
+
+
+form = DisabledForm({})
+assert form.errors == {}
+
+for name in ("text", "number", "dt", "dt_plain"):
+    bound_field = form[name]
+    assert form.cleaned_data[name] == bound_field.initial, (
+        "field %r: cleaned_data %r != BoundField.initial %r"
+        % (name, form.cleaned_data[name], bound_field.initial)
+    )
+
+# A disabled field must ignore submitted data and use its initial, which is
+# the value exposed by the BoundField.
+bound_form = DisabledForm({"text": "ignored", "number": "99"})
+assert bound_form.errors == {}
+for name in ("text", "number", "dt", "dt_plain"):
+    bound_field = bound_form[name]
+    assert bound_form.cleaned_data[name] == bound_field.initial, (
+        "bound field %r: cleaned_data %r != BoundField.initial %r"
+        % (name, bound_form.cleaned_data[name], bound_field.initial)
+    )
+
+print("OK test_repro_2")
+
+
+----- test_repro_3.py -----
+"""Repro for: changed_data per-field logic should live on BoundField.
+
+The issue asks for the per-field change detection to be exposed by the
+BoundField (``bf._did_change()`` / ``bf.did_change()``), with
+BaseForm.changed_data simply collecting the names for which the BoundField
+reports a change, and BaseForm._clean_fields() iterating BoundField objects.
+"""
+from django.conf import settings
+
+settings.configure(USE_I18N=False)
+
+import django
+
+django.setup()
+
+from django import forms
+
+
+def did_change_method(bound_field):
+    for attr in ("_did_change", "did_change"):
+        method = getattr(bound_field, attr, None)
+        if method is not None:
+            return method
+    raise AssertionError(
+        "BoundField has no _did_change()/did_change() method: %r" % bound_field
+    )
+
+
+class SampleForm(forms.Form):
+    a = forms.CharField()
+    b = forms.CharField()
+    c = forms.CharField(show_hidden_initial=True, initial="x")
+
+
+form = SampleForm({"a": "1", "b": "", "c": "y", "initial-c": "x"})
+
+# BaseForm must expose a helper yielding (name, BoundField) pairs.
+bound_items = getattr(form, "_bound_items", None)
+assert bound_items is not None, "BaseForm has no _bound_items() helper"
+items = list(bound_items())
+assert [name for name, _ in items] == ["a", "b", "c"], items
+assert all(isinstance(bf, forms.BoundField) for _, bf in items), items
+
+# The per-field determination of "did change" lives on the BoundField.
+assert did_change_method(form["a"])(), "field 'a' changed from no initial to '1'"
+assert not did_change_method(form["b"])(), "field 'b' unchanged"
+assert did_change_method(form["c"])(), (
+    "field 'c' hidden initial 'x' differs from submitted 'y'"
+)
+
+# changed_data is now the collection over BoundFields.
+bf_changed = [name for name, bf in form._bound_items() if did_change_method(bf)()]
+assert form.changed_data == bf_changed, (form.changed_data, bf_changed)
+assert sorted(form.changed_data) == ["a", "c"], form.changed_data
+
+print("OK test_repro_3")
+
+
+==============================================================================
+pytest-dev__pytest-5809  [group4_right_old_tests_fail]
+----- test_repro_1.py -----
+"""Reproduction test: pastebin uploads must use lexer=text, not python3.
+
+The issue reports that ``pytest --pastebin`` submits its console output to
+bpaste.net with ``lexer=python3``, which can make the service return
+``HTTP Error 400: Bad Request``.  Arbitrary pytest output should be submitted
+as plain text.
+"""
+import urllib.request
+from urllib.parse import parse_qs
+
+from _pytest import pastebin
+
+
+class DummyResponse(object):
+    def read(self):
+        return b'<a href="/raw/abc123">raw</a>'
+
+
+captured = []
+
+
+def fake_urlopen(url, data=None):
+    captured.append((url, data))
+    return DummyResponse()
+
+
+original_urlopen = urllib.request.urlopen
+urllib.request.urlopen = fake_urlopen
+try:
+    result = pastebin.create_new_paste(b"pytest session output: anything\n")
+finally:
+    urllib.request.urlopen = original_urlopen
+
+assert result == "https://bpaste.net/show/abc123", result
+assert len(captured) == 1, captured
+url, data = captured[0]
+assert url == "https://bpaste.net", url
+assert isinstance(data, bytes), type(data)
+
+params = parse_qs(data.decode("ascii"))
+assert params.get("lexer") == ["text"], (
+    "pastebin should submit arbitrary pytest output with lexer='text', got %r"
+    % (params.get("lexer"),)
+)
+
+
+----- test_repro_2.py -----
+"""Reproduction test: no HTTP 400 when submitting arbitrary output.
+
+This simulates bpaste.net's reported behaviour: requests using
+``lexer=python3`` are rejected with ``HTTP Error 400: Bad Request``, while
+requests using ``lexer=text`` are accepted.  The --pastebin feature must
+therefore use the text lexer and complete successfully.
+"""
+import urllib.error
+import urllib.request
+from urllib.parse import parse_qs
+
+from _pytest import pastebin
+
+
+class DummyResponse(object):
+    def read(self):
+        return b'<a href="/raw/def456">raw</a>'
+
+
+def fake_urlopen(url, data=None):
+    params = parse_qs(data.decode("ascii"))
+    lexer = params.get("lexer", [None])[0]
+    if lexer != "text":
+        raise urllib.error.HTTPError(url, 400, "Bad Request", None, None)
+    return DummyResponse()
+
+
+original_urlopen = urllib.request.urlopen
+urllib.request.urlopen = fake_urlopen
+try:
+    try:
+        result = pastebin.create_new_paste(b"arbitrary pytest output\n")
+    except urllib.error.HTTPError as exc:
+        raise AssertionError(
+            "pastebin upload raised HTTP Error %s: %s; it should submit with "
+            "lexer='text' instead" % (exc.code, exc.msg)
+        ) from exc
+finally:
+    urllib.request.urlopen = original_urlopen
+
+assert result == "https://bpaste.net/show/def456", result
+
+
+----- test_repro_3.py -----
+"""Reproduction test: non-ASCII / arbitrary bytes are still accepted.
+
+The problematic pytest output is arbitrary text, not Python source.  This
+test uses output containing bytes that are not valid Python source characters
+and checks that the request is submitted with the text lexer.
+"""
+import urllib.error
+import urllib.request
+from urllib.parse import parse_qs
+
+from _pytest import pastebin
+
+
+class DummyResponse(object):
+    def read(self):
+        return b'<a href="/raw/ghi789">raw</a>'
+
+
+captured = []
+
+
+def fake_urlopen(url, data=None):
+    parsed = parse_qs(data.decode("ascii"))
+    captured.append(parsed)
+    lexer = parsed.get("lexer", [None])[0]
+    if lexer != "text":
+        raise urllib.error.HTTPError(url, 400, "Bad Request", None, None)
+    return DummyResponse()
+
+
+contents = b"F\xe2\x98\xba pytest output \xf0\x9f\x98\x80\n"
+original_urlopen = urllib.request.urlopen
+urllib.request.urlopen = fake_urlopen
+try:
+    try:
+        result = pastebin.create_new_paste(contents)
+    except urllib.error.HTTPError as exc:
+        raise AssertionError(
+            "pastebin rejected arbitrary output with HTTP %s: %s"
+            % (exc.code, exc.msg)
+        ) from exc
+finally:
+    urllib.request.urlopen = original_urlopen
+
+assert result == "https://bpaste.net/show/ghi789", result
+assert captured and captured[0].get("lexer") == ["text"], captured
+
+
+==============================================================================
+sphinx-doc__sphinx-10435  [group4_right_old_tests_fail]
+----- test_repro_1.py -----
+"""Reproduction for Sphinx issue: LaTeX inline code highlighting adds spaces.
+
+The issue is that an inline ``code`` role using syntax highlighting produces
+LaTeX where the highlighted code is surrounded by newlines inside
+``\sphinxcode{\sphinxupquote{...}}``.  In LaTeX those newlines are rendered as
+visible spaces, so the generated output has an unwanted space at the start and
+end of the inline code.
+
+This test checks the semantic requirement: the content directly inside the
+inline-code macro must not start with whitespace, and if it ends with
+whitespace, that whitespace must be suppressed by a trailing ``%`` (the usual
+LaTeX way to gobble the newline).
+"""
+
+import io
+import pathlib
+import re
+import tempfile
+
+from sphinx.application import Sphinx
+
+
+ISSUE_SOURCE = """\
+.. role:: python(code)
+   :language: python
+   :class: highlight
+
+Inline :python:`def foo(1 + 2 + None + "abc"): pass` code block
+
+.. code-block:: python
+
+   def foo(1 + 2 + None + "abc"): pass
+"""
+
+
+def build_latex(tmpdir: str) -> str:
+    root = pathlib.Path(tmpdir)
+    src = root / "src"
+    out = root / "out"
+    doctrees = root / "doctrees"
+    src.mkdir()
+    out.mkdir()
+    doctrees.mkdir()
+
+    (src / "conf.py").write_text("project = 'repro'\n", encoding="utf-8")
+    (src / "index.rst").write_text(ISSUE_SOURCE, encoding="utf-8")
+
+    status = io.StringIO()
+    warning = io.StringIO()
+    app = Sphinx(
+        srcdir=str(src),
+        confdir=str(src),
+        outdir=str(out),
+        doctreedir=str(doctrees),
+        buildername="latex",
+        status=status,
+        warning=warning,
+        freshenv=True,
+    )
+    app.build()
+
+    tex_files = list(out.glob("*.tex"))
+    assert len(tex_files) == 1, f"expected exactly one .tex file, got {tex_files!r}"
+    return tex_files[0].read_text(encoding="utf-8")
+
+
+def main() -> None:
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tex = build_latex(tmpdir)
+
+    match = re.search(
+        r"\\sphinxcode\{\\sphinxupquote\{(?P<body>.*?)\}\} code block",
+        tex,
+        flags=re.DOTALL,
+    )
+    assert match is not None, (
+        "could not find the highlighted inline-code macro in LaTeX output:\n"
+        + tex
+    )
+
+    body = match.group("body")
+    assert body, "highlighted inline code unexpectedly has no content"
+
+    assert not body[0].isspace(), (
+        "highlighted inline code starts with whitespace; LaTeX will render "
+        f"an unwanted leading space.  Body starts with {body[:40]!r}"
+    )
+
+    stripped = body.rstrip()
+    if stripped != body:
+        assert stripped.endswith("%"), (
+            "highlighted inline code ends with unsuppressed whitespace; LaTeX "
+            "will render an unwanted trailing space.  "
+            f"Body ends with {body[-40:]!r}"
+        )
+
+
+if __name__ == "__main__":
+    main()
+
+
+----- test_repro_2.py -----
+"""Reproduction for Sphinx issue: LaTeX inline code highlighting adds spaces.
+
+This checks the actual LaTeX macro boundaries.  For syntax-highlighted inline
+code Sphinx writes ``\sphinxcode{\sphinxupquote{...}}``.  A newline or space
+directly after the opening brace, or directly before the closing braces, is
+typeset as a visible space.  A newline can be safely used only when it is
+immediately preceded by ``%`` (which comments out the newline).
+"""
+
+import io
+import pathlib
+import re
+import tempfile
+
+from sphinx.application import Sphinx
+
+
+ISSUE_SOURCE = """\
+.. role:: python(code)
+   :language: python
+   :class: highlight
+
+Inline :python:`def foo(1 + 2 + None + "abc"): pass` code block
+
+.. code-block:: python
+
+   def foo(1 + 2 + None + "abc"): pass
+"""
+
+
+def build_latex(tmpdir: str) -> str:
+    root = pathlib.Path(tmpdir)
+    src = root / "src"
+    out = root / "out"
+    doctrees = root / "doctrees"
+    src.mkdir()
+    out.mkdir()
+    doctrees.mkdir()
+
+    (src / "conf.py").write_text("project = 'repro'\n", encoding="utf-8")
+    (src / "index.rst").write_text(ISSUE_SOURCE, encoding="utf-8")
+
+    app = Sphinx(
+        srcdir=str(src),
+        confdir=str(src),
+        outdir=str(out),
+        doctreedir=str(doctrees),
+        buildername="latex",
+        status=io.StringIO(),
+        warning=io.StringIO(),
+        freshenv=True,
+    )
+    app.build()
+
+    tex_files = list(out.glob("*.tex"))
+    assert len(tex_files) == 1, f"expected exactly one .tex file, got {tex_files!r}"
+    return tex_files[0].read_text(encoding="utf-8")
+
+
+def main() -> None:
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tex = build_latex(tmpdir)
+
+    # No whitespace may appear immediately after the opening macro brace.
+    bad_start = re.search(r"\\sphinxcode\{\\sphinxupquote\{[ \t\r\n]", tex)
+    assert bad_start is None, (
+        "highlighted inline code has whitespace immediately after the opening "
+        "brace; LaTeX will render a leading space:\n"
+        + tex[bad_start.start() - 60:bad_start.start() + 120]
+    )
+
+    # No raw whitespace may appear immediately before the closing braces.  The
+    # only permitted newline here is one commented out by a preceding percent
+    # sign (the standard LaTeX newline-gobbling idiom).
+    bad_end = re.search(r"(?<!%)[ \t\r\n]\}\} code block", tex)
+    assert bad_end is None, (
+        "highlighted inline code has unsuppressed whitespace immediately "
+        "before the closing braces; LaTeX will render a trailing space:\n"
+        + tex[bad_end.start() - 100:bad_end.start() + 60]
+    )
+
+
+if __name__ == "__main__":
+    main()
+
+
+----- test_repro_3.py -----
+"""Reproduction for Sphinx issue: LaTeX inline code highlighting adds spaces.
+
+This variant checks that the fix works for more than one highlighted inline
+code role (Python and C).  Every syntax-highlighted inline literal must have no
+unsuppressed whitespace right inside the ``\sphinxcode{\sphinxupquote{...}}``
+wrapper.
+"""
+
+import io
+import pathlib
+import re
+import tempfile
+
+from sphinx.application import Sphinx
+
+
+ISSUE_SOURCE = """\
+.. role:: python(code)
+   :language: python
+   :class: highlight
+
+.. role:: c(code)
+   :language: c
+   :class: highlight
+
+Inline :python:`def foo(1 + 2 + None + "abc"): pass` code block
+
+Inline :c:`int x = 1;` code block
+
+.. code-block:: python
+
+   def foo(1 + 2 + None + "abc"): pass
+"""
+
+
+def build_latex(tmpdir: str) -> str:
+    root = pathlib.Path(tmpdir)
+    src = root / "src"
+    out = root / "out"
+    doctrees = root / "doctrees"
+    src.mkdir()
+    out.mkdir()
+    doctrees.mkdir()
+
+    (src / "conf.py").write_text("project = 'repro'\n", encoding="utf-8")
+    (src / "index.rst").write_text(ISSUE_SOURCE, encoding="utf-8")
+
+    app = Sphinx(
+        srcdir=str(src),
+        confdir=str(src),
+        outdir=str(out),
+        doctreedir=str(doctrees),
+        buildername="latex",
+        status=io.StringIO(),
+        warning=io.StringIO(),
+        freshenv=True,
+    )
+    app.build()
+
+    tex_files = list(out.glob("*.tex"))
+    assert len(tex_files) == 1, f"expected exactly one .tex file, got {tex_files!r}"
+    return tex_files[0].read_text(encoding="utf-8")
+
+
+def main() -> None:
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tex = build_latex(tmpdir)
+
+    matches = list(
+        re.finditer(
+            r"\\sphinxcode\{\\sphinxupquote\{(?P<body>.*?)\}\} code block",
+            tex,
+            flags=re.DOTALL,
+        )
+    )
+    assert len(matches) == 2, (
+        f"expected two highlighted inline-code macros, found {len(matches)}:\n{tex}"
+    )
+
+    for index, match in enumerate(matches, start=1):
+        body = match.group("body")
+        assert body, f"inline code #{index} unexpectedly has no content"
+
+        assert not body[0].isspace(), (
+            f"inline code #{index} starts with whitespace; LaTeX will render an "
+            f"unwanted leading space.  Body starts with {body[:50]!r}"
+        )
+
+        stripped = body.rstrip()
+        if stripped != body:
+            assert stripped.endswith("%"), (
+                f"inline code #{index} ends with unsuppressed whitespace; LaTeX "
+                f"will render an unwanted trailing space.  Body ends with "
+                f"{body[-50:]!r}"
+            )
+
+
+if __name__ == "__main__":
+    main()
+
