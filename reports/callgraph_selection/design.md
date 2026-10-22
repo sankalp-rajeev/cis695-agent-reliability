@@ -307,3 +307,129 @@ isolated post-hoc module and report after its own approval.
 **Current stop:** present phase-1 design and unavailable-source evidence for
 review. Leave all new call-graph files uncommitted. Commit this design only when
 the user asks, and never run phase 3 before that commit exists.
+
+<!-- amendment-2026-10-21-draft -->
+
+## Draft amendment — 2026-10-21 — file-level AST-budget omissions
+
+**PENDING USER APPROVAL. NOT APPLIED.** This appendix does not change the
+pre-registered rules above, graph implementation, or accepted phase-1b artifacts.
+No selector work or oracle evaluation is authorized by this draft.
+
+**Observed reason, without oracle information.** Four verified SymPy base
+snapshots cross the cumulative 5,000,000 inspected-AST-node limit. The existing
+exception is handled outside the file loop, so the entire graph stops before
+call resolution. The crossing file is not necessarily large or invalid; earlier
+files already consumed most of the allowance. The exact tasks/files/counters
+are documented in `sympy_limit_stops.csv` and `report.md`, using AST-only counter
+replay of archived base sources. No oracle, gold patch, official test list,
+repair correctness label, or selector outcome informs this proposal.
+
+**Revised proposal: largest-first whole-file omissions.** Before constructing
+any graph, preflight every eligible regular base `.py` file with `ast.parse`
+and count the entries from `ast.walk`, including context/operator entries as
+in the current counter. Inspect files in ascending repository-relative POSIX
+path order. Existing syntax/encoding failures, Python links and files over the
+2 MiB blob limit retain their existing explicit omission/failure handling.
+
+Let T be the sum of AST counts of all successfully preflighted eligible files.
+If T exceeds **5,000,000 retained AST nodes**, sort those files by
+`(-preflight_ast_nodes, repository_relative_posix_path)` and omit whole files
+in that order until the retained sum is <= 5,000,000. Ties use ascending path;
+stop at the first fitting sum, including exact equality. Do not refill an
+omitted file or retain a prefix of it. If T already fits, omit no file for
+this quota. This replaces the lexical admission/skip rule completely; lexical
+order determines inspection and ties, never preferential file retention.
+
+The preflight still has the **10,000,000 inspected-AST-node hard ceiling**,
+including nodes in files later omitted. Stop before inspecting node 10,000,001;
+if a complete inventory cannot be obtained within that ceiling, mark preflight
+`resource_limited`, list the uncounted/current files and do not claim a global
+largest-first omission set from the partial inventory. A complete inventory of
+exactly 10,000,000 nodes is permitted. Keep the 600-second task wall ceiling and
+all other fixed limits. Preflight and graph construction share the task wall
+budget; re-reading a preflighted AST must not hide inspection work or reset the
+counter. Record whether trees are retained/reused or revisited; every additional
+AST-node inspection counts against the same ceiling. A budget-only dry run
+makes no claim that graph construction will fit the remaining work/time budget.
+
+Omission ranking uses only base AST size and path. Test status, candidate patch,
+changed symbols/packages, oracle information and official test identities never
+change which files are omitted. Only after fixing omission lists, annotate test
+files using the existing `is_test_file` and package overlap using hash-verified
+frozen candidates and the existing patch parser/symbol extractor. Same package
+means the exact immediate dotted module parent under the existing `src`/`lib`
+layout convention; no ancestor-package or fuzzy matching. Missing/unverified
+patches or unestablished changed symbols make overlap unavailable, never false.
+
+Any AST-quota omission makes the graph **partial**. Record each omitted path,
+byte/hash identity, full AST count, removal rank, retained total before/after,
+reason `largest_first_retained_ast_quota`, test-file status, and separate package
+overlap evidence. References and changed symbols in omitted files remain
+unavailable/uncertain with an explicit file-omission reason. Never infer coverage
+or correctness from file size, omission, retention, or package proximity.
+
+**Explicit budget change requiring approval.** Today's 5,000,000 limit measures
+all *inspected* nodes; simply moving its catch inside the loop would immediately
+stop again at the next file. This proposal therefore separates retained graph
+cost from inspection work. Freeze a proposed **10,000,000 inspected-AST-node
+hard ceiling per task**, including all omitted/preflighted work, alongside the
+5,000,000 retained quota. Reaching the inspected ceiling still ends the task as
+`resource_limited`, records the current path/counters, and does not retry. Stop
+counting a file when the hard work ceiling is reached; do not fully walk it for
+a diagnostic count after that ceiling. All other limits, including the 2 MiB
+blob limit and 600-second wall limit, remain unchanged. This is a proposed
+change to AST accounting and its work budget, not a claim of the old policy's
+same resource bound. The round two-times work ceiling is a bounded proposal,
+not a value tuned to outcomes or a promise that all four builds will finish.
+
+**Eligibility and preservation.** Partial graphs remain ineligible for the
+primary comparison. Preserve all accepted phase-1b graphs/statuses and report any
+approved future run as a separately versioned diagnostic with new code/input
+hashes. Do not overwrite the frozen study or reinterpret current resource
+stops as successes. Keep all distances, selection budgets, ranking features,
+cohorts and oracle separation unchanged. Approval of this amendment is required
+before implementation or any rerun under it; this draft authorizes neither.
+
+## Draft secondary traversal variant — 2026-10-21
+
+**PENDING APPROVAL. NOT IMPLEMENTED.** Pre-register both variants before any
+selector outputs or post-hoc oracle evaluation. The primary design remains
+`PRIMARY_RESOLVED_ONLY`, following resolved call edges only. A separately named
+`SECONDARY_RESOLVED_PLUS_AMBIGUOUS` also follows each recorded candidate target
+of an ambiguous call site. Sites with no candidate targets and unresolved sites
+add no traversable edges. Neither variant may invent targets or change the
+existing graph resolution classifications or resolved changed-seed mapping.
+
+Both variants use d in {1,2,3}, K in {25,50,100,250,500}, the same populations,
+base graphs, candidate bytes, eligibility rules and deterministic tie-breaks.
+Each candidate call edge counts as one hop, with no fitted discount. Compute
+fan-in at depth 3, distances, direct-seed counts and specificity using each
+variant's fixed traversal edge set and the existing formulas/ranking order.
+All other ranking features are unchanged. Keep the shortest path per test/seed,
+break equal-length ties by lexical node IDs, and report all depths/budgets.
+A vs B vs C remains limited to the 19 stored-selection tasks; broader B remains
+a separate offline analysis with confirmed and local provenance split.
+
+Every secondary path using ambiguity must record `uses_ambiguous_edge=true`,
+the number and positions of ambiguous hops, original call-site IDs/locations,
+recorded candidate targets and uncertainty reasons. Preserve edge-level resolved
+versus ambiguous status. Also record whether a test is reachable using resolved
+edges alone at the same depth; an ambiguous chosen shortest path alone does not
+prove the test requires ambiguity. Aggregate ambiguity-use and resolved-only
+reachability for provenance rows beyond the existing top-test/path cap.
+
+Store `edge_variant` in every comparison/provenance output. Report secondary
+results in separate tables and paired, common-evaluable comparisons with the
+primary; never pool or relabel them as primary. Apply the existing cap of top
+25 tests, <=3 seed paths/test and <=3 hops/path separately per variant, sharing
+paths across K. The full-path upper bound becomes 22,950 per variant and 45,900
+overall; emit aggregates for the rest. Partial graphs remain ineligible for the
+primary comparison; this secondary does not relax graph eligibility either.
+
+Freeze these choices before results. Do not select a depth/budget, change edge
+weights, prune candidates or choose between variants using outcomes, oracle
+fields, official tests or case-study hindsight. Phase-3 oracle analysis remains
+separate and requires the existing approval/freeze gate. Ambiguous reachability
+is a static possibility, not evidence that a selected test exercises changed
+code. No production verifier or policy behavior changes are proposed here.
