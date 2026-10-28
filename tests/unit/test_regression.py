@@ -49,7 +49,7 @@ class ScriptedExecutor:
         else:
             self._patched_calls += 1
             source = self._rerun if self._patched_calls > 1 and self._rerun else self._patched
-        return RunResult(results=tuple(
+        return RunResult(evidence_complete=True, results=tuple(
             result(t, source[t]) for t in tests if t in source
         ))
 
@@ -292,6 +292,8 @@ def test_timeout_does_not_produce_a_pass():
 
     assert report.outcomes[TESTS[1]] is Outcome.TIMEOUT
     assert report.count(Outcome.PASS) == 1
+    assert report.signal is Signal.INCOMPLETE
+    assert report.original_signal is Signal.PASS
 
 
 def test_newly_passing_is_recorded_but_does_not_drive_the_signal():

@@ -1,0 +1,28 @@
+{
+  "analytics_compatibility": "Top-level neutral outcome groups INCOMPLETE with NOT_AVAILABLE; native distinction and reasons remain in findings/absence. No PASS coercion.",
+  "baseline_policy": "FLAG when integrity PASS; not is_pass.",
+  "compatibility_issue_reported_before_behavior_change": "Secondary RelaxedPolicy intentionally allows NOT_AVAILABLE with V4 PASS to ACCEPT. This also applies to the INCOMPLETE neutral encoding. No policy behavior changed.",
+  "decision_policy_sha256": "32f9e68f070ae70a4f5e97807245544d6228babaa4ef3c05780a7c1afe0bdb32",
+  "historical_execution_gaps": 10,
+  "historical_unverifiable_PASS": 54,
+  "invalid_native_literal": "SignalRecord rejects outcome=INCOMPLETE; it does not coerce it to PASS.",
+  "native_INCOMPLETE": "RegressionReport.signal=INCOMPLETE; original_signal retained separately.",
+  "original_signal_consumption": "Compatibility/provenance only. The policy reads regression.outcome, not original_signal.",
+  "path": [
+    "src/reliability/verifier/run.py:374",
+    "src/reliability/verifier/evidence.py:54",
+    "src/reliability/verifier/record.py:266",
+    "src/reliability/verifier/record.py:278",
+    "src/reliability/verifier/record.py:305",
+    "src/reliability/verifier/record.py:286"
+  ],
+  "primary_configs": "configs/verifier/full.yaml: policy full; configs/verifier/baseline.yaml: policy baseline. No active relaxed config found.",
+  "primary_full_policy": "FLAG when other signals are PASS; not is_pass; existing REJECT causes still dominate.",
+  "roundtrip_tests": "tests/unit/test_v2_downstream.py: two tests passed",
+  "serialized": {
+    "regression.absence": "incomplete",
+    "regression.findings.original_signal": "PASS",
+    "regression.findings.signal": "INCOMPLETE",
+    "regression.outcome": "NOT_AVAILABLE"
+  }
+}

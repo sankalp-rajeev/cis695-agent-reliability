@@ -1,0 +1,935 @@
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /testbed
+configfile: setup.cfg
+plugins: profiling-1.7.0, timeout-2.3.1, cov-3.0.0, benchmark-3.4.1, xdist-2.5.0, forked-1.6.0
+collecting ... collected 256 items
+
+tests/lint/test_pylinter.py::test_crash_in_file PASSED                   [  0%]
+tests/lint/test_pylinter.py::test_check_deprecation PASSED               [  0%]
+tests/lint/unittest_expand_modules.py::test__is_in_ignore_list_re_match PASSED [  1%]
+tests/lint/unittest_expand_modules.py::TestExpandModules::test_expand_modules[files_or_modules0-expected0] PASSED [  1%]
+tests/lint/unittest_expand_modules.py::TestExpandModules::test_expand_modules[files_or_modules1-expected1] PASSED [  1%]
+tests/lint/unittest_expand_modules.py::TestExpandModules::test_expand_modules_with_ignore[files_or_modules0-expected0] PASSED [  2%]
+tests/lint/unittest_expand_modules.py::TestExpandModules::test_expand_modules_with_ignore[files_or_modules1-expected1] PASSED [  2%]
+doc/test_messages_documentation.py::test_code_examples[use-list-literal-good] PASSED [  3%]
+doc/test_messages_documentation.py::test_code_examples[use-list-literal-bad] PASSED [  3%]
+doc/test_messages_documentation.py::test_code_examples[unnecessary-ellipsis-good] PASSED [  3%]
+doc/test_messages_documentation.py::test_code_examples[unnecessary-ellipsis-bad] PASSED [  4%]
+doc/test_messages_documentation.py::test_code_examples[unnecessary-dunder-call-good] PASSED [  4%]
+doc/test_messages_documentation.py::test_code_examples[unnecessary-dunder-call-bad] PASSED [  5%]
+doc/test_messages_documentation.py::test_code_examples[undefined-variable-good] PASSED [  5%]
+doc/test_messages_documentation.py::test_code_examples[undefined-variable-bad] PASSED [  5%]
+doc/test_messages_documentation.py::test_code_examples[useless-return-good] PASSED [  6%]
+doc/test_messages_documentation.py::test_code_examples[useless-return-bad] PASSED [  6%]
+doc/test_messages_documentation.py::test_code_examples[use-dict-literal-good] PASSED [  7%]
+doc/test_messages_documentation.py::test_code_examples[use-dict-literal-bad] PASSED [  7%]
+doc/test_messages_documentation.py::test_code_examples[unused-wildcard-import-good] PASSED [  7%]
+doc/test_messages_documentation.py::test_code_examples[unused-wildcard-import-bad] PASSED [  8%]
+doc/test_messages_documentation.py::test_code_examples[useless-import-alias-good] PASSED [  8%]
+doc/test_messages_documentation.py::test_code_examples[useless-import-alias-bad] PASSED [  8%]
+doc/test_messages_documentation.py::test_code_examples[undefined-all-variable-good] PASSED [  9%]
+doc/test_messages_documentation.py::test_code_examples[undefined-all-variable-bad] PASSED [  9%]
+doc/test_messages_documentation.py::test_code_examples[unbalanced-tuple-unpacking-good] PASSED [ 10%]
+doc/test_messages_documentation.py::test_code_examples[unbalanced-tuple-unpacking-bad] PASSED [ 10%]
+doc/test_messages_documentation.py::test_code_examples[unnecessary-list-index-lookup-good] PASSED [ 10%]
+doc/test_messages_documentation.py::test_code_examples[unnecessary-list-index-lookup-bad] PASSED [ 11%]
+doc/test_messages_documentation.py::test_code_examples[unnecessary-lambda-assignment-good] PASSED [ 11%]
+doc/test_messages_documentation.py::test_code_examples[unnecessary-lambda-assignment-bad] PASSED [ 12%]
+doc/test_messages_documentation.py::test_code_examples[unspecified-encoding-good] PASSED [ 12%]
+doc/test_messages_documentation.py::test_code_examples[unspecified-encoding-bad] PASSED [ 12%]
+doc/test_messages_documentation.py::test_code_examples[ungrouped-imports-good] PASSED [ 13%]
+doc/test_messages_documentation.py::test_code_examples[ungrouped-imports-bad] PASSED [ 13%]
+doc/test_messages_documentation.py::test_code_examples[unnecessary-direct-lambda-call-good] PASSED [ 14%]
+doc/test_messages_documentation.py::test_code_examples[unnecessary-direct-lambda-call-bad] PASSED [ 14%]
+doc/test_messages_documentation.py::test_code_examples[unidiomatic-typecheck-good] PASSED [ 14%]
+doc/test_messages_documentation.py::test_code_examples[unidiomatic-typecheck-bad] PASSED [ 15%]
+doc/test_messages_documentation.py::test_code_examples[unreachable-good] PASSED [ 15%]
+doc/test_messages_documentation.py::test_code_examples[unreachable-bad] PASSED [ 16%]
+doc/test_messages_documentation.py::test_code_examples[use-maxsplit-arg-good] PASSED [ 16%]
+doc/test_messages_documentation.py::test_code_examples[use-maxsplit-arg-bad] PASSED [ 16%]
+doc/test_messages_documentation.py::test_code_examples[no-else-continue-good] PASSED [ 17%]
+doc/test_messages_documentation.py::test_code_examples[no-else-continue-bad] PASSED [ 17%]
+doc/test_messages_documentation.py::test_code_examples[no-else-raise-good] PASSED [ 17%]
+doc/test_messages_documentation.py::test_code_examples[no-else-raise-bad] PASSED [ 18%]
+doc/test_messages_documentation.py::test_code_examples[no-else-return-good] PASSED [ 18%]
+doc/test_messages_documentation.py::test_code_examples[no-else-return-bad] PASSED [ 19%]
+doc/test_messages_documentation.py::test_code_examples[no-else-break-good] PASSED [ 19%]
+doc/test_messages_documentation.py::test_code_examples[no-else-break-bad] PASSED [ 19%]
+doc/test_messages_documentation.py::test_code_examples[redefined-slots-in-subclass-good] PASSED [ 20%]
+doc/test_messages_documentation.py::test_code_examples[redefined-slots-in-subclass-bad] PASSED [ 20%]
+doc/test_messages_documentation.py::test_code_examples[return-in-init-good] PASSED [ 21%]
+doc/test_messages_documentation.py::test_code_examples[return-in-init-bad] PASSED [ 21%]
+doc/test_messages_documentation.py::test_code_examples[redefined-loop-name-good] PASSED [ 21%]
+doc/test_messages_documentation.py::test_code_examples[redefined-loop-name-bad] PASSED [ 22%]
+doc/test_messages_documentation.py::test_code_examples[reimported-good] PASSED [ 22%]
+doc/test_messages_documentation.py::test_code_examples[reimported-bad] PASSED [ 23%]
+doc/test_messages_documentation.py::test_code_examples[redundant-unittest-assert-good] PASSED [ 23%]
+doc/test_messages_documentation.py::test_code_examples[redundant-unittest-assert-bad] PASSED [ 23%]
+doc/test_messages_documentation.py::test_code_examples[global-at-module-level-good] PASSED [ 24%]
+doc/test_messages_documentation.py::test_code_examples[global-at-module-level-bad] PASSED [ 24%]
+doc/test_messages_documentation.py::test_code_examples[global-statement-good] PASSED [ 25%]
+doc/test_messages_documentation.py::test_code_examples[global-statement-bad] PASSED [ 25%]
+doc/test_messages_documentation.py::test_code_examples[duplicate-bases-good] PASSED [ 25%]
+doc/test_messages_documentation.py::test_code_examples[duplicate-bases-bad] PASSED [ 26%]
+doc/test_messages_documentation.py::test_code_examples[dict-iter-missing-items-good] PASSED [ 26%]
+doc/test_messages_documentation.py::test_code_examples[dict-iter-missing-items-bad] PASSED [ 26%]
+doc/test_messages_documentation.py::test_code_examples[duplicate-value-good] PASSED [ 27%]
+doc/test_messages_documentation.py::test_code_examples[duplicate-value-bad] PASSED [ 27%]
+doc/test_messages_documentation.py::test_code_examples[duplicate-argument-name-good] PASSED [ 28%]
+doc/test_messages_documentation.py::test_code_examples[duplicate-argument-name-bad] PASSED [ 28%]
+doc/test_messages_documentation.py::test_code_examples[duplicate-key-good] PASSED [ 28%]
+doc/test_messages_documentation.py::test_code_examples[duplicate-key-bad] PASSED [ 29%]
+doc/test_messages_documentation.py::test_code_examples[assert-on-tuple-good] PASSED [ 29%]
+doc/test_messages_documentation.py::test_code_examples[assert-on-tuple-bad] PASSED [ 30%]
+doc/test_messages_documentation.py::test_code_examples[anomalous-unicode-escape-in-string-good] PASSED [ 30%]
+doc/test_messages_documentation.py::test_code_examples[anomalous-unicode-escape-in-string-bad] PASSED [ 30%]
+doc/test_messages_documentation.py::test_code_examples[anomalous-backslash-in-string-good] PASSED [ 31%]
+doc/test_messages_documentation.py::test_code_examples[anomalous-backslash-in-string-bad] PASSED [ 31%]
+doc/test_messages_documentation.py::test_code_examples[await-outside-async-good] PASSED [ 32%]
+doc/test_messages_documentation.py::test_code_examples[await-outside-async-bad] PASSED [ 32%]
+doc/test_messages_documentation.py::test_code_examples[arguments-differ-good] PASSED [ 32%]
+doc/test_messages_documentation.py::test_code_examples[arguments-differ-bad] PASSED [ 33%]
+doc/test_messages_documentation.py::test_code_examples[assignment-from-no-return-good] PASSED [ 33%]
+doc/test_messages_documentation.py::test_code_examples[assignment-from-no-return-bad] PASSED [ 33%]
+doc/test_messages_documentation.py::test_code_examples[assert-on-string-literal-good] PASSED [ 34%]
+doc/test_messages_documentation.py::test_code_examples[assert-on-string-literal-bad] PASSED [ 34%]
+doc/test_messages_documentation.py::test_code_examples[assigning-non-slot-good] PASSED [ 35%]
+doc/test_messages_documentation.py::test_code_examples[assigning-non-slot-bad] PASSED [ 35%]
+doc/test_messages_documentation.py::test_code_examples[abstract-class-instantiated-good] PASSED [ 35%]
+doc/test_messages_documentation.py::test_code_examples[abstract-class-instantiated-bad] PASSED [ 36%]
+doc/test_messages_documentation.py::test_code_examples[arguments-renamed-good] PASSED [ 36%]
+doc/test_messages_documentation.py::test_code_examples[arguments-renamed-bad] PASSED [ 37%]
+doc/test_messages_documentation.py::test_code_examples[arguments-out-of-order-good] PASSED [ 37%]
+doc/test_messages_documentation.py::test_code_examples[arguments-out-of-order-bad] PASSED [ 37%]
+doc/test_messages_documentation.py::test_code_examples[abstract-method-good] PASSED [ 38%]
+doc/test_messages_documentation.py::test_code_examples[abstract-method-bad] PASSED [ 38%]
+doc/test_messages_documentation.py::test_code_examples[access-member-before-definition-good] PASSED [ 39%]
+doc/test_messages_documentation.py::test_code_examples[access-member-before-definition-bad] PASSED [ 39%]
+doc/test_messages_documentation.py::test_code_examples[assignment-from-none-good] PASSED [ 39%]
+doc/test_messages_documentation.py::test_code_examples[assignment-from-none-bad] PASSED [ 40%]
+doc/test_messages_documentation.py::test_code_examples[attribute-defined-outside-init-good] PASSED [ 40%]
+doc/test_messages_documentation.py::test_code_examples[attribute-defined-outside-init-bad] PASSED [ 41%]
+doc/test_messages_documentation.py::test_code_examples[super-without-brackets-good] PASSED [ 41%]
+doc/test_messages_documentation.py::test_code_examples[super-without-brackets-bad] PASSED [ 41%]
+doc/test_messages_documentation.py::test_code_examples[super-with-arguments-good] PASSED [ 42%]
+doc/test_messages_documentation.py::test_code_examples[super-with-arguments-bad] PASSED [ 42%]
+doc/test_messages_documentation.py::test_code_examples[subclassed-final-class-good] PASSED [ 42%]
+doc/test_messages_documentation.py::test_code_examples[subclassed-final-class-bad] PASSED [ 43%]
+doc/test_messages_documentation.py::test_code_examples[singleton-comparison-good] PASSED [ 43%]
+doc/test_messages_documentation.py::test_code_examples[singleton-comparison-bad] PASSED [ 44%]
+doc/test_messages_documentation.py::test_code_examples[self-assigning-variable-good] PASSED [ 44%]
+doc/test_messages_documentation.py::test_code_examples[self-assigning-variable-bad] PASSED [ 44%]
+doc/test_messages_documentation.py::test_code_examples[literal-comparison-good] PASSED [ 45%]
+doc/test_messages_documentation.py::test_code_examples[literal-comparison-bad] PASSED [ 45%]
+doc/test_messages_documentation.py::test_code_examples[logging-format-interpolation-good] PASSED [ 46%]
+doc/test_messages_documentation.py::test_code_examples[logging-format-interpolation-bad] PASSED [ 46%]
+doc/test_messages_documentation.py::test_code_examples[logging-fstring-interpolation-good] PASSED [ 46%]
+doc/test_messages_documentation.py::test_code_examples[logging-fstring-interpolation-bad] PASSED [ 47%]
+doc/test_messages_documentation.py::test_code_examples[potential-index-error-good] PASSED [ 47%]
+doc/test_messages_documentation.py::test_code_examples[potential-index-error-bad] PASSED [ 48%]
+doc/test_messages_documentation.py::test_code_examples[missing-yield-type-doc-good] PASSED [ 48%]
+doc/test_messages_documentation.py::test_code_examples[missing-yield-type-doc-bad] PASSED [ 48%]
+doc/test_messages_documentation.py::test_code_examples[method-cache-max-size-none-good] PASSED [ 49%]
+doc/test_messages_documentation.py::test_code_examples[method-cache-max-size-none-bad] PASSED [ 49%]
+doc/test_messages_documentation.py::test_code_examples[missing-class-docstring-good] PASSED [ 50%]
+doc/test_messages_documentation.py::test_code_examples[missing-class-docstring-bad] PASSED [ 50%]
+doc/test_messages_documentation.py::test_code_examples[missing-function-docstring-good] PASSED [ 50%]
+doc/test_messages_documentation.py::test_code_examples[missing-function-docstring-bad] PASSED [ 51%]
+doc/test_messages_documentation.py::test_code_examples[missing-raises-doc-good] PASSED [ 51%]
+doc/test_messages_documentation.py::test_code_examples[missing-raises-doc-bad] PASSED [ 51%]
+doc/test_messages_documentation.py::test_code_examples[missing-yield-doc-good] PASSED [ 52%]
+doc/test_messages_documentation.py::test_code_examples[missing-yield-doc-bad] PASSED [ 52%]
+doc/test_messages_documentation.py::test_code_examples[missing-return-type-doc-good] PASSED [ 53%]
+doc/test_messages_documentation.py::test_code_examples[missing-return-type-doc-bad] PASSED [ 53%]
+doc/test_messages_documentation.py::test_code_examples[missing-type-doc-good] PASSED [ 53%]
+doc/test_messages_documentation.py::test_code_examples[missing-type-doc-bad] PASSED [ 54%]
+doc/test_messages_documentation.py::test_code_examples[missing-return-doc-good] PASSED [ 54%]
+doc/test_messages_documentation.py::test_code_examples[missing-return-doc-bad] PASSED [ 55%]
+doc/test_messages_documentation.py::test_code_examples[misplaced-future-good] PASSED [ 55%]
+doc/test_messages_documentation.py::test_code_examples[misplaced-future-bad] PASSED [ 55%]
+doc/test_messages_documentation.py::test_code_examples[missing-module-docstring-good] PASSED [ 56%]
+doc/test_messages_documentation.py::test_code_examples[missing-module-docstring-bad] PASSED [ 56%]
+doc/test_messages_documentation.py::test_code_examples[missing-format-argument-key-good] PASSED [ 57%]
+doc/test_messages_documentation.py::test_code_examples[missing-format-argument-key-bad] PASSED [ 57%]
+doc/test_messages_documentation.py::test_code_examples[missing-param-doc-good] PASSED [ 57%]
+doc/test_messages_documentation.py::test_code_examples[missing-param-doc-bad] PASSED [ 58%]
+doc/test_messages_documentation.py::test_code_examples[wrong-import-position-good] PASSED [ 58%]
+doc/test_messages_documentation.py::test_code_examples[wrong-import-position-bad] PASSED [ 58%]
+doc/test_messages_documentation.py::test_code_examples[wrong-import-order-good] PASSED [ 59%]
+doc/test_messages_documentation.py::test_code_examples[wrong-import-order-bad] PASSED [ 59%]
+doc/test_messages_documentation.py::test_code_examples[while-used-good] PASSED [ 60%]
+doc/test_messages_documentation.py::test_code_examples[while-used-bad] PASSED [ 60%]
+doc/test_messages_documentation.py::test_code_examples[wildcard-import-good] PASSED [ 60%]
+doc/test_messages_documentation.py::test_code_examples[wildcard-import-bad] PASSED [ 61%]
+doc/test_messages_documentation.py::test_code_examples[too-many-arguments-good] PASSED [ 61%]
+doc/test_messages_documentation.py::test_code_examples[too-many-arguments-bad] PASSED [ 62%]
+doc/test_messages_documentation.py::test_code_examples[typevar-double-variance-good] PASSED [ 62%]
+doc/test_messages_documentation.py::test_code_examples[typevar-double-variance-bad] PASSED [ 62%]
+doc/test_messages_documentation.py::test_code_examples[typevar-name-mismatch-good] PASSED [ 63%]
+doc/test_messages_documentation.py::test_code_examples[typevar-name-mismatch-bad] PASSED [ 63%]
+doc/test_messages_documentation.py::test_code_examples[too-many-format-args-good] PASSED [ 64%]
+doc/test_messages_documentation.py::test_code_examples[too-many-format-args-bad] PASSED [ 64%]
+doc/test_messages_documentation.py::test_code_examples[too-few-format-args-good] PASSED [ 64%]
+doc/test_messages_documentation.py::test_code_examples[too-few-format-args-bad] PASSED [ 65%]
+doc/test_messages_documentation.py::test_code_examples[try-except-raise-good] PASSED [ 65%]
+doc/test_messages_documentation.py::test_code_examples[try-except-raise-bad] PASSED [ 66%]
+doc/test_messages_documentation.py::test_code_examples[overridden-final-method-good] PASSED [ 66%]
+doc/test_messages_documentation.py::test_code_examples[overridden-final-method-bad] PASSED [ 66%]
+doc/test_messages_documentation.py::test_code_examples[bad-except-order-good] PASSED [ 67%]
+doc/test_messages_documentation.py::test_code_examples[bad-except-order-bad] PASSED [ 67%]
+doc/test_messages_documentation.py::test_code_examples[broad-except-good] PASSED [ 67%]
+doc/test_messages_documentation.py::test_code_examples[broad-except-bad] PASSED [ 68%]
+doc/test_messages_documentation.py::test_code_examples[broken-collections-callable-good] PASSED [ 68%]
+doc/test_messages_documentation.py::test_code_examples[broken-collections-callable-bad] PASSED [ 69%]
+doc/test_messages_documentation.py::test_code_examples[bad-reversed-sequence-good] PASSED [ 69%]
+doc/test_messages_documentation.py::test_code_examples[bad-reversed-sequence-bad] PASSED [ 69%]
+doc/test_messages_documentation.py::test_code_examples[bad-classmethod-argument-good] PASSED [ 70%]
+doc/test_messages_documentation.py::test_code_examples[bad-classmethod-argument-bad] PASSED [ 70%]
+doc/test_messages_documentation.py::test_code_examples[bad-builtin-good] PASSED [ 71%]
+doc/test_messages_documentation.py::test_code_examples[bad-builtin-bad] PASSED [ 71%]
+doc/test_messages_documentation.py::test_code_examples[bad-string-format-type-good] PASSED [ 71%]
+doc/test_messages_documentation.py::test_code_examples[bad-string-format-type-bad] PASSED [ 72%]
+doc/test_messages_documentation.py::test_code_examples[bad-str-strip-call-good] PASSED [ 72%]
+doc/test_messages_documentation.py::test_code_examples[bad-str-strip-call-bad] PASSED [ 73%]
+doc/test_messages_documentation.py::test_code_examples[bad-super-call-good] PASSED [ 73%]
+doc/test_messages_documentation.py::test_code_examples[bad-super-call-bad] PASSED [ 73%]
+doc/test_messages_documentation.py::test_code_examples[bad-exception-context-good] PASSED [ 74%]
+doc/test_messages_documentation.py::test_code_examples[bad-exception-context-bad] PASSED [ 74%]
+doc/test_messages_documentation.py::test_code_examples[binary-op-exception-good] PASSED [ 75%]
+doc/test_messages_documentation.py::test_code_examples[binary-op-exception-bad] PASSED [ 75%]
+doc/test_messages_documentation.py::test_code_examples[bare-except-good] PASSED [ 75%]
+doc/test_messages_documentation.py::test_code_examples[bare-except-bad] PASSED [ 76%]
+doc/test_messages_documentation.py::test_code_examples[bad-format-character-good] PASSED [ 76%]
+doc/test_messages_documentation.py::test_code_examples[bad-format-character-bad] PASSED [ 76%]
+doc/test_messages_documentation.py::test_code_examples[bad-format-string-good] PASSED [ 77%]
+doc/test_messages_documentation.py::test_code_examples[bad-format-string-bad] PASSED [ 77%]
+doc/test_messages_documentation.py::test_code_examples[bad-staticmethod-argument-good] PASSED [ 78%]
+doc/test_messages_documentation.py::test_code_examples[bad-staticmethod-argument-bad] PASSED [ 78%]
+doc/test_messages_documentation.py::test_code_examples[bad-indentation-good] PASSED [ 78%]
+doc/test_messages_documentation.py::test_code_examples[bad-indentation-bad] PASSED [ 79%]
+doc/test_messages_documentation.py::test_code_examples[bad-option-value-good] PASSED [ 79%]
+doc/test_messages_documentation.py::test_code_examples[bad-option-value-bad] PASSED [ 80%]
+doc/test_messages_documentation.py::test_code_examples[bad-open-mode-good] PASSED [ 80%]
+doc/test_messages_documentation.py::test_code_examples[bad-open-mode-bad] PASSED [ 80%]
+doc/test_messages_documentation.py::test_code_examples[catching-non-exception-good] PASSED [ 81%]
+doc/test_messages_documentation.py::test_code_examples[catching-non-exception-bad] PASSED [ 81%]
+doc/test_messages_documentation.py::test_code_examples[chained-comparison-good] PASSED [ 82%]
+doc/test_messages_documentation.py::test_code_examples[chained-comparison-bad] PASSED [ 82%]
+doc/test_messages_documentation.py::test_code_examples[confusing-consecutive-elif-good] PASSED [ 82%]
+doc/test_messages_documentation.py::test_code_examples[confusing-consecutive-elif-bad] PASSED [ 83%]
+doc/test_messages_documentation.py::test_code_examples[comparison-with-itself-good] PASSED [ 83%]
+doc/test_messages_documentation.py::test_code_examples[comparison-with-itself-bad] PASSED [ 83%]
+doc/test_messages_documentation.py::test_code_examples[cell-var-from-loop-good] PASSED [ 84%]
+doc/test_messages_documentation.py::test_code_examples[cell-var-from-loop-bad] PASSED [ 84%]
+doc/test_messages_documentation.py::test_code_examples[consider-using-sys-exit-good] PASSED [ 85%]
+doc/test_messages_documentation.py::test_code_examples[consider-using-sys-exit-bad] PASSED [ 85%]
+doc/test_messages_documentation.py::test_code_examples[consider-using-with-good] PASSED [ 85%]
+doc/test_messages_documentation.py::test_code_examples[consider-using-with-bad] PASSED [ 86%]
+doc/test_messages_documentation.py::test_code_examples[consider-using-f-string-good] PASSED [ 86%]
+doc/test_messages_documentation.py::test_code_examples[consider-using-f-string-bad] PASSED [ 87%]
+doc/test_messages_documentation.py::test_code_examples[comparison-of-constants-good] PASSED [ 87%]
+doc/test_messages_documentation.py::test_code_examples[comparison-of-constants-bad] PASSED [ 87%]
+doc/test_messages_documentation.py::test_code_examples[comparison-with-callable-good] PASSED [ 88%]
+doc/test_messages_documentation.py::test_code_examples[comparison-with-callable-bad] PASSED [ 88%]
+doc/test_messages_documentation.py::test_code_examples[function-redefined-good] PASSED [ 89%]
+doc/test_messages_documentation.py::test_code_examples[function-redefined-bad] PASSED [ 89%]
+doc/test_messages_documentation.py::test_code_examples[yield-inside-async-function-good] PASSED [ 89%]
+doc/test_messages_documentation.py::test_code_examples[yield-inside-async-function-bad] PASSED [ 90%]
+doc/test_messages_documentation.py::test_code_examples[import-outside-toplevel-good] PASSED [ 90%]
+doc/test_messages_documentation.py::test_code_examples[import-outside-toplevel-bad] PASSED [ 91%]
+doc/test_messages_documentation.py::test_code_examples[invalid-enum-extension-good] PASSED [ 91%]
+doc/test_messages_documentation.py::test_code_examples[invalid-enum-extension-bad] PASSED [ 91%]
+doc/test_messages_documentation.py::test_code_examples[empty-docstring-good] PASSED [ 92%]
+doc/test_messages_documentation.py::test_code_examples[empty-docstring-bad] PASSED [ 92%]
+tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_benchmark_j1 PASSED [ 92%]
+tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_benchmark_j2 PASSED [ 93%]
+tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_benchmark_check_parallel_j2 PASSED [ 93%]
+tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_lots_of_files_j1 PASSED [ 94%]
+tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_lots_of_files_j2 PASSED [ 94%]
+tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_lots_of_files_j1_empty_checker PASSED [ 94%]
+tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_lots_of_files_j2_empty_checker PASSED [ 95%]
+tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_benchmark_j1_single_working_checker PASSED [ 95%]
+tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_benchmark_j2_single_working_checker PASSED [ 96%]
+tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_benchmark_j1_all_checks_single_file PASSED [ 96%]
+tests/benchmark/test_baseline_benchmarks.py::TestEstablishBaselineBenchmarks::test_baseline_benchmark_j1_all_checks_lots_of_files PASSED [ 96%]
+tests/checkers/unittest_base_checker.py::test_base_checker_doc PASSED    [ 97%]
+tests/checkers/unittest_base_checker.py::test_base_checker_ordering PASSED [ 97%]
+tests/checkers/unittest_format.py::TestCheckSpace::test_encoding_token PASSED [ 98%]
+tests/checkers/unittest_format.py::test_disable_global_option_end_of_line PASSED [ 98%]
+tests/checkers/unittest_similar.py::test_ignore_comments PASSED          [ 98%]
+tests/checkers/unittest_similar.py::test_ignore_docstrings PASSED        [ 99%]
+tests/checkers/unittest_similar.py::test_ignore_imports PASSED           [ 99%]
+tests/checkers/unittest_similar.py::test_multiline_imports PASSED        [100%]
+
+=============================== warnings summary ===============================
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+
+---------------------------------------------------------------------------------------------------------------- benchmark 'baseline': 11 tests ----------------------------------------------------------------------------------------------------------------
+Name (time in us)                                                  Min                       Max                      Mean                 StdDev                    Median                    IQR            Outliers         OPS            Rounds  Iterations
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+test_baseline_benchmark_j1                                    148.5220 (1.0)            924.2540 (1.0)            188.0347 (1.0)          48.9883 (1.0)            175.9810 (1.0)          19.3110 (1.0)        91;134  5,318.1664 (1.0)        1502           1
+test_baseline_benchmark_j1_all_checks_single_file          13,185.4120 (88.78)      194,017.5410 (209.92)      19,005.3385 (101.07)   27,166.1797 (554.54)      14,208.7470 (80.74)     1,262.6430 (65.38)         1;3     52.6168 (0.01)         44           1
+test_baseline_benchmark_check_parallel_j2                  13,255.9370 (89.25)       16,739.0260 (18.11)       14,521.2381 (77.23)       770.5940 (15.73)       14,360.3940 (81.60)       936.9868 (48.52)        24;2     68.8647 (0.01)         73           1
+test_baseline_benchmark_j2                                 14,269.2810 (96.08)       19,274.1450 (20.85)       15,484.9243 (82.35)     1,046.1599 (21.36)       15,132.9470 (85.99)     1,227.0783 (63.54)         8;2     64.5789 (0.01)         47           1
+test_baseline_lots_of_files_j1_empty_checker               53,004.8230 (356.88)      56,213.0500 (60.82)       54,373.7069 (289.17)      940.3019 (19.19)       54,372.3600 (308.97)    1,588.5983 (82.26)         8;0     18.3912 (0.00)         19           1
+test_baseline_lots_of_files_j1                             53,789.1450 (362.16)      67,796.8880 (73.35)       56,435.4251 (300.13)    3,852.1326 (78.63)       54,920.7230 (312.08)    1,923.5150 (99.61)         2;3     17.7194 (0.00)         18           1
+test_baseline_lots_of_files_j2_empty_checker              130,241.5080 (876.92)     147,842.3470 (159.96)     139,797.3737 (743.47)    5,603.8465 (114.39)     140,357.6110 (797.57)    6,296.2365 (326.04)        2;0      7.1532 (0.00)          7           1
+test_baseline_lots_of_files_j2                            132,624.9780 (892.97)     152,312.3190 (164.79)     141,599.0366 (753.05)    7,285.2073 (148.71)     140,929.6950 (800.82)   11,927.7900 (617.67)        4;0      7.0622 (0.00)          8           1
+test_baseline_benchmark_j1_all_checks_lots_of_files       389,679.9460 (>1000.0)    407,559.7440 (440.96)     397,647.7890 (>1000.0)   6,395.3710 (130.55)     397,209.8880 (>1000.0)   5,251.9767 (271.97)        2;0      2.5148 (0.00)          5           1
+test_baseline_benchmark_j2_single_working_checker         515,777.8050 (>1000.0)    518,091.6060 (560.55)     516,765.7484 (>1000.0)     848.4794 (17.32)      516,712.1940 (>1000.0)     917.9280 (47.53)         2;0      1.9351 (0.00)          5           1
+test_baseline_benchmark_j1_single_working_checker       1,001,496.0310 (>1000.0)  1,001,846.8550 (>1000.0)  1,001,650.7072 (>1000.0)     127.3114 (2.60)     1,001,632.3500 (>1000.0)     133.0795 (6.89)          2;0      0.9984 (0.00)          5           1
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Legend:
+  Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
+  OPS: Operations Per Second, computed as 1 / Mean
+======================= 256 passed, 1 warning in 29.71s ========================
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /testbed
+configfile: setup.cfg
+plugins: profiling-1.7.0, timeout-2.3.1, cov-3.0.0, benchmark-3.4.1, xdist-2.5.0, forked-1.6.0
+collecting ... collected 25 items
+
+tests/checkers/unittest_similar.py::test_ignore_multiline_imports PASSED [  4%]
+tests/checkers/unittest_similar.py::test_ignore_signatures_fail PASSED   [  8%]
+tests/checkers/unittest_similar.py::test_ignore_signatures_pass PASSED   [ 12%]
+tests/checkers/unittest_similar.py::test_ignore_signatures_class_methods_fail PASSED [ 16%]
+tests/checkers/unittest_similar.py::test_ignore_signatures_class_methods_pass PASSED [ 20%]
+tests/checkers/unittest_similar.py::test_ignore_signatures_empty_functions_fail PASSED [ 24%]
+tests/checkers/unittest_similar.py::test_ignore_signatures_empty_functions_pass PASSED [ 28%]
+tests/checkers/unittest_similar.py::test_no_hide_code_with_imports PASSED [ 32%]
+tests/checkers/unittest_similar.py::test_ignore_nothing PASSED           [ 36%]
+tests/checkers/unittest_similar.py::test_lines_without_meaningful_content_do_not_trigger_similarity PASSED [ 40%]
+tests/checkers/unittest_similar.py::test_help PASSED                     [ 44%]
+tests/checkers/unittest_similar.py::test_no_args PASSED                  [ 48%]
+tests/checkers/unittest_similar.py::test_get_map_data PASSED             [ 52%]
+tests/checkers/unittest_similar.py::test_set_duplicate_lines_to_zero PASSED [ 56%]
+tests/config/test_deprecations.py::TestDeprecationArgumentsManager::test_load_configuration PASSED [ 60%]
+tests/config/test_deprecations.py::TestDeprecationArgumentsManager::test_load_configuration_from_config PASSED [ 64%]
+tests/config/test_deprecations.py::TestDeprecationArgumentsManager::test_help_with_level PASSED [ 68%]
+tests/config/test_deprecations.py::TestDeprecationArgumentsManager::test_register_options_provider_load_defaults PASSED [ 72%]
+tests/config/test_deprecations.py::TestDeprecationArgumentsManager::test_get_global_option PASSED [ 76%]
+tests/config/test_deprecations.py::TestDeprecationArgumentsManager::test_read_config_file PASSED [ 80%]
+tests/config/test_deprecations.py::TestDeprecationArgumentsManager::test_load_config_file PASSED [ 84%]
+tests/config/test_deprecations.py::TestDeprecationArgumentsManager::test_load_command_line_configuration PASSED [ 88%]
+tests/config/test_deprecations.py::TestDeprecationArgumentsManager::test_cb_set_provider_option PASSED [ 92%]
+tests/config/test_deprecations.py::TestDeprecationArgumentsManager::test_level_attribute PASSED [ 96%]
+tests/config/test_deprecations.py::TestDeprecationArgumentsManager::test_no_default_in_optdict PASSED [100%]
+
+=============================== warnings summary ===============================
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 25 passed, 1 warning in 0.04s =========================
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /testbed
+configfile: setup.cfg
+plugins: profiling-1.7.0, timeout-2.3.1, cov-3.0.0, benchmark-3.4.1, xdist-2.5.0, forked-1.6.0
+collecting ... collected 34 items
+
+tests/config/test_deprecations.py::TestDeprecationArgumentsManager::test_no_level_in_optdict PASSED [  2%]
+tests/config/unittest_config.py::test__regexp_validator_valid PASSED     [  5%]
+tests/config/unittest_config.py::test__regexp_validator_invalid PASSED   [  8%]
+tests/config/unittest_config.py::test__csv_validator_no_spaces PASSED    [ 11%]
+tests/config/unittest_config.py::test__csv_validator_spaces PASSED       [ 14%]
+tests/config/unittest_config.py::test__regexp_csv_validator_valid PASSED [ 17%]
+tests/config/unittest_config.py::test__regexp_csv_validator_invalid PASSED [ 20%]
+tests/config/unittest_config.py::TestPyLinterOptionSetters::test_ignore_paths_with_value PASSED [ 23%]
+tests/config/unittest_config.py::TestPyLinterOptionSetters::test_ignore_paths_with_no_value PASSED [ 26%]
+tests/lint/unittest_lint.py::test_no_args PASSED                         [ 29%]
+tests/lint/unittest_lint.py::test_one_arg[case0] PASSED                  [ 32%]
+tests/lint/unittest_lint.py::test_one_arg[case1] PASSED                  [ 35%]
+tests/lint/unittest_lint.py::test_one_arg[case2] PASSED                  [ 38%]
+tests/lint/unittest_lint.py::test_one_arg[case3] PASSED                  [ 41%]
+tests/lint/unittest_lint.py::test_one_arg[case4] PASSED                  [ 44%]
+tests/lint/unittest_lint.py::test_two_similar_args[case0] PASSED         [ 47%]
+tests/lint/unittest_lint.py::test_two_similar_args[case1] PASSED         [ 50%]
+tests/lint/unittest_lint.py::test_two_similar_args[case2] PASSED         [ 52%]
+tests/lint/unittest_lint.py::test_two_similar_args[case3] PASSED         [ 55%]
+tests/lint/unittest_lint.py::test_more_args[case0] PASSED                [ 58%]
+tests/lint/unittest_lint.py::test_more_args[case1] PASSED                [ 61%]
+tests/lint/unittest_lint.py::test_more_args[case2] PASSED                [ 64%]
+tests/lint/unittest_lint.py::test_pylint_visit_method_taken_in_account PASSED [ 67%]
+tests/lint/unittest_lint.py::test_enable_message PASSED                  [ 70%]
+tests/lint/unittest_lint.py::test_enable_message_category PASSED         [ 73%]
+tests/lint/unittest_lint.py::test_message_state_scope PASSED             [ 76%]
+tests/lint/unittest_lint.py::test_enable_message_block PASSED            [ 79%]
+tests/lint/unittest_lint.py::test_enable_by_symbol PASSED                [ 82%]
+tests/lint/unittest_lint.py::test_enable_report PASSED                   [ 85%]
+tests/lint/unittest_lint.py::test_report_output_format_aliased PASSED    [ 88%]
+tests/lint/unittest_lint.py::test_set_unsupported_reporter PASSED        [ 91%]
+tests/lint/unittest_lint.py::test_set_option_1 PASSED                    [ 94%]
+tests/lint/unittest_lint.py::test_set_option_2 PASSED                    [ 97%]
+tests/lint/unittest_lint.py::test_enable_checkers PASSED                 [100%]
+
+=============================== warnings summary ===============================
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 34 passed, 1 warning in 0.23s =========================
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /testbed
+configfile: setup.cfg
+plugins: profiling-1.7.0, timeout-2.3.1, cov-3.0.0, benchmark-3.4.1, xdist-2.5.0, forked-1.6.0
+collecting ... collected 27 items
+
+tests/lint/unittest_lint.py::test_errors_only PASSED                     [  3%]
+tests/lint/unittest_lint.py::test_disable_similar PASSED                 [  7%]
+tests/lint/unittest_lint.py::test_disable_alot PASSED                    [ 11%]
+tests/lint/unittest_lint.py::test_addmessage PASSED                      [ 14%]
+tests/lint/unittest_lint.py::test_addmessage_invalid PASSED              [ 18%]
+tests/lint/unittest_lint.py::test_load_plugin_command_line PASSED        [ 22%]
+tests/lint/unittest_lint.py::test_load_plugin_config_file PASSED         [ 25%]
+tests/lint/unittest_lint.py::test_load_plugin_configuration PASSED       [ 29%]
+tests/lint/unittest_lint.py::test_init_hooks_called_before_load_plugins PASSED [ 33%]
+tests/lint/unittest_lint.py::test_analyze_explicit_script PASSED         [ 37%]
+tests/lint/unittest_lint.py::test_full_documentation PASSED              [ 40%]
+tests/lint/unittest_lint.py::test_list_msgs_enabled PASSED               [ 44%]
+tests/lint/unittest_lint.py::test_pylint_home PASSED                     [ 48%]
+tests/lint/unittest_lint.py::test_pylint_home_from_environ PASSED        [ 51%]
+tests/lint/unittest_lint.py::test_warn_about_old_home PASSED             [ 55%]
+tests/lint/unittest_lint.py::test_pylintrc PASSED                        [ 59%]
+tests/lint/unittest_lint.py::test_pylintrc_parentdir PASSED              [ 62%]
+tests/lint/unittest_lint.py::test_pylintrc_parentdir_no_package PASSED   [ 66%]
+tests/lint/unittest_lint.py::test_custom_should_analyze_file PASSED      [ 70%]
+tests/lint/unittest_lint.py::test_multiprocessing[1] PASSED              [ 74%]
+tests/lint/unittest_lint.py::test_multiprocessing[2] PASSED              [ 77%]
+tests/lint/unittest_lint.py::test_filename_with__init__ PASSED           [ 81%]
+tests/lint/unittest_lint.py::test_by_module_statement_value PASSED       [ 85%]
+tests/lint/unittest_lint.py::test_import_sibling_module_from_namespace PASSED [ 88%]
+tests/message/test_no_removed_msgid_or_symbol_used.py::test_no_removed_msgid_or_symbol_used PASSED [ 92%]
+tests/message/unittest_message_definition.py::test_create_invalid_message_type[Q1234-Bad message type Q in 'Q1234'] PASSED [ 96%]
+tests/message/unittest_message_definition.py::test_create_invalid_message_type[W12345-Invalid message id 'W12345'] PASSED [100%]
+
+=============================== warnings summary ===============================
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 27 passed, 1 warning in 0.27s =========================
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /testbed
+configfile: setup.cfg
+plugins: profiling-1.7.0, timeout-2.3.1, cov-3.0.0, benchmark-3.4.1, xdist-2.5.0, forked-1.6.0
+collecting ... collected 57 items
+
+tests/message/unittest_message_definition.py::TestMessagesDefinition::test_may_be_emitted PASSED [  1%]
+tests/message/unittest_message_definition.py::TestMessagesDefinition::test_repr PASSED [  3%]
+tests/message/unittest_message_definition.py::TestMessagesDefinition::test_str PASSED [  5%]
+tests/message/unittest_message_definition.py::TestMessagesDefinition::test_format_help PASSED [  7%]
+tests/message/unittest_message_definition_store.py::test_register_error[messages0-Inconsistent checker part in message id 'W4321' (expected 'x12xx' because we already had ['W1234']).] PASSED [  8%]
+tests/message/unittest_message_definition_store.py::test_register_error[messages1-Message id 'W1234' cannot have both 'msg-symbol-one' and 'old-symbol' as symbolic name.] PASSED [ 10%]
+tests/message/unittest_message_definition_store.py::test_register_error[messages2-Message id 'W1234' cannot have both 'msg-symbol-one' and 'old-symbol' as symbolic name.] PASSED [ 12%]
+tests/message/unittest_message_definition_store.py::test_register_error[messages3-Message id 'W1201' cannot have both 'old-symbol-one' and 'old-symbol-two' as symbolic name.] PASSED [ 14%]
+tests/message/unittest_message_definition_store.py::test_register_error[messages4-Message symbol 'msg-symbol' cannot be used for 'W1234' and 'W1235' at the same time. If you're creating an 'old_names' use 'old-msg-symbol' as the old symbol.] PASSED [ 15%]
+tests/message/unittest_message_definition_store.py::test_register_error[messages5-Message symbol 'msg-symbol-one' cannot be used for 'W1230' and 'W1234' at the same time. If you're creating an 'old_names' use 'old-msg-symbol-one' as the old symbol.] PASSED [ 17%]
+tests/message/unittest_message_definition_store.py::test_register_error[messages6-Message symbol 'msg-symbol-one' cannot be used for 'W1230' and 'W1234' at the same time. If you're creating an 'old_names' use 'old-msg-symbol-one' as the old symbol.] PASSED [ 19%]
+tests/message/unittest_message_definition_store.py::test_register_error[messages7-Message symbol 'old-symbol-one' cannot be used for 'W1230' and 'W1231' at the same time. If you're creating an 'old_names' use 'old-old-symbol-one' as the old symbol.] PASSED [ 21%]
+tests/message/unittest_message_definition_store.py::test_register_error_new_id_duplicate_of_new PASSED [ 22%]
+tests/message/unittest_message_definition_store.py::test_format_help PASSED [ 24%]
+tests/message/unittest_message_definition_store.py::test_get_msg_display_string PASSED [ 26%]
+tests/message/unittest_message_definition_store.py::test_check_message_id PASSED [ 28%]
+tests/message/unittest_message_definition_store.py::TestMessageDefinitionStore::test_message_help PASSED [ 29%]
+tests/message/unittest_message_definition_store.py::TestMessageDefinitionStore::test_message_help_minmax PASSED [ 31%]
+tests/message/unittest_message_definition_store.py::test_list_messages PASSED [ 33%]
+tests/message/unittest_message_definition_store.py::test_renamed_message_register PASSED [ 35%]
+tests/message/unittest_message_definition_store.py::test_multiple_child_of_old_name PASSED [ 36%]
+tests/test_check_parallel.py::TestCheckParallelFramework::test_worker_initialize PASSED [ 38%]
+tests/test_check_parallel.py::TestCheckParallelFramework::test_worker_initialize_pickling PASSED [ 40%]
+tests/test_check_parallel.py::TestCheckParallelFramework::test_worker_check_single_file_uninitialised PASSED [ 42%]
+tests/test_check_parallel.py::TestCheckParallelFramework::test_worker_check_single_file_no_checkers PASSED [ 43%]
+tests/test_check_parallel.py::TestCheckParallelFramework::test_worker_check_sequential_checker PASSED [ 45%]
+tests/test_check_parallel.py::TestCheckParallel::test_sequential_checkers_work PASSED [ 47%]
+tests/test_check_parallel.py::TestCheckParallel::test_invoke_single_job PASSED [ 49%]
+tests/test_check_parallel.py::TestCheckParallel::test_compare_workers_to_single_proc[1-2-1] PASSED [ 50%]
+tests/test_check_parallel.py::TestCheckParallel::test_compare_workers_to_single_proc[1-2-2] PASSED [ 52%]
+tests/test_check_parallel.py::TestCheckParallel::test_compare_workers_to_single_proc[1-2-3] PASSED [ 54%]
+tests/test_check_parallel.py::TestCheckParallel::test_compare_workers_to_single_proc[2-2-1] PASSED [ 56%]
+tests/test_check_parallel.py::TestCheckParallel::test_compare_workers_to_single_proc[2-2-2] PASSED [ 57%]
+tests/test_check_parallel.py::TestCheckParallel::test_compare_workers_to_single_proc[2-2-3] PASSED [ 59%]
+tests/test_check_parallel.py::TestCheckParallel::test_compare_workers_to_single_proc[3-2-1] PASSED [ 61%]
+tests/test_check_parallel.py::TestCheckParallel::test_compare_workers_to_single_proc[3-2-2] PASSED [ 63%]
+tests/test_check_parallel.py::TestCheckParallel::test_compare_workers_to_single_proc[3-2-3] PASSED [ 64%]
+tests/test_check_parallel.py::TestCheckParallel::test_compare_workers_to_single_proc[3-1-1] PASSED [ 66%]
+tests/test_check_parallel.py::TestCheckParallel::test_compare_workers_to_single_proc[3-1-2] PASSED [ 68%]
+tests/test_check_parallel.py::TestCheckParallel::test_compare_workers_to_single_proc[3-1-3] PASSED [ 70%]
+tests/test_check_parallel.py::TestCheckParallel::test_compare_workers_to_single_proc[10-2-1] PASSED [ 71%]
+tests/test_check_parallel.py::TestCheckParallel::test_compare_workers_to_single_proc[10-2-2] PASSED [ 73%]
+tests/test_check_parallel.py::TestCheckParallel::test_compare_workers_to_single_proc[10-2-3] PASSED [ 75%]
+tests/test_check_parallel.py::TestCheckParallel::test_map_reduce[2-2-1] PASSED [ 77%]
+tests/test_check_parallel.py::TestCheckParallel::test_map_reduce[2-2-2] PASSED [ 78%]
+tests/test_check_parallel.py::TestCheckParallel::test_map_reduce[2-2-3] PASSED [ 80%]
+tests/test_check_parallel.py::TestCheckParallel::test_map_reduce[3-2-1] PASSED [ 82%]
+tests/test_check_parallel.py::TestCheckParallel::test_map_reduce[3-2-2] PASSED [ 84%]
+tests/test_check_parallel.py::TestCheckParallel::test_map_reduce[3-2-3] PASSED [ 85%]
+tests/test_check_parallel.py::TestCheckParallel::test_map_reduce[3-1-1] PASSED [ 87%]
+tests/test_check_parallel.py::TestCheckParallel::test_map_reduce[3-1-2] PASSED [ 89%]
+tests/test_check_parallel.py::TestCheckParallel::test_map_reduce[3-1-3] PASSED [ 91%]
+tests/test_check_parallel.py::TestCheckParallel::test_map_reduce[10-2-1] PASSED [ 92%]
+tests/test_check_parallel.py::TestCheckParallel::test_map_reduce[10-2-2] PASSED [ 94%]
+tests/test_check_parallel.py::TestCheckParallel::test_map_reduce[10-2-3] PASSED [ 96%]
+tests/test_deprecation.py::test_mapreducemixin PASSED                    [ 98%]
+tests/test_deprecation.py::test_reporter_implements PASSED               [100%]
+
+=============================== warnings summary ===============================
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 57 passed, 1 warning in 0.57s =========================
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /testbed
+configfile: setup.cfg
+plugins: profiling-1.7.0, timeout-2.3.1, cov-3.0.0, benchmark-3.4.1, xdist-2.5.0, forked-1.6.0
+collecting ... collected 41 items
+
+tests/test_deprecation.py::test_checker_implements PASSED                [  2%]
+tests/test_deprecation.py::test_interfaces PASSED                        [  4%]
+tests/test_deprecation.py::test_load_and_save_results PASSED             [  7%]
+tests/test_deprecation.py::test_filestate PASSED                         [  9%]
+tests/test_import_graph.py::test_dependencies_graph[foo.dot] PASSED      [ 12%]
+tests/test_import_graph.py::test_dependencies_graph[foo.gv] PASSED       [ 14%]
+tests/test_import_graph.py::test_dependencies_graph[tests/regrtest_data/foo.dot] PASSED [ 17%]
+tests/test_import_graph.py::test_missing_graphviz[graph.png] PASSED      [ 19%]
+tests/test_import_graph.py::test_missing_graphviz[graph] PASSED          [ 21%]
+tests/test_import_graph.py::test_checker_dep_graphs PASSED               [ 24%]
+tests/test_regr.py::test_package[file_names0-<lambda>] PASSED            [ 26%]
+tests/test_regr.py::test_package[file_names1-<lambda>] PASSED            [ 29%]
+tests/test_regr.py::test_package[file_names2-<lambda>] PASSED            [ 31%]
+tests/test_regr.py::test_package[file_names3-<lambda>] PASSED            [ 34%]
+tests/test_regr.py::test_package[file_names4-<lambda>] PASSED            [ 36%]
+tests/test_regr.py::test_package[file_names5-<lambda>] PASSED            [ 39%]
+tests/test_regr.py::test_package[file_names6-<lambda>] PASSED            [ 41%]
+tests/test_regr.py::test_package[file_names7-<lambda>] PASSED            [ 43%]
+tests/test_regr.py::test_package[file_names8-<lambda>] PASSED            [ 46%]
+tests/test_regr.py::test_crash[file_names0] PASSED                       [ 48%]
+tests/test_regr.py::test_crash[file_names1] PASSED                       [ 51%]
+tests/test_regr.py::test_crash[file_names2] PASSED                       [ 53%]
+tests/test_regr.py::test_descriptor_crash[special_attr_scope_lookup_crash.py] PASSED [ 56%]
+tests/test_regr.py::test_descriptor_crash[try_finally_disable_msg_crash.py] PASSED [ 58%]
+tests/test_regr.py::test_descriptor_crash[application_crash.py] PASSED   [ 60%]
+tests/test_regr.py::test_descriptor_crash[descriptor_crash.py] PASSED    [ 63%]
+tests/test_regr.py::test_check_package___init__ PASSED                   [ 65%]
+tests/test_regr.py::test_pylint_config_attr XFAIL                        [ 68%]
+tests/test_regr.py::test_hang[file_names0] PASSED                        [ 70%]
+tests/test_self.py::TestRunTC::test_pkginfo PASSED                       [ 73%]
+tests/test_self.py::TestRunTC::test_all PASSED                           [ 75%]
+tests/test_self.py::TestRunTC::test_no_ext_file PASSED                   [ 78%]
+tests/test_self.py::TestRunTC::test_w0704_ignored PASSED                 [ 80%]
+tests/test_self.py::TestRunTC::test_exit_zero PASSED                     [ 82%]
+tests/test_self.py::TestRunTC::test_nonexistent_config_file PASSED       [ 85%]
+tests/test_self.py::TestRunTC::test_error_missing_arguments PASSED       [ 87%]
+tests/test_self.py::TestRunTC::test_no_out_encoding PASSED               [ 90%]
+tests/test_self.py::TestRunTC::test_parallel_execution PASSED            [ 92%]
+tests/test_self.py::TestRunTC::test_parallel_execution_missing_arguments PASSED [ 95%]
+tests/test_self.py::TestRunTC::test_abbreviations_are_not_supported XFAIL [ 97%]
+tests/test_self.py::TestRunTC::test_enable_all_works PASSED              [100%]
+
+=============================== warnings summary ===============================
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=================== 39 passed, 2 xfailed, 1 warning in 1.98s ===================
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /testbed
+configfile: setup.cfg
+plugins: profiling-1.7.0, timeout-2.3.1, cov-3.0.0, benchmark-3.4.1, xdist-2.5.0, forked-1.6.0
+collecting ... collected 49 items
+
+tests/test_self.py::TestRunTC::test_wrong_import_position_when_others_disabled PASSED [  2%]
+tests/test_self.py::TestRunTC::test_import_itself_not_accounted_for_relative_imports PASSED [  4%]
+tests/test_self.py::TestRunTC::test_reject_empty_indent_strings PASSED   [  6%]
+tests/test_self.py::TestRunTC::test_json_report_when_file_has_syntax_error PASSED [  8%]
+tests/test_self.py::TestRunTC::test_json_report_when_file_is_missing PASSED [ 10%]
+tests/test_self.py::TestRunTC::test_json_report_does_not_escape_quotes PASSED [ 12%]
+tests/test_self.py::TestRunTC::test_information_category_disabled_by_default PASSED [ 14%]
+tests/test_self.py::TestRunTC::test_error_mode_shows_no_score PASSED     [ 16%]
+tests/test_self.py::TestRunTC::test_evaluation_score_shown_by_default PASSED [ 18%]
+tests/test_self.py::TestRunTC::test_confidence_levels PASSED             [ 20%]
+tests/test_self.py::TestRunTC::test_bom_marker PASSED                    [ 22%]
+tests/test_self.py::TestRunTC::test_pylintrc_plugin_duplicate_options PASSED [ 24%]
+tests/test_self.py::TestRunTC::test_pylintrc_comments_in_values PASSED   [ 26%]
+tests/test_self.py::TestRunTC::test_no_crash_with_formatting_regex_defaults PASSED [ 28%]
+tests/test_self.py::TestRunTC::test_getdefaultencoding_crashes_with_lc_ctype_utf8 PASSED [ 30%]
+tests/test_self.py::TestRunTC::test_parseable_file_path PASSED           [ 32%]
+tests/test_self.py::TestRunTC::test_stdin[/testbed/tests/mymodule.py-mymodule-/testbed/tests/mymodule.py] PASSED [ 34%]
+tests/test_self.py::TestRunTC::test_stdin[mymodule.py-mymodule-mymodule.py] PASSED [ 36%]
+tests/test_self.py::TestRunTC::test_stdin_missing_modulename PASSED      [ 38%]
+tests/test_self.py::TestRunTC::test_relative_imports[False] PASSED       [ 40%]
+tests/test_self.py::TestRunTC::test_relative_imports[True] PASSED        [ 42%]
+tests/test_self.py::TestRunTC::test_stdin_syntaxerror PASSED             [ 44%]
+tests/test_self.py::TestRunTC::test_version PASSED                       [ 46%]
+tests/test_self.py::TestRunTC::test_fail_under PASSED                    [ 48%]
+tests/test_self.py::TestRunTC::test_fail_on[-10-missing-function-docstring-fail_under_plus7_5.py-16] PASSED [ 51%]
+tests/test_self.py::TestRunTC::test_fail_on[6-missing-function-docstring-fail_under_plus7_5.py-16] PASSED [ 53%]
+tests/test_self.py::TestRunTC::test_fail_on[7.5-missing-function-docstring-fail_under_plus7_5.py-16] PASSED [ 55%]
+tests/test_self.py::TestRunTC::test_fail_on[7.6-missing-function-docstring-fail_under_plus7_5.py-16] PASSED [ 57%]
+tests/test_self.py::TestRunTC::test_fail_on[-11-missing-function-docstring-fail_under_minus10.py-22] PASSED [ 59%]
+tests/test_self.py::TestRunTC::test_fail_on[-10-missing-function-docstring-fail_under_minus10.py-22] PASSED [ 61%]
+tests/test_self.py::TestRunTC::test_fail_on[-9-missing-function-docstring-fail_under_minus10.py-22] PASSED [ 63%]
+tests/test_self.py::TestRunTC::test_fail_on[-5-missing-function-docstring-fail_under_minus10.py-22] PASSED [ 65%]
+tests/test_self.py::TestRunTC::test_fail_on[-10-broad-except-fail_under_plus7_5.py-0] PASSED [ 67%]
+tests/test_self.py::TestRunTC::test_fail_on[6-broad-except-fail_under_plus7_5.py-0] PASSED [ 69%]
+tests/test_self.py::TestRunTC::test_fail_on[7.5-broad-except-fail_under_plus7_5.py-0] PASSED [ 71%]
+tests/test_self.py::TestRunTC::test_fail_on[7.6-broad-except-fail_under_plus7_5.py-16] PASSED [ 73%]
+tests/test_self.py::TestRunTC::test_fail_on[-11-broad-except-fail_under_minus10.py-0] PASSED [ 75%]
+tests/test_self.py::TestRunTC::test_fail_on[-10-broad-except-fail_under_minus10.py-0] PASSED [ 77%]
+tests/test_self.py::TestRunTC::test_fail_on[-9-broad-except-fail_under_minus10.py-22] PASSED [ 79%]
+tests/test_self.py::TestRunTC::test_fail_on[-5-broad-except-fail_under_minus10.py-22] PASSED [ 81%]
+tests/test_self.py::TestRunTC::test_fail_on[-10-C0116-fail_under_plus7_5.py-16] PASSED [ 83%]
+tests/test_self.py::TestRunTC::test_fail_on[-10-C-fail_under_plus7_5.py-16] PASSED [ 85%]
+tests/test_self.py::TestRunTC::test_fail_on[-10-fake1,C,fake2-fail_under_plus7_5.py-16] PASSED [ 87%]
+tests/test_self.py::TestRunTC::test_fail_on[-10-C0115-fail_under_plus7_5.py-0] PASSED [ 89%]
+tests/test_self.py::TestRunTC::test_fail_on_edge_case[opts0-0] PASSED    [ 91%]
+tests/test_self.py::TestRunTC::test_fail_on_edge_case[opts1-0] PASSED    [ 93%]
+tests/test_self.py::TestRunTC::test_fail_on_edge_case[opts2-16] PASSED   [ 95%]
+tests/test_self.py::TestRunTC::test_fail_on_edge_case[opts3-16] PASSED   [ 97%]
+tests/test_self.py::TestRunTC::test_modify_sys_path PASSED               [100%]
+
+=============================== warnings summary ===============================
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 49 passed, 1 warning in 1.19s =========================
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /testbed
+configfile: setup.cfg
+plugins: profiling-1.7.0, timeout-2.3.1, cov-3.0.0, benchmark-3.4.1, xdist-2.5.0, forked-1.6.0
+collecting ... ERROR: not found: /testbed/tests/test_self.py::TestRunTC::test_environ_pythonpath
+(no name '/testbed/tests/test_self.py::TestRunTC::test_environ_pythonpath' in any of [<Module tests/test_self.py>])
+
+collected 52 items
+
+=============================== warnings summary ===============================
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================== 1 warning in 0.02s ==============================
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /testbed
+configfile: setup.cfg
+plugins: profiling-1.7.0, timeout-2.3.1, cov-3.0.0, benchmark-3.4.1, xdist-2.5.0, forked-1.6.0
+collecting ... ERROR: not found: /testbed/tests/test_self.py::TestRunTC::test_environ_pythonpath
+(no name '/testbed/tests/test_self.py::TestRunTC::test_environ_pythonpath' in any of [<Module tests/test_self.py>])
+
+collected 19 items
+
+=============================== warnings summary ===============================
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================== 1 warning in 0.02s ==============================
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /testbed
+configfile: setup.cfg
+plugins: profiling-1.7.0, timeout-2.3.1, cov-3.0.0, benchmark-3.4.1, xdist-2.5.0, forked-1.6.0
+collecting ... ERROR: not found: /testbed/tests/test_self.py::TestRunTC::test_environ_pythonpath
+(no name '/testbed/tests/test_self.py::TestRunTC::test_environ_pythonpath' in any of [<Module tests/test_self.py>])
+
+collected 5 items
+
+=============================== warnings summary ===============================
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================== 1 warning in 0.02s ==============================
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /testbed
+configfile: setup.cfg
+plugins: profiling-1.7.0, timeout-2.3.1, cov-3.0.0, benchmark-3.4.1, xdist-2.5.0, forked-1.6.0
+collecting ... ERROR: not found: /testbed/tests/test_self.py::TestRunTC::test_environ_pythonpath
+(no name '/testbed/tests/test_self.py::TestRunTC::test_environ_pythonpath' in any of [<Module tests/test_self.py>])
+
+collected 2 items
+
+=============================== warnings summary ===============================
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================== 1 warning in 0.02s ==============================
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /testbed
+configfile: setup.cfg
+plugins: profiling-1.7.0, timeout-2.3.1, cov-3.0.0, benchmark-3.4.1, xdist-2.5.0, forked-1.6.0
+collecting ... ERROR: not found: /testbed/tests/test_self.py::TestRunTC::test_environ_pythonpath
+(no name '/testbed/tests/test_self.py::TestRunTC::test_environ_pythonpath' in any of [<Module tests/test_self.py>])
+
+collected 0 items
+
+=============================== warnings summary ===============================
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================== 1 warning in 0.02s ==============================
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /testbed
+configfile: setup.cfg
+plugins: profiling-1.7.0, timeout-2.3.1, cov-3.0.0, benchmark-3.4.1, xdist-2.5.0, forked-1.6.0
+collecting ... collected 2 items
+
+tests/test_self.py::TestRunTC::test_do_not_import_files_from_local_directory PASSED [ 50%]
+tests/test_self.py::TestRunTC::test_do_not_import_files_from_local_directory_with_pythonpath PASSED [100%]
+
+=============================== warnings summary ===============================
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+========================= 2 passed, 1 warning in 1.03s =========================
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /testbed
+configfile: setup.cfg
+plugins: profiling-1.7.0, timeout-2.3.1, cov-3.0.0, benchmark-3.4.1, xdist-2.5.0, forked-1.6.0
+collecting ... collected 3 items
+
+tests/test_self.py::TestRunTC::test_import_plugin_from_local_directory_if_pythonpath_cwd PASSED [ 33%]
+tests/test_self.py::TestRunTC::test_allow_import_of_files_found_in_modules_during_parallel_check PASSED [ 66%]
+tests/test_self.py::TestRunTC::test_can_list_directories_without_dunder_init PASSED [100%]
+
+=============================== warnings summary ===============================
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+========================= 3 passed, 1 warning in 0.55s =========================
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /testbed
+configfile: setup.cfg
+plugins: profiling-1.7.0, timeout-2.3.1, cov-3.0.0, benchmark-3.4.1, xdist-2.5.0, forked-1.6.0
+collecting ... collected 14 items
+
+tests/test_self.py::TestRunTC::test_jobs_score PASSED                    [  7%]
+tests/test_self.py::TestRunTC::test_regression_parallel_mode_without_filepath PASSED [ 14%]
+tests/test_self.py::TestRunTC::test_output_file_valid_path PASSED        [ 21%]
+tests/test_self.py::TestRunTC::test_output_file_invalid_path_exits_with_code_32 PASSED [ 28%]
+tests/test_self.py::TestRunTC::test_fail_on_exit_code[args0-0] PASSED    [ 35%]
+tests/test_self.py::TestRunTC::test_fail_on_exit_code[args1-0] PASSED    [ 42%]
+tests/test_self.py::TestRunTC::test_fail_on_exit_code[args2-0] PASSED    [ 50%]
+tests/test_self.py::TestRunTC::test_fail_on_exit_code[args3-6] PASSED    [ 57%]
+tests/test_self.py::TestRunTC::test_fail_on_exit_code[args4-6] PASSED    [ 64%]
+tests/test_self.py::TestRunTC::test_fail_on_exit_code[args5-22] PASSED   [ 71%]
+tests/test_self.py::TestRunTC::test_fail_on_exit_code[args6-22] PASSED   [ 78%]
+tests/test_self.py::TestRunTC::test_fail_on_exit_code[args7-6] PASSED    [ 85%]
+tests/test_self.py::TestRunTC::test_fail_on_exit_code[args8-22] PASSED   [ 92%]
+tests/test_self.py::TestRunTC::test_one_module_fatal_error PASSED        [100%]
+
+=============================== warnings summary ===============================
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 14 passed, 1 warning in 1.96s =========================
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /testbed
+configfile: setup.cfg
+plugins: profiling-1.7.0, timeout-2.3.1, cov-3.0.0, benchmark-3.4.1, xdist-2.5.0, forked-1.6.0
+collecting ... collected 33 items
+
+tests/test_self.py::TestRunTC::test_fail_on_info_only_exit_code[args0-0] PASSED [  3%]
+tests/test_self.py::TestRunTC::test_fail_on_info_only_exit_code[args1-0] PASSED [  6%]
+tests/test_self.py::TestRunTC::test_fail_on_info_only_exit_code[args2-0] PASSED [  9%]
+tests/test_self.py::TestRunTC::test_fail_on_info_only_exit_code[args3-0] PASSED [ 12%]
+tests/test_self.py::TestRunTC::test_fail_on_info_only_exit_code[args4-0] PASSED [ 15%]
+tests/test_self.py::TestRunTC::test_fail_on_info_only_exit_code[args5-0] PASSED [ 18%]
+tests/test_self.py::TestRunTC::test_fail_on_info_only_exit_code[args6-0] PASSED [ 21%]
+tests/test_self.py::TestRunTC::test_fail_on_info_only_exit_code[args7-1] PASSED [ 24%]
+tests/test_self.py::TestRunTC::test_fail_on_info_only_exit_code[args8-1] PASSED [ 27%]
+tests/test_self.py::TestRunTC::test_output_file_can_be_combined_with_output_format_option[text-tests/regrtest_data/unused_variable.py:4:4: W0612: Unused variable 'variable' (unused-variable)] PASSED [ 30%]
+tests/test_self.py::TestRunTC::test_output_file_can_be_combined_with_output_format_option[parseable-tests/regrtest_data/unused_variable.py:4: [W0612(unused-variable), test] Unused variable 'variable'] PASSED [ 33%]
+tests/test_self.py::TestRunTC::test_output_file_can_be_combined_with_output_format_option[msvs-tests/regrtest_data/unused_variable.py(4): [W0612(unused-variable)test] Unused variable 'variable'] PASSED [ 36%]
+tests/test_self.py::TestRunTC::test_output_file_can_be_combined_with_output_format_option[colorized-tests/regrtest_data/unused_variable.py:4:4: W0612: \x1b[35mUnused variable 'variable'\x1b[0m (\x1b[35munused-variable\x1b[0m)] PASSED [ 39%]
+tests/test_self.py::TestRunTC::test_output_file_can_be_combined_with_output_format_option[json-"message": "Unused variable 'variable'",] PASSED [ 42%]
+tests/test_self.py::TestRunTC::test_output_file_can_be_combined_with_custom_reporter PASSED [ 45%]
+tests/test_self.py::TestRunTC::test_output_file_specified_in_rcfile PASSED [ 48%]
+tests/test_self.py::TestRunTC::test_load_text_repoter_if_not_provided PASSED [ 51%]
+tests/test_self.py::TestRunTC::test_regex_paths_csv_validator PASSED     [ 54%]
+tests/test_self.py::TestRunTC::test_max_inferred_for_complicated_class_hierarchy PASSED [ 57%]
+tests/test_self.py::TestRunTC::test_regression_recursive PASSED          [ 60%]
+tests/test_self.py::TestRunTC::test_recursive PASSED                     [ 63%]
+tests/test_self.py::TestRunTC::test_recursive_current_dir PASSED         [ 66%]
+tests/test_self.py::TestRunTC::test_regression_recursive_current_dir PASSED [ 69%]
+tests/test_self.py::TestCallbackOptions::test_output_of_callback_options[command0-Emittable messages with current interpreter:] PASSED [ 72%]
+tests/test_self.py::TestCallbackOptions::test_output_of_callback_options[command1-Enabled messages:] PASSED [ 75%]
+tests/test_self.py::TestCallbackOptions::test_output_of_callback_options[command2-nonascii-checker] PASSED [ 78%]
+tests/test_self.py::TestCallbackOptions::test_output_of_callback_options[command3-Confidence(name='HIGH', description=] PASSED [ 81%]
+tests/test_self.py::TestCallbackOptions::test_output_of_callback_options[command4-pylint.extensions.empty_comment] PASSED [ 84%]
+tests/test_self.py::TestCallbackOptions::test_output_of_callback_options[command5-Pylint global options and switches] PASSED [ 87%]
+tests/test_self.py::TestCallbackOptions::test_output_of_callback_options[command6-Environment variables:] PASSED [ 90%]
+tests/test_self.py::TestCallbackOptions::test_help_msg[args0-:unreachable (W0101)-False] PASSED [ 93%]
+tests/test_self.py::TestCallbackOptions::test_help_msg[args1-No such message id-False] PASSED [ 96%]
+tests/test_self.py::TestCallbackOptions::test_help_msg[args2---help-msg: expected at least one argumen-True] PASSED [100%]
+
+=============================== warnings summary ===============================
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 33 passed, 1 warning in 2.61s =========================
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-7.4.4, pluggy-1.5.0 -- /opt/miniconda3/envs/testbed/bin/python
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /testbed
+configfile: setup.cfg
+plugins: profiling-1.7.0, timeout-2.3.1, cov-3.0.0, benchmark-3.4.1, xdist-2.5.0, forked-1.6.0
+collecting ... collected 18 items
+
+tests/test_self.py::TestCallbackOptions::test_generate_rcfile PASSED     [  5%]
+tests/test_self.py::TestCallbackOptions::test_generate_config_disable_symbolic_names PASSED [ 11%]
+tests/test_self.py::TestCallbackOptions::test_generate_toml_config FAILED [ 16%]
+tests/test_self.py::TestCallbackOptions::test_generate_toml_config_disable_symbolic_names FAILED [ 22%]
+tests/test_self.py::TestCallbackOptions::test_errors_only PASSED         [ 27%]
+tests/test_self.py::TestCallbackOptions::test_verbose PASSED             [ 33%]
+tests/test_self.py::TestCallbackOptions::test_enable_all_extensions PASSED [ 38%]
+tests/unittest_reporters_json.py::test_simple_json_output_no_score PASSED [ 44%]
+tests/unittest_reporters_json.py::test_simple_json_output_no_score_with_end_line PASSED [ 50%]
+tests/unittest_reporting.py::test_template_option PASSED                 [ 55%]
+tests/unittest_reporting.py::test_template_option_default PASSED         [ 61%]
+tests/unittest_reporting.py::test_template_option_end_line PASSED        [ 66%]
+tests/unittest_reporting.py::test_template_option_non_existing PASSED    [ 72%]
+tests/unittest_reporting.py::test_deprecation_set_output PASSED          [ 77%]
+tests/unittest_reporting.py::test_parseable_output_deprecated PASSED     [ 83%]
+tests/unittest_reporting.py::test_parseable_output_regression PASSED     [ 88%]
+tests/unittest_reporting.py::test_multi_format_output PASSED             [ 94%]
+tests/unittest_reporting.py::test_display_results_is_renamed PASSED      [100%]
+
+=================================== FAILURES ===================================
+________________ TestCallbackOptions.test_generate_toml_config _________________
+
+    @staticmethod
+    def test_generate_toml_config() -> None:
+        """Test the --generate-toml-config flag."""
+        args = _add_rcfile_default_pylintrc(
+            [
+                "--preferred-modules=a:b",
+                "--generate-toml-config",
+            ]
+        )
+        process = subprocess.run(
+            [sys.executable, "-m", "pylint"] + args,
+            capture_output=True,
+            encoding="utf-8",
+            check=False,
+        )
+>       assert "[tool.pylint.master]" in process.stdout
+E       assert '[tool.pylint.master]' in ''
+E        +  where '' = CompletedProcess(args=['/opt/miniconda3/envs/testbed/bin/python', '-m', 'pylint', '--rcfile=/testbed/pylint/testutils/testing_pylintrc', '--preferred-modules=a:b', '--generate-toml-config'], returncode=1, stdout='', stderr='Traceback (most recent call last):\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 197, in _run_module_as_main\n    return _run_code(code, main_globals, None,\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code\n    exec(code, run_globals)\n  File "/testbed/pylint/__main__.py", line 10, in <module>\n    pylint.run_pylint()\n  File "/testbed/pylint/__init__.py", line 25, in run_pylint\n    PylintRun(argv or sys.argv[1:])\n  File "/testbed/pylint/lint/run.py", line 135, in __init__\n    args = _config_initialization(\n  File "/testbed/pylint/config/config_initialization.py", line 73, in _config_initialization\n    parsed_args_list = linter._parse_command_line_configuration(args_list)\n  File "/testbed/pylint/config/arguments_manager.py", line 258, in _parse_command_line_configuration\n    self.config, parsed_args = self._arg_parser.parse_known_args(\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/argparse.... 2067, in _parse_known_args\n    start_index = consume_optional(start_index)\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/argparse.py", line 2007, in consume_optional\n    take_action(action, args, option_string)\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/argparse.py", line 1935, in take_action\n    action(self, namespace, argument_values, option_string)\n  File "/testbed/pylint/config/callback_actions.py", line 281, in __call__\n    self.run.linter._generate_config_file()\n  File "/testbed/pylint/config/arguments_manager.py", line 661, in _generate_config_file\n    toml_doc.add(tomlkit.key(["tool", "pylint"]), pylint_tool_table)\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/tomlkit/container.py", line 116, in add\n    return self.append(key, item)\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/tomlkit/container.py", line 171, in append\n    self._handle_dotted_key(key, item)\n  File "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/tomlkit/container.py", line 120, in _handle_dotted_key\n    raise TOMLKitError("Can\'t add a table to a dotted key")\ntomlkit.exceptions.TOMLKitError: Can\'t add a table to a dotted key\n').stdout
+
+tests/test_self.py:1385: AssertionError
+_____ TestCallbackOptions.test_generate_toml_config_disable_symbolic_names _____
+
+    @staticmethod
+    def test_generate_toml_config_disable_symbolic_names() -> None:
+        """Test that --generate-toml-config puts symbolic names in the --disable option."""
+        output_stream = StringIO()
+        with _patch_streams(output_stream):
+            with pytest.raises(SystemExit):
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore")
+>                   Run(["--generate-toml-config"])
+
+tests/test_self.py:1405: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+pylint/testutils/_run.py:45: in __init__
+    super().__init__(args, reporter, exit, do_exit)
+pylint/lint/run.py:135: in __init__
+    args = _config_initialization(
+pylint/config/config_initialization.py:73: in _config_initialization
+    parsed_args_list = linter._parse_command_line_configuration(args_list)
+pylint/config/arguments_manager.py:258: in _parse_command_line_configuration
+    self.config, parsed_args = self._arg_parser.parse_known_args(
+/opt/miniconda3/envs/testbed/lib/python3.9/argparse.py:1858: in parse_known_args
+    namespace, args = self._parse_known_args(args, namespace)
+/opt/miniconda3/envs/testbed/lib/python3.9/argparse.py:2067: in _parse_known_args
+    start_index = consume_optional(start_index)
+/opt/miniconda3/envs/testbed/lib/python3.9/argparse.py:2007: in consume_optional
+    take_action(action, args, option_string)
+/opt/miniconda3/envs/testbed/lib/python3.9/argparse.py:1935: in take_action
+    action(self, namespace, argument_values, option_string)
+pylint/config/callback_actions.py:281: in __call__
+    self.run.linter._generate_config_file()
+pylint/config/arguments_manager.py:661: in _generate_config_file
+    toml_doc.add(tomlkit.key(["tool", "pylint"]), pylint_tool_table)
+/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/tomlkit/container.py:116: in add
+    return self.append(key, item)
+/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/tomlkit/container.py:171: in append
+    self._handle_dotted_key(key, item)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = {}, key = <Key tool.pylint>, value = {}
+
+    def _handle_dotted_key(self, key: Key, value: Item) -> None:
+        if isinstance(value, (Table, AoT)):
+>           raise TOMLKitError("Can't add a table to a dotted key")
+E           tomlkit.exceptions.TOMLKitError: Can't add a table to a dotted key
+
+/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/tomlkit/container.py:120: TOMLKitError
+=============================== warnings summary ===============================
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_self.py::TestCallbackOptions::test_generate_toml_config - a...
+FAILED tests/test_self.py::TestCallbackOptions::test_generate_toml_config_disable_symbolic_names
+=================== 2 failed, 16 passed, 1 warning in 0.92s ====================

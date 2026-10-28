@@ -1,0 +1,291 @@
+{
+  "frozen_rule_sha256": "a4ef66525e026e9373a12ddf1402a70992d786cdb1dfa8b7960a3c1a77109b29",
+  "predictions_saved_before_retrospective_label_access": true,
+  "prior_researcher_familiarity_acknowledged": true,
+  "isolation": {
+    "landlock_abi": 7,
+    "all_filesystem_reads_denied": true,
+    "tcp_bind_connect_denied": true,
+    "probe_results": {
+      "/home/rajee/projects/cis695-agent-reliability/reports/failure_analysis/group4_gold_check.json": "DENIED",
+      "/home/rajee/projects/cis695-agent-reliability/reports/failure_analysis/quotes/pytest-dev__pytest-5809.md": "DENIED",
+      "/home/rajee/projects/cis695-agent-reliability/docs/results_100.csv": "DENIED",
+      "/home/rajee/projects/cis695-agent-reliability/runs/main_50_a/tasks/pytest-dev__pytest-5809/oracle_record.json": "DENIED",
+      "/tmp/v2_classifier_isolation_8sqzg7pu/retrospective_labels": "DENIED"
+    },
+    "input_keys": [
+      [
+        "base_output",
+        "candidate_patch",
+        "issue",
+        "patched_output",
+        "test_source"
+      ],
+      [
+        "base_output",
+        "candidate_patch",
+        "issue",
+        "patched_output",
+        "test_source"
+      ],
+      [
+        "base_output",
+        "candidate_patch",
+        "issue",
+        "patched_output",
+        "test_source"
+      ],
+      [
+        "base_output",
+        "candidate_patch",
+        "issue",
+        "patched_output",
+        "test_source"
+      ],
+      [
+        "base_output",
+        "candidate_patch",
+        "issue",
+        "patched_output",
+        "test_source"
+      ]
+    ]
+  },
+  "cases": [
+    {
+      "instance_id": "django__django-12209",
+      "held_out_diagnostic": true,
+      "allowlisted_inputs_sha256": "44bb48abd0b83b15d80d7a882adecae31bb1881c4f64221f146bfe6d29830c72",
+      "field_sha256": {
+        "issue": "565ee11b7b2c254f72640f238443fd092b2b2e24d045d2f4d510d64005f57c5f",
+        "candidate_patch": "84683b7002b1ec130c18c0edf007e1466695cb1ec7ca364b47bdb47f2c1de489",
+        "test_source": "fbc124b7d8c1130f0d946c979a8fa28d737fc0b82c4d2771d5018d1cc495d784",
+        "base_output": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "patched_output": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "source_refs": {
+        "issue": "/home/rajee/.cache/huggingface/datasets/SWE-bench___swe-bench_verified/default/0.0.0/78f471bf655a3137b2e8a75af1501690ec009ec3/swe-bench_verified-test.arrow:django__django-12209:problem_statement",
+        "candidate_patch": "reports/v2_scoring_audit/frozen_inputs/django__django-12209.patch",
+        "test_source": [
+          "/home/rajee/cg_repos/task_archives/django__django-12209.tar!testbed/tests/basic/tests.py"
+        ],
+        "base_output": [],
+        "patched_output": []
+      },
+      "observations": {
+        "base": 0,
+        "patched": 0
+      },
+      "prediction": "UNCERTAIN",
+      "shadow_mode": true,
+      "suggest_suppress_v2_negative": false,
+      "checks": {
+        "stable_transition": false,
+        "plain_assertion": false,
+        "explicit_issue_change": false,
+        "candidate_changes_behavior": false,
+        "no_conflicts": false
+      },
+      "reason": "Insufficient paired stability observations; need initial plus three per tree",
+      "evidence": []
+    },
+    {
+      "instance_id": "django__django-14140",
+      "held_out_diagnostic": false,
+      "allowlisted_inputs_sha256": "e1551df6d4a5040bfda5a87d962053e4375e78bd8f51e823d1ff0746d5d07b01",
+      "field_sha256": {
+        "issue": "4c153cd821859153f62c9d0a62d396f56260ecbafa5f6af764f55c3813907fea",
+        "candidate_patch": "81a7bd066e9382a7b9877bc97faac495f4c85635fa7985d9e8da4d2243666656",
+        "test_source": "a09aa15538c1babef470cb81a27baebec1b0de92ae3227a2f1bb07057298dc62",
+        "base_output": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "patched_output": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "source_refs": {
+        "issue": "/home/rajee/.cache/huggingface/datasets/SWE-bench___swe-bench_verified/default/0.0.0/78f471bf655a3137b2e8a75af1501690ec009ec3/swe-bench_verified-test.arrow:django__django-14140:problem_statement",
+        "candidate_patch": "reports/v2_scoring_audit/frozen_inputs/django__django-14140.patch",
+        "test_source": [
+          "/home/rajee/cg_repos/task_archives/django__django-14140.tar!testbed/tests/queries/test_q.py"
+        ],
+        "base_output": [],
+        "patched_output": []
+      },
+      "observations": {
+        "base": 0,
+        "patched": 0
+      },
+      "prediction": "UNCERTAIN",
+      "shadow_mode": true,
+      "suggest_suppress_v2_negative": false,
+      "checks": {
+        "stable_transition": false,
+        "plain_assertion": false,
+        "explicit_issue_change": false,
+        "candidate_changes_behavior": false,
+        "no_conflicts": false
+      },
+      "reason": "Insufficient paired stability observations; need initial plus three per tree",
+      "evidence": []
+    },
+    {
+      "instance_id": "django__django-14631",
+      "held_out_diagnostic": false,
+      "allowlisted_inputs_sha256": "7e056a50b93c55aa15474603d8d1b66249b793e72dd729d8ffe221a20faeded4",
+      "field_sha256": {
+        "issue": "b88e26fe144af2647dc7c74be7b7c8a6a5d16dddc8baa3bba021050efa6aa109",
+        "candidate_patch": "f8e7f5aa873b0418382b6da41b8bc6b892512624804ded1ba7fa74226161a4af",
+        "test_source": "db349342ca51f317728e55718e1cfc617c14d7b0ef6feb096612270d7a7f7482",
+        "base_output": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "patched_output": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "source_refs": {
+        "issue": "/home/rajee/.cache/huggingface/datasets/SWE-bench___swe-bench_verified/default/0.0.0/78f471bf655a3137b2e8a75af1501690ec009ec3/swe-bench_verified-test.arrow:django__django-14631:problem_statement",
+        "candidate_patch": "reports/v2_scoring_audit/frozen_inputs/django__django-14631.patch",
+        "test_source": [
+          "/home/rajee/cg_repos/task_archives/django__django-14631.tar!testbed/tests/forms_tests/tests/test_forms.py"
+        ],
+        "base_output": [],
+        "patched_output": []
+      },
+      "observations": {
+        "base": 0,
+        "patched": 0
+      },
+      "prediction": "UNCERTAIN",
+      "shadow_mode": true,
+      "suggest_suppress_v2_negative": false,
+      "checks": {
+        "stable_transition": false,
+        "plain_assertion": false,
+        "explicit_issue_change": false,
+        "candidate_changes_behavior": false,
+        "no_conflicts": false
+      },
+      "reason": "Insufficient paired stability observations; need initial plus three per tree",
+      "evidence": []
+    },
+    {
+      "instance_id": "pytest-dev__pytest-5809",
+      "held_out_diagnostic": false,
+      "allowlisted_inputs_sha256": "678f67afeffff7f9912b412e083c83e5c9d9bf335e276f9790b76b4623fec793",
+      "field_sha256": {
+        "issue": "e3596882d416093976811d727467d1253ed7f7546aa691b43fb12a5a642e776c",
+        "candidate_patch": "a7ccc4af77eed21019a7e1b0ece4371f87c482bfd0b054fe9611c1aba0b061da",
+        "test_source": "50fab39df396c00f7c6d6a1dd91ecfef1a7482f6ba0b7bb1cbeecc3d6bf9a759",
+        "base_output": "b2b984b61b7944493895828e99168a30d364e49275831858e9435adafcd99124",
+        "patched_output": "df49b57a6f40c20842cee57708b964e74d03df277210171a22639260dc16b03f"
+      },
+      "source_refs": {
+        "issue": "/home/rajee/.cache/huggingface/datasets/SWE-bench___swe-bench_verified/default/0.0.0/78f471bf655a3137b2e8a75af1501690ec009ec3/swe-bench_verified-test.arrow:pytest-dev__pytest-5809:problem_statement",
+        "candidate_patch": "reports/v2_scoring_audit/frozen_inputs/pytest-dev__pytest-5809.patch",
+        "test_source": [
+          "/home/rajee/cg_repos/task_archives/pytest-dev__pytest-5809.tar!testbed/testing/test_pastebin.py"
+        ],
+        "base_output": [
+          {
+            "stdout": "reports/v2_scoring_audit/resume_20261026/phase2/pytest-dev__pytest-5809/base/initial/runner.raw",
+            "stderr": "reports/v2_scoring_audit/resume_20261026/phase2/pytest-dev__pytest-5809/base/initial/driver.stderr",
+            "receipt": "reports/v2_scoring_audit/resume_20261026/phase2/pytest-dev__pytest-5809/base/initial/batch_events.jsonl",
+            "receipt_note": "Target test batch exit; complete initial raw context is not trimmed"
+          },
+          {
+            "stdout": "reports/v2_scoring_audit/resume_20261026/phase3/pytest-dev__pytest-5809/base/candidate_0000_repeat_1/runner.raw",
+            "stderr": "reports/v2_scoring_audit/resume_20261026/phase3/pytest-dev__pytest-5809/base/candidate_0000_repeat_1/driver.stderr",
+            "receipt": "reports/v2_scoring_audit/resume_20261026/phase3/pytest-dev__pytest-5809/base/candidate_0000_repeat_1/batch_events.jsonl",
+            "receipt_note": "Target test batch exit; complete initial raw context is not trimmed"
+          },
+          {
+            "stdout": "reports/v2_scoring_audit/resume_20261026/phase3/pytest-dev__pytest-5809/base/candidate_0000_repeat_2/runner.raw",
+            "stderr": "reports/v2_scoring_audit/resume_20261026/phase3/pytest-dev__pytest-5809/base/candidate_0000_repeat_2/driver.stderr",
+            "receipt": "reports/v2_scoring_audit/resume_20261026/phase3/pytest-dev__pytest-5809/base/candidate_0000_repeat_2/batch_events.jsonl",
+            "receipt_note": "Target test batch exit; complete initial raw context is not trimmed"
+          },
+          {
+            "stdout": "reports/v2_scoring_audit/resume_20261026/phase3/pytest-dev__pytest-5809/base/candidate_0000_repeat_3/runner.raw",
+            "stderr": "reports/v2_scoring_audit/resume_20261026/phase3/pytest-dev__pytest-5809/base/candidate_0000_repeat_3/driver.stderr",
+            "receipt": "reports/v2_scoring_audit/resume_20261026/phase3/pytest-dev__pytest-5809/base/candidate_0000_repeat_3/batch_events.jsonl",
+            "receipt_note": "Target test batch exit; complete initial raw context is not trimmed"
+          }
+        ],
+        "patched_output": [
+          {
+            "stdout": "reports/v2_scoring_audit/resume_20261026/phase2/pytest-dev__pytest-5809/patched/initial/runner.raw",
+            "stderr": "reports/v2_scoring_audit/resume_20261026/phase2/pytest-dev__pytest-5809/patched/initial/driver.stderr",
+            "receipt": "reports/v2_scoring_audit/resume_20261026/phase2/pytest-dev__pytest-5809/patched/initial/batch_events.jsonl",
+            "receipt_note": "Target test batch exit; complete initial raw context is not trimmed"
+          },
+          {
+            "stdout": "reports/v2_scoring_audit/resume_20261026/phase3/pytest-dev__pytest-5809/patched/candidate_0000_repeat_1/runner.raw",
+            "stderr": "reports/v2_scoring_audit/resume_20261026/phase3/pytest-dev__pytest-5809/patched/candidate_0000_repeat_1/driver.stderr",
+            "receipt": "reports/v2_scoring_audit/resume_20261026/phase3/pytest-dev__pytest-5809/patched/candidate_0000_repeat_1/batch_events.jsonl",
+            "receipt_note": "Target test batch exit; complete initial raw context is not trimmed"
+          },
+          {
+            "stdout": "reports/v2_scoring_audit/resume_20261026/phase3/pytest-dev__pytest-5809/patched/candidate_0000_repeat_2/runner.raw",
+            "stderr": "reports/v2_scoring_audit/resume_20261026/phase3/pytest-dev__pytest-5809/patched/candidate_0000_repeat_2/driver.stderr",
+            "receipt": "reports/v2_scoring_audit/resume_20261026/phase3/pytest-dev__pytest-5809/patched/candidate_0000_repeat_2/batch_events.jsonl",
+            "receipt_note": "Target test batch exit; complete initial raw context is not trimmed"
+          },
+          {
+            "stdout": "reports/v2_scoring_audit/resume_20261026/phase3/pytest-dev__pytest-5809/patched/candidate_0000_repeat_3/runner.raw",
+            "stderr": "reports/v2_scoring_audit/resume_20261026/phase3/pytest-dev__pytest-5809/patched/candidate_0000_repeat_3/driver.stderr",
+            "receipt": "reports/v2_scoring_audit/resume_20261026/phase3/pytest-dev__pytest-5809/patched/candidate_0000_repeat_3/batch_events.jsonl",
+            "receipt_note": "Target test batch exit; complete initial raw context is not trimmed"
+          }
+        ]
+      },
+      "observations": {
+        "base": 4,
+        "patched": 4
+      },
+      "prediction": "UNCERTAIN",
+      "shadow_mode": true,
+      "suggest_suppress_v2_negative": false,
+      "checks": {
+        "stable_transition": true,
+        "plain_assertion": true,
+        "explicit_issue_change": false,
+        "candidate_changes_behavior": false,
+        "no_conflicts": false
+      },
+      "reason": "Non-assertion, conflicting or unrelated failure evidence",
+      "evidence": []
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-10435",
+      "held_out_diagnostic": false,
+      "allowlisted_inputs_sha256": "7af730063834c960a24c4f2e2a6ee85144506a0bbeff294af33df73a9322f734",
+      "field_sha256": {
+        "issue": "3d41b12c34d786732a247f5b622a6bb82262b701089fd6bc78d21e480322d949",
+        "candidate_patch": "9347d769d1a14360d468cbab6ac826604364505b701dd12d13e45c1411c99b71",
+        "test_source": "f1abc02f526ae12934d3c6abb31a7c468b64da45231a6d3a8cb26d1ed98df385",
+        "base_output": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "patched_output": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "source_refs": {
+        "issue": "/home/rajee/.cache/huggingface/datasets/SWE-bench___swe-bench_verified/default/0.0.0/78f471bf655a3137b2e8a75af1501690ec009ec3/swe-bench_verified-test.arrow:sphinx-doc__sphinx-10435:problem_statement",
+        "candidate_patch": "reports/v2_scoring_audit/frozen_inputs/sphinx-doc__sphinx-10435.patch",
+        "test_source": [
+          "/home/rajee/cg_repos/task_archives/sphinx-doc__sphinx-10435.tar!testbed/tests/test_build_latex.py"
+        ],
+        "base_output": [],
+        "patched_output": []
+      },
+      "observations": {
+        "base": 0,
+        "patched": 0
+      },
+      "prediction": "UNCERTAIN",
+      "shadow_mode": true,
+      "suggest_suppress_v2_negative": false,
+      "checks": {
+        "stable_transition": false,
+        "plain_assertion": false,
+        "explicit_issue_change": false,
+        "candidate_changes_behavior": false,
+        "no_conflicts": false
+      },
+      "reason": "Insufficient paired stability observations; need initial plus three per tree",
+      "evidence": []
+    }
+  ]
+}

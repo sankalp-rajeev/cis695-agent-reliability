@@ -1,0 +1,46 @@
+{
+  "config": {
+    "candidate_relationship": "One semantic removed/added line, same string dictionary key, new string literal, matching existing test variable/format assertion and called module",
+    "default": "UNCERTAIN",
+    "genuine_regression_output": "Reserved; this narrow prototype abstains rather than asserting genuine regression",
+    "held_out": "django-12209 is diagnostic only; no ID or repository-specific branches in classifier",
+    "infrastructure_scope": "A verified completed batch containing the failing concrete test, including collection. Unknown relevance abstains. Unrelated assertion failures still conflict.",
+    "input_allowlist": [
+      "issue",
+      "candidate_patch",
+      "test_source",
+      "base_output",
+      "patched_output"
+    ],
+    "issue_relationship": "Exact explicit field changed from old to new statement; no lexical similarity score",
+    "minimum_observations_per_tree": 2,
+    "mode": "SHADOW_ONLY",
+    "no_unrelated_failure_or_runner_error": false,
+    "outputs": [
+      "LIKELY_SUPERSEDED_ASSERTION",
+      "LIKELY_GENUINE_REGRESSION",
+      "UNCERTAIN"
+    ],
+    "plain_assertion_only": true,
+    "prior_knowledge": "Cases are familiar. Freeze cannot remove researcher knowledge. Report agreement with five retrospective labels, never accuracy.",
+    "raw_context": "Retain complete initial raw logs. Candidate-scoped output must come from recorded completed batch byte offsets or a stored raw batch with its exit receipt."
+  },
+  "exploratory_only": "Five familiar cases are exploratory, not validation; prior knowledge cannot be removed by freezing.",
+  "frozen_before_familiar_case_execution": true,
+  "frozen_rule_sha256": "e0e5d8d116c4df39121c8bc7eaa4f83fb75a7d39fe523e3cd140a85e3aab3b6b",
+  "frozen_utc": "2026-10-27T00:42:38.956229+00:00",
+  "implementation_sha256": {
+    "superseded_rule.py": "4c3150eb15af25c7f1914e88abbe3eece28ae306aac1f367c23f0540d85594f4",
+    "superseded_rule_v2.py": "dc3d9c5206f75c73f1b9783e89b0940936992e0a41a1b4a12c103e8598eef90a",
+    "superseded_shadow.py": "76a88c0abb4dbf5e2f0dc7231c0e4d97e9cdc84d91b6580f65abec363e1b5f62",
+    "superseded_shadow_v2.py": "3dc70ba25c9e3f7ddc739873f0043e803d2c0548a54bb64c87abcbd7b241d6eb"
+  },
+  "mode": "SHADOW_ONLY",
+  "stability_execution_plan": "One extra isolated base run per FAIL candidate; reuse original patched confirmation, otherwise add one patched run. Never retry disagreements. No extra tests for non-FAIL.",
+  "structural_changes": [
+    "Two consistent observations per tree for FAIL candidates only; any disagreement abstains.",
+    "Infrastructure checked for the failing test or its collection using verified batch receipts; unrelated infrastructure elsewhere does not by itself reject."
+  ],
+  "unchanged_literal_relationship_logic_sha256": "4c8e67bf96a0e89c95a3c90cd7b4366a3538709069ebe6a148974d50e6f2c87c",
+  "version": "v2"
+}

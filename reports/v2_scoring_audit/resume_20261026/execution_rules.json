@@ -1,0 +1,9 @@
+{
+  "historical_image_digest": "UNKNOWN: not stored in frozen metadata",
+  "instrumentation": "Original runner commands, selection order, batch size 25, split-on-exit4 budget 200; streaming byte capture and batch events added. No plugins installed or dependencies changed.",
+  "oracle_gate": "CLOSED until all authorized possible raw collection and repeats finish",
+  "proposed_fix_sha256": "ce04a91ea89459920acf4a8b71ccc6f8361971752681d3e5e5d8f9021a64c5fb",
+  "protocol_sha256": "e43be43fb6929fbb0c415d3a3f7818da58b98894b43c9123594b6b43d3edfb0d",
+  "usable_definition": "V2 ran at least one selected test on both trees and every selected test has a recorded base and patched outcome.",
+  "usable_treatment": "Only observed terminal PASS/FAIL/ERROR/SKIP are recorded per-test outcomes. Missing IDs, inferred NOT_RUN and process-level timeout do not supply raw outcomes. At least one concrete PASS/FAIL/SKIP is required on each tree. A family is covered only if its responsible batch completed with rc 0/1 and emitted a concrete result."
+}

@@ -1,0 +1,27 @@
+{
+  "complete_pass": {
+    "raw_ids": "Every relevant emitted concrete ID must map unambiguously to a selected ID; all observed parameter cases must be paired; unidentified/ambiguous outputs and unsupported result formats preclude a complete PASS.",
+    "runner_evidence": "Raw output plus batch exit/completion evidence must be retained; absent capture proof is UNVERIFIABLE.",
+    "selected_outcomes": "Every selected ID must have identifiable terminal base and patched outcomes; NOT_RUN/TIMEOUT are gaps, not terminal evidence. ERROR/runner infrastructure failures preclude a complete PASS. Explicit skips are terminal recorded outcomes.",
+    "timeout_threshold": 0
+  },
+  "empty_selection": "Existing NOT_AVAILABLE unchanged.",
+  "frozen_utc": "2026-10-27T00:01:10.234248+00:00",
+  "historical_absence": "A missing historical raw record is an evidence gap, never an invented NOT_RUN or timeout. Would-be PASS becomes INCOMPLETE with state UNVERIFIABLE.",
+  "historical_states": [
+    "COMPLETE",
+    "INCOMPLETE_CONFIRMED",
+    "UNVERIFIABLE"
+  ],
+  "migration": "Only PASS -> INCOMPLETE; FAIL, NOT_AVAILABLE and BASELINE_UNRELIABLE remain unchanged. Keep original verdict beside new.",
+  "policy": "Decision rules in decision.py unchanged; native INCOMPLETE adapts to existing unavailable signal vocabulary. Classifier only logs shadow suggestions; no decision suppression.",
+  "regression_precedence": "FAIL remains FAIL despite other incompleteness. Preserve legacy parser/scorer classifications alongside raw accounting; do not retroactively turn previously ignored IDs into FAIL or erase historical FAILs.",
+  "source_sha256_before": {
+    "src/reliability/verifier/container.py": "27646aff9a9c502b2d878c18acea9bb11a19d99eed12b8546503c0652083f457",
+    "src/reliability/verifier/decision.py": "32f9e68f070ae70a4f5e97807245544d6228babaa4ef3c05780a7c1afe0bdb32",
+    "src/reliability/verifier/evidence.py": "d7ebe1ddb084746c675ac6cebaa9c1f54ea26ab276f7777071f0a4595005edd4",
+    "src/reliability/verifier/record.py": "d6902009274cb7972cec3b6e93f2831232bf877ebba666e626e9f0d20727f6aa",
+    "src/reliability/verifier/regression.py": "f0307ffdb6e526518e6fb92dfeced618b9b7deecd18dbd710228e3c2ea132320",
+    "src/reliability/verifier/run.py": "967a2ebc270863df4f4614afd17c9b85ace3c9236163fbf5a3c4e9c9a65edd3f"
+  }
+}

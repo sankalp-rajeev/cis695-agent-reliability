@@ -15,7 +15,11 @@ it, removed on exit. Nothing is shared between concurrent verifications.
 
 from __future__ import annotations
 
+import base64
 import contextvars
+import hashlib
+import json
+import os
 import re
 import shlex
 import subprocess
@@ -156,6 +160,18 @@ class TaskContainer:
             raise TimeoutError(f"command timed out after {timeout_s}s") from exc
         return proc.returncode, (proc.stdout or "") + (proc.stderr or "")
 
+    def exec_raw(self, command: str, timeout_s: int):
+        """V2 capture boundary: retain undecoded bytes, including timeout output."""
+        try:
+            proc = subprocess.run(
+                [_docker_bin(), "exec", "-w", WORKDIR, self.name, "bash", "-lc", command],
+                capture_output=True, timeout=timeout_s,
+                env=clean_env(), check=False,
+            )
+            return proc.returncode, proc.stdout, proc.stderr, False
+        except subprocess.TimeoutExpired as exc:
+            return None, exc.stdout or b"", exc.stderr or b"", True
+
     # -- tree state --------------------------------------------------------
 
     def set_patched(self, patched: bool) -> None:
@@ -231,24 +247,42 @@ _OUT_LOG = "/tmp/verifier_out.txt"
 #: costs its own result and not its neighbours'. The splitting is capped so a
 #: usage error cannot turn into hundreds of runs.
 _BATCH_DRIVER = r'''
-import pathlib, subprocess, sys
+import json, os, pathlib, subprocess, sys, time
 kind = sys.argv[1]
 ids = [line.strip() for line in pathlib.Path("/tmp/verifier_ids").read_text(encoding="utf-8", errors="replace").splitlines() if line.strip()]
-log = pathlib.Path("/tmp/verifier_out.txt")
-log.write_text("", encoding="utf-8")
+try:
+    os.setsid()
+except OSError:
+    pass
+pathlib.Path("/tmp/verifier_pgid").write_text(str(os.getpgrp()))
+log = open("/tmp/verifier_out.txt", "wb", buffering=0)
+events = open("/tmp/verifier_events.jsonl", "w", buffering=1)
 budget = [200]
+sequence = [0]
 
 def run(part):
     if kind == "django":
         cmd = ["python", "tests/runtests.py", "--verbosity=2"] + part
     else:
         cmd = ["python", "-m", "pytest"] + part + ["-p", "no:cacheprovider", "-v"]
-    proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    text = proc.stdout.decode("utf-8", "replace")
-    with log.open("a", encoding="utf-8") as fh:
-        fh.write(text)
-    print(text, end="")
-    return proc.returncode
+    sequence[0] += 1
+    index, start = sequence[0], time.monotonic()
+    events.write(json.dumps(dict(event="start", batch=index, argv=cmd, ids=part,
+                                offset=log.tell())) + "\n")
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    while True:
+        chunk = os.read(proc.stdout.fileno(), 65536)
+        if not chunk:
+            break
+        log.write(chunk)
+        sys.stdout.buffer.write(chunk)
+        sys.stdout.buffer.flush()
+    code = proc.wait()
+    split = kind == "pytest" and code == 4 and len(part) > 1 and budget[0] > 0
+    events.write(json.dumps(dict(event="end", batch=index, returncode=code,
+                                split=split, offset=log.tell(),
+                                duration_s=time.monotonic()-start)) + "\n")
+    return code
 
 def execute(part):
     code = run(part)
@@ -260,6 +294,7 @@ def execute(part):
 
 for start in range(0, len(ids), 25):
     execute(ids[start:start + 25])
+events.write(json.dumps(dict(event="complete")) + "\n")
 '''
 
 
@@ -278,6 +313,17 @@ class ContainerTestExecutor:
 
     container: TaskContainer
     runner: TestRunner | None = None
+    evidence_dir: Path | None = None
+
+    def _capture(self, command, timeout_s):
+        if hasattr(self.container, "exec_raw"):
+            return self.container.exec_raw(command, timeout_s)
+        # Structured executors used by unit tests; never claim raw completeness.
+        try:
+            rc, output = self.container.exec(command, timeout_s=timeout_s)
+            return rc, output.encode(), b"", False
+        except TimeoutError:
+            return None, b"", b"", True
 
     def run(self, tests: tuple[str, ...], *, patched: bool, timeout_s: int) -> RunResult:
         if not tests:
@@ -290,34 +336,107 @@ class ContainerTestExecutor:
             if runner.name == "django" else tests
         )
         command = f"python /tmp/verifier_driver.py {runner.name}"
+        errors = []
+        raw_stdout = raw_stderr = runner_log = b""
+        event_bytes = b""
+        timed_out = False
+        events = ()
+        files, digests = {}, {}
         try:
             # The ids go through stdin. Embedding them in `docker exec` argv is
             # what raised E2BIG once a short symbol selected a large tier-2 set.
-            self.container.exec_input(
+            rc, _ = self.container.exec_input(
                 f"cat > {_IDS_PATH}", "\n".join(native) + "\n", timeout_s=60)
-            self.container.exec_input(
+            if rc:
+                errors.append("selected-ID upload failed")
+            rc, _ = self.container.exec_input(
                 "cat > /tmp/verifier_driver.py", _BATCH_DRIVER, timeout_s=60)
-            _, output = self.container.exec(command, timeout_s=timeout_s)
+            if rc:
+                errors.append("capture-driver upload failed")
+            # A failed driver must not expose stale logs from an earlier tree/pass.
+            rc, _, _, clear_timeout = self._capture(
+                "rm -f /tmp/verifier_out.txt /tmp/verifier_events.jsonl /tmp/verifier_pgid", 30)
+            if rc or clear_timeout:
+                errors.append("could not clear previous capture")
+            if errors:
+                return RunResult(
+                    results=tuple(TestResult(t, TestStatus.NOT_RUN) for t in tests),
+                    infrastructure_errors=tuple(errors), requested_tests=tuple(tests),
+                    note="; ".join(errors))
+            rc, raw_stdout, raw_stderr, timed_out = self._capture(command, timeout_s)
+            if rc not in (0, None):
+                errors.append(f"capture driver exit {rc}")
+            if timed_out:
+                kill = ("python -c 'import os,signal; "
+                        "os.killpg(int(open(\"/tmp/verifier_pgid\").read()),signal.SIGKILL)'")
+                self._capture(kill, 30)
+            rc, logged, _, log_timeout = self._capture("cat " + _OUT_LOG, 30)
+            runner_log = logged if rc == 0 and not log_timeout else raw_stdout
+            rc, event_bytes, _, event_timeout = self._capture("cat /tmp/verifier_events.jsonl", 30)
+            if rc != 0 or event_timeout:
+                event_bytes = b""
         except TimeoutError:
-            try:
-                statuses = self._partial_statuses(runner, tests)
-            except TimeoutError:
-                statuses = {}
-            return RunResult(
-                results=tuple(
-                    TestResult(t, statuses.get(t, TestStatus.TIMEOUT)) for t in tests
-                ),
-                timed_out=True,
-            )
-
+            timed_out = True
+        output = (runner_log + raw_stderr).decode("utf-8", "replace")
+        # Persist bytes/events BEFORE either legacy parsing or raw-ID accounting.
+        if self.evidence_dir is not None:
+            folder = self.evidence_dir / (("patched" if patched else "base") + "_" + uuid.uuid4().hex)
+            folder.mkdir(parents=True, exist_ok=False)
+            for name, data in (("stdout.raw", raw_stdout), ("stderr.raw", raw_stderr),
+                               ("runner.raw", runner_log),
+                               ("events.jsonl", event_bytes)):
+                path = folder / name
+                with path.open("xb") as f:
+                    f.write(data)
+                    f.flush()
+                    os.fsync(f.fileno())
+                files[name] = str(path.resolve())
+                digests[name] = hashlib.sha256(data).hexdigest()
+        try:
+            events = tuple(json.loads(line) for line in event_bytes.splitlines())
+            if not all(isinstance(event, dict) for event in events):
+                raise ValueError("capture event is not an object")
+        except (ValueError, TypeError):
+            events = ()
+            errors.append("malformed capture events")
         statuses = _parse_output(runner, output, tests)
-
+        raw_results, mappings, unmatched = account_raw_output(runner, output, tests)
+        complete = bool(events and events[-1].get("event") == "complete")
+        starts = {e.get("batch") for e in events if e.get("event") == "start"}
+        ends = {e.get("batch") for e in events if e.get("event") == "end"}
+        if not starts:
+            complete = False
+        if starts != ends:
+            errors.append("unfinished runner batch")
+        for event in events:
+            if event.get("event") == "end" and not event.get("split"):
+                if event.get("returncode") not in (0, 1):
+                    errors.append(f"runner batch {event.get('batch')} exit {event.get('returncode')}")
+                elif event.get("returncode") == 1:
+                    start = next((e for e in events if e.get("event") == "start"
+                                  and e.get("batch") == event.get("batch")), {})
+                    if "offset" not in start or "offset" not in event:
+                        complete = False
+                    else:
+                        batch_output = runner_log[start["offset"]:event["offset"]].decode("utf-8", "replace")
+                        cases, _, _ = account_raw_output(runner, batch_output, tests)
+                        if not any(r.status in (TestStatus.FAILED, TestStatus.ERROR) for r in cases):
+                            errors.append("unexplained nonzero runner exit")
         # Anything the runner did not report on is NOT_RUN, never an implicit pass.
         return RunResult(
             results=tuple(
-                TestResult(t, statuses.get(t, TestStatus.NOT_RUN)) for t in tests
+                TestResult(t, statuses.get(t, TestStatus.TIMEOUT if timed_out else TestStatus.NOT_RUN))
+                for t in tests
             ),
             note="" if statuses else _no_results_note(output),
+            timed_out=timed_out, raw_results=raw_results, raw_id_map=mappings,
+            unmatched_ids=unmatched, infrastructure_errors=tuple(errors),
+            evidence_complete=complete and not errors,
+            raw_stdout_b64=base64.b64encode(raw_stdout).decode(),
+            raw_stderr_b64=base64.b64encode(raw_stderr).decode(),
+            runner_log_b64=base64.b64encode(runner_log).decode(),
+            events=events, evidence_files=files, evidence_sha256=digests,
+            requested_tests=tuple(tests),
         )
 
     def _partial_statuses(self, runner: TestRunner, tests) -> dict:
@@ -404,6 +523,51 @@ def _parse_django(output: str, tests: tuple[str, ...]) -> dict[str, TestStatus]:
         if node is not None:
             statuses[node] = status
     return statuses
+
+
+def account_raw_output(runner: TestRunner, output: str, tests: tuple[str, ...]):
+    """Account for concrete IDs without changing legacy admission/scoring.
+
+    A family match is evidence about an emitted concrete case, not permission to
+    collapse different parameter cases into a single pass/fail transition.
+    Unmapped IDs remain visible and block completeness.
+    """
+    wanted = set(tests)
+    labels: dict[str, list[str]] = {}
+    for tid in tests:
+        labels.setdefault(django_label(tid), []).append(tid)
+    raw, mappings = {}, {}
+    pending = None
+    for line in output.splitlines():
+        line = re.sub(r"\x1b\[[0-9;]*m", "", line).strip()
+        if runner.name == "django":
+            header = re.match(r"^(\w+) \(([^)]+)\)(.*)$", line)
+            if header:
+                name, label, tail = header.groups()
+                pending = label if label.endswith("." + name) else label + "." + name
+            else:
+                tail = line
+            outcome = re.search(r"\.\.\. (ok|FAIL|ERROR|skipped)\b", tail, re.IGNORECASE)
+            if pending is None or outcome is None:
+                continue
+            tid = pending
+            status = _DJANGO_OUTCOME[outcome.group(1).lower()]
+            mapped = tuple(labels.get(tid, ()))
+            pending = None
+        else:
+            match = _PYTEST_LINE.match(line)
+            if match is None:
+                continue
+            tid = match.group("id")
+            status = _PYTEST_OUTCOME[match.group("outcome")]
+            candidates = (tid, tid.split("[", 1)[0]) if "[" in tid else (tid,)
+            mapped = tuple(t for t in candidates if t in wanted)
+        earlier = raw.get(tid)
+        if earlier is None or _PYTEST_SEVERITY[status] >= _PYTEST_SEVERITY[earlier]:
+            raw[tid] = status
+        mappings[tid] = mapped
+    return (tuple(TestResult(tid, status) for tid, status in raw.items()), mappings,
+            tuple(tid for tid, selected in mappings.items() if len(selected) != 1))
 
 
 def verify_in_container(

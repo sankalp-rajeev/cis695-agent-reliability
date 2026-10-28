@@ -40,3 +40,16 @@ reports/callgraph_selection/provenance/
 /reports/callgraph_selection/phase2/ranked_outputs.jsonl.gz
 /reports/callgraph_selection/phase2/per_test_provenance.csv
 /reports/callgraph_selection/**/*.log
+
+# Bulk V2 captures stay local; minimal parser fixtures are explicitly tracked.
+/reports/v2_scoring_audit/**/preflight/
+/reports/v2_scoring_audit/resume_20261026/phase2/
+/reports/v2_scoring_audit/resume_20261026/phase3/
+/reports/v2_scoring_audit/raw_test_outcomes.csv
+/reports/v2_scoring_audit/**/*.log
+/reports/v2_scoring_audit/**/*.stdout
+/reports/v2_scoring_audit/**/*.stderr
+/reports/v2_stabilization/classifier_v2/preflight/
+/reports/v2_stabilization/classifier_v2/live/tasks/*/raw/
+/reports/v2_stabilization/classifier_v2/live/tasks/*/verification_record.full.json
+/reports/v2_stabilization/**/*.log

@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "docker",
+    "ps",
+    "-a",
+    "--filter",
+    "label=experiment_id=v2_stabilization_live_v2",
+    "--format",
+    "{{.Names}}"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "",
+  "all_validation_containers_removed": true
+}

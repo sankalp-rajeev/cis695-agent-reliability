@@ -67,6 +67,7 @@ class SignalAbsence(str, Enum):
     NOTHING_TO_CHECK = "nothing_to_check"  # ran, found nothing applicable
     ERROR = "error"                      # the layer itself broke
     TIMEOUT = "timeout"
+    INCOMPLETE = "incomplete"
 
 
 class SignalRecord(BaseModel):

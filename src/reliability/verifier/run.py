@@ -45,6 +45,7 @@ from reliability.verifier.regression import (
     RegressionReport,
     Signal,
     run_regression,
+    run_to_dict,
 )
 from reliability.verifier.reproduction import (
     ContainerSandbox,
@@ -115,7 +116,7 @@ def verify_task(
             container.start()
             tree = ContainerRepoTree(container)
             command_executor = ContainerCommandExecutor(container)
-            test_executor = ContainerTestExecutor(container)
+            test_executor = ContainerTestExecutor(container, evidence_dir=task_dir / "v2_evidence")
         signals, extras = run_layers(
             patch_text, tree, command_executor, test_executor,
             instance_id=record.instance_id,
@@ -181,6 +182,7 @@ def run_layers(
     *,
     instance_id: str,
     baseline_cache_dir: Path | None = None,
+    issue_text: str | None = None,
 ) -> tuple[dict[SignalKind, SignalRecord], dict]:
     """Run each layer, recording an attributed absence where one cannot run."""
     signals: dict[SignalKind, SignalRecord] = {}
@@ -250,6 +252,19 @@ def run_layers(
                 RegressionConfig(baseline_cache_dir=baseline_cache_dir),
             )
             signals[SignalKind.REGRESSION] = signal_from_regression(report)
+            # Shadow only: no change to report.signal, evidence or decisions.
+            from reliability.verifier.superseded_shadow_v2 import shadow_from_report
+
+            try:
+                if (issue_text is None and report.signal is Signal.FAIL
+                        and isinstance(test_executor, ContainerTestExecutor)):
+                    issue_text = load_agent_task(instance_id).problem_statement
+                shadow = shadow_from_report(report, issue_text, patch_text, tree, test_executor)
+            except Exception as exc:  # noqa: BLE001 - shadow cannot change decisions
+                shadow = {"prediction": "UNCERTAIN", "shadow_mode": True,
+                          "suggest_suppress_v2_negative": False,
+                          "reason": f"Shadow unavailable: {type(exc).__name__}: {exc}"[:400]}
+            signals[SignalKind.REGRESSION].findings["superseded_shadow"] = shadow
 
         if command_executor is None:
             signals[SignalKind.STATIC] = SignalRecord.absent(
@@ -360,7 +375,9 @@ def signal_from_regression(report: RegressionReport) -> SignalRecord:
     outcome = regression_outcome(report)
     absence = None
     if outcome is SignalOutcome.NOT_AVAILABLE:
-        if report.signal is Signal.BASELINE_UNRELIABLE:
+        if report.signal is Signal.INCOMPLETE:
+            absence = SignalAbsence.INCOMPLETE
+        elif report.signal is Signal.BASELINE_UNRELIABLE:
             absence = SignalAbsence.ERROR
         elif report.selection and report.selection.tests:
             # Tests were selected and none ran: the runner broke. That is the
@@ -370,6 +387,8 @@ def signal_from_regression(report: RegressionReport) -> SignalRecord:
             absence = SignalAbsence.NOTHING_TO_CHECK
     detail = "; ".join(report.notes) or (
         f"{report.n_executed} executed, {report.n_regressions} regressions")
+    if report.signal is Signal.INCOMPLETE:
+        detail = "V2 INCOMPLETE: " + "; ".join(report.incompleteness[:5])
     return SignalRecord(
         kind=SignalKind.REGRESSION, outcome=outcome, absence=absence,
         detail=detail, duration_s=report.duration_s,
@@ -378,6 +397,13 @@ def signal_from_regression(report: RegressionReport) -> SignalRecord:
             "summary": report.summary,
             "n_executed": report.n_executed,
             "notes": list(report.notes),
+            "original_signal": (report.original_signal or report.signal).value,
+            "completeness": report.completeness,
+            "incompleteness": list(report.incompleteness),
+            "outcomes": {tid: status.value for tid, status in report.outcomes.items()},
+            "base": run_to_dict(report.baseline, inline_raw=False) if report.baseline else None,
+            "patched": run_to_dict(report.patched, inline_raw=False) if report.patched else None,
+            "confirmations": [run_to_dict(r, inline_raw=False) for r in report.confirmations],
         },
     )
 

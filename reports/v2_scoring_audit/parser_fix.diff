@@ -1,0 +1,21 @@
+--- a/src/reliability/verifier/container.py
++++ b/src/reliability/verifier/container.py
+@@ -362,9 +362,16 @@ def _parse_pytest(output: str, tests: tuple[str, ...]) -> dict[str, TestStatus]:
+     statuses: dict[str, TestStatus] = {}
+     for line in output.splitlines():
+         match = _PYTEST_LINE.match(line.strip())
+-        if match is None or match.group("id") not in wanted:
++        if match is None:
+             continue
+-        test, status = match.group("id"), _PYTEST_OUTCOME[match.group("outcome")]
++        test = match.group("id")
++        if test not in wanted and "[" in test:
++            family = test.split("[", 1)[0]
++            if family in wanted:
++                test = family
++        if test not in wanted:
++            continue
++        status = _PYTEST_OUTCOME[match.group("outcome")]
+         earlier = statuses.get(test)
+         if earlier is None or _PYTEST_SEVERITY[status] >= _PYTEST_SEVERITY[earlier]:
+             statuses[test] = status

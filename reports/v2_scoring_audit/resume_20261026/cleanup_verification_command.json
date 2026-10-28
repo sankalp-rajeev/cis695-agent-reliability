@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "docker",
+    "ps",
+    "-a",
+    "--filter",
+    "label=experiment_id=v2_scoring_audit_resume_20261026",
+    "--format",
+    "{{.Names}}"
+  ],
+  "timeout_s": 20,
+  "utc": "2026-10-26T22:10:24.580920+00:00"
+}

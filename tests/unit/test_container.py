@@ -36,6 +36,8 @@ class FakeContainer:
         self.calls.append(script)
         if self.timeout:
             raise TimeoutError
+        if script.startswith(("cat >", "rm -f")):
+            return 0, ""
         for key, value in self.responses.items():
             if key in script:
                 return value

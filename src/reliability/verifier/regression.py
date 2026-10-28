@@ -27,7 +27,7 @@ from __future__ import annotations
 
 import json
 import time
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from enum import Enum
 from pathlib import Path
 from typing import Protocol
@@ -75,6 +75,7 @@ class Signal(str, Enum):
     FAIL = "FAIL"
     NOT_AVAILABLE = "NOT_AVAILABLE"            # nothing ran; can never ACCEPT
     BASELINE_UNRELIABLE = "BASELINE_UNRELIABLE"  # §5.5
+    INCOMPLETE = "INCOMPLETE"                 # would-be PASS without complete evidence
 
 
 #: Policy §5.5 — above this share of baseline failures the environment is
@@ -99,6 +100,20 @@ class RunResult:
     duration_s: float = 0.0
     #: Why nothing ran, when the runner reported no results at all.
     note: str = ""
+    # Legacy selected-ID results above remain the compatibility scoring input.
+    # Concrete raw IDs below are retained even when the legacy parser ignores them.
+    raw_results: tuple[TestResult, ...] = ()
+    raw_id_map: dict[str, tuple[str, ...]] = field(default_factory=dict)
+    unmatched_ids: tuple[str, ...] = ()
+    infrastructure_errors: tuple[str, ...] = ()
+    evidence_complete: bool = False
+    raw_stdout_b64: str = ""
+    raw_stderr_b64: str = ""
+    runner_log_b64: str = ""
+    events: tuple[dict, ...] = ()
+    evidence_files: dict[str, str] = field(default_factory=dict)
+    evidence_sha256: dict[str, str] = field(default_factory=dict)
+    requested_tests: tuple[str, ...] = ()
 
     def by_id(self) -> dict[str, TestResult]:
         return {r.test_id: r for r in self.results}
@@ -135,6 +150,12 @@ class RegressionReport:
     n_executed: int = 0
     duration_s: float = 0.0
     notes: tuple[str, ...] = ()
+    original_signal: Signal | None = None
+    completeness: str = "UNVERIFIABLE"
+    incompleteness: tuple[str, ...] = ()
+    baseline: RunResult | None = None
+    patched: RunResult | None = None
+    confirmations: tuple[RunResult, ...] = ()
 
     @property
     def regressions(self) -> tuple[str, ...]:
@@ -163,15 +184,86 @@ def load_cached_baseline(config: RegressionConfig, instance_id: str) -> RunResul
     if path is None or not path.exists():
         return None
     payload = json.loads(path.read_text(encoding="utf-8"))
-    return RunResult(
-        results=tuple(
-            TestResult(r["test_id"], TestStatus(r["status"]), r.get("duration_s", 0.0),
-                       r.get("message", ""))
-            for r in payload["results"]
-        ),
-        timed_out=payload.get("timed_out", False),
-        duration_s=payload.get("duration_s", 0.0),
-    )
+    return run_from_dict(payload)
+
+
+def run_to_dict(run: RunResult, *, inline_raw: bool = True) -> dict:
+    payload = asdict(run)
+    if not inline_raw and run.evidence_files:
+        for key in ("raw_stdout_b64", "raw_stderr_b64", "runner_log_b64"):
+            payload.pop(key, None)
+    return payload
+
+
+def run_from_dict(payload: dict) -> RunResult:
+    fields = {key: payload[key] for key in RunResult.__dataclass_fields__ if key in payload}
+    for key in ("results", "raw_results"):
+        fields[key] = tuple(TestResult(r["test_id"], TestStatus(r["status"]),
+                                      r.get("duration_s", 0.0), r.get("message", ""))
+                            for r in fields.get(key, ()))
+    for key in ("unmatched_ids", "infrastructure_errors", "events", "requested_tests"):
+        fields[key] = tuple(fields.get(key, ()))
+    fields["raw_id_map"] = {k: tuple(v) for k, v in fields.get("raw_id_map", {}).items()}
+    return RunResult(**fields)
+
+
+def completeness_of(tests: tuple[str, ...], base: RunResult | None,
+                    patched: RunResult | None) -> tuple[str, tuple[str, ...]]:
+    """Separate known execution gaps from missing historical capture evidence."""
+    gaps, unknown = [], []
+    for label, run in (("base", base), ("patched", patched)):
+        if run is None:
+            unknown.append(f"{label}: paired evidence unavailable")
+            continue
+        by_id = run.by_id()
+        mapped_raw: dict[str, list[TestResult]] = {}
+        for result in run.raw_results:
+            mapped = run.raw_id_map.get(result.test_id, ())
+            if len(mapped) == 1:
+                mapped_raw.setdefault(mapped[0], []).append(result)
+        if len(by_id) != len(run.results):
+            gaps.append(f"{label}: duplicate selected IDs")
+        for tid in tests:
+            result = by_id.get(tid)
+            # Lossless accounting can establish a healthy selected parameter
+            # family even when the unchanged legacy parser admitted only exact
+            # IDs. Do not invent a pass or silently absorb an unscored failure.
+            cases = mapped_raw.get(tid, ())
+            recovered = (cases and all(r.status in (TestStatus.PASSED, TestStatus.SKIPPED)
+                                      for r in cases))
+            if (result is None or result.status is TestStatus.NOT_RUN) and recovered:
+                continue
+            if result is None or result.status in (TestStatus.NOT_RUN, TestStatus.TIMEOUT,
+                                                   TestStatus.ERROR):
+                gaps.append(f"{label}: {tid}: {result.status.value if result else 'missing'}")
+        if run.timed_out:
+            gaps.append(f"{label}: pass timed out (allowed threshold 0%)")
+        gaps.extend(f"{label}: infrastructure: {s}" for s in run.infrastructure_errors)
+        gaps.extend(f"{label}: unmatched raw ID: {s}" for s in run.unmatched_ids)
+        gaps.extend(f"{label}: ambiguous raw ID: {tid}" for tid, ids in run.raw_id_map.items()
+                    if len(ids) != 1)
+        gaps.extend(f"{label}: raw ERROR: {r.test_id}" for r in run.raw_results
+                    if r.status is TestStatus.ERROR)
+        for result in run.raw_results:
+            ids = run.raw_id_map.get(result.test_id, ())
+            if not ids:
+                gaps.append(f"{label}: unaccounted raw ID: {result.test_id}")
+            if len(ids) == 1 and result.status in (TestStatus.FAILED, TestStatus.ERROR):
+                selected = by_id.get(ids[0])
+                if selected and selected.status in (TestStatus.PASSED, TestStatus.SKIPPED):
+                    gaps.append(f"{label}: raw/selected status conflict: {result.test_id}")
+        if not run.evidence_complete:
+            unknown.append(f"{label}: complete raw/runner capture unavailable")
+    if (base and patched and base.raw_results and patched.raw_results
+            and {r.test_id for r in base.raw_results} != {r.test_id for r in patched.raw_results}):
+        gaps.append("concrete raw test IDs differ between base and patched")
+    state = "INCOMPLETE_CONFIRMED" if gaps else "UNVERIFIABLE" if unknown else "COMPLETE"
+    return state, tuple(gaps + unknown)
+
+
+def integrity_verdict(original: str, completeness: str) -> str:
+    """The single permitted migration. Never manufacture historical outcomes."""
+    return "INCOMPLETE" if original == "PASS" and completeness != "COMPLETE" else original
 
 
 def save_baseline(config: RegressionConfig, instance_id: str, run: RunResult) -> None:
@@ -184,16 +276,7 @@ def save_baseline(config: RegressionConfig, instance_id: str, run: RunResult) ->
     if path is None:
         return
     path.parent.mkdir(parents=True, exist_ok=True)
-    payload = {
-        "instance_id": instance_id,
-        "timed_out": run.timed_out,
-        "duration_s": run.duration_s,
-        "results": [
-            {"test_id": r.test_id, "status": r.status.value,
-             "duration_s": r.duration_s, "message": r.message}
-            for r in run.results
-        ],
-    }
+    payload = {"instance_id": instance_id, **run_to_dict(run)}
     tmp = path.with_suffix(path.suffix + ".tmp")
     tmp.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     tmp.replace(path)
@@ -253,6 +336,7 @@ def run_regression(
         return RegressionReport(
             instance_id=instance_id, signal=Signal.NOT_AVAILABLE, selection=selection,
             notes=("no tests selected",),
+            original_signal=Signal.NOT_AVAILABLE, completeness="COMPLETE",
         )
 
     baseline = load_cached_baseline(config, instance_id)
@@ -286,6 +370,9 @@ def run_regression(
                     (f"{failed_base}/{len(executed_base)} selected tests fail on the "
                      f"base commit; environment is suspect"),
                 ),
+                original_signal=Signal.BASELINE_UNRELIABLE,
+                baseline=baseline,
+                incompleteness=("patched pass not executed: unreliable baseline",),
             )
 
     patched = executor.run(
@@ -300,11 +387,14 @@ def run_regression(
     # Policy §4.1: re-run regressions once in isolation. Rejecting a correct
     # patch over a nondeterministic test lands in the false-rejection rate and
     # distorts the risk-coverage curve directly.
+    confirmations = []
     if config.rerun_flaky:
         suspects = tuple(t for t, o in outcomes.items() if o is Outcome.REGRESSION)
         if suspects:
-            rerun = executor.run(
-                suspects, patched=True, timeout_s=config.per_pass_timeout_s).by_id()
+            confirmation = executor.run(
+                suspects, patched=True, timeout_s=config.per_pass_timeout_s)
+            confirmations.append(confirmation)
+            rerun = confirmation.by_id()
             for test in suspects:
                 result = rerun.get(test)
                 if result is not None and result.status is TestStatus.PASSED:
@@ -327,9 +417,23 @@ def run_regression(
     else:
         signal = Signal.PASS
 
+    original_signal = signal
+    completeness, gaps = completeness_of(selection.tests, baseline, patched)
+    for confirmation in confirmations:
+        state, reasons = completeness_of(
+            confirmation.requested_tests or tuple(r.test_id for r in confirmation.results),
+            confirmation, confirmation)
+        if state != "COMPLETE":
+            completeness = "INCOMPLETE_CONFIRMED" if state == "INCOMPLETE_CONFIRMED" else completeness
+            if completeness == "COMPLETE":
+                completeness = "UNVERIFIABLE"
+            gaps += tuple("confirmation: " + reason for reason in reasons)
+    signal = Signal(integrity_verdict(original_signal.value, completeness))
     return RegressionReport(
         instance_id=instance_id, signal=signal, outcomes=outcomes,
         selection=selection, baseline_from_cache=from_cache,
         n_executed=n_executed, duration_s=time.monotonic() - started,
         notes=tuple(notes),
+        original_signal=original_signal, completeness=completeness, incompleteness=gaps,
+        baseline=baseline, patched=patched, confirmations=tuple(confirmations),
     )
