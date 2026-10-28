@@ -1,0 +1,318 @@
+{
+  "decision_map_outcome": "Do not use on this experiment's evidence",
+  "fallback_supported": false,
+  "rank_filter_supported": false,
+  "results": [
+    {
+      "criterion": "C1",
+      "decides": true,
+      "denominator": 6,
+      "descriptive_only": false,
+      "edge_variant": "PRIMARY_RESOLVED_ONLY",
+      "eligible_tasks": 5,
+      "excluded_fixed_tasks": [
+        "django__django-14631"
+      ],
+      "label": "partly met",
+      "passed": false,
+      "stratum": "PRIMARY_COMPLETE",
+      "success_tasks": [
+        "astropy__astropy-13977",
+        "django__django-13297"
+      ],
+      "successes": 2,
+      "threshold": 5,
+      "underlying": "FAIL"
+    },
+    {
+      "criterion": "C2",
+      "decides": true,
+      "denominator": 6,
+      "descriptive_only": false,
+      "edge_variant": "PRIMARY_RESOLVED_ONLY",
+      "eligible_tasks": 5,
+      "excluded_fixed_tasks": [
+        "django__django-14631"
+      ],
+      "label": "partly met",
+      "passed": false,
+      "stratum": "PRIMARY_COMPLETE",
+      "success_tasks": [
+        "astropy__astropy-13977",
+        "django__django-13297"
+      ],
+      "successes": 2,
+      "threshold": 5,
+      "underlying": "FAIL"
+    },
+    {
+      "criterion": "C3",
+      "decides": true,
+      "denominator": 7,
+      "descriptive_only": false,
+      "edge_variant": "PRIMARY_RESOLVED_ONLY",
+      "eligible_task_ids": [
+        "astropy__astropy-13977",
+        "astropy__astropy-14365",
+        "astropy__astropy-14508",
+        "matplotlib__matplotlib-14623",
+        "matplotlib__matplotlib-24177",
+        "matplotlib__matplotlib-25287",
+        "pydata__xarray-4966"
+      ],
+      "eligible_tasks": 7,
+      "excluded_fixed_tasks": [
+        "pylint-dev__pylint-6903",
+        "sympy__sympy-13480",
+        "sympy__sympy-14711",
+        "sympy__sympy-17318",
+        "sympy__sympy-19783",
+        "sympy__sympy-24562"
+      ],
+      "label": "partly met",
+      "passed": false,
+      "stratum": "PRIMARY_COMPLETE",
+      "success_tasks": [
+        "astropy__astropy-13977",
+        "astropy__astropy-14365",
+        "pydata__xarray-4966"
+      ],
+      "successes": 3,
+      "threshold": 4,
+      "underlying": "FAIL"
+    },
+    {
+      "criterion": "C1",
+      "decides": false,
+      "denominator": 1,
+      "descriptive_only": true,
+      "edge_variant": "PRIMARY_RESOLVED_ONLY",
+      "eligible_tasks": 1,
+      "excluded_fixed_tasks": [
+        "django__django-13212",
+        "astropy__astropy-13977",
+        "django__django-12209",
+        "django__django-13297",
+        "django__django-14140"
+      ],
+      "label": "descriptive only",
+      "passed": false,
+      "stratum": "EXTENDED_PARTIAL",
+      "success_tasks": [],
+      "successes": 0,
+      "threshold": null,
+      "underlying": "NOT_A_PRIMARY_CRITERION"
+    },
+    {
+      "criterion": "C2",
+      "decides": false,
+      "denominator": 1,
+      "descriptive_only": true,
+      "edge_variant": "PRIMARY_RESOLVED_ONLY",
+      "eligible_tasks": 1,
+      "excluded_fixed_tasks": [
+        "django__django-13212",
+        "astropy__astropy-13977",
+        "django__django-12209",
+        "django__django-13297",
+        "django__django-14140"
+      ],
+      "label": "descriptive only",
+      "passed": false,
+      "stratum": "EXTENDED_PARTIAL",
+      "success_tasks": [],
+      "successes": 0,
+      "threshold": null,
+      "underlying": "NOT_A_PRIMARY_CRITERION"
+    },
+    {
+      "criterion": "C3",
+      "decides": false,
+      "denominator": 3,
+      "descriptive_only": true,
+      "edge_variant": "PRIMARY_RESOLVED_ONLY",
+      "eligible_task_ids": [
+        "sympy__sympy-14711",
+        "sympy__sympy-17318",
+        "sympy__sympy-19783"
+      ],
+      "eligible_tasks": 3,
+      "excluded_fixed_tasks": [
+        "astropy__astropy-13977",
+        "astropy__astropy-14365",
+        "astropy__astropy-14508",
+        "matplotlib__matplotlib-14623",
+        "matplotlib__matplotlib-24177",
+        "matplotlib__matplotlib-25287",
+        "pydata__xarray-4966",
+        "pylint-dev__pylint-6903",
+        "sympy__sympy-13480",
+        "sympy__sympy-24562"
+      ],
+      "label": "descriptive only",
+      "passed": false,
+      "stratum": "EXTENDED_PARTIAL",
+      "success_tasks": [],
+      "successes": 0,
+      "threshold": null,
+      "underlying": "NOT_A_PRIMARY_CRITERION"
+    },
+    {
+      "criterion": "C1",
+      "decides": false,
+      "denominator": 6,
+      "descriptive_only": true,
+      "edge_variant": "SECONDARY_RESOLVED_PLUS_AMBIGUOUS",
+      "eligible_tasks": 5,
+      "excluded_fixed_tasks": [
+        "django__django-14631"
+      ],
+      "label": "partly met",
+      "passed": false,
+      "stratum": "PRIMARY_COMPLETE",
+      "success_tasks": [
+        "django__django-13212",
+        "astropy__astropy-13977",
+        "django__django-13297"
+      ],
+      "successes": 3,
+      "threshold": 5,
+      "underlying": "FAIL"
+    },
+    {
+      "criterion": "C2",
+      "decides": false,
+      "denominator": 6,
+      "descriptive_only": true,
+      "edge_variant": "SECONDARY_RESOLVED_PLUS_AMBIGUOUS",
+      "eligible_tasks": 5,
+      "excluded_fixed_tasks": [
+        "django__django-14631"
+      ],
+      "label": "partly met",
+      "passed": false,
+      "stratum": "PRIMARY_COMPLETE",
+      "success_tasks": [
+        "django__django-13212",
+        "astropy__astropy-13977",
+        "django__django-13297",
+        "django__django-14140"
+      ],
+      "successes": 4,
+      "threshold": 5,
+      "underlying": "FAIL"
+    },
+    {
+      "criterion": "C3",
+      "decides": false,
+      "denominator": 7,
+      "descriptive_only": true,
+      "edge_variant": "SECONDARY_RESOLVED_PLUS_AMBIGUOUS",
+      "eligible_task_ids": [
+        "astropy__astropy-13977",
+        "astropy__astropy-14365",
+        "astropy__astropy-14508",
+        "matplotlib__matplotlib-14623",
+        "matplotlib__matplotlib-24177",
+        "matplotlib__matplotlib-25287",
+        "pydata__xarray-4966"
+      ],
+      "eligible_tasks": 7,
+      "excluded_fixed_tasks": [
+        "pylint-dev__pylint-6903",
+        "sympy__sympy-13480",
+        "sympy__sympy-14711",
+        "sympy__sympy-17318",
+        "sympy__sympy-19783",
+        "sympy__sympy-24562"
+      ],
+      "label": "partly met",
+      "passed": false,
+      "stratum": "PRIMARY_COMPLETE",
+      "success_tasks": [
+        "astropy__astropy-13977",
+        "astropy__astropy-14365",
+        "pydata__xarray-4966"
+      ],
+      "successes": 3,
+      "threshold": 4,
+      "underlying": "FAIL"
+    },
+    {
+      "criterion": "C1",
+      "decides": false,
+      "denominator": 1,
+      "descriptive_only": true,
+      "edge_variant": "SECONDARY_RESOLVED_PLUS_AMBIGUOUS",
+      "eligible_tasks": 1,
+      "excluded_fixed_tasks": [
+        "django__django-13212",
+        "astropy__astropy-13977",
+        "django__django-12209",
+        "django__django-13297",
+        "django__django-14140"
+      ],
+      "label": "descriptive only",
+      "passed": false,
+      "stratum": "EXTENDED_PARTIAL",
+      "success_tasks": [],
+      "successes": 0,
+      "threshold": null,
+      "underlying": "NOT_A_PRIMARY_CRITERION"
+    },
+    {
+      "criterion": "C2",
+      "decides": false,
+      "denominator": 1,
+      "descriptive_only": true,
+      "edge_variant": "SECONDARY_RESOLVED_PLUS_AMBIGUOUS",
+      "eligible_tasks": 1,
+      "excluded_fixed_tasks": [
+        "django__django-13212",
+        "astropy__astropy-13977",
+        "django__django-12209",
+        "django__django-13297",
+        "django__django-14140"
+      ],
+      "label": "descriptive only",
+      "passed": false,
+      "stratum": "EXTENDED_PARTIAL",
+      "success_tasks": [],
+      "successes": 0,
+      "threshold": null,
+      "underlying": "NOT_A_PRIMARY_CRITERION"
+    },
+    {
+      "criterion": "C3",
+      "decides": false,
+      "denominator": 3,
+      "descriptive_only": true,
+      "edge_variant": "SECONDARY_RESOLVED_PLUS_AMBIGUOUS",
+      "eligible_task_ids": [
+        "sympy__sympy-14711",
+        "sympy__sympy-17318",
+        "sympy__sympy-19783"
+      ],
+      "eligible_tasks": 3,
+      "excluded_fixed_tasks": [
+        "astropy__astropy-13977",
+        "astropy__astropy-14365",
+        "astropy__astropy-14508",
+        "matplotlib__matplotlib-14623",
+        "matplotlib__matplotlib-24177",
+        "matplotlib__matplotlib-25287",
+        "pydata__xarray-4966",
+        "pylint-dev__pylint-6903",
+        "sympy__sympy-13480",
+        "sympy__sympy-24562"
+      ],
+      "label": "descriptive only",
+      "passed": false,
+      "stratum": "EXTENDED_PARTIAL",
+      "success_tasks": [],
+      "successes": 0,
+      "threshold": null,
+      "underlying": "NOT_A_PRIMARY_CRITERION"
+    }
+  ]
+}

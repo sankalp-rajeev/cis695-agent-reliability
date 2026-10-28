@@ -1,0 +1,38 @@
+{
+  "archive_reader_fix": "Accept the regular root directory entry testbed as well as testbed/. Input/archive handling only. Failed-attempt stubs and pre-fix code hashes preserved in failed_attempts/archive_root_check/.",
+  "autonomous_reruns": [
+    {
+      "attempt": 1,
+      "cause": "The detached nohup launcher returned, but no execution.log or exit/completion record appeared and its stdout/stderr log stayed empty. The child did not persist after its enclosing sandbox command exited. No selector candidate was produced; exact signal is unrecorded. Keep the launching parent alive with wait while polling the background child log.",
+      "completed_task_records": 0,
+      "completion_required": "83 task IDs plus SELECTOR_RUN_COMPLETE and BACKGROUND_RUN_COMPLETE exit=0",
+      "exit_status": "unrecorded",
+      "launch": "nohup bash reports/callgraph_selection/phase2/run_background.sh; log background_attempt_1.log",
+      "preserved": "failed_attempts/background_parent_exit/",
+      "status": "failed before selector start"
+    },
+    {
+      "applicable_B_tasks": 79,
+      "attempt": 2,
+      "completed_task_records": 83,
+      "completion_required": "83 task IDs plus SELECTOR_RUN_COMPLETE and BACKGROUND_RUN_COMPLETE exit=0",
+      "exit_status": 0,
+      "launch": "nohup bash reports/callgraph_selection/phase2/run_background.sh; log background_attempt_2.log; parent waits while child runs",
+      "status": "completed",
+      "stored_A_C_tasks": 19
+    }
+  ],
+  "date": "2026-10-22",
+  "eligibility_freeze_file_sha256": "be9ebf5ba3c1222fa57d4ce23a26f83c79a6bf136bd4513dc798fa04cfbd0b0c",
+  "eligibility_json_sha256": "bce2b74f6e043759123768e2012e2c770cabc4e777c81f810f9d2a7844ef073e",
+  "eligibility_written_before_any_selector_output": true,
+  "interrupted_completed_task_records": 23,
+  "interrupted_run": "Abrupt termination during an interrupted chat/tool session; exact exit cause unrecorded. No selector timeout exists, no traceback/stderr/exit status survived; cgroup reports zero OOM kills. External interruption is consistent with the recorded turn abort, but timeout/signal/crash cannot be conclusively distinguished from stored evidence.",
+  "no_ranking_eligibility_or_frozen_parameter_change": true,
+  "no_selector_candidate_output_inspected_before_fixes": true,
+  "partial_outputs_preserved": "failed_attempts/interrupted_foreground_run/",
+  "record_count_note": "The artifact has 23 completed-task lines, ending at django__django-15103. No completion record for a 24th task survives.",
+  "timing_evidence": "run.py writes eligibility and its freeze before calling selectors(); the unchanged eligibility digest is also recorded in the first archive-reader failure manifest.",
+  "usage_limit_pause_and_resume": true,
+  "user_reported_task_count": 24
+}

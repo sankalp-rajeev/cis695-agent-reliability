@@ -1,0 +1,63 @@
+{
+  "acquisition_metadata_preserved": true,
+  "code_sha256": {
+    "reports/callgraph_selection/build_graphs.py": "49da79f0ca3a671149ed542d88ada282ea4654e6f8a6f9b4433b4e26b87afe91",
+    "reports/callgraph_selection/design.md": "61f186b15719df5222be2c4495e4db7d6e83de3963c33da0ba2d2cfe6927f515",
+    "reports/callgraph_selection/static_graph.py": "0c8952dbeaac018f06eaef420b8cbb6bfbd5906b9559acefdfe0eb666429db30",
+    "src/reliability/agent/freeze.py": "fe68a80337e5dd95b7918af3490092b01e7dae93b16b3befdd45d4f9d861732e",
+    "src/reliability/verifier/integrity.py": "2b0262244fb4c877a4d4f7b2b8ba88e0de908e3f48bb0f290267f5172ca48f75",
+    "src/reliability/verifier/patch.py": "ccbbbabbcecec46bae2498c4c4853eb15f8666eeac83200011ae547a976655a7"
+  },
+  "cohort_projection": [
+    "instance_id",
+    "repo",
+    "source_run",
+    "artifact_kind"
+  ],
+  "command": "env -u PYTHONPATH .venv/bin/python -B reports/callgraph_selection/build_graphs.py --tasks astropy__astropy-14365 django__django-13297 pallets__flask-5014",
+  "design_commit": "05bdd1144e2013f7c1884066ce3fa05c6d52eedc",
+  "input_sha256": {
+    "reports/callgraph_selection/inputs.json": "6f415d4d6cf8af79cc85c75e66441702d6fd67436bc49098785475f1aab7d29d",
+    "reports/failure_analysis/extracted.json": "86bc1c27d28b9a1932874c2f9fa1239528e073810457623118aa564cf7fba1cf",
+    "reports/v2_diagnostic/patches.csv": "04268819c4fc7402af5d6451f0680e677f018457c1e66c3725e5e806c365c796"
+  },
+  "note": "Sample CSV and aggregate measurements retained; graph directories superseded by full build.",
+  "output_sha256": {},
+  "snapshot_projection": [
+    "instance_id",
+    "source_run",
+    "agent_patch"
+  ],
+  "tasks": [
+    {
+      "archive_sha256": "52c5b392a42c15f7a36dde4a000d39b75544e6297f2a34dfe49a5f80eeffdc60",
+      "base_commit": "7269fa3e33e8d02485a647da91a5a2a60a06af61",
+      "base_python_sha256": "04a512d79b9c785b5b128e05eea4b6810a8cc33073b2b40f606fa778a732220d",
+      "instance_id": "astropy__astropy-14365",
+      "patch_artifact": "",
+      "patch_sha256": null,
+      "patch_status": "patch missing",
+      "repair_record_sha256": null
+    },
+    {
+      "archive_sha256": "4cc98bbed4b03a91c6c47dbe581056ba77bb5f2436aa5e41c405ecf19da307a9",
+      "base_commit": "7ee9ceb71e868944a46e1ff00b506772a53a4f1d",
+      "base_python_sha256": "b0a8cdbf7933d6509bbe2b2a582ffb962f5d21e1f876d8d7b9dbd6bc3c7db71a",
+      "instance_id": "pallets__flask-5014",
+      "patch_artifact": "runs/main_50_a/tasks/pallets__flask-5014/patch.diff",
+      "patch_sha256": "165c0d5aca96068ddb66053d70b8a51a70edd79f8087216d290d41fdf6bb9300",
+      "patch_status": "available",
+      "repair_record_sha256": "47eec11e99a58c499025adf2535fe052321b90e170ad8c01ad9fb455055f1bb9"
+    },
+    {
+      "archive_sha256": "4f499ef39fae21bfb9ce3eb9cbf2b3878158435323828e5e1a480e90aa810da4",
+      "base_commit": "8954f255bbf5f4ee997fd6de62cb50fc9b5dd697",
+      "base_python_sha256": "e082044747b761c29d6c074c1490cf82f8fb1c9b3c6cfd587284468a34e7b436",
+      "instance_id": "django__django-13297",
+      "patch_artifact": "reports/failure_analysis/extracted.json#tasks.agent_patch",
+      "patch_sha256": "69181c9a98281a325159813f1b8a53aa13bf3dd5bb8bd375894c1d344a9cdc85",
+      "patch_status": "available",
+      "repair_record_sha256": null
+    }
+  ]
+}

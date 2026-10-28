@@ -105,43 +105,8 @@ class Graph:
                 self.check()
                 self.files[path] = "parsed"
                 self.counts["parsed_files"] += 1
-                parts = list(Path(path).with_suffix("").parts)
-                if parts[0] in {"src", "lib"}:
-                    parts = parts[1:]
-                package = parts[-1] == "__init__"
-                if package:
-                    parts = parts[:-1]
-                module = ".".join(parts)
-                mid = self.add_node(path, "<module>", "module", 1, 0, None, module,
-                                    package=package, decorated=False, conditional=False)
-                self.modules[module].append(mid)
-                Indexer(self, mid).visit(tree)
-            self.expand_imports()
-            for index, call in enumerate(self.calls):
-                if index % 4096 == 0:
-                    self.check()
-                scope, line, col, expr, unsupported = call
-                if unsupported:
-                    refs, reason = [], "unsupported_comprehension_lambda_or_annotation_scope"
-                else:
-                    refs, reason = self.resolve(scope, expr)
-                refs = list(dict.fromkeys(refs))
-                targets = [value for kind, value in refs if kind == "node"]
-                if len(refs) == 1 and len(targets) == 1 and not reason:
-                    target = self.nodes[targets[0]]
-                    if target["decorated"] or target["conditional"]:
-                        reason = "decorated_or_conditional_definition"
-                    status = "ambiguous" if reason else "resolved"
-                elif targets:
-                    status = "ambiguous"
-                    reason = reason or "multiple_or_uncertain_bindings"
-                else:
-                    status = "unresolved"
-                    reason = reason or "module_or_external_not_callable_definition"
-                self.edges.append(dict(caller=self.scopes[scope]["caller"],
-                                       scope=scope, path=self.scopes[scope]["path"],
-                                       line=line, column=col, expression=dotted(expr),
-                                       status=status, targets=targets, reason=reason or "unique_static_binding"))
+                self.index_tree(path, tree)
+            self.resolve_calls()
         except ResourceLimit as exc:
             self.status = "resource_limited"
             self.failures.append(dict(reason="fixed_resource_limit", limit=str(exc)))
@@ -152,6 +117,49 @@ class Graph:
         self.counts["edge_records"] = len(self.edges)
         self.runtime = time.monotonic() - self.started
         return self
+
+    def index_tree(self, path, tree, indexer=None):
+        """Shared indexing; callers may reuse an already preflighted base AST."""
+        parts = list(Path(path).with_suffix("").parts)
+        if parts[0] in {"src", "lib"}:
+            parts = parts[1:]
+        package = parts[-1] == "__init__"
+        if package:
+            parts = parts[:-1]
+        module = ".".join(parts)
+        mid = self.add_node(path, "<module>", "module", 1, 0, None, module,
+                            package=package, decorated=False, conditional=False)
+        self.modules[module].append(mid)
+        (indexer or Indexer)(self, mid).visit(tree)
+
+    def resolve_calls(self):
+        """Existing classification logic, shared by original and amended builds."""
+        self.expand_imports()
+        for index, call in enumerate(self.calls):
+            if index % 4096 == 0:
+                self.check()
+            scope, line, col, expr, unsupported = call
+            if unsupported:
+                refs, reason = [], "unsupported_comprehension_lambda_or_annotation_scope"
+            else:
+                refs, reason = self.resolve(scope, expr)
+            refs = list(dict.fromkeys(refs))
+            targets = [value for kind, value in refs if kind == "node"]
+            if len(refs) == 1 and len(targets) == 1 and not reason:
+                target = self.nodes[targets[0]]
+                if target["decorated"] or target["conditional"]:
+                    reason = "decorated_or_conditional_definition"
+                status = "ambiguous" if reason else "resolved"
+            elif targets:
+                status = "ambiguous"
+                reason = reason or "multiple_or_uncertain_bindings"
+            else:
+                status = "unresolved"
+                reason = reason or "module_or_external_not_callable_definition"
+            self.edges.append(dict(caller=self.scopes[scope]["caller"],
+                                   scope=scope, path=self.scopes[scope]["path"],
+                                   line=line, column=col, expression=dotted(expr),
+                                   status=status, targets=targets, reason=reason or "unique_static_binding"))
 
     def resolve(self, sid, expr, depth=0):
         if depth > 30:

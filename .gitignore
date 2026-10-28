@@ -32,3 +32,11 @@ docker-volumes/
 # call-graph raw outputs (regenerable)
 reports/callgraph_selection/graphs/
 reports/callgraph_selection/provenance/
+
+# Local call-graph intermediates; final summaries and manifests stay tracked.
+/reports/callgraph_selection/amendment2_72ad21b/graphs/
+/reports/callgraph_selection/followup_cache/
+/reports/callgraph_selection/phase2/failed_attempts/
+/reports/callgraph_selection/phase2/ranked_outputs.jsonl.gz
+/reports/callgraph_selection/phase2/per_test_provenance.csv
+/reports/callgraph_selection/**/*.log

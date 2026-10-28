@@ -1,0 +1,22 @@
+{
+  "amendment_applied": false,
+  "baseline_graph_inputs_sha256": "5982c5d5ab9dbff8a90caee59c528e89b169b60d0a46bcf8ae947e3c082d4752",
+  "code_sha256": {
+    "followup_analysis.py": "693562fc9af5e9fff5dd1b4676ea1cae0d1766e32b6971c55f7262ea471d15ab",
+    "followup_report.py": "3557425aa53ec89b1413f7a8571bcece17ddc002aaa0c5f0aa1f4948fae0bd50",
+    "test_static_graph.py": "28e5aa4fb4e8bcf0f6d26da0e93943b8113cc6bb0b06e8381d1935281fb8be18"
+  },
+  "command": "env -u PYTHONPATH .venv/bin/python -B reports/callgraph_selection/followup_analysis.py",
+  "current_design_sha256": "0516240b403a28649ba342ee968f322d7039cd228f8b288166b67a48ae435595",
+  "output_sha256": {
+    "call_resolution_by_repository.csv": "726b60876b9705add36ca1146cc782c63852d587d4fb2d6f533d681cb2379d2d",
+    "call_resolution_by_task.csv": "859c74a60ac96a713c931b1a008b7b7e2c44bc555181daf7422faddcf68d55ca",
+    "changed_symbol_origins.csv": "b11ee38b19df6be80e7b0d06586e835a4a2b3adcde5ebcdc8b30c10517f74cb9",
+    "changed_symbol_rates.csv": "160022c776fa51a1b21bd96e375908bacfa9795cb97fc60742a69217adb0e0d3",
+    "followup_summary.json": "2935cba07bf4b05581578c518e3f883608200ea291e387a228dca867859cc3cc",
+    "partial_graph_files.csv": "b904668d3b81c3e9c5c9976e0579fd89a138f7a01ff0af61ddfcd1934408f1b8",
+    "partial_graphs.md": "436250bfec4449a8f43ab0b4b6fe9ba7e3b6ce8e301355d149f22574d604a7f8",
+    "report.md": "0fab62754cb3ac3c1730458f4fc1df9d2c799b9f3f2b8ac90388190efdea5d7b",
+    "sympy_limit_stops.csv": "3ab224374e65fc3a63c004cdaa959628b88267a3b6e7223f5bcb4c895c29e275"
+  }
+}
