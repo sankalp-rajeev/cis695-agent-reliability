@@ -1,0 +1,35 @@
+{
+  "changed_production_paths": [
+    "django/core/validators.py"
+  ],
+  "instance_id": "django__django-13212",
+  "modules": [
+    "tests/forms_tests/tests/test_validators.py",
+    "tests/migrations/test_autodetector.py",
+    "tests/migrations/test_writer.py",
+    "tests/validators/tests.py"
+  ],
+  "oracle_inputs": false,
+  "selector": "graph_depth3_resolved_plus_ambiguous",
+  "source_run": "main_50_a",
+  "status": "inferred",
+  "test_ids": [
+    "tests/forms_tests/tests/test_validators.py::TestFieldWithValidators::test_all_errors_get_reported",
+    "tests/migrations/test_autodetector.py::AutodetectorTests::test_different_regex_does_alter",
+    "tests/migrations/test_autodetector.py::AutodetectorTests::test_identical_regex_doesnt_alter",
+    "tests/migrations/test_writer.py::WriterTests::test_serialize_class_based_validators",
+    "tests/validators/tests.py::DeprecationTests::test_domain_whitelist",
+    "tests/validators/tests.py::DeprecationTests::test_domain_whitelist_access_warning",
+    "tests/validators/tests.py::DeprecationTests::test_domain_whitelist_set_warning",
+    "tests/validators/tests.py::DeprecationTests::test_whitelist",
+    "tests/validators/tests.py::DeprecationTests::test_whitelist_warning",
+    "tests/validators/tests.py::TestValidatorEquality::test_decimal_equality",
+    "tests/validators/tests.py::TestValidatorEquality::test_email_equality",
+    "tests/validators/tests.py::TestValidatorEquality::test_file_extension_equality",
+    "tests/validators/tests.py::TestValidatorEquality::test_prohibit_null_characters_validator_equality",
+    "tests/validators/tests.py::TestValidatorEquality::test_regex_equality",
+    "tests/validators/tests.py::TestValidatorEquality::test_regex_equality_blank",
+    "tests/validators/tests.py::TestValidatorEquality::test_regex_equality_nocache",
+    "tests/validators/tests.py::TestValidators::test_regex_validator_flags"
+  ]
+}

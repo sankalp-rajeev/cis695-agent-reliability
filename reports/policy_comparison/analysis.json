@@ -1,0 +1,308 @@
+{
+  "bootstrap": {
+    "differences": {
+      "accuracy": {
+        "high": 0.03614457831325302,
+        "low": -0.1325301204819277,
+        "point": -0.04819277108433728,
+        "undefined_resamples": 0,
+        "valid_resamples": 10000
+      },
+      "coverage": {
+        "high": -0.07228915662650603,
+        "low": -0.22891566265060237,
+        "point": -0.14457831325301207,
+        "undefined_resamples": 0,
+        "valid_resamples": 10000
+      },
+      "f1": {
+        "high": 0.0010338316847477518,
+        "low": -0.11378757777139945,
+        "point": -0.053190828310445526,
+        "undefined_resamples": 0,
+        "valid_resamples": 10000
+      },
+      "precision": {
+        "high": 0.09913154455607291,
+        "low": -0.013368356789409418,
+        "point": 0.03725961538461542,
+        "undefined_resamples": 0,
+        "valid_resamples": 10000
+      },
+      "recall": {
+        "high": -0.04477611940298509,
+        "low": -0.19444444444444442,
+        "point": -0.1159420289855072,
+        "undefined_resamples": 0,
+        "valid_resamples": 10000
+      }
+    },
+    "generator": "numpy.PCG64",
+    "method": "percentile 95%, linear quantiles",
+    "n": 83,
+    "numpy_version": "2.4.6",
+    "policy_f1": {
+      "baseline": {
+        "high": 0.8671328671328671,
+        "low": 0.7166666666666667,
+        "point": 0.7969924812030075,
+        "undefined_resamples": 0,
+        "valid_resamples": 10000
+      },
+      "full": {
+        "high": 0.8244274809160306,
+        "low": 0.6495726495726496,
+        "point": 0.743801652892562,
+        "undefined_resamples": 0,
+        "valid_resamples": 10000
+      }
+    },
+    "resample_indices_sha256": "97d44dbb507b3fea52466b47005a207e9f8654f46ca48f982720dafe93c37869",
+    "resamples": 10000,
+    "seed": 695,
+    "unit": "patch; same sampled row indices for truth and both policies"
+  },
+  "bootstrap_row_order": [
+    "astropy__astropy-14365",
+    "astropy__astropy-14508",
+    "django__django-10973",
+    "django__django-11095",
+    "django__django-12965",
+    "django__django-13158",
+    "django__django-13212",
+    "django__django-13807",
+    "django__django-15037",
+    "django__django-15103",
+    "django__django-15278",
+    "django__django-15499",
+    "django__django-15572",
+    "django__django-15930",
+    "django__django-16612",
+    "django__django-16667",
+    "matplotlib__matplotlib-14623",
+    "matplotlib__matplotlib-20676",
+    "matplotlib__matplotlib-22871",
+    "matplotlib__matplotlib-24026",
+    "matplotlib__matplotlib-25122",
+    "matplotlib__matplotlib-25287",
+    "matplotlib__matplotlib-26291",
+    "pallets__flask-5014",
+    "pydata__xarray-4629",
+    "pydata__xarray-4695",
+    "pydata__xarray-6599",
+    "pydata__xarray-6744",
+    "pylint-dev__pylint-4970",
+    "pylint-dev__pylint-6528",
+    "pylint-dev__pylint-7277",
+    "pytest-dev__pytest-5809",
+    "pytest-dev__pytest-6202",
+    "pytest-dev__pytest-7432",
+    "scikit-learn__scikit-learn-12585",
+    "scikit-learn__scikit-learn-14141",
+    "scikit-learn__scikit-learn-14629",
+    "scikit-learn__scikit-learn-14894",
+    "sphinx-doc__sphinx-7910",
+    "astropy__astropy-13977",
+    "astropy__astropy-7606",
+    "django__django-11299",
+    "django__django-11820",
+    "django__django-12209",
+    "django__django-13023",
+    "django__django-13033",
+    "django__django-13297",
+    "django__django-13569",
+    "django__django-13786",
+    "django__django-13820",
+    "django__django-14140",
+    "django__django-14631",
+    "django__django-15375",
+    "django__django-16082",
+    "django__django-16136",
+    "django__django-16255",
+    "django__django-16315",
+    "django__django-16631",
+    "matplotlib__matplotlib-20488",
+    "matplotlib__matplotlib-22719",
+    "matplotlib__matplotlib-23299",
+    "matplotlib__matplotlib-23476",
+    "matplotlib__matplotlib-24177",
+    "matplotlib__matplotlib-24637",
+    "matplotlib__matplotlib-24970",
+    "matplotlib__matplotlib-25479",
+    "mwaskom__seaborn-3069",
+    "pydata__xarray-4966",
+    "pylint-dev__pylint-4661",
+    "pylint-dev__pylint-6903",
+    "pytest-dev__pytest-10051",
+    "pytest-dev__pytest-5787",
+    "pytest-dev__pytest-7236",
+    "pytest-dev__pytest-7521",
+    "scikit-learn__scikit-learn-10908",
+    "sphinx-doc__sphinx-10323",
+    "sphinx-doc__sphinx-10435",
+    "sphinx-doc__sphinx-10466",
+    "sympy__sympy-13480",
+    "sympy__sympy-14711",
+    "sympy__sympy-17318",
+    "sympy__sympy-19783",
+    "sympy__sympy-24562"
+  ],
+  "expectations": [
+    {
+      "actual": {
+        "fn": 16,
+        "fp": 11,
+        "tn": 3,
+        "tp": 53
+      },
+      "expected": {
+        "fn": 16,
+        "fp": 11,
+        "tn": 3,
+        "tp": 53
+      },
+      "matches": true,
+      "policy": "baseline"
+    },
+    {
+      "actual": {
+        "fn": 24,
+        "fp": 7,
+        "tn": 7,
+        "tp": 45
+      },
+      "expected": {
+        "fn": 24,
+        "fp": 7,
+        "tn": 7,
+        "tp": 45
+      },
+      "matches": true,
+      "policy": "full"
+    }
+  ],
+  "metadata": {
+    "input_sha256": {
+      "git:72ad21bce666aa766cc329c9bef8057f790c0ef5:docs/results_100.csv": "89192cb27935c33b62204dbbc5ac9090e8577407e367ec347542ca7c9155cb66",
+      "git:72ad21bce666aa766cc329c9bef8057f790c0ef5:docs/results_100.md": "46cb3b4cfef3b8945dedfe449e9c9b6fddfd0650bc3346c40889440e8f37bd41",
+      "git:72ad21bce666aa766cc329c9bef8057f790c0ef5:src/reliability/verifier/decision.py": "32f9e68f070ae70a4f5e97807245544d6228babaa4ef3c05780a7c1afe0bdb32",
+      "git:72ad21bce666aa766cc329c9bef8057f790c0ef5:src/reliability/verifier/evidence.py": "d7ebe1ddb084746c675ac6cebaa9c1f54ea26ab276f7777071f0a4595005edd4",
+      "git:72ad21bce666aa766cc329c9bef8057f790c0ef5:src/reliability/verifier/integrity.py": "2b0262244fb4c877a4d4f7b2b8ba88e0de908e3f48bb0f290267f5172ca48f75",
+      "runs/main_50_a/tasks/pytest-dev__pytest-7432/oracle_record.json": "871235c48f1592c59259a1e47fb4f4a53b0cf6ee3df69584224ef754ec025568"
+    },
+    "local_discrepancies": [],
+    "numpy_version": "2.4.6",
+    "oracle_use": "POST-HOC ANALYSIS ONLY; oracle labels never enter policy Evidence",
+    "python_version": "3.11.16",
+    "revision": "72ad21bce666aa766cc329c9bef8057f790c0ef5",
+    "risk_provenance_counts": {
+      "inferred_policy_implication_not_independent": 54,
+      "missing": 45,
+      "recorded_in_committed_report": 1
+    }
+  },
+  "paired_tests": {
+    "accept_disagreement_table": {
+      "baseline_only_accept": 12,
+      "both_accept": 52,
+      "full_only_accept": 0,
+      "neither_accept": 19
+    },
+    "added_accept_count": 0,
+    "baseline_accepted_count": 64,
+    "baseline_accepted_wrong": 11,
+    "baseline_accepted_wrong_share": 0.171875,
+    "correctness_disagreement_table": {
+      "baseline_only_correct": 8,
+      "both_correct": 48,
+      "full_only_correct": 4,
+      "neither_correct": 23
+    },
+    "correctness_mcnemar_exact_two_sided_p": 0.3876953125,
+    "enrichment_exact_one_sided_p": 0.11427497979555833,
+    "stopped_count": 12,
+    "stopped_ids": [
+      "django__django-10973",
+      "django__django-13158",
+      "django__django-15037",
+      "matplotlib__matplotlib-20676",
+      "matplotlib__matplotlib-22871",
+      "pylint-dev__pylint-4970",
+      "pylint-dev__pylint-6528",
+      "sphinx-doc__sphinx-7910",
+      "django__django-16631",
+      "matplotlib__matplotlib-24637",
+      "mwaskom__seaborn-3069",
+      "sphinx-doc__sphinx-10323"
+    ],
+    "stopped_right": 8,
+    "stopped_wrong": 4,
+    "stopped_wrong_share": 0.3333333333333333,
+    "stopped_wrong_share_wilson": [
+      0.1381200910912132,
+      0.6093779111272004
+    ]
+  },
+  "populations": {
+    "ALL_100_INCLUDING_EMPTY_SENSITIVITY": {
+      "empty": 11,
+      "n": 100,
+      "resolved": 75,
+      "unresolved": 14
+    },
+    "ALL_EMPTY_STRUCTURAL": {
+      "empty": 11,
+      "n": 11,
+      "resolved": 0,
+      "unresolved": 0
+    },
+    "ALL_NONEMPTY": {
+      "empty": 0,
+      "n": 89,
+      "resolved": 75,
+      "unresolved": 14
+    },
+    "HEADLINE_EMPTY_STRUCTURAL": {
+      "empty": 10,
+      "n": 10,
+      "resolved": 0,
+      "unresolved": 0
+    },
+    "HEADLINE_INCLUDING_EMPTY_SENSITIVITY": {
+      "empty": 10,
+      "n": 93,
+      "resolved": 69,
+      "unresolved": 14
+    },
+    "HEADLINE_NONEMPTY_PRIMARY": {
+      "empty": 0,
+      "n": 83,
+      "resolved": 69,
+      "unresolved": 14
+    },
+    "PYTEST7432_UNRESOLVED_ALL_NONEMPTY_SENSITIVITY": {
+      "empty": 0,
+      "n": 89,
+      "resolved": 74,
+      "unresolved": 15
+    },
+    "PYTEST7432_UNRESOLVED_HEADLINE_SENSITIVITY": {
+      "empty": 0,
+      "n": 83,
+      "resolved": 68,
+      "unresolved": 15
+    },
+    "REQUESTS_ALL_SENSITIVITY": {
+      "empty": 1,
+      "n": 7,
+      "resolved": 6,
+      "unresolved": 0
+    },
+    "REQUESTS_NONEMPTY": {
+      "empty": 0,
+      "n": 6,
+      "resolved": 6,
+      "unresolved": 0
+    }
+  }
+}
