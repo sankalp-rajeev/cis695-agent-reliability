@@ -1,0 +1,152 @@
+[
+  {
+    "basis": "Agent source-context inspection under the observed-static-caller model; no benchmark execution",
+    "classification": "SUPPORTED",
+    "expression": "hub.stop",
+    "instance_id": "astropy__astropy-14508",
+    "provenance": "local_constructor",
+    "reason": "hub is assigned SAMPHubServer() once before stop(); that class directly defines stop.",
+    "repo": "astropy/astropy",
+    "sample_key": "006cf651252377bcf469f254061f18cb1e1eedd3e36d062e4b995a9b1e2c3492"
+  },
+  {
+    "basis": "Agent source-context inspection under the observed-static-caller model; no benchmark execution",
+    "classification": "SUPPORTED",
+    "expression": "project_state.clone",
+    "instance_id": "django__django-12209",
+    "provenance": "local_constructor",
+    "reason": "project_state is assigned ProjectState() immediately before clone(); clone is defined directly on ProjectState.",
+    "repo": "django/django",
+    "sample_key": "0002c4604e5789661184d4cf7b3b1c1451f280b023e5a561a1b47d4f4cc4eae6"
+  },
+  {
+    "basis": "Agent source-context inspection under the observed-static-caller model; no benchmark execution",
+    "classification": "SUPPORTED",
+    "expression": "dmap.data2grid",
+    "instance_id": "matplotlib__matplotlib-20488",
+    "provenance": "caller_parameter",
+    "reason": "The observed integrator call receives dmap from DomainMap(grid, mask); DomainMap directly defines data2grid.",
+    "repo": "matplotlib/matplotlib",
+    "sample_key": "0e1faa7c4ab29c3f358cf29a9f4f1df48142ee2541621aff27848b5ad3e367aa"
+  },
+  {
+    "basis": "Agent source-context inspection under the observed-static-caller model; no benchmark execution",
+    "classification": "SUPPORTED",
+    "expression": "dmap.mask2grid",
+    "instance_id": "matplotlib__matplotlib-23476",
+    "provenance": "local_constructor",
+    "reason": "dmap is assigned DomainMap(grid, mask) before mask2grid(); the direct class member matches.",
+    "repo": "matplotlib/matplotlib",
+    "sample_key": "0012364381291a4ee321675ce760d5baab853f47c5a55199dbb7f5c3adda097a"
+  },
+  {
+    "basis": "Agent source-context inspection under the observed-static-caller model; no benchmark execution",
+    "classification": "SUPPORTED",
+    "expression": "a.set_view_interval",
+    "instance_id": "mwaskom__seaborn-3069",
+    "provenance": "local_constructor",
+    "reason": "a is constructed as PseudoAxis and its class directly defines set_view_interval.",
+    "repo": "mwaskom/seaborn",
+    "sample_key": "123bf7c0da6a3f394df9a498a0746365f18cd81cb3d692b54d7d27550973924c"
+  },
+  {
+    "basis": "Agent source-context inspection under the observed-static-caller model; no benchmark execution",
+    "classification": "SUPPORTED",
+    "expression": "s.dumps",
+    "instance_id": "pallets__flask-5014",
+    "provenance": "local_constructor",
+    "reason": "s is constructed as TaggedJSONSerializer; registering tags does not replace its directly defined dumps method in the inspected context.",
+    "repo": "pallets/flask",
+    "sample_key": "165951419084128c240cd465a4c97ea8f91af079bb6482d4841ce08d2784b23d"
+  },
+  {
+    "basis": "Agent source-context inspection under the observed-static-caller model; no benchmark execution",
+    "classification": "SUPPORTED",
+    "expression": "g.map_dataarray_line",
+    "instance_id": "pydata__xarray-6744",
+    "provenance": "local_constructor",
+    "reason": "g is constructed as FacetGrid before the kind branch; map_dataarray_line is a direct class method.",
+    "repo": "pydata/xarray",
+    "sample_key": "04c95ac45076ee9562092a000f673ebbc708e59349ba05cb16d0b727a6303e70"
+  },
+  {
+    "basis": "Agent source-context inspection under the observed-static-caller model; no benchmark execution",
+    "classification": "SUPPORTED",
+    "expression": "writer.write",
+    "instance_id": "pylint-dev__pylint-6528",
+    "provenance": "caller_parameter",
+    "reason": "All seven inspected fixture callers construct DiagramWriter and pass it into _setup(writer); DiagramWriter directly defines write.",
+    "repo": "pylint-dev/pylint",
+    "sample_key": "0268f1807dec6ab331d148194c4d3cb1dc1d1a861c8df342e4e7de304de2da45"
+  },
+  {
+    "basis": "Agent source-context inspection under the observed-static-caller model; no benchmark execution",
+    "classification": "SUPPORTED",
+    "expression": "store_.register_messages_from_checker",
+    "instance_id": "pylint-dev__pylint-4970",
+    "provenance": "local_constructor",
+    "reason": "store_ is constructed as MessageDefinitionStore before registration; register_messages_from_checker is directly defined on that class.",
+    "repo": "pylint-dev/pylint",
+    "sample_key": "0601600735477f450778441cc17b3b9ce1417c4018934c27bf4401dc2746e11c"
+  },
+  {
+    "basis": "Agent source-context inspection under the observed-static-caller model; no benchmark execution",
+    "classification": "SUPPORTED",
+    "expression": "s.accept",
+    "instance_id": "pytest-dev__pytest-7432",
+    "provenance": "caller_parameter",
+    "reason": "expression receives a direct Scanner(input) argument; Scanner directly defines accept.",
+    "repo": "pytest-dev/pytest",
+    "sample_key": "0d37504f31cb3429596a69155bca3284412fbd08793903e4c0db3f3da00564dd"
+  },
+  {
+    "basis": "Agent source-context inspection under the observed-static-caller model; no benchmark execution",
+    "classification": "SUPPORTED",
+    "expression": "s.accept",
+    "instance_id": "pytest-dev__pytest-7432",
+    "provenance": "caller_parameter_transitive",
+    "reason": "Scanner(input) flows through expression, expr, and_expr and not_expr, including recursive calls; the receiver member is Scanner.accept.",
+    "repo": "pytest-dev/pytest",
+    "sample_key": "0019bcea02cbe6869bc8b96235cafd08d7002ed82c8811aa8e5615bebd025f40"
+  },
+  {
+    "basis": "Agent source-context inspection under the observed-static-caller model; no benchmark execution",
+    "classification": "SUPPORTED",
+    "expression": "matcher.fnmatch_lines",
+    "instance_id": "pytest-dev__pytest-10051",
+    "provenance": "local_constructor",
+    "reason": "matcher is constructed as LineMatcher immediately before fnmatch_lines; the direct method definition matches.",
+    "repo": "pytest-dev/pytest",
+    "sample_key": "00aa7dd3941bbcbcbae37709f9aba1d467ae7676d4a69d82f379962ef87e6984"
+  },
+  {
+    "basis": "Agent source-context inspection under the observed-static-caller model; no benchmark execution",
+    "classification": "SUPPORTED",
+    "expression": "grower.split_next",
+    "instance_id": "scikit-learn__scikit-learn-14629",
+    "provenance": "local_constructor",
+    "reason": "grower is constructed as TreeGrower before split_next; constructor keyword values do not change the statically known class target.",
+    "repo": "scikit-learn/scikit-learn",
+    "sample_key": "01e6cd90e66d156d3e6491c4aa40766a7ee35efde8256d9214ff0c35584243eb"
+  },
+  {
+    "basis": "Agent source-context inspection under the observed-static-caller model; no benchmark execution",
+    "classification": "SUPPORTED",
+    "expression": "parser.parse",
+    "instance_id": "sphinx-doc__sphinx-10323",
+    "provenance": "local_constructor",
+    "reason": "parser is constructed as Parser immediately before parse(); Parser directly defines parse.",
+    "repo": "sphinx-doc/sphinx",
+    "sample_key": "00455af5dbb07626bfb45d477ff2a765356a4e5714acd89f1b42d79b88632b27"
+  },
+  {
+    "basis": "Agent source-context inspection under the observed-static-caller model; no benchmark execution",
+    "classification": "SUPPORTED",
+    "expression": "O.locatenew",
+    "instance_id": "sympy__sympy-24562",
+    "provenance": "local_constructor",
+    "reason": "O is constructed as Point before locatenew(); Point directly defines that method.",
+    "repo": "sympy/sympy",
+    "sample_key": "0030bb61691290959ba86e3fb82d992b0dcebfe334bcf18242a408364808be5b"
+  }
+]

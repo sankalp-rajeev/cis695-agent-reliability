@@ -1,0 +1,998 @@
+[
+  {
+    "edge": {
+      "baseline_reason": "uncertain_or_rebound_name",
+      "baseline_status": "unresolved",
+      "baseline_targets": [],
+      "caller": "astropy/samp/tests/test_hub.py::test_SAMPHubServer_run_repeated::test_function@29:0",
+      "column": 4,
+      "expression": "hub.stop",
+      "line": 42,
+      "path": "astropy/samp/tests/test_hub.py",
+      "provenance": "local_constructor",
+      "reason": "typeprop_unique_receiver_method",
+      "receiver_fact": {
+        "name": "hub",
+        "scope": "astropy/samp/tests/test_hub.py::test_SAMPHubServer_run_repeated::test_function@29:0"
+      },
+      "receiver_types": [
+        "astropy/samp/hub.py::SAMPHubServer::class@30:0"
+      ],
+      "scope": "astropy/samp/tests/test_hub.py::test_SAMPHubServer_run_repeated::test_function@29:0",
+      "status": "resolved",
+      "targets": [
+        "astropy/samp/hub.py::SAMPHubServer.stop::method@494:4"
+      ]
+    },
+    "evidence": [
+      {
+        "context": "32:     when web profile support is enabled.\n33:     \"\"\"\n34: \n35:     hub = SAMPHubServer(web_profile=True, mode=\"multiple\", pool_size=1)\n36:     hub.start()\n37:     time.sleep(1)\n38:     hub.stop()",
+        "kind": "local_constructor",
+        "name": "hub",
+        "scope": "astropy/samp/tests/test_hub.py::test_SAMPHubServer_run_repeated::test_function@29:0"
+      }
+    ],
+    "instance_id": "astropy__astropy-14508",
+    "ordinal": 59242,
+    "receiver_classes": [
+      {
+        "bases": [],
+        "column": 0,
+        "conditional": false,
+        "decorated": false,
+        "decorators": [],
+        "id": "astropy/samp/hub.py::SAMPHubServer::class@30:0",
+        "kind": "class",
+        "line": 30,
+        "module": "astropy.samp.hub",
+        "parent": "astropy/samp/hub.py::<module>::module@1:0",
+        "path": "astropy/samp/hub.py",
+        "qualname": "SAMPHubServer"
+      }
+    ],
+    "repo": "astropy/astropy",
+    "sample_key": "006cf651252377bcf469f254061f18cb1e1eedd3e36d062e4b995a9b1e2c3492",
+    "site_context": "39:     time.sleep(1)\n40:     hub.start()\n41:     time.sleep(1)\n42:     hub.stop()",
+    "target_context": [
+      "491:         else:\n492:             return str(uuid.uuid1())\n493: \n494:     def stop(self):\n495:         \"\"\"\n496:         Stop the current SAMP Hub instance and delete the lock file.\n497:         \"\"\""
+    ]
+  },
+  {
+    "edge": {
+      "baseline_reason": "uncertain_or_rebound_name",
+      "baseline_status": "unresolved",
+      "baseline_targets": [],
+      "caller": "tests/migrations/test_operations.py::OperationTests.test_run_python_noop::test_method@2663:4",
+      "column": 20,
+      "expression": "project_state.clone",
+      "line": 2668,
+      "path": "tests/migrations/test_operations.py",
+      "provenance": "local_constructor",
+      "reason": "typeprop_unique_receiver_method",
+      "receiver_fact": {
+        "name": "project_state",
+        "scope": "tests/migrations/test_operations.py::OperationTests.test_run_python_noop::test_method@2663:4"
+      },
+      "receiver_types": [
+        "django/db/migrations/state.py::ProjectState::class@79:0"
+      ],
+      "scope": "tests/migrations/test_operations.py::OperationTests.test_run_python_noop::test_method@2663:4",
+      "status": "resolved",
+      "targets": [
+        "django/db/migrations/state.py::ProjectState.clone::method@192:4"
+      ]
+    },
+    "evidence": [
+      {
+        "context": "2664:         \"\"\"\n2665:         #24098 - Tests no-op RunPython operations.\n2666:         \"\"\"\n2667:         project_state = ProjectState()\n2668:         new_state = project_state.clone()\n2669:         operation = migrations.RunPython(migrations.RunPython.noop, migrations.RunPython.noop)\n2670:         with connection.schema_editor() as editor:",
+        "kind": "local_constructor",
+        "name": "project_state",
+        "scope": "tests/migrations/test_operations.py::OperationTests.test_run_python_noop::test_method@2663:4"
+      }
+    ],
+    "instance_id": "django__django-12209",
+    "ordinal": 94525,
+    "receiver_classes": [
+      {
+        "bases": [],
+        "column": 0,
+        "conditional": false,
+        "decorated": false,
+        "decorators": [],
+        "id": "django/db/migrations/state.py::ProjectState::class@79:0",
+        "kind": "class",
+        "line": 79,
+        "module": "django.db.migrations.state",
+        "parent": "django/db/migrations/state.py::<module>::module@1:0",
+        "path": "django/db/migrations/state.py",
+        "qualname": "ProjectState"
+      }
+    ],
+    "repo": "django/django",
+    "sample_key": "0002c4604e5789661184d4cf7b3b1c1451f280b023e5a561a1b47d4f4cc4eae6",
+    "site_context": "2665:         #24098 - Tests no-op RunPython operations.\n2666:         \"\"\"\n2667:         project_state = ProjectState()\n2668:         new_state = project_state.clone()\n2669:         operation = migrations.RunPython(migrations.RunPython.noop, migrations.RunPython.noop)\n2670:         with connection.schema_editor() as editor:\n2671:             operation.database_forwards(\"test_runpython\", editor, project_state, new_state)",
+    "target_context": [
+      "189:         # Render all models\n190:         self.apps.render_multiple(states_to_be_rendered)\n191: \n192:     def clone(self):\n193:         \"\"\"Return an exact copy of this ProjectState.\"\"\"\n194:         new_state = ProjectState(\n195:             models={k: v.clone() for k, v in self.models.items()},"
+    ]
+  },
+  {
+    "edge": {
+      "baseline_reason": "uncertain_or_rebound_name",
+      "baseline_status": "unresolved",
+      "baseline_targets": [],
+      "caller": "lib/matplotlib/streamplot.py::get_integrator::function@436:0",
+      "column": 11,
+      "expression": "dmap.data2grid",
+      "line": 439,
+      "path": "lib/matplotlib/streamplot.py",
+      "provenance": "caller_parameter",
+      "reason": "typeprop_unique_receiver_method",
+      "receiver_fact": {
+        "name": "dmap",
+        "scope": "lib/matplotlib/streamplot.py::get_integrator::function@436:0"
+      },
+      "receiver_types": [
+        "lib/matplotlib/streamplot.py::DomainMap::class@253:0"
+      ],
+      "scope": "lib/matplotlib/streamplot.py::get_integrator::function@436:0",
+      "status": "resolved",
+      "targets": [
+        "lib/matplotlib/streamplot.py::DomainMap.data2grid::method@293:4"
+      ]
+    },
+    "evidence": [
+      {
+        "context": "140:     u = np.ma.masked_invalid(u)\n141:     v = np.ma.masked_invalid(v)\n142: \n143:     integrate = get_integrator(u, v, dmap, minlength, maxlength,\n144:                                integration_direction)\n145: \n146:     trajectories = []",
+        "kind": "caller_argument",
+        "name": "dmap",
+        "scope": "lib/matplotlib/streamplot.py::get_integrator::function@436:0"
+      },
+      {
+        "context": "86:     \"\"\"\n87:     grid = Grid(x, y)\n88:     mask = StreamMask(density)\n89:     dmap = DomainMap(grid, mask)\n90: \n91:     if zorder is None:\n92:         zorder = mlines.Line2D.zorder",
+        "kind": "local_constructor",
+        "name": "dmap",
+        "scope": "lib/matplotlib/streamplot.py::streamplot::function@19:0"
+      }
+    ],
+    "instance_id": "matplotlib__matplotlib-20488",
+    "ordinal": 34150,
+    "receiver_classes": [
+      {
+        "bases": [],
+        "column": 0,
+        "conditional": false,
+        "decorated": false,
+        "decorators": [],
+        "id": "lib/matplotlib/streamplot.py::DomainMap::class@253:0",
+        "kind": "class",
+        "line": 253,
+        "module": "matplotlib.streamplot",
+        "parent": "lib/matplotlib/streamplot.py::<module>::module@1:0",
+        "path": "lib/matplotlib/streamplot.py",
+        "qualname": "DomainMap"
+      }
+    ],
+    "repo": "matplotlib/matplotlib",
+    "sample_key": "0e1faa7c4ab29c3f358cf29a9f4f1df48142ee2541621aff27848b5ad3e367aa",
+    "site_context": "436: def get_integrator(u, v, dmap, minlength, maxlength, integration_direction):\n437: \n438:     # rescale velocity onto grid-coordinates for integrations.\n439:     u, v = dmap.data2grid(u, v)\n440: \n441:     # speed (path length) will be in axes-coordinates\n442:     u_ax = u / (dmap.grid.nx - 1)",
+    "target_context": [
+      "290:     def mask2grid(self, xm, ym):\n291:         return xm * self.x_mask2grid, ym * self.y_mask2grid\n292: \n293:     def data2grid(self, xd, yd):\n294:         return xd * self.x_data2grid, yd * self.y_data2grid\n295: \n296:     def grid2data(self, xg, yg):"
+    ]
+  },
+  {
+    "edge": {
+      "baseline_reason": "uncertain_or_rebound_name",
+      "baseline_status": "unresolved",
+      "baseline_targets": [],
+      "caller": "lib/matplotlib/streamplot.py::streamplot::function@18:0",
+      "column": 25,
+      "expression": "dmap.mask2grid",
+      "line": 154,
+      "path": "lib/matplotlib/streamplot.py",
+      "provenance": "local_constructor",
+      "reason": "typeprop_unique_receiver_method",
+      "receiver_fact": {
+        "name": "dmap",
+        "scope": "lib/matplotlib/streamplot.py::streamplot::function@18:0"
+      },
+      "receiver_types": [
+        "lib/matplotlib/streamplot.py::DomainMap::class@254:0"
+      ],
+      "scope": "lib/matplotlib/streamplot.py::streamplot::function@18:0",
+      "status": "resolved",
+      "targets": [
+        "lib/matplotlib/streamplot.py::DomainMap.mask2grid::method@291:4"
+      ]
+    },
+    "evidence": [
+      {
+        "context": "90:     \"\"\"\n91:     grid = Grid(x, y)\n92:     mask = StreamMask(density)\n93:     dmap = DomainMap(grid, mask)\n94: \n95:     if zorder is None:\n96:         zorder = mlines.Line2D.zorder",
+        "kind": "local_constructor",
+        "name": "dmap",
+        "scope": "lib/matplotlib/streamplot.py::streamplot::function@18:0"
+      }
+    ],
+    "instance_id": "matplotlib__matplotlib-23476",
+    "ordinal": 35190,
+    "receiver_classes": [
+      {
+        "bases": [],
+        "column": 0,
+        "conditional": false,
+        "decorated": false,
+        "decorators": [],
+        "id": "lib/matplotlib/streamplot.py::DomainMap::class@254:0",
+        "kind": "class",
+        "line": 254,
+        "module": "matplotlib.streamplot",
+        "parent": "lib/matplotlib/streamplot.py::<module>::module@1:0",
+        "path": "lib/matplotlib/streamplot.py",
+        "qualname": "DomainMap"
+      }
+    ],
+    "repo": "matplotlib/matplotlib",
+    "sample_key": "0012364381291a4ee321675ce760d5baab853f47c5a55199dbb7f5c3adda097a",
+    "site_context": "151:     if start_points is None:\n152:         for xm, ym in _gen_starting_points(mask.shape):\n153:             if mask[ym, xm] == 0:\n154:                 xg, yg = dmap.mask2grid(xm, ym)\n155:                 t = integrate(xg, yg, broken_streamlines)\n156:                 if t is not None:\n157:                     trajectories.append(t)",
+    "target_context": [
+      "288:         return (int(xi * self.x_grid2mask + 0.5),\n289:                 int(yi * self.y_grid2mask + 0.5))\n290: \n291:     def mask2grid(self, xm, ym):\n292:         return xm * self.x_mask2grid, ym * self.y_mask2grid\n293: \n294:     def data2grid(self, xd, yd):"
+    ]
+  },
+  {
+    "edge": {
+      "baseline_reason": "uncertain_or_rebound_name",
+      "baseline_status": "unresolved",
+      "baseline_targets": [],
+      "caller": "tests/_core/test_scales.py::TestContinuous.setup_labels::method@42:4",
+      "column": 8,
+      "expression": "a.set_view_interval",
+      "line": 46,
+      "path": "tests/_core/test_scales.py",
+      "provenance": "local_constructor",
+      "reason": "typeprop_unique_receiver_method",
+      "receiver_fact": {
+        "name": "a",
+        "scope": "tests/_core/test_scales.py::TestContinuous.setup_labels::method@42:4"
+      },
+      "receiver_types": [
+        "seaborn/_core/scales.py::PseudoAxis::class@776:0"
+      ],
+      "scope": "tests/_core/test_scales.py::TestContinuous.setup_labels::method@42:4",
+      "status": "resolved",
+      "targets": [
+        "seaborn/_core/scales.py::PseudoAxis.set_view_interval::method@803:4"
+      ]
+    },
+    "evidence": [
+      {
+        "context": "42:     def setup_labels(self, x, *args, **kwargs):\n43: \n44:         s = Continuous().label(*args, **kwargs)._setup(x, Coordinate())\n45:         a = PseudoAxis(s._matplotlib_scale)\n46:         a.set_view_interval(0, 1)\n47:         locs = a.major.locator()\n48:         return a, locs",
+        "kind": "local_constructor",
+        "name": "a",
+        "scope": "tests/_core/test_scales.py::TestContinuous.setup_labels::method@42:4"
+      }
+    ],
+    "instance_id": "mwaskom__seaborn-3069",
+    "ordinal": 8734,
+    "receiver_classes": [
+      {
+        "bases": [],
+        "column": 0,
+        "conditional": false,
+        "decorated": false,
+        "decorators": [],
+        "id": "seaborn/_core/scales.py::PseudoAxis::class@776:0",
+        "kind": "class",
+        "line": 776,
+        "module": "seaborn._core.scales",
+        "parent": "seaborn/_core/scales.py::<module>::module@1:0",
+        "path": "seaborn/_core/scales.py",
+        "qualname": "PseudoAxis"
+      }
+    ],
+    "repo": "mwaskom/seaborn",
+    "sample_key": "123bf7c0da6a3f394df9a498a0746365f18cd81cb3d692b54d7d27550973924c",
+    "site_context": "43: \n44:         s = Continuous().label(*args, **kwargs)._setup(x, Coordinate())\n45:         a = PseudoAxis(s._matplotlib_scale)\n46:         a.set_view_interval(0, 1)\n47:         locs = a.major.locator()\n48:         return a, locs\n49: ",
+    "target_context": [
+      "800:         scale.set_default_locators_and_formatters(self)\n801:         # self.set_default_intervals()  Is this ever needed?\n802: \n803:     def set_view_interval(self, vmin, vmax):\n804:         self._view_interval = vmin, vmax\n805: \n806:     def get_view_interval(self):"
+    ]
+  },
+  {
+    "edge": {
+      "baseline_reason": "uncertain_or_rebound_name",
+      "baseline_status": "unresolved",
+      "baseline_targets": [],
+      "caller": "tests/test_json_tag.py::test_custom_tag::test_function@43:0",
+      "column": 19,
+      "expression": "s.dumps",
+      "line": 63,
+      "path": "tests/test_json_tag.py",
+      "provenance": "local_constructor",
+      "reason": "typeprop_unique_receiver_method",
+      "receiver_fact": {
+        "name": "s",
+        "scope": "tests/test_json_tag.py::test_custom_tag::test_function@43:0"
+      },
+      "receiver_types": [
+        "src/flask/json/tag.py::TaggedJSONSerializer::class@216:0"
+      ],
+      "scope": "tests/test_json_tag.py::test_custom_tag::test_function@43:0",
+      "status": "resolved",
+      "targets": [
+        "src/flask/json/tag.py::TaggedJSONSerializer.dumps::method@306:4"
+      ]
+    },
+    "evidence": [
+      {
+        "context": "58:         def to_python(self, value):\n59:             return Foo(value)\n60: \n61:     s = TaggedJSONSerializer()\n62:     s.register(TagFoo)\n63:     assert s.loads(s.dumps(Foo(\"bar\"))).data == \"bar\"\n64: ",
+        "kind": "local_constructor",
+        "name": "s",
+        "scope": "tests/test_json_tag.py::test_custom_tag::test_function@43:0"
+      }
+    ],
+    "instance_id": "pallets__flask-5014",
+    "ordinal": 3230,
+    "receiver_classes": [
+      {
+        "bases": [],
+        "column": 0,
+        "conditional": false,
+        "decorated": false,
+        "decorators": [],
+        "id": "src/flask/json/tag.py::TaggedJSONSerializer::class@216:0",
+        "kind": "class",
+        "line": 216,
+        "module": "flask.json.tag",
+        "parent": "src/flask/json/tag.py::<module>::module@1:0",
+        "path": "src/flask/json/tag.py",
+        "qualname": "TaggedJSONSerializer"
+      }
+    ],
+    "repo": "pallets/flask",
+    "sample_key": "165951419084128c240cd465a4c97ea8f91af079bb6482d4841ce08d2784b23d",
+    "site_context": "60: \n61:     s = TaggedJSONSerializer()\n62:     s.register(TagFoo)\n63:     assert s.loads(s.dumps(Foo(\"bar\"))).data == \"bar\"\n64: \n65: \n66: def test_tag_interface():",
+    "target_context": [
+      "303: \n304:         return self.tags[key].to_python(value[key])\n305: \n306:     def dumps(self, value: t.Any) -> str:\n307:         \"\"\"Tag the value and dump it to a compact JSON string.\"\"\"\n308:         return dumps(self.tag(value), separators=(\",\", \":\"))\n309: "
+    ]
+  },
+  {
+    "edge": {
+      "baseline_reason": "uncertain_or_rebound_name",
+      "baseline_status": "unresolved",
+      "baseline_targets": [],
+      "caller": "xarray/plot/facetgrid.py::_easy_facetgrid::function@642:0",
+      "column": 15,
+      "expression": "g.map_dataarray_line",
+      "line": 688,
+      "path": "xarray/plot/facetgrid.py",
+      "provenance": "local_constructor",
+      "reason": "typeprop_unique_receiver_method",
+      "receiver_fact": {
+        "name": "g",
+        "scope": "xarray/plot/facetgrid.py::_easy_facetgrid::function@642:0"
+      },
+      "receiver_types": [
+        "xarray/plot/facetgrid.py::FacetGrid::class@38:0"
+      ],
+      "scope": "xarray/plot/facetgrid.py::_easy_facetgrid::function@642:0",
+      "status": "resolved",
+      "targets": [
+        "xarray/plot/facetgrid.py::FacetGrid.map_dataarray_line::method@299:4"
+      ]
+    },
+    "evidence": [
+      {
+        "context": "671:     elif figsize is not None:\n672:         raise ValueError(\"cannot provide both `figsize` and `size` arguments\")\n673: \n674:     g = FacetGrid(\n675:         data=data,\n676:         col=col,\n677:         row=row,",
+        "kind": "local_constructor",
+        "name": "g",
+        "scope": "xarray/plot/facetgrid.py::_easy_facetgrid::function@642:0"
+      }
+    ],
+    "instance_id": "pydata__xarray-6744",
+    "ordinal": 11201,
+    "receiver_classes": [
+      {
+        "bases": [],
+        "column": 0,
+        "conditional": false,
+        "decorated": false,
+        "decorators": [],
+        "id": "xarray/plot/facetgrid.py::FacetGrid::class@38:0",
+        "kind": "class",
+        "line": 38,
+        "module": "xarray.plot.facetgrid",
+        "parent": "xarray/plot/facetgrid.py::<module>::module@1:0",
+        "path": "xarray/plot/facetgrid.py",
+        "qualname": "FacetGrid"
+      }
+    ],
+    "repo": "pydata/xarray",
+    "sample_key": "04c95ac45076ee9562092a000f673ebbc708e59349ba05cb16d0b727a6303e70",
+    "site_context": "685:     )\n686: \n687:     if kind == \"line\":\n688:         return g.map_dataarray_line(plotfunc, x, y, **kwargs)\n689: \n690:     if kind == \"dataarray\":\n691:         return g.map_dataarray(plotfunc, x, y, **kwargs)",
+    "target_context": [
+      "296: \n297:         return self\n298: \n299:     def map_dataarray_line(\n300:         self, func, x, y, hue, add_legend=True, _labels=None, **kwargs\n301:     ):\n302:         from .plot import _infer_line_data"
+    ]
+  },
+  {
+    "edge": {
+      "baseline_reason": "uncertain_or_rebound_name",
+      "baseline_status": "unresolved",
+      "baseline_targets": [],
+      "caller": "tests/pyreverse/test_writer.py::_setup::function@126:0",
+      "column": 4,
+      "expression": "writer.write",
+      "line": 134,
+      "path": "tests/pyreverse/test_writer.py",
+      "provenance": "caller_parameter",
+      "reason": "typeprop_unique_receiver_method",
+      "receiver_fact": {
+        "name": "writer",
+        "scope": "tests/pyreverse/test_writer.py::_setup::function@126:0"
+      },
+      "receiver_types": [
+        "pylint/pyreverse/writer.py::DiagramWriter::class@27:0"
+      ],
+      "scope": "tests/pyreverse/test_writer.py::_setup::function@126:0",
+      "status": "resolved",
+      "targets": [
+        "pylint/pyreverse/writer.py::DiagramWriter.write::method@59:4"
+      ]
+    },
+    "evidence": [
+      {
+        "context": "72: def setup_dot(default_config: PyreverseConfig, get_project: Callable) -> Iterator:\n73:     writer = DiagramWriter(default_config)\n74:     project = get_project(TEST_DATA_DIR)\n75:     yield from _setup(project, default_config, writer)\n76: \n77: \n78: @pytest.fixture()",
+        "kind": "caller_argument",
+        "name": "writer",
+        "scope": "tests/pyreverse/test_writer.py::_setup::function@126:0"
+      },
+      {
+        "context": "70: \n71: @pytest.fixture()\n72: def setup_dot(default_config: PyreverseConfig, get_project: Callable) -> Iterator:\n73:     writer = DiagramWriter(default_config)\n74:     project = get_project(TEST_DATA_DIR)\n75:     yield from _setup(project, default_config, writer)\n76: ",
+        "kind": "local_constructor",
+        "name": "writer",
+        "scope": "tests/pyreverse/test_writer.py::setup_dot::function@72:0"
+      },
+      {
+        "context": "81: ) -> Iterator:\n82:     writer = DiagramWriter(colorized_dot_config)\n83:     project = get_project(TEST_DATA_DIR, name=\"colorized\")\n84:     yield from _setup(project, colorized_dot_config, writer)\n85: \n86: \n87: @pytest.fixture()",
+        "kind": "caller_argument",
+        "name": "writer",
+        "scope": "tests/pyreverse/test_writer.py::_setup::function@126:0"
+      },
+      {
+        "context": "79: def setup_colorized_dot(\n80:     colorized_dot_config: PyreverseConfig, get_project: Callable\n81: ) -> Iterator:\n82:     writer = DiagramWriter(colorized_dot_config)\n83:     project = get_project(TEST_DATA_DIR, name=\"colorized\")\n84:     yield from _setup(project, colorized_dot_config, writer)\n85: ",
+        "kind": "local_constructor",
+        "name": "writer",
+        "scope": "tests/pyreverse/test_writer.py::setup_colorized_dot::function@79:0"
+      },
+      {
+        "context": "88: def setup_vcg(vcg_config: PyreverseConfig, get_project: Callable) -> Iterator:\n89:     writer = DiagramWriter(vcg_config)\n90:     project = get_project(TEST_DATA_DIR)\n91:     yield from _setup(project, vcg_config, writer)\n92: \n93: \n94: @pytest.fixture()",
+        "kind": "caller_argument",
+        "name": "writer",
+        "scope": "tests/pyreverse/test_writer.py::_setup::function@126:0"
+      },
+      {
+        "context": "86: \n87: @pytest.fixture()\n88: def setup_vcg(vcg_config: PyreverseConfig, get_project: Callable) -> Iterator:\n89:     writer = DiagramWriter(vcg_config)\n90:     project = get_project(TEST_DATA_DIR)\n91:     yield from _setup(project, vcg_config, writer)\n92: ",
+        "kind": "local_constructor",
+        "name": "writer",
+        "scope": "tests/pyreverse/test_writer.py::setup_vcg::function@88:0"
+      },
+      {
+        "context": "95: def setup_puml(puml_config: PyreverseConfig, get_project: Callable) -> Iterator:\n96:     writer = DiagramWriter(puml_config)\n97:     project = get_project(TEST_DATA_DIR)\n98:     yield from _setup(project, puml_config, writer)\n99: \n100: \n101: @pytest.fixture()",
+        "kind": "caller_argument",
+        "name": "writer",
+        "scope": "tests/pyreverse/test_writer.py::_setup::function@126:0"
+      },
+      {
+        "context": "93: \n94: @pytest.fixture()\n95: def setup_puml(puml_config: PyreverseConfig, get_project: Callable) -> Iterator:\n96:     writer = DiagramWriter(puml_config)\n97:     project = get_project(TEST_DATA_DIR)\n98:     yield from _setup(project, puml_config, writer)\n99: ",
+        "kind": "local_constructor",
+        "name": "writer",
+        "scope": "tests/pyreverse/test_writer.py::setup_puml::function@95:0"
+      },
+      {
+        "context": "104: ) -> Iterator:\n105:     writer = DiagramWriter(colorized_puml_config)\n106:     project = get_project(TEST_DATA_DIR, name=\"colorized\")\n107:     yield from _setup(project, colorized_puml_config, writer)\n108: \n109: \n110: @pytest.fixture()",
+        "kind": "caller_argument",
+        "name": "writer",
+        "scope": "tests/pyreverse/test_writer.py::_setup::function@126:0"
+      },
+      {
+        "context": "102: def setup_colorized_puml(\n103:     colorized_puml_config: PyreverseConfig, get_project: Callable\n104: ) -> Iterator:\n105:     writer = DiagramWriter(colorized_puml_config)\n106:     project = get_project(TEST_DATA_DIR, name=\"colorized\")\n107:     yield from _setup(project, colorized_puml_config, writer)\n108: ",
+        "kind": "local_constructor",
+        "name": "writer",
+        "scope": "tests/pyreverse/test_writer.py::setup_colorized_puml::function@102:0"
+      },
+      {
+        "context": "112:     writer = DiagramWriter(mmd_config)\n113: \n114:     project = get_project(TEST_DATA_DIR)\n115:     yield from _setup(project, mmd_config, writer)\n116: \n117: \n118: @pytest.fixture()",
+        "kind": "caller_argument",
+        "name": "writer",
+        "scope": "tests/pyreverse/test_writer.py::_setup::function@126:0"
+      },
+      {
+        "context": "109: \n110: @pytest.fixture()\n111: def setup_mmd(mmd_config: PyreverseConfig, get_project: Callable) -> Iterator:\n112:     writer = DiagramWriter(mmd_config)\n113: \n114:     project = get_project(TEST_DATA_DIR)\n115:     yield from _setup(project, mmd_config, writer)",
+        "kind": "local_constructor",
+        "name": "writer",
+        "scope": "tests/pyreverse/test_writer.py::setup_mmd::function@111:0"
+      },
+      {
+        "context": "120:     writer = DiagramWriter(html_config)\n121: \n122:     project = get_project(TEST_DATA_DIR)\n123:     yield from _setup(project, html_config, writer)\n124: \n125: \n126: def _setup(",
+        "kind": "caller_argument",
+        "name": "writer",
+        "scope": "tests/pyreverse/test_writer.py::_setup::function@126:0"
+      },
+      {
+        "context": "117: \n118: @pytest.fixture()\n119: def setup_html(html_config: PyreverseConfig, get_project: Callable) -> Iterator:\n120:     writer = DiagramWriter(html_config)\n121: \n122:     project = get_project(TEST_DATA_DIR)\n123:     yield from _setup(project, html_config, writer)",
+        "kind": "local_constructor",
+        "name": "writer",
+        "scope": "tests/pyreverse/test_writer.py::setup_html::function@119:0"
+      }
+    ],
+    "instance_id": "pylint-dev__pylint-6528",
+    "ordinal": 16467,
+    "receiver_classes": [
+      {
+        "bases": [],
+        "column": 0,
+        "conditional": false,
+        "decorated": false,
+        "decorators": [],
+        "id": "pylint/pyreverse/writer.py::DiagramWriter::class@27:0",
+        "kind": "class",
+        "line": 27,
+        "module": "pylint.pyreverse.writer",
+        "parent": "pylint/pyreverse/writer.py::<module>::module@1:0",
+        "path": "pylint/pyreverse/writer.py",
+        "qualname": "DiagramWriter"
+      }
+    ],
+    "repo": "pylint-dev/pylint",
+    "sample_key": "0268f1807dec6ab331d148194c4d3cb1dc1d1a861c8df342e4e7de304de2da45",
+    "site_context": "131:     dd = DefaultDiadefGenerator(linker, handler).visit(project)\n132:     for diagram in dd:\n133:         diagram.extract_relationships()\n134:     writer.write(dd)\n135:     yield\n136:     for fname in (\n137:         DOT_FILES",
+    "target_context": [
+      "56:         )\n57:         self.used_colors: dict[str, str] = {}\n58: \n59:     def write(self, diadefs):\n60:         \"\"\"Write files for <project> according to <diadefs>.\"\"\"\n61:         for diagram in diadefs:\n62:             basename = diagram.title.strip().replace(\" \", \"_\")"
+    ]
+  },
+  {
+    "edge": {
+      "baseline_reason": "uncertain_or_rebound_name",
+      "baseline_status": "unresolved",
+      "baseline_targets": [],
+      "caller": "tests/message/conftest.py::store::function@30:0",
+      "column": 4,
+      "expression": "store_.register_messages_from_checker",
+      "line": 50,
+      "path": "tests/message/conftest.py",
+      "provenance": "local_constructor",
+      "reason": "typeprop_unique_receiver_method",
+      "receiver_fact": {
+        "name": "store_",
+        "scope": "tests/message/conftest.py::store::function@30:0"
+      },
+      "receiver_types": [
+        "pylint/message/message_definition_store.py::MessageDefinitionStore::class@12:0"
+      ],
+      "scope": "tests/message/conftest.py::store::function@30:0",
+      "status": "resolved",
+      "targets": [
+        "pylint/message/message_definition_store.py::MessageDefinitionStore.register_messages_from_checker::method@32:4"
+      ]
+    },
+    "evidence": [
+      {
+        "context": "28: \n29: @pytest.fixture\n30: def store() -> MessageDefinitionStore:\n31:     store_ = MessageDefinitionStore()\n32: \n33:     class Checker(BaseChecker):\n34:         name = \"achecker\"",
+        "kind": "local_constructor",
+        "name": "store_",
+        "scope": "tests/message/conftest.py::store::function@30:0"
+      }
+    ],
+    "instance_id": "pylint-dev__pylint-4970",
+    "ordinal": 13440,
+    "receiver_classes": [
+      {
+        "bases": [],
+        "column": 0,
+        "conditional": false,
+        "decorated": false,
+        "decorators": [],
+        "id": "pylint/message/message_definition_store.py::MessageDefinitionStore::class@12:0",
+        "kind": "class",
+        "line": 12,
+        "module": "pylint.message.message_definition_store",
+        "parent": "pylint/message/message_definition_store.py::<module>::module@1:0",
+        "path": "pylint/message/message_definition_store.py",
+        "qualname": "MessageDefinitionStore"
+      }
+    ],
+    "repo": "pylint-dev/pylint",
+    "sample_key": "0601600735477f450778441cc17b3b9ce1417c4018934c27bf4401dc2746e11c",
+    "site_context": "47:             ),\n48:         }\n49: \n50:     store_.register_messages_from_checker(Checker())\n51:     return store_\n52: \n53: ",
+    "target_context": [
+      "29:         \"\"\"The list of all active messages.\"\"\"\n30:         return self._messages_definitions.values()\n31: \n32:     def register_messages_from_checker(self, checker) -> None:\n33:         \"\"\"Register all messages definitions from a checker.\"\"\"\n34:         checker.check_consistency()\n35:         for message in checker.messages:"
+    ]
+  },
+  {
+    "edge": {
+      "baseline_reason": "uncertain_or_rebound_name",
+      "baseline_status": "unresolved",
+      "baseline_targets": [],
+      "caller": "src/_pytest/mark/expression.py::expression::function@136:0",
+      "column": 8,
+      "expression": "s.accept",
+      "line": 141,
+      "path": "src/_pytest/mark/expression.py",
+      "provenance": "caller_parameter",
+      "reason": "typeprop_unique_receiver_method",
+      "receiver_fact": {
+        "name": "s",
+        "scope": "src/_pytest/mark/expression.py::expression::function@136:0"
+      },
+      "receiver_types": [
+        "src/_pytest/mark/expression.py::Scanner::class@74:0"
+      ],
+      "scope": "src/_pytest/mark/expression.py::expression::function@136:0",
+      "status": "resolved",
+      "targets": [
+        "src/_pytest/mark/expression.py::Scanner.accept::method@111:4"
+      ]
+    },
+    "evidence": [
+      {
+        "context": "204: \n205:         :param input: The input expression - one line.\n206:         \"\"\"\n207:         astexpr = expression(Scanner(input))\n208:         code = compile(\n209:             astexpr, filename=\"<pytest match expression>\", mode=\"eval\",\n210:         )  # type: types.CodeType",
+        "kind": "caller_argument",
+        "name": "s",
+        "scope": "src/_pytest/mark/expression.py::expression::function@136:0"
+      }
+    ],
+    "instance_id": "pytest-dev__pytest-7432",
+    "ordinal": 3995,
+    "receiver_classes": [
+      {
+        "bases": [],
+        "column": 0,
+        "conditional": false,
+        "decorated": false,
+        "decorators": [],
+        "id": "src/_pytest/mark/expression.py::Scanner::class@74:0",
+        "kind": "class",
+        "line": 74,
+        "module": "_pytest.mark.expression",
+        "parent": "src/_pytest/mark/expression.py::<module>::module@1:0",
+        "path": "src/_pytest/mark/expression.py",
+        "qualname": "Scanner"
+      }
+    ],
+    "repo": "pytest-dev/pytest",
+    "sample_key": "0d37504f31cb3429596a69155bca3284412fbd08793903e4c0db3f3da00564dd",
+    "site_context": "138:         ret = ast.NameConstant(False)  # type: ast.expr\n139:     else:\n140:         ret = expr(s)\n141:         s.accept(TokenType.EOF, reject=True)\n142:     return ast.fix_missing_locations(ast.Expression(ret))\n143: \n144: ",
+    "target_context": [
+      "108:                     )\n109:         yield Token(TokenType.EOF, \"\", pos)\n110: \n111:     def accept(self, type: TokenType, *, reject: bool = False) -> Optional[Token]:\n112:         if self.current.type is type:\n113:             token = self.current\n114:             if token.type is not TokenType.EOF:"
+    ]
+  },
+  {
+    "edge": {
+      "baseline_reason": "uncertain_or_rebound_name",
+      "baseline_status": "unresolved",
+      "baseline_targets": [],
+      "caller": "src/_pytest/mark/expression.py::not_expr::function@161:0",
+      "column": 7,
+      "expression": "s.accept",
+      "line": 164,
+      "path": "src/_pytest/mark/expression.py",
+      "provenance": "caller_parameter_transitive",
+      "reason": "typeprop_unique_receiver_method",
+      "receiver_fact": {
+        "name": "s",
+        "scope": "src/_pytest/mark/expression.py::not_expr::function@161:0"
+      },
+      "receiver_types": [
+        "src/_pytest/mark/expression.py::Scanner::class@74:0"
+      ],
+      "scope": "src/_pytest/mark/expression.py::not_expr::function@161:0",
+      "status": "resolved",
+      "targets": [
+        "src/_pytest/mark/expression.py::Scanner.accept::method@111:4"
+      ]
+    },
+    "evidence": [
+      {
+        "context": "151: \n152: \n153: def and_expr(s: Scanner) -> ast.expr:\n154:     ret = not_expr(s)\n155:     while s.accept(TokenType.AND):\n156:         rhs = not_expr(s)\n157:         ret = ast.BoolOp(ast.And(), [ret, rhs])",
+        "kind": "caller_argument",
+        "name": "s",
+        "scope": "src/_pytest/mark/expression.py::not_expr::function@161:0"
+      },
+      {
+        "context": "143: \n144: \n145: def expr(s: Scanner) -> ast.expr:\n146:     ret = and_expr(s)\n147:     while s.accept(TokenType.OR):\n148:         rhs = and_expr(s)\n149:         ret = ast.BoolOp(ast.Or(), [ret, rhs])",
+        "kind": "caller_argument",
+        "name": "s",
+        "scope": "src/_pytest/mark/expression.py::and_expr::function@153:0"
+      },
+      {
+        "context": "137:     if s.accept(TokenType.EOF):\n138:         ret = ast.NameConstant(False)  # type: ast.expr\n139:     else:\n140:         ret = expr(s)\n141:         s.accept(TokenType.EOF, reject=True)\n142:     return ast.fix_missing_locations(ast.Expression(ret))\n143: ",
+        "kind": "caller_argument",
+        "name": "s",
+        "scope": "src/_pytest/mark/expression.py::expr::function@145:0"
+      },
+      {
+        "context": "204: \n205:         :param input: The input expression - one line.\n206:         \"\"\"\n207:         astexpr = expression(Scanner(input))\n208:         code = compile(\n209:             astexpr, filename=\"<pytest match expression>\", mode=\"eval\",\n210:         )  # type: types.CodeType",
+        "kind": "caller_argument",
+        "name": "s",
+        "scope": "src/_pytest/mark/expression.py::expression::function@136:0"
+      },
+      {
+        "context": "162:     if s.accept(TokenType.NOT):\n163:         return ast.UnaryOp(ast.Not(), not_expr(s))\n164:     if s.accept(TokenType.LPAREN):\n165:         ret = expr(s)\n166:         s.accept(TokenType.RPAREN, reject=True)\n167:         return ret\n168:     ident = s.accept(TokenType.IDENT)",
+        "kind": "caller_argument",
+        "name": "s",
+        "scope": "src/_pytest/mark/expression.py::expr::function@145:0"
+      },
+      {
+        "context": "145: def expr(s: Scanner) -> ast.expr:\n146:     ret = and_expr(s)\n147:     while s.accept(TokenType.OR):\n148:         rhs = and_expr(s)\n149:         ret = ast.BoolOp(ast.Or(), [ret, rhs])\n150:     return ret\n151: ",
+        "kind": "caller_argument",
+        "name": "s",
+        "scope": "src/_pytest/mark/expression.py::and_expr::function@153:0"
+      },
+      {
+        "context": "153: def and_expr(s: Scanner) -> ast.expr:\n154:     ret = not_expr(s)\n155:     while s.accept(TokenType.AND):\n156:         rhs = not_expr(s)\n157:         ret = ast.BoolOp(ast.And(), [ret, rhs])\n158:     return ret\n159: ",
+        "kind": "caller_argument",
+        "name": "s",
+        "scope": "src/_pytest/mark/expression.py::not_expr::function@161:0"
+      },
+      {
+        "context": "160: \n161: def not_expr(s: Scanner) -> ast.expr:\n162:     if s.accept(TokenType.NOT):\n163:         return ast.UnaryOp(ast.Not(), not_expr(s))\n164:     if s.accept(TokenType.LPAREN):\n165:         ret = expr(s)\n166:         s.accept(TokenType.RPAREN, reject=True)",
+        "kind": "caller_argument",
+        "name": "s",
+        "scope": "src/_pytest/mark/expression.py::not_expr::function@161:0"
+      }
+    ],
+    "instance_id": "pytest-dev__pytest-7432",
+    "ordinal": 4012,
+    "receiver_classes": [
+      {
+        "bases": [],
+        "column": 0,
+        "conditional": false,
+        "decorated": false,
+        "decorators": [],
+        "id": "src/_pytest/mark/expression.py::Scanner::class@74:0",
+        "kind": "class",
+        "line": 74,
+        "module": "_pytest.mark.expression",
+        "parent": "src/_pytest/mark/expression.py::<module>::module@1:0",
+        "path": "src/_pytest/mark/expression.py",
+        "qualname": "Scanner"
+      }
+    ],
+    "repo": "pytest-dev/pytest",
+    "sample_key": "0019bcea02cbe6869bc8b96235cafd08d7002ed82c8811aa8e5615bebd025f40",
+    "site_context": "161: def not_expr(s: Scanner) -> ast.expr:\n162:     if s.accept(TokenType.NOT):\n163:         return ast.UnaryOp(ast.Not(), not_expr(s))\n164:     if s.accept(TokenType.LPAREN):\n165:         ret = expr(s)\n166:         s.accept(TokenType.RPAREN, reject=True)\n167:         return ret",
+    "target_context": [
+      "108:                     )\n109:         yield Token(TokenType.EOF, \"\", pos)\n110: \n111:     def accept(self, type: TokenType, *, reject: bool = False) -> Optional[Token]:\n112:         if self.current.type is type:\n113:             token = self.current\n114:             if token.type is not TokenType.EOF:"
+    ]
+  },
+  {
+    "edge": {
+      "baseline_reason": "uncertain_or_rebound_name",
+      "baseline_status": "unresolved",
+      "baseline_targets": [],
+      "caller": "testing/code/test_excinfo.py::TestFormattedExcinfo.test_exc_chain_repr_without_traceback::test_method@1268:4",
+      "column": 8,
+      "expression": "matcher.fnmatch_lines",
+      "line": 1303,
+      "path": "testing/code/test_excinfo.py",
+      "provenance": "local_constructor",
+      "reason": "typeprop_unique_receiver_method",
+      "receiver_fact": {
+        "name": "matcher",
+        "scope": "testing/code/test_excinfo.py::TestFormattedExcinfo.test_exc_chain_repr_without_traceback::test_method@1268:4"
+      },
+      "receiver_types": [
+        "src/_pytest/pytester.py::LineMatcher::class@1527:0"
+      ],
+      "scope": "testing/code/test_excinfo.py::TestFormattedExcinfo.test_exc_chain_repr_without_traceback::test_method@1268:4",
+      "status": "resolved",
+      "targets": [
+        "src/_pytest/pytester.py::LineMatcher.fnmatch_lines::method@1598:4"
+      ]
+    },
+    "evidence": [
+      {
+        "context": "1299:         tw.hasmarkup = False\n1300:         r.toterminal(tw)\n1301: \n1302:         matcher = LineMatcher(file.getvalue().splitlines())\n1303:         matcher.fnmatch_lines(\n1304:             [\n1305:                 \"ValueError: invalid value\",",
+        "kind": "local_constructor",
+        "name": "matcher",
+        "scope": "testing/code/test_excinfo.py::TestFormattedExcinfo.test_exc_chain_repr_without_traceback::test_method@1268:4"
+      }
+    ],
+    "instance_id": "pytest-dev__pytest-10051",
+    "ordinal": 7633,
+    "receiver_classes": [
+      {
+        "bases": [],
+        "column": 0,
+        "conditional": false,
+        "decorated": false,
+        "decorators": [],
+        "id": "src/_pytest/pytester.py::LineMatcher::class@1527:0",
+        "kind": "class",
+        "line": 1527,
+        "module": "_pytest.pytester",
+        "parent": "src/_pytest/pytester.py::<module>::module@1:0",
+        "path": "src/_pytest/pytester.py",
+        "qualname": "LineMatcher"
+      }
+    ],
+    "repo": "pytest-dev/pytest",
+    "sample_key": "00aa7dd3941bbcbcbae37709f9aba1d467ae7676d4a69d82f379962ef87e6984",
+    "site_context": "1300:         r.toterminal(tw)\n1301: \n1302:         matcher = LineMatcher(file.getvalue().splitlines())\n1303:         matcher.fnmatch_lines(\n1304:             [\n1305:                 \"ValueError: invalid value\",\n1306:                 description,",
+    "target_context": [
+      "1595:     def _log_text(self) -> str:\n1596:         return \"\\n\".join(self._log_output)\n1597: \n1598:     def fnmatch_lines(\n1599:         self, lines2: Sequence[str], *, consecutive: bool = False\n1600:     ) -> None:\n1601:         \"\"\"Check lines exist in the output (using :func:`python:fnmatch.fnmatch`)."
+    ]
+  },
+  {
+    "edge": {
+      "baseline_reason": "uncertain_or_rebound_name",
+      "baseline_status": "unresolved",
+      "baseline_targets": [],
+      "caller": "sklearn/ensemble/_hist_gradient_boosting/tests/test_grower.py::test_grow_tree::test_function@77:0",
+      "column": 28,
+      "expression": "grower.split_next",
+      "line": 103,
+      "path": "sklearn/ensemble/_hist_gradient_boosting/tests/test_grower.py",
+      "provenance": "local_constructor",
+      "reason": "typeprop_unique_receiver_method",
+      "receiver_fact": {
+        "name": "grower",
+        "scope": "sklearn/ensemble/_hist_gradient_boosting/tests/test_grower.py::test_grow_tree::test_function@77:0"
+      },
+      "receiver_types": [
+        "sklearn/ensemble/_hist_gradient_boosting/grower.py::TreeGrower::class@116:0"
+      ],
+      "scope": "sklearn/ensemble/_hist_gradient_boosting/tests/test_grower.py::test_grow_tree::test_function@77:0",
+      "status": "resolved",
+      "targets": [
+        "sklearn/ensemble/_hist_gradient_boosting/grower.py::TreeGrower.split_next::method@291:4"
+      ]
+    },
+    "evidence": [
+      {
+        "context": "84:     else:\n85:         stopping_param = {\"min_gain_to_split\": 0.01}\n86: \n87:     grower = TreeGrower(X_binned, all_gradients, all_hessians,\n88:                         max_bins=n_bins, shrinkage=shrinkage,\n89:                         min_samples_leaf=1, **stopping_param)\n90: ",
+        "kind": "local_constructor",
+        "name": "grower",
+        "scope": "sklearn/ensemble/_hist_gradient_boosting/tests/test_grower.py::test_grow_tree::test_function@77:0"
+      }
+    ],
+    "instance_id": "scikit-learn__scikit-learn-14629",
+    "ordinal": 24886,
+    "receiver_classes": [
+      {
+        "bases": [],
+        "column": 0,
+        "conditional": false,
+        "decorated": false,
+        "decorators": [],
+        "id": "sklearn/ensemble/_hist_gradient_boosting/grower.py::TreeGrower::class@116:0",
+        "kind": "class",
+        "line": 116,
+        "module": "sklearn.ensemble._hist_gradient_boosting.grower",
+        "parent": "sklearn/ensemble/_hist_gradient_boosting/grower.py::<module>::module@1:0",
+        "path": "sklearn/ensemble/_hist_gradient_boosting/grower.py",
+        "qualname": "TreeGrower"
+      }
+    ],
+    "repo": "scikit-learn/scikit-learn",
+    "sample_key": "01e6cd90e66d156d3e6491c4aa40766a7ee35efde8256d9214ff0c35584243eb",
+    "site_context": "100: \n101:     # Calling split next applies the next split and computes the best split\n102:     # for each of the two newly introduced children nodes.\n103:     left_node, right_node = grower.split_next()\n104: \n105:     # All training samples have ben splitted in the two nodes, approximately\n106:     # 50%/50%",
+    "target_context": [
+      "288:         else:\n289:             heappush(self.splittable_nodes, node)\n290: \n291:     def split_next(self):\n292:         \"\"\"Split the node with highest potential gain.\n293: \n294:         Returns"
+    ]
+  },
+  {
+    "edge": {
+      "baseline_reason": "uncertain_or_rebound_name",
+      "baseline_status": "unresolved",
+      "baseline_targets": [],
+      "caller": "tests/test_pycode_parser.py::test_complex_assignment::test_function@106:0",
+      "column": 4,
+      "expression": "parser.parse",
+      "line": 116,
+      "path": "tests/test_pycode_parser.py",
+      "provenance": "local_constructor",
+      "reason": "typeprop_unique_receiver_method",
+      "receiver_fact": {
+        "name": "parser",
+        "scope": "tests/test_pycode_parser.py::test_complex_assignment::test_function@106:0"
+      },
+      "receiver_types": [
+        "sphinx/pycode/parser.py::Parser::class@533:0"
+      ],
+      "scope": "tests/test_pycode_parser.py::test_complex_assignment::test_function@106:0",
+      "status": "resolved",
+      "targets": [
+        "sphinx/pycode/parser.py::Parser.parse::method@549:4"
+      ]
+    },
+    "evidence": [
+      {
+        "context": "112:               '(theta, phi) = (0, 0.5)  #: unpack assignment via tuple\\n'\n113:               '[x, y] = (5, 6)  #: unpack assignment via list\\n'\n114:               )\n115:     parser = Parser(source)\n116:     parser.parse()\n117:     assert parser.comments == {('', 'b'): 'compound statement',\n118:                                ('', 'c'): 'unpack assignment',",
+        "kind": "local_constructor",
+        "name": "parser",
+        "scope": "tests/test_pycode_parser.py::test_complex_assignment::test_function@106:0"
+      }
+    ],
+    "instance_id": "sphinx-doc__sphinx-10323",
+    "ordinal": 26888,
+    "receiver_classes": [
+      {
+        "bases": [],
+        "column": 0,
+        "conditional": false,
+        "decorated": false,
+        "decorators": [],
+        "id": "sphinx/pycode/parser.py::Parser::class@533:0",
+        "kind": "class",
+        "line": 533,
+        "module": "sphinx.pycode.parser",
+        "parent": "sphinx/pycode/parser.py::<module>::module@1:0",
+        "path": "sphinx/pycode/parser.py",
+        "qualname": "Parser"
+      }
+    ],
+    "repo": "sphinx-doc/sphinx",
+    "sample_key": "00455af5dbb07626bfb45d477ff2a765356a4e5714acd89f1b42d79b88632b27",
+    "site_context": "113:               '[x, y] = (5, 6)  #: unpack assignment via list\\n'\n114:               )\n115:     parser = Parser(source)\n116:     parser.parse()\n117:     assert parser.comments == {('', 'b'): 'compound statement',\n118:                                ('', 'c'): 'unpack assignment',\n119:                                ('', 'd'): 'unpack assignment',",
+    "target_context": [
+      "546:         self.finals: List[str] = []\n547:         self.overloads: Dict[str, List[Signature]] = {}\n548: \n549:     def parse(self) -> None:\n550:         \"\"\"Parse the source code.\"\"\"\n551:         self.parse_comments()\n552:         self.parse_definition()"
+    ]
+  },
+  {
+    "edge": {
+      "baseline_reason": "uncertain_or_rebound_name",
+      "baseline_status": "unresolved",
+      "baseline_targets": [],
+      "caller": "sympy/physics/vector/tests/test_point.py::test_point_a1pt_theorys::test_function@23:0",
+      "column": 8,
+      "expression": "O.locatenew",
+      "line": 31,
+      "path": "sympy/physics/vector/tests/test_point.py",
+      "provenance": "local_constructor",
+      "reason": "typeprop_unique_receiver_method",
+      "receiver_fact": {
+        "name": "O",
+        "scope": "sympy/physics/vector/tests/test_point.py::test_point_a1pt_theorys::test_function@23:0"
+      },
+      "receiver_types": [
+        "sympy/physics/vector/point.py::Point::class@8:0"
+      ],
+      "scope": "sympy/physics/vector/tests/test_point.py::test_point_a1pt_theorys::test_function@23:0",
+      "status": "resolved",
+      "targets": [
+        "sympy/physics/vector/point.py::Point.locatenew::method@253:4"
+      ]
+    },
+    "evidence": [
+      {
+        "context": "27:     N = ReferenceFrame('N')\n28:     B = ReferenceFrame('B')\n29:     B.set_ang_vel(N, qd * B.z)\n30:     O = Point('O')\n31:     P = O.locatenew('P', B.x)\n32:     P.set_vel(B, 0)\n33:     O.set_vel(N, 0)",
+        "kind": "local_constructor",
+        "name": "O",
+        "scope": "sympy/physics/vector/tests/test_point.py::test_point_a1pt_theorys::test_function@23:0"
+      }
+    ],
+    "instance_id": "sympy__sympy-24562",
+    "ordinal": 179055,
+    "receiver_classes": [
+      {
+        "bases": [],
+        "column": 0,
+        "conditional": false,
+        "decorated": false,
+        "decorators": [],
+        "id": "sympy/physics/vector/point.py::Point::class@8:0",
+        "kind": "class",
+        "line": 8,
+        "module": "sympy.physics.vector.point",
+        "parent": "sympy/physics/vector/point.py::<module>::module@1:0",
+        "path": "sympy/physics/vector/point.py",
+        "qualname": "Point"
+      }
+    ],
+    "repo": "sympy/sympy",
+    "sample_key": "0030bb61691290959ba86e3fb82d992b0dcebfe334bcf18242a408364808be5b",
+    "site_context": "28:     B = ReferenceFrame('B')\n29:     B.set_ang_vel(N, qd * B.z)\n30:     O = Point('O')\n31:     P = O.locatenew('P', B.x)\n32:     P.set_vel(B, 0)\n33:     O.set_vel(N, 0)\n34:     assert P.a1pt_theory(O, N, B) == -(qd**2) * B.x + qdd * B.y",
+    "target_context": [
+      "250:                 return Vector(0)\n251:         return self._acc_dict[frame]\n252: \n253:     def locatenew(self, name, value):\n254:         \"\"\"Creates a new point with a position defined from this point.\n255: \n256:         Parameters"
+    ]
+  }
+]

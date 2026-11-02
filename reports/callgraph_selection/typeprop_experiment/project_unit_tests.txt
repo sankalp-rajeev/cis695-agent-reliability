@@ -1,0 +1,279 @@
+........................................................................ [  8%]
+........................................................................ [ 16%]
+.......................F................................................ [ 24%]
+..................................................F..................... [ 32%]
+........................................................................ [ 40%]
+..............................ssss...................................... [ 48%]
+........................................................................ [ 56%]
+........................................................................ [ 64%]
+........................................................................ [ 72%]
+........................................................................ [ 80%]
+........................s.......F....................................... [ 88%]
+........................................................................ [ 96%]
+..............................s.....                                     [100%]
+=================================== FAILURES ===================================
+__________ test_assert_clean_interpreter_passes_under_the_test_runner __________
+
+    def test_assert_clean_interpreter_passes_under_the_test_runner():
+        """scripts/test.sh clears PYTHONPATH, so the suite itself must run clean."""
+>       assert_clean_interpreter()
+
+tests/unit/test_env.py:73:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def assert_clean_interpreter() -> None:
+        """Raise if the import path is contaminated.
+
+        Call at the start of runs whose results must be attributable to the locked
+        dependency set. Recording alone is enough for analysis after the fact, but an
+        experiment run is worth failing fast.
+        """
+        foreign = foreign_sys_path_entries()
+        if foreign:
+>           raise InterpreterContaminationError(
+                "sys.path contains entries outside the venv, stdlib, and project: "
+                f"{foreign}. Clear PYTHONPATH before running "
+                "(see scripts/test.sh and reliability.env.clean_env)."
+            )
+E           reliability.env.InterpreterContaminationError: sys.path contains entries outside the venv, stdlib, and project: ['/home/rajee/projects/cis695-agent-reliability/src']. Clear PYTHONPATH before running (see scripts/test.sh and reliability.env.clean_env).
+
+src/reliability/env.py:116: InterpreterContaminationError
+_____ test_resume_contamination_prints_an_instruction_without_a_traceback ______
+
+    def test_resume_contamination_prints_an_instruction_without_a_traceback():
+        env = os.environ.copy()
+        env["PYTHONPATH"] = "/opt/ros/jazzy/lib/python3.12/site-packages"
+>       proc = subprocess.run(
+            [str(PY), str(ROOT / "scripts" / "run_pilot.py"), "--resume", "main_50_a"],
+            cwd=ROOT, env=env, capture_output=True, text=True, check=False,
+        )
+
+tests/unit/test_launch_tmux.py:50:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+../../.local/share/uv/python/cpython-3.11.16-linux-x86_64-gnu/lib/python3.11/subprocess.py:548: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../.local/share/uv/python/cpython-3.11.16-linux-x86_64-gnu/lib/python3.11/subprocess.py:1026: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <Popen: returncode: 255 args: ['/home/rajee/projects/cis695-callgraph-typepr...>
+args = ['/home/rajee/projects/cis695-callgraph-typeprop/.venv/bin/python', '/home/rajee/projects/cis695-callgraph-typeprop/scripts/run_pilot.py', '--resume', 'main_50_a']
+executable = b'/home/rajee/projects/cis695-callgraph-typeprop/.venv/bin/python'
+preexec_fn = None, close_fds = True, pass_fds = ()
+cwd = PosixPath('/home/rajee/projects/cis695-callgraph-typeprop')
+env = {'SHELL': '/bin/bash', 'ROS_VERSION': '2', 'GZ_SIM_RESOURCE_PATH': '/opt/ros/jazzy/share', 'COLORTERM': '', ...}
+startupinfo = None, creationflags = 0, shell = False, p2cread = -1
+p2cwrite = -1, c2pread = 11, c2pwrite = 12, errread = 13, errwrite = 14
+restore_signals = True, gid = None, gids = None, uid = None, umask = -1
+start_new_session = False, process_group = -1
+
+    def _execute_child(self, args, executable, preexec_fn, close_fds,
+                       pass_fds, cwd, env,
+                       startupinfo, creationflags, shell,
+                       p2cread, p2cwrite,
+                       c2pread, c2pwrite,
+                       errread, errwrite,
+                       restore_signals,
+                       gid, gids, uid, umask,
+                       start_new_session, process_group):
+        """Execute program (POSIX version)"""
+
+        if isinstance(args, (str, bytes)):
+            args = [args]
+        elif isinstance(args, os.PathLike):
+            if shell:
+                raise TypeError('path-like args is not allowed when '
+                                'shell is true')
+            args = [args]
+        else:
+            args = list(args)
+
+        if shell:
+            # On Android the default shell is at '/system/bin/sh'.
+            unix_shell = ('/system/bin/sh' if
+                      hasattr(sys, 'getandroidapilevel') else '/bin/sh')
+            args = [unix_shell, "-c"] + args
+            if executable:
+                args[0] = executable
+
+        if executable is None:
+            executable = args[0]
+
+        sys.audit("subprocess.Popen", executable, args, cwd, env)
+
+        if (_USE_POSIX_SPAWN
+                and os.path.dirname(executable)
+                and preexec_fn is None
+                and not close_fds
+                and not pass_fds
+                and cwd is None
+                and (p2cread == -1 or p2cread > 2)
+                and (c2pwrite == -1 or c2pwrite > 2)
+                and (errwrite == -1 or errwrite > 2)
+                and not start_new_session
+                and process_group == -1
+                and gid is None
+                and gids is None
+                and uid is None
+                and umask < 0):
+            self._posix_spawn(args, executable, env, restore_signals,
+                              p2cread, p2cwrite,
+                              c2pread, c2pwrite,
+                              errread, errwrite)
+            return
+
+        orig_executable = executable
+
+        # For transferring possible exec failure from child to parent.
+        # Data format: "exception name:hex errno:description"
+        # Pickle is not used; it is complex and involves memory allocation.
+        errpipe_read, errpipe_write = os.pipe()
+        # errpipe_write must not be in the standard io 0, 1, or 2 fd range.
+        low_fds_to_close = []
+        while errpipe_write < 3:
+            low_fds_to_close.append(errpipe_write)
+            errpipe_write = os.dup(errpipe_write)
+        for low_fd in low_fds_to_close:
+            os.close(low_fd)
+        try:
+            try:
+                # We must avoid complex work that could involve
+                # malloc or free in the child process to avoid
+                # potential deadlocks, thus we do all this here.
+                # and pass it to fork_exec()
+
+                if env is not None:
+                    env_list = []
+                    for k, v in env.items():
+                        k = os.fsencode(k)
+                        if b'=' in k:
+                            raise ValueError("illegal environment variable name")
+                        env_list.append(k + b'=' + os.fsencode(v))
+                else:
+                    env_list = None  # Use execv instead of execve.
+                executable = os.fsencode(executable)
+                if os.path.dirname(executable):
+                    executable_list = (executable,)
+                else:
+                    # This matches the behavior of os._execvpe().
+                    executable_list = tuple(
+                        os.path.join(os.fsencode(dir), executable)
+                        for dir in os.get_exec_path(env))
+                fds_to_keep = set(pass_fds)
+                fds_to_keep.add(errpipe_write)
+                self.pid = _fork_exec(
+                        args, executable_list,
+                        close_fds, tuple(sorted(map(int, fds_to_keep))),
+                        cwd, env_list,
+                        p2cread, p2cwrite, c2pread, c2pwrite,
+                        errread, errwrite,
+                        errpipe_read, errpipe_write,
+                        restore_signals, start_new_session,
+                        process_group, gid, gids, uid, umask,
+                        preexec_fn, _USE_VFORK)
+                self._child_created = True
+            finally:
+                # be sure the FD is closed no matter what
+                os.close(errpipe_write)
+
+            self._close_pipe_fds(p2cread, p2cwrite,
+                                 c2pread, c2pwrite,
+                                 errread, errwrite)
+
+            # Wait for exec to fail or succeed; possibly raising an
+            # exception (limited in size)
+            errpipe_data = bytearray()
+            while True:
+                part = os.read(errpipe_read, 50000)
+                errpipe_data += part
+                if not part or len(errpipe_data) > 50000:
+                    break
+        finally:
+            # be sure the FD is closed no matter what
+            os.close(errpipe_read)
+
+        if errpipe_data:
+            try:
+                pid, sts = os.waitpid(self.pid, 0)
+                if pid == self.pid:
+                    self._handle_exitstatus(sts)
+                else:
+                    self.returncode = sys.maxsize
+            except ChildProcessError:
+                pass
+
+            try:
+                exception_name, hex_errno, err_msg = (
+                        errpipe_data.split(b':', 2))
+                # The encoding here should match the encoding
+                # written in by the subprocess implementations
+                # like _posixsubprocess
+                err_msg = err_msg.decode()
+            except ValueError:
+                exception_name = b'SubprocessError'
+                hex_errno = b'0'
+                err_msg = 'Bad exception data from child: {!r}'.format(
+                              bytes(errpipe_data))
+            child_exception_type = getattr(
+                    builtins, exception_name.decode('ascii'),
+                    SubprocessError)
+            if issubclass(child_exception_type, OSError) and hex_errno:
+                errno_num = int(hex_errno, 16)
+                if err_msg == "noexec:chdir":
+                    err_msg = ""
+                    # The error must be from chdir(cwd).
+                    err_filename = cwd
+                elif err_msg == "noexec":
+                    err_msg = ""
+                    err_filename = None
+                else:
+                    err_filename = orig_executable
+                if errno_num != 0:
+                    err_msg = os.strerror(errno_num)
+                if err_filename is not None:
+>                   raise child_exception_type(errno_num, err_msg, err_filename)
+E                   FileNotFoundError: [Errno 2] No such file or directory: '/home/rajee/projects/cis695-callgraph-typeprop/.venv/bin/python'
+
+../../.local/share/uv/python/cpython-3.11.16-linux-x86_64-gnu/lib/python3.11/subprocess.py:1955: FileNotFoundError
+____________________ test_django_16899_selects_admin_checks ____________________
+
+    def test_django_16899_selects_admin_checks():
+        """pilot_12 selected nothing for this patch. The real test file is expanded
+        to node ids here; every other file reads as empty, so Tier 2 contributes
+        only what the real tree would also give it for this patch (nothing)."""
+        admin_checks = gzip.decompress(
+            (FIXTURES / "django__django-16899.admin_checks_tests.py.gz").read_bytes()).decode()
+        tree = _FixtureTree(_files("django__django-16899"),
+                            {"tests/admin_checks/tests.py": admin_checks})
+>       patch = parse_patch((FIXTURES / "django__django-16899.patch").read_text())
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/unit/test_selection_ground_truth.py:139:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+../../.local/share/uv/python/cpython-3.11.16-linux-x86_64-gnu/lib/python3.11/pathlib.py:1058: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/home/rajee/projects/cis695-callgraph-typeprop/tests/fixtures/base_trees/django__django-16899.patch')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/rajee/projects/cis695-callgraph-typeprop/tests/fixtures/base_trees/django__django-16899.patch'
+
+../../.local/share/uv/python/cpython-3.11.16-linux-x86_64-gnu/lib/python3.11/pathlib.py:1044: FileNotFoundError
+=========================== short test summary info ============================
+FAILED tests/unit/test_env.py::test_assert_clean_interpreter_passes_under_the_test_runner
+FAILED tests/unit/test_launch_tmux.py::test_resume_contamination_prints_an_instruction_without_a_traceback
+FAILED tests/unit/test_selection_ground_truth.py::test_django_16899_selects_admin_checks
+3 failed, 891 passed, 6 skipped in 9.40s

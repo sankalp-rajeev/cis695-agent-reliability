@@ -1,0 +1,62 @@
+{
+  "audit": "one minimum-SHA256 new resolved callsite per repository/provenance stratum, after full run",
+  "baseline": "Amendment 2 overlay: 79 original + 4 amended SymPy",
+  "baseline_implementation": [
+    "static_graph.py",
+    "amended_graph.py"
+  ],
+  "baseline_manifest_sha256": "c99976e64b6be840fe19495adce7c5aa6767f980e86cfa8ca12ba99c2e04e566",
+  "benchmark_execution": false,
+  "code_sha256": {
+    "benchmark_runtime.py": "53060e3700aeb345a7eda1be3ef0c4717a94158b57b9f919bf8f9cdcb5b742c9",
+    "evaluate.py": "ff732919a5bc05e9408e58d7e224c8b5c8c42a664c5999afcb1137275df796de",
+    "test_typeprop.py": "f5305e06de1956faf05272d3c9ab8a6bf77866df2567f30a86bc74890650f676",
+    "typeprop_graph.py": "5108a97ff0b2018f7f8df9d41d929548b3ca9cff44bd9b8867e64197f850803d",
+    "validate_experiment.py": "82d871bb5a3f1e36caad59355a5cd5f097a948025e75e3b4bcbe254d5720d623"
+  },
+  "date": "2026-11-02",
+  "defaults_and_variadics": "unsupported: unknown",
+  "fixed_point": "synchronous set union + unknown; cycles without evidence stay bottom; round exhaustion fails closed",
+  "keywords": "required positional/keyword-only supported",
+  "limits": {
+    "ast_nodes": 5000000,
+    "call_sites": 2000000,
+    "definitions": 1000000,
+    "python_files": 50000,
+    "seconds": 600,
+    "source_blob_bytes": 2097152,
+    "source_bytes": 536870912
+  },
+  "max_rounds": 64,
+  "max_types": 16,
+  "oracle_inputs": false,
+  "original_worktree": "/home/rajee/projects/cis695-agent-reliability",
+  "parameter_boundary": "observed static callers, with escaped callable references rejected; not an open-world proof",
+  "population": 83,
+  "process_batch_size": 10,
+  "propagation_calls": "frozen baseline resolved only; uncertain calls taint parameters",
+  "selector": {
+    "budgets": [
+      25,
+      50,
+      100,
+      250,
+      500,
+      "ALL"
+    ],
+    "depths": [
+      1,
+      2,
+      3
+    ],
+    "eligibility": "frozen phase2 strata unchanged",
+    "ranking": "existing phase2 features/rank_candidates unchanged",
+    "variants": [
+      "PRIMARY_RESOLVED_ONLY",
+      "SECONDARY_RESOLVED_PLUS_AMBIGUOUS"
+    ]
+  },
+  "starting_commit": "0c0c87fda86cf0a2f7c33866020325856e7303de",
+  "tasks": 83,
+  "verified_baseline_files": 419
+}
