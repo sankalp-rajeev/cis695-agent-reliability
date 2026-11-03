@@ -1,0 +1,17 @@
+{
+  "all_available_counts_match_frozen_summaries": true,
+  "audit_tests": {
+    "command": "env -u PYTHONPATH PYTHONDONTWRITEBYTECODE=1 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -B -m pytest -p no:cacheprovider -o addopts= -q reports/callgraph_selection/typeprop_experiment/regression_validation/test_validation.py",
+    "passed": 15
+  },
+  "benchmark_execution": false,
+  "evidence_sources_hash_verified_at_read": true,
+  "existing_tracked_files_preserved": 590,
+  "final_preservation_check": "passed: all 590 prior tracked files and original dirty worktree unchanged",
+  "frozen_ranked_sha256": "d1a6eb79264d978ce7d154447db391a44aa061171e1a3a8b676285c190b9577c",
+  "original_worktree_unchanged": true,
+  "reconstructed_configurations": 3672,
+  "source_or_selector_changes": false,
+  "status": "passed",
+  "unknown_is_not_negative": true
+}
