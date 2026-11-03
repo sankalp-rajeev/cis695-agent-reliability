@@ -1,0 +1,139 @@
+{
+  "by_strategy_and_variant": [
+    {
+      "availability_changed_tasks": 4,
+      "depth3_all_added": 0,
+      "depth3_all_after_count": 131,
+      "depth3_all_before_count": 715,
+      "depth3_all_paired_tasks": 78,
+      "depth3_all_removed": 584,
+      "edge_variant": "PRIMARY_RESOLVED_ONLY",
+      "membership_changed_tasks": 20,
+      "order_changed_tasks": 20,
+      "strategy": "B"
+    },
+    {
+      "availability_changed_tasks": 4,
+      "depth3_all_added": 0,
+      "depth3_all_after_count": 179,
+      "depth3_all_before_count": 1215,
+      "depth3_all_paired_tasks": 78,
+      "depth3_all_removed": 1036,
+      "edge_variant": "SECONDARY_RESOLVED_PLUS_AMBIGUOUS",
+      "membership_changed_tasks": 28,
+      "order_changed_tasks": 28,
+      "strategy": "B"
+    },
+    {
+      "availability_changed_tasks": 0,
+      "depth3_all_added": 0,
+      "depth3_all_after_count": 25618,
+      "depth3_all_before_count": 25618,
+      "depth3_all_paired_tasks": 19,
+      "depth3_all_removed": 0,
+      "edge_variant": "PRIMARY_RESOLVED_ONLY",
+      "membership_changed_tasks": 3,
+      "order_changed_tasks": 5,
+      "strategy": "C"
+    },
+    {
+      "availability_changed_tasks": 0,
+      "depth3_all_added": 0,
+      "depth3_all_after_count": 25618,
+      "depth3_all_before_count": 25618,
+      "depth3_all_paired_tasks": 19,
+      "depth3_all_removed": 0,
+      "edge_variant": "SECONDARY_RESOLVED_PLUS_AMBIGUOUS",
+      "membership_changed_tasks": 6,
+      "order_changed_tasks": 7,
+      "strategy": "C"
+    }
+  ],
+  "corrected_existing_definition_counts": {
+    "ambiguous": 0,
+    "resolved": 106,
+    "unresolved": 0
+  },
+  "eligibility_changes": [
+    {
+      "added_seeds": "[]",
+      "after_reason": "NEW_SYMBOLS_ONLY",
+      "after_seed_count": "0",
+      "after_stratum": "EXCLUDED",
+      "before_reason": "ELIGIBLE",
+      "before_seed_count": "2",
+      "before_stratum": "PRIMARY_COMPLETE",
+      "instance_id": "django__django-13569",
+      "removed_seeds": "[\"django/db/models/functions/math.py::Random.as_mysql::method@148:4\", \"django/db/models/functions/math.py::Random::class@144:0\"]",
+      "repo": "django/django"
+    },
+    {
+      "added_seeds": "[\"lib/matplotlib/offsetbox.py::AnnotationBbox.draw::method@1449:4\"]",
+      "after_reason": "ELIGIBLE",
+      "after_seed_count": "1",
+      "after_stratum": "PRIMARY_COMPLETE",
+      "before_reason": "NO_EXTRACTED_SEEDS",
+      "before_seed_count": "0",
+      "before_stratum": "EXCLUDED",
+      "instance_id": "matplotlib__matplotlib-24637",
+      "removed_seeds": "[]",
+      "repo": "matplotlib/matplotlib"
+    },
+    {
+      "added_seeds": "[\"sympy/functions/elementary/hyperbolic.py::coth.eval::method@557:4\"]",
+      "after_reason": "ELIGIBLE",
+      "after_seed_count": "1",
+      "after_stratum": "EXTENDED_PARTIAL",
+      "before_reason": "AMBIGUOUS_ONLY_SEEDS",
+      "before_seed_count": "0",
+      "before_stratum": "EXCLUDED",
+      "instance_id": "sympy__sympy-13480",
+      "removed_seeds": "[]",
+      "repo": "sympy/sympy"
+    },
+    {
+      "added_seeds": "[\"sympy/core/numbers.py::Rational.__new__::method@1589:4\"]",
+      "after_reason": "ELIGIBLE",
+      "after_seed_count": "1",
+      "after_stratum": "PRIMARY_COMPLETE",
+      "before_reason": "AMBIGUOUS_ONLY_SEEDS",
+      "before_seed_count": "0",
+      "before_stratum": "EXCLUDED",
+      "instance_id": "sympy__sympy-24562",
+      "removed_seeds": "[]",
+      "repo": "sympy/sympy"
+    }
+  ],
+  "file_analysis_errors": 0,
+  "genuine_ambiguous_mappings_remaining": 0,
+  "graph_resolution_changed": false,
+  "legacy_actual_ambiguous_name_records_recovered": 10,
+  "legacy_failed_records_removed": 11,
+  "legacy_resolved_records_excluded_as_context_or_container": 103,
+  "legacy_resolved_wrong_scope_reclassified_new": 1,
+  "new_definitions_separate": 21,
+  "newly_discovered_existing_edited_definitions": 48,
+  "outside_definition_file_diagnostics": 12,
+  "previous_genuine_existing_definitions_retained": 43,
+  "qualified_definition_records": 127,
+  "ranking_or_budgets_changed": false,
+  "recovered_existing_definitions_from_old_ambiguous_names": 15,
+  "selection_comparison": {
+    "availability_changed_tasks": 4,
+    "baseline_frozen_counts_reproduced": true,
+    "changed_configurations": 1170,
+    "configurations": 3672,
+    "eligibility_changed_tasks": 4,
+    "graph_changed": false,
+    "membership_changed_tasks": 28,
+    "new_test_paths": 6,
+    "order_changed_tasks": 28,
+    "selector_functions_changed": false,
+    "tasks": 83
+  },
+  "selector_logic_changed": false,
+  "source_identity_regressions": 0,
+  "tasks": 83,
+  "tests_passed": 139,
+  "uncertainty": "Source identity only; runtime dispatch and coverage remain unproved. New definitions and module edits are not silently converted into base seeds."
+}

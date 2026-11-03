@@ -1,0 +1,12 @@
+[
+  {
+    "attempt": "ast_none_sentinel",
+    "status": "superseded_before_selection_comparison",
+    "reason": "Focused adversarial test showed AST None placeholders in keyword-only defaults must be preserved separately from intentionally skipped nested definitions/pass nodes. Fixed with a distinct sentinel; repeat full mapping with frozen code."
+  },
+  {
+    "attempt": "insertion_audit",
+    "status": "superseded_for_stronger_validation",
+    "reason": "Extend the old-target regression audit to candidate-side pure insertions, not only removed base lines; distinguish a coarse name split between an existing and new qualified definition. Mapping and selection semantics are unchanged. Repeat corpus for exact execution-source provenance."
+  }
+]

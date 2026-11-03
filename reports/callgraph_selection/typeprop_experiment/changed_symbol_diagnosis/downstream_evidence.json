@@ -1,0 +1,1543 @@
+[
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [
+      {
+        "context": "978:             value = _format_value(self._value).strip()\n979:             value = f\"'{self.field_specifier}: {value}'\"\n980:         else:\n981:             value = _format_value(value)\n982: \n983:         # For HIERARCH cards the value should be shortened to conserve space\n984:         if not self.field_specifier and len(self.keyword) > KEYWORD_LENGTH:",
+        "line": 981,
+        "owner": "Card._format_value"
+      },
+      {
+        "context": "975:             # Keep the existing formatting for float/complex numbers\n976:             value = f\"{self._valuestring:>20}\"\n977:         elif self.field_specifier:\n978:             value = _format_value(self._value).strip()\n979:             value = f\"'{self.field_specifier}: {value}'\"\n980:         else:\n981:             value = _format_value(value)",
+        "line": 978,
+        "owner": "Card._format_value"
+      }
+    ],
+    "case_id": "C01",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C02",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C03",
+    "parent_class_evidence": [
+      {
+        "class_call_status_counts": {
+          "ambiguous": 20
+        },
+        "class_node": {
+          "bases": [],
+          "column": 0,
+          "conditional": false,
+          "decorated": true,
+          "decorators": [
+            "deconstructible"
+          ],
+          "id": "django/core/validators.py::DecimalValidator::class@410:0",
+          "kind": "class",
+          "line": 410,
+          "module": "django.core.validators",
+          "parent": "django/core/validators.py::<module>::module@1:0",
+          "path": "django/core/validators.py",
+          "qualname": "DecimalValidator"
+        },
+        "class_reachability": {
+          "PRIMARY_RESOLVED_ONLY": {
+            "emittable_test_count": 0,
+            "test_ids": []
+          },
+          "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+            "emittable_test_count": 1,
+            "test_ids": [
+              "tests/validators/tests.py::TestValidatorEquality::test_decimal_equality"
+            ]
+          }
+        },
+        "incoming_class_calls": 20,
+        "representative_constructor_calls": [
+          {
+            "caller": "tests/validators/tests.py::<module>::module@1:0",
+            "column": 5,
+            "expression": "DecimalValidator",
+            "line": 271,
+            "path": "tests/validators/tests.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "tests/validators/tests.py::<module>::module@1:0",
+            "status": "ambiguous",
+            "targets": [
+              "django/core/validators.py::DecimalValidator::class@410:0"
+            ]
+          },
+          {
+            "caller": "tests/validators/tests.py::<module>::module@1:0",
+            "column": 5,
+            "expression": "DecimalValidator",
+            "line": 272,
+            "path": "tests/validators/tests.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "tests/validators/tests.py::<module>::module@1:0",
+            "status": "ambiguous",
+            "targets": [
+              "django/core/validators.py::DecimalValidator::class@410:0"
+            ]
+          },
+          {
+            "caller": "tests/validators/tests.py::<module>::module@1:0",
+            "column": 5,
+            "expression": "DecimalValidator",
+            "line": 273,
+            "path": "tests/validators/tests.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "tests/validators/tests.py::<module>::module@1:0",
+            "status": "ambiguous",
+            "targets": [
+              "django/core/validators.py::DecimalValidator::class@410:0"
+            ]
+          }
+        ]
+      },
+      {
+        "class_call_status_counts": {
+          "ambiguous": 14
+        },
+        "class_node": {
+          "bases": [],
+          "column": 0,
+          "conditional": false,
+          "decorated": true,
+          "decorators": [
+            "deconstructible"
+          ],
+          "id": "django/core/validators.py::EmailValidator::class@157:0",
+          "kind": "class",
+          "line": 157,
+          "module": "django.core.validators",
+          "parent": "django/core/validators.py::<module>::module@1:0",
+          "path": "django/core/validators.py",
+          "qualname": "EmailValidator"
+        },
+        "class_reachability": {
+          "PRIMARY_RESOLVED_ONLY": {
+            "emittable_test_count": 0,
+            "test_ids": []
+          },
+          "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+            "emittable_test_count": 7,
+            "test_ids": [
+              "tests/migrations/test_writer.py::WriterTests::test_serialize_class_based_validators",
+              "tests/validators/tests.py::DeprecationTests::test_domain_whitelist",
+              "tests/validators/tests.py::DeprecationTests::test_domain_whitelist_access_warning",
+              "tests/validators/tests.py::DeprecationTests::test_domain_whitelist_set_warning",
+              "tests/validators/tests.py::DeprecationTests::test_whitelist"
+            ]
+          }
+        },
+        "incoming_class_calls": 14,
+        "representative_constructor_calls": [
+          {
+            "caller": "tests/migrations/test_writer.py::WriterTests.test_serialize_class_based_validators::test_method@535:4",
+            "column": 20,
+            "expression": "EmailValidator",
+            "line": 564,
+            "path": "tests/migrations/test_writer.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "tests/migrations/test_writer.py::WriterTests.test_serialize_class_based_validators::test_method@535:4",
+            "status": "ambiguous",
+            "targets": [
+              "django/core/validators.py::EmailValidator::class@157:0"
+            ]
+          },
+          {
+            "caller": "tests/validators/tests.py::<module>::module@1:0",
+            "column": 5,
+            "expression": "EmailValidator",
+            "line": 54,
+            "path": "tests/validators/tests.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "tests/validators/tests.py::<module>::module@1:0",
+            "status": "ambiguous",
+            "targets": [
+              "django/core/validators.py::EmailValidator::class@157:0"
+            ]
+          },
+          {
+            "caller": "tests/validators/tests.py::TestValidatorEquality.test_email_equality::test_method@412:4",
+            "column": 12,
+            "expression": "EmailValidator",
+            "line": 414,
+            "path": "tests/validators/tests.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "tests/validators/tests.py::TestValidatorEquality.test_email_equality::test_method@412:4",
+            "status": "ambiguous",
+            "targets": [
+              "django/core/validators.py::EmailValidator::class@157:0"
+            ]
+          }
+        ]
+      },
+      {
+        "class_call_status_counts": {
+          "ambiguous": 29
+        },
+        "class_node": {
+          "bases": [],
+          "column": 0,
+          "conditional": false,
+          "decorated": true,
+          "decorators": [
+            "deconstructible"
+          ],
+          "id": "django/core/validators.py::FileExtensionValidator::class@488:0",
+          "kind": "class",
+          "line": 488,
+          "module": "django.core.validators",
+          "parent": "django/core/validators.py::<module>::module@1:0",
+          "path": "django/core/validators.py",
+          "qualname": "FileExtensionValidator"
+        },
+        "class_reachability": {
+          "PRIMARY_RESOLVED_ONLY": {
+            "emittable_test_count": 0,
+            "test_ids": []
+          },
+          "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+            "emittable_test_count": 1,
+            "test_ids": [
+              "tests/validators/tests.py::TestValidatorEquality::test_file_extension_equality"
+            ]
+          }
+        },
+        "incoming_class_calls": 29,
+        "representative_constructor_calls": [
+          {
+            "caller": "tests/validators/tests.py::<module>::module@1:0",
+            "column": 5,
+            "expression": "FileExtensionValidator",
+            "line": 259,
+            "path": "tests/validators/tests.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "tests/validators/tests.py::<module>::module@1:0",
+            "status": "ambiguous",
+            "targets": [
+              "django/core/validators.py::FileExtensionValidator::class@488:0"
+            ]
+          },
+          {
+            "caller": "tests/validators/tests.py::<module>::module@1:0",
+            "column": 5,
+            "expression": "FileExtensionValidator",
+            "line": 260,
+            "path": "tests/validators/tests.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "tests/validators/tests.py::<module>::module@1:0",
+            "status": "ambiguous",
+            "targets": [
+              "django/core/validators.py::FileExtensionValidator::class@488:0"
+            ]
+          },
+          {
+            "caller": "tests/validators/tests.py::<module>::module@1:0",
+            "column": 5,
+            "expression": "FileExtensionValidator",
+            "line": 261,
+            "path": "tests/validators/tests.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "tests/validators/tests.py::<module>::module@1:0",
+            "status": "ambiguous",
+            "targets": [
+              "django/core/validators.py::FileExtensionValidator::class@488:0"
+            ]
+          }
+        ]
+      },
+      {
+        "class_call_status_counts": {
+          "ambiguous": 12
+        },
+        "class_node": {
+          "bases": [],
+          "column": 0,
+          "conditional": false,
+          "decorated": true,
+          "decorators": [
+            "deconstructible"
+          ],
+          "id": "django/core/validators.py::ProhibitNullCharactersValidator::class@540:0",
+          "kind": "class",
+          "line": 540,
+          "module": "django.core.validators",
+          "parent": "django/core/validators.py::<module>::module@1:0",
+          "path": "django/core/validators.py",
+          "qualname": "ProhibitNullCharactersValidator"
+        },
+        "class_reachability": {
+          "PRIMARY_RESOLVED_ONLY": {
+            "emittable_test_count": 0,
+            "test_ids": []
+          },
+          "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+            "emittable_test_count": 1,
+            "test_ids": [
+              "tests/validators/tests.py::TestValidatorEquality::test_prohibit_null_characters_validator_equality"
+            ]
+          }
+        },
+        "incoming_class_calls": 12,
+        "representative_constructor_calls": [
+          {
+            "caller": "tests/validators/tests.py::<module>::module@1:0",
+            "column": 5,
+            "expression": "ProhibitNullCharactersValidator",
+            "line": 297,
+            "path": "tests/validators/tests.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "tests/validators/tests.py::<module>::module@1:0",
+            "status": "ambiguous",
+            "targets": [
+              "django/core/validators.py::ProhibitNullCharactersValidator::class@540:0"
+            ]
+          },
+          {
+            "caller": "tests/validators/tests.py::<module>::module@1:0",
+            "column": 5,
+            "expression": "ProhibitNullCharactersValidator",
+            "line": 298,
+            "path": "tests/validators/tests.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "tests/validators/tests.py::<module>::module@1:0",
+            "status": "ambiguous",
+            "targets": [
+              "django/core/validators.py::ProhibitNullCharactersValidator::class@540:0"
+            ]
+          },
+          {
+            "caller": "tests/validators/tests.py::<module>::module@1:0",
+            "column": 5,
+            "expression": "ProhibitNullCharactersValidator",
+            "line": 299,
+            "path": "tests/validators/tests.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "tests/validators/tests.py::<module>::module@1:0",
+            "status": "ambiguous",
+            "targets": [
+              "django/core/validators.py::ProhibitNullCharactersValidator::class@540:0"
+            ]
+          }
+        ]
+      },
+      {
+        "class_call_status_counts": {
+          "ambiguous": 50
+        },
+        "class_node": {
+          "bases": [],
+          "column": 0,
+          "conditional": false,
+          "decorated": true,
+          "decorators": [
+            "deconstructible"
+          ],
+          "id": "django/core/validators.py::RegexValidator::class@20:0",
+          "kind": "class",
+          "line": 20,
+          "module": "django.core.validators",
+          "parent": "django/core/validators.py::<module>::module@1:0",
+          "path": "django/core/validators.py",
+          "qualname": "RegexValidator"
+        },
+        "class_reachability": {
+          "PRIMARY_RESOLVED_ONLY": {
+            "emittable_test_count": 0,
+            "test_ids": []
+          },
+          "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+            "emittable_test_count": 8,
+            "test_ids": [
+              "tests/forms_tests/tests/test_validators.py::TestFieldWithValidators::test_all_errors_get_reported",
+              "tests/migrations/test_autodetector.py::AutodetectorTests::test_different_regex_does_alter",
+              "tests/migrations/test_autodetector.py::AutodetectorTests::test_identical_regex_doesnt_alter",
+              "tests/migrations/test_writer.py::WriterTests::test_serialize_class_based_validators",
+              "tests/validators/tests.py::TestValidatorEquality::test_regex_equality"
+            ]
+          }
+        },
+        "incoming_class_calls": 50,
+        "representative_constructor_calls": [
+          {
+            "caller": "tests/forms_tests/tests/test_forms.py::FormsTestCase.test_multivalue_optional_subfields.PhoneField.__init__::method@2968:12",
+            "column": 24,
+            "expression": "RegexValidator",
+            "line": 2971,
+            "path": "tests/forms_tests/tests/test_forms.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "tests/forms_tests/tests/test_forms.py::FormsTestCase.test_multivalue_optional_subfields.PhoneField.__init__::method@2968:12",
+            "status": "ambiguous",
+            "targets": [
+              "django/core/validators.py::RegexValidator::class@20:0"
+            ]
+          },
+          {
+            "caller": "tests/forms_tests/tests/test_validators.py::TestFieldWithValidators.test_all_errors_get_reported.UserForm::class@11:8",
+            "column": 20,
+            "expression": "validators.RegexValidator",
+            "line": 22,
+            "path": "tests/forms_tests/tests/test_validators.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "tests/forms_tests/tests/test_validators.py::TestFieldWithValidators.test_all_errors_get_reported.UserForm::class@11:8",
+            "status": "ambiguous",
+            "targets": [
+              "django/core/validators.py::RegexValidator::class@20:0"
+            ]
+          },
+          {
+            "caller": "tests/forms_tests/tests/test_validators.py::TestFieldWithValidators.test_all_errors_get_reported.UserForm::class@11:8",
+            "column": 20,
+            "expression": "validators.RegexValidator",
+            "line": 31,
+            "path": "tests/forms_tests/tests/test_validators.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "tests/forms_tests/tests/test_validators.py::TestFieldWithValidators.test_all_errors_get_reported.UserForm::class@11:8",
+            "status": "ambiguous",
+            "targets": [
+              "django/core/validators.py::RegexValidator::class@20:0"
+            ]
+          }
+        ]
+      },
+      {
+        "class_call_status_counts": {
+          "ambiguous": 16
+        },
+        "class_node": {
+          "bases": [
+            "RegexValidator"
+          ],
+          "column": 0,
+          "conditional": false,
+          "decorated": true,
+          "decorators": [
+            "deconstructible"
+          ],
+          "id": "django/core/validators.py::URLValidator::class@65:0",
+          "kind": "class",
+          "line": 65,
+          "module": "django.core.validators",
+          "parent": "django/core/validators.py::<module>::module@1:0",
+          "path": "django/core/validators.py",
+          "qualname": "URLValidator"
+        },
+        "class_reachability": {
+          "PRIMARY_RESOLVED_ONLY": {
+            "emittable_test_count": 0,
+            "test_ids": []
+          },
+          "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+            "emittable_test_count": 0,
+            "test_ids": []
+          }
+        },
+        "incoming_class_calls": 16,
+        "representative_constructor_calls": [
+          {
+            "caller": "tests/validators/tests.py::<module>::module@1:0",
+            "column": 5,
+            "expression": "URLValidator",
+            "line": 221,
+            "path": "tests/validators/tests.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "tests/validators/tests.py::<module>::module@1:0",
+            "status": "ambiguous",
+            "targets": [
+              "django/core/validators.py::URLValidator::class@65:0"
+            ]
+          },
+          {
+            "caller": "tests/validators/tests.py::<module>::module@1:0",
+            "column": 5,
+            "expression": "URLValidator",
+            "line": 222,
+            "path": "tests/validators/tests.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "tests/validators/tests.py::<module>::module@1:0",
+            "status": "ambiguous",
+            "targets": [
+              "django/core/validators.py::URLValidator::class@65:0"
+            ]
+          },
+          {
+            "caller": "tests/validators/tests.py::<module>::module@1:0",
+            "column": 5,
+            "expression": "URLValidator",
+            "line": 223,
+            "path": "tests/validators/tests.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "tests/validators/tests.py::<module>::module@1:0",
+            "status": "ambiguous",
+            "targets": [
+              "django/core/validators.py::URLValidator::class@65:0"
+            ]
+          }
+        ]
+      }
+    ],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C04",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [
+      {
+        "context": "116:         stack += first_line\n117: \n118:     # Color between x = 0 and the first array.\n119:     color = get_next_color()\n120:     coll = axes.fill_between(x, first_line, stack[0, :],\n121:                              facecolor=color, label=next(labels, None),\n122:                              **kwargs)",
+        "line": 119,
+        "owner": "stackplot"
+      },
+      {
+        "context": "125: \n126:     # Color between array i-1 and array i\n127:     for i in range(len(y) - 1):\n128:         color = get_next_color()\n129:         r.append(axes.fill_between(x, stack[i, :], stack[i + 1, :],\n130:                                    facecolor=color, label=next(labels, None),\n131:                                    **kwargs))",
+        "line": 128,
+        "owner": "stackplot"
+      }
+    ],
+    "case_id": "C05",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C06",
+    "parent_class_evidence": [
+      {
+        "class_call_status_counts": {},
+        "class_node": {
+          "bases": [
+            "AnchoredOffsetbox"
+          ],
+          "column": 0,
+          "conditional": false,
+          "decorated": false,
+          "decorators": [],
+          "id": "lib/mpl_toolkits/axes_grid1/inset_locator.py::AnchoredLocatorBase::class@60:0",
+          "kind": "class",
+          "line": 60,
+          "module": "mpl_toolkits.axes_grid1.inset_locator",
+          "parent": "lib/mpl_toolkits/axes_grid1/inset_locator.py::<module>::module@1:0",
+          "path": "lib/mpl_toolkits/axes_grid1/inset_locator.py",
+          "qualname": "AnchoredLocatorBase"
+        },
+        "class_reachability": {
+          "PRIMARY_RESOLVED_ONLY": {
+            "emittable_test_count": 0,
+            "test_ids": []
+          },
+          "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+            "emittable_test_count": 0,
+            "test_ids": []
+          }
+        },
+        "incoming_class_calls": 0,
+        "representative_constructor_calls": []
+      }
+    ],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C07",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C08",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [
+      {
+        "context": "76: \n77:     for something in files_or_modules:\n78:         basename = os.path.basename(something)\n79:         if _is_ignored_file(\n80:             something, ignore_list, ignore_list_re, ignore_list_paths_re\n81:         ):\n82:             continue",
+        "line": 79,
+        "owner": "expand_modules"
+      },
+      {
+        "context": "141:             ):\n142:                 if filepath == subfilepath:\n143:                     continue\n144:                 if _is_ignored_file(\n145:                     subfilepath, ignore_list, ignore_list_re, ignore_list_paths_re\n146:                 ):\n147:                     continue",
+        "line": 144,
+        "owner": "expand_modules"
+      }
+    ],
+    "case_id": "C09",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C10",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C11",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C12",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C13",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [
+      {
+        "context": "313:         \"\"\"\n314:         X = self._validate_for_predict(X)\n315:         predict = self._sparse_predict if self._sparse else self._dense_predict\n316:         return predict(X)\n317: \n318:     def _dense_predict(self, X):\n319:         X = self._compute_kernel(X)",
+        "line": 316,
+        "owner": "BaseLibSVM.predict"
+      }
+    ],
+    "case_id": "C14",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C15",
+    "parent_class_evidence": [
+      {
+        "class_call_status_counts": {
+          "resolved": 1
+        },
+        "class_node": {
+          "bases": [
+            "IrreducibleUnit"
+          ],
+          "column": 0,
+          "conditional": false,
+          "decorated": false,
+          "decorators": [],
+          "id": "astropy/units/core.py::UnrecognizedUnit::class@1675:0",
+          "kind": "class",
+          "line": 1675,
+          "module": "astropy.units.core",
+          "parent": "astropy/units/core.py::<module>::module@1:0",
+          "path": "astropy/units/core.py",
+          "qualname": "UnrecognizedUnit"
+        },
+        "class_reachability": {
+          "PRIMARY_RESOLVED_ONLY": {
+            "emittable_test_count": 0,
+            "test_ids": []
+          },
+          "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+            "emittable_test_count": 0,
+            "test_ids": []
+          }
+        },
+        "incoming_class_calls": 1,
+        "representative_constructor_calls": [
+          {
+            "caller": "astropy/units/core.py::_UnitMetaClass.__call__::method@1744:4",
+            "column": 23,
+            "expression": "UnrecognizedUnit",
+            "line": 1816,
+            "path": "astropy/units/core.py",
+            "provenance": "existing_static_resolution",
+            "reason": "unique_static_binding",
+            "scope": "astropy/units/core.py::_UnitMetaClass.__call__::method@1744:4",
+            "status": "resolved",
+            "targets": [
+              "astropy/units/core.py::UnrecognizedUnit::class@1675:0"
+            ]
+          }
+        ]
+      }
+    ],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C16",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C17",
+    "parent_class_evidence": [
+      {
+        "class_call_status_counts": {},
+        "class_node": {
+          "bases": [
+            "TemplateResponseMixin",
+            "ContextMixin",
+            "View"
+          ],
+          "column": 0,
+          "conditional": false,
+          "decorated": false,
+          "decorators": [],
+          "id": "django/views/generic/base.py::TemplateView::class@157:0",
+          "kind": "class",
+          "line": 157,
+          "module": "django.views.generic.base",
+          "parent": "django/views/generic/base.py::<module>::module@1:0",
+          "path": "django/views/generic/base.py",
+          "qualname": "TemplateView"
+        },
+        "class_reachability": {
+          "PRIMARY_RESOLVED_ONLY": {
+            "emittable_test_count": 0,
+            "test_ids": []
+          },
+          "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+            "emittable_test_count": 0,
+            "test_ids": []
+          }
+        },
+        "incoming_class_calls": 0,
+        "representative_constructor_calls": []
+      }
+    ],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C18",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C19",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C20",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C21",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C22",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C23",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C24",
+    "parent_class_evidence": [
+      {
+        "class_call_status_counts": {
+          "ambiguous": 33
+        },
+        "class_node": {
+          "bases": [
+            "Normalize"
+          ],
+          "column": 0,
+          "conditional": false,
+          "decorated": true,
+          "decorators": [
+            "<Call>"
+          ],
+          "id": "lib/matplotlib/colors.py::LogNorm::class@1543:0",
+          "kind": "class",
+          "line": 1543,
+          "module": "matplotlib.colors",
+          "parent": "lib/matplotlib/colors.py::<module>::module@1:0",
+          "path": "lib/matplotlib/colors.py",
+          "qualname": "LogNorm"
+        },
+        "class_reachability": {
+          "PRIMARY_RESOLVED_ONLY": {
+            "emittable_test_count": 0,
+            "test_ids": []
+          },
+          "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+            "emittable_test_count": 21,
+            "test_ids": [
+              "lib/matplotlib/tests/test_axes.py::test_specgram",
+              "lib/matplotlib/tests/test_axes.py::test_specgram_magnitude",
+              "lib/matplotlib/tests/test_colorbar.py::test_colorbar_autotickslog",
+              "lib/matplotlib/tests/test_colorbar.py::test_colorbar_format",
+              "lib/matplotlib/tests/test_colorbar.py::test_colorbar_inverted_ticks"
+            ]
+          }
+        },
+        "incoming_class_calls": 33,
+        "representative_constructor_calls": [
+          {
+            "caller": "examples/images_contours_and_fields/pcolor_demo.py::<module>::module@1:0",
+            "column": 20,
+            "expression": "LogNorm",
+            "line": 104,
+            "path": "examples/images_contours_and_fields/pcolor_demo.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "examples/images_contours_and_fields/pcolor_demo.py::<module>::module@1:0",
+            "status": "ambiguous",
+            "targets": [
+              "lib/matplotlib/colors.py::LogNorm::class@1543:0"
+            ]
+          },
+          {
+            "caller": "examples/statistics/hist.py::<module>::module@1:0",
+            "column": 42,
+            "expression": "colors.LogNorm",
+            "line": 96,
+            "path": "examples/statistics/hist.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "examples/statistics/hist.py::<module>::module@1:0",
+            "status": "ambiguous",
+            "targets": [
+              "lib/matplotlib/colors.py::LogNorm::class@1543:0"
+            ]
+          },
+          {
+            "caller": "examples/statistics/hist.py::<module>::module@1:0",
+            "column": 48,
+            "expression": "colors.LogNorm",
+            "line": 99,
+            "path": "examples/statistics/hist.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "examples/statistics/hist.py::<module>::module@1:0",
+            "status": "ambiguous",
+            "targets": [
+              "lib/matplotlib/colors.py::LogNorm::class@1543:0"
+            ]
+          }
+        ]
+      }
+    ],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C25",
+    "parent_class_evidence": [
+      {
+        "class_call_status_counts": {
+          "ambiguous": 33
+        },
+        "class_node": {
+          "bases": [
+            "Normalize"
+          ],
+          "column": 0,
+          "conditional": false,
+          "decorated": true,
+          "decorators": [
+            "<Call>"
+          ],
+          "id": "lib/matplotlib/colors.py::LogNorm::class@1543:0",
+          "kind": "class",
+          "line": 1543,
+          "module": "matplotlib.colors",
+          "parent": "lib/matplotlib/colors.py::<module>::module@1:0",
+          "path": "lib/matplotlib/colors.py",
+          "qualname": "LogNorm"
+        },
+        "class_reachability": {
+          "PRIMARY_RESOLVED_ONLY": {
+            "emittable_test_count": 0,
+            "test_ids": []
+          },
+          "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+            "emittable_test_count": 21,
+            "test_ids": [
+              "lib/matplotlib/tests/test_axes.py::test_specgram",
+              "lib/matplotlib/tests/test_axes.py::test_specgram_magnitude",
+              "lib/matplotlib/tests/test_colorbar.py::test_colorbar_autotickslog",
+              "lib/matplotlib/tests/test_colorbar.py::test_colorbar_format",
+              "lib/matplotlib/tests/test_colorbar.py::test_colorbar_inverted_ticks"
+            ]
+          }
+        },
+        "incoming_class_calls": 33,
+        "representative_constructor_calls": [
+          {
+            "caller": "examples/images_contours_and_fields/pcolor_demo.py::<module>::module@1:0",
+            "column": 20,
+            "expression": "LogNorm",
+            "line": 104,
+            "path": "examples/images_contours_and_fields/pcolor_demo.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "examples/images_contours_and_fields/pcolor_demo.py::<module>::module@1:0",
+            "status": "ambiguous",
+            "targets": [
+              "lib/matplotlib/colors.py::LogNorm::class@1543:0"
+            ]
+          },
+          {
+            "caller": "examples/statistics/hist.py::<module>::module@1:0",
+            "column": 42,
+            "expression": "colors.LogNorm",
+            "line": 96,
+            "path": "examples/statistics/hist.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "examples/statistics/hist.py::<module>::module@1:0",
+            "status": "ambiguous",
+            "targets": [
+              "lib/matplotlib/colors.py::LogNorm::class@1543:0"
+            ]
+          },
+          {
+            "caller": "examples/statistics/hist.py::<module>::module@1:0",
+            "column": 48,
+            "expression": "colors.LogNorm",
+            "line": 99,
+            "path": "examples/statistics/hist.py",
+            "provenance": "existing_static_resolution",
+            "reason": "decorated_or_conditional_definition",
+            "scope": "examples/statistics/hist.py::<module>::module@1:0",
+            "status": "ambiguous",
+            "targets": [
+              "lib/matplotlib/colors.py::LogNorm::class@1543:0"
+            ]
+          }
+        ]
+      }
+    ],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C26",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [
+      {
+        "context": "279:                 reprtraceback = deserialize_repr_traceback(\n280:                     reportdict[\"longrepr\"][\"reprtraceback\"]\n281:                 )\n282:                 reprcrash = deserialize_repr_crash(reportdict[\"longrepr\"][\"reprcrash\"])\n283: \n284:                 if \"chain\" in reportdict[\"longrepr\"]:\n285:                     exception_info = ExceptionChainRepr(",
+        "line": 282,
+        "owner": "BaseReport._from_json"
+      },
+      {
+        "context": "286:                         [\n287:                             (\n288:                                 deserialize_repr_traceback(entry[0]),\n289:                                 deserialize_repr_crash(entry[1]),\n290:                                 entry[2],\n291:                             )\n292:                             for entry in reportdict[\"longrepr\"][\"chain\"]",
+        "line": 289,
+        "owner": "BaseReport._from_json"
+      }
+    ],
+    "case_id": "C27",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [
+      {
+        "context": "259: \n260:         def deserialize_repr_traceback(reprtraceback_dict):\n261:             reprtraceback_dict[\"reprentries\"] = [\n262:                 deserialize_repr_entry(x)\n263:                 for x in reprtraceback_dict[\"reprentries\"]\n264:             ]\n265:             return ReprTraceback(**reprtraceback_dict)",
+        "line": 262,
+        "owner": "BaseReport._from_json.deserialize_repr_traceback"
+      }
+    ],
+    "case_id": "C28",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [
+      {
+        "context": "276:                 and \"reprtraceback\" in reportdict[\"longrepr\"]\n277:             ):\n278: \n279:                 reprtraceback = deserialize_repr_traceback(\n280:                     reportdict[\"longrepr\"][\"reprtraceback\"]\n281:                 )\n282:                 reprcrash = deserialize_repr_crash(reportdict[\"longrepr\"][\"reprcrash\"])",
+        "line": 279,
+        "owner": "BaseReport._from_json"
+      },
+      {
+        "context": "285:                     exception_info = ExceptionChainRepr(\n286:                         [\n287:                             (\n288:                                 deserialize_repr_traceback(entry[0]),\n289:                                 deserialize_repr_crash(entry[1]),\n290:                                 entry[2],\n291:                             )",
+        "line": 288,
+        "owner": "BaseReport._from_json"
+      }
+    ],
+    "case_id": "C29",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [
+      {
+        "context": "187: \n188:         def disassembled_report(rep):\n189:             result = {\n190:                 \"reprcrash\": serialize_repr_crash(rep.longrepr.reprcrash),\n191:                 \"reprtraceback\": serialize_repr_traceback(rep.longrepr.reprtraceback),\n192:                 \"sections\": rep.longrepr.sections,\n193:             }",
+        "line": 190,
+        "owner": "BaseReport._to_json.disassembled_report"
+      },
+      {
+        "context": "195:                 result[\"chain\"] = [\n196:                     (\n197:                         serialize_repr_traceback(entry[0]),\n198:                         serialize_repr_crash(entry[1]),\n199:                         entry[2],\n200:                     )\n201:                     for entry in rep.longrepr.chain",
+        "line": 198,
+        "owner": "BaseReport._to_json.disassembled_report"
+      }
+    ],
+    "case_id": "C30",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [
+      {
+        "context": "175:         def serialize_repr_traceback(reprtraceback):\n176:             result = reprtraceback.__dict__.copy()\n177:             result[\"reprentries\"] = [\n178:                 serialize_repr_entry(x) for x in reprtraceback.reprentries\n179:             ]\n180:             return result\n181: ",
+        "line": 178,
+        "owner": "BaseReport._to_json.serialize_repr_traceback"
+      }
+    ],
+    "case_id": "C31",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [
+      {
+        "context": "188:         def disassembled_report(rep):\n189:             result = {\n190:                 \"reprcrash\": serialize_repr_crash(rep.longrepr.reprcrash),\n191:                 \"reprtraceback\": serialize_repr_traceback(rep.longrepr.reprtraceback),\n192:                 \"sections\": rep.longrepr.sections,\n193:             }\n194:             if hasattr(rep.longrepr, \"chain\"):",
+        "line": 191,
+        "owner": "BaseReport._to_json.disassembled_report"
+      },
+      {
+        "context": "194:             if hasattr(rep.longrepr, \"chain\"):\n195:                 result[\"chain\"] = [\n196:                     (\n197:                         serialize_repr_traceback(entry[0]),\n198:                         serialize_repr_crash(entry[1]),\n199:                         entry[2],\n200:                     )",
+        "line": 197,
+        "owner": "BaseReport._to_json.disassembled_report"
+      }
+    ],
+    "case_id": "C32",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [
+      {
+        "context": "231:                 def postpone_tearDown(*args):\n232:                     self._explicit_tearDown = tearDown\n233: \n234:                 setattr(self._testcase, \"tearDown\", postpone_tearDown)\n235: \n236:             # we need to update the actual bound method with self.obj, because\n237:             # wrap_pytest_function_for_tracing replaces self.obj by a wrapper",
+        "kind": "setattr_callable_injection",
+        "line": 234
+      }
+    ],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C33",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [
+      {
+        "context": "435: \n436:             for option in ('prepend', 'append'):\n437:                 if option in self.options:\n438:                     indent = _get_option_indent(self.block_text, option)\n439:                     if indent:\n440:                         self.options[option] = indent + self.options[option]\n441: ",
+        "line": 438,
+        "owner": "LiteralInclude.run"
+      }
+    ],
+    "case_id": "C34",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C35",
+    "parent_class_evidence": [
+      {
+        "class_call_status_counts": {
+          "resolved": 1
+        },
+        "class_node": {
+          "bases": [],
+          "column": 0,
+          "conditional": false,
+          "decorated": false,
+          "decorators": [],
+          "id": "sphinx/builders/gettext.py::Message::class@31:0",
+          "kind": "class",
+          "line": 31,
+          "module": "sphinx.builders.gettext",
+          "parent": "sphinx/builders/gettext.py::<module>::module@1:0",
+          "path": "sphinx/builders/gettext.py",
+          "qualname": "Message"
+        },
+        "class_reachability": {
+          "PRIMARY_RESOLVED_ONLY": {
+            "emittable_test_count": 0,
+            "test_ids": []
+          },
+          "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+            "emittable_test_count": 0,
+            "test_ids": []
+          }
+        },
+        "incoming_class_calls": 1,
+        "representative_constructor_calls": [
+          {
+            "caller": "sphinx/builders/gettext.py::Catalog.__iter__::method@58:4",
+            "column": 18,
+            "expression": "Message",
+            "line": 62,
+            "path": "sphinx/builders/gettext.py",
+            "provenance": "existing_static_resolution",
+            "reason": "unique_static_binding",
+            "scope": "sphinx/builders/gettext.py::Catalog.__iter__::method@58:4",
+            "status": "resolved",
+            "targets": [
+              "sphinx/builders/gettext.py::Message::class@31:0"
+            ]
+          }
+        ]
+      }
+    ],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C36",
+    "parent_class_evidence": [
+      {
+        "class_call_status_counts": {
+          "ambiguous": 60,
+          "resolved": 27
+        },
+        "class_node": {
+          "bases": [
+            "HyperbolicFunction"
+          ],
+          "column": 0,
+          "conditional": false,
+          "decorated": false,
+          "decorators": [],
+          "id": "sympy/functions/elementary/hyperbolic.py::coth::class@537:0",
+          "kind": "class",
+          "line": 537,
+          "module": "sympy.functions.elementary.hyperbolic",
+          "parent": "sympy/functions/elementary/hyperbolic.py::<module>::module@1:0",
+          "path": "sympy/functions/elementary/hyperbolic.py",
+          "qualname": "coth"
+        },
+        "class_reachability": {
+          "PRIMARY_RESOLVED_ONLY": {
+            "emittable_test_count": 9,
+            "test_ids": [
+              "sympy/core/tests/test_args.py::test_sympy__functions__elementary__hyperbolic__coth",
+              "sympy/integrals/rubi/tests/test_utility_function.py::test_CothQ",
+              "sympy/integrals/rubi/tests/test_utility_function.py::test_FunctionOfTanhQ",
+              "sympy/integrals/rubi/tests/test_utility_function.py::test_FunctionOfTanhWeight",
+              "sympy/integrals/rubi/tests/test_utility_function.py::test_PiecewiseLinearQ"
+            ]
+          },
+          "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+            "emittable_test_count": 9,
+            "test_ids": [
+              "sympy/core/tests/test_args.py::test_sympy__functions__elementary__hyperbolic__coth",
+              "sympy/integrals/rubi/tests/test_utility_function.py::test_CothQ",
+              "sympy/integrals/rubi/tests/test_utility_function.py::test_FunctionOfTanhQ",
+              "sympy/integrals/rubi/tests/test_utility_function.py::test_FunctionOfTanhWeight",
+              "sympy/integrals/rubi/tests/test_utility_function.py::test_PiecewiseLinearQ"
+            ]
+          }
+        },
+        "incoming_class_calls": 87,
+        "representative_constructor_calls": [
+          {
+            "caller": "sympy/core/tests/test_args.py::test_sympy__functions__elementary__hyperbolic__coth::test_function@1368:0",
+            "column": 22,
+            "expression": "coth",
+            "line": 1370,
+            "path": "sympy/core/tests/test_args.py",
+            "provenance": "existing_static_resolution",
+            "reason": "unique_static_binding",
+            "scope": "sympy/core/tests/test_args.py::test_sympy__functions__elementary__hyperbolic__coth::test_function@1368:0",
+            "status": "resolved",
+            "targets": [
+              "sympy/functions/elementary/hyperbolic.py::coth::class@537:0"
+            ]
+          },
+          {
+            "caller": "sympy/functions/elementary/hyperbolic.py::sinh._eval_rewrite_as_coth::method@217:4",
+            "column": 20,
+            "expression": "coth",
+            "line": 218,
+            "path": "sympy/functions/elementary/hyperbolic.py",
+            "provenance": "existing_static_resolution",
+            "reason": "unique_static_binding",
+            "scope": "sympy/functions/elementary/hyperbolic.py::sinh._eval_rewrite_as_coth::method@217:4",
+            "status": "resolved",
+            "targets": [
+              "sympy/functions/elementary/hyperbolic.py::coth::class@537:0"
+            ]
+          },
+          {
+            "caller": "sympy/functions/elementary/hyperbolic.py::cosh._eval_rewrite_as_coth::method@369:4",
+            "column": 20,
+            "expression": "coth",
+            "line": 370,
+            "path": "sympy/functions/elementary/hyperbolic.py",
+            "provenance": "existing_static_resolution",
+            "reason": "unique_static_binding",
+            "scope": "sympy/functions/elementary/hyperbolic.py::cosh._eval_rewrite_as_coth::method@369:4",
+            "status": "resolved",
+            "targets": [
+              "sympy/functions/elementary/hyperbolic.py::coth::class@537:0"
+            ]
+          }
+        ]
+      }
+    ],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C37",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C38",
+    "parent_class_evidence": [],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C39",
+    "parent_class_evidence": [
+      {
+        "class_call_status_counts": {
+          "resolved": 5
+        },
+        "class_node": {
+          "bases": [
+            "Operator"
+          ],
+          "column": 0,
+          "conditional": false,
+          "decorated": false,
+          "decorators": [],
+          "id": "sympy/physics/quantum/operator.py::IdentityOperator::class@249:0",
+          "kind": "class",
+          "line": 249,
+          "module": "sympy.physics.quantum.operator",
+          "parent": "sympy/physics/quantum/operator.py::<module>::module@1:0",
+          "path": "sympy/physics/quantum/operator.py",
+          "qualname": "IdentityOperator"
+        },
+        "class_reachability": {
+          "PRIMARY_RESOLVED_ONLY": {
+            "emittable_test_count": 3,
+            "test_ids": [
+              "sympy/core/tests/test_args.py::test_sympy__physics__quantum__operator__IdentityOperator",
+              "sympy/physics/quantum/tests/test_operator.py::test_identity",
+              "sympy/physics/quantum/tests/test_operator.py::test_operator"
+            ]
+          },
+          "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+            "emittable_test_count": 3,
+            "test_ids": [
+              "sympy/core/tests/test_args.py::test_sympy__physics__quantum__operator__IdentityOperator",
+              "sympy/physics/quantum/tests/test_operator.py::test_identity",
+              "sympy/physics/quantum/tests/test_operator.py::test_operator"
+            ]
+          }
+        },
+        "incoming_class_calls": 5,
+        "representative_constructor_calls": [
+          {
+            "caller": "sympy/core/tests/test_args.py::test_sympy__physics__quantum__operator__IdentityOperator::test_function@3435:0",
+            "column": 22,
+            "expression": "IdentityOperator",
+            "line": 3437,
+            "path": "sympy/core/tests/test_args.py",
+            "provenance": "existing_static_resolution",
+            "reason": "unique_static_binding",
+            "scope": "sympy/core/tests/test_args.py::test_sympy__physics__quantum__operator__IdentityOperator::test_function@3435:0",
+            "status": "resolved",
+            "targets": [
+              "sympy/physics/quantum/operator.py::IdentityOperator::class@249:0"
+            ]
+          },
+          {
+            "caller": "sympy/physics/quantum/boson.py::BosonOp.__mul__::method@90:4",
+            "column": 20,
+            "expression": "IdentityOperator",
+            "line": 92,
+            "path": "sympy/physics/quantum/boson.py",
+            "provenance": "existing_static_resolution",
+            "reason": "unique_static_binding",
+            "scope": "sympy/physics/quantum/boson.py::BosonOp.__mul__::method@90:4",
+            "status": "resolved",
+            "targets": [
+              "sympy/physics/quantum/operator.py::IdentityOperator::class@249:0"
+            ]
+          },
+          {
+            "caller": "sympy/physics/quantum/tests/test_operator.py::test_operator::test_function@33:0",
+            "column": 13,
+            "expression": "IdentityOperator",
+            "line": 53,
+            "path": "sympy/physics/quantum/tests/test_operator.py",
+            "provenance": "existing_static_resolution",
+            "reason": "unique_static_binding",
+            "scope": "sympy/physics/quantum/tests/test_operator.py::test_operator::test_function@33:0",
+            "status": "resolved",
+            "targets": [
+              "sympy/physics/quantum/operator.py::IdentityOperator::class@249:0"
+            ]
+          }
+        ]
+      }
+    ],
+    "representative_target_incoming_edges": []
+  },
+  {
+    "actual_base_target_incoming_edge_counts": {},
+    "actual_base_target_incoming_reason_counts": {},
+    "callable_injection_evidence": [],
+    "candidate_same_name_call_syntax": [],
+    "case_id": "C40",
+    "parent_class_evidence": [
+      {
+        "class_call_status_counts": {
+          "ambiguous": 154,
+          "resolved": 8378
+        },
+        "class_node": {
+          "bases": [
+            "Number"
+          ],
+          "column": 0,
+          "conditional": false,
+          "decorated": false,
+          "decorators": [],
+          "id": "sympy/core/numbers.py::Rational::class@1483:0",
+          "kind": "class",
+          "line": 1483,
+          "module": "sympy.core.numbers",
+          "parent": "sympy/core/numbers.py::<module>::module@1:0",
+          "path": "sympy/core/numbers.py",
+          "qualname": "Rational"
+        },
+        "class_reachability": {
+          "PRIMARY_RESOLVED_ONLY": {
+            "emittable_test_count": 1215,
+            "test_ids": [
+              "sympy/algebras/tests/test_quaternion.py::test_quaternion_construction",
+              "sympy/algebras/tests/test_quaternion.py::test_quaternion_conversions",
+              "sympy/algebras/tests/test_quaternion.py::test_quaternion_functions",
+              "sympy/assumptions/tests/test_query.py::test_Rational_number",
+              "sympy/assumptions/tests/test_query.py::test_algebraic"
+            ]
+          },
+          "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+            "emittable_test_count": 1244,
+            "test_ids": [
+              "sympy/algebras/tests/test_quaternion.py::test_product_matrices",
+              "sympy/algebras/tests/test_quaternion.py::test_quaternion_construction",
+              "sympy/algebras/tests/test_quaternion.py::test_quaternion_conversions",
+              "sympy/algebras/tests/test_quaternion.py::test_quaternion_functions",
+              "sympy/algebras/tests/test_quaternion.py::test_rotation_matrix_homogeneous"
+            ]
+          }
+        },
+        "incoming_class_calls": 8532,
+        "representative_constructor_calls": [
+          {
+            "caller": "examples/advanced/fem.py::create_point_set::function@94:0",
+            "column": 8,
+            "expression": "Rational",
+            "line": 95,
+            "path": "examples/advanced/fem.py",
+            "provenance": "existing_static_resolution",
+            "reason": "unique_static_binding",
+            "scope": "examples/advanced/fem.py::create_point_set::function@94:0",
+            "status": "resolved",
+            "targets": [
+              "sympy/core/numbers.py::Rational::class@1483:0"
+            ]
+          },
+          {
+            "caller": "examples/beginner/limits_examples.py::sqrt3::function@11:0",
+            "column": 14,
+            "expression": "Rational",
+            "line": 12,
+            "path": "examples/beginner/limits_examples.py",
+            "provenance": "existing_static_resolution",
+            "reason": "unique_static_binding",
+            "scope": "examples/beginner/limits_examples.py::sqrt3::function@11:0",
+            "status": "resolved",
+            "targets": [
+              "sympy/core/numbers.py::Rational::class@1483:0"
+            ]
+          },
+          {
+            "caller": "examples/beginner/limits_examples.py::main::function@19:0",
+            "column": 51,
+            "expression": "Rational",
+            "line": 22,
+            "path": "examples/beginner/limits_examples.py",
+            "provenance": "existing_static_resolution",
+            "reason": "unique_static_binding",
+            "scope": "examples/beginner/limits_examples.py::main::function@19:0",
+            "status": "resolved",
+            "targets": [
+              "sympy/core/numbers.py::Rational::class@1483:0"
+            ]
+          }
+        ]
+      }
+    ],
+    "representative_target_incoming_edges": []
+  }
+]
