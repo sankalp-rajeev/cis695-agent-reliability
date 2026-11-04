@@ -1,0 +1,27 @@
+diff --git a/lib/matplotlib/backend_bases.py b/lib/matplotlib/backend_bases.py
+index 9ae2982c62..409c7b0018 100755
+--- a/lib/matplotlib/backend_bases.py
++++ b/lib/matplotlib/backend_bases.py
+@@ -1653,7 +1653,8 @@ class FigureCanvasBase:
+         self.toolbar = None  # NavigationToolbar2 will set me
+         self._is_idle_drawing = False
+         # We don't want to scale up the figure DPI more than once.
+-        figure._original_dpi = figure.dpi
++        if getattr(figure, "_original_dpi", None) is None:
++            figure._original_dpi = figure.dpi
+         self._device_pixel_ratio = 1
+         super().__init__()  # Typically the GUI widget init (if any).
+ 
+diff --git a/lib/matplotlib/figure.py b/lib/matplotlib/figure.py
+index c55864243a..232e7367c7 100755
+--- a/lib/matplotlib/figure.py
++++ b/lib/matplotlib/figure.py
+@@ -2406,6 +2406,8 @@ class Figure(FigureBase):
+         self.dpi_scale_trans = Affine2D().scale(dpi)
+         # do not use property as it will trigger
+         self._dpi = dpi
++        # We don't want to scale up the figure DPI more than once.
++        self._original_dpi = None
+         self.bbox = TransformedBbox(self.bbox_inches, self.dpi_scale_trans)
+         self.figbbox = self.bbox
+         self.transFigure = BboxTransformTo(self.bbox)

@@ -1,0 +1,20 @@
+diff --git a/lib/matplotlib/dates.py b/lib/matplotlib/dates.py
+index 4d8ddf3ee5..90793de7e5 100644
+--- a/lib/matplotlib/dates.py
++++ b/lib/matplotlib/dates.py
+@@ -798,7 +798,14 @@ class ConciseDateFormatter(ticker.Formatter):
+         for level in range(5, -1, -1):
+             if len(np.unique(tickdate[:, level])) > 1:
+                 if level < 2:
+-                    show_offset = False
++                    # Only show the offset at level 1 if a January tick is
++                    # not present (January labels already include the year)
++                    # and all ticks are in the same year, so the offset
++                    # unambiguously supplies the missing year.
++                    show_offset = (
++                        show_offset and level == 1
++                        and len(np.unique(tickdate[:, 0])) == 1
++                        and 1 not in tickdate[:, 1])
+                 break
+             elif level == 0:
+                 # all tickdate are the same, so only micros might be different

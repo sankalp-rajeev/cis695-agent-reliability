@@ -1,0 +1,23 @@
+diff --git a/astropy/units/quantity.py b/astropy/units/quantity.py
+index b98abfafb..3f21cd4d2 100644
+--- a/astropy/units/quantity.py
++++ b/astropy/units/quantity.py
+@@ -636,6 +636,18 @@ class Quantity(np.ndarray):
+         result : `~astropy.units.Quantity`
+             Results of the ufunc, with the unit set properly.
+         """
++        # If any of the inputs is not a Quantity or ndarray but does define
++        # __array_ufunc__, defer to it.  This is in line with the numpy
++        # protocol, and ensures that, e.g., a duck array with a unit but no
++        # direct conversion to a plain array gets the chance to handle the
++        # operation itself.
++        if any(
++            not isinstance(input_, (Quantity, np.ndarray))
++            and hasattr(input_, "__array_ufunc__")
++            for input_ in inputs
++        ):
++            return NotImplemented
++
+         # Determine required conversion functions -- to bring the unit of the
+         # input to that expected (e.g., radian for np.sin), or to get
+         # consistent units between two inputs (e.g., in np.add) --

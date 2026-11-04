@@ -1,0 +1,13 @@
+diff --git a/django/core/management/commands/inspectdb.py b/django/core/management/commands/inspectdb.py
+index f9b4bfb477..2eb0d9b2fa 100644
+--- a/django/core/management/commands/inspectdb.py
++++ b/django/core/management/commands/inspectdb.py
+@@ -128,6 +128,8 @@ class Command(BaseCommand):
+                             field_type = '%s(%s' % (rel_type, rel_to)
+                         else:
+                             field_type = "%s('%s'" % (rel_type, rel_to)
++                        if relations[column_name][0] != 'id':
++                            extra_params['to_field'] = relations[column_name][0]
+                     else:
+                         # Calling `get_field_type` to get the field type string and any
+                         # additional parameters and notes.

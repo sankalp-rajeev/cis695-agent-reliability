@@ -1,0 +1,16 @@
+diff --git a/sympy/core/numbers.py b/sympy/core/numbers.py
+index 52f7ea45ad..4b6baf7e84 100644
+--- a/sympy/core/numbers.py
++++ b/sympy/core/numbers.py
+@@ -1624,6 +1624,11 @@ def __new__(cls, p, q=None, gcd=None):
+ 
+             q = 1
+             gcd = 1
++        else:
++            if isinstance(p, str):
++                p = Rational(p)
++            if isinstance(q, str):
++                q = Rational(q)
+ 
+         if not isinstance(p, SYMPY_INTS):
+             p = Rational(p)

@@ -1,0 +1,24 @@
+diff --git a/pylint/lint/run.py b/pylint/lint/run.py
+index a7e5d557..63c1f669 100644
+--- a/pylint/lint/run.py
++++ b/pylint/lint/run.py
+@@ -58,6 +58,10 @@ def _query_cpu() -> int | None:
+             cpu_shares = int(file.read().rstrip())
+         # For AWS, gives correct value * 1024.
+         avail_cpu = int(cpu_shares / 1024)
++    if avail_cpu is not None:
++        # There is always at least one CPU available, even when the container
++        # is limited to less than a single CPU (e.g. cpu.shares < 1024).
++        avail_cpu = max(avail_cpu, 1)
+     return avail_cpu
+ 
+ 
+@@ -76,7 +80,7 @@ def _cpu_count() -> int:
+     else:
+         cpu_count = 1
+     if cpu_share is not None:
+-        return min(cpu_share, cpu_count)
++        return max(min(cpu_share, cpu_count), 1)
+     return cpu_count
+ 
+ 
