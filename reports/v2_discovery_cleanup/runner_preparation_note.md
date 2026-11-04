@@ -1,0 +1,5 @@
+The first preparation CLI smoke check found that relative input paths were being compared with an absolute repository root. It failed before creating a freeze or starting a container. The runner now normalizes those CLI paths and explicitly pins the existing shadow-classifier configuration alongside its implementation.
+
+The corrected runner passed the full unit suite (922 passed, 1 skipped), lint, an actual 83-task manifest preparation using relative input paths, and frozen-input verification. The smoke preparation used a temporary output directory and started zero containers. Details are in `runner_preparation_validation.json`; its smoke protocol hash is not the final review protocol hash.
+
+Previously committed discovery, integration and unit evidence remains unchanged. The final `frozen_83/protocol.json` is created from the commit containing this correction and records that exact code revision plus the additional runner-validation evidence. No selection, ranking, timeout, classification, classifier decision rule or verdict policy changed in this correction.

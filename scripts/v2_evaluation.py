@@ -58,6 +58,7 @@ def code_paths():
     return sorted([*ROOT.glob("src/reliability/verifier/*.py"),
                    ROOT / "src/reliability/env.py", Path(__file__).resolve(),
                    ROOT / "configs/verifier/full.yaml", ROOT / "configs/verifier/baseline.yaml",
+                   ROOT / "reports/v2_stabilization/classifier_v2/frozen_rule.json",
                    ROOT / "docs/VERIFIER_POLICY.md", ROOT / "pyproject.toml", ROOT / "uv.lock"])
 
 
@@ -69,6 +70,8 @@ def host_packages():
 
 def prepare(comparison, metadata, image_inventory, out):
     """Freeze source/config/manifests without starting a container or evaluating a test."""
+    comparison, metadata, image_inventory, out = (
+        path.resolve() for path in (comparison, metadata, image_inventory, out))
     compared = json.loads(comparison.read_text())
     safe = json.loads(metadata.read_text())
     tasks = safe["tasks"]
@@ -85,6 +88,9 @@ def prepare(comparison, metadata, image_inventory, out):
     assert integration["incomplete_PASS_count"] == 0 and integration["shadow_only"] is True
     evidence_paths = [validation_root / p for p in ("audit/summary.json", "integration_audit/validation.json",
                                                    "unit_final_complete.txt", "test_results.json", "lint.txt")]
+    runner_validation = validation_root / "runner_preparation_validation.json"
+    if runner_validation.exists():
+        evidence_paths.append(runner_validation)
     validation_hashes = {str(p.relative_to(ROOT)): sha(p.read_bytes()) for p in evidence_paths}
     for path, digest in compared["source_sha256"].items():
         assert sha((ROOT / path).read_bytes()) == digest, f"source drift: {path}"
