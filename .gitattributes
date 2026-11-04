@@ -33,3 +33,7 @@ reports/v2_scoring_audit/resume_20261026/phase2/pylint-dev__pylint-6528/base/ini
 reports/v2_scoring_audit/resume_20261026/phase2/pytest-dev__pytest-5809/base/initial/batch_0001.raw whitespace=-blank-at-eof
 src/reliability/verifier/superseded_shadow_v2.py whitespace=-blank-at-eof
 reports/next_steps/report.md whitespace=-blank-at-eol
+
+# Fresh V2 runner captures are byte-exact evidence, including CRLF and whitespace.
+reports/v2_discovery_cleanup/**/*.raw -text whitespace=-blank-at-eol,-blank-at-eof
+reports/v2_discovery_cleanup/frozen_83/patches/*.patch -text whitespace=-blank-at-eol,-blank-at-eof

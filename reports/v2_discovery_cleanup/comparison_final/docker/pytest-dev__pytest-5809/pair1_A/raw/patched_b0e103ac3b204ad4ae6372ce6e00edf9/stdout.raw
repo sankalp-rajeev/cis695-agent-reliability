@@ -1,0 +1,31 @@
+============================= test session starts ==============================
+platform linux -- Python 3.9.20, pytest-4.6.6.dev9+g8aba863a6, py-1.11.0, pluggy-0.13.1 -- /opt/miniconda3/envs/testbed/bin/python
+rootdir: /testbed, inifile: tox.ini
+collecting ... collected 1 item
+
+testing/test_pastebin.py::TestPaste::test_create_new_paste FAILED        [100%]
+
+=================================== FAILURES ===================================
+_______________________ TestPaste.test_create_new_paste ________________________
+
+self = <test_pastebin.TestPaste object at 0x7afe53562ee0>
+pastebin = <module '_pytest.pastebin' from '/testbed/src/_pytest/pastebin.py'>
+mocked_urlopen = [('https://bpaste.net', b'code=full-paste-contents&lexer=text&expiry=1week')]
+
+    def test_create_new_paste(self, pastebin, mocked_urlopen):
+        result = pastebin.create_new_paste(b"full-paste-contents")
+        assert result == "https://bpaste.net/show/3c0c6750bd"
+        assert len(mocked_urlopen) == 1
+        url, data = mocked_urlopen[0]
+        assert type(data) is bytes
+        lexer = "python3" if sys.version_info[0] >= 3 else "python"
+        assert url == "https://bpaste.net"
+>       assert "lexer=%s" % lexer in data.decode()
+E       AssertionError: assert ('lexer=%s' % 'python3') in 'code=full-paste-contents&lexer=text&expiry=1week'
+E        +  where 'code=full-paste-contents&lexer=text&expiry=1week' = <built-in method decode of bytes object at 0x7afe53569db0>()
+E        +    where <built-in method decode of bytes object at 0x7afe53569db0> = b'code=full-paste-contents&lexer=text&expiry=1week'.decode
+
+testing/test_pastebin.py:131: AssertionError
+=========================== short test summary info ============================
+FAILED testing/test_pastebin.py::TestPaste::test_create_new_paste - Assertion...
+=========================== 1 failed in 0.02 seconds ===========================

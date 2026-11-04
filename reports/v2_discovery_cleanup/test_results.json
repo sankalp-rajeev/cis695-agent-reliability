@@ -1,0 +1,31 @@
+{
+  "full_unit_suite": {
+    "command": "env -u PYTHONPATH HF_HUB_OFFLINE=1 HF_DATASETS_OFFLINE=1 HF_DATASETS_CACHE=/tmp/v2_discovery_hf_cache PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest tests/unit",
+    "passed": 922,
+    "result_log": "unit_final_complete.txt",
+    "skipped": 1
+  },
+  "initial_full_suite_environment_issue": {
+    "errors": 30,
+    "passed": 882,
+    "reason": "Read-only original Hugging Face cache lock; resolved using an offline temporary cache copy, no production changes"
+  },
+  "lint": {
+    "log": "lint.txt",
+    "passed": true
+  },
+  "targeted_initial_suite": {
+    "passed": 168,
+    "skipped": 1
+  },
+  "temporary_attempts": "Intermediate comparisons, initial cache-error logs and redundant unit logs were moved to a session-specific /tmp directory; no pre-existing file was moved or deleted.",
+  "validated_source_sha256": {
+    "scripts/v2_discovery_experiment.py": "71789b4ced9086e7e45460e42dcfe1f4cb61a483c1e1d177dc337c0995654306",
+    "scripts/v2_discovery_integration_audit.py": "978cf4ab47772bde3faa214ca2aec3d6e7d1dd42ad0eab770c3746be9c5e323f",
+    "scripts/v2_discovery_validate.py": "a0526a71dc60cc74e5eb6a24dbca5d8a0a17f92b046c1d38f948b621491781ca",
+    "scripts/v2_evaluation.py": "104693a7a14a6011c79d5b563312519ffd6f49183d249e7931fc7775e8499b3b",
+    "src/reliability/verifier/selection.py": "c862431997b0c0f7873bfdfe48d294ee788ae42661559bb5f14983ac2a710422",
+    "tests/unit/test_selection.py": "83b04a37494a852d946d713d1114cbb5a7dd751bded3955c97e564b15c195285",
+    "tests/unit/test_v2_evaluation.py": "aff329c4bb1c6a67b5ddea048a8240b4438eb7fc67da193b677c5e6c1afc9901"
+  }
+}

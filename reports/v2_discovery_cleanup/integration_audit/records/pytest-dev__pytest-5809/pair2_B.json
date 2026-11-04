@@ -1,0 +1,541 @@
+{
+  "instance_id": "pytest-dev__pytest-5809",
+  "experiment_id": "v2_discovery_validation",
+  "verifier_config": "full",
+  "patch_sha256": "sha256:82f7a2cecf06bb50a79120584ae083240b215e5e7fd40ff190ab52b0c1632d77",
+  "integrity": {
+    "kind": "integrity",
+    "outcome": "NOT_AVAILABLE",
+    "absence": "disabled",
+    "detail": "V2-only discovery validation; this stage was not executed",
+    "duration_s": 0.0,
+    "findings": {}
+  },
+  "regression": {
+    "kind": "regression",
+    "outcome": "FAIL",
+    "absence": null,
+    "detail": "4 executed, 1 regressions",
+    "duration_s": 0.00007128400102374144,
+    "findings": {
+      "signal": "FAIL",
+      "summary": {
+        "PASS": 3,
+        "REGRESSION": 1
+      },
+      "n_executed": 4,
+      "notes": [],
+      "original_signal": "FAIL",
+      "completeness": "COMPLETE",
+      "incompleteness": [],
+      "outcomes": {
+        "testing/test_pastebin.py::TestPasteCapture::test_failed": "PASS",
+        "testing/test_pastebin.py::TestPasteCapture::test_all": "PASS",
+        "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text": "PASS",
+        "testing/test_pastebin.py::TestPaste::test_create_new_paste": "REGRESSION"
+      },
+      "base": {
+        "results": [
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_failed",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_all",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          }
+        ],
+        "timed_out": false,
+        "duration_s": 0.0,
+        "note": "",
+        "raw_results": [
+          {
+            "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_failed",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_all",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          }
+        ],
+        "raw_id_map": {
+          "testing/test_pastebin.py::TestPaste::test_create_new_paste": [
+            "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+          ],
+          "testing/test_pastebin.py::TestPasteCapture::test_all": [
+            "testing/test_pastebin.py::TestPasteCapture::test_all"
+          ],
+          "testing/test_pastebin.py::TestPasteCapture::test_failed": [
+            "testing/test_pastebin.py::TestPasteCapture::test_failed"
+          ],
+          "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text": [
+            "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text"
+          ]
+        },
+        "unmatched_ids": [],
+        "infrastructure_errors": [],
+        "evidence_complete": true,
+        "events": [
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_failed",
+              "testing/test_pastebin.py::TestPasteCapture::test_all",
+              "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+              "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 1,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_failed",
+              "testing/test_pastebin.py::TestPasteCapture::test_all",
+              "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+              "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+            ],
+            "offset": 0
+          },
+          {
+            "batch": 1,
+            "duration_s": 1.1330321380009991,
+            "event": "end",
+            "offset": 688,
+            "returncode": 0,
+            "split": false
+          },
+          {
+            "event": "complete"
+          }
+        ],
+        "evidence_files": {
+          "events.jsonl": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_B/raw/base_bc8136b0953841d4a7dd019a6b87058f/events.jsonl",
+          "runner.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_B/raw/base_bc8136b0953841d4a7dd019a6b87058f/runner.raw",
+          "stderr.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_B/raw/base_bc8136b0953841d4a7dd019a6b87058f/stderr.raw",
+          "stdout.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_B/raw/base_bc8136b0953841d4a7dd019a6b87058f/stdout.raw"
+        },
+        "evidence_sha256": {
+          "events.jsonl": "73620a7a623256340a7b2b5fbcf12a7a2088f7403a1f2184528747a055a260de",
+          "runner.raw": "5a46df21e1c9cb9031de4a4fd6b0b79dfb452de18c4142e96fc5f320d81391e4",
+          "stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout.raw": "5a46df21e1c9cb9031de4a4fd6b0b79dfb452de18c4142e96fc5f320d81391e4"
+        },
+        "requested_tests": [
+          "testing/test_pastebin.py::TestPasteCapture::test_failed",
+          "testing/test_pastebin.py::TestPasteCapture::test_all",
+          "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+          "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+        ]
+      },
+      "patched": {
+        "results": [
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_failed",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_all",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+            "status": "failed",
+            "duration_s": 0.0,
+            "message": ""
+          }
+        ],
+        "timed_out": false,
+        "duration_s": 0.0,
+        "note": "",
+        "raw_results": [
+          {
+            "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+            "status": "failed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_failed",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_all",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          }
+        ],
+        "raw_id_map": {
+          "testing/test_pastebin.py::TestPaste::test_create_new_paste": [
+            "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+          ],
+          "testing/test_pastebin.py::TestPasteCapture::test_all": [
+            "testing/test_pastebin.py::TestPasteCapture::test_all"
+          ],
+          "testing/test_pastebin.py::TestPasteCapture::test_failed": [
+            "testing/test_pastebin.py::TestPasteCapture::test_failed"
+          ],
+          "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text": [
+            "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text"
+          ]
+        },
+        "unmatched_ids": [],
+        "infrastructure_errors": [],
+        "evidence_complete": true,
+        "events": [
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_failed",
+              "testing/test_pastebin.py::TestPasteCapture::test_all",
+              "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+              "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 1,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_failed",
+              "testing/test_pastebin.py::TestPasteCapture::test_all",
+              "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+              "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+            ],
+            "offset": 0
+          },
+          {
+            "batch": 1,
+            "duration_s": 0.6573854340003891,
+            "event": "end",
+            "offset": 2141,
+            "returncode": 1,
+            "split": false
+          },
+          {
+            "event": "complete"
+          }
+        ],
+        "evidence_files": {
+          "events.jsonl": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_B/raw/patched_434fa89f7bff4b678288b711df0fa2cd/events.jsonl",
+          "runner.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_B/raw/patched_434fa89f7bff4b678288b711df0fa2cd/runner.raw",
+          "stderr.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_B/raw/patched_434fa89f7bff4b678288b711df0fa2cd/stderr.raw",
+          "stdout.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_B/raw/patched_434fa89f7bff4b678288b711df0fa2cd/stdout.raw"
+        },
+        "evidence_sha256": {
+          "events.jsonl": "13ff56fc79666ed4383310a2aa4fac6ef2136cb09b9ca28033ac92b0363cd0c3",
+          "runner.raw": "49816a440d9a73a0f133f24af982b30d5a34454fa745c8d6c0cc2ff12dc9264d",
+          "stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout.raw": "49816a440d9a73a0f133f24af982b30d5a34454fa745c8d6c0cc2ff12dc9264d"
+        },
+        "requested_tests": [
+          "testing/test_pastebin.py::TestPasteCapture::test_failed",
+          "testing/test_pastebin.py::TestPasteCapture::test_all",
+          "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+          "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+        ]
+      },
+      "confirmations": [
+        {
+          "results": [
+            {
+              "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+              "status": "failed",
+              "duration_s": 0.0,
+              "message": ""
+            }
+          ],
+          "timed_out": false,
+          "duration_s": 0.0,
+          "note": "",
+          "raw_results": [
+            {
+              "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+              "status": "failed",
+              "duration_s": 0.0,
+              "message": ""
+            }
+          ],
+          "raw_id_map": {
+            "testing/test_pastebin.py::TestPaste::test_create_new_paste": [
+              "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+            ]
+          },
+          "unmatched_ids": [],
+          "infrastructure_errors": [],
+          "evidence_complete": true,
+          "events": [
+            {
+              "argv": [
+                "python",
+                "-m",
+                "pytest",
+                "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+                "-p",
+                "no:cacheprovider",
+                "-v"
+              ],
+              "batch": 1,
+              "event": "start",
+              "ids": [
+                "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+              ],
+              "offset": 0
+            },
+            {
+              "batch": 1,
+              "duration_s": 0.12048463099927176,
+              "event": "end",
+              "offset": 1896,
+              "returncode": 1,
+              "split": false
+            },
+            {
+              "event": "complete"
+            }
+          ],
+          "evidence_files": {
+            "events.jsonl": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_B/raw/patched_d1ebfc1756f74d8e9388f719365439fc/events.jsonl",
+            "runner.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_B/raw/patched_d1ebfc1756f74d8e9388f719365439fc/runner.raw",
+            "stderr.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_B/raw/patched_d1ebfc1756f74d8e9388f719365439fc/stderr.raw",
+            "stdout.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_B/raw/patched_d1ebfc1756f74d8e9388f719365439fc/stdout.raw"
+          },
+          "evidence_sha256": {
+            "events.jsonl": "6dc181402214511927caceaed0b7ef851eba02f61e75124a93ec2656d356e8da",
+            "runner.raw": "452178dada3daa04a9c79db4d8c90a2d5b1f900fee8abebb285705131093324a",
+            "stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout.raw": "452178dada3daa04a9c79db4d8c90a2d5b1f900fee8abebb285705131093324a"
+          },
+          "requested_tests": [
+            "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+          ]
+        }
+      ],
+      "superseded_shadow": {
+        "additional_evidence": [
+          {
+            "run": {
+              "duration_s": 0.0,
+              "events": [
+                {
+                  "argv": [
+                    "python",
+                    "-m",
+                    "pytest",
+                    "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+                    "-p",
+                    "no:cacheprovider",
+                    "-v"
+                  ],
+                  "batch": 1,
+                  "event": "start",
+                  "ids": [
+                    "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+                  ],
+                  "offset": 0
+                },
+                {
+                  "batch": 1,
+                  "duration_s": 0.10168846799933817,
+                  "event": "end",
+                  "offset": 443,
+                  "returncode": 0,
+                  "split": false
+                },
+                {
+                  "event": "complete"
+                }
+              ],
+              "evidence_complete": true,
+              "evidence_files": {
+                "events.jsonl": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_B/raw/base_52c488dfb7924986977b73591e48762b/events.jsonl",
+                "runner.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_B/raw/base_52c488dfb7924986977b73591e48762b/runner.raw",
+                "stderr.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_B/raw/base_52c488dfb7924986977b73591e48762b/stderr.raw",
+                "stdout.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_B/raw/base_52c488dfb7924986977b73591e48762b/stdout.raw"
+              },
+              "evidence_sha256": {
+                "events.jsonl": "98db45615007bd326ff532d14fac3c3d4109e47f802935002bdbfee3b855e8c7",
+                "runner.raw": "e326a34b784ca99291f80517930be9b7bbbdf3742e569d504736ceacd63fb7da",
+                "stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "stdout.raw": "e326a34b784ca99291f80517930be9b7bbbdf3742e569d504736ceacd63fb7da"
+              },
+              "infrastructure_errors": [],
+              "note": "",
+              "raw_id_map": {
+                "testing/test_pastebin.py::TestPaste::test_create_new_paste": [
+                  "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+                ]
+              },
+              "raw_results": [
+                {
+                  "duration_s": 0.0,
+                  "message": "",
+                  "status": "passed",
+                  "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+                }
+              ],
+              "requested_tests": [
+                "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+              ],
+              "results": [
+                {
+                  "duration_s": 0.0,
+                  "message": "",
+                  "status": "passed",
+                  "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+                }
+              ],
+              "timed_out": false,
+              "unmatched_ids": []
+            },
+            "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+            "tree": "base"
+          }
+        ],
+        "costs": {
+          "additional_base_runs": 1,
+          "additional_patched_runs": 0,
+          "additional_runner_s": 0.10168846799933817,
+          "additional_wall_s": 1.6256611480002903,
+          "reused_patched_runs": 1
+        },
+        "frozen_rule_sha256": "e0e5d8d116c4df39121c8bc7eaa4f83fb75a7d39fe523e3cd140a85e3aab3b6b",
+        "isolation": {
+          "all_filesystem_reads_denied": true,
+          "input_keys": [
+            [
+              "base_output",
+              "candidate_patch",
+              "issue",
+              "patched_output",
+              "test_source"
+            ]
+          ],
+          "landlock_abi": 7,
+          "probe_results": {},
+          "tcp_bind_connect_denied": true
+        },
+        "predictions": [
+          {
+            "checks": {
+              "candidate_changes_behavior": true,
+              "explicit_issue_change": true,
+              "no_conflicts": true,
+              "plain_assertion": true,
+              "stable_transition": true
+            },
+            "evidence": [
+              "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+              "field=lexer",
+              "old=python3",
+              "new=text",
+              "2 base PASS; 2 patched assertion FAIL"
+            ],
+            "prediction": "LIKELY_SUPERSEDED_ASSERTION",
+            "reason": "All five frozen conditions satisfied",
+            "shadow_mode": true,
+            "suggest_suppress_v2_negative": true,
+            "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+          }
+        ]
+      }
+    }
+  },
+  "static": {
+    "kind": "static",
+    "outcome": "NOT_AVAILABLE",
+    "absence": "disabled",
+    "detail": "V2-only discovery validation; this stage was not executed",
+    "duration_s": 0.0,
+    "findings": {}
+  },
+  "reproduction": {
+    "kind": "reproduction",
+    "outcome": "NOT_AVAILABLE",
+    "absence": "disabled",
+    "detail": "V2-only discovery validation; this stage was not executed",
+    "duration_s": 0.0,
+    "findings": {}
+  },
+  "decision": {
+    "decision": "REJECT",
+    "policy_name": "full",
+    "policy_version": "v1.3.0-full",
+    "reasons": [
+      "regression test failed"
+    ]
+  },
+  "risk_features": {},
+  "selected_tests": [
+    "testing/test_pastebin.py::TestPasteCapture::test_failed",
+    "testing/test_pastebin.py::TestPasteCapture::test_all",
+    "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+    "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+  ],
+  "selection_convention": "",
+  "selection_convention_hit_rate": null,
+  "selection_convention_scores": {},
+  "selection_runner": "pytest",
+  "reproduction_generator": {
+    "generator": {
+      "model_id": "NOT_INVOKED_V2_ONLY_VALIDATION"
+    }
+  },
+  "duration_s": 0.0,
+  "verified_at": "2026-11-04T01:12:46.336604+00:00"
+}

@@ -309,6 +309,155 @@ def test_class_methods_become_class_node_ids(tmp_path):
     )
 
 
+def test_discovery_ignores_fixture_strings_and_local_helpers():
+    text = '''
+class TestCapture:
+    def test_fixture(self):
+        monkeypatch.setattr("pkg.value", 1)
+        source = """
+        def test_phantom():
+            pass
+        """
+        @contextlib.contextmanager
+        def test_helper():
+            yield
+        with test_helper():
+            pass
+    @pytest.mark.parametrize("value", [1, 2])
+    def test_family(self, value):
+        pass
+def test_last():
+    pass
+'''
+    assert node_ids("test_capture.py", text) == (
+        "test_capture.py::TestCapture::test_fixture",
+        "test_capture.py::TestCapture::test_family",
+        "test_capture.py::test_last",
+    )
+
+
+@pytest.mark.parametrize("text", [
+    "def test_old():\n    print 'old Python'\n",
+    "def test_broken(:\n    pass\n",
+    "def test_future[T]():\n    pass\n",
+])
+def test_discovery_preserves_legacy_candidates_when_parse_is_uncertain(text):
+    from reliability.verifier.selection import _legacy_node_candidates
+
+    assert node_ids("test_case.py", text) == tuple(
+        tid for _, tid in _legacy_node_candidates("test_case.py", text))
+
+
+def test_discovery_keeps_exported_local_function():
+    text = '''
+def factory():
+    def test_exported():
+        pass
+    return test_exported
+test_exported = factory()
+'''
+    assert node_ids("test_case.py", text) == ("test_case.py::test_exported",)
+
+
+def test_discovery_keeps_dynamic_string_definitions():
+    text = '''
+exec("""
+def test_dynamic():
+    pass
+""")
+'''
+    assert node_ids("test_case.py", text) == ("test_case.py::test_dynamic",)
+
+
+@pytest.mark.parametrize("setup,execute", [
+    ("from builtins import exec as execute", "execute"),
+    ("import builtins", "builtins.exec"),
+    ("import builtins as runtime", "runtime.exec"),
+])
+def test_discovery_keeps_aliased_dynamic_definitions(setup, execute):
+    text = setup + '\n' + execute + '("""\ndef test_dynamic():\n    pass\n""")\n'
+    assert node_ids("test_case.py", text) == ("test_case.py::test_dynamic",)
+
+
+def test_discovery_keeps_explicit_global_binding():
+    text = '''
+def build_tests():
+    global test_created
+    def test_created():
+        pass
+build_tests()
+'''
+    assert node_ids("test_case.py", text) == ("test_case.py::test_created",)
+
+
+def test_discovery_preserves_first_occurrence_of_duplicate_real_id():
+    text = '''
+"""
+def test_real():
+    pass
+"""
+def test_middle():
+    pass
+def test_real():
+    pass
+'''
+    assert node_ids("test_case.py", text) == (
+        "test_case.py::test_real", "test_case.py::test_middle", "test_case.py::test_real")
+
+
+def test_discovery_keeps_tests_in_module_conditionals():
+    text = '''
+if available:
+    def test_optional():
+        pass
+class TestCase:
+    if available:
+        def test_method(self):
+            pass
+'''
+    assert node_ids("test_case.py", text) == (
+        "test_case.py::test_optional", "test_case.py::TestCase::test_method")
+
+
+def test_discovered_families_preserve_actual_pytest_collection(tmp_path):
+    """Independent runner check: real parametrized cases survive the filter."""
+    import os
+    import subprocess
+    import sys
+
+    source = '''
+import pytest
+class TestExample:
+    @pytest.mark.parametrize("value", [1, 2])
+    def test_family(self, value):
+        def test_helper():
+            return value
+        assert test_helper() == value
+    def test_fixture(self):
+        snippet = """
+        def test_fake():
+            pass
+        """
+        assert snippet
+def test_last():
+    pass
+'''
+    path = tmp_path / "test_example.py"
+    path.write_text(source)
+    ids = node_ids(str(path), source)
+    environment = dict(os.environ, PYTEST_DISABLE_PLUGIN_AUTOLOAD="1")
+    common = [sys.executable, "-m", "pytest", "-c", "/dev/null", "--collect-only", "-q"]
+    whole = subprocess.run([*common, str(path)], capture_output=True, text=True,
+                           env=environment, check=False)
+    selected = subprocess.run([*common, *ids], capture_output=True, text=True,
+                              env=environment, check=False)
+    assert whole.returncode == selected.returncode == 0, (whole.stdout, selected.stdout)
+    def concrete(output):
+        return [line for line in output.splitlines() if "::" in line]
+    assert concrete(whole.stdout) == concrete(selected.stdout)
+    assert len(concrete(selected.stdout)) == 4
+
+
 def test_django_label_drops_the_tests_prefix_and_uses_dots():
     node = "tests/utils_tests/test_dateformat.py::DateFormatTests::test_year"
     assert django_label(node) == "utils_tests.test_dateformat.DateFormatTests.test_year"

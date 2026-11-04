@@ -1,0 +1,1157 @@
+{
+  "instance_id": "pytest-dev__pytest-5809",
+  "experiment_id": "v2_discovery_validation",
+  "verifier_config": "full",
+  "patch_sha256": "sha256:82f7a2cecf06bb50a79120584ae083240b215e5e7fd40ff190ab52b0c1632d77",
+  "integrity": {
+    "kind": "integrity",
+    "outcome": "NOT_AVAILABLE",
+    "absence": "disabled",
+    "detail": "V2-only discovery validation; this stage was not executed",
+    "duration_s": 0.0,
+    "findings": {}
+  },
+  "regression": {
+    "kind": "regression",
+    "outcome": "FAIL",
+    "absence": null,
+    "detail": "4 executed, 1 regressions",
+    "duration_s": 0.00007605700011481531,
+    "findings": {
+      "signal": "FAIL",
+      "summary": {
+        "PASS": 3,
+        "REGRESSION": 1,
+        "NOT_RUN": 3
+      },
+      "n_executed": 4,
+      "notes": [],
+      "original_signal": "FAIL",
+      "completeness": "INCOMPLETE_CONFIRMED",
+      "incompleteness": [
+        "base: testing/test_pastebin.py::TestPasteCapture::test_pass: not_run",
+        "base: testing/test_pastebin.py::TestPasteCapture::test_fail: not_run",
+        "base: testing/test_pastebin.py::TestPasteCapture::test_skip: not_run",
+        "base: infrastructure: runner batch 5 exit 4",
+        "base: infrastructure: runner batch 6 exit 4",
+        "base: infrastructure: runner batch 9 exit 4",
+        "patched: testing/test_pastebin.py::TestPasteCapture::test_pass: not_run",
+        "patched: testing/test_pastebin.py::TestPasteCapture::test_fail: not_run",
+        "patched: testing/test_pastebin.py::TestPasteCapture::test_skip: not_run",
+        "patched: infrastructure: runner batch 5 exit 4",
+        "patched: infrastructure: runner batch 6 exit 4",
+        "patched: infrastructure: runner batch 9 exit 4",
+        "base: complete raw/runner capture unavailable",
+        "patched: complete raw/runner capture unavailable"
+      ],
+      "outcomes": {
+        "testing/test_pastebin.py::TestPasteCapture::test_failed": "PASS",
+        "testing/test_pastebin.py::TestPasteCapture::test_pass": "NOT_RUN",
+        "testing/test_pastebin.py::TestPasteCapture::test_fail": "NOT_RUN",
+        "testing/test_pastebin.py::TestPasteCapture::test_skip": "NOT_RUN",
+        "testing/test_pastebin.py::TestPasteCapture::test_all": "PASS",
+        "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text": "PASS",
+        "testing/test_pastebin.py::TestPaste::test_create_new_paste": "REGRESSION"
+      },
+      "base": {
+        "results": [
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_failed",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_pass",
+            "status": "not_run",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_fail",
+            "status": "not_run",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_skip",
+            "status": "not_run",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_all",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          }
+        ],
+        "timed_out": false,
+        "duration_s": 0.0,
+        "note": "",
+        "raw_results": [
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_failed",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_all",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          }
+        ],
+        "raw_id_map": {
+          "testing/test_pastebin.py::TestPaste::test_create_new_paste": [
+            "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+          ],
+          "testing/test_pastebin.py::TestPasteCapture::test_all": [
+            "testing/test_pastebin.py::TestPasteCapture::test_all"
+          ],
+          "testing/test_pastebin.py::TestPasteCapture::test_failed": [
+            "testing/test_pastebin.py::TestPasteCapture::test_failed"
+          ],
+          "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text": [
+            "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text"
+          ]
+        },
+        "unmatched_ids": [],
+        "infrastructure_errors": [
+          "runner batch 5 exit 4",
+          "runner batch 6 exit 4",
+          "runner batch 9 exit 4"
+        ],
+        "evidence_complete": false,
+        "events": [
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_failed",
+              "testing/test_pastebin.py::TestPasteCapture::test_pass",
+              "testing/test_pastebin.py::TestPasteCapture::test_fail",
+              "testing/test_pastebin.py::TestPasteCapture::test_skip",
+              "testing/test_pastebin.py::TestPasteCapture::test_all",
+              "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+              "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 1,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_failed",
+              "testing/test_pastebin.py::TestPasteCapture::test_pass",
+              "testing/test_pastebin.py::TestPasteCapture::test_fail",
+              "testing/test_pastebin.py::TestPasteCapture::test_skip",
+              "testing/test_pastebin.py::TestPasteCapture::test_all",
+              "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+              "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+            ],
+            "offset": 0
+          },
+          {
+            "batch": 1,
+            "duration_s": 0.5596869319997495,
+            "event": "end",
+            "offset": 912,
+            "returncode": 4,
+            "split": true
+          },
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_failed",
+              "testing/test_pastebin.py::TestPasteCapture::test_pass",
+              "testing/test_pastebin.py::TestPasteCapture::test_fail",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 2,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_failed",
+              "testing/test_pastebin.py::TestPasteCapture::test_pass",
+              "testing/test_pastebin.py::TestPasteCapture::test_fail"
+            ],
+            "offset": 912
+          },
+          {
+            "batch": 2,
+            "duration_s": 0.09782149400052731,
+            "event": "end",
+            "offset": 1640,
+            "returncode": 4,
+            "split": true
+          },
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_failed",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 3,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_failed"
+            ],
+            "offset": 1640
+          },
+          {
+            "batch": 3,
+            "duration_s": 0.3127515289997973,
+            "event": "end",
+            "offset": 2083,
+            "returncode": 0,
+            "split": false
+          },
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_pass",
+              "testing/test_pastebin.py::TestPasteCapture::test_fail",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 4,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_pass",
+              "testing/test_pastebin.py::TestPasteCapture::test_fail"
+            ],
+            "offset": 2083
+          },
+          {
+            "batch": 4,
+            "duration_s": 0.09338812699934351,
+            "event": "end",
+            "offset": 2812,
+            "returncode": 4,
+            "split": true
+          },
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_pass",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 5,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_pass"
+            ],
+            "offset": 2812
+          },
+          {
+            "batch": 5,
+            "duration_s": 0.08686583900089317,
+            "event": "end",
+            "offset": 3358,
+            "returncode": 4,
+            "split": false
+          },
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_fail",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 6,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_fail"
+            ],
+            "offset": 3358
+          },
+          {
+            "batch": 6,
+            "duration_s": 0.08898523199968622,
+            "event": "end",
+            "offset": 3904,
+            "returncode": 4,
+            "split": false
+          },
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_skip",
+              "testing/test_pastebin.py::TestPasteCapture::test_all",
+              "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+              "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 7,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_skip",
+              "testing/test_pastebin.py::TestPasteCapture::test_all",
+              "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+              "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+            ],
+            "offset": 3904
+          },
+          {
+            "batch": 7,
+            "duration_s": 0.08916922500065994,
+            "event": "end",
+            "offset": 4450,
+            "returncode": 4,
+            "split": true
+          },
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_skip",
+              "testing/test_pastebin.py::TestPasteCapture::test_all",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 8,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_skip",
+              "testing/test_pastebin.py::TestPasteCapture::test_all"
+            ],
+            "offset": 4450
+          },
+          {
+            "batch": 8,
+            "duration_s": 0.10386344699873007,
+            "event": "end",
+            "offset": 4995,
+            "returncode": 4,
+            "split": true
+          },
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_skip",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 9,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_skip"
+            ],
+            "offset": 4995
+          },
+          {
+            "batch": 9,
+            "duration_s": 0.0952843129998655,
+            "event": "end",
+            "offset": 5541,
+            "returncode": 4,
+            "split": false
+          },
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_all",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 10,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_all"
+            ],
+            "offset": 5541
+          },
+          {
+            "batch": 10,
+            "duration_s": 0.3250510489997396,
+            "event": "end",
+            "offset": 5984,
+            "returncode": 0,
+            "split": false
+          },
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+              "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 11,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+              "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+            ],
+            "offset": 5984
+          },
+          {
+            "batch": 11,
+            "duration_s": 0.258509358000083,
+            "event": "end",
+            "offset": 6512,
+            "returncode": 0,
+            "split": false
+          },
+          {
+            "event": "complete"
+          }
+        ],
+        "evidence_files": {
+          "events.jsonl": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_A/raw/base_5ee379d6055346109ae585b0dbd2790b/events.jsonl",
+          "runner.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_A/raw/base_5ee379d6055346109ae585b0dbd2790b/runner.raw",
+          "stderr.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_A/raw/base_5ee379d6055346109ae585b0dbd2790b/stderr.raw",
+          "stdout.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_A/raw/base_5ee379d6055346109ae585b0dbd2790b/stdout.raw"
+        },
+        "evidence_sha256": {
+          "events.jsonl": "17fc1a34e7676457b5879f5f0a9844c88921be9e4f0892d4880c5c56152b2356",
+          "runner.raw": "ba07cf3e53c219af0b93cd470c1f3255c35a3e6999a837485f7d5c9208819d6c",
+          "stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout.raw": "ba07cf3e53c219af0b93cd470c1f3255c35a3e6999a837485f7d5c9208819d6c"
+        },
+        "requested_tests": [
+          "testing/test_pastebin.py::TestPasteCapture::test_failed",
+          "testing/test_pastebin.py::TestPasteCapture::test_pass",
+          "testing/test_pastebin.py::TestPasteCapture::test_fail",
+          "testing/test_pastebin.py::TestPasteCapture::test_skip",
+          "testing/test_pastebin.py::TestPasteCapture::test_all",
+          "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+          "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+        ]
+      },
+      "patched": {
+        "results": [
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_failed",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_pass",
+            "status": "not_run",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_fail",
+            "status": "not_run",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_skip",
+            "status": "not_run",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_all",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+            "status": "failed",
+            "duration_s": 0.0,
+            "message": ""
+          }
+        ],
+        "timed_out": false,
+        "duration_s": 0.0,
+        "note": "",
+        "raw_results": [
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_failed",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_all",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+            "status": "failed",
+            "duration_s": 0.0,
+            "message": ""
+          },
+          {
+            "test_id": "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+            "status": "passed",
+            "duration_s": 0.0,
+            "message": ""
+          }
+        ],
+        "raw_id_map": {
+          "testing/test_pastebin.py::TestPaste::test_create_new_paste": [
+            "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+          ],
+          "testing/test_pastebin.py::TestPasteCapture::test_all": [
+            "testing/test_pastebin.py::TestPasteCapture::test_all"
+          ],
+          "testing/test_pastebin.py::TestPasteCapture::test_failed": [
+            "testing/test_pastebin.py::TestPasteCapture::test_failed"
+          ],
+          "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text": [
+            "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text"
+          ]
+        },
+        "unmatched_ids": [],
+        "infrastructure_errors": [
+          "runner batch 5 exit 4",
+          "runner batch 6 exit 4",
+          "runner batch 9 exit 4"
+        ],
+        "evidence_complete": false,
+        "events": [
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_failed",
+              "testing/test_pastebin.py::TestPasteCapture::test_pass",
+              "testing/test_pastebin.py::TestPasteCapture::test_fail",
+              "testing/test_pastebin.py::TestPasteCapture::test_skip",
+              "testing/test_pastebin.py::TestPasteCapture::test_all",
+              "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+              "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 1,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_failed",
+              "testing/test_pastebin.py::TestPasteCapture::test_pass",
+              "testing/test_pastebin.py::TestPasteCapture::test_fail",
+              "testing/test_pastebin.py::TestPasteCapture::test_skip",
+              "testing/test_pastebin.py::TestPasteCapture::test_all",
+              "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+              "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+            ],
+            "offset": 0
+          },
+          {
+            "batch": 1,
+            "duration_s": 0.08533891200022481,
+            "event": "end",
+            "offset": 912,
+            "returncode": 4,
+            "split": true
+          },
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_failed",
+              "testing/test_pastebin.py::TestPasteCapture::test_pass",
+              "testing/test_pastebin.py::TestPasteCapture::test_fail",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 2,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_failed",
+              "testing/test_pastebin.py::TestPasteCapture::test_pass",
+              "testing/test_pastebin.py::TestPasteCapture::test_fail"
+            ],
+            "offset": 912
+          },
+          {
+            "batch": 2,
+            "duration_s": 0.11712560200066946,
+            "event": "end",
+            "offset": 1640,
+            "returncode": 4,
+            "split": true
+          },
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_failed",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 3,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_failed"
+            ],
+            "offset": 1640
+          },
+          {
+            "batch": 3,
+            "duration_s": 0.2612225689990737,
+            "event": "end",
+            "offset": 2083,
+            "returncode": 0,
+            "split": false
+          },
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_pass",
+              "testing/test_pastebin.py::TestPasteCapture::test_fail",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 4,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_pass",
+              "testing/test_pastebin.py::TestPasteCapture::test_fail"
+            ],
+            "offset": 2083
+          },
+          {
+            "batch": 4,
+            "duration_s": 0.0994266300003801,
+            "event": "end",
+            "offset": 2812,
+            "returncode": 4,
+            "split": true
+          },
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_pass",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 5,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_pass"
+            ],
+            "offset": 2812
+          },
+          {
+            "batch": 5,
+            "duration_s": 0.09888913999930082,
+            "event": "end",
+            "offset": 3358,
+            "returncode": 4,
+            "split": false
+          },
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_fail",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 6,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_fail"
+            ],
+            "offset": 3358
+          },
+          {
+            "batch": 6,
+            "duration_s": 0.1017778929999622,
+            "event": "end",
+            "offset": 3904,
+            "returncode": 4,
+            "split": false
+          },
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_skip",
+              "testing/test_pastebin.py::TestPasteCapture::test_all",
+              "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+              "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 7,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_skip",
+              "testing/test_pastebin.py::TestPasteCapture::test_all",
+              "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+              "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+            ],
+            "offset": 3904
+          },
+          {
+            "batch": 7,
+            "duration_s": 0.09911573699901055,
+            "event": "end",
+            "offset": 4450,
+            "returncode": 4,
+            "split": true
+          },
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_skip",
+              "testing/test_pastebin.py::TestPasteCapture::test_all",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 8,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_skip",
+              "testing/test_pastebin.py::TestPasteCapture::test_all"
+            ],
+            "offset": 4450
+          },
+          {
+            "batch": 8,
+            "duration_s": 0.10215868100021908,
+            "event": "end",
+            "offset": 4995,
+            "returncode": 4,
+            "split": true
+          },
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_skip",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 9,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_skip"
+            ],
+            "offset": 4995
+          },
+          {
+            "batch": 9,
+            "duration_s": 0.09780888400018739,
+            "event": "end",
+            "offset": 5541,
+            "returncode": 4,
+            "split": false
+          },
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_all",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 10,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_all"
+            ],
+            "offset": 5541
+          },
+          {
+            "batch": 10,
+            "duration_s": 0.2292220269991958,
+            "event": "end",
+            "offset": 5984,
+            "returncode": 0,
+            "split": false
+          },
+          {
+            "argv": [
+              "python",
+              "-m",
+              "pytest",
+              "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+              "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+              "-p",
+              "no:cacheprovider",
+              "-v"
+            ],
+            "batch": 11,
+            "event": "start",
+            "ids": [
+              "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+              "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+            ],
+            "offset": 5984
+          },
+          {
+            "batch": 11,
+            "duration_s": 0.2599711870007013,
+            "event": "end",
+            "offset": 7965,
+            "returncode": 1,
+            "split": false
+          },
+          {
+            "event": "complete"
+          }
+        ],
+        "evidence_files": {
+          "events.jsonl": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_A/raw/patched_93bcc626afbc4efeae70bf5aa9db0bfc/events.jsonl",
+          "runner.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_A/raw/patched_93bcc626afbc4efeae70bf5aa9db0bfc/runner.raw",
+          "stderr.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_A/raw/patched_93bcc626afbc4efeae70bf5aa9db0bfc/stderr.raw",
+          "stdout.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_A/raw/patched_93bcc626afbc4efeae70bf5aa9db0bfc/stdout.raw"
+        },
+        "evidence_sha256": {
+          "events.jsonl": "82d1eed603508f6bb526251085058b631df1fac386a7380429142e567646efde",
+          "runner.raw": "290feb9edba81aa6018b88e2d34ea706a6458baa8685e953657c0babbc6313d7",
+          "stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout.raw": "290feb9edba81aa6018b88e2d34ea706a6458baa8685e953657c0babbc6313d7"
+        },
+        "requested_tests": [
+          "testing/test_pastebin.py::TestPasteCapture::test_failed",
+          "testing/test_pastebin.py::TestPasteCapture::test_pass",
+          "testing/test_pastebin.py::TestPasteCapture::test_fail",
+          "testing/test_pastebin.py::TestPasteCapture::test_skip",
+          "testing/test_pastebin.py::TestPasteCapture::test_all",
+          "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+          "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+        ]
+      },
+      "confirmations": [
+        {
+          "results": [
+            {
+              "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+              "status": "failed",
+              "duration_s": 0.0,
+              "message": ""
+            }
+          ],
+          "timed_out": false,
+          "duration_s": 0.0,
+          "note": "",
+          "raw_results": [
+            {
+              "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+              "status": "failed",
+              "duration_s": 0.0,
+              "message": ""
+            }
+          ],
+          "raw_id_map": {
+            "testing/test_pastebin.py::TestPaste::test_create_new_paste": [
+              "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+            ]
+          },
+          "unmatched_ids": [],
+          "infrastructure_errors": [],
+          "evidence_complete": true,
+          "events": [
+            {
+              "argv": [
+                "python",
+                "-m",
+                "pytest",
+                "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+                "-p",
+                "no:cacheprovider",
+                "-v"
+              ],
+              "batch": 1,
+              "event": "start",
+              "ids": [
+                "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+              ],
+              "offset": 0
+            },
+            {
+              "batch": 1,
+              "duration_s": 0.10894234099941968,
+              "event": "end",
+              "offset": 1896,
+              "returncode": 1,
+              "split": false
+            },
+            {
+              "event": "complete"
+            }
+          ],
+          "evidence_files": {
+            "events.jsonl": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_A/raw/patched_93c6f366ab9f4a83937e3b89bbf041fb/events.jsonl",
+            "runner.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_A/raw/patched_93c6f366ab9f4a83937e3b89bbf041fb/runner.raw",
+            "stderr.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_A/raw/patched_93c6f366ab9f4a83937e3b89bbf041fb/stderr.raw",
+            "stdout.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_A/raw/patched_93c6f366ab9f4a83937e3b89bbf041fb/stdout.raw"
+          },
+          "evidence_sha256": {
+            "events.jsonl": "551b68f9df451ef7fa1f69049819ae17b55cd92cb17bb86d7c194b109f19c56b",
+            "runner.raw": "f98b92399c334a742a7099db2935399b091be43f5972c28fb7cad7b088857d4d",
+            "stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout.raw": "f98b92399c334a742a7099db2935399b091be43f5972c28fb7cad7b088857d4d"
+          },
+          "requested_tests": [
+            "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+          ]
+        }
+      ],
+      "superseded_shadow": {
+        "additional_evidence": [
+          {
+            "run": {
+              "duration_s": 0.0,
+              "events": [
+                {
+                  "argv": [
+                    "python",
+                    "-m",
+                    "pytest",
+                    "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+                    "-p",
+                    "no:cacheprovider",
+                    "-v"
+                  ],
+                  "batch": 1,
+                  "event": "start",
+                  "ids": [
+                    "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+                  ],
+                  "offset": 0
+                },
+                {
+                  "batch": 1,
+                  "duration_s": 0.10151399200003652,
+                  "event": "end",
+                  "offset": 443,
+                  "returncode": 0,
+                  "split": false
+                },
+                {
+                  "event": "complete"
+                }
+              ],
+              "evidence_complete": true,
+              "evidence_files": {
+                "events.jsonl": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_A/raw/base_ac8bf98953dd45a4b86241ca736715a8/events.jsonl",
+                "runner.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_A/raw/base_ac8bf98953dd45a4b86241ca736715a8/runner.raw",
+                "stderr.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_A/raw/base_ac8bf98953dd45a4b86241ca736715a8/stderr.raw",
+                "stdout.raw": "/home/rajee/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/comparison_final/docker/pytest-dev__pytest-5809/pair2_A/raw/base_ac8bf98953dd45a4b86241ca736715a8/stdout.raw"
+              },
+              "evidence_sha256": {
+                "events.jsonl": "f0aa4abe541127acdcc64bda5af55f1deab7036646fa839a60a3d1b6f6ec6bb3",
+                "runner.raw": "e326a34b784ca99291f80517930be9b7bbbdf3742e569d504736ceacd63fb7da",
+                "stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "stdout.raw": "e326a34b784ca99291f80517930be9b7bbbdf3742e569d504736ceacd63fb7da"
+              },
+              "infrastructure_errors": [],
+              "note": "",
+              "raw_id_map": {
+                "testing/test_pastebin.py::TestPaste::test_create_new_paste": [
+                  "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+                ]
+              },
+              "raw_results": [
+                {
+                  "duration_s": 0.0,
+                  "message": "",
+                  "status": "passed",
+                  "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+                }
+              ],
+              "requested_tests": [
+                "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+              ],
+              "results": [
+                {
+                  "duration_s": 0.0,
+                  "message": "",
+                  "status": "passed",
+                  "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+                }
+              ],
+              "timed_out": false,
+              "unmatched_ids": []
+            },
+            "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+            "tree": "base"
+          }
+        ],
+        "costs": {
+          "additional_base_runs": 1,
+          "additional_patched_runs": 0,
+          "additional_runner_s": 0.10151399200003652,
+          "additional_wall_s": 1.5846849420013314,
+          "reused_patched_runs": 1
+        },
+        "frozen_rule_sha256": "e0e5d8d116c4df39121c8bc7eaa4f83fb75a7d39fe523e3cd140a85e3aab3b6b",
+        "isolation": {
+          "all_filesystem_reads_denied": true,
+          "input_keys": [
+            [
+              "base_output",
+              "candidate_patch",
+              "issue",
+              "patched_output",
+              "test_source"
+            ]
+          ],
+          "landlock_abi": 7,
+          "probe_results": {},
+          "tcp_bind_connect_denied": true
+        },
+        "predictions": [
+          {
+            "checks": {
+              "candidate_changes_behavior": true,
+              "explicit_issue_change": true,
+              "no_conflicts": true,
+              "plain_assertion": true,
+              "stable_transition": true
+            },
+            "evidence": [
+              "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+              "field=lexer",
+              "old=python3",
+              "new=text",
+              "2 base PASS; 2 patched assertion FAIL"
+            ],
+            "prediction": "LIKELY_SUPERSEDED_ASSERTION",
+            "reason": "All five frozen conditions satisfied",
+            "shadow_mode": true,
+            "suggest_suppress_v2_negative": true,
+            "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+          }
+        ]
+      }
+    }
+  },
+  "static": {
+    "kind": "static",
+    "outcome": "NOT_AVAILABLE",
+    "absence": "disabled",
+    "detail": "V2-only discovery validation; this stage was not executed",
+    "duration_s": 0.0,
+    "findings": {}
+  },
+  "reproduction": {
+    "kind": "reproduction",
+    "outcome": "NOT_AVAILABLE",
+    "absence": "disabled",
+    "detail": "V2-only discovery validation; this stage was not executed",
+    "duration_s": 0.0,
+    "findings": {}
+  },
+  "decision": {
+    "decision": "REJECT",
+    "policy_name": "full",
+    "policy_version": "v1.3.0-full",
+    "reasons": [
+      "regression test failed"
+    ]
+  },
+  "risk_features": {},
+  "selected_tests": [
+    "testing/test_pastebin.py::TestPasteCapture::test_failed",
+    "testing/test_pastebin.py::TestPasteCapture::test_pass",
+    "testing/test_pastebin.py::TestPasteCapture::test_fail",
+    "testing/test_pastebin.py::TestPasteCapture::test_skip",
+    "testing/test_pastebin.py::TestPasteCapture::test_all",
+    "testing/test_pastebin.py::TestPasteCapture::test_non_ascii_paste_text",
+    "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+  ],
+  "selection_convention": "",
+  "selection_convention_hit_rate": null,
+  "selection_convention_scores": {},
+  "selection_runner": "pytest",
+  "reproduction_generator": {
+    "generator": {
+      "model_id": "NOT_INVOKED_V2_ONLY_VALIDATION"
+    }
+  },
+  "duration_s": 0.0,
+  "verified_at": "2026-11-04T01:12:46.337683+00:00"
+}

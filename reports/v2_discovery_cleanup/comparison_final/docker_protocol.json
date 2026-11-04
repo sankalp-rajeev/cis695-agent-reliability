@@ -1,0 +1,87 @@
+{
+  "A": "original committed discovery",
+  "B": "syntax/scope filter only",
+  "argv": [
+    "scripts/v2_discovery_experiment.py",
+    "docker",
+    "--out",
+    "reports/v2_discovery_cleanup/comparison_final"
+  ],
+  "baseline_cache": null,
+  "confirmation": "one patched-only run of all initial regression suspects, 300s; unchanged run_regression",
+  "created_utc": "2026-11-04T01:01:34.558387+00:00",
+  "network": "none",
+  "offline_sha256": "c8b62809571952a02a0057ece03bd1f6f11ab5e54a52357db33d0d1d50bc574a",
+  "pull": "never",
+  "rerun_flaky": true,
+  "resources": "identical default TaskContainer limits; sequential execution",
+  "schedule": [
+    [
+      "pytest-dev__pytest-5809",
+      1,
+      "A"
+    ],
+    [
+      "pytest-dev__pytest-5809",
+      1,
+      "B"
+    ],
+    [
+      "pytest-dev__pytest-5809",
+      2,
+      "B"
+    ],
+    [
+      "pytest-dev__pytest-5809",
+      2,
+      "A"
+    ],
+    [
+      "pylint-dev__pylint-6528",
+      1,
+      "A"
+    ],
+    [
+      "pylint-dev__pylint-6528",
+      1,
+      "B"
+    ],
+    [
+      "pylint-dev__pylint-6528",
+      2,
+      "B"
+    ],
+    [
+      "pylint-dev__pylint-6528",
+      2,
+      "A"
+    ],
+    [
+      "pylint-dev__pylint-7277",
+      1,
+      "A"
+    ],
+    [
+      "pylint-dev__pylint-7277",
+      1,
+      "B"
+    ],
+    [
+      "pylint-dev__pylint-7277",
+      2,
+      "B"
+    ],
+    [
+      "pylint-dev__pylint-7277",
+      2,
+      "A"
+    ]
+  ],
+  "source_sha256": {
+    "scripts/v2_discovery_experiment.py": "71789b4ced9086e7e45460e42dcfe1f4cb61a483c1e1d177dc337c0995654306",
+    "src/reliability/verifier/container.py": "c46228fdfeb8e9c6d9c9fca8b99593de65f0d00bec9c4b2b8d928083df0ab0bd",
+    "src/reliability/verifier/regression.py": "3ac8511b7e1e69de0e71dd5fbc78d7aa819a103fde465eaba0f395e275c61cf4",
+    "src/reliability/verifier/selection.py": "c862431997b0c0f7873bfdfe48d294ee788ae42661559bb5f14983ac2a710422"
+  },
+  "timeout_per_pass_s": 300
+}

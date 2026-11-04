@@ -23,6 +23,7 @@ cap buys interpretive cleanliness at the cost of evidential strength.
 
 from __future__ import annotations
 
+import ast
 import random
 import re
 import shlex
@@ -404,15 +405,11 @@ def _indent(prefix: str) -> int:
     return len(prefix.replace("\t", "    "))
 
 
-def node_ids(path: str, text: str) -> tuple[str, ...]:
-    """Pytest node ids for the test functions in one file.
-
-    A file with no ``test_*`` function contributes nothing. Emitting the bare
-    path is what left the executor with a module and no test to run.
-    """
-    ids: list[str] = []
+def _legacy_node_candidates(path: str, text: str) -> tuple[tuple[int, str], ...]:
+    """Keep legacy identities and source order, including ambiguous candidates."""
+    ids: list[tuple[int, str]] = []
     classes: list[tuple[int, str]] = []
-    for line in text.splitlines():
+    for lineno, line in enumerate(text.splitlines(), 1):
         if not line.strip() or line.lstrip().startswith("#"):
             continue
         class_match = _CLASS_LINE.match(line)
@@ -428,10 +425,86 @@ def node_ids(path: str, text: str) -> tuple[str, ...]:
                 classes.pop()
             name = def_match.group(2)
             if classes:
-                ids.append(f"{path}::{classes[-1][1]}::{name}")
+                ids.append((lineno, f"{path}::{classes[-1][1]}::{name}"))
             else:
-                ids.append(f"{path}::{name}")
+                ids.append((lineno, f"{path}::{name}"))
     return tuple(ids)
+
+
+def _phantom_test_lines(text: str) -> dict[int, str]:
+    """Find syntactic false positives; absence here means retain, not runnable.
+
+    Parsing may fail on source for a different Python version. Dynamic namespace
+    writes and escaping local definitions also need runner evidence, so keep the
+    legacy candidates in those cases. This is not a replacement for collection.
+    """
+    try:
+        tree = ast.parse(text)
+    except (SyntaxError, ValueError, RecursionError):
+        return {}
+    nodes = list(ast.walk(tree))
+    dynamic = {"exec", "eval", "globals", "locals", "setattr"}
+    builtin_modules = {"builtins", "__builtin__", "__builtins__"}
+    builtin_modules.update(n.asname for n in nodes if isinstance(n, ast.alias)
+                           and n.name in builtin_modules and n.asname)
+    if any((isinstance(n, ast.Name) and n.id in dynamic | {"__builtins__"})
+           or (isinstance(n, ast.Attribute) and n.attr in dynamic
+               and isinstance(n.value, ast.Name) and n.value.id in builtin_modules)
+           or (isinstance(n, ast.alias) and n.name in dynamic) for n in nodes):
+        return {}
+    parents = {child: parent for parent in nodes for child in ast.iter_child_nodes(parent)}
+    # A local callable used as a value could be exported/registered by user code.
+    # Calling a helper directly does not export that helper.
+    escaping = {
+        n.id for n in nodes if isinstance(n, ast.Name) and isinstance(n.ctx, ast.Load)
+        and not (isinstance(parents.get(n), ast.Call) and parents[n].func is n)
+    }
+    bound = {n.id for n in nodes if isinstance(n, ast.Name) and isinstance(n.ctx, ast.Store)}
+    bound.update(n.attr for n in nodes if isinstance(n, ast.Attribute)
+                 and isinstance(n.ctx, ast.Store))
+    bound.update(n.asname or n.name.split(".")[0] for n in nodes if isinstance(n, ast.alias))
+    bound.update(name for n in nodes if isinstance(n, (ast.Global, ast.Nonlocal))
+                 for name in n.names)
+    strings: set[int] = set()
+    nested: dict[int, str] = {}
+    for node in nodes:
+        if isinstance(node, ast.Constant) and isinstance(node.value, str):
+            strings.update(range(node.lineno, node.end_lineno + 1))
+        if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            continue
+        scopes = []
+        parent = parents.get(node)
+        while parent is not None:
+            if isinstance(parent, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                scopes.append(parent)
+            parent = parents.get(parent)
+        if not any(isinstance(s, (ast.FunctionDef, ast.AsyncFunctionDef)) for s in scopes):
+            bound.add(node.name)
+        elif not any(s.name in escaping for s in [node, *scopes]):
+            nested[node.lineno] = node.name
+    reasons = {}
+    for lineno, line in enumerate(text.splitlines(), 1):
+        match = _TEST_DEF.match(line)
+        if not match or match.group(2) in bound:
+            continue
+        if lineno in strings:
+            reasons[lineno] = "string literal, not a function definition"
+        elif lineno in nested:
+            reasons[lineno] = "function-local definition, not a module/class test"
+    return reasons
+
+
+def node_ids(path: str, text: str) -> tuple[str, ...]:
+    """Legacy test identities/order minus provable string/local false positives.
+
+    Keep an ID if any occurrence is uncertain or represents an actual outer
+    definition. In particular, a string example must not mask a real test of the
+    same name or move its first occurrence in the existing selection order.
+    """
+    candidates = _legacy_node_candidates(path, text)
+    excluded = _phantom_test_lines(text)
+    retained = {tid for line, tid in candidates if line not in excluded}
+    return tuple(tid for line, tid in candidates if line not in excluded or tid in retained)
 
 
 def node_path(node_id: str) -> str:
