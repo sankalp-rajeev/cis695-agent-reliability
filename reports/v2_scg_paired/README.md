@@ -17,7 +17,9 @@ selection cap, graph limit, production budget or verdict rule is changed.
 - `tests/unit/test_v2_scg_paired.py`: focused invariants and synthetic dry runs.
 
 `prepare` copies the original 83-task V2 freeze and preserves every task ID,
-candidate byte/hash, base commit/archive hash, runner and environment identifier.
+candidate byte/hash, base commit/archive hash, runner and historical image field.
+The version-2 paired protocol adds a separate host-local image binding; historical
+image availability is never used as current Ubuntu availability.
 It measures a fresh reproduction of each updated V2 selection and requires exact
 list and runner equality with the original freeze. The original list remains
 authoritative. Each SCG worker independently builds its graph from the same base
@@ -37,13 +39,13 @@ shadow-only classifier through the unchanged `v2_evaluation.execute_one`.
 Both lists are fixed before any execution and reused unchanged for the initial
 base and patched passes. Existing confirmation subsets remain unchanged. Both
 arms check the identical union of selected test files and original V2 relevant
-source files against the verified archive, using the same pinned image ID and
+source files against the verified archive, using the same bound host-local image ID and
 runner. Image HEAD differences remain recorded, as in V2; relevant-source
 equivalence does not establish complete historical image identity.
 
 Preparation and selection use fresh subprocesses; each execution arm uses a
 fresh UUID-named container and a separate raw-evidence directory. There is no
-baseline cache, image substitution, image pull, networking or shared writable
+baseline cache, fallback to other image tags/IDs, image pull, networking or shared writable
 container/volume state. Task order is lexicographic; arm order alternates by
 cohort index, including when a pilot selects a subset. The unchanged limits are
 300 seconds per pass and the existing 600-second nominal pair metadata, with
@@ -56,6 +58,42 @@ differences. Preparation seals the actual interpreter, package and platform
 inventory for both arms. Validation refuses subsequent host drift. Prepare and
 review a new paired freeze on the intended execution host; do not copy an
 already prepared WSL freeze to Ubuntu and launch it there.
+
+## Ubuntu-host image binding
+
+`bind-images` inspects each exact frozen tag with `docker image inspect`, without
+pulling/building images or starting containers. It records all 83 tasks, the
+Docker daemon ID, current host inventory hash, actual host-local image ID,
+historical ID/digest/environment status, availability and ID comparison. A
+historical null ID may become available; a different historical ID is recorded
+as a mismatch, not silently reused or rejected as proof of wrong source.
+
+Matching tags/IDs and image availability do **not** establish source fidelity.
+Bindings explicitly say NOT_VERIFIED. The existing archive hashes and common
+selected/changed-source check remain required before benchmark execution for
+either arm. A source mismatch retains ENVIRONMENT_MISMATCH and no verdict.
+
+Pass the binding inventory explicitly to `prepare --image-bindings`. Its exact
+bytes and SHA-256 are sealed in the new paired freeze/protocol. Task records keep
+their historical `image_id`, `image_digest` and `environment_status` unchanged;
+`image_binding.host_image_id` is the execution ID supplied to the shared V2
+executor for **both** arms. Paired result `image_id` is this actual execution ID,
+with the historical ID and complete binding recorded separately.
+
+Preparation, validation, plan creation and launch re-inspect the exact tags and
+check the same Docker daemon. Each arm checks again immediately before its
+executor boundary. Retagging, deletion, a formerly missing image appearing, or
+an inspection/daemon error blocks further execution; there is no automatic
+rebinding, fallback to the historical ID, or continued use of a stale tag
+resolution. Immutable image IDs still pin the container at launch. Missing
+images stay explicitly MISSING with a null host ID. Docker permission, CLI or
+daemon failures are INSPECTION_ERROR and block preparation rather than being
+reported as missing images.
+
+If bindings drift, collect a new inventory and prepare/review a new freeze and
+pilot plan. Existing version-1 paired freezes and their plans cannot launch with
+this fix; they must be recreated. Original V2 artifacts and historical reports
+are never edited or resealed.
 
 ## Missing evidence and accounting
 
@@ -103,7 +141,9 @@ unchanged; historical witnesses are not assumed to reproduce in a new environmen
 
 ## Validation performed
 
-See `validation.json`, `unit.xml`, `scg_source_manifest.json` and `preflight.json`.
+The original validation remains in `validation.json`, `unit.xml`,
+`scg_source_manifest.json` and `preflight.json`. The image-binding fix has its
+own report and test/lint evidence in `image_binding_fix/`.
 The focused and existing selector/executor/regression/integrity suites pass.
 Tests exercise exact IDs and budgets, production confirmation, flaky outcomes,
 baseline guards, timeouts, missing tests, evidence tampering, independent arm
@@ -139,19 +179,26 @@ uv sync --frozen
 export PYTHONPATH="$PWD/src"
 uv run --no-sync python -B -m pytest \
   tests/unit/test_v2_scg_paired.py tests/unit/test_v2_evaluation.py \
+  tests/unit/test_v2_scg_images.py \
   tests/unit/test_v2_integrity.py tests/unit/test_selection.py \
   tests/unit/test_container.py tests/unit/test_regression.py
 uv run --no-sync ruff check scripts/v2_scg_paired.py scripts/v2_scg_select.py \
-  tests/unit/test_v2_scg_paired.py
+  scripts/v2_scg_images.py tests/unit/test_v2_scg_paired.py tests/unit/test_v2_scg_images.py
 uv run --no-sync python -B scripts/v2_scg_paired.py preflight \
   --archives "$HOME/cg_repos/task_archives" \
   --out reports/v2_scg_paired/ubuntu_preflight_01.json
+uv run --no-sync python -B scripts/v2_scg_paired.py bind-images \
+  --out runs/ubuntu_image_bindings_01.json
+python3 -m json.tool runs/ubuntu_image_bindings_01.json
 git status --short
 ```
 
 Preflight requires the existing verified task archives and the Git-frozen input
-files. It never downloads or replaces environments. A remote pin mismatch fails
-closed for review. Do not change frozen IDs or image pins to make preflight pass.
+files. The offline preflight never calls Docker; the separate `bind-images`
+command performs read-only Docker inspections. Neither downloads or replaces
+environments. A remote pin mismatch fails closed for review. Do not change
+frozen tags or historical image metadata to make preflight pass. Review the
+binding inventory, including missing images and historical ID differences.
 
 ## Static preparation after preflight review; still no live execution
 
@@ -161,8 +208,9 @@ Use a new destination; interrupted or existing freezes are never overwritten.
 
 ```bash
 uv run --no-sync python -B scripts/v2_scg_paired.py prepare \
-  --archives "$HOME/cg_repos/task_archives" --out runs/v2_scg_frozen_01
-uv run --no-sync python -B scripts/v2_scg_paired.py validate --frozen runs/v2_scg_frozen_01
+  --archives "$HOME/cg_repos/task_archives" \
+  --image-bindings runs/ubuntu_image_bindings_01.json --out runs/v2_scg_frozen_02
+uv run --no-sync python -B scripts/v2_scg_paired.py validate --frozen runs/v2_scg_frozen_02
 ```
 
 After the user identifies a pilot scope, create a plan with one `--task` per
@@ -170,9 +218,9 @@ reviewed task. For example, the syntax for a single task is:
 
 ```bash
 uv run --no-sync python -B scripts/v2_scg_paired.py plan \
-  --frozen runs/v2_scg_frozen_01 --task pytest-dev__pytest-5809 \
-  --out runs/v2_scg_pilot_plan_01.json
-sha256sum runs/v2_scg_frozen_01/protocol.json runs/v2_scg_pilot_plan_01.json
+  --frozen runs/v2_scg_frozen_02 --task pytest-dev__pytest-5809 \
+  --out runs/v2_scg_pilot_plan_02.json
+sha256sum runs/v2_scg_frozen_02/protocol.json runs/v2_scg_pilot_plan_02.json
 ```
 
 The example task is illustrative, not an authorized pilot. Review the selections,

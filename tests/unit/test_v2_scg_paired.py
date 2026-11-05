@@ -26,6 +26,7 @@ from reliability.verifier.regression import (
 from reliability.verifier.selection import SelectionConfig, TestRunner
 
 IID = "pytest-dev__pytest-5809"
+LOCAL_ID = "sha256:" + "a" * 64
 TESTS = ["tests/test_api.py::test_compute", "tests/test_api.py::test_other"]
 PATCH = """diff --git a/api.py b/api.py
 --- a/api.py
@@ -42,6 +43,9 @@ def no_docker(monkeypatch):
     def forbidden(*args, **kwargs):
         pytest.fail("No live container is permitted in harness validation")
     monkeypatch.setattr(h.v2.LocalOnlyContainer, "start", forbidden)
+    monkeypatch.setattr(h.images, "daemon_id", lambda: "synthetic-daemon")
+    monkeypatch.setattr(h.images, "inspect_image", lambda tag: {
+        "availability": "MISSING", "host_image_id": None, "repo_digests": [], "reason": "Synthetic missing image"})
 
 
 def task_and_archive(tmp_path):
@@ -58,7 +62,8 @@ def task_and_archive(tmp_path):
     task = {"instance_id": IID, "repo": "pytest-dev/pytest", "base_commit": "base",
             "base_archive_sha256": s.digest(archive), "patch_sha256": s.digest(patch),
             "runner": asdict(TestRunner("pytest", "pytest.ini")), "patch_path": patch.name,
-            "issue_path": "issue.txt", "image_id": None,
+            "issue_path": "issue.txt", "image_id": None, "image_tag": "frozen:exact",
+            "image_digest": None, "environment_status": "UNAVAILABLE_LOCAL_IMAGE",
             "base_source_sha256": {"api.py": h.sha(contents["api.py"])} }
     return task, archive, patch
 
@@ -125,7 +130,8 @@ def selection(tests, arm="scg", status=None):
 def task_ready(tmp_path):
     task, _, _ = task_and_archive(tmp_path)
     task.update(v2_reproduced=True, source_fidelity_status="FROZEN_UNION",
-                selections={a: a + ".json" for a in h.ARMS})
+                selections={a: a + ".json" for a in h.ARMS}, docker_daemon_id="synthetic-daemon")
+    task["image_binding"] = h.images.binding_record(task, h.images.inspect_image(task["image_tag"]))
     for arm in h.ARMS:
         h.write_json(tmp_path / (arm + ".json"), selection(TESTS if arm == "v2" else TESTS[:1], arm))
     (tmp_path / "issue.txt").write_text("Candidate issue")
@@ -174,7 +180,11 @@ def raw_run(tests, statuses, *, timed_out=False):
     ("baseline", "BASELINE_UNRELIABLE"), ("bad_evidence", None)])
 def test_shared_executor_budgets_ids_policy_and_isolation(tmp_path, monkeypatch, arm, scenario, signal):
     task = task_ready(tmp_path)
-    task["image_id"] = "sha256:pinned"
+    # Historical null must not cause a skip when Ubuntu has the exact frozen tag.
+    assert task["image_id"] is None
+    observed = {"availability": "AVAILABLE", "host_image_id": LOCAL_ID, "repo_digests": [], "reason": None}
+    task["image_binding"] = h.images.binding_record(task, observed)
+    monkeypatch.setattr(h.images, "inspect_image", lambda tag: observed)
     selected = selection(TESTS, arm)
     (tmp_path / (arm + ".json")).write_text(json.dumps(selected))
     instances, requests, fidelity = [], [], []
@@ -183,6 +193,7 @@ def test_shared_executor_budgets_ids_policy_and_isolation(tmp_path, monkeypatch,
         def __init__(self, iid, patch, **kwargs):
             self.name = f"isolated-{len(instances)}"
             self.image = kwargs["image"]
+            assert self.image == LOCAL_ID
             instances.append(self)
         def start(self):
             pass
@@ -215,7 +226,7 @@ def test_shared_executor_budgets_ids_policy_and_isolation(tmp_path, monkeypatch,
     monkeypatch.setattr(h.v2, "LocalOnlyContainer", Container)
     monkeypatch.setattr(h.v2, "ContainerTestExecutor", Executor)
     monkeypatch.setattr(h.v2.subprocess, "run", lambda *a, **k: type("Inspect", (), {
-        "returncode": 0, "stdout": "sha256:pinned\n"})())
+        "returncode": 0, "stdout": LOCAL_ID + "\n"})())
     monkeypatch.setattr(h.v2, "preflight", lambda c, t: fidelity.append(t["base_source_sha256"]) or {})
     monkeypatch.setattr(h.v2, "resource_snapshot", lambda c: {})
     monkeypatch.setattr(h.v2, "shadow_from_report", lambda *a, **k: {})
@@ -343,7 +354,7 @@ def test_frozen_configuration_defaults_are_unchanged():
 
 
 @pytest.fixture
-def dry_frozen(tmp_path, monkeypatch):
+def dry_frozen(tmp_path, monkeypatch, request):
     """Exercise real 83-cohort freezing with deliberately unavailable test inputs.
 
     This is a synthetic dry run, not a real SCG experiment or a performance result.
@@ -354,8 +365,13 @@ def dry_frozen(tmp_path, monkeypatch):
         result["selection_status"] = "SYNTHETIC_DRY_RUN" if arm == "v2" else "UNAVAILABLE_BASE_ARCHIVE"
         return result
     monkeypatch.setattr(h, "worker", synthetic_worker)
+    if getattr(request, "param", None) == "host-images":
+        monkeypatch.setattr(h.images, "inspect_image", lambda tag: {
+            "availability": "AVAILABLE", "host_image_id": LOCAL_ID, "repo_digests": [], "reason": None})
     frozen = tmp_path / "frozen"
-    h.prepare(h.V2_FROZEN, tmp_path / "intentionally-missing-archives", frozen)
+    binding_path = tmp_path / "bindings.json"
+    h.bind_images(h.V2_FROZEN, binding_path)
+    h.prepare(h.V2_FROZEN, tmp_path / "intentionally-missing-archives", frozen, binding_path)
     return frozen
 
 
@@ -374,12 +390,13 @@ def test_all_83_have_one_manifest_per_arm_and_original_identity(dry_frozen):
         assert scg["tests"] is None
 
 
-@pytest.mark.parametrize("target", ["selection", "source", "protocol", "snapshot"])
+@pytest.mark.parametrize("target", ["selection", "source", "protocol", "snapshot", "image_binding"])
 def test_seal_catches_all_input_classes(dry_frozen, target):
     _, tasks = h.validate(dry_frozen)
     paths = {"selection": dry_frozen / tasks[0]["selections"]["scg"],
              "source": dry_frozen / "tasks.json", "protocol": dry_frozen / "protocol.json",
-             "snapshot": dry_frozen / "scg_source" / s.SCG_FILES[0]}
+             "snapshot": dry_frozen / "scg_source" / s.SCG_FILES[0],
+             "image_binding": dry_frozen / "image_bindings.json"}
     with paths[target].open("a") as stream:
         stream.write(" ")
     with pytest.raises(ValueError, match="drift"):
@@ -416,6 +433,7 @@ def test_end_to_end_scoped_dry_run_accounts_for_both_abstentions(dry_frozen, tmp
     assert summary["both_completed"] == 0
     assert all(arm["abstentions"] == 1 for arm in summary["arms"].values())
     assert json.loads((out / "collection_complete.json").read_text())["scope"] == [iid]
+    assert json.loads((out / "run_provenance.json").read_text())["image_bindings_sha256"] == s.digest(dry_frozen / "image_bindings.json")
     h.summarize(out, tmp_path / "posthoc.json")
     with pytest.raises(FileExistsError):
         h.run(dry_frozen, plan, out, s.digest(plan))
@@ -528,3 +546,140 @@ def test_unsealed_execution_selection_is_refused(tmp_path):
     with pytest.raises(ValueError, match="IDs differ"):
         h.execute_arm(task, selection(["changed_selection"]), tmp_path, tmp_path / "must-not-exist")
     assert not (tmp_path / "must-not-exist").exists()
+
+
+def test_binding_inventory_has_all_83_historical_records_unchanged(dry_frozen):
+    originals = json.loads((h.V2_FROZEN / "tasks.json").read_text())
+    bindings = json.loads((dry_frozen / "image_bindings.json").read_text())
+    assert len(bindings["rows"]) == 83
+    assert sum(r["historical_image_id"] is None for r in bindings["rows"]) == 44
+    assert sum(r["historical_image_id"] is not None for r in bindings["rows"]) == 39
+    for original, binding in zip(originals, bindings["rows"]):
+        assert original["image_id"] == binding["historical_image_id"]
+        assert binding["host_image_id"] is None and binding["availability"] == "MISSING"
+    for source in h.V2_FROZEN.rglob("*"):
+        if source.is_file():
+            assert source.read_bytes() == (dry_frozen / "v2" / source.relative_to(h.V2_FROZEN)).read_bytes()
+
+
+def test_validation_detects_image_drift_before_plan_creation(dry_frozen, tmp_path, monkeypatch):
+    _, tasks = h.validate(dry_frozen)
+    iid = tasks[0]["instance_id"]
+    monkeypatch.setattr(h.images, "inspect_image", lambda tag: {
+        "availability": "AVAILABLE", "host_image_id": LOCAL_ID, "repo_digests": [], "reason": None})
+    with pytest.raises(h.images.ImageBindingError, match="Host image drift"):
+        h.make_plan(dry_frozen, [iid], tmp_path / "must-not-exist.json")
+    assert not (tmp_path / "must-not-exist.json").exists()
+
+
+def test_validation_detects_docker_daemon_drift(dry_frozen, monkeypatch):
+    monkeypatch.setattr(h.images, "daemon_id", lambda: "another-daemon")
+    with pytest.raises(ValueError, match="Docker daemon binding drift"):
+        h.validate(dry_frozen)
+
+
+def test_resealed_binding_still_bound_to_protocol(dry_frozen):
+    target = dry_frozen / "image_bindings.json"
+    with target.open("a") as stream:
+        stream.write(" ")
+    seals = json.loads((dry_frozen / "artifact_hashes.json").read_text())
+    seals["image_bindings.json"] = s.digest(target)
+    (dry_frozen / "artifact_hashes.json").write_text(json.dumps(seals))
+    with pytest.raises(ValueError, match="protocol-bound input drift"):
+        h.validate(dry_frozen)
+
+
+def test_each_arm_rechecks_binding_before_executor(tmp_path, monkeypatch):
+    task = task_ready(tmp_path)
+    observed = {"availability": "AVAILABLE", "host_image_id": LOCAL_ID, "repo_digests": [], "reason": None}
+    task["image_binding"] = h.images.binding_record(task, observed)
+    monkeypatch.setattr(h.images, "inspect_image", lambda tag: observed)
+    calls = []
+    monkeypatch.setattr(h.v2, "execute_one", lambda adapted, *a: calls.append(adapted["image_id"]) or {})
+    h.execute_arm(task, selection(TESTS, "v2"), tmp_path, tmp_path / "v2")
+    observed = dict(observed, host_image_id="sha256:" + "b" * 64)
+    with pytest.raises(h.images.ImageBindingError, match="Host image drift"):
+        h.execute_arm(task, selection(TESTS[:1], "scg"), tmp_path, tmp_path / "scg")
+    assert calls == [LOCAL_ID] and not (tmp_path / "scg").exists()
+
+
+@pytest.mark.parametrize("arm", h.ARMS)
+def test_available_bound_image_still_requires_source_fidelity(tmp_path, monkeypatch, arm):
+    task = task_ready(tmp_path)
+    observed = {"availability": "AVAILABLE", "host_image_id": LOCAL_ID, "repo_digests": [], "reason": None}
+    task["image_binding"] = h.images.binding_record(task, observed)
+    monkeypatch.setattr(h.images, "inspect_image", lambda tag: observed)
+    class Container:
+        def __init__(self, *args, **kwargs):
+            assert kwargs["image"] == LOCAL_ID
+        def start(self):
+            pass
+        def stop(self):
+            pass
+    def mismatch(container, adapted):
+        assert adapted["base_source_sha256"] == task["base_source_sha256"]
+        raise h.v2.EnvironmentMismatch("synthetic archive/source mismatch")
+    monkeypatch.setattr(h.v2, "LocalOnlyContainer", Container)
+    monkeypatch.setattr(h.v2, "preflight", mismatch)
+    monkeypatch.setattr(h.v2, "ContainerTestExecutor", lambda *a, **k: pytest.fail("Source mismatch must precede tests"))
+    monkeypatch.setattr(h.v2.subprocess, "run", lambda *a, **k: SimpleNamespace(returncode=0, stdout=LOCAL_ID))
+    selected = json.loads((tmp_path / (arm + ".json")).read_text())
+    row = h.execute_arm(task, selected, tmp_path, tmp_path / arm)
+    assert row["execution_status"] == "ENVIRONMENT_MISMATCH" and row["signal"] is None
+
+
+@pytest.mark.parametrize("dry_frozen", ["host-images"], indirect=True)
+def test_new_freeze_binds_host_images_for_all_83_without_rewriting_history(dry_frozen):
+    _, tasks = h.validate(dry_frozen)
+    assert sum(t["image_id"] is None for t in tasks) == 44
+    assert all(t["image_binding"]["host_image_id"] == LOCAL_ID for t in tasks)
+    assert all(t["image_binding"]["historical_image_id"] == t["image_id"] for t in tasks)
+    assert all(t["image_binding"]["source_fidelity"] == "NOT_VERIFIED" for t in tasks)
+
+
+@pytest.mark.parametrize("historical", [None, LOCAL_ID, "sha256:" + "b" * 64])
+def test_both_arms_receive_same_host_id_with_history_intact(tmp_path, monkeypatch, historical):
+    task = task_ready(tmp_path)
+    task["image_id"] = historical
+    observed = {"availability": "AVAILABLE", "host_image_id": LOCAL_ID, "repo_digests": [], "reason": None}
+    task["image_binding"] = h.images.binding_record(task, observed)
+    monkeypatch.setattr(h.images, "inspect_image", lambda tag: observed)
+    calls = []
+    monkeypatch.setattr(h.v2, "execute_one", lambda adapted, *a: calls.append(adapted) or {})
+    for arm in h.ARMS:
+        selected = json.loads((tmp_path / (arm + ".json")).read_text())
+        h.execute_arm(task, selected, tmp_path, tmp_path / arm)
+    assert [c["image_id"] for c in calls] == [LOCAL_ID, LOCAL_ID]
+    assert task["image_id"] == historical
+    assert calls[0]["base_source_sha256"] == calls[1]["base_source_sha256"] == task["base_source_sha256"]
+
+
+def test_image_inspection_error_blocks_preparation(dry_frozen, tmp_path, monkeypatch):
+    bindings = json.loads((dry_frozen / "image_bindings.json").read_text())
+    bindings["ready"] = False
+    target = tmp_path / "unverified.json"
+    h.write_json(target, bindings)
+    monkeypatch.setattr(h, "worker", lambda *a: pytest.fail("Unverified images must block before selection"))
+    with pytest.raises(ValueError, match="image inspection errors"):
+        h.prepare(h.V2_FROZEN, tmp_path, tmp_path / "must-not-exist", target)
+    assert not (tmp_path / "must-not-exist").exists()
+
+
+def test_image_binding_cannot_change_task_cohort(dry_frozen):
+    bindings = json.loads((dry_frozen / "image_bindings.json").read_text())
+    bindings["rows"].pop()
+    _, originals, _ = h.verify_v2_inputs(h.V2_FROZEN)
+    with pytest.raises(ValueError, match="cohort mismatch"):
+        h.verify_image_bindings(bindings, originals)
+
+
+@pytest.mark.parametrize("arm", h.ARMS)
+def test_missing_bound_tag_never_falls_back_to_historical_id(tmp_path, monkeypatch, arm):
+    task = task_ready(tmp_path)
+    task["image_id"] = LOCAL_ID
+    task["image_binding"] = h.images.binding_record(task, h.images.inspect_image(task["image_tag"]))
+    monkeypatch.setattr(h.v2, "LocalOnlyContainer", lambda *a, **k: pytest.fail("No historical ID fallback"))
+    selected = json.loads((tmp_path / (arm + ".json")).read_text())
+    row = h.execute_arm(task, selected, tmp_path, tmp_path / arm)
+    assert row["execution_status"] == "UNAVAILABLE_ENVIRONMENT" and row["signal"] is None
+    assert task["image_id"] == LOCAL_ID

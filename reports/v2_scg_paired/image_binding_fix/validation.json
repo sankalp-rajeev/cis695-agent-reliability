@@ -1,0 +1,48 @@
+{
+  "benchmark_tests_executed": 0,
+  "branch": "experiment/v2-scg-paired-harness",
+  "cohort": {
+    "historical_image_ids": 39,
+    "historical_null_image_ids": 44,
+    "tasks": 83
+  },
+  "containers_started": 0,
+  "date": "2026-11-05",
+  "docker_inspections": "MOCKED_ONLY",
+  "evidence_sha256": {
+    "lint.txt": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "unit.txt": "303fc055f8963607fb9031d4e725510fc51f94cad4aa7696f242a14f2679d2df",
+    "unit.xml": "5d2016d0a5edf105ac493b9c5bf8ff812c00544ec066e215d5ce37e2941d94b4"
+  },
+  "experiment_launched": false,
+  "frozen_v2_protocol_sha256": "f3c8ef5c802d26985bbe0f70f5bf9f7ac846c73ef496b50e48af606bfead463f",
+  "implementation_sha256": {
+    "scripts/v2_scg_images.py": "4aa8e68273892a471d83e5ab64af5d1e9b6b215323537b8790124b624760b294",
+    "scripts/v2_scg_paired.py": "b7af23dbca10b024df40b851fdba075a504092c9a869353ac009871b18692448",
+    "tests/unit/test_v2_scg_images.py": "ab0834f641412746f407289beee8d867157beb6681f7370d1b37bd166ca9cc3b",
+    "tests/unit/test_v2_scg_paired.py": "4fe631e0b3000738b9646228f9bb376b31178bb394629f77aa3eed9db6d706b0"
+  },
+  "lint": "PASS",
+  "original_freeze_selectors_classification_and_candidates_unchanged": true,
+  "original_local_changes_preserved": true,
+  "original_manifest_sha256": "96be69ebe77d4df9976439bcd3557c02fa8afa38a267ee61762a05341faa3290",
+  "paired_protocol_version": 2,
+  "real_ubuntu_binding_inventory_created": false,
+  "remaining_host_validation": [
+    "Collect and review read-only Ubuntu image bindings for all 83 exact tags",
+    "Prepare and validate a new version-2 paired freeze with those bindings; recreate pilot plan",
+    "Source fidelity remains NOT_VERIFIED until the original source preflight during a separately authorized pilot"
+  ],
+  "remaining_implementation_blockers": [],
+  "reviewed_base": "b5f0e33cd6b3c3385053a4fecbcaf5476194c8e3",
+  "status": "IMAGE_BINDING_FIX_VALIDATED_NO_LIVE_EXECUTION",
+  "tests": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 234,
+    "skipped": 0,
+    "test_v2_scg_images": 19,
+    "test_v2_scg_paired": 66,
+    "wall_s": 13.462
+  }
+}

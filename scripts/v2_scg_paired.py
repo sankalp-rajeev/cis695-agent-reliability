@@ -21,6 +21,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 import v2_evaluation as v2
+import v2_scg_images as images
 from reliability.verifier.regression import RegressionConfig, run_regression
 from reliability.verifier.selection import Selection, SelectionConfig
 from v2_scg_select import CONFIGURATION, SCG_FILES, SCG_REVISION, digest
@@ -51,7 +52,7 @@ def check_scg_revision():
 
 def source_hashes():
     paths = [*v2.code_paths(), Path(__file__), ROOT / "scripts/v2_scg_select.py",
-             ROOT / "scripts/v2_discovery_experiment.py"]
+             ROOT / "scripts/v2_scg_images.py", ROOT / "scripts/v2_discovery_experiment.py"]
     return {str(p.relative_to(ROOT)): digest(p) for p in paths}
 
 
@@ -123,6 +124,38 @@ def export_scg(snapshot):
     return hashes
 
 
+def host_inventory_sha256():
+    return sha(json.dumps(v2.host_packages(), sort_keys=True).encode())
+
+
+def bind_images(frozen, out):
+    """Inspect all exact frozen tags on this host; never pull, build or execute."""
+    _, tasks, _ = verify_v2_inputs(frozen)
+    bindings = images.capture(tasks)
+    bindings.update(version=1, created_utc=datetime.now(UTC).isoformat(),
+                    v2_protocol_sha256=digest(frozen / "protocol.json"),
+                    host_inventory_sha256=host_inventory_sha256())
+    write_json(out, bindings)
+    return bindings
+
+
+def verify_image_bindings(bindings, originals):
+    require(bindings["version"] == 1 and bindings["v2_protocol_sha256"] == V2_PROTOCOL_SHA256,
+            "image binding protocol mismatch")
+    require(bindings["host_inventory_sha256"] == host_inventory_sha256(), "image binding host drift")
+    require(bindings["ready"] is True and bindings["docker_daemon_id"] is not None,
+            "image inspection errors; collect a new host binding inventory")
+    rows = bindings["rows"]
+    require(len(rows) == len({r["instance_id"] for r in rows}) == 83 and
+            {r["instance_id"] for r in rows} == {t["instance_id"] for t in originals},
+            "image binding cohort mismatch")
+    require(images.daemon_id() == bindings["docker_daemon_id"], "Docker daemon binding drift")
+    by_id = {r["instance_id"]: r for r in rows}
+    for task in originals:
+        images.verify_current(task, by_id[task["instance_id"]])
+    return by_id
+
+
 def worker(task, patch, archive, expected, arm, snapshot, folder):
     with tempfile.TemporaryDirectory(prefix="paired-selection-request-") as temporary:
         request, result = Path(temporary) / "request.json", Path(temporary) / "result.json"
@@ -167,14 +200,18 @@ def source_union(task, selections, archive):
     return result
 
 
-def prepare(frozen, archives, out):
-    """Static selection of all 83 tasks. No image inspection or test execution."""
+def prepare(frozen, archives, out, image_bindings):
+    """Freeze host bindings and static selections; never execute benchmark tests."""
     started = time.monotonic()
     _, original, _ = verify_v2_inputs(frozen)
     check_scg_revision()
+    binding_bytes = image_bindings.read_bytes()
+    bindings = json.loads(binding_bytes)
+    by_id = verify_image_bindings(bindings, original)
     out = out.resolve()
     out.mkdir(parents=True, exist_ok=False)
     shutil.copytree(frozen, out / "v2")
+    (out / "image_bindings.json").write_bytes(binding_bytes)
     write_json(out / "host_packages.json", v2.host_packages())
     scg_hashes = export_scg(out / "scg_source")
     rows = []
@@ -182,6 +219,8 @@ def prepare(frozen, archives, out):
         task_started = time.monotonic()
         task = copy.deepcopy(source)
         iid = task["instance_id"]
+        task["image_binding"] = by_id[iid]
+        task["docker_daemon_id"] = bindings["docker_daemon_id"]
         folder = out / "selections" / iid
         folder.mkdir(parents=True)
         expected = copied_v2_selection(frozen, task)
@@ -210,10 +249,12 @@ def prepare(frozen, archives, out):
         print(iid, {a: selections[a]["selection_status"] for a in ARMS}, flush=True)
     write_json(out / "tasks.json", rows)
     protocol = {
-        "version": 1, "tasks": 83, "created_utc": datetime.now(UTC).isoformat(),
+        "version": 2, "tasks": 83, "created_utc": datetime.now(UTC).isoformat(),
         "v2_revision": "9654fc7", "scg_revision": SCG_REVISION,
         "harness_revision": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT).decode().strip(),
         "v2_protocol_sha256": digest(frozen / "protocol.json"), "scg_source_sha256": scg_hashes,
+        "image_bindings_sha256": sha(binding_bytes),
+        "image_binding_policy": "Exact frozen tags inspected locally; host IDs shared by both arms; availability is not source fidelity",
         "scg_configuration": CONFIGURATION, "source_sha256": source_hashes(),
         "selection_config": asdict(SelectionConfig()), "regression_config": asdict(RegressionConfig()),
         "network": "none", "image_pull": "never", "parallelism": 1,
@@ -235,6 +276,7 @@ def prepare(frozen, archives, out):
 
 def validate(frozen):
     protocol = json.loads((frozen / "protocol.json").read_text())
+    require(protocol["version"] == 2, "paired freeze needs host-local image bindings; prepare a new freeze")
     seals = json.loads((frozen / "artifact_hashes.json").read_text())
     require(all(digest(frozen / p) == h for p, h in seals.items()), "frozen artifact drift")
     require(all(digest(frozen / p) == h for p, h in protocol["task_artifact_sha256"].items()),
@@ -253,6 +295,9 @@ def validate(frozen):
         require(digest(frozen / "scg_source" / path) == expected, "SCG snapshot drift")
         require(expected == sha(git_bytes(SCG_REVISION, path)), "SCG snapshot differs from pinned Git source")
     _, originals, _ = verify_v2_inputs(frozen / "v2")
+    require(digest(frozen / "image_bindings.json") == protocol["image_bindings_sha256"], "image binding seal drift")
+    bindings = json.loads((frozen / "image_bindings.json").read_text())
+    by_id = verify_image_bindings(bindings, originals)
     original = {t["instance_id"]: t for t in originals}
     tasks = json.loads((frozen / "tasks.json").read_text())
     require(len(tasks) == len({t["instance_id"] for t in tasks}) == 83 and
@@ -260,6 +305,8 @@ def validate(frozen):
     require([t["instance_id"] for t in tasks] == sorted(original), "frozen task order drift")
     for task in tasks:
         source = original[task["instance_id"]]
+        require(task["image_binding"] == by_id[task["instance_id"]] and
+                task["docker_daemon_id"] == bindings["docker_daemon_id"], "paired image binding drift")
         for key in ("repo", "base_commit", "patch_sha256", "base_archive_sha256", "image_tag",
                     "image_id", "image_digest", "runner", "environment_status"):
             require(task[key] == source[key], f"paired input drift: {key}")
@@ -303,6 +350,8 @@ def execute_arm(task, selection, frozen, folder):
     """One shared executor boundary. The SCG IDs never enter V2 discovery."""
     stored = json.loads((frozen / task["selections"][selection["arm"]]).read_text())
     require(selection["tests"] == stored["tests"], "execution IDs differ from frozen selection")
+    require(images.daemon_id() == task["docker_daemon_id"], "Docker daemon binding drift before arm")
+    images.verify_current(task, task["image_binding"])
     if selection["tests"] is None or not task["v2_reproduced"] or task["source_fidelity_status"] != "FROZEN_UNION":
         row = empty_row(task, selection)
         row["reason"] = selection["selection_status"] if selection["tests"] is None else "UNAVAILABLE_SHARED_SOURCE_OR_V2_REPRODUCTION"
@@ -319,7 +368,7 @@ def execute_arm(task, selection, frozen, folder):
         write_json(folder / "result.json", row)
         return row
     adapted = dict(task, test_manifest=task["selections"][selection["arm"]],
-                   selected=len(selection["tests"]))
+                   selected=len(selection["tests"]), image_id=task["image_binding"]["host_image_id"])
     started = time.monotonic()
     row = v2.execute_one(adapted, frozen, folder)
     row.setdefault("wall_s", time.monotonic() - started)
@@ -461,6 +510,7 @@ def run(frozen, plan_path, out, approved_hash):
     started = time.monotonic()
     write_json(out / "run_provenance.json", {"plan_sha256": sha(plan_bytes), "plan": plan,
         "protocol_sha256": plan["protocol_sha256"], "started_utc": datetime.now(UTC).isoformat(),
+        "image_bindings_sha256": protocol["image_bindings_sha256"],
         "host_packages": v2.host_packages(), "source_sha256": protocol["source_sha256"],
         "actual_git_revision": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT).decode().strip(),
         "disk_before": v2.asdict_disk(out), "labels_read": False})
@@ -470,9 +520,10 @@ def run(frozen, plan_path, out, approved_hash):
         task = by_id[entry["instance_id"]]
         task_started = time.monotonic()
         pair = {"instance_id": task["instance_id"], "patch_sha256": task["patch_sha256"],
-                "base_commit": task["base_commit"], "image_id": task["image_id"],
-                "image_tag": task["image_tag"], "image_digest": task["image_digest"],
-                "environment_status": task["environment_status"],
+                "base_commit": task["base_commit"], "image_id": task["image_binding"]["host_image_id"],
+                "image_tag": task["image_tag"], "historical_image_id": task["image_id"],
+                "image_binding": task["image_binding"],
+                "environment_status": task["image_binding"]["availability"],
                 "base_archive_sha256": task["base_archive_sha256"],
                 "runner": task["runner"], "arm_order": entry["arms"], "arms": {}}
         for arm in entry["arms"]:
@@ -523,6 +574,11 @@ def main():
         sub.add_argument("--v2-frozen", type=Path, default=V2_FROZEN)
         sub.add_argument("--archives", type=Path, default=Path.home() / "cg_repos/task_archives")
         sub.add_argument("--out", type=Path, required=True)
+        if command == "prepare":
+            sub.add_argument("--image-bindings", type=Path, required=True)
+    sub = commands.add_parser("bind-images")
+    sub.add_argument("--v2-frozen", type=Path, default=V2_FROZEN)
+    sub.add_argument("--out", type=Path, required=True)
     for command in ("validate", "plan", "run"):
         sub = commands.add_parser(command)
         sub.add_argument("--frozen", type=Path, required=True)
@@ -542,7 +598,13 @@ def main():
     if args.command == "preflight":
         write_json(args.out, preflight(args.v2_frozen, args.archives))
     elif args.command == "prepare":
-        prepare(args.v2_frozen, args.archives, args.out)
+        prepare(args.v2_frozen, args.archives, args.out, args.image_bindings)
+    elif args.command == "bind-images":
+        bindings = bind_images(args.v2_frozen, args.out)
+        print(json.dumps({"ready": bindings["ready"], "tasks": len(bindings["rows"]),
+                          "availability": dict(Counter(r["availability"] for r in bindings["rows"]))}))
+        if not bindings["ready"]:
+            raise SystemExit("Image inspection errors recorded; preparation is blocked")
     elif args.command == "validate":
         _, tasks = validate(args.frozen)
         print(json.dumps({"verified": True, "tasks": len(tasks), "containers_started": 0}))
