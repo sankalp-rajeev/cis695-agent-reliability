@@ -1,0 +1,145 @@
+{
+  "archives_verified": 83,
+  "arms": {
+    "scg": {
+      "available_including_empty": 81,
+      "costs": {
+        "graph_build_s": {
+          "max": 56.296773832000326,
+          "measured_tasks": 83,
+          "sum": 924.3691896040036
+        },
+        "graph_input_preparation_s": {
+          "max": 0.9611372070003199,
+          "measured_tasks": 83,
+          "sum": 41.34802624300028
+        },
+        "selection_cpu_s": {
+          "max": 79.478632289,
+          "measured_tasks": 83,
+          "sum": 1353.5289656239997
+        },
+        "selection_process_peak_rss_bytes": {
+          "max": 2562646016,
+          "measured_tasks": 83,
+          "sum": 36717314048
+        },
+        "selection_s": {
+          "max": 22.12356083800023,
+          "measured_tasks": 83,
+          "sum": 343.45264760199916
+        },
+        "worker_wall_s": {
+          "max": 79.56489104299999,
+          "measured_tasks": 83,
+          "sum": 1360.4376172040038
+        }
+      },
+      "empty": 68,
+      "graph_status": {
+        "complete": 56,
+        "partial": 27
+      },
+      "nonempty": 13,
+      "selection_status": {
+        "SELECTED": 13,
+        "UNAVAILABLE_NO_RESOLVED_SEEDS": 2,
+        "ZERO_SELECTION": 68
+      },
+      "total_selected_ids": 131,
+      "unavailable": 2
+    },
+    "v2": {
+      "available_including_empty": 83,
+      "costs": {
+        "graph_build_s": {
+          "max": null,
+          "measured_tasks": 0,
+          "sum": null
+        },
+        "graph_input_preparation_s": {
+          "max": null,
+          "measured_tasks": 0,
+          "sum": null
+        },
+        "selection_cpu_s": {
+          "max": 2.983598897,
+          "measured_tasks": 83,
+          "sum": 48.68262735799999
+        },
+        "selection_process_peak_rss_bytes": {
+          "max": 78008320,
+          "measured_tasks": 83,
+          "sum": 4217892864
+        },
+        "selection_s": {
+          "max": 2.6553625520000423,
+          "measured_tasks": 83,
+          "sum": 33.6384609550023
+        },
+        "worker_wall_s": {
+          "max": 3.0690958799996224,
+          "measured_tasks": 83,
+          "sum": 54.41127376500117
+        }
+      },
+      "empty": 5,
+      "graph_status": {
+        "NOT_APPLICABLE": 83
+      },
+      "nonempty": 78,
+      "selection_status": {
+        "SELECTED": 78,
+        "ZERO_SELECTION": 5
+      },
+      "total_selected_ids": 57682,
+      "unavailable": 0
+    }
+  },
+  "benchmark_containers_started": 0,
+  "benchmark_tests_executed": 0,
+  "common_source_files": 1546,
+  "common_source_manifests": {
+    "FROZEN_UNION": 83
+  },
+  "common_source_missing_by_task": {},
+  "common_source_missing_files": 0,
+  "frozen_directory": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/paired_frozen",
+  "harness_revision": "b030e508d849926b9a2260c70e1091adebfee993",
+  "historical_image_comparisons": {
+    "DIFFERENT": 39,
+    "HISTORICAL_ID_UNAVAILABLE": 44
+  },
+  "image_binding_sha256": "af2e5c19b0a875b53f93f734798c151767b46412083e18dfe3fb60a19bcc1329",
+  "images": {
+    "AVAILABLE": 83
+  },
+  "launch_status": "PREPARED_FOR_REVIEW_NOT_AUTHORIZED",
+  "observed_prepare_stage_wall_s": 1433.3554262819998,
+  "original_frozen_artifacts_verified": 252,
+  "paired_sealed_artifacts_verified": 765,
+  "paired_task_preparation_wall_s": 1430.7364084430028,
+  "protocol_preparation_wall_s": 1431.8774881099998,
+  "protocol_sha256": "2eaf8341274099cf4210674e6418a4b1e44ea2d0babb09a1c2243f77258c5153",
+  "protocol_version": 2,
+  "regression_configuration": {
+    "baseline_cache_dir": null,
+    "per_instance_timeout_s": 600,
+    "per_pass_timeout_s": 300,
+    "rerun_flaky": true
+  },
+  "runtime_import_fidelity": "NOT_VERIFIED_BY_STATIC_PREPARATION; requires separately authorized pilot",
+  "scg_revision": "e1a3ed1c74fd304493c3fe3811de755af77e306c",
+  "scg_source_files_verified": 10,
+  "selection_configuration": {
+    "budget": "ALL",
+    "depth": 3,
+    "edge_variant": "PRIMARY_RESOLVED_ONLY",
+    "strategy": "B"
+  },
+  "static_worker_exceptions": {},
+  "tasks": 83,
+  "v2_exactly_reproduced": 83,
+  "validated": true,
+  "worktree": "/home/sankalp/projects/cis695-v2-scg-paired-review-b030e50"
+}

@@ -1,0 +1,461 @@
+{
+  "common_source_file_hash_matches": 15,
+  "project_module_hash_matches": 15,
+  "retrospective_proof_of_pilot_imports": false,
+  "tasks": [
+    {
+      "benchmark_files_unchanged": 6563,
+      "common_source_file_hash_matches": 6,
+      "distributions": [
+        {
+          "direct_url": null,
+          "location": "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages",
+          "name": "numpy",
+          "version": "2.0.2"
+        },
+        {
+          "direct_url": {
+            "dir_info": {
+              "editable": true
+            },
+            "url": "file:///testbed"
+          },
+          "location": "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages",
+          "name": "Django",
+          "version": "4.1.dev20211122085656"
+        }
+      ],
+      "editable_install_files": [
+        {
+          "content": "import __editable___django_4_1_dev20211122085656_finder; __editable___django_4_1_dev20211122085656_finder.install()",
+          "path": "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/__editable__.django-4.1.dev20211122085656.pth",
+          "sha256": "1e73aa1b5a1021f9eac0440950ae167a88cba46f0f422522de03c002d1c65ebb"
+        },
+        {
+          "content": "import os; var = 'SETUPTOOLS_USE_DISTUTILS'; enabled = os.environ.get(var, 'local') == 'local'; enabled and __import__('_distutils_hack').add_shim(); \n",
+          "path": "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/distutils-precedence.pth",
+          "sha256": "2638ce9e2500e572a5e0de7faed6661eb569d1b696fcba07b0dd223da5f5d224"
+        }
+      ],
+      "image_id": "sha256:10ca209ff265ccb996602e08fe0362a94b3f6b3f80a0f4fb34cabc22fe697ae8",
+      "instance_id": "django__django-15103",
+      "modules": {
+        "django": {
+          "expected_archive_path": "django/__init__.py",
+          "expected_archive_sha256": "ecbdcce88be899afaf0dc6ecdd2b7182e3282d65def66f473e1734f8689edab5",
+          "file": "/testbed/django/__init__.py",
+          "loader": "SourceFileLoader",
+          "observed_sha256": "ecbdcce88be899afaf0dc6ecdd2b7182e3282d65def66f473e1734f8689edab5",
+          "origin_is_expected_testbed_path": true,
+          "package_locations": [
+            "/testbed/django"
+          ],
+          "realpath": "/testbed/django/__init__.py",
+          "source_bytes_match_archive": true,
+          "spec_origin": "/testbed/django/__init__.py",
+          "version": "4.1.dev20260813013317"
+        },
+        "django.template.defaultfilters": {
+          "expected_archive_path": "django/template/defaultfilters.py",
+          "expected_archive_sha256": "21b462f88fb0efcb2016d9b366adc0e445cf38a2868c33d3795fa7a55861612e",
+          "file": "/testbed/django/template/defaultfilters.py",
+          "loader": "SourceFileLoader",
+          "observed_sha256": "21b462f88fb0efcb2016d9b366adc0e445cf38a2868c33d3795fa7a55861612e",
+          "origin_is_expected_testbed_path": true,
+          "package_locations": [],
+          "realpath": "/testbed/django/template/defaultfilters.py",
+          "source_bytes_match_archive": true,
+          "spec_origin": "/testbed/django/template/defaultfilters.py",
+          "version": "None"
+        },
+        "django.test.runner": {
+          "expected_archive_path": "django/test/runner.py",
+          "expected_archive_sha256": "acb90f72a8c8bc133fbc8993e9bcedaff940e8c82b0d9cd15401d63c29b584a3",
+          "file": "/testbed/django/test/runner.py",
+          "loader": "SourceFileLoader",
+          "observed_sha256": "acb90f72a8c8bc133fbc8993e9bcedaff940e8c82b0d9cd15401d63c29b584a3",
+          "origin_is_expected_testbed_path": true,
+          "package_locations": [],
+          "realpath": "/testbed/django/test/runner.py",
+          "source_bytes_match_archive": true,
+          "spec_origin": "/testbed/django/test/runner.py",
+          "version": "None"
+        },
+        "django.utils.html": {
+          "expected_archive_path": "django/utils/html.py",
+          "expected_archive_sha256": "7ef6ccf364b2edd8fe43d8edc1cfafa47d592a73510c31a297197953845f227d",
+          "file": "/testbed/django/utils/html.py",
+          "loader": "SourceFileLoader",
+          "observed_sha256": "7ef6ccf364b2edd8fe43d8edc1cfafa47d592a73510c31a297197953845f227d",
+          "origin_is_expected_testbed_path": true,
+          "package_locations": [],
+          "realpath": "/testbed/django/utils/html.py",
+          "source_bytes_match_archive": true,
+          "spec_origin": "/testbed/django/utils/html.py",
+          "version": "None"
+        }
+      },
+      "project_module_hash_matches": 4,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "scope_limit": "Entry-point import resolution only. No pytest plugin/conftest collection, no Django test setup, no patched state. Separate probe cannot prove earlier pytest imports.",
+      "sys_path": [
+        "/testbed/tests",
+        "/opt/miniconda3/envs/testbed/lib/python39.zip",
+        "/opt/miniconda3/envs/testbed/lib/python3.9",
+        "/opt/miniconda3/envs/testbed/lib/python3.9/lib-dynload",
+        "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages"
+      ]
+    },
+    {
+      "benchmark_files_unchanged": 5604,
+      "common_source_file_hash_matches": 2,
+      "distributions": [
+        {
+          "direct_url": null,
+          "location": "/opt/miniconda3/envs/testbed/lib/python3.11/site-packages",
+          "name": "numpy",
+          "version": "1.25.2"
+        },
+        {
+          "direct_url": {
+            "dir_info": {},
+            "url": "file:///home/conda/feedstock_root/build_artifacts/pytest_1733217473289/work"
+          },
+          "location": "/opt/miniconda3/envs/testbed/lib/python3.11/site-packages",
+          "name": "pytest",
+          "version": "8.3.4"
+        },
+        {
+          "direct_url": {
+            "archive_info": {
+              "hash": "sha256=884420a58b11b4c9b7f4df21046caaae9229522b672b557f0f98c84251141fc5",
+              "hashes": {
+                "sha256": "884420a58b11b4c9b7f4df21046caaae9229522b672b557f0f98c84251141fc5"
+              }
+            },
+            "url": "file:///croot/pandas_1732735089971/work/dist/pandas-2.2.3-cp311-cp311-linux_x86_64.whl"
+          },
+          "location": "/opt/miniconda3/envs/testbed/lib/python3.11/site-packages",
+          "name": "pandas",
+          "version": "2.2.3"
+        },
+        {
+          "direct_url": {
+            "dir_info": {
+              "editable": true
+            },
+            "url": "file:///testbed"
+          },
+          "location": "/opt/miniconda3/envs/testbed/lib/python3.11/site-packages",
+          "name": "matplotlib",
+          "version": "3.8.0.dev392+gf8ffce6d4"
+        },
+        {
+          "direct_url": null,
+          "location": "/testbed/lib",
+          "name": "matplotlib",
+          "version": "3.8.0.dev392+gf8ffce6d4"
+        }
+      ],
+      "editable_install_files": [
+        {
+          "content": "/testbed/lib\n",
+          "path": "/opt/miniconda3/envs/testbed/lib/python3.11/site-packages/__editable__.matplotlib-3.8.0.dev392+gf8ffce6d4.pth",
+          "sha256": "3c9f84cc6dc08a2cb7c8015e780c216d94a2ac2a6b532cde6c59a51d9ecaae7b"
+        },
+        {
+          "content": "import os; var = 'SETUPTOOLS_USE_DISTUTILS'; enabled = os.environ.get(var, 'local') == 'local'; enabled and __import__('_distutils_hack').add_shim(); \n",
+          "path": "/opt/miniconda3/envs/testbed/lib/python3.11/site-packages/distutils-precedence.pth",
+          "sha256": "2638ce9e2500e572a5e0de7faed6661eb569d1b696fcba07b0dd223da5f5d224"
+        },
+        {
+          "content": "import sys, types, os;p = os.path.join('/testbed/lib', *('mpl_toolkits',));importlib = __import__('importlib.util');__import__('importlib.machinery');m = sys.modules.setdefault('mpl_toolkits', importlib.util.module_from_spec(importlib.machinery.PathFinder.find_spec('mpl_toolkits', [os.path.dirname(p)])));m = m or sys.modules.setdefault('mpl_toolkits', types.ModuleType('mpl_toolkits'));mp = (m or []) and m.__dict__.setdefault('__path__',[]);(p not in mp) and mp.append(p)\n",
+          "path": "/opt/miniconda3/envs/testbed/lib/python3.11/site-packages/matplotlib-3.8.0.dev392+gf8ffce6d4-nspkg.pth",
+          "sha256": "7b7cf51de6c2ad43b659311fb6235651813bd8038eb0dcd707909035a2327aa7"
+        },
+        {
+          "content": "import os, sys;exec('if \\'COV_CORE_SOURCE\\' in os.environ:\\n try:\\n  from pytest_cov.embed import init\\n  init()\\n except Exception as exc:\\n  sys.stderr.write(\\n   \"pytest-cov: Failed to setup subprocess coverage. \"\\n   \"Environ: {0!r} \"\\n   \"Exception: {1!r}\\\\n\".format(\\n    dict((k, v) for k, v in os.environ.items() if k.startswith(\\'COV_CORE\\')),\\n    exc\\n   )\\n  )\\n')\n",
+          "path": "/opt/miniconda3/envs/testbed/lib/python3.11/site-packages/pytest-cov.pth",
+          "sha256": "f47446a60fdf5905e84e7d7c892baf92f8d5a3226d0da1599b9c014eab6c7ddb"
+        },
+        {
+          "content": "import sys, types, os;p = os.path.join(sys._getframe(1).f_locals['sitedir'], *('sphinxcontrib',));importlib = __import__('importlib.util');__import__('importlib.machinery');m = sys.modules.setdefault('sphinxcontrib', importlib.util.module_from_spec(importlib.machinery.PathFinder.find_spec('sphinxcontrib', [os.path.dirname(p)])));m = m or sys.modules.setdefault('sphinxcontrib', types.ModuleType('sphinxcontrib'));mp = (m or []) and m.__dict__.setdefault('__path__',[]);(p not in mp) and mp.append(p)\n",
+          "path": "/opt/miniconda3/envs/testbed/lib/python3.11/site-packages/sphinxcontrib_jsmath-1.0.1-py3.9-nspkg.pth",
+          "sha256": "a328acccc2310e241f406ef5fd39a60ce5ffdd678a9454be561d28af01a81e54"
+        }
+      ],
+      "image_id": "sha256:0a721ca71f4cfd2858777c2a451a954e50fa78f2551661a4cbcd0a9d6aa71c73",
+      "instance_id": "matplotlib__matplotlib-25287",
+      "modules": {
+        "matplotlib": {
+          "expected_archive_path": "lib/matplotlib/__init__.py",
+          "expected_archive_sha256": "ebd0446eed5cfcf58efdbbc318dde2e30dea595a6b3b09237be89f2420a8db6e",
+          "file": "/testbed/lib/matplotlib/__init__.py",
+          "loader": "SourceFileLoader",
+          "observed_sha256": "ebd0446eed5cfcf58efdbbc318dde2e30dea595a6b3b09237be89f2420a8db6e",
+          "origin_is_expected_testbed_path": true,
+          "package_locations": [
+            "/testbed/lib/matplotlib"
+          ],
+          "realpath": "/testbed/lib/matplotlib/__init__.py",
+          "source_bytes_match_archive": true,
+          "spec_origin": "/testbed/lib/matplotlib/__init__.py",
+          "version": "3.8.0.dev393+g03096e9c97"
+        },
+        "matplotlib.axis": {
+          "expected_archive_path": "lib/matplotlib/axis.py",
+          "expected_archive_sha256": "a7da060cb0e7717efe33af8b9bb3cec98a4483de1c2f1a04a00f555b2b0ed352",
+          "file": "/testbed/lib/matplotlib/axis.py",
+          "loader": "SourceFileLoader",
+          "observed_sha256": "a7da060cb0e7717efe33af8b9bb3cec98a4483de1c2f1a04a00f555b2b0ed352",
+          "origin_is_expected_testbed_path": true,
+          "package_locations": [],
+          "realpath": "/testbed/lib/matplotlib/axis.py",
+          "source_bytes_match_archive": true,
+          "spec_origin": "/testbed/lib/matplotlib/axis.py",
+          "version": "None"
+        },
+        "matplotlib.pyplot": {
+          "expected_archive_path": "lib/matplotlib/pyplot.py",
+          "expected_archive_sha256": "84f2844829bfa11d8fbba934dd6482896196abd5f79af7125d1f57805bcbdd89",
+          "file": "/testbed/lib/matplotlib/pyplot.py",
+          "loader": "SourceFileLoader",
+          "observed_sha256": "84f2844829bfa11d8fbba934dd6482896196abd5f79af7125d1f57805bcbdd89",
+          "origin_is_expected_testbed_path": true,
+          "package_locations": [],
+          "realpath": "/testbed/lib/matplotlib/pyplot.py",
+          "source_bytes_match_archive": true,
+          "spec_origin": "/testbed/lib/matplotlib/pyplot.py",
+          "version": "None"
+        },
+        "matplotlib.testing.decorators": {
+          "expected_archive_path": "lib/matplotlib/testing/decorators.py",
+          "expected_archive_sha256": "3a57999cad02f52d7362103684d32663ca3656a29b6ce6e17192256d6ec6809a",
+          "file": "/testbed/lib/matplotlib/testing/decorators.py",
+          "loader": "SourceFileLoader",
+          "observed_sha256": "3a57999cad02f52d7362103684d32663ca3656a29b6ce6e17192256d6ec6809a",
+          "origin_is_expected_testbed_path": true,
+          "package_locations": [],
+          "realpath": "/testbed/lib/matplotlib/testing/decorators.py",
+          "source_bytes_match_archive": true,
+          "spec_origin": "/testbed/lib/matplotlib/testing/decorators.py",
+          "version": "None"
+        }
+      },
+      "project_module_hash_matches": 4,
+      "python": "3.11.11 | packaged by conda-forge | (main, Dec  5 2024, 14:17:24) [GCC 13.3.0]",
+      "scope_limit": "Entry-point import resolution only. No pytest plugin/conftest collection, no Django test setup, no patched state. Separate probe cannot prove earlier pytest imports.",
+      "sys_path": [
+        "/testbed",
+        "/opt/miniconda3/envs/testbed/lib/python311.zip",
+        "/opt/miniconda3/envs/testbed/lib/python3.11",
+        "/opt/miniconda3/envs/testbed/lib/python3.11/lib-dynload",
+        "/opt/miniconda3/envs/testbed/lib/python3.11/site-packages",
+        "/testbed/lib"
+      ]
+    },
+    {
+      "benchmark_files_unchanged": 460,
+      "common_source_file_hash_matches": 7,
+      "distributions": [
+        {
+          "direct_url": null,
+          "location": "/testbed",
+          "name": "xarray",
+          "version": "0.16.3.dev2+ga41edc7bf"
+        },
+        {
+          "direct_url": null,
+          "location": "/opt/miniconda3/envs/testbed/lib/python3.10/site-packages",
+          "name": "pytest",
+          "version": "7.4.0"
+        },
+        {
+          "direct_url": null,
+          "location": "/opt/miniconda3/envs/testbed/lib/python3.10/site-packages",
+          "name": "matplotlib",
+          "version": "3.9.2"
+        },
+        {
+          "direct_url": null,
+          "location": "/opt/miniconda3/envs/testbed/lib/python3.10/site-packages",
+          "name": "pandas",
+          "version": "1.5.3"
+        },
+        {
+          "direct_url": null,
+          "location": "/opt/miniconda3/envs/testbed/lib/python3.10/site-packages",
+          "name": "numpy",
+          "version": "1.23.0"
+        },
+        {
+          "direct_url": {
+            "dir_info": {},
+            "url": "file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_sparse_1727687215/work"
+          },
+          "location": "/opt/miniconda3/envs/testbed/lib/python3.10/site-packages",
+          "name": "sparse",
+          "version": "0.15.4"
+        },
+        {
+          "direct_url": {
+            "dir_info": {},
+            "url": "file:///home/conda/feedstock_root/build_artifacts/pint_1720883462887/work"
+          },
+          "location": "/opt/miniconda3/envs/testbed/lib/python3.10/site-packages",
+          "name": "Pint",
+          "version": "0.24.3"
+        },
+        {
+          "direct_url": null,
+          "location": "/opt/miniconda3/envs/testbed/lib/python3.10/site-packages",
+          "name": "dask",
+          "version": "2022.8.1"
+        },
+        {
+          "direct_url": null,
+          "location": "/testbed",
+          "name": "xarray",
+          "version": "0.16.3.dev2+ga41edc7bf"
+        }
+      ],
+      "editable_install_files": [
+        {
+          "content": "./cdat_info-8.2.1-py3.9.egg\n",
+          "path": "/opt/miniconda3/envs/testbed/lib/python3.10/site-packages/cdat_info.pth",
+          "sha256": "062e80569fbdbe21f128367b667e0a49af543d02da04ab5162eafae6284b762f"
+        },
+        {
+          "content": "import os; var = 'SETUPTOOLS_USE_DISTUTILS'; enabled = os.environ.get(var, 'local') == 'local'; enabled and __import__('_distutils_hack').add_shim(); \n",
+          "path": "/opt/miniconda3/envs/testbed/lib/python3.10/site-packages/distutils-precedence.pth",
+          "sha256": "2638ce9e2500e572a5e0de7faed6661eb569d1b696fcba07b0dd223da5f5d224"
+        },
+        {
+          "content": "/testbed\n",
+          "path": "/opt/miniconda3/envs/testbed/lib/python3.10/site-packages/easy-install.pth",
+          "sha256": "8d503a71f419a498d67669b26fdfa66848bc339939d625f34a9eaa79f4b23eb0"
+        },
+        {
+          "content": "import os, sys;exec('if \\'COV_CORE_SOURCE\\' in os.environ:\\n try:\\n  from pytest_cov.embed import init\\n  init()\\n except Exception as exc:\\n  sys.stderr.write(\\n   \"pytest-cov: Failed to setup subprocess coverage. \"\\n   \"Environ: {0!r} \"\\n   \"Exception: {1!r}\\\\n\".format(\\n    dict((k, v) for k, v in os.environ.items() if k.startswith(\\'COV_CORE\\')),\\n    exc\\n   )\\n  )\\n')\n",
+          "path": "/opt/miniconda3/envs/testbed/lib/python3.10/site-packages/pytest-cov.pth",
+          "sha256": "f47446a60fdf5905e84e7d7c892baf92f8d5a3226d0da1599b9c014eab6c7ddb"
+        },
+        {
+          "content": "/testbed\n.",
+          "path": "/opt/miniconda3/envs/testbed/lib/python3.10/site-packages/xarray.egg-link",
+          "sha256": "4b2dd43558084e36e0c1ad7f2c3161a4b6688c4aa361f9c65bff41fde57be785"
+        }
+      ],
+      "image_id": "sha256:6ef760ecc8a78780f669f3e24a32e11a5ad5adaec505fce12cc15d27648657d0",
+      "instance_id": "pydata__xarray-4629",
+      "modules": {
+        "xarray": {
+          "expected_archive_path": "xarray/__init__.py",
+          "expected_archive_sha256": "1ca0e4bd5154b50089cd7ed935d4b6a23637782adef577ab70a3fbe82b7ac415",
+          "file": "/testbed/xarray/__init__.py",
+          "loader": "SourceFileLoader",
+          "observed_sha256": "1ca0e4bd5154b50089cd7ed935d4b6a23637782adef577ab70a3fbe82b7ac415",
+          "origin_is_expected_testbed_path": true,
+          "package_locations": [
+            "/testbed/xarray"
+          ],
+          "realpath": "/testbed/xarray/__init__.py",
+          "source_bytes_match_archive": true,
+          "spec_origin": "/testbed/xarray/__init__.py",
+          "version": "0.16.3.dev2+ga41edc7bf"
+        },
+        "xarray.core.dask_array_compat": {
+          "expected_archive_path": "xarray/core/dask_array_compat.py",
+          "expected_archive_sha256": "af422da1cb6d903869dcc42dfe29f6aee53afa67ddfb602f1cfe5a9e9db40296",
+          "file": "/testbed/xarray/core/dask_array_compat.py",
+          "loader": "SourceFileLoader",
+          "observed_sha256": "af422da1cb6d903869dcc42dfe29f6aee53afa67ddfb602f1cfe5a9e9db40296",
+          "origin_is_expected_testbed_path": true,
+          "package_locations": [],
+          "realpath": "/testbed/xarray/core/dask_array_compat.py",
+          "source_bytes_match_archive": true,
+          "spec_origin": "/testbed/xarray/core/dask_array_compat.py",
+          "version": "None"
+        },
+        "xarray.core.dataarray": {
+          "expected_archive_path": "xarray/core/dataarray.py",
+          "expected_archive_sha256": "ec6527bbb6594c299b6a096c93c3754ec858f336583f75115e2c7a36e448f844",
+          "file": "/testbed/xarray/core/dataarray.py",
+          "loader": "SourceFileLoader",
+          "observed_sha256": "ec6527bbb6594c299b6a096c93c3754ec858f336583f75115e2c7a36e448f844",
+          "origin_is_expected_testbed_path": true,
+          "package_locations": [],
+          "realpath": "/testbed/xarray/core/dataarray.py",
+          "source_bytes_match_archive": true,
+          "spec_origin": "/testbed/xarray/core/dataarray.py",
+          "version": "None"
+        },
+        "xarray.core.dataset": {
+          "expected_archive_path": "xarray/core/dataset.py",
+          "expected_archive_sha256": "83e8caff2cabdbd6eed61e43ff2bf6d7393613df52437c0acf9e6585758e8b73",
+          "file": "/testbed/xarray/core/dataset.py",
+          "loader": "SourceFileLoader",
+          "observed_sha256": "83e8caff2cabdbd6eed61e43ff2bf6d7393613df52437c0acf9e6585758e8b73",
+          "origin_is_expected_testbed_path": true,
+          "package_locations": [],
+          "realpath": "/testbed/xarray/core/dataset.py",
+          "source_bytes_match_archive": true,
+          "spec_origin": "/testbed/xarray/core/dataset.py",
+          "version": "None"
+        },
+        "xarray.core.merge": {
+          "expected_archive_path": "xarray/core/merge.py",
+          "expected_archive_sha256": "84e0cbc5b6aeff78894d06e5c1f7a0d0de247f241b6162329a3838bf7f882fa6",
+          "file": "/testbed/xarray/core/merge.py",
+          "loader": "SourceFileLoader",
+          "observed_sha256": "84e0cbc5b6aeff78894d06e5c1f7a0d0de247f241b6162329a3838bf7f882fa6",
+          "origin_is_expected_testbed_path": true,
+          "package_locations": [],
+          "realpath": "/testbed/xarray/core/merge.py",
+          "source_bytes_match_archive": true,
+          "spec_origin": "/testbed/xarray/core/merge.py",
+          "version": "None"
+        },
+        "xarray.core.options": {
+          "expected_archive_path": "xarray/core/options.py",
+          "expected_archive_sha256": "4f5d5bf8685854aa1889ad6ab8d56bac0f0c324161e809fc629bfb1d68f9071b",
+          "file": "/testbed/xarray/core/options.py",
+          "loader": "SourceFileLoader",
+          "observed_sha256": "4f5d5bf8685854aa1889ad6ab8d56bac0f0c324161e809fc629bfb1d68f9071b",
+          "origin_is_expected_testbed_path": true,
+          "package_locations": [],
+          "realpath": "/testbed/xarray/core/options.py",
+          "source_bytes_match_archive": true,
+          "spec_origin": "/testbed/xarray/core/options.py",
+          "version": "None"
+        },
+        "xarray.core.variable": {
+          "expected_archive_path": "xarray/core/variable.py",
+          "expected_archive_sha256": "ad28f3ed587e3d878ccc15bf26da3b7afeb2b67f5a49e05764c6745e78f9d4e3",
+          "file": "/testbed/xarray/core/variable.py",
+          "loader": "SourceFileLoader",
+          "observed_sha256": "ad28f3ed587e3d878ccc15bf26da3b7afeb2b67f5a49e05764c6745e78f9d4e3",
+          "origin_is_expected_testbed_path": true,
+          "package_locations": [],
+          "realpath": "/testbed/xarray/core/variable.py",
+          "source_bytes_match_archive": true,
+          "spec_origin": "/testbed/xarray/core/variable.py",
+          "version": "None"
+        }
+      },
+      "project_module_hash_matches": 7,
+      "python": "3.10.15 | packaged by conda-forge | (main, Sep 30 2024, 17:51:04) [GCC 13.3.0]",
+      "scope_limit": "Entry-point import resolution only. No pytest plugin/conftest collection, no Django test setup, no patched state. Separate probe cannot prove earlier pytest imports.",
+      "sys_path": [
+        "/testbed",
+        "/opt/miniconda3/envs/testbed/lib/python310.zip",
+        "/opt/miniconda3/envs/testbed/lib/python3.10",
+        "/opt/miniconda3/envs/testbed/lib/python3.10/lib-dynload",
+        "/opt/miniconda3/envs/testbed/lib/python3.10/site-packages",
+        "/opt/miniconda3/envs/testbed/lib/python3.10/site-packages/cdat_info-8.2.1-py3.9.egg",
+        "/testbed"
+      ]
+    }
+  ],
+  "test_collection_or_execution_in_this_review": false
+}

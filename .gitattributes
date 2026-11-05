@@ -38,3 +38,8 @@ reports/next_steps/report.md whitespace=-blank-at-eol
 reports/v2_discovery_cleanup/**/*.raw -text whitespace=-blank-at-eol,-blank-at-eof
 reports/v2_discovery_cleanup/frozen_83/patches/*.patch -text whitespace=-blank-at-eol,-blank-at-eof
 reports/v2_discovery_cleanup/frozen_83/issues/*.txt -text whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab
+
+# Published Ubuntu evidence inventories retain their original CRLF bytes and hashes.
+reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/scientific_audit_20261105T180428_197888Z/selection_comparison.csv -text whitespace=cr-at-eol
+reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/pilot_20261105T183041_929325Z/execution_inventory.csv -text whitespace=cr-at-eol
+reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/post_pilot_review_20261105T185712_250018Z/parameter_exposure_tasks.csv -text whitespace=cr-at-eol

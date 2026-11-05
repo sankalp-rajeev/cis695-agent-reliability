@@ -1,0 +1,39 @@
+{
+  "corrected_records": [
+    {
+      "arm": "v2",
+      "instance_id": "pydata__xarray-4629",
+      "phase": "base",
+      "removed_false_prefix_matches": [
+        "/testbed/lib/python3.10/site-packages/setuptools/_distutils/version.py"
+      ]
+    },
+    {
+      "arm": "v2",
+      "instance_id": "pydata__xarray-4629",
+      "phase": "patched",
+      "removed_false_prefix_matches": [
+        "/testbed/lib/python3.10/site-packages/setuptools/_distutils/version.py"
+      ]
+    },
+    {
+      "arm": "scg",
+      "instance_id": "pydata__xarray-4629",
+      "phase": "base",
+      "removed_false_prefix_matches": [
+        "/testbed/lib/python3.10/site-packages/setuptools/_distutils/version.py"
+      ]
+    },
+    {
+      "arm": "scg",
+      "instance_id": "pydata__xarray-4629",
+      "phase": "patched",
+      "removed_false_prefix_matches": [
+        "/testbed/lib/python3.10/site-packages/setuptools/_distutils/version.py"
+      ]
+    }
+  ],
+  "original_derived_file_preserved": "runtime_source_and_import_evidence.json",
+  "reason": "Initial derived regex could match the testbed substring in a Conda environment path. Corrected full-path token extraction, without changing raw captures, source hashes, test counts or native verdicts.",
+  "use_verified_file": "runtime_source_and_import_evidence_verified.json"
+}

@@ -1,0 +1,82 @@
+{
+  "additional_possible_not_statically_confirmed_tasks": 11,
+  "additional_possible_task_ids": [
+    "astropy__astropy-14365",
+    "pylint-dev__pylint-4661",
+    "pytest-dev__pytest-5809",
+    "scikit-learn__scikit-learn-14141",
+    "sphinx-doc__sphinx-10323",
+    "sphinx-doc__sphinx-7910",
+    "sympy__sympy-13480",
+    "sympy__sympy-14711",
+    "sympy__sympy-17318",
+    "sympy__sympy-19783",
+    "sympy__sympy-24562"
+  ],
+  "arm_counts": {
+    "scg": {
+      "entire_nonempty_list_statically_parameterized_tasks": 2,
+      "static_exposed_selected_ids": 17,
+      "static_exposed_tasks": 4
+    },
+    "v2": {
+      "entire_nonempty_list_statically_parameterized_tasks": 1,
+      "static_exposed_selected_ids": 3913,
+      "static_exposed_tasks": 36
+    }
+  },
+  "benchmark_tests_executed": 0,
+  "definite_static_parameter_declaration_tasks": 36,
+  "definite_static_task_ids": [
+    "astropy__astropy-13977",
+    "astropy__astropy-7606",
+    "matplotlib__matplotlib-20488",
+    "matplotlib__matplotlib-20676",
+    "matplotlib__matplotlib-22719",
+    "matplotlib__matplotlib-22871",
+    "matplotlib__matplotlib-23299",
+    "matplotlib__matplotlib-23476",
+    "matplotlib__matplotlib-24026",
+    "matplotlib__matplotlib-24637",
+    "matplotlib__matplotlib-24970",
+    "matplotlib__matplotlib-25122",
+    "matplotlib__matplotlib-25287",
+    "matplotlib__matplotlib-25479",
+    "matplotlib__matplotlib-26291",
+    "mwaskom__seaborn-3069",
+    "pallets__flask-5014",
+    "pydata__xarray-4629",
+    "pydata__xarray-4695",
+    "pydata__xarray-6599",
+    "pydata__xarray-6744",
+    "pylint-dev__pylint-4970",
+    "pylint-dev__pylint-6528",
+    "pylint-dev__pylint-7277",
+    "pytest-dev__pytest-10051",
+    "pytest-dev__pytest-5787",
+    "pytest-dev__pytest-6202",
+    "pytest-dev__pytest-7236",
+    "pytest-dev__pytest-7432",
+    "pytest-dev__pytest-7521",
+    "scikit-learn__scikit-learn-10908",
+    "scikit-learn__scikit-learn-12585",
+    "scikit-learn__scikit-learn-14629",
+    "scikit-learn__scikit-learn-14894",
+    "sphinx-doc__sphinx-10435",
+    "sphinx-doc__sphinx-10466"
+  ],
+  "definition": "Definite static exposure means a bare frozen pytest family ID with a directly declared or statically verified helper/fixture parameterization. It does not prove collection, suffixed case emission, missing exact admissions, failures or whole-arm NOT_AVAILABLE. Remaining nonempty pytest tasks cannot be excluded from dynamic/plugin parameterization by AST alone.",
+  "other_definite_static_tasks_beyond_two_pilot_confirmed": 34,
+  "other_structurally_possible_tasks_beyond_two_pilot_confirmed": 45,
+  "pilot_confirmed_runtime_family_interpretation_tasks": [
+    "matplotlib__matplotlib-25287",
+    "pydata__xarray-4629"
+  ],
+  "runners": {
+    "django": 31,
+    "pytest": 52
+  },
+  "structural_possible_nonempty_pytest_tasks": 47,
+  "tasks": 83,
+  "test_collection_invoked": false
+}

@@ -1,0 +1,137 @@
+{
+  "excluded_locations": [
+    {
+      "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/paired_frozen",
+      "reason": "Immutable frozen payload, candidate patches, issues, selections and host inventory remain local"
+    },
+    {
+      "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/scientific_audit_20261105T180428_197888Z/graph_replay",
+      "reason": "Bulk static graph replay evidence retained locally"
+    },
+    {
+      "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/pilot_20261105T183041_929325Z/results",
+      "reason": "Native results and raw benchmark captures retained locally"
+    },
+    {
+      "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/post_pilot_review_20261105T185712_250018Z/import_probes",
+      "reason": "Full diagnostic container file snapshots retained locally"
+    },
+    {
+      "path": "/home/sankalp/cg_repos/task_archives",
+      "reason": "83 source archives are external local inputs; frozen hashes referenced below"
+    },
+    {
+      "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/ubuntu_20261105",
+      "reason": "Superseded Ubuntu preparation evidence and freeze remain local"
+    },
+    {
+      "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/ubuntu_readonly_preflight_20261105T171113_732025Z",
+      "reason": "Prior read-only preflight evidence remains local"
+    },
+    {
+      "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_publication",
+      "reason": "Earlier failed publication diagnostics remain local"
+    },
+    {
+      "path": "/home/sankalp/projects/cis695-agent-reliability/frozen_patches_export.tgz",
+      "reason": "Patch export remains local",
+      "sha256": "4bc9e4d36b5f4e7da064e3b763b2abf8540f113370bb5941aa8b485fb265c57d"
+    }
+  ],
+  "hashes_recorded_for_publication_only_no_audit_rerun": true,
+  "important_local_files": [
+    {
+      "bytes": 99632,
+      "description": "Immutable Ubuntu protocol",
+      "included_in_this_commit": false,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/paired_frozen/protocol.json",
+      "sha256": "2eaf8341274099cf4210674e6418a4b1e44ea2d0babb09a1c2243f77258c5153"
+    },
+    {
+      "bytes": 91752,
+      "description": "765 frozen artifact hashes",
+      "included_in_this_commit": false,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/paired_frozen/artifact_hashes.json",
+      "sha256": "31d8fdac607e9899e29ea158263bd626b06ad3c8e6e9f25bdec2f554adcb482a"
+    },
+    {
+      "bytes": 353918,
+      "description": "83 frozen task identities and original inputs",
+      "included_in_this_commit": false,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/paired_frozen/tasks.json",
+      "sha256": "532df6e8eebd9afa91592ef39aa28f12d8b905fcf3987c7698e06c8ad02ac625"
+    },
+    {
+      "bytes": 67984,
+      "description": "83 frozen Ubuntu image bindings",
+      "included_in_this_commit": false,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/paired_frozen/image_bindings.json",
+      "sha256": "af2e5c19b0a875b53f93f734798c151767b46412083e18dfe3fb60a19bcc1329"
+    },
+    {
+      "bytes": 106395,
+      "description": "Original integration evidence seal",
+      "included_in_this_commit": false,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/evidence_sha256.json",
+      "sha256": "15660e12a9b98fbec26021b37fe748a639e17c79a66a996bc2277d558188c11c"
+    },
+    {
+      "bytes": 31686,
+      "description": "Scientific audit evidence seal",
+      "included_in_this_commit": false,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/scientific_audit_20261105T180428_197888Z/audit_evidence_sha256.json",
+      "sha256": "48cd2fbf031dfd9570c5bc48132edb00f8082aaeff67cd5b55b7ce73bebe54eb"
+    },
+    {
+      "bytes": 495,
+      "description": "Existing three-task plan; not a full-cohort plan",
+      "included_in_this_commit": false,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/scientific_audit_20261105T180428_197888Z/pilot_plan.json",
+      "sha256": "57c84e2ceb615ebe7df43a5a26cf140b300b5a838f706ce6f7f7a5d2b9a77f1d"
+    },
+    {
+      "bytes": 340722,
+      "description": "Native pilot results",
+      "included_in_this_commit": false,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/pilot_20261105T183041_929325Z/results/results.json",
+      "sha256": "1c38559c76a0f62f37bd7f301c988ceb02c6f2ab186b0680670e750cba03a8da"
+    },
+    {
+      "bytes": 13281,
+      "description": "Pilot evidence seal",
+      "included_in_this_commit": false,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/pilot_20261105T183041_929325Z/evidence_sha256.json",
+      "sha256": "f9405004c2c76bce43b2ffca7aaa7c06e8258f3d62790c045387f99b145106c9"
+    },
+    {
+      "bytes": 24251,
+      "description": "Pilot raw capture integrity inventory",
+      "included_in_this_commit": false,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/pilot_20261105T183041_929325Z/raw_capture_integrity.json",
+      "sha256": "354acb4d63704fd9581f58268c2aaa264471cd4932e1188cbfe2b8a5694f7c65"
+    },
+    {
+      "bytes": 4151,
+      "description": "Final post-pilot diagnostic seal",
+      "included_in_this_commit": false,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/post_pilot_review_20261105T185712_250018Z/evidence_sha256.json",
+      "sha256": "7b8258f89a1302040601eb446f46ff566660bbe0cff77cd976f3c965cc613b84"
+    },
+    {
+      "bytes": 8561995,
+      "description": "Detailed static per-ID evidence; bulk local only",
+      "included_in_this_commit": false,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/post_pilot_review_20261105T185712_250018Z/parameter_exposure_ids.json",
+      "sha256": "1c9a50c708b71698ed7245e8662a673787e83896da76a0ac0d96b2b12ad1b62e"
+    }
+  ],
+  "local_evidence_root": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z",
+  "not_read_or_published": [
+    ".env",
+    "credentials",
+    "virtual environments",
+    "runs/",
+    "logs/",
+    "Docker image layers"
+  ]
+}
