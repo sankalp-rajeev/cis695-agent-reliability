@@ -1,0 +1,55 @@
+{
+  "all_preexisting_tracked_files_unchanged": true,
+  "benchmark_tests_executed": 0,
+  "branch": "experiment/v2-scg-paired-harness",
+  "containers_started": 0,
+  "date": "2026-11-05",
+  "dry_runs": [
+    "Synthetic 83-task paired manifest preparation and integrity verification",
+    "Synthetic one-task scope with paired abstentions, collection sealing and post-collection summary",
+    "Real pinned SCG graph/mapper/selector on synthetic archive fixtures only"
+  ],
+  "evidence_sha256": {
+    "lint.txt": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "preflight.json": "285c63c154af029e79e99f379809f39044b35c15f24d556a8ec447e49d408607",
+    "scg_source_manifest.json": "24539e5a412b6db48d77766c64492f392dcdf4ff505ef1589544fa6ee4cadf7f",
+    "unit.txt": "3294dde7c5f4a09b685be18d607f31c8884be14c65e7421b949378f31129f09b",
+    "unit.xml": "505cadfe88804512bc84e6421e46b96a3f250a2ac2260156be312564f4c9b1c4"
+  },
+  "frozen_v2_protocol_sha256": "f3c8ef5c802d26985bbe0f70f5bf9f7ac846c73ef496b50e48af606bfead463f",
+  "historical_results_overwritten": false,
+  "implementation_sha256": {
+    "scripts/v2_scg_paired.py": "08e77faf538f3ff6ca1f77611305fe091a288df07adb2f64a61df8e8d6543b0e",
+    "scripts/v2_scg_select.py": "8a9666e24a660b417116b5a6979bd1b08be8a5448223b2f3bffcb905250fa1e9",
+    "tests/unit/test_v2_scg_paired.py": "ecf1b58bbebd9bcf98dea203cce1031e04faaafa26c2c234df72bdf7a93fa944"
+  },
+  "lint": "PASS",
+  "live_pilot_performed": false,
+  "next_step": "Review harness and separately collected Ubuntu preflight; static preparation and explicit pilot plan approval precede live execution",
+  "offline_preflight": {
+    "historical_environment_counts": {
+      "LOCAL_IMAGE_PRESENT_NOT_YET_SOURCE_VERIFIED": 39,
+      "UNAVAILABLE_LOCAL_IMAGE": 44
+    },
+    "tasks": 83,
+    "verified_archive_hashes": 83
+  },
+  "original_worktree": {
+    "branch": "fix/pkg-cache-mask",
+    "modified_or_untracked_paths_verified": 25,
+    "preserved": true,
+    "snapshot_sha256": "d673d577517dfdc8fa95763575e10569ae5c4d2934a7ec4c03729d1d3545ba7d"
+  },
+  "parent_revision": "9654fc7c4168da0ff0c1bdf786f99a8a38d0c006",
+  "real_83_task_selection_preparation_performed": false,
+  "scg_revision": "e1a3ed1c74fd304493c3fe3811de755af77e306c",
+  "status": "IMPLEMENTATION_VALIDATED_NO_LIVE_EXECUTION",
+  "tests": {
+    "errors": 0,
+    "failures": 0,
+    "focused_paired_harness_cases": 50,
+    "passed": 199,
+    "skipped": 0,
+    "wall_s": 7.53
+  }
+}
