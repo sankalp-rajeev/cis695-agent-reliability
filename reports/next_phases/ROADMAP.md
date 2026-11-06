@@ -131,17 +131,19 @@ Effort figures are estimates.
 **Steps:**
 1. For each test, find its outcome on the original and patched trees in the raw captures.
 2. Classify each test into exactly one bucket:
-   - **A — not reached:** timed out or never run (e.g. django-13297, where 6,890 of 8,155 tests timed out).
+   - **A — not reached:** timed out or never run, including collection/load aborts. Phase 1 found a loader failure on both trees for django-13297; it was not a timeout.
    - **B — result dropped:** it ran, but the outcome wasn't admitted (parametrized name, parser, ANSI codes).
    - **C — already failing:** it fails on the original code in our image (environment difference).
    - **D — passed:** it passed on the patched code in our environment.
+   - **E — skipped on both trees:** the concrete test was explicitly SKIPPED on base and patched (**added after Phase 1 inspection**).
+   - **F — already detected:** V2 already recorded and confirmed the base-pass → patched-fail regression (**added after Phase 1 inspection**).
 3. Record the evidence (capture file, line, hash) for every classification.
 
-**Output:** `phase1_known_failures.csv` plus a half-page summary.
+**Output:** `phase1_known_failures.csv` plus a summary, with base/patched selected outcomes, raw outcomes, skip/load reason, task verdict/completeness and capture path:line references. Full skip strings and mechanisms remain unknown when not recorded.
 
 **Done when:** all 7 tests are classified with evidence.
 
-**Decision:** if any land in D, look for an environment difference from the grader before Phase 3.
+**Decision:** if any land in D, look for an environment difference from the grader before Phase 3. For E, retain the captured skip reason and investigate the skip condition; mark a missing/truncated reason or unknown mechanism explicitly. E/F were added after inspecting the Phase 1 data, not preregistered. Observed counts: A = 1, E = 5, F = 1.
 
 **Commit and push** (branch `experiment/v2-execution-repair`):
 
@@ -199,6 +201,7 @@ git push
 4. **Classification:** add a separate `REGRESSION_ERROR` outcome for base PASS → patched ERROR. Report FAIL both with and without it.
 5. **SymPy:** a `bin/test` runner adapter, matching the SWE-bench harness.
 6. **Reporting:** keep the strict PASS rule as primary, and report raw per-task coverage beside it.
+7. **Skip completeness (added after Phase 1 inspection):** treat SKIPPED selected tests as missing evidence for PASS. Apply this to concrete parameter cases as well as exact selected IDs; mapped raw SKIPPED cases must not recover a missing family for PASS. Phase 1 found pylint-6528 and pylint-7277 reported PASS / COMPLETE while accepting these skips.
 
 **Checks:**
 - Unit tests for each parser and adapter.
