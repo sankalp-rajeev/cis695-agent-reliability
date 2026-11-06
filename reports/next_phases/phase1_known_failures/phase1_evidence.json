@@ -1,0 +1,972 @@
+{
+  "analysis_scope": "POST-HOC ANALYSIS ONLY",
+  "benchmark_tests_executed": 0,
+  "bucket_counts": {
+    "A_NOT_REACHED": 1,
+    "E_SKIPPED": 5,
+    "F_ALREADY_DETECTED": 1
+  },
+  "capture_sha256": {
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/base_b801df1e75a04136a31773e481cc700e/events.jsonl": "0e142565af9bc6698fe50698295273bd3193a404a307f06d375d9f704e1aee05",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/base_b801df1e75a04136a31773e481cc700e/runner.raw": "834ce7717516584ae7fd2a1a5f47b9911af450826321fb2b6dca597d2d21bec5",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/base_b801df1e75a04136a31773e481cc700e/stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/base_b801df1e75a04136a31773e481cc700e/stdout.raw": "834ce7717516584ae7fd2a1a5f47b9911af450826321fb2b6dca597d2d21bec5",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/patched_b55fb9e09e194de3ae5bacaeac3bba5e/events.jsonl": "5c5c43fe8cf8284ab01a96e345f78607b0aec8e67e157dc701ecab8e070fd104",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/patched_b55fb9e09e194de3ae5bacaeac3bba5e/runner.raw": "ac3f5e8f7f9375a11b01f8d7c95a79a84cec830fd8a82f0cdce70332c465d3cd",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/patched_b55fb9e09e194de3ae5bacaeac3bba5e/stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/patched_b55fb9e09e194de3ae5bacaeac3bba5e/stdout.raw": "ac3f5e8f7f9375a11b01f8d7c95a79a84cec830fd8a82f0cdce70332c465d3cd",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/base_0986cb841a714e86aa61570e9a0bdde0/events.jsonl": "8c80eafbcfbb5836a3f4cf3855a2b2516bf1dacbcf2363270cad5868cd0fdaf0",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/base_0986cb841a714e86aa61570e9a0bdde0/runner.raw": "392fce6eb69ca873bab507b49da10fec8453f5a24801de3cd2ca4633a7440db8",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/base_0986cb841a714e86aa61570e9a0bdde0/stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/base_0986cb841a714e86aa61570e9a0bdde0/stdout.raw": "392fce6eb69ca873bab507b49da10fec8453f5a24801de3cd2ca4633a7440db8",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/base_4c2a4162b1004699b0425ac4f74cf7b4/events.jsonl": "f95fbe4511de590aa8b17f7224f52db8178d248b4f850666b964fe1c9e46f719",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/base_4c2a4162b1004699b0425ac4f74cf7b4/runner.raw": "b2f570fdf3d8afc4a35464a8e9304d91cfb842b12208d0dfa15c69fac4aa81d6",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/base_4c2a4162b1004699b0425ac4f74cf7b4/stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/base_4c2a4162b1004699b0425ac4f74cf7b4/stdout.raw": "b2f570fdf3d8afc4a35464a8e9304d91cfb842b12208d0dfa15c69fac4aa81d6",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/patched_000f83c49b2b441f997c59a85f10940a/events.jsonl": "7bb8c5afcef933b90a2ab6da201905f7171dab4c7295a66aaeca15d0d090627f",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/patched_000f83c49b2b441f997c59a85f10940a/runner.raw": "79fe283f821e45544a34eaec6792f6aa50bf22295d8344d6030b7e212203e335",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/patched_000f83c49b2b441f997c59a85f10940a/stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/patched_000f83c49b2b441f997c59a85f10940a/stdout.raw": "79fe283f821e45544a34eaec6792f6aa50bf22295d8344d6030b7e212203e335",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/patched_8aac9b32f076443bb56b733e3c85f27d/events.jsonl": "acc69dab69e123ddf15fbe411bd45e60bce869486ce710dfc9405da72f6e9c55",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/patched_8aac9b32f076443bb56b733e3c85f27d/runner.raw": "68de0aa77d2ce9d3ecf2ffe03461e0b709079f152804f6bdce5cdee42c3deee4",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/patched_8aac9b32f076443bb56b733e3c85f27d/stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/patched_8aac9b32f076443bb56b733e3c85f27d/stdout.raw": "68de0aa77d2ce9d3ecf2ffe03461e0b709079f152804f6bdce5cdee42c3deee4",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/events.jsonl": "4c2e48f74150bf5100a155fe67888c87b4e77a740fffc2057319f2ebee91d37a",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/runner.raw": "0612a6cf6c6dfef6c22aa2fb80dd652a993d9e696c6d285bb3fa0367b187356a",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/stdout.raw": "0612a6cf6c6dfef6c22aa2fb80dd652a993d9e696c6d285bb3fa0367b187356a",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/events.jsonl": "5be913ea041f8fdb971dfba6612176a4a5e8a809cd0125c51628df3987a575d0",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/runner.raw": "8ea233d5ce4e641c25b0ce95bc42f09016e29d0b6bf71a81764f695150a45b54",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/stdout.raw": "8ea233d5ce4e641c25b0ce95bc42f09016e29d0b6bf71a81764f695150a45b54",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/raw/base_9ebb49b558484cc2bf502c0c45e06ebf/events.jsonl": "5aac7dd03ced42cf5e3e0afd33effb92e3893a593aab251acf2b4b1efe87cfb6",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/raw/base_9ebb49b558484cc2bf502c0c45e06ebf/runner.raw": "76ae790d87e6f9492b9e06ebbaa50591e4755d23844c80fa1a85145f0bd7681b",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/raw/base_9ebb49b558484cc2bf502c0c45e06ebf/stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/raw/base_9ebb49b558484cc2bf502c0c45e06ebf/stdout.raw": "76ae790d87e6f9492b9e06ebbaa50591e4755d23844c80fa1a85145f0bd7681b",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/raw/patched_9304e52de7e748c2817a9d6f61192cd8/events.jsonl": "dd4bc7f71440970c7cdab209ba7e5a3544f9074f83b5cc0f2dc66a875601a3fd",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/raw/patched_9304e52de7e748c2817a9d6f61192cd8/runner.raw": "eebe545a70052ee9b1981d120c6b180233379b21e92c94a59891d6ccdade97ed",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/raw/patched_9304e52de7e748c2817a9d6f61192cd8/stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/raw/patched_9304e52de7e748c2817a9d6f61192cd8/stdout.raw": "eebe545a70052ee9b1981d120c6b180233379b21e92c94a59891d6ccdade97ed"
+  },
+  "categories_added_after_phase1_inspection": [
+    "E_SKIPPED",
+    "F_ALREADY_DETECTED"
+  ],
+  "containers_started": 0,
+  "followup_answers": {
+    "django_candidate_changed_files": [
+      "django/views/generic/base.py"
+    ],
+    "django_candidate_patch_sha256": "69181c9a98281a325159813f1b8a53aa13bf3dd5bb8bd375894c1d344a9cdc85",
+    "django_other_requested_module": "django.test.runner",
+    "django_target_module": "generic_views.test_base",
+    "scoring_lines": [
+      {
+        "line": 232,
+        "text": "            recovered = (cases and all(r.status in (TestStatus.PASSED, TestStatus.SKIPPED)"
+      },
+      {
+        "line": 234,
+        "text": "            if (result is None or result.status is TestStatus.NOT_RUN) and recovered:"
+      },
+      {
+        "line": 253,
+        "text": "                if selected and selected.status in (TestStatus.PASSED, TestStatus.SKIPPED):"
+      },
+      {
+        "line": 266,
+        "text": "    return \"INCOMPLETE\" if original == \"PASS\" and completeness != \"COMPLETE\" else original"
+      },
+      {
+        "line": 311,
+        "text": "    base_ok = base.status in (TestStatus.PASSED, TestStatus.SKIPPED)"
+      },
+      {
+        "line": 312,
+        "text": "    patched_ok = patched.status in (TestStatus.PASSED, TestStatus.SKIPPED)"
+      },
+      {
+        "line": 314,
+        "text": "    if base_ok and patched_ok:"
+      },
+      {
+        "line": 315,
+        "text": "        return Outcome.PASS"
+      }
+    ],
+    "scoring_source": "/home/sankalp/projects/cis695-v2-scg-paired-review-b030e50/src/reliability/verifier/regression.py",
+    "scoring_source_revision": "b030e508d849926b9a2260c70e1091adebfee993",
+    "scoring_source_sha256": "3ac8511b7e1e69de0e71dd5fbc78d7aa819a103fde465eaba0f395e275c61cf4",
+    "skip_mechanism_limit": "Full reason strings and marker/importorskip/version/platform mechanisms are not recoverable from these captures. No source archive or runtime probe was used.",
+    "tasks": {
+      "django__django-13297": {
+        "completeness": "INCOMPLETE_CONFIRMED",
+        "incompleteness_count": 1816,
+        "initial_capture_complete": [
+          false,
+          false
+        ],
+        "original_verdict": "PASS",
+        "verdict": "INCOMPLETE"
+      },
+      "matplotlib__matplotlib-25479": {
+        "completeness": "COMPLETE",
+        "incompleteness_count": 0,
+        "initial_capture_complete": [
+          true,
+          true
+        ],
+        "original_verdict": "FAIL",
+        "verdict": "FAIL"
+      },
+      "pylint-dev__pylint-6528": {
+        "completeness": "COMPLETE",
+        "incompleteness_count": 0,
+        "initial_capture_complete": [
+          true,
+          true
+        ],
+        "original_verdict": "PASS",
+        "verdict": "PASS"
+      },
+      "pylint-dev__pylint-7277": {
+        "completeness": "COMPLETE",
+        "incompleteness_count": 0,
+        "initial_capture_complete": [
+          true,
+          true
+        ],
+        "original_verdict": "PASS",
+        "verdict": "PASS"
+      }
+    }
+  },
+  "input_sha256": {
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/run_provenance.json": "1af66e4c035dcd5c0f2baaa5e3a6173ea89dedb03f27a81807ff4c1ece08f7c8",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/result.json": "50bf8d451a146875f0bf748b5dc937ddd35b8bea8bdb536b5b59a47bb90f3a75",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/result.json": "5e3baf395a0510c4d5b43e8753854313b788a753affcac4f8732e1cf81b7b9af",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/result.json": "e742e2a4e828bf51909509eb690b49613e25b35af26feefbfdd7a5c6d6269958",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/result.json": "2fe54fa09f160bba5ab0ceafabaf652f0746b476dc49fe23738b1b1ffc489009",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/paired_frozen/tasks.json": "532df6e8eebd9afa91592ef39aa28f12d8b905fcf3987c7698e06c8ad02ac625",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/paired_frozen/v2/patches/django__django-13297.patch": "69181c9a98281a325159813f1b8a53aa13bf3dd5bb8bd375894c1d344a9cdc85",
+    "/home/sankalp/projects/cis695-callgraph-typeprop/reports/callgraph_selection/typeprop_experiment/regression_validation/witnesses.csv": "099bb6f13654a0ec10901f21c02eb3169d33214332f0dabe49fd6a7d6a6cdc76",
+    "/home/sankalp/projects/cis695-v2-scg-paired-review-b030e50/src/reliability/verifier/regression.py": "3ac8511b7e1e69de0e71dd5fbc78d7aa819a103fde465eaba0f395e275c61cf4"
+  },
+  "local_evidence_manifest": "/home/sankalp/projects/cis695-artifacts/local_evidence_manifest_20261106.sha256",
+  "local_evidence_manifest_sha256": "11ad4bb7ea40b987d20bcbbb6afdd030314ad1379c2956dada570e7c1ff87642",
+  "native_verdicts_changed": false,
+  "records": [
+    {
+      "observations": [
+        {
+          "call_index": 0,
+          "evidence": {
+            "batch": 3,
+            "batch_byte_offsets": [
+              4731,
+              5654
+            ],
+            "batch_capture_lines": [
+              84,
+              99
+            ],
+            "batch_event_lines": [
+              5,
+              6
+            ],
+            "batch_returncode": 1,
+            "capture_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/base_b801df1e75a04136a31773e481cc700e/runner.raw",
+            "capture_sha256": "834ce7717516584ae7fd2a1a5f47b9911af450826321fb2b6dca597d2d21bec5",
+            "diagnostic": "TypeError: don't know how to make test from: <property object ...>",
+            "events_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/base_b801df1e75a04136a31773e481cc700e/events.jsonl",
+            "events_sha256": "0e142565af9bc6698fe50698295273bd3193a404a307f06d375d9f704e1aee05",
+            "exact_traceback": [
+              {
+                "line": 88,
+                "text": "Traceback (most recent call last):"
+              },
+              {
+                "line": 89,
+                "text": "  File \"tests/runtests.py\", line 577, in <module>"
+              },
+              {
+                "line": 90,
+                "text": "    options.start_at, options.start_after, options.pdb, options.buffer,"
+              },
+              {
+                "line": 91,
+                "text": "  File \"tests/runtests.py\", line 315, in django_tests"
+              },
+              {
+                "line": 92,
+                "text": "    extra_tests=extra_tests,"
+              },
+              {
+                "line": 93,
+                "text": "  File \"/testbed/django/test/runner.py\", line 705, in run_tests"
+              },
+              {
+                "line": 94,
+                "text": "    suite = self.build_suite(test_labels, extra_tests)"
+              },
+              {
+                "line": 95,
+                "text": "  File \"/testbed/django/test/runner.py\", line 562, in build_suite"
+              },
+              {
+                "line": 96,
+                "text": "    tests = self.test_loader.loadTestsFromName(label)"
+              },
+              {
+                "line": 97,
+                "text": "  File \"/opt/miniconda3/envs/testbed/lib/python3.6/unittest/loader.py\", line 213, in loadTestsFromName"
+              },
+              {
+                "line": 98,
+                "text": "    raise TypeError(\"don't know how to make test from: %s\" % obj)"
+              },
+              {
+                "line": 99,
+                "text": "TypeError: don't know how to make test from: <property object at 0x7f5340435728>"
+              }
+            ],
+            "limitation": "Loader property-object failure is observed; exact offending label is not identified by the traceback.",
+            "other_label_in_same_batch": "django.test.runner.RemoteTestResult.test_index",
+            "status_lines": [],
+            "target_label_in_start_event": "generic_views.test_base.DeprecationTests.test_template_params_warning"
+          },
+          "evidence_complete": false,
+          "parameter_admission_gap": false,
+          "phase": "base",
+          "raw_status": "NOT_OBSERVED",
+          "scope": "initial",
+          "selected_status": "not_run",
+          "timed_out": false
+        },
+        {
+          "call_index": 1,
+          "evidence": {
+            "batch": 3,
+            "batch_byte_offsets": [
+              4731,
+              5654
+            ],
+            "batch_capture_lines": [
+              84,
+              99
+            ],
+            "batch_event_lines": [
+              5,
+              6
+            ],
+            "batch_returncode": 1,
+            "capture_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/patched_b55fb9e09e194de3ae5bacaeac3bba5e/runner.raw",
+            "capture_sha256": "ac3f5e8f7f9375a11b01f8d7c95a79a84cec830fd8a82f0cdce70332c465d3cd",
+            "diagnostic": "TypeError: don't know how to make test from: <property object ...>",
+            "events_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/patched_b55fb9e09e194de3ae5bacaeac3bba5e/events.jsonl",
+            "events_sha256": "5c5c43fe8cf8284ab01a96e345f78607b0aec8e67e157dc701ecab8e070fd104",
+            "exact_traceback": [
+              {
+                "line": 88,
+                "text": "Traceback (most recent call last):"
+              },
+              {
+                "line": 89,
+                "text": "  File \"tests/runtests.py\", line 577, in <module>"
+              },
+              {
+                "line": 90,
+                "text": "    options.start_at, options.start_after, options.pdb, options.buffer,"
+              },
+              {
+                "line": 91,
+                "text": "  File \"tests/runtests.py\", line 315, in django_tests"
+              },
+              {
+                "line": 92,
+                "text": "    extra_tests=extra_tests,"
+              },
+              {
+                "line": 93,
+                "text": "  File \"/testbed/django/test/runner.py\", line 705, in run_tests"
+              },
+              {
+                "line": 94,
+                "text": "    suite = self.build_suite(test_labels, extra_tests)"
+              },
+              {
+                "line": 95,
+                "text": "  File \"/testbed/django/test/runner.py\", line 562, in build_suite"
+              },
+              {
+                "line": 96,
+                "text": "    tests = self.test_loader.loadTestsFromName(label)"
+              },
+              {
+                "line": 97,
+                "text": "  File \"/opt/miniconda3/envs/testbed/lib/python3.6/unittest/loader.py\", line 213, in loadTestsFromName"
+              },
+              {
+                "line": 98,
+                "text": "    raise TypeError(\"don't know how to make test from: %s\" % obj)"
+              },
+              {
+                "line": 99,
+                "text": "TypeError: don't know how to make test from: <property object at 0x7f9839134728>"
+              }
+            ],
+            "limitation": "Loader property-object failure is observed; exact offending label is not identified by the traceback.",
+            "other_label_in_same_batch": "django.test.runner.RemoteTestResult.test_index",
+            "status_lines": [],
+            "target_label_in_start_event": "generic_views.test_base.DeprecationTests.test_template_params_warning"
+          },
+          "evidence_complete": false,
+          "parameter_admission_gap": false,
+          "phase": "patched",
+          "raw_status": "NOT_OBSERVED",
+          "scope": "initial",
+          "selected_status": "not_run",
+          "timed_out": false
+        }
+      ],
+      "summary": {
+        "analysis_scope": "POST-HOC ANALYSIS ONLY",
+        "base_capture": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/base_b801df1e75a04136a31773e481cc700e/runner.raw",
+        "base_capture_lines": "[84, 99]",
+        "base_capture_sha256": "834ce7717516584ae7fd2a1a5f47b9911af450826321fb2b6dca597d2d21bec5",
+        "base_outcome": "NOT_RUN",
+        "base_raw_status": "NOT_OBSERVED",
+        "base_selected_status": "not_run",
+        "bucket": "A_NOT_REACHED",
+        "evidence_path:line": "base=/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/base_b801df1e75a04136a31773e481cc700e/runner.raw:88; patched=/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/patched_b55fb9e09e194de3ae5bacaeac3bba5e/runner.raw:88",
+        "instance_id": "django__django-13297",
+        "native_task_verdict": "INCOMPLETE",
+        "native_test_outcome": "NOT_RUN",
+        "patched_capture": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/patched_b55fb9e09e194de3ae5bacaeac3bba5e/runner.raw",
+        "patched_capture_lines": "[84, 99]",
+        "patched_capture_sha256": "ac3f5e8f7f9375a11b01f8d7c95a79a84cec830fd8a82f0cdce70332c465d3cd",
+        "patched_outcome": "NOT_RUN",
+        "patched_raw_status": "NOT_OBSERVED",
+        "patched_selected_status": "not_run",
+        "reason": "Requested in batch 3 on both trees; loader property-object TypeError aborted the batch. Not a timeout.",
+        "secondary_parameter_admission_gap": false,
+        "selected_by_v2": true,
+        "selected_family": "tests/generic_views/test_base.py::DeprecationTests::test_template_params_warning",
+        "skip_mechanism": "not applicable",
+        "skip_or_error_reason": "Both trees: TypeError: don't know how to make test from: <property object ...>; batch 3 loader abort",
+        "test_id": "tests/generic_views/test_base.py::DeprecationTests::test_template_params_warning",
+        "v2_task_completeness": "INCOMPLETE_CONFIRMED",
+        "v2_task_verdict": "INCOMPLETE"
+      },
+      "witness_inventory_record": {
+        "base_relation": "unchanged at base",
+        "evidence_tier": "official_existing_base_witness",
+        "instance_id": "django__django-13297",
+        "limitation": "Official harness failure; base identity unchanged does not establish a paired base-pass/candidate-fail in the historical V2 environment.",
+        "matching_id": "tests/generic_views/test_base.py::DeprecationTests::test_template_params_warning",
+        "source": "reports/ceiling_check/failing_tests.csv; reports/failure_analysis/extracted.json#oracle_record.p2p_failure",
+        "test_id": "test_template_params_warning (generic_views.test_base.DeprecationTests)",
+        "usable_for_existing_test_recall": "True"
+      }
+    },
+    {
+      "observations": [
+        {
+          "call_index": 0,
+          "evidence": {
+            "capture_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/base_0986cb841a714e86aa61570e9a0bdde0/runner.raw",
+            "capture_sha256": "392fce6eb69ca873bab507b49da10fec8453f5a24801de3cd2ca4633a7440db8",
+            "events_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/base_0986cb841a714e86aa61570e9a0bdde0/events.jsonl",
+            "events_sha256": "8c80eafbcfbb5836a3f4cf3855a2b2516bf1dacbcf2363270cad5868cd0fdaf0",
+            "status_lines": [
+              {
+                "line": 16,
+                "text": "lib/matplotlib/tests/test_colors.py::test_register_cmap PASSED           [ 29%]"
+              }
+            ]
+          },
+          "evidence_complete": true,
+          "parameter_admission_gap": false,
+          "phase": "base",
+          "raw_status": "passed",
+          "scope": "initial",
+          "selected_status": "passed",
+          "timed_out": false
+        },
+        {
+          "call_index": 1,
+          "evidence": {
+            "capture_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/patched_8aac9b32f076443bb56b733e3c85f27d/runner.raw",
+            "capture_sha256": "68de0aa77d2ce9d3ecf2ffe03461e0b709079f152804f6bdce5cdee42c3deee4",
+            "events_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/patched_8aac9b32f076443bb56b733e3c85f27d/events.jsonl",
+            "events_sha256": "acc69dab69e123ddf15fbe411bd45e60bce869486ce710dfc9405da72f6e9c55",
+            "status_lines": [
+              {
+                "line": 16,
+                "text": "lib/matplotlib/tests/test_colors.py::test_register_cmap FAILED           [ 29%]"
+              }
+            ]
+          },
+          "evidence_complete": true,
+          "parameter_admission_gap": false,
+          "phase": "patched",
+          "raw_status": "failed",
+          "scope": "initial",
+          "selected_status": "failed",
+          "timed_out": false
+        },
+        {
+          "call_index": 2,
+          "evidence": {
+            "capture_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/patched_000f83c49b2b441f997c59a85f10940a/runner.raw",
+            "capture_sha256": "79fe283f821e45544a34eaec6792f6aa50bf22295d8344d6030b7e212203e335",
+            "events_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/patched_000f83c49b2b441f997c59a85f10940a/events.jsonl",
+            "events_sha256": "7bb8c5afcef933b90a2ab6da201905f7171dab4c7295a66aaeca15d0d090627f",
+            "status_lines": [
+              {
+                "line": 8,
+                "text": "lib/matplotlib/tests/test_colors.py::test_register_cmap FAILED           [100%]"
+              }
+            ]
+          },
+          "evidence_complete": true,
+          "parameter_admission_gap": false,
+          "phase": "patched",
+          "raw_status": "failed",
+          "scope": "confirmation_or_base_recheck",
+          "selected_status": "failed",
+          "timed_out": false
+        },
+        {
+          "call_index": 3,
+          "evidence": {
+            "capture_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/base_4c2a4162b1004699b0425ac4f74cf7b4/runner.raw",
+            "capture_sha256": "b2f570fdf3d8afc4a35464a8e9304d91cfb842b12208d0dfa15c69fac4aa81d6",
+            "events_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/base_4c2a4162b1004699b0425ac4f74cf7b4/events.jsonl",
+            "events_sha256": "f95fbe4511de590aa8b17f7224f52db8178d248b4f850666b964fe1c9e46f719",
+            "status_lines": [
+              {
+                "line": 8,
+                "text": "lib/matplotlib/tests/test_colors.py::test_register_cmap PASSED           [100%]"
+              }
+            ]
+          },
+          "evidence_complete": true,
+          "parameter_admission_gap": false,
+          "phase": "base",
+          "raw_status": "passed",
+          "scope": "confirmation_or_base_recheck",
+          "selected_status": "passed",
+          "timed_out": false
+        }
+      ],
+      "summary": {
+        "analysis_scope": "POST-HOC ANALYSIS ONLY",
+        "base_capture": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/base_0986cb841a714e86aa61570e9a0bdde0/runner.raw",
+        "base_capture_lines": "[16]",
+        "base_capture_sha256": "392fce6eb69ca873bab507b49da10fec8453f5a24801de3cd2ca4633a7440db8",
+        "base_outcome": "PASSED",
+        "base_raw_status": "passed",
+        "base_selected_status": "passed",
+        "bucket": "F_ALREADY_DETECTED",
+        "evidence_path:line": "base=/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/base_0986cb841a714e86aa61570e9a0bdde0/runner.raw:16; patched=/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/patched_8aac9b32f076443bb56b733e3c85f27d/runner.raw:16",
+        "instance_id": "matplotlib__matplotlib-25479",
+        "native_task_verdict": "FAIL",
+        "native_test_outcome": "REGRESSION",
+        "patched_capture": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/patched_8aac9b32f076443bb56b733e3c85f27d/runner.raw",
+        "patched_capture_lines": "[16]",
+        "patched_capture_sha256": "68de0aa77d2ce9d3ecf2ffe03461e0b709079f152804f6bdce5cdee42c3deee4",
+        "patched_outcome": "FAILED",
+        "patched_raw_status": "failed",
+        "patched_selected_status": "failed",
+        "reason": "Native REGRESSION and task FAIL; patched confirmation failed and additional base observation passed.",
+        "secondary_parameter_admission_gap": false,
+        "selected_by_v2": true,
+        "selected_family": "lib/matplotlib/tests/test_colors.py::test_register_cmap",
+        "skip_mechanism": "not applicable",
+        "skip_or_error_reason": "already detected: base PASSED, patched FAILED, confirmation FAILED, base recheck PASSED",
+        "test_id": "lib/matplotlib/tests/test_colors.py::test_register_cmap",
+        "v2_task_completeness": "COMPLETE",
+        "v2_task_verdict": "FAIL"
+      },
+      "witness_inventory_record": {
+        "base_relation": "unchanged at base",
+        "evidence_tier": "official_existing_base_witness",
+        "instance_id": "matplotlib__matplotlib-25479",
+        "limitation": "Official harness failure; base identity unchanged does not establish a paired base-pass/candidate-fail in the historical V2 environment.",
+        "matching_id": "lib/matplotlib/tests/test_colors.py::test_register_cmap",
+        "source": "reports/ceiling_check/failing_tests.csv; reports/failure_analysis/extracted.json#oracle_record.p2p_failure",
+        "test_id": "lib/matplotlib/tests/test_colors.py::test_register_cmap",
+        "usable_for_existing_test_recall": "True"
+      }
+    },
+    {
+      "observations": [
+        {
+          "call_index": 0,
+          "evidence": {
+            "capture_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/runner.raw",
+            "capture_sha256": "0612a6cf6c6dfef6c22aa2fb80dd652a993d9e696c6d285bb3fa0367b187356a",
+            "captured_skip_reason": null,
+            "events_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/events.jsonl",
+            "events_sha256": "4c2e48f74150bf5100a155fe67888c87b4e77a740fffc2057319f2ebee91d37a",
+            "skip_mechanism": "UNKNOWN_FROM_CAPTURE: marker/importorskip/version/platform condition not recorded",
+            "skip_reason_complete": false,
+            "status_lines": [
+              {
+                "line": 405,
+                "text": "tests/lint/unittest_lint.py::test_custom_should_analyze_file SKIPPED     [ 70%]"
+              }
+            ]
+          },
+          "evidence_complete": true,
+          "parameter_admission_gap": false,
+          "phase": "base",
+          "raw_status": "skipped",
+          "scope": "initial",
+          "selected_status": "skipped",
+          "timed_out": false
+        },
+        {
+          "call_index": 1,
+          "evidence": {
+            "capture_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/runner.raw",
+            "capture_sha256": "8ea233d5ce4e641c25b0ce95bc42f09016e29d0b6bf71a81764f695150a45b54",
+            "captured_skip_reason": null,
+            "events_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/events.jsonl",
+            "events_sha256": "5be913ea041f8fdb971dfba6612176a4a5e8a809cd0125c51628df3987a575d0",
+            "skip_mechanism": "UNKNOWN_FROM_CAPTURE: marker/importorskip/version/platform condition not recorded",
+            "skip_reason_complete": false,
+            "status_lines": [
+              {
+                "line": 405,
+                "text": "tests/lint/unittest_lint.py::test_custom_should_analyze_file SKIPPED     [ 70%]"
+              }
+            ]
+          },
+          "evidence_complete": true,
+          "parameter_admission_gap": false,
+          "phase": "patched",
+          "raw_status": "skipped",
+          "scope": "initial",
+          "selected_status": "skipped",
+          "timed_out": false
+        }
+      ],
+      "summary": {
+        "analysis_scope": "POST-HOC ANALYSIS ONLY",
+        "base_capture": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/runner.raw",
+        "base_capture_lines": "[405]",
+        "base_capture_sha256": "0612a6cf6c6dfef6c22aa2fb80dd652a993d9e696c6d285bb3fa0367b187356a",
+        "base_outcome": "SKIPPED",
+        "base_raw_status": "skipped",
+        "base_selected_status": "skipped",
+        "bucket": "E_SKIPPED",
+        "evidence_path:line": "base=/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/runner.raw:405; patched=/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/runner.raw:405",
+        "instance_id": "pylint-dev__pylint-6528",
+        "native_task_verdict": "PASS",
+        "native_test_outcome": "PASS",
+        "patched_capture": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/runner.raw",
+        "patched_capture_lines": "[405]",
+        "patched_capture_sha256": "8ea233d5ce4e641c25b0ce95bc42f09016e29d0b6bf71a81764f695150a45b54",
+        "patched_outcome": "SKIPPED",
+        "patched_raw_status": "skipped",
+        "patched_selected_status": "skipped",
+        "reason": "Explicit SKIPPED on both trees; assertions were not exercised. Capture does not print a skip reason.",
+        "secondary_parameter_admission_gap": false,
+        "selected_by_v2": true,
+        "selected_family": "tests/lint/unittest_lint.py::test_custom_should_analyze_file",
+        "skip_mechanism": "UNKNOWN_FROM_CAPTURE: marker/importorskip/version/platform condition not recorded",
+        "skip_or_error_reason": "reason not printed",
+        "test_id": "tests/lint/unittest_lint.py::test_custom_should_analyze_file",
+        "v2_task_completeness": "COMPLETE",
+        "v2_task_verdict": "PASS"
+      },
+      "witness_inventory_record": {
+        "base_relation": "unchanged at base",
+        "evidence_tier": "official_existing_base_witness",
+        "instance_id": "pylint-dev__pylint-6528",
+        "limitation": "Official harness failure; base identity unchanged does not establish a paired base-pass/candidate-fail in the historical V2 environment.",
+        "matching_id": "tests/lint/unittest_lint.py::test_custom_should_analyze_file",
+        "source": "reports/ceiling_check/failing_tests.csv; reports/failure_analysis/extracted.json#oracle_record.p2p_failure",
+        "test_id": "tests/lint/unittest_lint.py::test_custom_should_analyze_file",
+        "usable_for_existing_test_recall": "True"
+      }
+    },
+    {
+      "observations": [
+        {
+          "call_index": 0,
+          "evidence": {
+            "capture_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/runner.raw",
+            "capture_sha256": "0612a6cf6c6dfef6c22aa2fb80dd652a993d9e696c6d285bb3fa0367b187356a",
+            "captured_skip_reason": "Need 2...",
+            "events_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/events.jsonl",
+            "events_sha256": "4c2e48f74150bf5100a155fe67888c87b4e77a740fffc2057319f2ebee91d37a",
+            "skip_mechanism": "UNKNOWN_FROM_CAPTURE: marker/importorskip/version/platform condition not recorded",
+            "skip_reason_complete": false,
+            "status_lines": [
+              {
+                "line": 406,
+                "text": "tests/lint/unittest_lint.py::test_multiprocessing[1] SKIPPED (Need 2...) [ 74%]"
+              }
+            ]
+          },
+          "evidence_complete": true,
+          "parameter_admission_gap": true,
+          "phase": "base",
+          "raw_status": "skipped",
+          "scope": "initial",
+          "selected_status": "not_run",
+          "timed_out": false
+        },
+        {
+          "call_index": 1,
+          "evidence": {
+            "capture_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/runner.raw",
+            "capture_sha256": "8ea233d5ce4e641c25b0ce95bc42f09016e29d0b6bf71a81764f695150a45b54",
+            "captured_skip_reason": "Need 2...",
+            "events_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/events.jsonl",
+            "events_sha256": "5be913ea041f8fdb971dfba6612176a4a5e8a809cd0125c51628df3987a575d0",
+            "skip_mechanism": "UNKNOWN_FROM_CAPTURE: marker/importorskip/version/platform condition not recorded",
+            "skip_reason_complete": false,
+            "status_lines": [
+              {
+                "line": 406,
+                "text": "tests/lint/unittest_lint.py::test_multiprocessing[1] SKIPPED (Need 2...) [ 74%]"
+              }
+            ]
+          },
+          "evidence_complete": true,
+          "parameter_admission_gap": true,
+          "phase": "patched",
+          "raw_status": "skipped",
+          "scope": "initial",
+          "selected_status": "not_run",
+          "timed_out": false
+        }
+      ],
+      "summary": {
+        "analysis_scope": "POST-HOC ANALYSIS ONLY",
+        "base_capture": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/runner.raw",
+        "base_capture_lines": "[406]",
+        "base_capture_sha256": "0612a6cf6c6dfef6c22aa2fb80dd652a993d9e696c6d285bb3fa0367b187356a",
+        "base_outcome": "NOT_RUN",
+        "base_raw_status": "skipped",
+        "base_selected_status": "not_run",
+        "bucket": "E_SKIPPED",
+        "evidence_path:line": "base=/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/runner.raw:406; patched=/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/runner.raw:406",
+        "instance_id": "pylint-dev__pylint-6528",
+        "native_task_verdict": "PASS",
+        "native_test_outcome": "NOT_RUN",
+        "patched_capture": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/runner.raw",
+        "patched_capture_lines": "[406]",
+        "patched_capture_sha256": "8ea233d5ce4e641c25b0ce95bc42f09016e29d0b6bf71a81764f695150a45b54",
+        "patched_outcome": "NOT_RUN",
+        "patched_raw_status": "skipped",
+        "patched_selected_status": "not_run",
+        "reason": "Explicit SKIPPED on both trees; assertions were not exercised. Capture prints a truncated 'Need 2...' reason; the complete condition is unproven. Concrete skipped parameter outcomes were also dropped from bare-family admission (secondary B-type gap).",
+        "secondary_parameter_admission_gap": true,
+        "selected_by_v2": true,
+        "selected_family": "tests/lint/unittest_lint.py::test_multiprocessing",
+        "skip_mechanism": "UNKNOWN_FROM_CAPTURE: marker/importorskip/version/platform condition not recorded",
+        "skip_or_error_reason": "Need 2...",
+        "test_id": "tests/lint/unittest_lint.py::test_multiprocessing[1]",
+        "v2_task_completeness": "COMPLETE",
+        "v2_task_verdict": "PASS"
+      },
+      "witness_inventory_record": {
+        "base_relation": "unchanged at base",
+        "evidence_tier": "official_existing_base_witness",
+        "instance_id": "pylint-dev__pylint-6528",
+        "limitation": "Official harness failure; base identity unchanged does not establish a paired base-pass/candidate-fail in the historical V2 environment.",
+        "matching_id": "tests/lint/unittest_lint.py::test_multiprocessing[1]",
+        "source": "reports/ceiling_check/failing_tests.csv; reports/failure_analysis/extracted.json#oracle_record.p2p_failure",
+        "test_id": "tests/lint/unittest_lint.py::test_multiprocessing[1]",
+        "usable_for_existing_test_recall": "True"
+      }
+    },
+    {
+      "observations": [
+        {
+          "call_index": 0,
+          "evidence": {
+            "capture_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/runner.raw",
+            "capture_sha256": "0612a6cf6c6dfef6c22aa2fb80dd652a993d9e696c6d285bb3fa0367b187356a",
+            "captured_skip_reason": "Need 2...",
+            "events_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/events.jsonl",
+            "events_sha256": "4c2e48f74150bf5100a155fe67888c87b4e77a740fffc2057319f2ebee91d37a",
+            "skip_mechanism": "UNKNOWN_FROM_CAPTURE: marker/importorskip/version/platform condition not recorded",
+            "skip_reason_complete": false,
+            "status_lines": [
+              {
+                "line": 407,
+                "text": "tests/lint/unittest_lint.py::test_multiprocessing[2] SKIPPED (Need 2...) [ 77%]"
+              }
+            ]
+          },
+          "evidence_complete": true,
+          "parameter_admission_gap": true,
+          "phase": "base",
+          "raw_status": "skipped",
+          "scope": "initial",
+          "selected_status": "not_run",
+          "timed_out": false
+        },
+        {
+          "call_index": 1,
+          "evidence": {
+            "capture_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/runner.raw",
+            "capture_sha256": "8ea233d5ce4e641c25b0ce95bc42f09016e29d0b6bf71a81764f695150a45b54",
+            "captured_skip_reason": "Need 2...",
+            "events_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/events.jsonl",
+            "events_sha256": "5be913ea041f8fdb971dfba6612176a4a5e8a809cd0125c51628df3987a575d0",
+            "skip_mechanism": "UNKNOWN_FROM_CAPTURE: marker/importorskip/version/platform condition not recorded",
+            "skip_reason_complete": false,
+            "status_lines": [
+              {
+                "line": 407,
+                "text": "tests/lint/unittest_lint.py::test_multiprocessing[2] SKIPPED (Need 2...) [ 77%]"
+              }
+            ]
+          },
+          "evidence_complete": true,
+          "parameter_admission_gap": true,
+          "phase": "patched",
+          "raw_status": "skipped",
+          "scope": "initial",
+          "selected_status": "not_run",
+          "timed_out": false
+        }
+      ],
+      "summary": {
+        "analysis_scope": "POST-HOC ANALYSIS ONLY",
+        "base_capture": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/runner.raw",
+        "base_capture_lines": "[407]",
+        "base_capture_sha256": "0612a6cf6c6dfef6c22aa2fb80dd652a993d9e696c6d285bb3fa0367b187356a",
+        "base_outcome": "NOT_RUN",
+        "base_raw_status": "skipped",
+        "base_selected_status": "not_run",
+        "bucket": "E_SKIPPED",
+        "evidence_path:line": "base=/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/runner.raw:407; patched=/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/runner.raw:407",
+        "instance_id": "pylint-dev__pylint-6528",
+        "native_task_verdict": "PASS",
+        "native_test_outcome": "NOT_RUN",
+        "patched_capture": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/runner.raw",
+        "patched_capture_lines": "[407]",
+        "patched_capture_sha256": "8ea233d5ce4e641c25b0ce95bc42f09016e29d0b6bf71a81764f695150a45b54",
+        "patched_outcome": "NOT_RUN",
+        "patched_raw_status": "skipped",
+        "patched_selected_status": "not_run",
+        "reason": "Explicit SKIPPED on both trees; assertions were not exercised. Capture prints a truncated 'Need 2...' reason; the complete condition is unproven. Concrete skipped parameter outcomes were also dropped from bare-family admission (secondary B-type gap).",
+        "secondary_parameter_admission_gap": true,
+        "selected_by_v2": true,
+        "selected_family": "tests/lint/unittest_lint.py::test_multiprocessing",
+        "skip_mechanism": "UNKNOWN_FROM_CAPTURE: marker/importorskip/version/platform condition not recorded",
+        "skip_or_error_reason": "Need 2...",
+        "test_id": "tests/lint/unittest_lint.py::test_multiprocessing[2]",
+        "v2_task_completeness": "COMPLETE",
+        "v2_task_verdict": "PASS"
+      },
+      "witness_inventory_record": {
+        "base_relation": "unchanged at base",
+        "evidence_tier": "official_existing_base_witness",
+        "instance_id": "pylint-dev__pylint-6528",
+        "limitation": "Official harness failure; base identity unchanged does not establish a paired base-pass/candidate-fail in the historical V2 environment.",
+        "matching_id": "tests/lint/unittest_lint.py::test_multiprocessing[2]",
+        "source": "reports/ceiling_check/failing_tests.csv; reports/failure_analysis/extracted.json#oracle_record.p2p_failure",
+        "test_id": "tests/lint/unittest_lint.py::test_multiprocessing[2]",
+        "usable_for_existing_test_recall": "True"
+      }
+    },
+    {
+      "observations": [
+        {
+          "call_index": 0,
+          "evidence": {
+            "capture_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/runner.raw",
+            "capture_sha256": "0612a6cf6c6dfef6c22aa2fb80dd652a993d9e696c6d285bb3fa0367b187356a",
+            "captured_skip_reason": "Need 2 or mo...",
+            "events_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/events.jsonl",
+            "events_sha256": "4c2e48f74150bf5100a155fe67888c87b4e77a740fffc2057319f2ebee91d37a",
+            "skip_mechanism": "UNKNOWN_FROM_CAPTURE: marker/importorskip/version/platform condition not recorded",
+            "skip_reason_complete": false,
+            "status_lines": [
+              {
+                "line": 630,
+                "text": "tests/test_self.py::TestRunTC::test_jobs_score SKIPPED (Need 2 or mo...) [ 11%]"
+              }
+            ]
+          },
+          "evidence_complete": true,
+          "parameter_admission_gap": false,
+          "phase": "base",
+          "raw_status": "skipped",
+          "scope": "initial",
+          "selected_status": "skipped",
+          "timed_out": false
+        },
+        {
+          "call_index": 1,
+          "evidence": {
+            "capture_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/runner.raw",
+            "capture_sha256": "8ea233d5ce4e641c25b0ce95bc42f09016e29d0b6bf71a81764f695150a45b54",
+            "captured_skip_reason": "Need 2 or mo...",
+            "events_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/events.jsonl",
+            "events_sha256": "5be913ea041f8fdb971dfba6612176a4a5e8a809cd0125c51628df3987a575d0",
+            "skip_mechanism": "UNKNOWN_FROM_CAPTURE: marker/importorskip/version/platform condition not recorded",
+            "skip_reason_complete": false,
+            "status_lines": [
+              {
+                "line": 630,
+                "text": "tests/test_self.py::TestRunTC::test_jobs_score SKIPPED (Need 2 or mo...) [ 11%]"
+              }
+            ]
+          },
+          "evidence_complete": true,
+          "parameter_admission_gap": false,
+          "phase": "patched",
+          "raw_status": "skipped",
+          "scope": "initial",
+          "selected_status": "skipped",
+          "timed_out": false
+        }
+      ],
+      "summary": {
+        "analysis_scope": "POST-HOC ANALYSIS ONLY",
+        "base_capture": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/runner.raw",
+        "base_capture_lines": "[630]",
+        "base_capture_sha256": "0612a6cf6c6dfef6c22aa2fb80dd652a993d9e696c6d285bb3fa0367b187356a",
+        "base_outcome": "SKIPPED",
+        "base_raw_status": "skipped",
+        "base_selected_status": "skipped",
+        "bucket": "E_SKIPPED",
+        "evidence_path:line": "base=/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/runner.raw:630; patched=/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/runner.raw:630",
+        "instance_id": "pylint-dev__pylint-6528",
+        "native_task_verdict": "PASS",
+        "native_test_outcome": "PASS",
+        "patched_capture": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/runner.raw",
+        "patched_capture_lines": "[630]",
+        "patched_capture_sha256": "8ea233d5ce4e641c25b0ce95bc42f09016e29d0b6bf71a81764f695150a45b54",
+        "patched_outcome": "SKIPPED",
+        "patched_raw_status": "skipped",
+        "patched_selected_status": "skipped",
+        "reason": "Explicit SKIPPED on both trees; assertions were not exercised. Capture prints a truncated 'Need 2...' reason; the complete condition is unproven.",
+        "secondary_parameter_admission_gap": false,
+        "selected_by_v2": true,
+        "selected_family": "tests/test_self.py::TestRunTC::test_jobs_score",
+        "skip_mechanism": "UNKNOWN_FROM_CAPTURE: marker/importorskip/version/platform condition not recorded",
+        "skip_or_error_reason": "Need 2 or mo...",
+        "test_id": "tests/test_self.py::TestRunTC::test_jobs_score",
+        "v2_task_completeness": "COMPLETE",
+        "v2_task_verdict": "PASS"
+      },
+      "witness_inventory_record": {
+        "base_relation": "unchanged at base",
+        "evidence_tier": "official_existing_base_witness",
+        "instance_id": "pylint-dev__pylint-6528",
+        "limitation": "Official harness failure; base identity unchanged does not establish a paired base-pass/candidate-fail in the historical V2 environment.",
+        "matching_id": "tests/test_self.py::TestRunTC::test_jobs_score",
+        "source": "reports/ceiling_check/failing_tests.csv; reports/failure_analysis/extracted.json#oracle_record.p2p_failure",
+        "test_id": "tests/test_self.py::TestRunTC::test_jobs_score",
+        "usable_for_existing_test_recall": "True"
+      }
+    },
+    {
+      "observations": [
+        {
+          "call_index": 0,
+          "evidence": {
+            "capture_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/raw/base_9ebb49b558484cc2bf502c0c45e06ebf/runner.raw",
+            "capture_sha256": "76ae790d87e6f9492b9e06ebbaa50591e4755d23844c80fa1a85145f0bd7681b",
+            "captured_skip_reason": "Need 2 or mo...",
+            "events_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/raw/base_9ebb49b558484cc2bf502c0c45e06ebf/events.jsonl",
+            "events_sha256": "5aac7dd03ced42cf5e3e0afd33effb92e3893a593aab251acf2b4b1efe87cfb6",
+            "skip_mechanism": "UNKNOWN_FROM_CAPTURE: marker/importorskip/version/platform condition not recorded",
+            "skip_reason_complete": false,
+            "status_lines": [
+              {
+                "line": 85,
+                "text": "tests/test_self.py::TestRunTC::test_jobs_score SKIPPED (Need 2 or mo...) [ 60%]"
+              }
+            ]
+          },
+          "evidence_complete": true,
+          "parameter_admission_gap": false,
+          "phase": "base",
+          "raw_status": "skipped",
+          "scope": "initial",
+          "selected_status": "skipped",
+          "timed_out": false
+        },
+        {
+          "call_index": 1,
+          "evidence": {
+            "capture_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/raw/patched_9304e52de7e748c2817a9d6f61192cd8/runner.raw",
+            "capture_sha256": "eebe545a70052ee9b1981d120c6b180233379b21e92c94a59891d6ccdade97ed",
+            "captured_skip_reason": "Need 2 or mo...",
+            "events_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/raw/patched_9304e52de7e748c2817a9d6f61192cd8/events.jsonl",
+            "events_sha256": "dd4bc7f71440970c7cdab209ba7e5a3544f9074f83b5cc0f2dc66a875601a3fd",
+            "skip_mechanism": "UNKNOWN_FROM_CAPTURE: marker/importorskip/version/platform condition not recorded",
+            "skip_reason_complete": false,
+            "status_lines": [
+              {
+                "line": 85,
+                "text": "tests/test_self.py::TestRunTC::test_jobs_score SKIPPED (Need 2 or mo...) [ 60%]"
+              }
+            ]
+          },
+          "evidence_complete": true,
+          "parameter_admission_gap": false,
+          "phase": "patched",
+          "raw_status": "skipped",
+          "scope": "initial",
+          "selected_status": "skipped",
+          "timed_out": false
+        }
+      ],
+      "summary": {
+        "analysis_scope": "POST-HOC ANALYSIS ONLY",
+        "base_capture": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/raw/base_9ebb49b558484cc2bf502c0c45e06ebf/runner.raw",
+        "base_capture_lines": "[85]",
+        "base_capture_sha256": "76ae790d87e6f9492b9e06ebbaa50591e4755d23844c80fa1a85145f0bd7681b",
+        "base_outcome": "SKIPPED",
+        "base_raw_status": "skipped",
+        "base_selected_status": "skipped",
+        "bucket": "E_SKIPPED",
+        "evidence_path:line": "base=/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/raw/base_9ebb49b558484cc2bf502c0c45e06ebf/runner.raw:85; patched=/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/raw/patched_9304e52de7e748c2817a9d6f61192cd8/runner.raw:85",
+        "instance_id": "pylint-dev__pylint-7277",
+        "native_task_verdict": "PASS",
+        "native_test_outcome": "PASS",
+        "patched_capture": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/raw/patched_9304e52de7e748c2817a9d6f61192cd8/runner.raw",
+        "patched_capture_lines": "[85]",
+        "patched_capture_sha256": "eebe545a70052ee9b1981d120c6b180233379b21e92c94a59891d6ccdade97ed",
+        "patched_outcome": "SKIPPED",
+        "patched_raw_status": "skipped",
+        "patched_selected_status": "skipped",
+        "reason": "Explicit SKIPPED on both trees; assertions were not exercised. Capture prints a truncated 'Need 2...' reason; the complete condition is unproven.",
+        "secondary_parameter_admission_gap": false,
+        "selected_by_v2": true,
+        "selected_family": "tests/test_self.py::TestRunTC::test_jobs_score",
+        "skip_mechanism": "UNKNOWN_FROM_CAPTURE: marker/importorskip/version/platform condition not recorded",
+        "skip_or_error_reason": "Need 2 or mo...",
+        "test_id": "tests/test_self.py::TestRunTC::test_jobs_score",
+        "v2_task_completeness": "COMPLETE",
+        "v2_task_verdict": "PASS"
+      },
+      "witness_inventory_record": {
+        "base_relation": "unchanged at base",
+        "evidence_tier": "official_existing_base_witness",
+        "instance_id": "pylint-dev__pylint-7277",
+        "limitation": "Official harness failure; base identity unchanged does not establish a paired base-pass/candidate-fail in the historical V2 environment.",
+        "matching_id": "tests/test_self.py::TestRunTC::test_jobs_score",
+        "source": "reports/ceiling_check/failing_tests.csv; reports/failure_analysis/extracted.json#oracle_record.p2p_failure",
+        "test_id": "tests/test_self.py::TestRunTC::test_jobs_score",
+        "usable_for_existing_test_recall": "True"
+      }
+    }
+  ],
+  "verified_captures": 40,
+  "witness_source_revision": "e1a3ed1c74fd304493c3fe3811de755af77e306c",
+  "witness_source_sha256": "099bb6f13654a0ec10901f21c02eb3169d33214332f0dabe49fd6a7d6a6cdc76"
+}
