@@ -1,0 +1,94 @@
+[
+  {
+    "instance_id": "django__django-12209",
+    "correctness": "right",
+    "test_id": "tests/basic/tests.py::ModelInstanceCreationTests::test_save_primary_with_default",
+    "phase": "production patched confirmation",
+    "raw_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-12209/v2/raw/patched_66eebafe27ca4379b1b7dfcf136d11b9/runner.raw",
+    "diagnostic_excerpt": [
+      "FAIL: test_save_primary_with_default (basic.tests.ModelInstanceCreationTests)",
+      "AssertionError: 2 != 1 : 2 queries executed, 1 expected"
+    ]
+  },
+  {
+    "instance_id": "django__django-14140",
+    "correctness": "right",
+    "test_id": "tests/queries/test_q.py::QTests::test_deconstruct",
+    "phase": "production patched confirmation",
+    "raw_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-14140/v2/raw/patched_1f317103632e4c779e75d8166eb1fd8d/runner.raw",
+    "diagnostic_excerpt": [
+      "FAIL: test_deconstruct (queries.test_q.QTests)",
+      "AssertionError: Tuples differ: (('price__gt', F(discounted_price)),) != ()",
+      "FAIL: test_deconstruct_negated (queries.test_q.QTests)",
+      "AssertionError: Tuples differ: (('price__gt', F(discounted_price)),) != ()"
+    ]
+  },
+  {
+    "instance_id": "django__django-14140",
+    "correctness": "right",
+    "test_id": "tests/queries/test_q.py::QTests::test_deconstruct_negated",
+    "phase": "production patched confirmation",
+    "raw_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-14140/v2/raw/patched_1f317103632e4c779e75d8166eb1fd8d/runner.raw",
+    "diagnostic_excerpt": [
+      "FAIL: test_deconstruct (queries.test_q.QTests)",
+      "AssertionError: Tuples differ: (('price__gt', F(discounted_price)),) != ()",
+      "FAIL: test_deconstruct_negated (queries.test_q.QTests)",
+      "AssertionError: Tuples differ: (('price__gt', F(discounted_price)),) != ()"
+    ]
+  },
+  {
+    "instance_id": "django__django-14631",
+    "correctness": "right",
+    "test_id": "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled",
+    "phase": "production patched confirmation",
+    "raw_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-14631/v2/raw/patched_a612b68aebdc47b68d75b6ee28cdca08/runner.raw",
+    "diagnostic_excerpt": [
+      "FAIL: test_datetime_clean_initial_callable_disabled (forms_tests.tests.test_forms.FormsTestCase)",
+      "AssertionError: {'dt': datetime.datetime(2006, 10, 25, 14, 30, 45)} != {'dt': datetime.datetime(2006, 10, 25, 14, 30, 45, 123456)}"
+    ]
+  },
+  {
+    "instance_id": "matplotlib__matplotlib-25479",
+    "correctness": "wrong",
+    "test_id": "lib/matplotlib/tests/test_colors.py::test_register_cmap",
+    "phase": "production patched confirmation",
+    "raw_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-25479/v2/raw/patched_000f83c49b2b441f997c59a85f10940a/runner.raw",
+    "diagnostic_excerpt": [
+      ">       assert mpl.colormaps[target] == new_cm",
+      "E       assert <matplotlib.colors.ListedColormap object at 0x7fc5d592b290> == <matplotlib.colors.ListedColormap object at 0x7fc5d59e8b90>",
+      "lib/matplotlib/tests/test_colors.py:83: AssertionError",
+      "FAILED lib/matplotlib/tests/test_colors.py::test_register_cmap - assert <matp..."
+    ]
+  },
+  {
+    "instance_id": "pytest-dev__pytest-5809",
+    "correctness": "right",
+    "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+    "phase": "production patched confirmation",
+    "raw_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pytest-dev__pytest-5809/v2/raw/patched_9d5e82be2a494872bc561424a397f98f/runner.raw",
+    "diagnostic_excerpt": [
+      "        assert result == \"https://bpaste.net/show/3c0c6750bd\"",
+      "        assert len(mocked_urlopen) == 1",
+      "        assert type(data) is bytes",
+      "        assert url == \"https://bpaste.net\"",
+      ">       assert \"lexer=%s\" % lexer in data.decode()",
+      "E       AssertionError: assert ('lexer=%s' % 'python3') in 'code=full-paste-contents&lexer=text&expiry=1week'",
+      "E        +  where 'code=full-paste-contents&lexer=text&expiry=1week' = <built-in method decode of bytes object at 0x7f9d70035d50>()",
+      "E        +    where <built-in method decode of bytes object at 0x7f9d70035d50> = b'code=full-paste-contents&lexer=text&expiry=1week'.decode",
+      "testing/test_pastebin.py:131: AssertionError"
+    ]
+  },
+  {
+    "instance_id": "sphinx-doc__sphinx-10435",
+    "correctness": "right",
+    "test_id": "tests/test_build_latex.py::test_latex_code_role",
+    "phase": "production patched confirmation",
+    "raw_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/sphinx-doc__sphinx-10435/v2/raw/patched_1cea6c0c06274c93aef842092628c915/runner.raw",
+    "diagnostic_excerpt": [
+      ">       assert (r'Inline \\sphinxcode{\\sphinxupquote{' + '\\n' +",
+      "E       assert ((('Inline \\\\sphinxcode{\\\\sphinxupquote{' + '\\n') + '\\\\PYG{k}{def} \\\\PYG{n+nf}{foo}\\\\PYG{p}{(}\\\\PYG{l+m+mi}{1} \\\\PYG{o}{+} \\\\PYG{l+m+mi}{2} \\\\PYG{o}{+} \\\\PYG{k+kc}{None} \\\\PYG{o}{+} \\\\PYG{l+s+s2}{\\\\PYGZdq{}}\\\\PYG{l+s+s2}{abc}\\\\PYG{l+s+s2}{\\\\PYGZdq{}}\\\\PYG{p}{)}\\\\PYG{p}{:} \\\\PYG{k}{pass}') + '\\n}} code block') in '%% Generated by Sphinx.\\n\\\\def\\\\sphinxdocclass{report}\\n\\\\documentclass[letterpaper,10pt,english]{sphinxmanual}\\n\\\\ifdefined\\\\pdfpxdimen\\n   \\\\let\\\\sphinxpxdimen\\\\pdfpxdimen\\\\else\\\\newdimen\\\\sphinxpxdimen\\n\\\\fi \\\\sphinxpxdimen=.75bp\\\\relax\\n\\\\ifdefined\\\\pdfimageresolution\\n    \\\\pdfimageresolution= \\\\numexpr \\\\dimexpr1in\\\\relax/\\\\sphinxpxdimen\\\\relax\\n\\\\fi\\n%% let collapsible pdf bookmarks panel have high depth per default\\n\\\\PassOptionsToPackage{bookmarksdepth=5}{hyperref}\\n\\n\\\\PassOptionsToPackage{warn}{textcomp}\\n\\\\usepackage[utf8]{inputenc}\\n\\\\ifdefined\\\\DeclareUnicodeCharacter\\n% support both utf8 and utf8x syntaxes\\n  \\\\ifdefined\\\\DeclareUnicodeCharacterAsOptional\\n    \\\\def\\\\sphinxDUC#1{\\\\DeclareUnicodeCharacter{\"#1}}\\n  \\\\else\\n    \\\\let\\\\sphinxDUC\\\\DeclareUnicodeCharacter\\n  \\\\fi\\n  \\\\sphinxDUC{00A0}{\\\\nobreakspace}\\n  \\\\sphinxDUC{2500}{\\\\sphinxunichar{2500}}\\n  \\\\sphinxDUC{2502}{\\\\sphinxunichar{2502}}\\n  \\\\sphinxDUC{2514}{\\\\sphinxunichar{2514}}\\n  \\\\sphinxDUC{251C}{\\\\sphinxunichar{251C}}\\n  \\\\sphinxDUC{2572}{\\\\textbackslash}\\n\\\\fi\\n\\\\usepackage{cmap}\\n\\\\usepackage[T1]{fontenc}\\n\\\\usepackage{amsmath,amssymb,amstext}\\n\\\\usepackage{babel}\\n\\n\\n\\n\\\\usepackage{tgtermes}\\n\\\\...inxmessages}\\n\\n\\n\\n\\n\\\\title{Python}\\n\\\\date{Nov 06, 2026}\\n\\\\release{}\\n\\\\author{unknown}\\n\\\\newcommand{\\\\sphinxlogo}{\\\\vbox{}}\\n\\\\renewcommand{\\\\releasename}{}\\n\\\\makeindex\\n\\\\begin{document}\\n\\n\\\\ifdefined\\\\shorthandoff\\n  \\\\ifnum\\\\catcode`\\\\=\\\\string=\\\\active\\\\shorthandoff{=}\\\\fi\\n  \\\\ifnum\\\\catcode`\\\\\"=\\\\active\\\\shorthandoff{\"}\\\\fi\\n\\\\fi\\n\\n\\\\pagestyle{empty}\\n\\\\sphinxmaketitle\\n\\\\pagestyle{plain}\\n\\\\sphinxtableofcontents\\n\\\\pagestyle{normal}\\n\\\\phantomsection\\\\label{\\\\detokenize{index::doc}}\\n\\\\sphinxAtStartPar\\nInline \\\\sphinxcode{\\\\sphinxupquote{%\\n\\\\PYG{k}{def} \\\\PYG{n+nf}{foo}\\\\PYG{p}{(}\\\\PYG{l+m+mi}{1} \\\\PYG{o}{+} \\\\PYG{l+m+mi}{2} \\\\PYG{o}{+} \\\\PYG{k+kc}{None} \\\\PYG{o}{+} \\\\PYG{l+s+s2}{\\\\PYGZdq{}}\\\\PYG{l+s+s2}{abc}\\\\PYG{l+s+s2}{\\\\PYGZdq{}}\\\\PYG{p}{)}\\\\PYG{p}{:} \\\\PYG{k}{pass}%\\n}} code block\\n\\n\\\\begin{sphinxVerbatim}[commandchars=\\\\\\\\\\\\{\\\\}]\\n\\\\PYG{k}{def} \\\\PYG{n+nf}{foo}\\\\PYG{p}{(}\\\\PYG{l+m+mi}{1} \\\\PYG{o}{+} \\\\PYG{l+m+mi}{2} \\\\PYG{o}{+} \\\\PYG{k+kc}{None} \\\\PYG{o}{+} \\\\PYG{l+s+s2}{\\\\PYGZdq{}}\\\\PYG{l+s+s2}{abc}\\\\PYG{l+s+s2}{\\\\PYGZdq{}}\\\\PYG{p}{)}\\\\PYG{p}{:} \\\\PYG{k}{pass}\\n\\\\end{sphinxVerbatim}\\n\\n\\n\\n\\\\renewcommand{\\\\indexname}{Index}\\n\\\\printindex\\n\\\\end{document}'",
+      "tests/test_build_latex.py:1626: AssertionError",
+      "FAILED tests/test_build_latex.py::test_latex_code_role - assert ((('Inline \\\\..."
+    ]
+  }
+]

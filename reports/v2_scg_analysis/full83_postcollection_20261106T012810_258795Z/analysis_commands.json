@@ -1,0 +1,72 @@
+[
+  {
+    "PYTHONPATH": "/home/sankalp/projects/cis695-v2-scg-paired-review-b030e50/src",
+    "command": [
+      "/home/sankalp/projects/cis695-v2-scg-paired-review-b030e50/.venv/bin/python",
+      "-B",
+      "scripts/v2_scg_paired.py",
+      "summarize",
+      "--results",
+      "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results",
+      "--out",
+      "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_analysis/full83_postcollection_20261106T012810_258795Z/unlabeled_summary.json"
+    ],
+    "cwd": "/home/sankalp/projects/cis695-v2-scg-paired-review-b030e50",
+    "elapsed_s": 1.390858811999351,
+    "returncode": 0
+  },
+  {
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_analysis/full83_postcollection_20261106T012810_258795Z/prepare_posthoc_evaluation.py",
+      "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_analysis/full83_postcollection_20261106T012810_258795Z"
+    ],
+    "purpose": "Bind pinned labels and invoke existing labeled summary"
+  },
+  {
+    "PYTHONPATH": "/home/sankalp/projects/cis695-v2-scg-paired-review-b030e50/src",
+    "command": [
+      "/home/sankalp/projects/cis695-v2-scg-paired-review-b030e50/.venv/bin/python",
+      "-B",
+      "scripts/v2_scg_paired.py",
+      "summarize",
+      "--results",
+      "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results",
+      "--out",
+      "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_analysis/full83_postcollection_20261106T012810_258795Z/labeled_summary.json",
+      "--labels",
+      "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_analysis/full83_postcollection_20261106T012810_258795Z/correctness_sidecar.json",
+      "--witnesses",
+      "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_analysis/full83_postcollection_20261106T012810_258795Z/historical_witness_sidecar.json"
+    ],
+    "cwd": "/home/sankalp/projects/cis695-v2-scg-paired-review-b030e50",
+    "elapsed_s": 1.412574764000965,
+    "returncode": 0
+  },
+  {
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_analysis/full83_postcollection_20261106T012810_258795Z/analyze_completed.py",
+      "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_analysis/full83_postcollection_20261106T012810_258795Z"
+    ]
+  },
+  {
+    "PYTHONPATH": "unset",
+    "command": [
+      "/home/sankalp/projects/cis695-v2-scg-paired-review-b030e50/.venv/bin/python",
+      "-B",
+      "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_analysis/full83_postcollection_20261106T012810_258795Z/diagnostic_replays.py",
+      "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_analysis/full83_postcollection_20261106T012810_258795Z"
+    ]
+  },
+  {
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_analysis/full83_postcollection_20261106T012810_258795Z/finalize_analysis.py",
+      "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_analysis/full83_postcollection_20261106T012810_258795Z"
+    ]
+  }
+]

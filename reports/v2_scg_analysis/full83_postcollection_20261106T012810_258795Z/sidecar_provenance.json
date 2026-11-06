@@ -1,0 +1,61 @@
+{
+  "counts": {
+    "right": 69,
+    "wrong": 14
+  },
+  "label_mapping": {
+    "resolved": "right",
+    "unresolved": "wrong"
+  },
+  "label_source": "/home/sankalp/projects/cis695-agent-reliability/docs/results_100.csv",
+  "label_source_pinned_sha256": "89192cb27935c33b62204dbbc5ac9090e8577407e367ec347542ca7c9155cb66",
+  "label_source_working_sha256": "cd4f6ca4aa87c7b852cc6d2127c7d400f78829ae44b90b7972949e4c2e71997f",
+  "official_gold_test_lists_read_for_sidecars": false,
+  "patch_binding_manifest": "/home/sankalp/projects/cis695-agent-reliability/reports/callgraph_selection/amendment2_72ad21b/verified_patch_manifest.csv",
+  "patch_binding_manifest_sha256": "cbbbfffb5ca3d5deb0716044f050a3c44843bb4ee4f25635deabe2d335efdb5a",
+  "source_pinned_git_revision": "b030e508d849926b9a2260c70e1091adebfee993",
+  "source_run_aliases": [
+    {
+      "export_manifest_notes": "also_in main_50_a (DIFF_HASH)",
+      "export_source_run_raw": "rerun",
+      "instance_id": "matplotlib__matplotlib-20676",
+      "oracle": "unresolved",
+      "patch_sha256": "9240f7376d7530a0ec8d1f85948a277c2fcea18bf1c7696a93a503ba9f3684d1",
+      "source_run_final_csv": "main_2_rerun_mpl",
+      "source_run_frozen": "rerun"
+    },
+    {
+      "export_manifest_notes": "also_in main_50_b (DIFF_HASH)",
+      "export_source_run_raw": "rerun",
+      "instance_id": "sympy__sympy-17318",
+      "oracle": "unresolved",
+      "patch_sha256": "ec660195991c803d89ece67e457d400281458499814ad37f442047d29c570aff",
+      "source_run_final_csv": "main_3_rerun_infra",
+      "source_run_frozen": "rerun"
+    },
+    {
+      "export_manifest_notes": "also_in main_50_b (DIFF_HASH)",
+      "export_source_run_raw": "rerun",
+      "instance_id": "sympy__sympy-19783",
+      "oracle": "resolved",
+      "patch_sha256": "2f39638c2023f8a9b7e47816f9b3c52394773e749a2223766860a80d44ad26e2",
+      "source_run_final_csv": "main_3_rerun_infra",
+      "source_run_frozen": "rerun"
+    },
+    {
+      "export_manifest_notes": "also_in main_50_b (DIFF_HASH)",
+      "export_source_run_raw": "rerun",
+      "instance_id": "sympy__sympy-24562",
+      "oracle": "resolved",
+      "patch_sha256": "a32d6f46bb14412e947380e75305f3fc5b7cd6bdc4f7268832432c9cccf8b5ce",
+      "source_run_final_csv": "main_3_rerun_infra",
+      "source_run_frozen": "rerun"
+    }
+  ],
+  "unlabeled_summary_completed_first": true,
+  "witness_source": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/audit/known_witnesses_retained.json",
+  "witness_source_sha256": "df9f91ac987e3240a6a65985a0844eef189bf23ed07017971d0bef49bcaa3ff1",
+  "witness_tasks": 5,
+  "witnesses": 6,
+  "working_vs_git_difference": "CRLF only; pinned LF bytes are authoritative"
+}

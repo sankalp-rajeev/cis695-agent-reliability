@@ -43,3 +43,8 @@ reports/v2_discovery_cleanup/frozen_83/issues/*.txt -text whitespace=-blank-at-e
 reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/scientific_audit_20261105T180428_197888Z/selection_comparison.csv -text whitespace=cr-at-eol
 reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/pilot_20261105T183041_929325Z/execution_inventory.csv -text whitespace=cr-at-eol
 reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/post_pilot_review_20261105T185712_250018Z/parameter_exposure_tasks.csv -text whitespace=cr-at-eol
+
+# Preserve the original sealed full-83 analysis CSV bytes and hashes.
+reports/v2_scg_analysis/full83_postcollection_20261106T012810_258795Z/incorrect_patch_outcomes.csv -text whitespace=cr-at-eol
+reports/v2_scg_analysis/full83_postcollection_20261106T012810_258795Z/paired_dispositions.csv -text whitespace=cr-at-eol
+reports/v2_scg_analysis/full83_postcollection_20261106T012810_258795Z/task_arm_inventory.csv -text whitespace=cr-at-eol

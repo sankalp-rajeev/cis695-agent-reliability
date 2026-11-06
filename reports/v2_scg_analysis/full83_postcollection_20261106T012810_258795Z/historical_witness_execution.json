@@ -1,0 +1,320 @@
+[
+  {
+    "arm": "v2",
+    "confirmed_detection": true,
+    "correctness": "right",
+    "initial_observations": [
+      {
+        "patched": false,
+        "raw_matches": [
+          {
+            "duration_s": 0.0,
+            "message": "",
+            "status": "passed",
+            "test_id": "basic.tests.ModelInstanceCreationTests.test_save_primary_with_default"
+          }
+        ],
+        "selected_result": {
+          "duration_s": 0.0,
+          "message": "",
+          "status": "passed",
+          "test_id": "tests/basic/tests.py::ModelInstanceCreationTests::test_save_primary_with_default"
+        }
+      },
+      {
+        "patched": true,
+        "raw_matches": [
+          {
+            "duration_s": 0.0,
+            "message": "",
+            "status": "failed",
+            "test_id": "basic.tests.ModelInstanceCreationTests.test_save_primary_with_default"
+          }
+        ],
+        "selected_result": {
+          "duration_s": 0.0,
+          "message": "",
+          "status": "failed",
+          "test_id": "tests/basic/tests.py::ModelInstanceCreationTests::test_save_primary_with_default"
+        }
+      }
+    ],
+    "instance_id": "django__django-12209",
+    "selected": true,
+    "test_id": "tests/basic/tests.py::ModelInstanceCreationTests::test_save_primary_with_default"
+  },
+  {
+    "arm": "scg",
+    "confirmed_detection": false,
+    "correctness": "right",
+    "initial_observations": [],
+    "instance_id": "django__django-12209",
+    "selected": false,
+    "test_id": "tests/basic/tests.py::ModelInstanceCreationTests::test_save_primary_with_default"
+  },
+  {
+    "arm": "v2",
+    "confirmed_detection": true,
+    "correctness": "right",
+    "initial_observations": [
+      {
+        "patched": false,
+        "raw_matches": [
+          {
+            "duration_s": 0.0,
+            "message": "",
+            "status": "passed",
+            "test_id": "queries.test_q.QTests.test_deconstruct"
+          }
+        ],
+        "selected_result": {
+          "duration_s": 0.0,
+          "message": "",
+          "status": "passed",
+          "test_id": "tests/queries/test_q.py::QTests::test_deconstruct"
+        }
+      },
+      {
+        "patched": true,
+        "raw_matches": [
+          {
+            "duration_s": 0.0,
+            "message": "",
+            "status": "failed",
+            "test_id": "queries.test_q.QTests.test_deconstruct"
+          }
+        ],
+        "selected_result": {
+          "duration_s": 0.0,
+          "message": "",
+          "status": "failed",
+          "test_id": "tests/queries/test_q.py::QTests::test_deconstruct"
+        }
+      }
+    ],
+    "instance_id": "django__django-14140",
+    "selected": true,
+    "test_id": "tests/queries/test_q.py::QTests::test_deconstruct"
+  },
+  {
+    "arm": "v2",
+    "confirmed_detection": true,
+    "correctness": "right",
+    "initial_observations": [
+      {
+        "patched": false,
+        "raw_matches": [
+          {
+            "duration_s": 0.0,
+            "message": "",
+            "status": "passed",
+            "test_id": "queries.test_q.QTests.test_deconstruct_negated"
+          }
+        ],
+        "selected_result": {
+          "duration_s": 0.0,
+          "message": "",
+          "status": "passed",
+          "test_id": "tests/queries/test_q.py::QTests::test_deconstruct_negated"
+        }
+      },
+      {
+        "patched": true,
+        "raw_matches": [
+          {
+            "duration_s": 0.0,
+            "message": "",
+            "status": "failed",
+            "test_id": "queries.test_q.QTests.test_deconstruct_negated"
+          }
+        ],
+        "selected_result": {
+          "duration_s": 0.0,
+          "message": "",
+          "status": "failed",
+          "test_id": "tests/queries/test_q.py::QTests::test_deconstruct_negated"
+        }
+      }
+    ],
+    "instance_id": "django__django-14140",
+    "selected": true,
+    "test_id": "tests/queries/test_q.py::QTests::test_deconstruct_negated"
+  },
+  {
+    "arm": "scg",
+    "confirmed_detection": false,
+    "correctness": "right",
+    "initial_observations": [],
+    "instance_id": "django__django-14140",
+    "selected": false,
+    "test_id": "tests/queries/test_q.py::QTests::test_deconstruct"
+  },
+  {
+    "arm": "scg",
+    "confirmed_detection": false,
+    "correctness": "right",
+    "initial_observations": [],
+    "instance_id": "django__django-14140",
+    "selected": false,
+    "test_id": "tests/queries/test_q.py::QTests::test_deconstruct_negated"
+  },
+  {
+    "arm": "v2",
+    "confirmed_detection": true,
+    "correctness": "right",
+    "initial_observations": [
+      {
+        "patched": false,
+        "raw_matches": [
+          {
+            "duration_s": 0.0,
+            "message": "",
+            "status": "passed",
+            "test_id": "forms_tests.tests.test_forms.FormsTestCase.test_datetime_clean_initial_callable_disabled"
+          }
+        ],
+        "selected_result": {
+          "duration_s": 0.0,
+          "message": "",
+          "status": "passed",
+          "test_id": "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled"
+        }
+      },
+      {
+        "patched": true,
+        "raw_matches": [
+          {
+            "duration_s": 0.0,
+            "message": "",
+            "status": "failed",
+            "test_id": "forms_tests.tests.test_forms.FormsTestCase.test_datetime_clean_initial_callable_disabled"
+          }
+        ],
+        "selected_result": {
+          "duration_s": 0.0,
+          "message": "",
+          "status": "failed",
+          "test_id": "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled"
+        }
+      }
+    ],
+    "instance_id": "django__django-14631",
+    "selected": true,
+    "test_id": "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled"
+  },
+  {
+    "arm": "scg",
+    "confirmed_detection": false,
+    "correctness": "right",
+    "initial_observations": [],
+    "instance_id": "django__django-14631",
+    "selected": false,
+    "test_id": "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled"
+  },
+  {
+    "arm": "v2",
+    "confirmed_detection": true,
+    "correctness": "right",
+    "initial_observations": [
+      {
+        "patched": false,
+        "raw_matches": [
+          {
+            "duration_s": 0.0,
+            "message": "",
+            "status": "passed",
+            "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+          }
+        ],
+        "selected_result": {
+          "duration_s": 0.0,
+          "message": "",
+          "status": "passed",
+          "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+        }
+      },
+      {
+        "patched": true,
+        "raw_matches": [
+          {
+            "duration_s": 0.0,
+            "message": "",
+            "status": "failed",
+            "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+          }
+        ],
+        "selected_result": {
+          "duration_s": 0.0,
+          "message": "",
+          "status": "failed",
+          "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+        }
+      }
+    ],
+    "instance_id": "pytest-dev__pytest-5809",
+    "selected": true,
+    "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+  },
+  {
+    "arm": "scg",
+    "confirmed_detection": false,
+    "correctness": "right",
+    "initial_observations": [],
+    "instance_id": "pytest-dev__pytest-5809",
+    "selected": false,
+    "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+  },
+  {
+    "arm": "v2",
+    "confirmed_detection": true,
+    "correctness": "right",
+    "initial_observations": [
+      {
+        "patched": false,
+        "raw_matches": [
+          {
+            "duration_s": 0.0,
+            "message": "",
+            "status": "passed",
+            "test_id": "tests/test_build_latex.py::test_latex_code_role"
+          }
+        ],
+        "selected_result": {
+          "duration_s": 0.0,
+          "message": "",
+          "status": "passed",
+          "test_id": "tests/test_build_latex.py::test_latex_code_role"
+        }
+      },
+      {
+        "patched": true,
+        "raw_matches": [
+          {
+            "duration_s": 0.0,
+            "message": "",
+            "status": "failed",
+            "test_id": "tests/test_build_latex.py::test_latex_code_role"
+          }
+        ],
+        "selected_result": {
+          "duration_s": 0.0,
+          "message": "",
+          "status": "failed",
+          "test_id": "tests/test_build_latex.py::test_latex_code_role"
+        }
+      }
+    ],
+    "instance_id": "sphinx-doc__sphinx-10435",
+    "selected": true,
+    "test_id": "tests/test_build_latex.py::test_latex_code_role"
+  },
+  {
+    "arm": "scg",
+    "confirmed_detection": false,
+    "correctness": "right",
+    "initial_observations": [],
+    "instance_id": "sphinx-doc__sphinx-10435",
+    "selected": false,
+    "test_id": "tests/test_build_latex.py::test_latex_code_role"
+  }
+]

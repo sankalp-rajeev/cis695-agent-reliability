@@ -1,0 +1,366 @@
+{
+  "all_task_reason_groups": {
+    "scg": {
+      "EVIDENCE_GAPS": 2,
+      "GRAPH_OR_MAPPING_DIAGNOSTICS_RECORDED": 32,
+      "GRAPH_PARTIAL": 27,
+      "INCOMPLETE_CAPTURE": 2,
+      "LEGACY_NOT_RUN": 8,
+      "NO_NATIVE_COUNTED_EXECUTIONS": 3,
+      "RECORDED_PARAMETER_FAMILY_ADMISSION_GAP": 4,
+      "RUNNER_ERROR": 2,
+      "SELECTED_IDS_WITHOUT_RAW_MAPPING": 2,
+      "UNAVAILABLE_SELECTION": 2,
+      "ZERO_SELECTION": 68
+    },
+    "v2": {
+      "EVIDENCE_GAPS": 48,
+      "INCOMPLETE_CAPTURE": 37,
+      "LEGACY_NOT_RUN": 68,
+      "NO_NATIVE_COUNTED_EXECUTIONS": 8,
+      "RAW_ID_MAPPING_ERROR": 23,
+      "RAW_TEST_ERROR": 11,
+      "RECORDED_PARAMETER_FAMILY_ADMISSION_GAP": 34,
+      "RECORDED_REGRESSION": 6,
+      "RUNNER_ERROR": 37,
+      "SELECTED_IDS_WITHOUT_RAW_MAPPING": 41,
+      "TIMEOUT": 2,
+      "ZERO_SELECTION": 5
+    }
+  },
+  "both_binary_task_ids": [
+    "django__django-15103",
+    "pydata__xarray-4629",
+    "pylint-dev__pylint-7277",
+    "scikit-learn__scikit-learn-14141"
+  ],
+  "coverage": {
+    "scg": {
+      "base": {
+        "admitted_selected_results": 103,
+        "calls": 13,
+        "mapped_selected_families": 129,
+        "raw_adapter_cases": 800,
+        "raw_mapped_but_not_admitted_families": 26,
+        "raw_status_passed": 785,
+        "raw_status_skipped": 15,
+        "raw_uniquely_mapped_cases": 800,
+        "raw_unmapped_or_ambiguous_cases": 0,
+        "requested": 131,
+        "selected_status_not_run": 28,
+        "selected_status_passed": 98,
+        "selected_status_skipped": 5,
+        "timed_out_calls": 0
+      },
+      "patched": {
+        "admitted_selected_results": 103,
+        "calls": 13,
+        "mapped_selected_families": 129,
+        "raw_adapter_cases": 800,
+        "raw_mapped_but_not_admitted_families": 26,
+        "raw_status_passed": 785,
+        "raw_status_skipped": 15,
+        "raw_uniquely_mapped_cases": 800,
+        "raw_unmapped_or_ambiguous_cases": 0,
+        "requested": 131,
+        "selected_status_not_run": 28,
+        "selected_status_passed": 98,
+        "selected_status_skipped": 5,
+        "timed_out_calls": 0
+      }
+    },
+    "v2": {
+      "base": {
+        "admitted_selected_results": 37767,
+        "calls": 78,
+        "mapped_selected_families": 49608,
+        "raw_adapter_cases": 68281,
+        "raw_mapped_but_not_admitted_families": 11841,
+        "raw_status_error": 94,
+        "raw_status_failed": 614,
+        "raw_status_passed": 64559,
+        "raw_status_skipped": 3014,
+        "raw_uniquely_mapped_cases": 68065,
+        "raw_unmapped_or_ambiguous_cases": 216,
+        "requested": 57682,
+        "selected_status_error": 20,
+        "selected_status_failed": 124,
+        "selected_status_not_run": 15589,
+        "selected_status_passed": 35623,
+        "selected_status_skipped": 2000,
+        "selected_status_timeout": 4326,
+        "timed_out_calls": 2
+      },
+      "patched": {
+        "admitted_selected_results": 37766,
+        "calls": 78,
+        "mapped_selected_families": 49608,
+        "raw_adapter_cases": 68286,
+        "raw_mapped_but_not_admitted_families": 11842,
+        "raw_status_error": 100,
+        "raw_status_failed": 545,
+        "raw_status_passed": 64627,
+        "raw_status_skipped": 3014,
+        "raw_uniquely_mapped_cases": 68068,
+        "raw_unmapped_or_ambiguous_cases": 218,
+        "requested": 57682,
+        "selected_status_error": 25,
+        "selected_status_failed": 66,
+        "selected_status_not_run": 15590,
+        "selected_status_passed": 35675,
+        "selected_status_skipped": 2000,
+        "selected_status_timeout": 4326,
+        "timed_out_calls": 2
+      },
+      "production_confirmation": {
+        "admitted_selected_results": 7,
+        "calls": 6,
+        "mapped_selected_families": 7,
+        "raw_adapter_cases": 8,
+        "raw_mapped_but_not_admitted_families": 0,
+        "raw_status_failed": 7,
+        "raw_status_passed": 1,
+        "raw_uniquely_mapped_cases": 7,
+        "raw_unmapped_or_ambiguous_cases": 1,
+        "requested": 7,
+        "selected_status_failed": 7,
+        "timed_out_calls": 0
+      },
+      "shadow_observation": {
+        "admitted_selected_results": 7,
+        "calls": 7,
+        "mapped_selected_families": 7,
+        "raw_adapter_cases": 7,
+        "raw_mapped_but_not_admitted_families": 0,
+        "raw_status_passed": 7,
+        "raw_uniquely_mapped_cases": 7,
+        "raw_unmapped_or_ambiguous_cases": 0,
+        "requested": 7,
+        "selected_status_passed": 7,
+        "timed_out_calls": 0
+      }
+    }
+  },
+  "incomplete_reasons": {
+    "scg": {
+      "original_signals": {
+        "PASS": 2
+      },
+      "overlapping_task_reason_counts": {
+        "EVIDENCE_GAPS": 2,
+        "EXPLICIT_PYTEST_NOT_FOUND": 1,
+        "INCOMPLETE_CAPTURE": 2,
+        "LEGACY_NOT_RUN": 2,
+        "RECORDED_PARAMETER_FAMILY_ADMISSION_GAP": 1,
+        "RUNNER_ERROR": 2,
+        "SELECTED_IDS_WITHOUT_RAW_MAPPING": 2
+      },
+      "task_ids": [
+        "matplotlib__matplotlib-23299",
+        "scikit-learn__scikit-learn-12585"
+      ],
+      "tasks": 2
+    },
+    "v2": {
+      "original_signals": {
+        "PASS": 39
+      },
+      "overlapping_task_reason_counts": {
+        "EVIDENCE_GAPS": 39,
+        "EXPLICIT_PYTEST_NOT_FOUND": 14,
+        "INCOMPLETE_CAPTURE": 28,
+        "LEGACY_NOT_RUN": 38,
+        "RAW_ID_MAPPING_ERROR": 20,
+        "RAW_TEST_ERROR": 9,
+        "RECORDED_PARAMETER_FAMILY_ADMISSION_GAP": 16,
+        "RUNNER_ERROR": 28,
+        "SELECTED_IDS_WITHOUT_RAW_MAPPING": 32,
+        "TIMEOUT": 1
+      },
+      "task_ids": [
+        "astropy__astropy-7606",
+        "django__django-10973",
+        "django__django-11095",
+        "django__django-11299",
+        "django__django-11820",
+        "django__django-13023",
+        "django__django-13158",
+        "django__django-13212",
+        "django__django-13297",
+        "django__django-13569",
+        "django__django-13786",
+        "django__django-13807",
+        "django__django-13820",
+        "django__django-15037",
+        "django__django-15278",
+        "django__django-15375",
+        "django__django-15499",
+        "django__django-15572",
+        "django__django-15930",
+        "django__django-16082",
+        "django__django-16136",
+        "django__django-16612",
+        "django__django-16631",
+        "matplotlib__matplotlib-20488",
+        "matplotlib__matplotlib-20676",
+        "matplotlib__matplotlib-22719",
+        "matplotlib__matplotlib-23476",
+        "mwaskom__seaborn-3069",
+        "pydata__xarray-6744",
+        "pylint-dev__pylint-4970",
+        "pytest-dev__pytest-10051",
+        "pytest-dev__pytest-5787",
+        "pytest-dev__pytest-6202",
+        "pytest-dev__pytest-7236",
+        "pytest-dev__pytest-7432",
+        "pytest-dev__pytest-7521",
+        "scikit-learn__scikit-learn-12585",
+        "scikit-learn__scikit-learn-14629",
+        "scikit-learn__scikit-learn-14894"
+      ],
+      "tasks": 39
+    }
+  },
+  "label_signals": {
+    "scg": {
+      "right": {
+        "INCOMPLETE": 1,
+        "NOT_AVAILABLE": 60,
+        "NO_VERDICT": 2,
+        "PASS": 6
+      },
+      "wrong": {
+        "INCOMPLETE": 1,
+        "NOT_AVAILABLE": 11,
+        "PASS": 2
+      }
+    },
+    "v2": {
+      "right": {
+        "FAIL": 5,
+        "INCOMPLETE": 33,
+        "NOT_AVAILABLE": 11,
+        "PASS": 20
+      },
+      "wrong": {
+        "FAIL": 1,
+        "INCOMPLETE": 6,
+        "NOT_AVAILABLE": 2,
+        "PASS": 5
+      }
+    }
+  },
+  "runtime_confirmed_bracket_admission_tasks": {
+    "scg": [
+      "matplotlib__matplotlib-25122",
+      "pydata__xarray-4629",
+      "pylint-dev__pylint-6528",
+      "scikit-learn__scikit-learn-12585"
+    ],
+    "v2": [
+      "astropy__astropy-7606",
+      "matplotlib__matplotlib-20488",
+      "matplotlib__matplotlib-20676",
+      "matplotlib__matplotlib-22719",
+      "matplotlib__matplotlib-22871",
+      "matplotlib__matplotlib-23299",
+      "matplotlib__matplotlib-23476",
+      "matplotlib__matplotlib-24026",
+      "matplotlib__matplotlib-24637",
+      "matplotlib__matplotlib-24970",
+      "matplotlib__matplotlib-25122",
+      "matplotlib__matplotlib-25287",
+      "matplotlib__matplotlib-25479",
+      "matplotlib__matplotlib-26291",
+      "mwaskom__seaborn-3069",
+      "pallets__flask-5014",
+      "pydata__xarray-4629",
+      "pydata__xarray-4695",
+      "pydata__xarray-6599",
+      "pydata__xarray-6744",
+      "pylint-dev__pylint-4970",
+      "pylint-dev__pylint-6528",
+      "pylint-dev__pylint-7277",
+      "pytest-dev__pytest-10051",
+      "pytest-dev__pytest-5787",
+      "pytest-dev__pytest-6202",
+      "pytest-dev__pytest-7236",
+      "pytest-dev__pytest-7432",
+      "pytest-dev__pytest-7521",
+      "scikit-learn__scikit-learn-10908",
+      "scikit-learn__scikit-learn-12585",
+      "scikit-learn__scikit-learn-14894",
+      "sphinx-doc__sphinx-10435",
+      "sphinx-doc__sphinx-10466"
+    ]
+  },
+  "scg_nonempty_graph_status": {
+    "complete": 8,
+    "partial": 5
+  },
+  "scg_nonempty_signals": {
+    "INCOMPLETE": 2,
+    "NOT_AVAILABLE": 3,
+    "PASS": 8
+  },
+  "scg_pass_where_v2_does_not_pass": [
+    {
+      "correctness": "right",
+      "graph_status": "complete",
+      "instance_id": "django__django-13820",
+      "scg_selected": 8,
+      "v2_selected": 262
+    },
+    {
+      "correctness": "wrong",
+      "graph_status": "partial",
+      "instance_id": "django__django-16631",
+      "scg_selected": 5,
+      "v2_selected": 478
+    },
+    {
+      "correctness": "right",
+      "graph_status": "partial",
+      "instance_id": "pylint-dev__pylint-4970",
+      "scg_selected": 16,
+      "v2_selected": 204
+    },
+    {
+      "correctness": "right",
+      "graph_status": "complete",
+      "instance_id": "scikit-learn__scikit-learn-14629",
+      "scg_selected": 10,
+      "v2_selected": 2789
+    }
+  ],
+  "summary_correctness_metrics": {
+    "scg": {
+      "binary_coverage": 0.0963855421686747,
+      "f1_all_labeled": 0.0,
+      "f1_binary": 0.0,
+      "false_negative_binary": 2,
+      "false_positive": 0,
+      "positive_prediction": "FAIL",
+      "precision": null,
+      "recall_all_labeled": 0.0,
+      "recall_binary": 0.0,
+      "target": "wrong patch",
+      "true_positive": 0,
+      "wrong_all": 14
+    },
+    "v2": {
+      "binary_coverage": 0.37349397590361444,
+      "f1_all_labeled": 0.1,
+      "f1_binary": 0.16666666666666666,
+      "false_negative_binary": 5,
+      "false_positive": 5,
+      "positive_prediction": "FAIL",
+      "precision": 0.16666666666666666,
+      "recall_all_labeled": 0.07142857142857142,
+      "recall_binary": 0.16666666666666666,
+      "target": "wrong patch",
+      "true_positive": 1,
+      "wrong_all": 14
+    }
+  }
+}

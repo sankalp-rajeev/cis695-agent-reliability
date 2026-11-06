@@ -1,0 +1,87 @@
+{
+  "arm_records_verified": 166,
+  "execution_error_or_environment_mismatch_records": [],
+  "frozen_artifacts_sealed_verified": 765,
+  "frozen_files_unchanged": true,
+  "image_heads_differing_from_dataset_base": 91,
+  "labels_read_during_collection": false,
+  "no_verdict_expected_abstentions": [
+    {
+      "execution_calls": 0,
+      "execution_status": "UNAVAILABLE_SELECTION",
+      "expected_preexecution_abstention": true,
+      "graph_failures": [],
+      "graph_status": "complete",
+      "instance_id": "django__django-13569",
+      "mapping": [
+        {
+          "base_definitions": [],
+          "base_path": "django/db/models/functions/math.py",
+          "candidate_definitions": [
+            {
+              "column": 4,
+              "depth": 1,
+              "end": 149,
+              "kind": "function",
+              "line": 148,
+              "name": "get_group_by_cols",
+              "qualname": "Random.get_group_by_cols",
+              "start": 148
+            }
+          ],
+          "change_kind": "added",
+          "definition_kind": "function",
+          "name": "get_group_by_cols",
+          "path": "django/db/models/functions/math.py",
+          "qualname": "Random.get_group_by_cols",
+          "reason": "definition_introduced_by_candidate",
+          "record_kind": "definition",
+          "status": "new_definition",
+          "targets": []
+        }
+      ],
+      "mapping_diagnostics": [],
+      "reason": "UNAVAILABLE_NO_RESOLVED_SEEDS"
+    },
+    {
+      "execution_calls": 0,
+      "execution_status": "UNAVAILABLE_SELECTION",
+      "expected_preexecution_abstention": true,
+      "graph_failures": [
+        {
+          "line": 11,
+          "message": "invalid decimal literal (tests_syntax_error.py, line 11)",
+          "path": "tests/test_runner_apps/tagged/tests_syntax_error.py",
+          "reason": "SyntaxError"
+        }
+      ],
+      "graph_status": "partial",
+      "instance_id": "django__django-16082",
+      "mapping": [],
+      "mapping_diagnostics": [
+        {
+          "added": [
+            {
+              "line": 536,
+              "text": "            Combinable.MOD,"
+            }
+          ],
+          "reason": "edits_outside_named_definitions",
+          "removed": []
+        }
+      ],
+      "reason": "UNAVAILABLE_NO_RESOLVED_SEEDS"
+    }
+  ],
+  "paired_tasks_verified": 83,
+  "plan_sha256": "12ccff62b99c493dba1eab49ccc53de5ad6da7638ef8529b881c4a472d8f2160",
+  "protocol_sha256": "2eaf8341274099cf4210674e6418a4b1e44ea2d0babb09a1c2243f77258c5153",
+  "raw_capture_hash_entries_verified": 780,
+  "raw_capture_unique_files_verified": 780,
+  "result_files_unchanged": true,
+  "results_sha256": "d290159d5ab466c5089dafbafc47332bb122b4f04584f991ca23fec0abcee941",
+  "runtime_import_trace_complete": false,
+  "runtime_source_checks_verified": 91,
+  "runtime_source_file_entries_verified": 1781,
+  "task_order_pairing_inputs_selections_and_images_verified": true
+}
