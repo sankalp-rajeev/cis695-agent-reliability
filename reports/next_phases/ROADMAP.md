@@ -104,6 +104,8 @@ git diff --cached --name-only | grep -E '\.jsonl$|\.patch$|^logs/|^runs/' && ech
 
 Stage paths explicitly (`git add <path>`), never `git add -A`.
 
+**After every phase:** update `reports/next_phases/PRESENTATION_NOTES.md` and its small chart CSV (at most 15 rows) with the phase status, headline, evidence example, caveat and result commit, then commit and push the notes before closing the phase. Keep planned thresholds distinct from observed results.
+
 ## Overview
 
 | Phase | What | New runs? | Est. effort | Depends on |
