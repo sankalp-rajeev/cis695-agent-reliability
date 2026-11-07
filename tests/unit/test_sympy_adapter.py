@@ -116,6 +116,12 @@ def fake_repo(tmp_path):
 from sympy.testing.runtests import SymPyTests
 assert '-C' in sys.argv and '--verbose' in sys.argv and '--no-subprocess' in sys.argv
 assert os.environ['SYMPY_USE_CACHE']=='no'
+assert os.environ['PYTHONWARNINGS']=='ignore::UserWarning,ignore::SyntaxWarning'
+import warnings
+with warnings.catch_warnings(record=True) as emitted:
+ warnings.warn('ignored user',UserWarning)
+ warnings.warn('ignored syntax',SyntaxWarning)
+ assert not emitted
 class Reporter:
  def root_dir(self,root):self.root=root
  def entering_filename(self,path,n):print(os.path.relpath(path,self.root)+'['+str(n)+']')

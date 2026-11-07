@@ -3,12 +3,18 @@
 # Runs in task images, including Python 3.6. The native test_file implementation
 # performs collection; matches(False) prevents test calls during collection.
 _SYMPY_PROGRAM = r'''
-import contextlib, importlib, inspect, io, json, os, re, runpy, sys, traceback
+import contextlib, importlib, inspect, io, json, os, re, runpy, sys, traceback, warnings
 mode, module = sys.argv[1:3]
 request = json.load(sys.stdin) if mode == "collect" else {"ids": sys.argv[3:]}
 identities = request["ids"]
 wanted = set(t.split("::", 1)[1] for t in identities if t.startswith(module + "::") and len(t.split("::")) == 2)
 os.environ["SYMPY_USE_CACHE"] = "no"
+# SWE-bench TEST_SYMPY sets this before bin/test starts. Apply it to this
+# interpreter too, before importing SymPy; setting the environment alone only
+# changes child interpreters. Do not suppress DeprecationWarning.
+os.environ["PYTHONWARNINGS"] = "ignore::UserWarning,ignore::SyntaxWarning"
+warnings.simplefilter("ignore", UserWarning)
+warnings.simplefilter("ignore", SyntaxWarning)
 sys.path.insert(0, os.getcwd())
 sys.path.insert(0, os.path.abspath("bin"))
 stream = io.StringIO()
