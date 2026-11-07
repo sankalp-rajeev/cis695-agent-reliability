@@ -188,6 +188,7 @@ These may use labels; the executor never changes in response:
 
 ## 6. Cost and stopping rule
 
+- **Concurrency:** serial (one container at a time), chosen so container contention cannot alter timing, timeouts or NOT_REACHED counts. Estimated 4.08-4.86 h plus confirmation runs; the 12 h stop rule applies.
 - **Engineering estimate:** 5–7 working days for fixes 0–8.
 - **Run estimate:** 3–8 h. Stop and report partial accounting at 12 h.
 - **One run only.** Any later executor change is a new version, reported as exploratory.
