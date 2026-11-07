@@ -1,0 +1,75 @@
+{
+  "task": {
+    "instance_id": "matplotlib__matplotlib-14623",
+    "repo": "matplotlib/matplotlib",
+    "runner": {
+      "evidence": "pytest.ini or conftest.py; pytest referenced in tox.ini",
+      "name": "pytest"
+    },
+    "image_id": "sha256:30368e1c136e8eded62e7229d134a132cabb4bb47b5a2c56e1d1e0dc5e9752b3",
+    "image_tag": "swebench/sweb.eval.x86_64.matplotlib_1776_matplotlib-14623:latest",
+    "base_commit": "d65c9ca20ddf81ef91199e6d819f9d3506ef477c",
+    "archive_sha256": "32d9e0ee89a2638b07416ab4a7cefe86bc9c285bba77849ab6e292bef507e87c",
+    "selection_sha256": "f9733c756fc530bb5269b8bc529e171ff136e1f917a761d5dd93c0ed574ad61d",
+    "patch_sha256": "90ca07500c28ff5020e5ee77bb1aa6ea61fcf6810bdfef3f43f81d9af384e262",
+    "base_expected_sha256": "08614e2cef4e0d6e0b56cbf155f4dfb265e9630571587ef5401acab34700d4f7",
+    "selected_ids": 0
+  },
+  "archive_path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-14623.tar",
+  "archive_tar_sha256": "32d9e0ee89a2638b07416ab4a7cefe86bc9c285bba77849ab6e292bef507e87c",
+  "file": "lib/matplotlib/_version.py",
+  "file_sha256": "a14e1304d76c35270dfc9f0051b507a81929417c7b79d9f503a6eee3d0e3af3a",
+  "file_bytes": 15799,
+  "gitattributes": {
+    "testbed/.gitattributes": "* text=auto\n*.svg binary\n*.svg linguist-language=true\nlib/matplotlib/_version.py export-subst\n"
+  },
+  "candidate_patch_sha256": "90ca07500c28ff5020e5ee77bb1aa6ea61fcf6810bdfef3f43f81d9af384e262",
+  "candidate_patch_headers": [
+    "diff --git a/lib/matplotlib/axes/_base.py b/lib/matplotlib/axes/_base.py",
+    "--- a/lib/matplotlib/axes/_base.py",
+    "+++ b/lib/matplotlib/axes/_base.py"
+  ],
+  "candidate_touches_file": false,
+  "completed_task_ids_from_file_presence_only": [
+    "astropy__astropy-13977",
+    "astropy__astropy-14365",
+    "astropy__astropy-14508",
+    "astropy__astropy-7606",
+    "django__django-10973",
+    "django__django-11095",
+    "django__django-11299",
+    "django__django-11820",
+    "django__django-12209",
+    "django__django-12965",
+    "django__django-13023",
+    "django__django-13033",
+    "django__django-13158",
+    "django__django-13212",
+    "django__django-13297",
+    "django__django-13569",
+    "django__django-13786",
+    "django__django-13807",
+    "django__django-13820",
+    "django__django-14140",
+    "django__django-14631",
+    "django__django-15037",
+    "django__django-15103",
+    "django__django-15278",
+    "django__django-15375",
+    "django__django-15499",
+    "django__django-15572",
+    "django__django-15930",
+    "django__django-16082",
+    "django__django-16136",
+    "django__django-16255",
+    "django__django-16315",
+    "django__django-16612",
+    "django__django-16631",
+    "django__django-16667"
+  ],
+  "completed_repositories": {
+    "astropy/astropy": 4,
+    "django/django": 31
+  },
+  "outcome_files_read": false
+}

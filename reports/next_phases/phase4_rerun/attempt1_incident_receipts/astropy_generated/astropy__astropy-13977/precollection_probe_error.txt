@@ -1,0 +1,15 @@
+{"task": "astropy__astropy-13977", "version_paths_in_startup_guard": {"astropy/version.py": true, "astropy/_version.py": false}, "git_ignore_rules": ".gitignore:22:astropy/_version.py\tastropy/_version.py\n", "version_paths_seen_by_native_source_snapshot": ["astropy/version.py"], "native_collection_status": null, "generated_version_changed_during_collection": null, "container_removed": true}
+Traceback (most recent call last):
+  File "/tmp/probe_astropy_generated_sources.py", line 43, in <module>
+    record['runtime_version_generator_python_file']=execute("python -c 'import inspect,setuptools_scm; print(inspect.getfile(setuptools_scm.get_version))'").decode().strip() if iid!='astropy__astropy-7606' else None
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/probe_astropy_generated_sources.py", line 18, in execute
+    return call(['exec']+(['-i'] if input is not None else [])+['-w','/testbed',name,'bash','-lc',script],input,timeout).stdout
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/probe_astropy_generated_sources.py", line 15, in call
+    if check and p.returncode:raise RuntimeError(p.stderr.decode(errors='replace')[-1500:])
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'setuptools_scm'
+

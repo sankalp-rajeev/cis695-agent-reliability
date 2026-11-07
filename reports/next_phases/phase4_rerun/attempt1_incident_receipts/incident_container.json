@@ -1,0 +1,26 @@
+{
+  "name": "verify_phase4_v2_serial_20261107t173952z_matplotlib__matplotlib-14623_cf11e73f",
+  "image_id": "sha256:30368e1c136e8eded62e7229d134a132cabb4bb47b5a2c56e1d1e0dc5e9752b3",
+  "cpu_shares": 2048,
+  "nano_cpus": 0,
+  "network": "none",
+  "argv": [
+    "/usr/bin/docker",
+    "run",
+    "--pull=never",
+    "-d",
+    "--cpu-shares",
+    "2048",
+    "--name",
+    "verify_phase4_v2_serial_20261107t173952z_matplotlib__matplotlib-14623_cf11e73f",
+    "--label",
+    "experiment_id=phase4_v2_serial_20261107T173952Z",
+    "-w",
+    "/testbed",
+    "--network",
+    "none",
+    "sha256:30368e1c136e8eded62e7229d134a132cabb4bb47b5a2c56e1d1e0dc5e9752b3",
+    "sleep",
+    "infinity"
+  ]
+}

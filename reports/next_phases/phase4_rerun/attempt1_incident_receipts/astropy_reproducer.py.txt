@@ -1,0 +1,60 @@
+import ast,hashlib,json,shlex,subprocess,tarfile,uuid
+from pathlib import Path
+from reliability.env import clean_env
+from reliability.verifier.collection import _NATIVE_DRIVER,_PYTEST_PLUGIN
+root=Path.cwd();run=root/'runs/phase4_v2_serial_20261107T173952Z';out=root/'reports/next_phases/phase4_rerun/attempt1_incident_receipts'
+protocol=json.loads((run/'protocol.json').read_text());audit=json.loads((out/'completed_source_audit.json').read_text())
+tasks=[t for t in protocol['tasks'] if t['repo']=='astropy/astropy' and t['instance_id'] in {r['task'] for r in audit['tasks_audited']}]
+results=[]
+for task in tasks:
+ iid=task['instance_id'];dest=out/'astropy_generated'/iid;dest.mkdir(parents=True,exist_ok=True)
+ name='phase4_incident_'+iid.replace('__','_')+'_'+uuid.uuid4().hex[:6];commands=[];record={'task':iid,'image_id':task['image_id'],'diagnostic_only':True,'completed_task_outcomes_read':False,'test_bodies_executed':0}
+ def call(args,input=None,timeout=150,check=True):
+  commands.append({'argv':['docker',*args],'stdin_sha256':hashlib.sha256(input).hexdigest() if input is not None else None})
+  p=subprocess.run(['docker',*args],input=input,stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=clean_env(),timeout=timeout)
+  if check and p.returncode:raise RuntimeError(p.stderr.decode(errors='replace')[-1500:])
+  return p
+ def execute(script,input=None,timeout=150):
+  return call(['exec']+(['-i'] if input is not None else [])+['-w','/testbed',name,'bash','-lc',script],input,timeout).stdout
+ def snap(stage):
+  hashes={}
+  for target in ('astropy/version.py','astropy/_version.py'):
+   temp=Path('/tmp')/(name+'_'+target.replace('/','_')+'.txt')
+   p=call(['cp',name+':/testbed/'+target,str(temp)],check=False)
+   if p.returncode:
+    hashes[target]=None
+   else:
+    raw=temp.read_bytes();temp.unlink();hashes[target]=hashlib.sha256(raw).hexdigest()
+    if stage=='created_before_start':(dest/(target.replace('/','_')+'.txt')).write_bytes(raw)
+  record.setdefault('stages',[]).append({'stage':stage,'sha256':hashes})
+ try:
+  call(['create','--pull=never','--name',name,'--label','experiment_id=phase4_attempt1_incident','--network','none','--cpu-shares','2048','-w','/testbed',task['image_id'],'sleep','infinity'])
+  snap('created_before_start');call(['start',name]);snap('started_before_exec')
+  expected=json.loads((run/'inputs'/iid/'base_expected.json').read_text())
+  # Reproduce only the archived configuration restoration recorded at startup.
+  initial=json.loads((run/'tasks'/iid/'source_check.json').read_text())
+  for config in initial['configs_restored']:
+   execute('cat > '+shlex.quote(config),expected['configs'][config].encode())
+  record['configs_restored_as_original_attempt']=initial['configs_restored']
+  snap('after_config_restoration')
+  record['version_paths_in_startup_guard']={p:p in expected['sha256'] for p in ('astropy/version.py','astropy/_version.py')}
+  record['git_ignore_rules']=execute('git check-ignore -v astropy/version.py astropy/_version.py || true').decode()
+  record['version_paths_seen_by_native_source_snapshot']=execute('git ls-files --cached --others --exclude-standard -- astropy/version.py astropy/_version.py').decode().splitlines()
+  record['setuptools_scm_available']=execute("python -c 'import importlib.util; print(importlib.util.find_spec(\"setuptools_scm\") is not None)'").decode().strip() == 'True'
+  snap('before_native_collection')
+  module='astropy/constants/tests/test_prior_version.py'
+  request={'runner':'pytest','ids':[module+'::test_c'],'module_timeout_s':120,'budget_s':120,'prior_elapsed_s':0}
+  for path,data in (('/tmp/verifier_collect_request.json',json.dumps(request)),('/tmp/verifier_collect_driver.py',_NATIVE_DRIVER),('/tmp/verifier_collect_plugin.py',_PYTEST_PLUGIN)):
+   execute('cat > '+path,data.encode())
+  raw=execute('python /tmp/verifier_collect_driver.py',timeout=150);receipt=json.loads(raw);assert receipt['tests_executed']==0
+  (dest/'native_collection.json').write_bytes(raw)
+  record['native_collection_groups']=receipt['groups'];record['native_collection_status']={k:{f:v.get(f) for f in ('completed','returncode','collection_status','reason')} for k,v in receipt['ids'].items()}
+  snap('after_native_collection')
+  record['generated_version_changed_during_collection']=record['stages'][-1]['sha256']!=record['stages'][-2]['sha256']
+ finally:
+  removed=call(['rm','-f',name],check=False,timeout=30)
+  record['container_removed']=removed.returncode==0;record['commands']=commands
+  (dest/'receipt.json').write_text(json.dumps(record,indent=2)+'\n')
+  results.append(record)
+  print(json.dumps({k:record.get(k) for k in ('task','version_paths_in_startup_guard','git_ignore_rules','version_paths_seen_by_native_source_snapshot','native_collection_status','generated_version_changed_during_collection','container_removed')}),flush=True)
+(out/'astropy_generated_source_probes.json').write_text(json.dumps(results,indent=2)+'\n')

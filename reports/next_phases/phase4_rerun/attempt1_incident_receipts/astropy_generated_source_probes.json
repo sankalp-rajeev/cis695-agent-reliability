@@ -1,0 +1,1280 @@
+[
+  {
+    "task": "astropy__astropy-13977",
+    "image_id": "sha256:ba3d2b723b6698da914da64befdbf7a075799e65a970a56355b8f1ef1543c835",
+    "diagnostic_only": true,
+    "completed_task_outcomes_read": false,
+    "test_bodies_executed": 0,
+    "stages": [
+      {
+        "stage": "created_before_start",
+        "sha256": {
+          "astropy/version.py": "06178ec181388c9f14a79e030cc36d36c5954210c077a2c462fa32cbebd4d684",
+          "astropy/_version.py": "17b8dc1109d0a0789b95bd66ab6d56d77ef76d47755d8e6e30afcc967e87f204"
+        }
+      },
+      {
+        "stage": "started_before_exec",
+        "sha256": {
+          "astropy/version.py": "06178ec181388c9f14a79e030cc36d36c5954210c077a2c462fa32cbebd4d684",
+          "astropy/_version.py": "17b8dc1109d0a0789b95bd66ab6d56d77ef76d47755d8e6e30afcc967e87f204"
+        }
+      },
+      {
+        "stage": "after_config_restoration",
+        "sha256": {
+          "astropy/version.py": "06178ec181388c9f14a79e030cc36d36c5954210c077a2c462fa32cbebd4d684",
+          "astropy/_version.py": "17b8dc1109d0a0789b95bd66ab6d56d77ef76d47755d8e6e30afcc967e87f204"
+        }
+      },
+      {
+        "stage": "before_native_collection",
+        "sha256": {
+          "astropy/version.py": "06178ec181388c9f14a79e030cc36d36c5954210c077a2c462fa32cbebd4d684",
+          "astropy/_version.py": "17b8dc1109d0a0789b95bd66ab6d56d77ef76d47755d8e6e30afcc967e87f204"
+        }
+      },
+      {
+        "stage": "after_native_collection",
+        "sha256": {
+          "astropy/version.py": "06178ec181388c9f14a79e030cc36d36c5954210c077a2c462fa32cbebd4d684",
+          "astropy/_version.py": "17b8dc1109d0a0789b95bd66ab6d56d77ef76d47755d8e6e30afcc967e87f204"
+        }
+      }
+    ],
+    "configs_restored_as_original_attempt": [
+      "pyproject.toml"
+    ],
+    "version_paths_in_startup_guard": {
+      "astropy/version.py": true,
+      "astropy/_version.py": false
+    },
+    "git_ignore_rules": ".gitignore:22:astropy/_version.py\tastropy/_version.py\n",
+    "version_paths_seen_by_native_source_snapshot": [
+      "astropy/version.py"
+    ],
+    "setuptools_scm_available": false,
+    "native_collection_groups": [
+      {
+        "module": "astropy/constants/tests/test_prior_version.py",
+        "duration_s": 1.5719341469957726,
+        "returncode": 0,
+        "command": [
+          "/opt/miniconda3/envs/testbed/bin/python",
+          "-m",
+          "pytest",
+          "--collect-only",
+          "-q",
+          "-p",
+          "no:cacheprovider",
+          "-p",
+          "verifier_collect_plugin",
+          "--",
+          "astropy/constants/tests/test_prior_version.py"
+        ]
+      }
+    ],
+    "native_collection_status": {
+      "astropy/constants/tests/test_prior_version.py::test_c": {
+        "completed": true,
+        "returncode": 0,
+        "collection_status": "COMPLETE",
+        "reason": ""
+      }
+    },
+    "generated_version_changed_during_collection": false,
+    "container_removed": true,
+    "commands": [
+      {
+        "argv": [
+          "docker",
+          "create",
+          "--pull=never",
+          "--name",
+          "phase4_incident_astropy_astropy-13977_125756",
+          "--label",
+          "experiment_id=phase4_attempt1_incident",
+          "--network",
+          "none",
+          "--cpu-shares",
+          "2048",
+          "-w",
+          "/testbed",
+          "sha256:ba3d2b723b6698da914da64befdbf7a075799e65a970a56355b8f1ef1543c835",
+          "sleep",
+          "infinity"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-13977_125756:/testbed/astropy/version.py",
+          "/tmp/phase4_incident_astropy_astropy-13977_125756_astropy_version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-13977_125756:/testbed/astropy/_version.py",
+          "/tmp/phase4_incident_astropy_astropy-13977_125756_astropy__version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "start",
+          "phase4_incident_astropy_astropy-13977_125756"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-13977_125756:/testbed/astropy/version.py",
+          "/tmp/phase4_incident_astropy_astropy-13977_125756_astropy_version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-13977_125756:/testbed/astropy/_version.py",
+          "/tmp/phase4_incident_astropy_astropy-13977_125756_astropy__version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-i",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-13977_125756",
+          "bash",
+          "-lc",
+          "cat > pyproject.toml"
+        ],
+        "stdin_sha256": "9b703dbc98e2c449bd6881e2cc7143f90599659fd64a4f8ef6149c9e5184da6d"
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-13977_125756:/testbed/astropy/version.py",
+          "/tmp/phase4_incident_astropy_astropy-13977_125756_astropy_version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-13977_125756:/testbed/astropy/_version.py",
+          "/tmp/phase4_incident_astropy_astropy-13977_125756_astropy__version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-13977_125756",
+          "bash",
+          "-lc",
+          "git check-ignore -v astropy/version.py astropy/_version.py || true"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-13977_125756",
+          "bash",
+          "-lc",
+          "git ls-files --cached --others --exclude-standard -- astropy/version.py astropy/_version.py"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-13977_125756",
+          "bash",
+          "-lc",
+          "python -c 'import importlib.util; print(importlib.util.find_spec(\"setuptools_scm\") is not None)'"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-13977_125756:/testbed/astropy/version.py",
+          "/tmp/phase4_incident_astropy_astropy-13977_125756_astropy_version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-13977_125756:/testbed/astropy/_version.py",
+          "/tmp/phase4_incident_astropy_astropy-13977_125756_astropy__version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-i",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-13977_125756",
+          "bash",
+          "-lc",
+          "cat > /tmp/verifier_collect_request.json"
+        ],
+        "stdin_sha256": "b1739dd8b730795a7758bfea4f9058fc5139e267a2c2ec28d5b61705effe579d"
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-i",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-13977_125756",
+          "bash",
+          "-lc",
+          "cat > /tmp/verifier_collect_driver.py"
+        ],
+        "stdin_sha256": "52a8040e4aef53688a99a32fe023ff47c2d10c07344f539efa9df950817c79e0"
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-i",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-13977_125756",
+          "bash",
+          "-lc",
+          "cat > /tmp/verifier_collect_plugin.py"
+        ],
+        "stdin_sha256": "6a44b06e306b6b7ab61e8b19d794fc0b0842208a2e65abc56783cc0f8e2a0bc2"
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-13977_125756",
+          "bash",
+          "-lc",
+          "python /tmp/verifier_collect_driver.py"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-13977_125756:/testbed/astropy/version.py",
+          "/tmp/phase4_incident_astropy_astropy-13977_125756_astropy_version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-13977_125756:/testbed/astropy/_version.py",
+          "/tmp/phase4_incident_astropy_astropy-13977_125756_astropy__version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "rm",
+          "-f",
+          "phase4_incident_astropy_astropy-13977_125756"
+        ],
+        "stdin_sha256": null
+      }
+    ]
+  },
+  {
+    "task": "astropy__astropy-14365",
+    "image_id": "sha256:186d28b0d249e6d87d9d65aaada7688fc0e2cf4f8d70dfef591dfdfaaa283492",
+    "diagnostic_only": true,
+    "completed_task_outcomes_read": false,
+    "test_bodies_executed": 0,
+    "stages": [
+      {
+        "stage": "created_before_start",
+        "sha256": {
+          "astropy/version.py": "06178ec181388c9f14a79e030cc36d36c5954210c077a2c462fa32cbebd4d684",
+          "astropy/_version.py": "0135efa74dc40d38c91042007fdc816d8cc9024c2cf5825a336162bc6855ca6a"
+        }
+      },
+      {
+        "stage": "started_before_exec",
+        "sha256": {
+          "astropy/version.py": "06178ec181388c9f14a79e030cc36d36c5954210c077a2c462fa32cbebd4d684",
+          "astropy/_version.py": "0135efa74dc40d38c91042007fdc816d8cc9024c2cf5825a336162bc6855ca6a"
+        }
+      },
+      {
+        "stage": "after_config_restoration",
+        "sha256": {
+          "astropy/version.py": "06178ec181388c9f14a79e030cc36d36c5954210c077a2c462fa32cbebd4d684",
+          "astropy/_version.py": "0135efa74dc40d38c91042007fdc816d8cc9024c2cf5825a336162bc6855ca6a"
+        }
+      },
+      {
+        "stage": "before_native_collection",
+        "sha256": {
+          "astropy/version.py": "06178ec181388c9f14a79e030cc36d36c5954210c077a2c462fa32cbebd4d684",
+          "astropy/_version.py": "0135efa74dc40d38c91042007fdc816d8cc9024c2cf5825a336162bc6855ca6a"
+        }
+      },
+      {
+        "stage": "after_native_collection",
+        "sha256": {
+          "astropy/version.py": "06178ec181388c9f14a79e030cc36d36c5954210c077a2c462fa32cbebd4d684",
+          "astropy/_version.py": "0135efa74dc40d38c91042007fdc816d8cc9024c2cf5825a336162bc6855ca6a"
+        }
+      }
+    ],
+    "configs_restored_as_original_attempt": [
+      "pyproject.toml"
+    ],
+    "version_paths_in_startup_guard": {
+      "astropy/version.py": true,
+      "astropy/_version.py": false
+    },
+    "git_ignore_rules": ".gitignore:22:astropy/_version.py\tastropy/_version.py\n",
+    "version_paths_seen_by_native_source_snapshot": [
+      "astropy/version.py"
+    ],
+    "setuptools_scm_available": false,
+    "native_collection_groups": [
+      {
+        "module": "astropy/constants/tests/test_prior_version.py",
+        "duration_s": 1.5933210060029523,
+        "returncode": 0,
+        "command": [
+          "/opt/miniconda3/envs/testbed/bin/python",
+          "-m",
+          "pytest",
+          "--collect-only",
+          "-q",
+          "-p",
+          "no:cacheprovider",
+          "-p",
+          "verifier_collect_plugin",
+          "--",
+          "astropy/constants/tests/test_prior_version.py"
+        ]
+      }
+    ],
+    "native_collection_status": {
+      "astropy/constants/tests/test_prior_version.py::test_c": {
+        "completed": true,
+        "returncode": 0,
+        "collection_status": "COMPLETE",
+        "reason": ""
+      }
+    },
+    "generated_version_changed_during_collection": false,
+    "container_removed": true,
+    "commands": [
+      {
+        "argv": [
+          "docker",
+          "create",
+          "--pull=never",
+          "--name",
+          "phase4_incident_astropy_astropy-14365_842edb",
+          "--label",
+          "experiment_id=phase4_attempt1_incident",
+          "--network",
+          "none",
+          "--cpu-shares",
+          "2048",
+          "-w",
+          "/testbed",
+          "sha256:186d28b0d249e6d87d9d65aaada7688fc0e2cf4f8d70dfef591dfdfaaa283492",
+          "sleep",
+          "infinity"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-14365_842edb:/testbed/astropy/version.py",
+          "/tmp/phase4_incident_astropy_astropy-14365_842edb_astropy_version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-14365_842edb:/testbed/astropy/_version.py",
+          "/tmp/phase4_incident_astropy_astropy-14365_842edb_astropy__version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "start",
+          "phase4_incident_astropy_astropy-14365_842edb"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-14365_842edb:/testbed/astropy/version.py",
+          "/tmp/phase4_incident_astropy_astropy-14365_842edb_astropy_version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-14365_842edb:/testbed/astropy/_version.py",
+          "/tmp/phase4_incident_astropy_astropy-14365_842edb_astropy__version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-i",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-14365_842edb",
+          "bash",
+          "-lc",
+          "cat > pyproject.toml"
+        ],
+        "stdin_sha256": "ed215461c564de8e7a1923361c6c859b0d4316b76f2ecbde1ce3b819fd471f4e"
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-14365_842edb:/testbed/astropy/version.py",
+          "/tmp/phase4_incident_astropy_astropy-14365_842edb_astropy_version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-14365_842edb:/testbed/astropy/_version.py",
+          "/tmp/phase4_incident_astropy_astropy-14365_842edb_astropy__version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-14365_842edb",
+          "bash",
+          "-lc",
+          "git check-ignore -v astropy/version.py astropy/_version.py || true"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-14365_842edb",
+          "bash",
+          "-lc",
+          "git ls-files --cached --others --exclude-standard -- astropy/version.py astropy/_version.py"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-14365_842edb",
+          "bash",
+          "-lc",
+          "python -c 'import importlib.util; print(importlib.util.find_spec(\"setuptools_scm\") is not None)'"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-14365_842edb:/testbed/astropy/version.py",
+          "/tmp/phase4_incident_astropy_astropy-14365_842edb_astropy_version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-14365_842edb:/testbed/astropy/_version.py",
+          "/tmp/phase4_incident_astropy_astropy-14365_842edb_astropy__version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-i",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-14365_842edb",
+          "bash",
+          "-lc",
+          "cat > /tmp/verifier_collect_request.json"
+        ],
+        "stdin_sha256": "b1739dd8b730795a7758bfea4f9058fc5139e267a2c2ec28d5b61705effe579d"
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-i",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-14365_842edb",
+          "bash",
+          "-lc",
+          "cat > /tmp/verifier_collect_driver.py"
+        ],
+        "stdin_sha256": "52a8040e4aef53688a99a32fe023ff47c2d10c07344f539efa9df950817c79e0"
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-i",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-14365_842edb",
+          "bash",
+          "-lc",
+          "cat > /tmp/verifier_collect_plugin.py"
+        ],
+        "stdin_sha256": "6a44b06e306b6b7ab61e8b19d794fc0b0842208a2e65abc56783cc0f8e2a0bc2"
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-14365_842edb",
+          "bash",
+          "-lc",
+          "python /tmp/verifier_collect_driver.py"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-14365_842edb:/testbed/astropy/version.py",
+          "/tmp/phase4_incident_astropy_astropy-14365_842edb_astropy_version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-14365_842edb:/testbed/astropy/_version.py",
+          "/tmp/phase4_incident_astropy_astropy-14365_842edb_astropy__version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "rm",
+          "-f",
+          "phase4_incident_astropy_astropy-14365_842edb"
+        ],
+        "stdin_sha256": null
+      }
+    ]
+  },
+  {
+    "task": "astropy__astropy-14508",
+    "image_id": "sha256:5bddfb5a01db7352b58157f7bfe41674a36ab915efc6fd6586303cc048b974a7",
+    "diagnostic_only": true,
+    "completed_task_outcomes_read": false,
+    "test_bodies_executed": 0,
+    "stages": [
+      {
+        "stage": "created_before_start",
+        "sha256": {
+          "astropy/version.py": "06178ec181388c9f14a79e030cc36d36c5954210c077a2c462fa32cbebd4d684",
+          "astropy/_version.py": "94c07cfca1da97e8cb6640a250376a4256b3b931ac2eaaac406a17967f65a68e"
+        }
+      },
+      {
+        "stage": "started_before_exec",
+        "sha256": {
+          "astropy/version.py": "06178ec181388c9f14a79e030cc36d36c5954210c077a2c462fa32cbebd4d684",
+          "astropy/_version.py": "94c07cfca1da97e8cb6640a250376a4256b3b931ac2eaaac406a17967f65a68e"
+        }
+      },
+      {
+        "stage": "after_config_restoration",
+        "sha256": {
+          "astropy/version.py": "06178ec181388c9f14a79e030cc36d36c5954210c077a2c462fa32cbebd4d684",
+          "astropy/_version.py": "94c07cfca1da97e8cb6640a250376a4256b3b931ac2eaaac406a17967f65a68e"
+        }
+      },
+      {
+        "stage": "before_native_collection",
+        "sha256": {
+          "astropy/version.py": "06178ec181388c9f14a79e030cc36d36c5954210c077a2c462fa32cbebd4d684",
+          "astropy/_version.py": "94c07cfca1da97e8cb6640a250376a4256b3b931ac2eaaac406a17967f65a68e"
+        }
+      },
+      {
+        "stage": "after_native_collection",
+        "sha256": {
+          "astropy/version.py": "06178ec181388c9f14a79e030cc36d36c5954210c077a2c462fa32cbebd4d684",
+          "astropy/_version.py": "94c07cfca1da97e8cb6640a250376a4256b3b931ac2eaaac406a17967f65a68e"
+        }
+      }
+    ],
+    "configs_restored_as_original_attempt": [
+      "pyproject.toml"
+    ],
+    "version_paths_in_startup_guard": {
+      "astropy/version.py": true,
+      "astropy/_version.py": false
+    },
+    "git_ignore_rules": ".gitignore:22:astropy/_version.py\tastropy/_version.py\n",
+    "version_paths_seen_by_native_source_snapshot": [
+      "astropy/version.py"
+    ],
+    "setuptools_scm_available": false,
+    "native_collection_groups": [
+      {
+        "module": "astropy/constants/tests/test_prior_version.py",
+        "duration_s": 1.6159429050021572,
+        "returncode": 0,
+        "command": [
+          "/opt/miniconda3/envs/testbed/bin/python",
+          "-m",
+          "pytest",
+          "--collect-only",
+          "-q",
+          "-p",
+          "no:cacheprovider",
+          "-p",
+          "verifier_collect_plugin",
+          "--",
+          "astropy/constants/tests/test_prior_version.py"
+        ]
+      }
+    ],
+    "native_collection_status": {
+      "astropy/constants/tests/test_prior_version.py::test_c": {
+        "completed": true,
+        "returncode": 0,
+        "collection_status": "COMPLETE",
+        "reason": ""
+      }
+    },
+    "generated_version_changed_during_collection": false,
+    "container_removed": true,
+    "commands": [
+      {
+        "argv": [
+          "docker",
+          "create",
+          "--pull=never",
+          "--name",
+          "phase4_incident_astropy_astropy-14508_cce623",
+          "--label",
+          "experiment_id=phase4_attempt1_incident",
+          "--network",
+          "none",
+          "--cpu-shares",
+          "2048",
+          "-w",
+          "/testbed",
+          "sha256:5bddfb5a01db7352b58157f7bfe41674a36ab915efc6fd6586303cc048b974a7",
+          "sleep",
+          "infinity"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-14508_cce623:/testbed/astropy/version.py",
+          "/tmp/phase4_incident_astropy_astropy-14508_cce623_astropy_version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-14508_cce623:/testbed/astropy/_version.py",
+          "/tmp/phase4_incident_astropy_astropy-14508_cce623_astropy__version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "start",
+          "phase4_incident_astropy_astropy-14508_cce623"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-14508_cce623:/testbed/astropy/version.py",
+          "/tmp/phase4_incident_astropy_astropy-14508_cce623_astropy_version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-14508_cce623:/testbed/astropy/_version.py",
+          "/tmp/phase4_incident_astropy_astropy-14508_cce623_astropy__version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-i",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-14508_cce623",
+          "bash",
+          "-lc",
+          "cat > pyproject.toml"
+        ],
+        "stdin_sha256": "916dd2dc613b6288125b958f8dbef756a9fa8237d1f395826970687b877d64eb"
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-14508_cce623:/testbed/astropy/version.py",
+          "/tmp/phase4_incident_astropy_astropy-14508_cce623_astropy_version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-14508_cce623:/testbed/astropy/_version.py",
+          "/tmp/phase4_incident_astropy_astropy-14508_cce623_astropy__version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-14508_cce623",
+          "bash",
+          "-lc",
+          "git check-ignore -v astropy/version.py astropy/_version.py || true"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-14508_cce623",
+          "bash",
+          "-lc",
+          "git ls-files --cached --others --exclude-standard -- astropy/version.py astropy/_version.py"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-14508_cce623",
+          "bash",
+          "-lc",
+          "python -c 'import importlib.util; print(importlib.util.find_spec(\"setuptools_scm\") is not None)'"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-14508_cce623:/testbed/astropy/version.py",
+          "/tmp/phase4_incident_astropy_astropy-14508_cce623_astropy_version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-14508_cce623:/testbed/astropy/_version.py",
+          "/tmp/phase4_incident_astropy_astropy-14508_cce623_astropy__version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-i",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-14508_cce623",
+          "bash",
+          "-lc",
+          "cat > /tmp/verifier_collect_request.json"
+        ],
+        "stdin_sha256": "b1739dd8b730795a7758bfea4f9058fc5139e267a2c2ec28d5b61705effe579d"
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-i",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-14508_cce623",
+          "bash",
+          "-lc",
+          "cat > /tmp/verifier_collect_driver.py"
+        ],
+        "stdin_sha256": "52a8040e4aef53688a99a32fe023ff47c2d10c07344f539efa9df950817c79e0"
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-i",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-14508_cce623",
+          "bash",
+          "-lc",
+          "cat > /tmp/verifier_collect_plugin.py"
+        ],
+        "stdin_sha256": "6a44b06e306b6b7ab61e8b19d794fc0b0842208a2e65abc56783cc0f8e2a0bc2"
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-14508_cce623",
+          "bash",
+          "-lc",
+          "python /tmp/verifier_collect_driver.py"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-14508_cce623:/testbed/astropy/version.py",
+          "/tmp/phase4_incident_astropy_astropy-14508_cce623_astropy_version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-14508_cce623:/testbed/astropy/_version.py",
+          "/tmp/phase4_incident_astropy_astropy-14508_cce623_astropy__version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "rm",
+          "-f",
+          "phase4_incident_astropy_astropy-14508_cce623"
+        ],
+        "stdin_sha256": null
+      }
+    ]
+  },
+  {
+    "task": "astropy__astropy-7606",
+    "image_id": "sha256:8e8fdd966e0ce7264fa909835125e934869c97660819936121230a49d0dac142",
+    "diagnostic_only": true,
+    "completed_task_outcomes_read": false,
+    "test_bodies_executed": 0,
+    "stages": [
+      {
+        "stage": "created_before_start",
+        "sha256": {
+          "astropy/version.py": "a009dfe815c092d642ad50d8af9f809a75b7e9b213e9642317f5e3f57ff703d9",
+          "astropy/_version.py": null
+        }
+      },
+      {
+        "stage": "started_before_exec",
+        "sha256": {
+          "astropy/version.py": "a009dfe815c092d642ad50d8af9f809a75b7e9b213e9642317f5e3f57ff703d9",
+          "astropy/_version.py": null
+        }
+      },
+      {
+        "stage": "after_config_restoration",
+        "sha256": {
+          "astropy/version.py": "a009dfe815c092d642ad50d8af9f809a75b7e9b213e9642317f5e3f57ff703d9",
+          "astropy/_version.py": null
+        }
+      },
+      {
+        "stage": "before_native_collection",
+        "sha256": {
+          "astropy/version.py": "a009dfe815c092d642ad50d8af9f809a75b7e9b213e9642317f5e3f57ff703d9",
+          "astropy/_version.py": null
+        }
+      },
+      {
+        "stage": "after_native_collection",
+        "sha256": {
+          "astropy/version.py": "a009dfe815c092d642ad50d8af9f809a75b7e9b213e9642317f5e3f57ff703d9",
+          "astropy/_version.py": null
+        }
+      }
+    ],
+    "configs_restored_as_original_attempt": [],
+    "version_paths_in_startup_guard": {
+      "astropy/version.py": false,
+      "astropy/_version.py": false
+    },
+    "git_ignore_rules": ".gitignore:15:astropy/version.py\tastropy/version.py\n",
+    "version_paths_seen_by_native_source_snapshot": [],
+    "setuptools_scm_available": false,
+    "native_collection_groups": [
+      {
+        "module": "astropy/constants/tests/test_prior_version.py",
+        "duration_s": 0.9211537760129431,
+        "returncode": 0,
+        "command": [
+          "/opt/miniconda3/envs/testbed/bin/python",
+          "-m",
+          "pytest",
+          "--collect-only",
+          "-q",
+          "-p",
+          "no:cacheprovider",
+          "-p",
+          "verifier_collect_plugin",
+          "--",
+          "astropy/constants/tests/test_prior_version.py"
+        ]
+      }
+    ],
+    "native_collection_status": {
+      "astropy/constants/tests/test_prior_version.py::test_c": {
+        "completed": true,
+        "returncode": 0,
+        "collection_status": "COMPLETE",
+        "reason": ""
+      }
+    },
+    "generated_version_changed_during_collection": false,
+    "container_removed": true,
+    "commands": [
+      {
+        "argv": [
+          "docker",
+          "create",
+          "--pull=never",
+          "--name",
+          "phase4_incident_astropy_astropy-7606_449f25",
+          "--label",
+          "experiment_id=phase4_attempt1_incident",
+          "--network",
+          "none",
+          "--cpu-shares",
+          "2048",
+          "-w",
+          "/testbed",
+          "sha256:8e8fdd966e0ce7264fa909835125e934869c97660819936121230a49d0dac142",
+          "sleep",
+          "infinity"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-7606_449f25:/testbed/astropy/version.py",
+          "/tmp/phase4_incident_astropy_astropy-7606_449f25_astropy_version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-7606_449f25:/testbed/astropy/_version.py",
+          "/tmp/phase4_incident_astropy_astropy-7606_449f25_astropy__version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "start",
+          "phase4_incident_astropy_astropy-7606_449f25"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-7606_449f25:/testbed/astropy/version.py",
+          "/tmp/phase4_incident_astropy_astropy-7606_449f25_astropy_version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-7606_449f25:/testbed/astropy/_version.py",
+          "/tmp/phase4_incident_astropy_astropy-7606_449f25_astropy__version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-7606_449f25:/testbed/astropy/version.py",
+          "/tmp/phase4_incident_astropy_astropy-7606_449f25_astropy_version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-7606_449f25:/testbed/astropy/_version.py",
+          "/tmp/phase4_incident_astropy_astropy-7606_449f25_astropy__version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-7606_449f25",
+          "bash",
+          "-lc",
+          "git check-ignore -v astropy/version.py astropy/_version.py || true"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-7606_449f25",
+          "bash",
+          "-lc",
+          "git ls-files --cached --others --exclude-standard -- astropy/version.py astropy/_version.py"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-7606_449f25",
+          "bash",
+          "-lc",
+          "python -c 'import importlib.util; print(importlib.util.find_spec(\"setuptools_scm\") is not None)'"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-7606_449f25:/testbed/astropy/version.py",
+          "/tmp/phase4_incident_astropy_astropy-7606_449f25_astropy_version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-7606_449f25:/testbed/astropy/_version.py",
+          "/tmp/phase4_incident_astropy_astropy-7606_449f25_astropy__version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-i",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-7606_449f25",
+          "bash",
+          "-lc",
+          "cat > /tmp/verifier_collect_request.json"
+        ],
+        "stdin_sha256": "b1739dd8b730795a7758bfea4f9058fc5139e267a2c2ec28d5b61705effe579d"
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-i",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-7606_449f25",
+          "bash",
+          "-lc",
+          "cat > /tmp/verifier_collect_driver.py"
+        ],
+        "stdin_sha256": "52a8040e4aef53688a99a32fe023ff47c2d10c07344f539efa9df950817c79e0"
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-i",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-7606_449f25",
+          "bash",
+          "-lc",
+          "cat > /tmp/verifier_collect_plugin.py"
+        ],
+        "stdin_sha256": "6a44b06e306b6b7ab61e8b19d794fc0b0842208a2e65abc56783cc0f8e2a0bc2"
+      },
+      {
+        "argv": [
+          "docker",
+          "exec",
+          "-w",
+          "/testbed",
+          "phase4_incident_astropy_astropy-7606_449f25",
+          "bash",
+          "-lc",
+          "python /tmp/verifier_collect_driver.py"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-7606_449f25:/testbed/astropy/version.py",
+          "/tmp/phase4_incident_astropy_astropy-7606_449f25_astropy_version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "cp",
+          "phase4_incident_astropy_astropy-7606_449f25:/testbed/astropy/_version.py",
+          "/tmp/phase4_incident_astropy_astropy-7606_449f25_astropy__version.py.txt"
+        ],
+        "stdin_sha256": null
+      },
+      {
+        "argv": [
+          "docker",
+          "rm",
+          "-f",
+          "phase4_incident_astropy_astropy-7606_449f25"
+        ],
+        "stdin_sha256": null
+      }
+    ]
+  }
+]
