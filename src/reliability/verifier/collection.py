@@ -8,6 +8,8 @@ import time
 from dataclasses import dataclass, field
 
 from reliability.verifier.id_validation import IDValidation, SourceTree, StaticIndex, merge_native
+from reliability.verifier.selection import TestRunner
+from reliability.verifier.sympy_adapter import _SYMPY_PROGRAM
 
 # These programs run in historical task images, including Python 3.6.
 _SOURCE_SNAPSHOT = r"""
@@ -16,7 +18,7 @@ files = subprocess.check_output(["git", "ls-files", "--cached", "--others", "--e
 sources = {}
 for name in files:
     path = pathlib.Path(name)
-    if (name.endswith(".py") or path.name in ("setup.cfg", "tox.ini", "pytest.ini", ".pytest.ini", "pyproject.toml")) and path.is_file():
+    if (name.endswith(".py") or path.name in ("setup.cfg", "tox.ini", "pytest.ini", ".pytest.ini", "pyproject.toml") or name == "bin/test") and path.is_file():
         sources[name] = path.read_text(encoding="utf-8", errors="replace")
 print(json.dumps(sources))
 """
@@ -147,7 +149,15 @@ result, groups_log = {}, []
 for module, identities in sorted(groups.items()):
     start = time.monotonic()
     try:
-        if kind == "django":
+        if kind == "sympy":
+            command = [sys.executable, "/tmp/verifier_sympy_driver.py", "collect", module]
+            proc = subprocess.run(command, input=json.dumps(dict(ids=identities)).encode(),
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=request["module_timeout_s"])
+            if proc.returncode:
+                raise RuntimeError((proc.stdout + proc.stderr).decode("utf-8", "replace"))
+            receipt = json.loads(proc.stdout.decode("utf-8", "replace"))
+            result.update(receipt["ids"])
+        elif kind == "django":
             labels = {}
             for identity in identities:
                 parts = identity.split("::")
@@ -246,21 +256,28 @@ class ValidationPass:
 def validate_in_container(container, tests, runner, *, timeout_s=300):
     """Snapshot the current (already base/patched) tree, then collect valid identities."""
     started = time.monotonic()
-    if runner.name not in ("pytest", "django"):
-        return ValidationPass(errors=("No collection-only adapter for runner: " + runner.name,))
+    if runner.name not in ("pytest", "django", "sympy"):
+        return ValidationPass(records=tuple(IDValidation(t, 'unknown', reason='runner_unavailable',
+            unavailable=True, failure_status='RUNNER_UNAVAILABLE') for t in tests),
+            errors=("No collection-only adapter for runner: " + runner.name,))
     try:
         command = "python -c " + shlex.quote(_SOURCE_SNAPSHOT)
         rc, raw = container.exec(command, timeout_s=120)
         if rc:
             raise RuntimeError("source snapshot failed: " + raw[-2000:])
-        static = StaticIndex(SourceTree(json.loads(raw)), runner.name).validate(tests)
+        sources = SourceTree(json.loads(raw))
+        frozen_runner = runner.name
+        if runner.name == 'pytest' and 'bin/test' in sources.sources and 'sympy/__init__.py' in sources.sources:
+            runner = TestRunner('sympy', 'native SymPy bin/test present; repairs frozen pytest runner')
+        context = {'runner': runner.name, 'frozen_runner': frozen_runner, 'runner_evidence': runner.evidence}
+        static = StaticIndex(sources, runner.name).validate(tests)
         ids = tuple(
             dict.fromkeys(
                 t for r in static for t in (r.runnable_ids if r.valid else (r.selected_id,))
             )
         )
         if not ids:
-            return ValidationPass(static, duration_s=time.monotonic() - started)
+            return ValidationPass(static, duration_s=time.monotonic() - started, context=context)
         payload = json.dumps(
             {"runner": runner.name, "ids": ids, "module_timeout_s": min(timeout_s, 120)}
         )
@@ -269,6 +286,7 @@ def validate_in_container(container, tests, runner, *, timeout_s=300):
             ("/tmp/verifier_collect_driver.py", _NATIVE_DRIVER),
             ("/tmp/verifier_django_collect.py", _DJANGO_COLLECT),
             ("/tmp/verifier_collect_plugin.py", _PYTEST_PLUGIN),
+            ("/tmp/verifier_sympy_driver.py", _SYMPY_PROGRAM),
         ):
             rc, message = container.exec_input("cat > " + path, data, timeout_s=60)
             if rc:
@@ -282,7 +300,7 @@ def validate_in_container(container, tests, runner, *, timeout_s=300):
             raise RuntimeError("collection receipt missing zero-execution assertion")
         merged = merge_native(static, receipt["ids"])
         return ValidationPass(
-            merged, duration_s=time.monotonic() - started, groups=tuple(receipt["groups"])
+            merged, duration_s=time.monotonic() - started, groups=tuple(receipt["groups"]), context=context
         )
     except (TimeoutError, RuntimeError, ValueError, OSError) as exc:
         if isinstance(exc, TimeoutError):

@@ -370,12 +370,12 @@ def test_factory():
     assert not sentinel.exists()
 
 
-def test_unavailable_sympy_collection_adapter_never_falls_through_to_execution():
+def test_unavailable_collection_adapter_never_falls_through_to_execution():
     class Container:
         def exec(self, *args, **kwargs):
             pytest.fail("must not start an unsupported runner")
 
-    result = validate_in_container(Container(), ("x.py::test_a",), TestRunner("sympy", ""))
+    result = validate_in_container(Container(), ("x.py::test_a",), TestRunner("unsupported", ""))
     assert result.errors
 
 

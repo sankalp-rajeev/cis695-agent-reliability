@@ -539,6 +539,9 @@ def discover_runner(tree: RepoTree) -> TestRunner:
             "django", "found tests/runtests.py in a Django tree",
         )
 
+    if 'bin/test' in files and 'sympy/__init__.py' in files:
+        return TestRunner('sympy', 'native SymPy bin/test runner')
+
     evidence: list[str] = []
     if "pytest.ini" in files or "conftest.py" in files:
         evidence.append("pytest.ini or conftest.py")

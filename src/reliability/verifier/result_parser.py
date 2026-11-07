@@ -36,6 +36,8 @@ SEVERITY = {"skipped": 0, "xfail": 1, "passed": 2, "xpass": 3, "failed": 4, "err
 
 def parse_capture(text, runner):
     """Parse observed terminal outcomes; reject Django summary-derived fake IDs."""
+    if runner == "sympy":
+        return parse_sympy_capture(text)
     result, pending = {}, None
     for number, physical in enumerate(text.split("\n"), 1):
         for line in ANSI.sub("", physical).split("\r"):
@@ -105,6 +107,65 @@ def parse_capture(text, runner):
             }
             if rid not in result or SEVERITY[status] >= SEVERITY[result[rid]["status"]]:
                 result[rid] = observation
+    return result
+
+
+# SymPy's native verbose reporter identifies the file once, then emits a test
+# name and a token (sometimes on a later line after warnings/debug output).
+_SYMPY_FILE = re.compile(r"^(?P<path>[^\s\[]+\.py)\[(?:\d+|\?)\]")
+_SYMPY_TEST = re.compile(r"^(?P<name>test_\w+|<lambda>)(?:\s+(?P<tail>.*))?$")
+_SYMPY_TOKEN = re.compile(r"(?:^|\s)(ok|[fXFEsKwT])\s*(?:\[(?:OK|FAIL)\])?\s*$")
+_SYMPY_STATUS = {
+    "ok": "passed",
+    "f": "xfail",
+    "X": "xpass",
+    "F": "failed",
+    "E": "error",
+    "s": "skipped",
+    "K": "skipped",
+    "w": "skipped",
+    "T": "timeout",
+}
+
+
+def parse_sympy_capture(text):
+    result, module, pending = {}, None, None
+    severity = dict(SEVERITY, timeout=6)
+    for number, physical in enumerate(text.split("\n"), 1):
+        for line in ANSI.sub("", physical).split("\r"):
+            line = line.strip()
+            header = _SYMPY_FILE.match(line)
+            if header:
+                module = header.group("path")
+                module = re.sub(r"^/testbed/", "", module)
+                pending = None
+                continue
+            if line.startswith(("===", "___", "DO *NOT* COMMIT")):
+                module, pending = None, None
+                continue
+            test = _SYMPY_TEST.match(line)
+            if test and module:
+                pending = (module + "::" + test.group("name"), number)
+                tail = test.group("tail") or ""
+            else:
+                tail = line
+            token = _SYMPY_TOKEN.search(tail)
+            if not pending or not token:
+                continue
+            word = token.group(1)
+            status = _SYMPY_STATUS[word]
+            rid, header_line = pending
+            flavor = "XFAIL" if word == "f" else "XPASS" if word == "X" else status.upper()
+            observed = {
+                "status": status,
+                "line": number,
+                "header_line": header_line,
+                "reason": tail[: token.start()].strip() if status in ("skipped", "timeout") else "",
+                "flavor": flavor,
+                "kind": "case",
+            }
+            if rid not in result or severity[status] >= severity[result[rid]["status"]]:
+                result[rid] = observed
     return result
 
 

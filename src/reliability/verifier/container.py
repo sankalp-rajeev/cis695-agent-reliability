@@ -240,14 +240,9 @@ _OUT_LOG = "/tmp/verifier_out.txt"
 #: images go back to Python 3.6, so nothing here may need 3.7 or later: no
 #: `text=`, no `capture_output=`. Output is read as bytes and decoded by hand.
 #:
-#: Node ids arrive in a file, not on argv, and run in batches so one widely
-#: referenced symbol cannot overflow exec. No pytest plugin is required: results
-#: come from pytest's own `-v` lines, which every version prints.
-#:
-#: Pytest exits 4 and runs nothing in a batch when one id does not resolve. A
-#: batch that does that is split in half and each half run again, so one bad id
-#: costs its own result and not its neighbours'. The splitting is capped so a
-#: usage error cannot turn into hundreds of runs.
+#: Validated IDs arrive through stdin, then are grouped by their test module.
+#: Each module has one runner process; a load abort retries only unreported
+#: valid IDs individually. GIS guard modules stay isolated and missing.
 # Embed the shared, Python-3.6-compatible terminal parser in the standalone driver.
 # No project package is required in a task image.
 _DRIVER_PARSER = Path(__file__).with_name('result_parser.py').read_text().replace(
@@ -283,7 +278,9 @@ def seen(output, part, module):
     return found
 
 def run(part, module, retry=False, parent=None):
-    if kind == "django":
+    if kind == "sympy":
+        cmd = ["python", "/tmp/verifier_sympy_driver.py", "execute", module] + part
+    elif kind == "django":
         cmd = ["python", "tests/runtests.py", "--verbosity=2"] + part
     else:
         cmd = ["python", "-m", "pytest", "-p", "no:cacheprovider", "-v", "--"] + part
@@ -364,7 +361,9 @@ class ContainerTestExecutor:
         self.container.set_patched(patched)
         runner = self.runner or TestRunner("pytest", "default")
         validation = validate_in_container(self.container, tests, runner, timeout_s=timeout_s)
-        validation = replace(validation, context={
+        actual = validation.context.get('runner', runner.name)
+        runner = TestRunner(actual, validation.context.get('runner_evidence', runner.evidence))
+        validation = replace(validation, context={**validation.context,
             'instance_id': getattr(self.container, 'instance_id', ''),
             'tree': 'patched' if patched else 'base', 'runner': runner.name})
         if self.evidence_dir is not None:
@@ -588,7 +587,7 @@ def _no_results_note(output: str) -> str:
 # Worst terminal observation wins, including a teardown ERROR after PASSED.
 _PYTEST_SEVERITY = {
     TestStatus.SKIPPED: 0, TestStatus.XFAIL: 1, TestStatus.PASSED: 2,
-    TestStatus.XPASS: 3, TestStatus.FAILED: 4, TestStatus.ERROR: 5,
+    TestStatus.XPASS: 3, TestStatus.FAILED: 4, TestStatus.ERROR: 5, TestStatus.TIMEOUT: 6,
 }
 
 
