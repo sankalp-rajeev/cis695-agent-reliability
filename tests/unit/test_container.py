@@ -156,8 +156,8 @@ def test_the_driver_uses_nothing_newer_than_python_36():
     ("t.py::a FAILED   [ 10%]", TestStatus.FAILED),
     ("t.py::a ERROR    [ 10%]", TestStatus.ERROR),
     ("t.py::a SKIPPED (no network)  [ 10%]", TestStatus.SKIPPED),
-    ("t.py::a XFAIL  [ 10%]", TestStatus.SKIPPED),
-    ("t.py::a XPASS  [ 10%]", TestStatus.PASSED),
+    ("t.py::a XFAIL  [ 10%]", TestStatus.XFAIL),
+    ("t.py::a XPASS  [ 10%]", TestStatus.XPASS),
     ("t.py::a PASSED", TestStatus.PASSED),  # older pytest, no progress column
 ])
 def test_every_pytest_outcome_word_is_mapped(line, expected):

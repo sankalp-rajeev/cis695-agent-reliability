@@ -1,8 +1,6 @@
 """Terminal result parsing shared by live execution and stored-capture scoring.
 
-Fix 1 preserves the historical skip-compatible outcome policy. Flavor and kind
-retain XFAIL/XPASS and loader/fixture identity for diagnostics; policy changes
-are deferred to the separately planned outcome-model fix.
+XFAIL/XPASS retain distinct statuses as well as their original runner flavor.
 """
 
 import re
@@ -24,16 +22,16 @@ STATUSES = {
     "FAILED": "failed",
     "ERROR": "error",
     "SKIPPED": "skipped",
-    "XFAIL": "skipped",
-    "XPASS": "passed",
+    "XFAIL": "xfail",
+    "XPASS": "xpass",
     "ok": "passed",
     "fail": "failed",
     "error": "error",
     "skipped": "skipped",
-    "expected failure": "skipped",
-    "unexpected success": "passed",
+    "expected failure": "xfail",
+    "unexpected success": "xpass",
 }
-SEVERITY = {"skipped": 0, "passed": 1, "failed": 2, "error": 3}
+SEVERITY = {"skipped": 0, "xfail": 1, "passed": 2, "xpass": 3, "failed": 4, "error": 5}
 
 
 def parse_capture(text, runner):

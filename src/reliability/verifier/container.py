@@ -446,7 +446,13 @@ def run_from_capture(
                 else:
                     batch_output = runner_log[start["offset"]:event["offset"]].decode("utf-8", "replace")
                     cases, _, _ = account_raw_output(runner, batch_output, tests)
-                    if not any(r.status in (TestStatus.FAILED, TestStatus.ERROR) for r in cases):
+                    explained = any(r.status in (TestStatus.FAILED, TestStatus.ERROR)
+                                    for r in cases)
+                    # unittest treats unexpected success as a nonzero run;
+                    # pytest non-strict XPASS alone does not explain exit 1.
+                    explained |= runner.name == "django" and any(
+                        r.status is TestStatus.XPASS for r in cases)
+                    if not explained:
                         errors.append("unexplained nonzero runner exit")
     # Anything the runner did not report on is NOT_RUN, never an implicit pass.
     return RunResult(
@@ -490,7 +496,8 @@ def _no_results_note(output: str) -> str:
 
 # Worst terminal observation wins, including a teardown ERROR after PASSED.
 _PYTEST_SEVERITY = {
-    TestStatus.SKIPPED: 0, TestStatus.PASSED: 1, TestStatus.FAILED: 2, TestStatus.ERROR: 3,
+    TestStatus.SKIPPED: 0, TestStatus.XFAIL: 1, TestStatus.PASSED: 2,
+    TestStatus.XPASS: 3, TestStatus.FAILED: 4, TestStatus.ERROR: 5,
 }
 
 

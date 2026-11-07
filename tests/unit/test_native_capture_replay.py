@@ -132,10 +132,10 @@ def test_runner_abort_blocks_a_pass_even_if_some_results_are_readable():
     assert not result.evidence_complete
 
 
-def test_xfail_and_xpass_flavors_are_retained_with_legacy_policy_until_fix2():
+def test_xfail_and_xpass_are_distinct_outcomes():
     parsed = parse_capture("t.py::a xfail\nt.py::b XPASS\n", "pytest")
-    assert (parsed["t.py::a"]["flavor"], parsed["t.py::a"]["status"]) == ("XFAIL", "skipped")
-    assert (parsed["t.py::b"]["flavor"], parsed["t.py::b"]["status"]) == ("XPASS", "passed")
+    assert (parsed["t.py::a"]["flavor"], parsed["t.py::a"]["status"]) == ("XFAIL", "xfail")
+    assert (parsed["t.py::b"]["flavor"], parsed["t.py::b"]["status"]) == ("XPASS", "xpass")
 
 
 def test_legacy_parsed_baseline_cache_cannot_mix_with_new_patched_results(tmp_path):

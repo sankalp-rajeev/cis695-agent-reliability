@@ -25,11 +25,11 @@ Planned CSVs contain roadmap scope, baseline or threshold values, not experiment
 ## Phase 3 — Repair V2 execution
 
 - Status: in progress
-- Headline: Fix 1 native scoring reproduces 9/39 INCOMPLETE recoveries and 2/13 NOT_AVAILABLE recoveries, retains all 6 native FAILs and matches all 169 Phase 2 call parses; Fixes 2–8 remain planned.
-- Table or chart data: reports/next_phases/phase3_fix1/recovery_chart.csv
-- Example: Astropy-14365 / astropy/io/ascii/tests/test_qdp.py::test_get_tables_from_qdp_file has an ANSI-coloured PASSED line now admitted by native scoring, contributing to the recovered 8/8 paired tests; /home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/astropy__astropy-14365/v2/raw/base_57eb38196f6242678fc083ed71cc992b/runner.raw:47.
-- Caveat: This is offline re-scoring under the historical skip-compatible policy; runtime outcome separation and later fixes are pending, and Phase 3 cost checks have not run.
-- Commit: this Fix 1 commit (plan c4d17c8; resolve from reports/next_phases/phase3_fix1/SUMMARY.md history)
+- Headline: Fix 1 reproduces 9/39 INCOMPLETE and 2/13 NOT_AVAILABLE recoveries. Fix 2 separates XFAIL/XPASS from SKIPPED and finds five PASS→ERROR transitions in Django-10973, reported as REGRESSION_ERROR. Against Fix 1, Policy C changes 1/83 task verdicts and Policy S changes 2/83; all 6 native FAILs retain their concrete evidence. Fixes 3–8 remain planned.
+- Table or chart data: reports/next_phases/phase3_fix2/policy_chart.csv (before/after policy verdicts); reports/next_phases/phase3_fix2/task_rescore.csv (83 tasks); reports/next_phases/presentation_data/phase3.csv (small chart)
+- Example: Django-10973 / PostgreSqlDbshellCommandTestCase.test_basic is PASSED on base and ERROR on patch; reports/next_phases/phase3_fix2/regression_error_evidence.csv preserves all five transitions with exact capture lines. Seaborn-3069 changes INCOMPLETE→PASS only under Policy S because XFAIL is evidence.
+- Caveat: Offline scoring of 676 immutable capture files, with frozen selections and no benchmark or Docker runs. REGRESSION_ERROR is separate from assertion FAIL; stable 3× confirmation is still Fix 8. The 172 focused unit tests pass; the full unit suite is not green in this worktree because its parent editable install triggers the interpreter-path guard and the local .venv is absent. Phase 3 cost checks have not run.
+- Commit: this Fix 2 commit (resolve with git log -1 --format=%h -- reports/next_phases/phase3_fix2/SUMMARY.md); owner-expansion rule committed and pushed first in ff53e21. Fix 1 remains recorded in reports/next_phases/phase3_fix1.
 
 ## Phase 4 — Controlled V2 rerun
 

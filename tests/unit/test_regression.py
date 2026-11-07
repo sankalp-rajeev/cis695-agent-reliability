@@ -66,9 +66,9 @@ class ScriptedExecutor:
         (TestStatus.FAILED, TestStatus.PASSED, Outcome.NEWLY_PASSING),
         (TestStatus.PASSED, TestStatus.TIMEOUT, Outcome.TIMEOUT),
         (TestStatus.PASSED, TestStatus.NOT_RUN, Outcome.NOT_RUN),
-        (TestStatus.PASSED, TestStatus.ERROR, Outcome.ERROR),
+        (TestStatus.PASSED, TestStatus.ERROR, Outcome.REGRESSION_ERROR),
         (TestStatus.ERROR, TestStatus.PASSED, Outcome.ERROR),
-        (TestStatus.SKIPPED, TestStatus.SKIPPED, Outcome.PASS),
+        (TestStatus.SKIPPED, TestStatus.SKIPPED, Outcome.SKIPPED),
     ],
 )
 def test_classification_matrix(base, patched, expected):

@@ -42,6 +42,8 @@ class TestStatus(str, Enum):
     FAILED = "failed"
     ERROR = "error"        # collection or import failure, not an assertion
     SKIPPED = "skipped"
+    XFAIL = "xfail"
+    XPASS = "xpass"
     TIMEOUT = "timeout"
     NOT_RUN = "not_run"
 
@@ -54,6 +56,10 @@ class Outcome(str, Enum):
     PRE_EXISTING_FAIL = "PRE_EXISTING_FAIL"  # failed on base; excluded from signal
     NEWLY_PASSING = "NEWLY_PASSING"          # failed on base, passes on patch
     FLAKY = "FLAKY"                          # regression that vanished on re-run
+    REGRESSION_ERROR = "REGRESSION_ERROR"    # base PASS, patched ERROR
+    XFAIL = "XFAIL"
+    XPASS = "XPASS"
+    SKIPPED = "SKIPPED"
     ERROR = "ERROR"
     TIMEOUT = "TIMEOUT"
     NOT_RUN = "NOT_RUN"
@@ -73,6 +79,7 @@ class Signal(str, Enum):
 
     PASS = "PASS"
     FAIL = "FAIL"
+    REGRESSION_ERROR = "REGRESSION_ERROR"    # reported separately from assertion FAIL
     NOT_AVAILABLE = "NOT_AVAILABLE"            # nothing ran; can never ACCEPT
     BASELINE_UNRELIABLE = "BASELINE_UNRELIABLE"  # §5.5
     INCOMPLETE = "INCOMPLETE"                 # would-be PASS without complete evidence
@@ -82,8 +89,8 @@ class Signal(str, Enum):
 #: suspect rather than the repository.
 BASELINE_FAILURE_THRESHOLD = 0.5
 
-# Parsed baseline caches must not mix the old reader with Fix 1 patched results.
-_BASELINE_PARSER_REVISION = "native-capture-v1"
+# Parsed baseline caches must preserve the same outcome model as patched results.
+_BASELINE_PARSER_REVISION = "native-capture-v2-outcomes"
 
 
 @dataclass(frozen=True, slots=True)
@@ -141,6 +148,7 @@ class RegressionConfig:
     per_instance_timeout_s: int = 600  # ten minutes including baseline
     rerun_flaky: bool = True           # policy §4.1
     baseline_cache_dir: Path | None = None
+    skip_compatible: bool = True       # Policy C; False selects Policy S
 
 
 @dataclass(frozen=True, slots=True)
@@ -167,6 +175,11 @@ class RegressionReport:
     @property
     def n_regressions(self) -> int:
         return len(self.regressions)
+
+    @property
+    def regression_errors(self) -> tuple[str, ...]:
+        return tuple(sorted(t for t, o in self.outcomes.items()
+                            if o is Outcome.REGRESSION_ERROR))
 
     def count(self, outcome: Outcome) -> int:
         return sum(1 for o in self.outcomes.values() if o is outcome)
@@ -213,9 +226,13 @@ def run_from_dict(payload: dict) -> RunResult:
 
 
 def completeness_of(tests: tuple[str, ...], base: RunResult | None,
-                    patched: RunResult | None) -> tuple[str, tuple[str, ...]]:
+                    patched: RunResult | None, *,
+                    skip_compatible: bool = True) -> tuple[str, tuple[str, ...]]:
     """Separate known execution gaps from missing historical capture evidence."""
     gaps, unknown = [], []
+    healthy = {TestStatus.PASSED, TestStatus.XFAIL, TestStatus.XPASS}
+    if skip_compatible:
+        healthy.add(TestStatus.SKIPPED)
     for label, run in (("base", base), ("patched", patched)):
         if run is None:
             unknown.append(f"{label}: paired evidence unavailable")
@@ -234,12 +251,12 @@ def completeness_of(tests: tuple[str, ...], base: RunResult | None,
             # family even when the unchanged legacy parser admitted only exact
             # IDs. Do not invent a pass or silently absorb an unscored failure.
             cases = mapped_raw.get(tid, ())
-            recovered = (cases and all(r.status in (TestStatus.PASSED, TestStatus.SKIPPED)
-                                      for r in cases))
+            recovered = (cases and all(r.status in healthy for r in cases))
             if (result is None or result.status is TestStatus.NOT_RUN) and recovered:
                 continue
-            if result is None or result.status in (TestStatus.NOT_RUN, TestStatus.TIMEOUT,
-                                                   TestStatus.ERROR):
+            if (result is None or result.status in (TestStatus.NOT_RUN, TestStatus.TIMEOUT,
+                                                    TestStatus.ERROR)
+                    or (not skip_compatible and result.status is TestStatus.SKIPPED)):
                 gaps.append(f"{label}: {tid}: {result.status.value if result else 'missing'}")
         if run.timed_out:
             gaps.append(f"{label}: pass timed out (allowed threshold 0%)")
@@ -251,11 +268,13 @@ def completeness_of(tests: tuple[str, ...], base: RunResult | None,
                     if r.status is TestStatus.ERROR)
         for result in run.raw_results:
             ids = run.raw_id_map.get(result.test_id, ())
+            if not skip_compatible and result.status is TestStatus.SKIPPED:
+                gaps.append(f"{label}: raw SKIPPED: {result.test_id}")
             if not ids:
                 gaps.append(f"{label}: unaccounted raw ID: {result.test_id}")
             if len(ids) == 1 and result.status in (TestStatus.FAILED, TestStatus.ERROR):
                 selected = by_id.get(ids[0])
-                if selected and selected.status in (TestStatus.PASSED, TestStatus.SKIPPED):
+                if selected and selected.status in healthy:
                     gaps.append(f"{label}: raw/selected status conflict: {result.test_id}")
         if not run.evidence_complete:
             unknown.append(f"{label}: complete raw/runner capture unavailable")
@@ -309,16 +328,22 @@ def classify(
     if base.status is TestStatus.TIMEOUT:
         return Outcome.TIMEOUT
 
-    # Errors are collection/import failures rather than assertion failures, and
-    # are reported as such wherever they appear.
+    # Only an observed base PASS establishes a patched-only ERROR transition.
+    if base.status is TestStatus.PASSED and patched.status is TestStatus.ERROR:
+        return Outcome.REGRESSION_ERROR
+
+    # Other errors do not establish a patch regression.
     if TestStatus.ERROR in (base.status, patched.status):
         return Outcome.ERROR
 
-    base_ok = base.status in (TestStatus.PASSED, TestStatus.SKIPPED)
-    patched_ok = patched.status in (TestStatus.PASSED, TestStatus.SKIPPED)
+    base_ok = base.status in (TestStatus.PASSED, TestStatus.SKIPPED,
+                              TestStatus.XFAIL, TestStatus.XPASS)
+    patched_ok = patched.status in (TestStatus.PASSED, TestStatus.SKIPPED,
+                                    TestStatus.XFAIL, TestStatus.XPASS)
 
     if base_ok and patched_ok:
-        return Outcome.PASS
+        return {TestStatus.XFAIL: Outcome.XFAIL, TestStatus.XPASS: Outcome.XPASS,
+                TestStatus.SKIPPED: Outcome.SKIPPED}.get(patched.status, Outcome.PASS)
     if base_ok and not patched_ok:
         return Outcome.REGRESSION
     if not base_ok and patched_ok:
@@ -458,15 +483,18 @@ def run_regression(
         )
     elif n_regressions > 0:
         signal = Signal.FAIL
+    elif any(o is Outcome.REGRESSION_ERROR for o in outcomes.values()):
+        signal = Signal.REGRESSION_ERROR
     else:
         signal = Signal.PASS
 
     original_signal = signal
-    completeness, gaps = completeness_of(selection.tests, baseline, patched)
+    completeness, gaps = completeness_of(selection.tests, baseline, patched,
+                                         skip_compatible=config.skip_compatible)
     for confirmation in confirmations:
         state, reasons = completeness_of(
             confirmation.requested_tests or tuple(r.test_id for r in confirmation.results),
-            confirmation, confirmation)
+            confirmation, confirmation, skip_compatible=config.skip_compatible)
         if state != "COMPLETE":
             completeness = "INCOMPLETE_CONFIRMED" if state == "INCOMPLETE_CONFIRMED" else completeness
             if completeness == "COMPLETE":

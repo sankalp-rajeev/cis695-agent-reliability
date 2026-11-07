@@ -386,7 +386,8 @@ def signal_from_regression(report: RegressionReport) -> SignalRecord:
         else:
             absence = SignalAbsence.NOTHING_TO_CHECK
     detail = "; ".join(report.notes) or (
-        f"{report.n_executed} executed, {report.n_regressions} regressions")
+        f"{report.n_executed} executed, {report.n_regressions} assertion regressions, "
+        f"{len(report.regression_errors)} regression errors")
     if report.signal is Signal.INCOMPLETE:
         detail = "V2 INCOMPLETE: " + "; ".join(report.incompleteness[:5])
     return SignalRecord(
@@ -396,6 +397,8 @@ def signal_from_regression(report: RegressionReport) -> SignalRecord:
             "signal": report.signal.value,
             "summary": report.summary,
             "n_executed": report.n_executed,
+            "n_regression_errors": len(report.regression_errors),
+            "regression_errors": list(report.regression_errors),
             "notes": list(report.notes),
             "original_signal": (report.original_signal or report.signal).value,
             "completeness": report.completeness,
