@@ -24,21 +24,21 @@ Planned CSVs contain roadmap scope, baseline or threshold values, not experiment
 
 ## Phase 3 — Repair V2 execution
 
-- Status: planned
-- Headline: Plan: repair the 7 listed executor behaviours without changing V2 selection, succeeding when all checks pass and the Phase 4 plan is committed.
-- Table or chart data: reports/next_phases/presentation_data/phase3.csv
-- Example: Historical example, not a repaired result: pylint-7277 / TestRunTC::test_jobs_score was skipped while its task received PASS / COMPLETE; reports/next_phases/phase1_known_failures/confirmations.md:65.
-- Caveat: The repairs are unimplemented and ROADMAP.md requires a written plan before checks, including the three largest tasks per runner type, with any unexplained disappearing original FAIL treated as a bug.
-- Commit: 15c3d9b
+- Status: in progress
+- Headline: Fix 0 attributes all 3,683 collection/runner-error slots, with the top 10 signatures covering 3,634; Fixes 1–8 remain planned in the committed Phase 4 draft order.
+- Table or chart data: reports/next_phases/phase4_baselines/fix0_top10.csv
+- Example: Django-13297 / test_template_params_warning stayed NOT_RUN after a selected property aborted its batch; the property signature affects 200 slots across 4 tasks and is executor-fixable through validation/isolation; reports/next_phases/phase4_baselines/fix0_top10.csv:5.
+- Caveat: Executor-fixable includes correct validation and accounting for invalid IDs, not a promise that every request can execute, and no Phase 3 code or cost run has happened.
+- Commit: this plan-draft commit (resolve from reports/next_phases/phase4_plan.md history)
 
 ## Phase 4 — Controlled V2 rerun
 
 - Status: planned
-- Headline: Hypothesis: frozen V2 selection with the repaired executor raises yes/no verdicts from 31/83 to at least 50/83, falsified below 42/83, in one run with a 1,800 s per-pass cap and a 12 h stopping rule.
-- Table or chart data: reports/next_phases/presentation_data/phase4.csv
-- Example: Historical example for reconfirmation, not a rerun result: Matplotlib-25479 / test_register_cmap passed on base and failed on patched with confirmation; reports/next_phases/phase1_known_failures/phase1_known_failures.csv:3.
-- Caveat: No repaired run exists, and post-hoc label metrics must follow sealed run metrics without executor changes after labels are read.
-- Commit: 15c3d9b
+- Headline: Fixed draft baselines are B1 = 37,614 addressable slots and B2 = 21/83 projected strict yes/no verdicts with XFAIL/XPASS separate; H1 predicts at least 60% recovery and is falsified below 30%, while Policy C targets 50/83 and is falsified below 42/83.
+- Table or chart data: reports/next_phases/phase4_baselines/B1_B2.csv
+- Example: Seaborn-3069 has 5 XFAIL concrete tests on both trees and no ordinary skip, adding one strict projected PASS to the old 20/83; reports/next_phases/phase4_baselines/B2_tasks.csv:52.
+- Caveat: B2 is an offline projection, H3 is descriptive, no controlled rerun exists, and the fixed plan permits one run with a 1,800 s per-pass cap and a 12 h stopping rule.
+- Commit: this plan-draft commit (resolve from reports/next_phases/phase4_plan.md history)
 
 ## Phase 5 — Offline selector and ordering replay
 
