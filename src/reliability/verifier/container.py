@@ -248,10 +248,16 @@ _OUT_LOG = "/tmp/verifier_out.txt"
 #: batch that does that is split in half and each half run again, so one bad id
 #: costs its own result and not its neighbours'. The splitting is capped so a
 #: usage error cannot turn into hundreds of runs.
-_BATCH_DRIVER = r'''
-import json, os, pathlib, subprocess, sys, time
+# Embed the shared, Python-3.6-compatible terminal parser in the standalone driver.
+# No project package is required in a task image.
+_DRIVER_PARSER = Path(__file__).with_name('result_parser.py').read_text().replace(
+    'from reliability.verifier.selection import django_label\n', '')
+_BATCH_DRIVER = 'exec(' + repr(_DRIVER_PARSER) + ')\n' + r'''
+import collections, json, os, pathlib, subprocess, sys, time
 kind = sys.argv[1]
 ids = [line.strip() for line in pathlib.Path("/tmp/verifier_ids").read_text(encoding="utf-8", errors="replace").splitlines() if line.strip()]
+map_path = pathlib.Path("/tmp/verifier_module_ids.json")
+module_map = json.loads(map_path.read_text()) if map_path.exists() else {}
 try:
     os.setsid()
 except OSError:
@@ -259,46 +265,70 @@ except OSError:
 pathlib.Path("/tmp/verifier_pgid").write_text(str(os.getpgrp()))
 log = open("/tmp/verifier_out.txt", "wb", buffering=0)
 events = open("/tmp/verifier_events.jsonl", "w", buffering=1)
-budget = [200]
 sequence = [0]
 
-def run(part):
+def seen(output, part, module):
+    observed = parse_capture(output.decode("utf-8", "replace"), kind)
+    found = set()
+    for rid, value in observed.items():
+        if value["kind"] != "case":
+            continue
+        if rid in part:
+            found.add(rid)
+        elif kind == "pytest" and "::" in rid:
+            path, suffix = rid.split("::", 1)
+            canonical = module + "::" + suffix
+            if (module == path or module.endswith("/" + path)) and canonical in part:
+                found.add(canonical)
+    return found
+
+def run(part, module, retry=False, parent=None):
     if kind == "django":
         cmd = ["python", "tests/runtests.py", "--verbosity=2"] + part
     else:
-        cmd = ["python", "-m", "pytest"] + part + ["-p", "no:cacheprovider", "-v"]
+        cmd = ["python", "-m", "pytest", "-p", "no:cacheprovider", "-v", "--"] + part
     sequence[0] += 1
     index, start = sequence[0], time.monotonic()
-    events.write(json.dumps(dict(event="start", batch=index, argv=cmd, ids=part,
+    events.write(json.dumps(dict(event="start", batch=index, module=module,
+                                retry=retry, parent=parent, argv=cmd, ids=part,
                                 offset=log.tell())) + "\n")
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    captured = bytearray()
     while True:
         chunk = os.read(proc.stdout.fileno(), 65536)
         if not chunk:
             break
+        captured.extend(chunk)
         log.write(chunk)
         sys.stdout.buffer.write(chunk)
         sys.stdout.buffer.flush()
     code = proc.wait()
-    split = kind == "pytest" and code == 4 and len(part) > 1 and budget[0] > 0
-    events.write(json.dumps(dict(event="end", batch=index, returncode=code,
-                                split=split, offset=log.tell(),
-                                duration_s=time.monotonic()-start)) + "\n")
-    return code
+    observed = seen(bytes(captured), part, module)
+    text = bytes(captured).decode("utf-8", "replace")
+    gis = "Aborting: A GIS database backend is required to run gis_tests." in text
+    missing = [tid for tid in part if tid not in observed]
+    # A negative exit with unreported identities is a load/collection abort.
+    # Ordinary assertion FAIL/ERROR with every identity observed is not retried.
+    load_failure = bool(code and missing)
+    retry_ids = missing if load_failure and not retry and not gis else []
+    events.write(json.dumps(dict(event="end", batch=index, module=module,
+        returncode=code, retry=retry, parent=parent, observed_ids=sorted(observed),
+        load_failure=load_failure, gis_guard=gis, split=bool(retry_ids),
+        missing_ids=missing, offset=log.tell(), duration_s=time.monotonic()-start)) + "\n")
+    return index, retry_ids
 
-def execute(part):
-    code = run(part)
-    if kind == "pytest" and code == 4 and len(part) > 1 and budget[0] > 0:
-        budget[0] -= 1
-        mid = len(part) // 2
-        execute(part[:mid])
-        execute(part[mid:])
-
-for start in range(0, len(ids), 25):
-    execute(ids[start:start + 25])
+modules = collections.OrderedDict()
+for identity in ids:
+    module = module_map.get(identity)
+    if module is None:
+        module = identity.rsplit(".", 2)[0] if kind == "django" else identity.split("::", 1)[0]
+    modules.setdefault(module, []).append(identity)
+for module, part in modules.items():
+    parent, remaining = run(part, module)
+    for identity in remaining:
+        run([identity], module, retry=True, parent=parent)
 events.write(json.dumps(dict(event="complete")) + "\n")
 '''
-
 
 @dataclass
 class ContainerTestExecutor:
@@ -346,12 +376,12 @@ class ContainerTestExecutor:
             validation = replace(validation, evidence_files={'validation.json': str(path.resolve())},
                                  evidence_sha256={'validation.json': hashlib.sha256(raw).hexdigest()})
         if validation.errors:
-            return RunResult(results=tuple(TestResult(t, TestStatus.NOT_RUN) for t in tests),
-                             requested_tests=tests, infrastructure_errors=validation.errors,
+            return apply_validation(RunResult(infrastructure_errors=validation.errors,
+                             requested_tests=tests,
                              validation_summary=validation.to_dict(),
                              evidence_files=validation.evidence_files,
                              evidence_sha256=validation.evidence_sha256,
-                             note='ID validation unavailable')
+                             note='ID validation unavailable'), validation)
         tests = validation.runnable_ids
         if not tests:
             return apply_validation(RunResult(evidence_complete=True), validation)
@@ -373,6 +403,12 @@ class ContainerTestExecutor:
                 f"cat > {_IDS_PATH}", "\n".join(native) + "\n", timeout_s=60)
             if rc:
                 errors.append("selected-ID upload failed")
+            rc, _ = self.container.exec_input(
+                "cat > /tmp/verifier_module_ids.json",
+                json.dumps({label: test.split('::', 1)[0] for label, test in zip(native, tests)}),
+                timeout_s=60)
+            if rc:
+                errors.append("module-ID upload failed")
             rc, _ = self.container.exec_input(
                 "cat > /tmp/verifier_driver.py", _BATCH_DRIVER, timeout_s=60)
             if rc:
@@ -449,8 +485,24 @@ def run_from_capture(
     """
     output = (runner_log + raw_stderr).decode("utf-8", "replace")
     errors = list(infrastructure_errors)
-    statuses = _parse_output(runner, output, tests)
-    raw_results, mappings, unmatched = account_raw_output(runner, output, tests)
+    observed = parse_capture(output, runner.name)
+    # A retried module's loader/fixture placeholders are superseded. Preserve
+    # actual case outcomes already observed in that attempt and keep raw bytes.
+    for event in events:
+        if event.get('event') != 'end' or not event.get('split'):
+            continue
+        start = next((e for e in events if e.get('event') == 'start'
+                      and e.get('batch') == event.get('batch')), {})
+        begin, finish = start.get('offset'), event.get('offset')
+        if not isinstance(begin, int) or not isinstance(finish, int):
+            continue
+        first, last = runner_log[:begin].count(b'\n') + 1, runner_log[:finish].count(b'\n')
+        admitted = set(event.get('observed_ids', ()))
+        observed = {rid: value for rid, value in observed.items()
+                    if not (first <= value['line'] <= last and
+                            (value['kind'] != 'case' or rid not in admitted))}
+    statuses = _parse_output(runner, output, tests, observed=observed)
+    raw_results, mappings, unmatched = account_raw_output(runner, output, tests, observed=observed)
     complete = bool(events and events[-1].get("event") == "complete")
     starts = {e.get("batch") for e in events if e.get("event") == "start"}
     ends = {e.get("batch") for e in events if e.get("event") == "end"}
@@ -478,6 +530,20 @@ def run_from_capture(
                         r.status is TestStatus.XPASS for r in cases)
                     if not explained:
                         errors.append("unexplained nonzero runner exit")
+    for event in events:
+        if event.get('event') != 'end' or event.get('split') or not event.get('load_failure'):
+            continue
+        start = next((e for e in events if e.get('event') == 'start'
+                      and e.get('batch') == event.get('batch')), {})
+        begin, finish = start.get('offset', 0), event.get('offset', len(runner_log))
+        message = runner_log[begin:finish].decode('utf-8', 'replace')
+        from reliability.verifier.collection import classify_collector_failure
+        failure = TestStatus(classify_collector_failure(message).lower())
+        mapper = mapping_for(tests, runner.name)
+        for missing in event.get('missing_ids', ()):
+            for tid in mapper(missing):
+                statuses[tid] = failure
+        errors.append('GIS environment guard' if event.get('gis_guard') else 'module collection failed')
     # Anything the runner did not report on is NOT_RUN, never an implicit pass.
     return RunResult(
         results=tuple(
@@ -496,15 +562,16 @@ def run_from_capture(
     )
 
 
-def _parse_output(runner: TestRunner, output: str, tests: tuple[str, ...]) -> dict:
+def _parse_output(runner: TestRunner, output: str, tests: tuple[str, ...], *, observed=None) -> dict:
     """Admit only unique selected families; concrete cases remain separately scored."""
     mapper = mapping_for(tests, runner.name)
     statuses = {}
-    for raw_id, observed in parse_capture(output, runner.name).items():
+    parsed = parse_capture(output, runner.name) if observed is None else observed
+    for raw_id, value in parsed.items():
         selected = mapper(raw_id)
-        if len(selected) != 1 or observed['kind'] != 'case':
+        if len(selected) != 1 or value['kind'] != 'case':
             continue
-        status = TestStatus(observed['status'])
+        status = TestStatus(value['status'])
         earlier = statuses.get(selected[0])
         if earlier is None or _PYTEST_SEVERITY[status] >= _PYTEST_SEVERITY[earlier]:
             statuses[selected[0]] = status
@@ -533,10 +600,10 @@ def _parse_django(output: str, tests: tuple[str, ...]) -> dict[str, TestStatus]:
     return _parse_output(TestRunner("django", "native parser"), output, tests)
 
 
-def account_raw_output(runner: TestRunner, output: str, tests: tuple[str, ...]):
+def account_raw_output(runner: TestRunner, output: str, tests: tuple[str, ...], *, observed=None):
     """Preserve each concrete outcome and every ambiguous/unmapped identity."""
     mapper = mapping_for(tests, runner.name)
-    parsed = parse_capture(output, runner.name)
+    parsed = parse_capture(output, runner.name) if observed is None else observed
     mappings = {
         raw_id: tuple(mapper(raw_id)) if observed['kind'] == 'case' else ()
         for raw_id, observed in parsed.items()

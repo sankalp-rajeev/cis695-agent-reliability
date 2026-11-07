@@ -47,6 +47,8 @@ class TestStatus(str, Enum):
     TIMEOUT = "timeout"
     NOT_RUN = "not_run"
     INVALID_ID = "invalid_id"
+    COLLECTION_ERROR = "collection_error"
+    RUNNER_UNAVAILABLE = "runner_unavailable"
 
 
 class Outcome(str, Enum):
@@ -65,6 +67,8 @@ class Outcome(str, Enum):
     TIMEOUT = "TIMEOUT"
     NOT_RUN = "NOT_RUN"
     INVALID_ID = "INVALID_ID"
+    COLLECTION_ERROR = "COLLECTION_ERROR"
+    RUNNER_UNAVAILABLE = "RUNNER_UNAVAILABLE"
 
     @property
     def counts_as_regression(self) -> bool:
@@ -73,7 +77,8 @@ class Outcome(str, Enum):
     @property
     def executed(self) -> bool:
         """Whether this outcome reflects a test that actually ran to completion."""
-        return self not in (Outcome.NOT_RUN, Outcome.TIMEOUT, Outcome.INVALID_ID)
+        return self not in (Outcome.NOT_RUN, Outcome.TIMEOUT, Outcome.INVALID_ID,
+                            Outcome.COLLECTION_ERROR, Outcome.RUNNER_UNAVAILABLE)
 
 
 class Signal(str, Enum):
@@ -92,7 +97,7 @@ class Signal(str, Enum):
 BASELINE_FAILURE_THRESHOLD = 0.5
 
 # Parsed baseline caches must preserve the same outcome model as patched results.
-_BASELINE_PARSER_REVISION = "native-capture-v3-validation"
+_BASELINE_PARSER_REVISION = "native-capture-v4-collection-guard"
 
 
 @dataclass(frozen=True, slots=True)
@@ -156,6 +161,7 @@ class RegressionConfig:
     rerun_flaky: bool = True           # policy §4.1
     baseline_cache_dir: Path | None = None
     skip_compatible: bool = True       # Policy C; False selects Policy S
+    invalid_as_missing: bool = False   # required sensitivity report
 
 
 @dataclass(frozen=True, slots=True)
@@ -235,11 +241,12 @@ def run_from_dict(payload: dict) -> RunResult:
 
 def completeness_of(tests: tuple[str, ...], base: RunResult | None,
                     patched: RunResult | None, *,
-                    skip_compatible: bool = True) -> tuple[str, tuple[str, ...]]:
+                    skip_compatible: bool = True,
+                    invalid_as_missing: bool = False) -> tuple[str, tuple[str, ...]]:
     """Separate known execution gaps from missing historical capture evidence."""
     gaps, unknown = [], []
     excluded = {r.test_id for run in (base, patched) if run is not None
-                for r in run.results if r.status is TestStatus.INVALID_ID}
+                for r in run.results if r.status is TestStatus.INVALID_ID and not invalid_as_missing}
     healthy = {TestStatus.PASSED, TestStatus.XFAIL, TestStatus.XPASS}
     if skip_compatible:
         healthy.add(TestStatus.SKIPPED)
@@ -278,7 +285,8 @@ def completeness_of(tests: tuple[str, ...], base: RunResult | None,
             if (result is None or result.status is TestStatus.NOT_RUN) and recovered and not missing_expansion:
                 continue
             if (result is None or result.status in (TestStatus.NOT_RUN, TestStatus.TIMEOUT,
-                                                    TestStatus.ERROR)
+                                                    TestStatus.ERROR, TestStatus.COLLECTION_ERROR,
+                                                    TestStatus.RUNNER_UNAVAILABLE, TestStatus.INVALID_ID)
                     or (not skip_compatible and result.status is TestStatus.SKIPPED)):
                 gaps.append(f"{label}: {tid}: {result.status.value if result else 'missing'}")
         if run.timed_out:
@@ -350,6 +358,10 @@ def classify(
     """
     if any(r is not None and r.status is TestStatus.INVALID_ID for r in (base, patched)):
         return Outcome.INVALID_ID
+    for status, outcome in ((TestStatus.RUNNER_UNAVAILABLE, Outcome.RUNNER_UNAVAILABLE),
+                            (TestStatus.COLLECTION_ERROR, Outcome.COLLECTION_ERROR)):
+        if any(r is not None and r.status is status for r in (base, patched)):
+            return outcome
     if patched is None or patched.status is TestStatus.NOT_RUN:
         return Outcome.NOT_RUN
     if patched.status is TestStatus.TIMEOUT:
@@ -451,7 +463,8 @@ def run_regression(
     if baseline is None:
         baseline = executor.run(
             selection.tests, patched=False, timeout_s=config.per_pass_timeout_s)
-        if any(r.status not in (TestStatus.NOT_RUN, TestStatus.TIMEOUT, TestStatus.INVALID_ID)
+        if any(r.status not in (TestStatus.NOT_RUN, TestStatus.TIMEOUT, TestStatus.INVALID_ID,
+                                       TestStatus.COLLECTION_ERROR, TestStatus.RUNNER_UNAVAILABLE)
                for r in baseline.results):
             # A pass in which nothing ran is not a baseline, and caching it
             # would hand the same empty answer to every later run.
@@ -462,7 +475,8 @@ def run_regression(
     # Policy §5.5: a mostly-red baseline indicts the environment, not the patch.
     baseline_cases, _ = concrete_comparison(selection.tests, baseline, baseline)
     executed_base = [r for r in baseline_cases.values()
-                     if r is not None and r.status not in (TestStatus.NOT_RUN, TestStatus.TIMEOUT, TestStatus.INVALID_ID)]
+                     if r is not None and r.status not in (TestStatus.NOT_RUN, TestStatus.TIMEOUT, TestStatus.INVALID_ID,
+                                       TestStatus.COLLECTION_ERROR, TestStatus.RUNNER_UNAVAILABLE)]
     if executed_base:
         failed_base = sum(
             1 for r in executed_base
@@ -530,11 +544,13 @@ def run_regression(
 
     original_signal = signal
     completeness, gaps = completeness_of(selection.tests, baseline, patched,
-                                         skip_compatible=config.skip_compatible)
+                                         skip_compatible=config.skip_compatible,
+                                         invalid_as_missing=config.invalid_as_missing)
     for confirmation in confirmations:
         state, reasons = completeness_of(
             confirmation.requested_tests or tuple(r.test_id for r in confirmation.results),
-            confirmation, confirmation, skip_compatible=config.skip_compatible)
+            confirmation, confirmation, skip_compatible=config.skip_compatible,
+                                         invalid_as_missing=config.invalid_as_missing)
         if state != "COMPLETE":
             completeness = "INCOMPLETE_CONFIRMED" if state == "INCOMPLETE_CONFIRMED" else completeness
             if completeness == "COMPLETE":

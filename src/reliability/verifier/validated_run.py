@@ -14,6 +14,8 @@ _SEVERITY = {
     TestStatus.ERROR: 5,
     TestStatus.NOT_RUN: 6,
     TestStatus.TIMEOUT: 7,
+    TestStatus.COLLECTION_ERROR: 8,
+    TestStatus.RUNNER_UNAVAILABLE: 9,
 }
 
 
@@ -34,7 +36,11 @@ def apply_validation(run: RunResult, validation):
             results.append(
                 TestResult(
                     record.selected_id,
-                    TestStatus.NOT_RUN if record.unavailable else TestStatus.INVALID_ID,
+                    TestStatus(record.failure_status.lower())
+                    if record.unavailable and record.failure_status
+                    else TestStatus.COLLECTION_ERROR
+                    if record.unavailable
+                    else TestStatus.INVALID_ID,
                     message=record.reason + ": " + record.message,
                 )
             )
@@ -43,7 +49,14 @@ def apply_validation(run: RunResult, validation):
             by_id.get(tid, TestResult(tid, TestStatus.NOT_RUN)).status
             for tid in record.runnable_ids
         ]
-        gaps = (TestStatus.NOT_RUN, TestStatus.TIMEOUT, TestStatus.ERROR, TestStatus.INVALID_ID)
+        gaps = (
+            TestStatus.NOT_RUN,
+            TestStatus.TIMEOUT,
+            TestStatus.ERROR,
+            TestStatus.INVALID_ID,
+            TestStatus.COLLECTION_ERROR,
+            TestStatus.RUNNER_UNAVAILABLE,
+        )
         receipt["admitted_instances"] = sum(s not in gaps for s in statuses)
         receipt["admitted"] = bool(statuses) and all(s not in gaps for s in statuses)
         status = max(statuses, key=_SEVERITY.get) if statuses else TestStatus.NOT_RUN
@@ -54,7 +67,7 @@ def apply_validation(run: RunResult, validation):
             dict.fromkeys(owner for tid in identities for owner in owners.get(tid, ()))
         )
     summary = validation.to_dict()
-    summary.pop('records')
+    summary.pop("records")
     return replace(
         run,
         raw_execution_map={raw: ids[0] for raw, ids in run.raw_id_map.items() if len(ids) == 1},

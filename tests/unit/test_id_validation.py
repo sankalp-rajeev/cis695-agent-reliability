@@ -207,11 +207,12 @@ def test_native_failure_invalidates_original_expansion_and_preserves_members():
     merged = merge_native(
         (original,),
         {
-            a: {"ids": [a]},
+            a: {"ids": [a], "completed": True},
             b: {"ids": [], "reason": "native_load_error", "message": "missing dependency"},
         },
     )[0]
-    assert not merged.valid and merged.reason == "invalid_expansion"
+    assert not merged.valid and merged.reason == "collection_error"
+    assert merged.unavailable and merged.failure_status == "COLLECTION_ERROR"
     assert merged.runnable_ids == (a,)
     assert merged.invalid_instances == ((b, "native_load_error"),)
     assert "missing dependency" in merged.message
@@ -222,14 +223,15 @@ def test_native_failure_invalidates_original_expansion_and_preserves_members():
 def test_native_cannot_add_a_different_family():
     selected = IDValidation("t.py::test_a", "runnable_test", ("t.py::test_a",))
     merged = merge_native((selected,), {"t.py::test_a": {"ids": ["t.py::test_b"]}})[0]
-    assert merged.reason == "native_identity_mismatch"
+    assert merged.reason == "collection_error"
+    assert merged.invalid_instances[0][1] == "native_identity_mismatch"
 
 
 def test_native_is_authoritative_and_disagreement_is_recorded():
     selected = IDValidation("t.py::test_generated", "helper", reason="non_callable_attribute")
-    merged = merge_native((selected,), {"t.py::test_generated": {"ids": ["t.py::test_generated"]}})[
-        0
-    ]
+    merged = merge_native(
+        (selected,), {"t.py::test_generated": {"ids": ["t.py::test_generated"], "completed": True}}
+    )[0]
     assert merged.valid and merged.native_disagrees
     assert merged.static_reason == "non_callable_attribute"
 
@@ -331,7 +333,7 @@ def test_native_module_load_error_does_not_abort_other_module(tmp_path):
     (tmp_path / "test_bad.py").write_text('raise RuntimeError("load problem")\n')
     (tmp_path / "test_good.py").write_text('def test_one(): raise AssertionError("must not run")\n')
     data = native_project(tmp_path, "pytest", ["test_bad.py::test_a", "test_good.py::test_one"])
-    assert data["ids"]["test_bad.py::test_a"]["reason"] == "native_load_error"
+    assert data["ids"]["test_bad.py::test_a"]["reason"] == "collection_error"
     assert "load problem" in data["ids"]["test_bad.py::test_a"]["message"]
     assert data["ids"]["test_good.py::test_one"]["ids"] == ["test_good.py::test_one"]
 
@@ -364,7 +366,7 @@ def test_factory():
     )
     assert data["ids"]["tests/sample.py::Case::test_one"]["ids"]
     assert data["ids"]["tests/sample.py::Case::missing"]["reason"] == "native_not_found"
-    assert data["ids"]["tests/sample.py::test_factory"]["reason"] == "native_load_error"
+    assert data["ids"]["tests/sample.py::test_factory"]["reason"] == "native_not_found"
     assert not sentinel.exists()
 
 
@@ -393,6 +395,8 @@ class ValidationContainer:
                 "message": "not collected",
             },
         }
+        for entry in self.native.values():
+            entry.setdefault("completed", True)
         self.raw, self.calls, self.inputs = raw, [], {}
 
     def set_patched(self, patched):
@@ -465,7 +469,7 @@ def test_validation_infrastructure_error_cannot_turn_into_invalid_id():
             return 1, "snapshot unavailable"
 
     result = ContainerTestExecutor(Broken()).run(("t.py::test_a",), patched=False, timeout_s=30)
-    assert result.results[0].status is TestStatus.NOT_RUN
+    assert result.results[0].status is TestStatus.COLLECTION_ERROR
     assert result.infrastructure_errors
 
 
@@ -514,7 +518,7 @@ def test_collection_timeout_remains_missing_evidence_instead_of_invalid_id():
     )[0]
     assert merged.unavailable and not merged.valid
     run = apply_validation(RunResult(evidence_complete=True), ValidationPass((merged,)))
-    assert run.results[0].status is TestStatus.NOT_RUN
+    assert run.results[0].status is TestStatus.COLLECTION_ERROR
     assert ValidationPass((merged,)).to_dict()["invalid_slots"] == 0
     assert completeness_of((tid,), run, run)[0] == "INCOMPLETE_CONFIRMED"
 

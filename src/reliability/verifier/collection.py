@@ -21,10 +21,27 @@ for name in files:
 print(json.dumps(sources))
 """
 
-_DJANGO_COLLECT = r"""
-import contextlib, importlib.util, inspect, io, json, os, sys, traceback, unittest
+_UNAVAILABLE_PATTERN = r"No module named [\"']?(?:pytest|_pytest|django|sympy)(?:[\"'\s]|$)|python[^\n]*(?:command not found|not found)|(?:can't open file|No such file)[^\n]*(?:bin/test|tests/runtests\.py)"
+
+
+def classify_collector_failure(message):
+    import re
+
+    return "RUNNER_UNAVAILABLE" if re.search(_UNAVAILABLE_PATTERN, message) else "COLLECTION_ERROR"
+
+
+_FAILURE_HELPER = (
+    "import re\ndef failure_status(message):\n    return 'RUNNER_UNAVAILABLE' if re.search("
+    + repr(_UNAVAILABLE_PATTERN)
+    + ", message) else 'COLLECTION_ERROR'\n"
+)
+
+_DJANGO_COLLECT = (
+    _FAILURE_HELPER
+    + r"""
+import contextlib, importlib, importlib.util, inspect, io, json, os, sys, traceback, unittest
 request = json.load(sys.stdin)
-labels = request["labels"]
+labels, module_name = request["labels"], request["module"]
 results = {}
 capture = io.StringIO()
 try:
@@ -32,44 +49,40 @@ try:
         sys.path.insert(0, os.path.abspath("tests"))
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "test_sqlite")
         spec = importlib.util.spec_from_file_location("runtests", "tests/runtests.py")
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
+        runner = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(runner)
         values = dict(verbosity=0, test_labels=labels, parallel=1, start_at=None, start_after=None)
-        params = inspect.signature(module.setup).parameters
-        module.setup(**dict((k, v) for k, v in values.items() if k in params))
+        params = inspect.signature(runner.setup).parameters
+        runner.setup(**dict((k, v) for k, v in values.items() if k in params))
+        # Import failure is never evidence that a selected attribute is absent.
+        module = importlib.import_module(module_name)
 except BaseException:
     message = capture.getvalue() + traceback.format_exc()
+    status = failure_status(message)
     for label in labels:
-        results[label] = dict(ids=[], reason="native_load_error", message=message)
+        results[label] = dict(ids=[], reason=status.lower(), message=message,
+                              collection_status=status, completed=False, returncode=0)
 else:
+    class Absent(Exception):
+        pass
     for label in labels:
         stream = io.StringIO()
         try:
             with contextlib.redirect_stdout(stream), contextlib.redirect_stderr(stream):
-                # Check the owner before calling unittest's loader, which otherwise
-                # invokes a plain function in an attempt to create a test suite.
-                bits = label.split(".")
-                loaded = None
-                for stop in range(len(bits) - 1, 0, -1):
-                    try:
-                        loaded = __import__(".".join(bits[:stop]), fromlist=["*"])
-                        rest = bits[stop:]
-                        break
-                    except ImportError:
-                        continue
-                if loaded is None:
-                    raise ImportError("No module for selected label: " + label)
-                owner = loaded
+                if not label.startswith(module_name + "."):
+                    raise Absent("Label is outside its containing module")
+                rest = label[len(module_name)+1:].split(".")
+                owner = module
                 for bit in rest[:-1]:
                     owner = getattr(owner, bit)
                 if not inspect.isclass(owner) or not issubclass(owner, unittest.TestCase):
-                    raise TypeError("Selected owner is not unittest.TestCase: " + label)
+                    raise Absent("Selected owner is not unittest.TestCase: " + label)
                 method = getattr(owner, rest[-1])
                 if not callable(method):
-                    raise TypeError("Selected member is not callable: " + label)
+                    raise Absent("Selected member is not callable: " + label)
                 loader = unittest.TestLoader()
                 if not rest[-1].startswith(loader.testMethodPrefix):
-                    raise LookupError("Selected member is a helper, not a test method: " + label)
+                    raise Absent("Selected member is a helper: " + label)
                 suite = loader.loadTestsFromName(label)
                 def cases(value):
                     if isinstance(value, unittest.TestSuite):
@@ -84,15 +97,23 @@ else:
                 if loader.errors or failures:
                     raise RuntimeError("\n".join(loader.errors + [str(e) for e in failures]))
                 if not found:
-                    raise LookupError("No test cases loaded for " + label)
+                    raise Absent("No cases loaded for " + label)
                 if any(not isinstance(case, unittest.TestCase) for case in found):
-                    raise TypeError("Loader returned non-TestCase object")
-            results[label] = dict(ids=[label], reason="", message=stream.getvalue())
-        except BaseException as exc:
-            results[label] = dict(ids=[], reason="native_not_found" if isinstance(exc, (AttributeError, LookupError)) else "native_load_error",
-                                  message=stream.getvalue() + traceback.format_exc())
+                    raise RuntimeError("Loader returned non-TestCase object")
+            results[label] = dict(ids=[label], reason="", message=stream.getvalue(),
+                                  collection_status="COMPLETE", completed=True, returncode=0)
+        except (Absent, AttributeError):
+            results[label] = dict(ids=[], reason="native_not_found",
+                message=stream.getvalue() + traceback.format_exc(),
+                collection_status="COMPLETE", completed=True, returncode=0)
+        except BaseException:
+            message = stream.getvalue() + traceback.format_exc()
+            status = failure_status(message)
+            results[label] = dict(ids=[], reason=status.lower(), message=message,
+                collection_status=status, completed=False, returncode=0)
 print(json.dumps(results))
 """
+)
 
 _PYTEST_PLUGIN = r"""
 import json, os
@@ -108,10 +129,17 @@ def pytest_collection_finish(session):
 """
 
 
-_NATIVE_DRIVER = r"""
+_NATIVE_DRIVER = (
+    _FAILURE_HELPER
+    + r"""
 import json, os, pathlib, subprocess, sys, time, traceback
 request = json.loads(pathlib.Path("/tmp/verifier_collect_request.json").read_text())
 kind = request["runner"]
+try:
+    os.setsid()
+except OSError:
+    pass
+pathlib.Path("/tmp/verifier_collect_pgid").write_text(str(os.getpgrp()))
 groups = {}
 for identity in request["ids"]:
     groups.setdefault(identity.split("::", 1)[0], []).append(identity)
@@ -128,7 +156,7 @@ for module, identities in sorted(groups.items()):
                     name = name[6:]
                 labels[identity] = ".".join([name] + parts[1:])
             proc = subprocess.run([sys.executable, "/tmp/verifier_django_collect.py"],
-                                  input=json.dumps(dict(labels=list(labels.values()))).encode(),
+                                  input=json.dumps(dict(labels=list(labels.values()), module=name)).encode(),
                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=request["module_timeout_s"])
             if proc.returncode:
                 raise RuntimeError((proc.stdout + proc.stderr).decode("utf-8", "replace"))
@@ -141,7 +169,7 @@ for module, identities in sorted(groups.items()):
                 result[identity] = observed
             command = [sys.executable, "/tmp/verifier_django_collect.py"]
         else:
-            command = [sys.executable, "-m", "pytest", "--collect-only", "-q", "-p", "no:cacheprovider", "-p", "verifier_collect_plugin", module]
+            command = [sys.executable, "-m", "pytest", "--collect-only", "-q", "-p", "no:cacheprovider", "-p", "verifier_collect_plugin", "--", module]
             receipt = os.path.join(os.path.dirname(__file__), "verifier_collection_nodes.json")
             if os.path.exists(receipt):
                 os.unlink(receipt)
@@ -156,24 +184,28 @@ for module, identities in sorted(groups.items()):
             for identity in identities:
                 ids = [node for node in collected if node == identity or
                        ("[" not in identity and node.startswith(identity + "["))]
-                error = proc.returncode not in (0, 5)
+                error = proc.returncode != 0 or not os.path.exists(receipt)
+                status = failure_status(message) if error else "COMPLETE"
                 result[identity] = dict(ids=[] if error else ids,
-                    reason="native_load_error" if error else "" if ids else "native_not_found",
-                    message=message if error or not ids else "")
+                    reason=status.lower() if error else "" if ids else "native_not_found",
+                    message=message if error or not ids else "",
+                    collection_status=status, completed=not error, returncode=proc.returncode)
         groups_log.append(dict(module=module, duration_s=time.monotonic()-start,
                                returncode=proc.returncode, command=command))
     except subprocess.TimeoutExpired:
         message = traceback.format_exc()
         for identity in identities:
-            result[identity] = dict(ids=[], reason="collection_timeout", message=message)
+            result[identity] = dict(ids=[], reason="collection_timeout", message=message, collection_status="COLLECTION_ERROR", completed=False)
         groups_log.append(dict(module=module, duration_s=time.monotonic()-start, error=message))
     except BaseException:
         message = traceback.format_exc()
         for identity in identities:
-            result[identity] = dict(ids=[], reason="native_load_error", message=message)
+            status = failure_status(message)
+            result[identity] = dict(ids=[], reason=status.lower(), message=message, collection_status=status, completed=False)
         groups_log.append(dict(module=module, duration_s=time.monotonic()-start, error=message))
 print(json.dumps(dict(ids=result, groups=groups_log, tests_executed=0)))
 """
+)
 
 
 @dataclass(frozen=True)
@@ -241,6 +273,7 @@ def validate_in_container(container, tests, runner, *, timeout_s=300):
             rc, message = container.exec_input("cat > " + path, data, timeout_s=60)
             if rc:
                 raise RuntimeError("collector upload failed: " + message[-2000:])
+        container.exec("rm -f /tmp/verifier_collect_pgid", timeout_s=30)
         rc, raw = container.exec("python /tmp/verifier_collect_driver.py", timeout_s=timeout_s)
         if rc:
             raise RuntimeError("collector driver failed: " + raw[-2000:])
@@ -252,4 +285,23 @@ def validate_in_container(container, tests, runner, *, timeout_s=300):
             merged, duration_s=time.monotonic() - started, groups=tuple(receipt["groups"])
         )
     except (TimeoutError, RuntimeError, ValueError, OSError) as exc:
-        return ValidationPass(errors=(str(exc),), duration_s=time.monotonic() - started)
+        if isinstance(exc, TimeoutError):
+            container.exec(
+                "python -c 'import os,signal; os.killpg(int(open(\"/tmp/verifier_collect_pgid\").read()),signal.SIGKILL)'",
+                timeout_s=30,
+            )
+        status = classify_collector_failure(str(exc))
+        records = tuple(
+            IDValidation(
+                t,
+                "unknown",
+                reason=status.lower(),
+                unavailable=True,
+                failure_status=status,
+                message=str(exc),
+            )
+            for t in tests
+        )
+        return ValidationPass(
+            records=records, errors=(str(exc),), duration_s=time.monotonic() - started
+        )

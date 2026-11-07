@@ -34,6 +34,7 @@ class IDValidation:
     native_disagrees: bool = False
     owner_instances: tuple[str, ...] = ()
     unavailable: bool = False
+    failure_status: str = ""
 
     @property
     def valid(self):
@@ -48,6 +49,11 @@ class IDValidation:
         return {
             **data,
             "valid": self.valid,
+            "validation_status": "VALID"
+            if self.valid
+            else (self.failure_status or "COLLECTION_ERROR")
+            if self.unavailable
+            else "INVALID_ID",
             "expansion_count": len(self.owner_instances or self.runnable_ids)
             if self.expanded
             else 0,
@@ -392,41 +398,86 @@ class StaticIndex:
         return tuple(self.classify(label) for label in selected)
 
 
+# A parse failure or unresolved ancestry is not proof that an identity is invalid.
+STATIC_INVALID_REASONS = frozenset(
+    {
+        "not_found",
+        "property",
+        "plain_function",
+        "helper",
+        "nested_helper",
+        "non_callable_attribute",
+        "no_runnable_owner",
+    }
+)
+
+
+def native_failure_status(observed):
+    """Require an explicit successful receipt before absence can prove invalidity."""
+    status = observed.get("collection_status")
+    reason = observed.get("reason", "")
+    if status == "RUNNER_UNAVAILABLE" or reason == "runner_unavailable":
+        return "RUNNER_UNAVAILABLE"
+    if (
+        status == "COLLECTION_ERROR"
+        or observed.get("returncode", 0) != 0
+        or reason in ("native_load_error", "collection_timeout", "native_identity_mismatch")
+    ):
+        return "COLLECTION_ERROR"
+    if observed.get("completed") is not True:
+        return "COLLECTION_ERROR"
+    return ""
+
+
 def merge_native(static, native):
-    """Keep every expansion member; one invalid member invalidates its original slot."""
+    """Only static proof or successful native absence can establish INVALID_ID."""
     output = []
     for item in static:
-        concrete, invalid, messages = [], [], []
+        concrete, invalid, messages, failures = [], [], [], []
         for tid in item.runnable_ids if item.valid else (item.selected_id,):
             observed = native.get(tid, {})
             ids = observed.get("ids", ())
+            failure = native_failure_status(observed)
             if any(
                 node != tid and not ("[" not in tid and node.startswith(tid + "[")) for node in ids
             ):
+                failure = "COLLECTION_ERROR"
                 observed = {
                     "reason": "native_identity_mismatch",
                     "message": "Collector returned an identity outside the selected instance",
                 }
-            if observed.get("reason") or not ids:
-                reason = observed.get("reason") or "native_not_found"
+            if failure or observed.get("reason") or not ids:
+                reason = observed.get("reason") or (
+                    "collection_error" if failure else "native_not_found"
+                )
                 invalid.append((tid, reason))
+                if failure:
+                    failures.append(failure)
                 if observed.get("message"):
                     messages.append(tid + ": " + observed["message"])
             else:
-                # Only identities collected for this selected instance may be added.
                 concrete.extend(ids)
-        unavailable = any(reason == "collection_timeout" for _, reason in invalid)
-        reason = (
-            "collection_timeout"
-            if unavailable
-            else item.reason
-            if invalid and item.reason
-            else "invalid_expansion"
-            if invalid and item.expanded
-            else invalid[0][1]
-            if invalid
+        static_proof = not item.valid and item.reason in STATIC_INVALID_REASONS
+        failure_status = (
+            "RUNNER_UNAVAILABLE"
+            if "RUNNER_UNAVAILABLE" in failures
+            else "COLLECTION_ERROR"
+            if failures
             else ""
         )
+        unavailable = bool(failure_status) and not static_proof
+        if unavailable:
+            reason = failure_status.lower()
+        elif invalid:
+            reason = (
+                item.reason
+                if static_proof
+                else "invalid_expansion"
+                if item.expanded
+                else invalid[0][1]
+            )
+        else:
+            reason = ""
         output.append(
             replace(
                 item,
@@ -434,6 +485,7 @@ def merge_native(static, native):
                 expanded=item.expanded and item.valid,
                 reason=reason,
                 unavailable=unavailable,
+                failure_status=failure_status if unavailable else "",
                 stage="native",
                 message="\n".join(messages),
                 invalid_instances=tuple(invalid),
