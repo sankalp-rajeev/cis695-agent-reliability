@@ -33,6 +33,7 @@ from pathlib import Path
 from typing import Protocol
 
 from reliability.verifier.selection import Selection
+from reliability.verifier.source_integrity import runtime_stage_var
 
 
 class TestStatus(str, Enum):
@@ -99,7 +100,7 @@ class Signal(str, Enum):
 BASELINE_FAILURE_THRESHOLD = 0.5
 
 # Parsed baseline caches must preserve the same outcome model as patched results.
-_BASELINE_PARSER_REVISION = "native-capture-v7-active-timeout"
+_BASELINE_PARSER_REVISION = "native-capture-v9-source-generated"
 
 
 @dataclass(frozen=True, slots=True)
@@ -141,6 +142,9 @@ class RunResult:
     validation_summary: dict = field(default_factory=dict)
     budget_s: float | None = None
     confirmation: dict = field(default_factory=dict)
+    generated_inputs: dict = field(default_factory=dict)
+    source_integrity: dict = field(default_factory=dict)
+    evidence_flags: tuple[str, ...] = ()
 
     def by_id(self) -> dict[str, TestResult]:
         return {r.test_id: r for r in self.results}
@@ -186,6 +190,7 @@ class RegressionReport:
     patched: RunResult | None = None
     confirmations: tuple[RunResult, ...] = ()
     confirmation_summary: tuple[dict, ...] = ()
+    evidence_flags: tuple[str, ...] = ()
 
     @property
     def regressions(self) -> tuple[str, ...]:
@@ -241,7 +246,7 @@ def run_from_dict(payload: dict) -> RunResult:
                                       r.get("duration_s", 0.0), r.get("message", ""),
                                       r.get("elapsed_s", 0.0))
                             for r in fields.get(key, ()))
-    for key in ("unmatched_ids", "infrastructure_errors", "events", "requested_tests", "validation"):
+    for key in ("unmatched_ids", "infrastructure_errors", "events", "requested_tests", "validation", "evidence_flags"):
         fields[key] = tuple(fields.get(key, ()))
     fields["raw_id_map"] = {k: tuple(v) for k, v in fields.get("raw_id_map", {}).items()}
     fields["execution_id_map"] = {k: tuple(v) for k, v in fields.get("execution_id_map", {}).items()}
@@ -503,7 +508,7 @@ def run_regression(
                      f"base commit; environment is suspect"),
                 ),
                 original_signal=Signal.BASELINE_UNRELIABLE,
-                baseline=baseline,
+                baseline=baseline, evidence_flags=baseline.evidence_flags,
                 incompleteness=("patched pass not executed: unreliable baseline",),
             )
 
@@ -527,9 +532,15 @@ def run_regression(
             usable = True
             for patched_tree in (False, True):
                 for attempt in range(1, 4):
-                    confirmation = executor.run(
-                        (test,), patched=patched_tree, timeout_s=config.per_pass_timeout_s)
-                    confirmation = replace(confirmation, confirmation={
+                    stage_token = runtime_stage_var.set('confirmation')
+                    try:
+                        confirmation = executor.run(
+                            (test,), patched=patched_tree, timeout_s=config.per_pass_timeout_s)
+                    finally:
+                        runtime_stage_var.reset(stage_token)
+                    confirmation = replace(confirmation,
+                        generated_inputs={**confirmation.generated_inputs, "runtime_kind": "confirmation"},
+                        confirmation={
                         "candidate_id": test, "tree": "patched" if patched_tree else "base",
                         "attempt": attempt, "attempts_per_tree": 3, "isolated": True})
                     confirmations.append(confirmation)
@@ -594,4 +605,6 @@ def run_regression(
         original_signal=original_signal, completeness=completeness, incompleteness=gaps,
         baseline=baseline, patched=patched, confirmations=tuple(confirmations),
         confirmation_summary=tuple(confirmation_summary),
+        evidence_flags=tuple(sorted({flag for run in (baseline, patched, *confirmations)
+                                     for flag in run.evidence_flags})),
     )

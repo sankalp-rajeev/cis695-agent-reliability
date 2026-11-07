@@ -33,6 +33,14 @@ from reliability.verifier.collection import validate_in_container
 from reliability.verifier.regression import RunResult, TestResult, TestStatus
 from reliability.verifier.result_parser import mapping_for, parse_capture
 from reliability.verifier.selection import TestRunner, django_label
+from reliability.verifier.source_integrity import (
+    BaseSourceSpec,
+    GeneratedInputAudit,
+    SourceIntegrityError,
+    generated_inventory,
+    runtime_stage_var,
+    verify_base_source,
+)
 from reliability.verifier.validated_run import apply_validation
 
 NAMESPACE = "swebench/sweb.eval.x86_64"
@@ -83,6 +91,10 @@ class TaskContainer:
     image: str | None = None
     name: str = field(default="")
     experiment_id: str = ""
+    source_spec: BaseSourceSpec | None = None
+    source_receipt_path: Path | None = None
+    source_integrity: dict = field(default_factory=dict, init=False)
+    _generated_pin: dict | None = field(default=None, init=False)
     _started: bool = field(default=False, init=False)
     _patch_applied: bool = field(default=False, init=False)
 
@@ -117,6 +129,31 @@ class TaskContainer:
         if proc.returncode != 0:
             raise ContainerError(f"could not start {self.image}: {proc.stderr.strip()}")
         self._started = True
+        if self.source_spec is not None:
+            try:
+                try:
+                    self.source_integrity = verify_base_source(self, self.source_spec)
+                except SourceIntegrityError as exc:
+                    self.source_integrity = exc.receipt
+                    raise
+                finally:
+                    self._save_source_receipt()
+            except BaseException:
+                self.stop()
+                raise
+
+    def _save_source_receipt(self):
+        if self.source_receipt_path is not None:
+            self.source_receipt_path.parent.mkdir(parents=True, exist_ok=True)
+            self.source_receipt_path.write_text(json.dumps(self.source_integrity, indent=2) + "\n")
+
+    def generated_snapshot(self, previous=(), *, timeout_s=60):
+        paths = set(previous) | set(self._generated_pin or {})
+        value = generated_inventory(self, paths, timeout_s=timeout_s)
+        if self._generated_pin is None:
+            self._generated_pin = dict(value['files'])
+        value['pinned_files'] = self._generated_pin
+        return value
 
     def stop(self) -> None:
         if not self._started:
@@ -382,14 +419,63 @@ class ContainerTestExecutor:
         except TimeoutError:
             return None, b"", b"", True
 
+    def _execute_once(self, command, timeout_s):
+        result = self._capture(command, timeout_s)
+        if result[3]:
+            kill_code = "import os,signal,json,pathlib\n"
+            kill_code += "p=pathlib.Path('/tmp/verifier_events.jsonl')\n"
+            kill_code += "events=[json.loads(l) for l in p.read_text().splitlines()] if p.exists() else []\n"
+            kill_code += "pids=[e['pid'] for e in events if e.get('event')=='start' and 'pid' in e]\n"
+            kill_code += "pids.append(int(open('/tmp/verifier_pgid').read()))\n"
+            kill_code += "for pid in pids:\n try: os.killpg(pid,signal.SIGKILL)\n except ProcessLookupError: pass\n"
+            kill = "python -c " + shlex.quote(kill_code)
+            self._capture(kill, 30)
+        return result
+
     def run(self, tests: tuple[str, ...], *, patched: bool, timeout_s: int) -> RunResult:
+        if isinstance(self.container, TaskContainer) and self.container.source_spec is None:
+            raise ValueError("Fix 9 requires a pinned BaseSourceSpec before runtime")
+        if isinstance(self.container, TaskContainer) and self.container.source_integrity.get('status') != 'VERIFIED':
+            raise ValueError("Fix 9 requires a verified pristine base-source receipt")
+        if timeout_s <= 0:
+            raise ValueError("per-pass budget must be positive")
+        started = time.monotonic()
+        deadline = started + timeout_s
+        snapshot = getattr(self.container, 'generated_snapshot', None)
+        if snapshot is not None:
+            method = snapshot
+            snapshot = lambda previous: method(previous, timeout_s=30)
+        audit = GeneratedInputAudit(snapshot)
+        boundary_stage = 'confirmation' if runtime_stage_var.get() == 'confirmation' else 'pass'
+        audit.capture(boundary_stage, 'before')
+        result = None
+        try:
+            result = self._run_audited(tests, patched=patched, timeout_s=timeout_s, audit=audit, started=started, deadline=deadline)
+        finally:
+            audit.capture(boundary_stage, 'after')
+            details = audit.to_dict()
+            details.update(tree='patched' if patched else 'base', runtime_kind=runtime_stage_var.get())
+            files = dict(result.evidence_files) if result is not None else {}
+            hashes = dict(result.evidence_sha256) if result is not None else {}
+            if self.evidence_dir is not None:
+                folder = self.evidence_dir / (('patched' if patched else 'base') + '_generated_' + uuid.uuid4().hex)
+                folder.mkdir(parents=True, exist_ok=False)
+                path = folder / 'generated_inputs.json'
+                raw = (json.dumps(details, indent=2) + '\n').encode()
+                path.write_bytes(raw)
+                files['generated_inputs.json'] = str(path.resolve())
+                hashes['generated_inputs.json'] = hashlib.sha256(raw).hexdigest()
+        return replace(result, generated_inputs=details, duration_s=time.monotonic()-started, budget_s=timeout_s,
+                       evidence_flags=tuple(dict.fromkeys((*result.evidence_flags, *audit.flags))),
+                       source_integrity=getattr(self.container, 'source_integrity', {}),
+                       evidence_files=files, evidence_sha256=hashes)
+
+    def _run_audited(self, tests, *, patched, timeout_s, audit, started, deadline) -> RunResult:
         if not tests:
             return RunResult()
 
         if timeout_s <= 0:
             raise ValueError("per-pass budget must be positive")
-        started = time.monotonic()
-        deadline = started + timeout_s
         def remaining(limit=None):
             value = max(0.001, deadline - time.monotonic())
             return min(value, limit) if limit is not None else value
@@ -398,9 +484,10 @@ class ContainerTestExecutor:
                            duration_s=time.monotonic()-started, budget_s=timeout_s,
                            timed_out=result.timed_out or any(r.failure_status == "NOT_REACHED" for r in validation.records))
 
-        self.container.set_patched(patched)
+        audit.stage('patch_application', lambda: self.container.set_patched(patched))
         runner = self.runner or TestRunner("pytest", "default")
-        validation = validate_in_container(self.container, tests, runner, timeout_s=remaining())
+        validation = audit.stage('native_collection', lambda: validate_in_container(
+            self.container, tests, runner, timeout_s=remaining()))
         actual = validation.context.get('runner', runner.name)
         runner = TestRunner(actual, validation.context.get('runner_evidence', runner.evidence))
         validation = replace(validation, context={**validation.context,
@@ -474,18 +561,10 @@ class ContainerTestExecutor:
                     timed_out=True, evidence_complete=True), validation)
             command += " " + str(remaining()) + " " + str(time.monotonic()-started)
             driver_started = True
-            rc, raw_stdout, raw_stderr, timed_out = self._capture(command, remaining() + 2)
+            rc, raw_stdout, raw_stderr, timed_out = audit.stage('execution',
+                lambda: self._execute_once(command, remaining() + 2))
             if rc not in (0, None):
                 errors.append(f"capture driver exit {rc}")
-            if timed_out:
-                kill_code = "import os,signal,json,pathlib\n"
-                kill_code += "p=pathlib.Path('/tmp/verifier_events.jsonl')\n"
-                kill_code += "events=[json.loads(l) for l in p.read_text().splitlines()] if p.exists() else []\n"
-                kill_code += "pids=[e['pid'] for e in events if e.get('event')=='start' and 'pid' in e]\n"
-                kill_code += "pids.append(int(open('/tmp/verifier_pgid').read()))\n"
-                kill_code += "for pid in pids:\n try: os.killpg(pid,signal.SIGKILL)\n except ProcessLookupError: pass\n"
-                kill = "python -c " + shlex.quote(kill_code)
-                self._capture(kill, 30)
             rc, logged, _, log_timeout = self._capture("cat " + _OUT_LOG, 30)
             runner_log = logged if rc == 0 and not log_timeout else raw_stdout
             rc, event_bytes, _, event_timeout = self._capture("cat /tmp/verifier_events.jsonl", 30)
