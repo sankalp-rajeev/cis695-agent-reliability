@@ -1,0 +1,28 @@
+{
+  "image_id": "sha256:ba3d2b723b6698da914da64befdbf7a075799e65a970a56355b8f1ef1543c835",
+  "image_tag_metadata": "swebench/sweb.eval.x86_64.astropy_1776_astropy-13977:latest",
+  "base_commit": "5250b2442501e6c671c6b380536f1edb352602d1",
+  "archive_sha256": "1f6604aec29c5bb012035f5b5778602eb4a3d645a43a5bda607ba6f4e2946248",
+  "container_argv": [
+    "/usr/bin/docker",
+    "run",
+    "--pull=never",
+    "-d",
+    "--cpu-shares",
+    "2048",
+    "--name",
+    "verify_phase4_fix9_pristine_audit_astropy__astropy-13977_5c272f5e",
+    "--label",
+    "experiment_id=phase4_fix9_pristine_audit",
+    "-w",
+    "/testbed",
+    "--network",
+    "none",
+    "sha256:ba3d2b723b6698da914da64befdbf7a075799e65a970a56355b8f1ef1543c835",
+    "sleep",
+    "infinity"
+  ],
+  "patch_applied": false,
+  "tests_executed": 0,
+  "collection_performed": false
+}

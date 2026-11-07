@@ -1,0 +1,28 @@
+{
+  "image_id": "sha256:c62eb7d71aba8970d858d9d93f2d1ec8b34c53702a4d736dea747597b9ceb2ce",
+  "image_tag_metadata": "swebench/sweb.eval.x86_64.django_1776_django-13023:latest",
+  "base_commit": "f83b44075dafa429d59e8755aa47e15577cc49f9",
+  "archive_sha256": "0b3e23fd17b2f1decc95ee743badb54e33aeb502e05f2282fc769f5ac5b486b4",
+  "container_argv": [
+    "/usr/bin/docker",
+    "run",
+    "--pull=never",
+    "-d",
+    "--cpu-shares",
+    "2048",
+    "--name",
+    "verify_phase4_fix9_pristine_audit_django__django-13023_9c187c6c",
+    "--label",
+    "experiment_id=phase4_fix9_pristine_audit",
+    "-w",
+    "/testbed",
+    "--network",
+    "none",
+    "sha256:c62eb7d71aba8970d858d9d93f2d1ec8b34c53702a4d736dea747597b9ceb2ce",
+    "sleep",
+    "infinity"
+  ],
+  "patch_applied": false,
+  "tests_executed": 0,
+  "collection_performed": false
+}

@@ -1,0 +1,28 @@
+{
+  "image_id": "sha256:e2c911dc9bc0a8847e18cb83b76ec901c5ab5945bf819ac8a6989b55b2c6a1aa",
+  "image_tag_metadata": "swebench/sweb.eval.x86_64.matplotlib_1776_matplotlib-20488:latest",
+  "base_commit": "b7ce415c15eb39b026a097a2865da73fbcf15c9c",
+  "archive_sha256": "73106be4d07b72480bd249c4b895bedc60af3b1b5f29dac3fb46a3d6fcfab02d",
+  "container_argv": [
+    "/usr/bin/docker",
+    "run",
+    "--pull=never",
+    "-d",
+    "--cpu-shares",
+    "2048",
+    "--name",
+    "verify_phase4_fix9_pristine_audit_matplotlib__matplotlib-20488_7679da68",
+    "--label",
+    "experiment_id=phase4_fix9_pristine_audit",
+    "-w",
+    "/testbed",
+    "--network",
+    "none",
+    "sha256:e2c911dc9bc0a8847e18cb83b76ec901c5ab5945bf819ac8a6989b55b2c6a1aa",
+    "sleep",
+    "infinity"
+  ],
+  "patch_applied": false,
+  "tests_executed": 0,
+  "collection_performed": false
+}
