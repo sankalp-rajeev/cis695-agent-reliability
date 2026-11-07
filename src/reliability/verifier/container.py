@@ -22,6 +22,7 @@ import json
 import os
 import shlex
 import subprocess
+import time
 import uuid
 from dataclasses import dataclass, field, replace
 from pathlib import Path
@@ -248,8 +249,13 @@ _OUT_LOG = "/tmp/verifier_out.txt"
 _DRIVER_PARSER = Path(__file__).with_name('result_parser.py').read_text().replace(
     'from reliability.verifier.selection import django_label\n', '')
 _BATCH_DRIVER = 'exec(' + repr(_DRIVER_PARSER) + ')\n' + r'''
-import collections, json, os, pathlib, subprocess, sys, time
+import collections, json, os, pathlib, select, signal, subprocess, sys, time
 kind = sys.argv[1]
+budget = float(sys.argv[2]) if len(sys.argv) > 2 else 1800.0
+prior_elapsed = float(sys.argv[3]) if len(sys.argv) > 3 else 0.0
+pass_start = time.monotonic()
+deadline = pass_start + budget
+cap_hit = [False]
 ids = [line.strip() for line in pathlib.Path("/tmp/verifier_ids").read_text(encoding="utf-8", errors="replace").splitlines() if line.strip()]
 map_path = pathlib.Path("/tmp/verifier_module_ids.json")
 module_map = json.loads(map_path.read_text()) if map_path.exists() else {}
@@ -277,7 +283,15 @@ def seen(output, part, module):
                 found.add(canonical)
     return found
 
+def not_reached(part, module):
+    cap_hit[0] = True
+    events.write(json.dumps(dict(event="not_reached", module=module, ids=part,
+        elapsed_s=prior_elapsed + time.monotonic()-pass_start, reason="per_pass_budget")) + "\n")
+
 def run(part, module, retry=False, parent=None):
+    if time.monotonic() >= deadline:
+        not_reached(part, module)
+        return None, []
     if kind == "sympy":
         cmd = ["python", "/tmp/verifier_sympy_driver.py", "execute", module] + part
     elif kind == "django":
@@ -286,12 +300,24 @@ def run(part, module, retry=False, parent=None):
         cmd = ["python", "-m", "pytest", "-p", "no:cacheprovider", "-v", "--"] + part
     sequence[0] += 1
     index, start = sequence[0], time.monotonic()
-    events.write(json.dumps(dict(event="start", batch=index, module=module,
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, start_new_session=True)
+    events.write(json.dumps(dict(event="start", batch=index, module=module, pid=proc.pid,
                                 retry=retry, parent=parent, argv=cmd, ids=part,
                                 offset=log.tell())) + "\n")
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     captured = bytearray()
+    timed_out = False
     while True:
+        remaining = deadline - time.monotonic()
+        if remaining <= 0 and not timed_out:
+            timed_out = True
+            cap_hit[0] = True
+            try:
+                os.killpg(proc.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+        ready, _, _ = select.select([proc.stdout], [], [], max(0.001, min(0.1, remaining)))
+        if not ready:
+            continue
         chunk = os.read(proc.stdout.fileno(), 65536)
         if not chunk:
             break
@@ -306,12 +332,14 @@ def run(part, module, retry=False, parent=None):
     missing = [tid for tid in part if tid not in observed]
     # A negative exit with unreported identities is a load/collection abort.
     # Ordinary assertion FAIL/ERROR with every identity observed is not retried.
-    load_failure = bool(code and missing)
+    load_failure = bool(code and missing and not timed_out)
     retry_ids = missing if load_failure and not retry and not gis else []
     events.write(json.dumps(dict(event="end", batch=index, module=module,
-        returncode=code, retry=retry, parent=parent, observed_ids=sorted(observed),
+        returncode=code, retry=retry, parent=parent, observed_ids=sorted(observed), timed_out=timed_out,
         load_failure=load_failure, gis_guard=gis, split=bool(retry_ids),
         missing_ids=missing, offset=log.tell(), duration_s=time.monotonic()-start)) + "\n")
+    if timed_out:
+        not_reached(missing, module)
     return index, retry_ids
 
 modules = collections.OrderedDict()
@@ -324,7 +352,7 @@ for module, part in modules.items():
     parent, remaining = run(part, module)
     for identity in remaining:
         run([identity], module, retry=True, parent=parent)
-events.write(json.dumps(dict(event="complete")) + "\n")
+events.write(json.dumps(dict(event="complete", timed_out=cap_hit[0], budget_s=budget, elapsed_s=prior_elapsed+time.monotonic()-pass_start)) + "\n")
 '''
 
 @dataclass
@@ -358,9 +386,21 @@ class ContainerTestExecutor:
         if not tests:
             return RunResult()
 
+        if timeout_s <= 0:
+            raise ValueError("per-pass budget must be positive")
+        started = time.monotonic()
+        deadline = started + timeout_s
+        def remaining(limit=None):
+            value = max(0.001, deadline - time.monotonic())
+            return min(value, limit) if limit is not None else value
+        def finish(result, validation):
+            return replace(apply_validation(result, validation),
+                           duration_s=time.monotonic()-started, budget_s=timeout_s,
+                           timed_out=result.timed_out or any(r.failure_status == "NOT_REACHED" for r in validation.records))
+
         self.container.set_patched(patched)
         runner = self.runner or TestRunner("pytest", "default")
-        validation = validate_in_container(self.container, tests, runner, timeout_s=timeout_s)
+        validation = validate_in_container(self.container, tests, runner, timeout_s=remaining())
         actual = validation.context.get('runner', runner.name)
         runner = TestRunner(actual, validation.context.get('runner_evidence', runner.evidence))
         validation = replace(validation, context={**validation.context,
@@ -375,7 +415,7 @@ class ContainerTestExecutor:
             validation = replace(validation, evidence_files={'validation.json': str(path.resolve())},
                                  evidence_sha256={'validation.json': hashlib.sha256(raw).hexdigest()})
         if validation.errors:
-            return apply_validation(RunResult(infrastructure_errors=validation.errors,
+            return finish(RunResult(infrastructure_errors=validation.errors,
                              requested_tests=tests,
                              validation_summary=validation.to_dict(),
                              evidence_files=validation.evidence_files,
@@ -383,7 +423,11 @@ class ContainerTestExecutor:
                              note='ID validation unavailable'), validation)
         tests = validation.runnable_ids
         if not tests:
-            return apply_validation(RunResult(evidence_complete=True), validation)
+            return finish(RunResult(evidence_complete=True), validation)
+        if time.monotonic() >= deadline:
+            return finish(RunResult(results=tuple(TestResult(t, TestStatus.NOT_REACHED,
+                elapsed_s=time.monotonic()-started, message="per-pass budget exhausted before execution")
+                for t in tests), timed_out=True, evidence_complete=True), validation)
         native = (
             tuple(django_label(test) for test in tests)
             if runner.name == "django" else tests
@@ -395,39 +439,52 @@ class ContainerTestExecutor:
         timed_out = False
         events = ()
         files, digests = {}, {}
+        driver_started = False
         try:
             # The ids go through stdin. Embedding them in `docker exec` argv is
             # what raised E2BIG once a short symbol selected a large tier-2 set.
             rc, _ = self.container.exec_input(
-                f"cat > {_IDS_PATH}", "\n".join(native) + "\n", timeout_s=60)
+                f"cat > {_IDS_PATH}", "\n".join(native) + "\n", timeout_s=remaining(60))
             if rc:
                 errors.append("selected-ID upload failed")
             rc, _ = self.container.exec_input(
                 "cat > /tmp/verifier_module_ids.json",
                 json.dumps({label: test.split('::', 1)[0] for label, test in zip(native, tests)}),
-                timeout_s=60)
+                timeout_s=remaining(60))
             if rc:
                 errors.append("module-ID upload failed")
             rc, _ = self.container.exec_input(
-                "cat > /tmp/verifier_driver.py", _BATCH_DRIVER, timeout_s=60)
+                "cat > /tmp/verifier_driver.py", _BATCH_DRIVER, timeout_s=remaining(60))
             if rc:
                 errors.append("capture-driver upload failed")
             # A failed driver must not expose stale logs from an earlier tree/pass.
             rc, _, _, clear_timeout = self._capture(
-                "rm -f /tmp/verifier_out.txt /tmp/verifier_events.jsonl /tmp/verifier_pgid", 30)
+                "rm -f /tmp/verifier_out.txt /tmp/verifier_events.jsonl /tmp/verifier_pgid", remaining(30))
             if rc or clear_timeout:
                 errors.append("could not clear previous capture")
             if errors:
-                return apply_validation(RunResult(
+                return finish(RunResult(
                     results=tuple(TestResult(t, TestStatus.NOT_RUN) for t in tests),
                     infrastructure_errors=tuple(errors), requested_tests=tuple(tests),
                     note="; ".join(errors)), validation)
-            rc, raw_stdout, raw_stderr, timed_out = self._capture(command, timeout_s)
+            if time.monotonic() >= deadline:
+                return finish(RunResult(
+                    results=tuple(TestResult(t, TestStatus.NOT_REACHED, elapsed_s=time.monotonic()-started,
+                        message="per-pass budget exhausted before execution") for t in tests),
+                    timed_out=True, evidence_complete=True), validation)
+            command += " " + str(remaining()) + " " + str(time.monotonic()-started)
+            driver_started = True
+            rc, raw_stdout, raw_stderr, timed_out = self._capture(command, remaining() + 2)
             if rc not in (0, None):
                 errors.append(f"capture driver exit {rc}")
             if timed_out:
-                kill = ("python -c 'import os,signal; "
-                        "os.killpg(int(open(\"/tmp/verifier_pgid\").read()),signal.SIGKILL)'")
+                kill_code = "import os,signal,json,pathlib\n"
+                kill_code += "p=pathlib.Path('/tmp/verifier_events.jsonl')\n"
+                kill_code += "events=[json.loads(l) for l in p.read_text().splitlines()] if p.exists() else []\n"
+                kill_code += "pids=[e['pid'] for e in events if e.get('event')=='start' and 'pid' in e]\n"
+                kill_code += "pids.append(int(open('/tmp/verifier_pgid').read()))\n"
+                kill_code += "for pid in pids:\n try: os.killpg(pid,signal.SIGKILL)\n except ProcessLookupError: pass\n"
+                kill = "python -c " + shlex.quote(kill_code)
                 self._capture(kill, 30)
             rc, logged, _, log_timeout = self._capture("cat " + _OUT_LOG, 30)
             runner_log = logged if rc == 0 and not log_timeout else raw_stdout
@@ -436,6 +493,10 @@ class ContainerTestExecutor:
                 event_bytes = b""
         except TimeoutError:
             timed_out = True
+            if not driver_started:
+                return finish(RunResult(results=tuple(TestResult(t, TestStatus.NOT_REACHED,
+                    elapsed_s=time.monotonic()-started, message="per-pass budget exhausted during upload")
+                    for t in tests), timed_out=True), validation)
         # Persist bytes/events BEFORE either legacy parsing or raw-ID accounting.
         if self.evidence_dir is not None:
             folder = self.evidence_dir / (("patched" if patched else "base") + "_" + uuid.uuid4().hex)
@@ -457,11 +518,11 @@ class ContainerTestExecutor:
         except (ValueError, TypeError):
             events = ()
             errors.append("malformed capture events")
-        return apply_validation(run_from_capture(
+        return finish(run_from_capture(
             runner, tests, runner_log=runner_log, raw_stderr=raw_stderr,
             raw_stdout=raw_stdout, events=events, timed_out=timed_out,
             infrastructure_errors=tuple(errors), evidence_files=files,
-            evidence_sha256=digests,
+            evidence_sha256=digests, budget_s=timeout_s,
         ), validation)
 
     def _partial_statuses(self, runner: TestRunner, tests) -> dict:
@@ -476,6 +537,7 @@ def run_from_capture(
     timed_out: bool = False, infrastructure_errors: tuple[str, ...] = (),
     evidence_files: dict[str, str] | None = None,
     evidence_sha256: dict[str, str] | None = None,
+    budget_s: float | None = None,
 ) -> RunResult:
     """Parse one captured pass identically for live execution and offline replay.
 
@@ -503,6 +565,26 @@ def run_from_capture(
     statuses = _parse_output(runner, output, tests, observed=observed)
     raw_results, mappings, unmatched = account_raw_output(runner, output, tests, observed=observed)
     complete = bool(events and events[-1].get("event") == "complete")
+    timed_out |= any(e.get("timed_out") or e.get("event") == "not_reached" for e in events)
+    reached_elapsed = {}
+    for event in events:
+        if event.get("event") == "not_reached":
+            mapper = mapping_for(tests, runner.name)
+            for identity in event.get("ids", ()):
+                for tid in mapper(identity):
+                    if tid not in statuses:
+                        statuses[tid] = TestStatus.NOT_REACHED
+                        reached_elapsed[tid] = event.get("elapsed_s", 0.0)
+    # A host watchdog can interrupt the driver before its final receipt. IDs
+    # outside every started process are still provably not reached.
+    if timed_out and events:
+        attempted = {t for e in events if e.get("event") == "start" for t in e.get("ids", ())}
+        mapper = mapping_for(tests, runner.name)
+        attempted = {t for identity in attempted for t in mapper(identity)}
+        for tid in tests:
+            if tid not in attempted and tid not in statuses:
+                statuses[tid] = TestStatus.NOT_REACHED
+                reached_elapsed[tid] = budget_s or 0.0
     starts = {e.get("batch") for e in events if e.get("event") == "start"}
     ends = {e.get("batch") for e in events if e.get("event") == "end"}
     if not starts:
@@ -510,7 +592,7 @@ def run_from_capture(
     if starts != ends:
         errors.append("unfinished runner batch")
     for event in events:
-        if event.get("event") == "end" and not event.get("split"):
+        if event.get("event") == "end" and not event.get("split") and not event.get("timed_out"):
             if event.get("returncode") not in (0, 1):
                 errors.append(f"runner batch {event.get('batch')} exit {event.get('returncode')}")
             elif event.get("returncode") == 1:
@@ -546,11 +628,13 @@ def run_from_capture(
     # Anything the runner did not report on is NOT_RUN, never an implicit pass.
     return RunResult(
         results=tuple(
-            TestResult(t, statuses.get(t, TestStatus.TIMEOUT if timed_out else TestStatus.NOT_RUN))
+            TestResult(t, statuses.get(t, TestStatus.TIMEOUT if timed_out else TestStatus.NOT_RUN),
+                       elapsed_s=reached_elapsed.get(t, 0.0),
+                       message="per-pass budget exhausted; no terminal outcome" if t in reached_elapsed else "")
             for t in tests
         ),
         note="" if statuses else _no_results_note(output),
-        timed_out=timed_out, raw_results=raw_results, raw_id_map=mappings,
+        timed_out=timed_out, budget_s=budget_s, raw_results=raw_results, raw_id_map=mappings,
         unmatched_ids=unmatched, infrastructure_errors=tuple(errors),
         evidence_complete=complete and not errors,
         raw_stdout_b64=base64.b64encode(raw_stdout).decode(),

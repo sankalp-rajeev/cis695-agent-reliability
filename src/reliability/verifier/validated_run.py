@@ -13,6 +13,7 @@ _SEVERITY = {
     TestStatus.FAILED: 4,
     TestStatus.ERROR: 5,
     TestStatus.NOT_RUN: 6,
+    TestStatus.NOT_REACHED: 6.5,
     TestStatus.TIMEOUT: 7,
     TestStatus.COLLECTION_ERROR: 8,
     TestStatus.RUNNER_UNAVAILABLE: 9,
@@ -42,6 +43,7 @@ def apply_validation(run: RunResult, validation):
                     if record.unavailable
                     else TestStatus.INVALID_ID,
                     message=record.reason + ": " + record.message,
+                    elapsed_s=record.elapsed_s,
                 )
             )
             continue
@@ -51,6 +53,7 @@ def apply_validation(run: RunResult, validation):
         ]
         gaps = (
             TestStatus.NOT_RUN,
+            TestStatus.NOT_REACHED,
             TestStatus.TIMEOUT,
             TestStatus.ERROR,
             TestStatus.INVALID_ID,
@@ -60,7 +63,8 @@ def apply_validation(run: RunResult, validation):
         receipt["admitted_instances"] = sum(s not in gaps for s in statuses)
         receipt["admitted"] = bool(statuses) and all(s not in gaps for s in statuses)
         status = max(statuses, key=_SEVERITY.get) if statuses else TestStatus.NOT_RUN
-        results.append(TestResult(record.selected_id, status))
+        results.append(TestResult(record.selected_id, status,
+                                  elapsed_s=max((by_id[t].elapsed_s for t in record.runnable_ids if t in by_id), default=0.0)))
     mappings = {}
     for raw, identities in run.raw_id_map.items():
         mappings[raw] = tuple(

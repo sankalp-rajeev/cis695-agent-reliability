@@ -35,6 +35,7 @@ class IDValidation:
     owner_instances: tuple[str, ...] = ()
     unavailable: bool = False
     failure_status: str = ""
+    elapsed_s: float = 0.0
 
     @property
     def valid(self):
@@ -416,6 +417,8 @@ def native_failure_status(observed):
     """Require an explicit successful receipt before absence can prove invalidity."""
     status = observed.get("collection_status")
     reason = observed.get("reason", "")
+    if status == "NOT_REACHED":
+        return "NOT_REACHED"
     if status == "RUNNER_UNAVAILABLE" or reason == "runner_unavailable":
         return "RUNNER_UNAVAILABLE"
     if (
@@ -461,6 +464,8 @@ def merge_native(static, native):
         failure_status = (
             "RUNNER_UNAVAILABLE"
             if "RUNNER_UNAVAILABLE" in failures
+            else "NOT_REACHED"
+            if "NOT_REACHED" in failures
             else "COLLECTION_ERROR"
             if failures
             else ""
@@ -486,6 +491,7 @@ def merge_native(static, native):
                 reason=reason,
                 unavailable=unavailable,
                 failure_status=failure_status if unavailable else "",
+                elapsed_s=max((native.get(t, {}).get("elapsed_s", 0.0) for t in (item.runnable_ids or (item.selected_id,))), default=0.0),
                 stage="native",
                 message="\n".join(messages),
                 invalid_instances=tuple(invalid),

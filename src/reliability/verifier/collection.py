@@ -146,13 +146,29 @@ groups = {}
 for identity in request["ids"]:
     groups.setdefault(identity.split("::", 1)[0], []).append(identity)
 result, groups_log = {}, []
+started = time.monotonic()
+deadline = started + request.get("budget_s", 1800)
+prior_elapsed = request.get("prior_elapsed_s", 0.0)
+def save():
+    # A timeout must not discard previously completed module collections.
+    target = pathlib.Path("/tmp/verifier_collect_partial.json")
+    temporary = target.with_suffix(".tmp")
+    temporary.write_text(json.dumps(dict(ids=result, groups=groups_log, tests_executed=0)))
+    temporary.replace(str(target))
 for module, identities in sorted(groups.items()):
     start = time.monotonic()
+    if start >= deadline:
+        for identity in identities:
+            result[identity] = dict(ids=[], reason="not_reached", message="per-pass budget exhausted before collection",
+                collection_status="NOT_REACHED", completed=False, elapsed_s=prior_elapsed+start-started)
+        save()
+        continue
+    module_timeout = max(0.001, min(request["module_timeout_s"], deadline-start))
     try:
         if kind == "sympy":
             command = [sys.executable, "/tmp/verifier_sympy_driver.py", "collect", module]
             proc = subprocess.run(command, input=json.dumps(dict(ids=identities)).encode(),
-                stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=request["module_timeout_s"])
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=module_timeout)
             if proc.returncode:
                 raise RuntimeError((proc.stdout + proc.stderr).decode("utf-8", "replace"))
             receipt = json.loads(proc.stdout.decode("utf-8", "replace"))
@@ -167,7 +183,7 @@ for module, identities in sorted(groups.items()):
                 labels[identity] = ".".join([name] + parts[1:])
             proc = subprocess.run([sys.executable, "/tmp/verifier_django_collect.py"],
                                   input=json.dumps(dict(labels=list(labels.values()), module=name)).encode(),
-                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=request["module_timeout_s"])
+                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=module_timeout)
             if proc.returncode:
                 raise RuntimeError((proc.stdout + proc.stderr).decode("utf-8", "replace"))
             native = json.loads(proc.stdout.decode("utf-8", "replace"))
@@ -187,7 +203,7 @@ for module, identities in sorted(groups.items()):
             environment["PYTHONPATH"] = os.path.dirname(__file__) + os.pathsep + environment.get("PYTHONPATH", "")
             environment["VERIFIER_COLLECTION_RECEIPT"] = receipt
             proc = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                  timeout=request["module_timeout_s"], env=environment)
+                                  timeout=module_timeout, env=environment)
             stdout = proc.stdout.decode("utf-8", "replace")
             message = stdout + proc.stderr.decode("utf-8", "replace")
             collected = json.loads(pathlib.Path(receipt).read_text()) if os.path.exists(receipt) else []
@@ -213,6 +229,7 @@ for module, identities in sorted(groups.items()):
             status = failure_status(message)
             result[identity] = dict(ids=[], reason=status.lower(), message=message, collection_status=status, completed=False)
         groups_log.append(dict(module=module, duration_s=time.monotonic()-start, error=message))
+    save()
 print(json.dumps(dict(ids=result, groups=groups_log, tests_executed=0)))
 """
 )
@@ -253,16 +270,21 @@ class ValidationPass:
         }
 
 
-def validate_in_container(container, tests, runner, *, timeout_s=300):
+def validate_in_container(container, tests, runner, *, timeout_s=1800):
     """Snapshot the current (already base/patched) tree, then collect valid identities."""
     started = time.monotonic()
+    deadline = started + timeout_s
+    static, context = (), {}
+    def remaining(limit=None):
+        value = max(0.001, deadline-time.monotonic())
+        return min(value, limit) if limit is not None else value
     if runner.name not in ("pytest", "django", "sympy"):
         return ValidationPass(records=tuple(IDValidation(t, 'unknown', reason='runner_unavailable',
             unavailable=True, failure_status='RUNNER_UNAVAILABLE') for t in tests),
             errors=("No collection-only adapter for runner: " + runner.name,))
     try:
         command = "python -c " + shlex.quote(_SOURCE_SNAPSHOT)
-        rc, raw = container.exec(command, timeout_s=120)
+        rc, raw = container.exec(command, timeout_s=remaining(120))
         if rc:
             raise RuntimeError("source snapshot failed: " + raw[-2000:])
         sources = SourceTree(json.loads(raw))
@@ -279,7 +301,8 @@ def validate_in_container(container, tests, runner, *, timeout_s=300):
         if not ids:
             return ValidationPass(static, duration_s=time.monotonic() - started, context=context)
         payload = json.dumps(
-            {"runner": runner.name, "ids": ids, "module_timeout_s": min(timeout_s, 120)}
+            {"runner": runner.name, "ids": ids, "module_timeout_s": min(timeout_s, 120),
+             "budget_s": remaining(), "prior_elapsed_s": time.monotonic()-started}
         )
         for path, data in (
             ("/tmp/verifier_collect_request.json", payload),
@@ -288,11 +311,15 @@ def validate_in_container(container, tests, runner, *, timeout_s=300):
             ("/tmp/verifier_collect_plugin.py", _PYTEST_PLUGIN),
             ("/tmp/verifier_sympy_driver.py", _SYMPY_PROGRAM),
         ):
-            rc, message = container.exec_input("cat > " + path, data, timeout_s=60)
+            rc, message = container.exec_input("cat > " + path, data, timeout_s=remaining(60))
             if rc:
                 raise RuntimeError("collector upload failed: " + message[-2000:])
-        container.exec("rm -f /tmp/verifier_collect_pgid", timeout_s=30)
-        rc, raw = container.exec("python /tmp/verifier_collect_driver.py", timeout_s=timeout_s)
+        container.exec("rm -f /tmp/verifier_collect_pgid /tmp/verifier_collect_partial.json", timeout_s=remaining(30))
+        # Refresh the remaining budget after uploads, before starting any collector.
+        payload = json.loads(payload)
+        payload.update(budget_s=remaining(), prior_elapsed_s=time.monotonic()-started)
+        container.exec_input("cat > /tmp/verifier_collect_request.json", json.dumps(payload), timeout_s=remaining(60))
+        rc, raw = container.exec("python /tmp/verifier_collect_driver.py", timeout_s=remaining()+2)
         if rc:
             raise RuntimeError("collector driver failed: " + raw[-2000:])
         receipt = json.loads(raw)
@@ -308,7 +335,18 @@ def validate_in_container(container, tests, runner, *, timeout_s=300):
                 "python -c 'import os,signal; os.killpg(int(open(\"/tmp/verifier_collect_pgid\").read()),signal.SIGKILL)'",
                 timeout_s=30,
             )
-        status = classify_collector_failure(str(exc))
+            rc, partial = container.exec("cat /tmp/verifier_collect_partial.json", timeout_s=30)
+            receipt = json.loads(partial) if rc == 0 else {"ids": {}, "groups": []}
+            # Static proofs survive missing collection evidence; unstarted IDs
+            # stay missing and never become INVALID_ID through a cap hit.
+            for identity in ids if static else tests:
+                receipt["ids"].setdefault(identity, {"ids": [], "reason": "not_reached",
+                    "collection_status": "NOT_REACHED", "completed": False,
+                    "elapsed_s": time.monotonic()-started, "message": "per-pass collection budget exhausted"})
+            if static:
+                return ValidationPass(merge_native(static, receipt["ids"]),
+                    duration_s=time.monotonic()-started, groups=tuple(receipt["groups"]), context=context)
+        status = "NOT_REACHED" if isinstance(exc, TimeoutError) else classify_collector_failure(str(exc))
         records = tuple(
             IDValidation(
                 t,
@@ -317,6 +355,7 @@ def validate_in_container(container, tests, runner, *, timeout_s=300):
                 unavailable=True,
                 failure_status=status,
                 message=str(exc),
+                elapsed_s=time.monotonic()-started,
             )
             for t in tests
         )

@@ -192,7 +192,9 @@ def test_driver_streams_raw_bytes_before_runner_finishes(tmp_path):
         assert proc.returncode==0,stderr
         assert stdout==log.read_bytes()
         events=[json.loads(s) for s in (tmp_path/'verifier_events.jsonl').read_text().splitlines()]
-        assert events[-1]=={'event':'complete'}
+        assert events[-1]['event']=='complete'
+        assert events[-1]['budget_s']==1800
+        assert events[-1]['timed_out'] is False
         assert events[1]['returncode']==0
         assert events[1]['offset']==len(stdout)
     finally:

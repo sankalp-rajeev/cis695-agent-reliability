@@ -436,9 +436,8 @@ def test_executor_validates_current_tree_before_execution_and_excludes_invalid(t
         ("t.py::test_a", "t.py::test_missing"), patched=True, timeout_s=30
     )
     assert container.calls[0] == ("tree", True)
-    assert container.calls.index("python /tmp/verifier_collect_driver.py") < container.calls.index(
-        "python /tmp/verifier_driver.py pytest"
-    )
+    assert container.calls.index("python /tmp/verifier_collect_driver.py") < next(i for i, call in enumerate(container.calls)
+           if isinstance(call, str) and call.startswith("python /tmp/verifier_driver.py pytest "))
     assert result.by_id()["t.py::test_a"].status is TestStatus.PASSED
     assert result.by_id()["t.py::test_missing"].status is TestStatus.INVALID_ID
     assert container.inputs["cat > /tmp/verifier_ids"].strip() == "t.py::test_a"

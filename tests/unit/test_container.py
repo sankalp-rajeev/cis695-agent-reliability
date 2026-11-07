@@ -228,14 +228,14 @@ def test_every_requested_test_appears_in_the_result():
     assert set(result.by_id()) == set(tests)
 
 
-def test_a_timeout_marks_every_test_timed_out():
+def test_upload_timeout_marks_unstarted_tests_not_reached():
     container = FakeContainer()
     container.timeout = True
     result = ContainerTestExecutor(container).run(
         ("t.py::a", "t.py::b"), patched=True, timeout_s=1)
 
     assert result.timed_out
-    assert all(r.status is TestStatus.TIMEOUT for r in result.results)
+    assert all(r.status is TestStatus.NOT_REACHED for r in result.results)
 
 
 def test_no_tests_means_no_container_work():

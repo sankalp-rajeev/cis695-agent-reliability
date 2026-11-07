@@ -46,6 +46,7 @@ class TestStatus(str, Enum):
     XPASS = "xpass"
     TIMEOUT = "timeout"
     NOT_RUN = "not_run"
+    NOT_REACHED = "not_reached"
     INVALID_ID = "invalid_id"
     COLLECTION_ERROR = "collection_error"
     RUNNER_UNAVAILABLE = "runner_unavailable"
@@ -66,6 +67,7 @@ class Outcome(str, Enum):
     ERROR = "ERROR"
     TIMEOUT = "TIMEOUT"
     NOT_RUN = "NOT_RUN"
+    NOT_REACHED = "NOT_REACHED"
     INVALID_ID = "INVALID_ID"
     COLLECTION_ERROR = "COLLECTION_ERROR"
     RUNNER_UNAVAILABLE = "RUNNER_UNAVAILABLE"
@@ -77,7 +79,7 @@ class Outcome(str, Enum):
     @property
     def executed(self) -> bool:
         """Whether this outcome reflects a test that actually ran to completion."""
-        return self not in (Outcome.NOT_RUN, Outcome.TIMEOUT, Outcome.INVALID_ID,
+        return self not in (Outcome.NOT_RUN, Outcome.NOT_REACHED, Outcome.TIMEOUT, Outcome.INVALID_ID,
                             Outcome.COLLECTION_ERROR, Outcome.RUNNER_UNAVAILABLE)
 
 
@@ -97,7 +99,7 @@ class Signal(str, Enum):
 BASELINE_FAILURE_THRESHOLD = 0.5
 
 # Parsed baseline caches must preserve the same outcome model as patched results.
-_BASELINE_PARSER_REVISION = "native-capture-v5-sympy"
+_BASELINE_PARSER_REVISION = "native-capture-v7-budget-cpu"
 
 
 @dataclass(frozen=True, slots=True)
@@ -106,6 +108,7 @@ class TestResult:
     status: TestStatus
     duration_s: float = 0.0
     message: str = ""
+    elapsed_s: float = 0.0
 
 
 @dataclass(frozen=True, slots=True)
@@ -136,6 +139,7 @@ class RunResult:
     execution_id_map: dict[str, tuple[str, ...]] = field(default_factory=dict)
     raw_execution_map: dict[str, str] = field(default_factory=dict)
     validation_summary: dict = field(default_factory=dict)
+    budget_s: float | None = None
 
     def by_id(self) -> dict[str, TestResult]:
         return {r.test_id: r for r in self.results}
@@ -156,8 +160,8 @@ class TestExecutor(Protocol):
 
 @dataclass(frozen=True, slots=True)
 class RegressionConfig:
-    per_pass_timeout_s: int = 300     # policy §3.4: five minutes per pass
-    per_instance_timeout_s: int = 600  # ten minutes including baseline
+    per_pass_timeout_s: int = 1800    # Phase 4: collection + execution per tree
+    per_instance_timeout_s: int = 3600  # legacy metadata; each pass enforces its own cap
     rerun_flaky: bool = True           # policy §4.1
     baseline_cache_dir: Path | None = None
     skip_compatible: bool = True       # Policy C; False selects Policy S
@@ -215,6 +219,8 @@ def load_cached_baseline(config: RegressionConfig, instance_id: str) -> RunResul
     payload = json.loads(path.read_text(encoding="utf-8"))
     if payload.get("parser_revision") != _BASELINE_PARSER_REVISION:
         return None
+    if payload.get("configured_per_pass_timeout_s") != config.per_pass_timeout_s:
+        return None
     return run_from_dict(payload)
 
 
@@ -230,7 +236,8 @@ def run_from_dict(payload: dict) -> RunResult:
     fields = {key: payload[key] for key in RunResult.__dataclass_fields__ if key in payload}
     for key in ("results", "raw_results", "execution_results"):
         fields[key] = tuple(TestResult(r["test_id"], TestStatus(r["status"]),
-                                      r.get("duration_s", 0.0), r.get("message", ""))
+                                      r.get("duration_s", 0.0), r.get("message", ""),
+                                      r.get("elapsed_s", 0.0))
                             for r in fields.get(key, ()))
     for key in ("unmatched_ids", "infrastructure_errors", "events", "requested_tests", "validation"):
         fields[key] = tuple(fields.get(key, ()))
@@ -274,7 +281,7 @@ def completeness_of(tests: tuple[str, ...], base: RunResult | None,
                 continue
             expected = expected_by_selected.get(tid, ())
             missing_expansion = any(t not in actual or actual[t].status in
-                                    (TestStatus.NOT_RUN, TestStatus.TIMEOUT) for t in expected)
+                                    (TestStatus.NOT_RUN, TestStatus.NOT_REACHED, TestStatus.TIMEOUT) for t in expected)
             if missing_expansion:
                 gaps.append(f"{label}: {tid}: expanded instance not admitted")
             # Lossless accounting can establish a healthy selected parameter
@@ -284,7 +291,7 @@ def completeness_of(tests: tuple[str, ...], base: RunResult | None,
             recovered = (cases and all(r.status in healthy for r in cases))
             if (result is None or result.status is TestStatus.NOT_RUN) and recovered and not missing_expansion:
                 continue
-            if (result is None or result.status in (TestStatus.NOT_RUN, TestStatus.TIMEOUT,
+            if (result is None or result.status in (TestStatus.NOT_RUN, TestStatus.NOT_REACHED, TestStatus.TIMEOUT,
                                                     TestStatus.ERROR, TestStatus.COLLECTION_ERROR,
                                                     TestStatus.RUNNER_UNAVAILABLE, TestStatus.INVALID_ID)
                     or (not skip_compatible and result.status is TestStatus.SKIPPED)):
@@ -339,6 +346,7 @@ def save_baseline(config: RegressionConfig, instance_id: str, run: RunResult) ->
         return
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = {"instance_id": instance_id, "parser_revision": _BASELINE_PARSER_REVISION,
+               "configured_per_pass_timeout_s": config.per_pass_timeout_s,
                **run_to_dict(run)}
     tmp = path.with_suffix(path.suffix + ".tmp")
     tmp.write_text(json.dumps(payload, indent=2), encoding="utf-8")
@@ -362,6 +370,8 @@ def classify(
                             (TestStatus.COLLECTION_ERROR, Outcome.COLLECTION_ERROR)):
         if any(r is not None and r.status is status for r in (base, patched)):
             return outcome
+    if any(r is not None and r.status is TestStatus.NOT_REACHED for r in (base, patched)):
+        return Outcome.NOT_REACHED
     if patched is None or patched.status is TestStatus.NOT_RUN:
         return Outcome.NOT_RUN
     if patched.status is TestStatus.TIMEOUT:
@@ -463,7 +473,7 @@ def run_regression(
     if baseline is None:
         baseline = executor.run(
             selection.tests, patched=False, timeout_s=config.per_pass_timeout_s)
-        if any(r.status not in (TestStatus.NOT_RUN, TestStatus.TIMEOUT, TestStatus.INVALID_ID,
+        if any(r.status not in (TestStatus.NOT_RUN, TestStatus.NOT_REACHED, TestStatus.TIMEOUT, TestStatus.INVALID_ID,
                                        TestStatus.COLLECTION_ERROR, TestStatus.RUNNER_UNAVAILABLE)
                for r in baseline.results):
             # A pass in which nothing ran is not a baseline, and caching it
@@ -475,7 +485,7 @@ def run_regression(
     # Policy §5.5: a mostly-red baseline indicts the environment, not the patch.
     baseline_cases, _ = concrete_comparison(selection.tests, baseline, baseline)
     executed_base = [r for r in baseline_cases.values()
-                     if r is not None and r.status not in (TestStatus.NOT_RUN, TestStatus.TIMEOUT, TestStatus.INVALID_ID,
+                     if r is not None and r.status not in (TestStatus.NOT_RUN, TestStatus.NOT_REACHED, TestStatus.TIMEOUT, TestStatus.INVALID_ID,
                                        TestStatus.COLLECTION_ERROR, TestStatus.RUNNER_UNAVAILABLE)]
     if executed_base:
         failed_base = sum(
