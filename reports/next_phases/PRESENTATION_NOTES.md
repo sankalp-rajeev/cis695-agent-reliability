@@ -25,11 +25,11 @@ Planned CSVs contain roadmap scope, baseline or threshold values, not experiment
 ## Phase 3 — Repair V2 execution
 
 - Status: in progress
-- Headline: Fix 0 attributes all 3,683 collection/runner-error slots, with the top 10 signatures covering 3,634; Fixes 1–8 remain planned in the committed Phase 4 draft order.
-- Table or chart data: reports/next_phases/phase4_baselines/fix0_top10.csv
-- Example: Django-13297 / test_template_params_warning stayed NOT_RUN after a selected property aborted its batch; the property signature affects 200 slots across 4 tasks and is executor-fixable through validation/isolation; reports/next_phases/phase4_baselines/fix0_top10.csv:5.
-- Caveat: Executor-fixable includes correct validation and accounting for invalid IDs, not a promise that every request can execute, and no Phase 3 code or cost run has happened.
-- Commit: this plan-draft commit (resolve from reports/next_phases/phase4_plan.md history)
+- Headline: Fix 1 native scoring reproduces 9/39 INCOMPLETE recoveries and 2/13 NOT_AVAILABLE recoveries, retains all 6 native FAILs and matches all 169 Phase 2 call parses; Fixes 2–8 remain planned.
+- Table or chart data: reports/next_phases/phase3_fix1/recovery_chart.csv
+- Example: Astropy-14365 / astropy/io/ascii/tests/test_qdp.py::test_get_tables_from_qdp_file has an ANSI-coloured PASSED line now admitted by native scoring, contributing to the recovered 8/8 paired tests; /home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/astropy__astropy-14365/v2/raw/base_57eb38196f6242678fc083ed71cc992b/runner.raw:47.
+- Caveat: This is offline re-scoring under the historical skip-compatible policy; runtime outcome separation and later fixes are pending, and Phase 3 cost checks have not run.
+- Commit: this Fix 1 commit (plan c4d17c8; resolve from reports/next_phases/phase3_fix1/SUMMARY.md history)
 
 ## Phase 4 — Controlled V2 rerun
 
@@ -38,7 +38,7 @@ Planned CSVs contain roadmap scope, baseline or threshold values, not experiment
 - Table or chart data: reports/next_phases/phase4_baselines/B1_B2.csv
 - Example: Seaborn-3069 has 5 XFAIL concrete tests on both trees and no ordinary skip, adding one strict projected PASS to the old 20/83; reports/next_phases/phase4_baselines/B2_tasks.csv:52.
 - Caveat: B2 is an offline projection, H3 is descriptive, no controlled rerun exists, and the fixed plan permits one run with a 1,800 s per-pass cap and a 12 h stopping rule.
-- Commit: this plan-draft commit (resolve from reports/next_phases/phase4_plan.md history)
+- Commit: c4d17c8
 
 ## Phase 5 — Offline selector and ordering replay
 

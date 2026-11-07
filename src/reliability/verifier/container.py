@@ -20,7 +20,6 @@ import contextvars
 import hashlib
 import json
 import os
-import re
 import shlex
 import subprocess
 import uuid
@@ -30,6 +29,7 @@ from typing import Self
 
 from reliability.env import clean_env
 from reliability.verifier.regression import RunResult, TestResult, TestStatus
+from reliability.verifier.result_parser import mapping_for, parse_capture
 from reliability.verifier.selection import TestRunner, django_label
 
 NAMESPACE = "swebench/sweb.eval.x86_64"
@@ -377,7 +377,6 @@ class ContainerTestExecutor:
                 event_bytes = b""
         except TimeoutError:
             timed_out = True
-        output = (runner_log + raw_stderr).decode("utf-8", "replace")
         # Persist bytes/events BEFORE either legacy parsing or raw-ID accounting.
         if self.evidence_dir is not None:
             folder = self.evidence_dir / (("patched" if patched else "base") + "_" + uuid.uuid4().hex)
@@ -399,44 +398,11 @@ class ContainerTestExecutor:
         except (ValueError, TypeError):
             events = ()
             errors.append("malformed capture events")
-        statuses = _parse_output(runner, output, tests)
-        raw_results, mappings, unmatched = account_raw_output(runner, output, tests)
-        complete = bool(events and events[-1].get("event") == "complete")
-        starts = {e.get("batch") for e in events if e.get("event") == "start"}
-        ends = {e.get("batch") for e in events if e.get("event") == "end"}
-        if not starts:
-            complete = False
-        if starts != ends:
-            errors.append("unfinished runner batch")
-        for event in events:
-            if event.get("event") == "end" and not event.get("split"):
-                if event.get("returncode") not in (0, 1):
-                    errors.append(f"runner batch {event.get('batch')} exit {event.get('returncode')}")
-                elif event.get("returncode") == 1:
-                    start = next((e for e in events if e.get("event") == "start"
-                                  and e.get("batch") == event.get("batch")), {})
-                    if "offset" not in start or "offset" not in event:
-                        complete = False
-                    else:
-                        batch_output = runner_log[start["offset"]:event["offset"]].decode("utf-8", "replace")
-                        cases, _, _ = account_raw_output(runner, batch_output, tests)
-                        if not any(r.status in (TestStatus.FAILED, TestStatus.ERROR) for r in cases):
-                            errors.append("unexplained nonzero runner exit")
-        # Anything the runner did not report on is NOT_RUN, never an implicit pass.
-        return RunResult(
-            results=tuple(
-                TestResult(t, statuses.get(t, TestStatus.TIMEOUT if timed_out else TestStatus.NOT_RUN))
-                for t in tests
-            ),
-            note="" if statuses else _no_results_note(output),
-            timed_out=timed_out, raw_results=raw_results, raw_id_map=mappings,
-            unmatched_ids=unmatched, infrastructure_errors=tuple(errors),
-            evidence_complete=complete and not errors,
-            raw_stdout_b64=base64.b64encode(raw_stdout).decode(),
-            raw_stderr_b64=base64.b64encode(raw_stderr).decode(),
-            runner_log_b64=base64.b64encode(runner_log).decode(),
-            events=events, evidence_files=files, evidence_sha256=digests,
-            requested_tests=tuple(tests),
+        return run_from_capture(
+            runner, tests, runner_log=runner_log, raw_stderr=raw_stderr,
+            raw_stdout=raw_stdout, events=events, timed_out=timed_out,
+            infrastructure_errors=tuple(errors), evidence_files=files,
+            evidence_sha256=digests,
         )
 
     def _partial_statuses(self, runner: TestRunner, tests) -> dict:
@@ -445,10 +411,74 @@ class ContainerTestExecutor:
         return _parse_output(runner, logged, tests) if rc == 0 else {}
 
 
+def run_from_capture(
+    runner: TestRunner, tests: tuple[str, ...], *, runner_log: bytes,
+    raw_stderr: bytes = b"", raw_stdout: bytes = b"", events: tuple[dict, ...] = (),
+    timed_out: bool = False, infrastructure_errors: tuple[str, ...] = (),
+    evidence_files: dict[str, str] | None = None,
+    evidence_sha256: dict[str, str] | None = None,
+) -> RunResult:
+    """Parse one captured pass identically for live execution and offline replay.
+
+    This function performs no I/O. Execution failures and event completeness
+    remain independent of whether a terminal outcome can be read.
+    """
+    output = (runner_log + raw_stderr).decode("utf-8", "replace")
+    errors = list(infrastructure_errors)
+    statuses = _parse_output(runner, output, tests)
+    raw_results, mappings, unmatched = account_raw_output(runner, output, tests)
+    complete = bool(events and events[-1].get("event") == "complete")
+    starts = {e.get("batch") for e in events if e.get("event") == "start"}
+    ends = {e.get("batch") for e in events if e.get("event") == "end"}
+    if not starts:
+        complete = False
+    if starts != ends:
+        errors.append("unfinished runner batch")
+    for event in events:
+        if event.get("event") == "end" and not event.get("split"):
+            if event.get("returncode") not in (0, 1):
+                errors.append(f"runner batch {event.get('batch')} exit {event.get('returncode')}")
+            elif event.get("returncode") == 1:
+                start = next((e for e in events if e.get("event") == "start"
+                              and e.get("batch") == event.get("batch")), {})
+                if "offset" not in start or "offset" not in event:
+                    complete = False
+                else:
+                    batch_output = runner_log[start["offset"]:event["offset"]].decode("utf-8", "replace")
+                    cases, _, _ = account_raw_output(runner, batch_output, tests)
+                    if not any(r.status in (TestStatus.FAILED, TestStatus.ERROR) for r in cases):
+                        errors.append("unexplained nonzero runner exit")
+    # Anything the runner did not report on is NOT_RUN, never an implicit pass.
+    return RunResult(
+        results=tuple(
+            TestResult(t, statuses.get(t, TestStatus.TIMEOUT if timed_out else TestStatus.NOT_RUN))
+            for t in tests
+        ),
+        note="" if statuses else _no_results_note(output),
+        timed_out=timed_out, raw_results=raw_results, raw_id_map=mappings,
+        unmatched_ids=unmatched, infrastructure_errors=tuple(errors),
+        evidence_complete=complete and not errors,
+        raw_stdout_b64=base64.b64encode(raw_stdout).decode(),
+        raw_stderr_b64=base64.b64encode(raw_stderr).decode(),
+        runner_log_b64=base64.b64encode(runner_log).decode(),
+        events=events, evidence_files=evidence_files or {}, evidence_sha256=evidence_sha256 or {},
+        requested_tests=tuple(tests),
+    )
+
+
 def _parse_output(runner: TestRunner, output: str, tests: tuple[str, ...]) -> dict:
-    if runner.name == "django":
-        return _parse_django(output, tests)
-    return _parse_pytest(output, tests)
+    """Admit only unique selected families; concrete cases remain separately scored."""
+    mapper = mapping_for(tests, runner.name)
+    statuses = {}
+    for raw_id, observed in parse_capture(output, runner.name).items():
+        selected = mapper(raw_id)
+        if len(selected) != 1 or observed['kind'] != 'case':
+            continue
+        status = TestStatus(observed['status'])
+        earlier = statuses.get(selected[0])
+        if earlier is None or _PYTEST_SEVERITY[status] >= _PYTEST_SEVERITY[earlier]:
+            statuses[selected[0]] = status
+    return statuses
 
 
 def _no_results_note(output: str) -> str:
@@ -458,140 +488,31 @@ def _no_results_note(output: str) -> str:
     return "the test runner reported no results; output ended: " + " | ".join(lines[-3:])[:400]
 
 
-_PYTEST_LINE = re.compile(
-    r"^(?P<id>\S.*?::\S.*?) (?P<outcome>PASSED|FAILED|ERROR|SKIPPED|XFAIL|XPASS)\b"
-)
-_PYTEST_OUTCOME = {
-    "PASSED": TestStatus.PASSED,
-    "XPASS": TestStatus.PASSED,      # non-strict unexpected pass; strict is reported FAILED
-    "FAILED": TestStatus.FAILED,
-    "ERROR": TestStatus.ERROR,
-    "SKIPPED": TestStatus.SKIPPED,
-    "XFAIL": TestStatus.SKIPPED,     # an expected failure neither passed nor regressed
-}
-#: A test can print PASSED and then ERROR at teardown. The worse one stands.
+# Worst terminal observation wins, including a teardown ERROR after PASSED.
 _PYTEST_SEVERITY = {
     TestStatus.SKIPPED: 0, TestStatus.PASSED: 1, TestStatus.FAILED: 2, TestStatus.ERROR: 3,
 }
 
 
 def _parse_pytest(output: str, tests: tuple[str, ...]) -> dict[str, TestStatus]:
-    """Read ``pytest -v`` lines. Only ids that were asked for are accepted."""
-    wanted = set(tests)
-    statuses: dict[str, TestStatus] = {}
-    for line in output.splitlines():
-        match = _PYTEST_LINE.match(line.strip())
-        if match is None or match.group("id") not in wanted:
-            continue
-        test, status = match.group("id"), _PYTEST_OUTCOME[match.group("outcome")]
-        earlier = statuses.get(test)
-        if earlier is None or _PYTEST_SEVERITY[status] >= _PYTEST_SEVERITY[earlier]:
-            statuses[test] = status
-    return statuses
-
-
-_DJANGO_LINE = re.compile(
-    r"^(?P<name>\w+) \((?P<label>[^)]+)\) \.\.\. (?P<outcome>ok|FAIL|ERROR|skipped)\b",
-    re.IGNORECASE,
-)
-_DJANGO_OUTCOME = {
-    "ok": TestStatus.PASSED,
-    "fail": TestStatus.FAILED,
-    "error": TestStatus.ERROR,
-    "skipped": TestStatus.SKIPPED,
-}
+    return _parse_output(TestRunner("pytest", "native parser"), output, tests)
 
 
 def _parse_django(output: str, tests: tuple[str, ...]) -> dict[str, TestStatus]:
-    """Map ``tests/runtests.py --verbosity=2`` lines back onto node ids."""
-    by_label = {django_label(test): test for test in tests}
-    statuses: dict[str, TestStatus] = {}
-    for line in output.splitlines():
-        match = _DJANGO_LINE.match(line.strip())
-        if match is None:
-            continue
-        label = match.group("label")
-        status = _DJANGO_OUTCOME[match.group("outcome").lower()]
-        node = by_label.get(label)
-        if node is None:
-            # Django sometimes prints ``module.Class`` without the method.
-            node = next(
-                (test for lab, test in by_label.items()
-                 if lab == f"{label}.{match.group('name')}" or lab.endswith("." + label)),
-                None,
-            )
-        if node is not None:
-            statuses[node] = status
-    return statuses
+    return _parse_output(TestRunner("django", "native parser"), output, tests)
 
 
 def account_raw_output(runner: TestRunner, output: str, tests: tuple[str, ...]):
-    """Account for concrete IDs without changing legacy admission/scoring.
-
-    A family match is evidence about an emitted concrete case, not permission to
-    collapse different parameter cases into a single pass/fail transition.
-    Unmapped IDs remain visible and block completeness.
-    """
-    wanted = set(tests)
-    labels: dict[str, list[str]] = {}
-    for tid in tests:
-        labels.setdefault(django_label(tid), []).append(tid)
-    raw, mappings = {}, {}
-    pending = None
-    for line in output.splitlines():
-        line = re.sub(r"\x1b\[[0-9;]*m", "", line).strip()
-        if runner.name == "django":
-            header = re.match(r"^(\w+) \(([^)]+)\)(.*)$", line)
-            if header:
-                name, label, tail = header.groups()
-                pending = label if label.endswith("." + name) else label + "." + name
-            else:
-                tail = line
-            outcome = re.search(r"\.\.\. (ok|FAIL|ERROR|skipped)\b", tail, re.IGNORECASE)
-            if pending is None or outcome is None:
-                continue
-            tid = pending
-            status = _DJANGO_OUTCOME[outcome.group(1).lower()]
-            mapped = tuple(labels.get(tid, ()))
-            pending = None
-        else:
-            match = _PYTEST_LINE.match(line)
-            if match is None:
-                continue
-            tid = match.group("id")
-            status = _PYTEST_OUTCOME[match.group("outcome")]
-            candidates = (tid, tid.split("[", 1)[0]) if "[" in tid else (tid,)
-            mapped = tuple(t for t in candidates if t in wanted)
-        earlier = raw.get(tid)
-        if earlier is None or _PYTEST_SEVERITY[status] >= _PYTEST_SEVERITY[earlier]:
-            raw[tid] = status
-        mappings[tid] = mapped
-    return (tuple(TestResult(tid, status) for tid, status in raw.items()), mappings,
-            tuple(tid for tid, selected in mappings.items() if len(selected) != 1))
-
-
-def verify_in_container(
-    instance_id: str,
-    patch_text: str,
-    *,
-    image: str | None = None,
-) -> tuple[TaskContainer, ContainerRepoTree, ContainerCommandExecutor, ContainerTestExecutor]:
-    """Start a container and return the pieces Phases 5 and 6 need.
-
-    The caller is responsible for stopping the container; use `TaskContainer` as
-    a context manager directly where possible.
-    """
-    container = TaskContainer(
-        instance_id=instance_id, patch_text=patch_text, image=image)
-    container.start()
+    """Preserve each concrete outcome and every ambiguous/unmapped identity."""
+    mapper = mapping_for(tests, runner.name)
+    parsed = parse_capture(output, runner.name)
+    mappings = {
+        raw_id: tuple(mapper(raw_id)) if observed['kind'] == 'case' else ()
+        for raw_id, observed in parsed.items()
+    }
     return (
-        container,
-        ContainerRepoTree(container),
-        ContainerCommandExecutor(container),
-        ContainerTestExecutor(container),
+        tuple(TestResult(raw_id, TestStatus(observed['status']))
+              for raw_id, observed in parsed.items()),
+        mappings,
+        tuple(raw_id for raw_id, selected in mappings.items() if len(selected) != 1),
     )
-
-
-def cache_dir_for(run_root: Path) -> Path:
-    """Baseline cache location for a run. Per-instance files live underneath."""
-    return run_root / "_baseline_cache"

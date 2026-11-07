@@ -82,6 +82,9 @@ class Signal(str, Enum):
 #: suspect rather than the repository.
 BASELINE_FAILURE_THRESHOLD = 0.5
 
+# Parsed baseline caches must not mix the old reader with Fix 1 patched results.
+_BASELINE_PARSER_REVISION = "native-capture-v1"
+
 
 @dataclass(frozen=True, slots=True)
 class TestResult:
@@ -184,6 +187,8 @@ def load_cached_baseline(config: RegressionConfig, instance_id: str) -> RunResul
     if path is None or not path.exists():
         return None
     payload = json.loads(path.read_text(encoding="utf-8"))
+    if payload.get("parser_revision") != _BASELINE_PARSER_REVISION:
+        return None
     return run_from_dict(payload)
 
 
@@ -276,7 +281,8 @@ def save_baseline(config: RegressionConfig, instance_id: str, run: RunResult) ->
     if path is None:
         return
     path.parent.mkdir(parents=True, exist_ok=True)
-    payload = {"instance_id": instance_id, **run_to_dict(run)}
+    payload = {"instance_id": instance_id, "parser_revision": _BASELINE_PARSER_REVISION,
+               **run_to_dict(run)}
     tmp = path.with_suffix(path.suffix + ".tmp")
     tmp.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     tmp.replace(path)
@@ -320,6 +326,42 @@ def classify(
     return Outcome.PRE_EXISTING_FAIL
 
 
+def concrete_comparison(
+    tests: tuple[str, ...], baseline: RunResult, patched: RunResult,
+) -> tuple[dict[str, TestResult | None], dict[str, TestResult | None]]:
+    """Pair observed concrete cases within each uniquely selected family.
+
+    Cases absent on either tree remain absent; a family's worst status cannot
+    stand in for a different parameter case. Historical/structured executors
+    without raw identities retain their explicit selected-ID results.
+    """
+    wanted = set(tests)
+
+    def families(run):
+        grouped: dict[str, dict[str, TestResult]] = {}
+        for result in run.raw_results:
+            selected = run.raw_id_map.get(result.test_id, ())
+            if len(selected) == 1 and selected[0] in wanted:
+                grouped.setdefault(selected[0], {})[result.test_id] = result
+        return grouped
+
+    base_cases, patch_cases = families(baseline), families(patched)
+    base, patch = {}, {}
+    base_selected, patch_selected = baseline.by_id(), patched.by_id()
+    for test in tests:
+        b, p = base_cases.get(test, {}), patch_cases.get(test, {})
+        ids = b.keys() | p.keys()
+        if not ids:
+            base[test], patch[test] = base_selected.get(test), patch_selected.get(test)
+            continue
+        for raw_id in sorted(ids):
+            # Keep the familiar selected key for a single unparameterized
+            # Django/pytest case; parameter cases retain their concrete IDs.
+            key = raw_id if len(ids) > 1 or ("[" in raw_id and raw_id != test) else test
+            base[key], patch[key] = b.get(raw_id), p.get(raw_id)
+    return base, patch
+
+
 def run_regression(
     instance_id: str,
     selection: Selection,
@@ -352,11 +394,10 @@ def run_regression(
     else:
         notes.append("baseline loaded from cache")
 
-    base_by_id = baseline.by_id()
-
     # Policy §5.5: a mostly-red baseline indicts the environment, not the patch.
-    executed_base = [r for r in baseline.results
-                     if r.status not in (TestStatus.NOT_RUN, TestStatus.TIMEOUT)]
+    baseline_cases, _ = concrete_comparison(selection.tests, baseline, baseline)
+    executed_base = [r for r in baseline_cases.values()
+                     if r is not None and r.status not in (TestStatus.NOT_RUN, TestStatus.TIMEOUT)]
     if executed_base:
         failed_base = sum(
             1 for r in executed_base
@@ -377,11 +418,11 @@ def run_regression(
 
     patched = executor.run(
         selection.tests, patched=True, timeout_s=config.per_pass_timeout_s)
-    patched_by_id = patched.by_id()
+    base_by_id, patched_by_id = concrete_comparison(selection.tests, baseline, patched)
 
     outcomes = {
         test: classify(test, base_by_id.get(test), patched_by_id.get(test))
-        for test in selection.tests
+        for test in base_by_id
     }
 
     # Policy §4.1: re-run regressions once in isolation. Rejecting a correct
@@ -395,6 +436,9 @@ def run_regression(
                 suspects, patched=True, timeout_s=config.per_pass_timeout_s)
             confirmations.append(confirmation)
             rerun = confirmation.by_id()
+            for result in confirmation.raw_results:
+                if len(confirmation.raw_id_map.get(result.test_id, ())) == 1:
+                    rerun.setdefault(result.test_id, result)
             for test in suspects:
                 result = rerun.get(test)
                 if result is not None and result.status is TestStatus.PASSED:
