@@ -31,13 +31,22 @@ Planned CSVs contain roadmap scope, baseline or threshold values, not experiment
 - Caveat: Corrected historical collection-only counts remain Django 16 INVALID_ID + 26 COLLECTION_ERROR; Astropy 16 + 105; old SymPy pytest 0 INVALID_ID + 781 RUNNER_UNAVAILABLE. Fresh native SymPy instead has 16 execution collection errors, two test errors and 18 successfully uncollected disabled-module IDs. The 83-task stored-data sensitivity is 42/21 PASS/FAIL yes/no under C/S with invalid IDs either excluded or missing; no task differs (REGRESSION_ERROR-inclusive: 43/22). H1 is only a stored projection, 23761/37614 primary and 23761/37116 informational secondary; invalid IDs add no admissions. Full suite: 1103 passed, 6 failed, 6 skipped, 17 setup errors, with the exact pre-existing failure/error set and all 18 new Fix 5 tests passing.
 - Commit: this Fix 5 commit (resolve from phase3_fix5/SUMMARY.md); Fix 4 28f93e3; accounting guard pushed first in ec918ba. B1/B2 and thresholds remain unchanged. No correctness sidecars or joins were used. Stop after Fix 5.
 
+## Phase 3 Fixes 6–8 — resources, deadlines, confirmation, and cost
+
+- Status: completed; three base-only cost probes finished within the 1,800 s budget.
+- Headline: All containers request CPU shares 2048 without a CPU-time cap. Each tree has a recorded 1,800 s collection-plus-execution budget; unreached slots carry elapsed time. Each new assertion failure or REGRESSION_ERROR requires three isolated base and three isolated patched observations; unstable candidates become FLAKY.
+- Table or chart data: reports/next_phases/phase3_fix678/base_probe_summary.csv; estimates.json and stage_aware_estimates.json in that directory; unit_summary.json.
+- Example: SymPy's warning environment now matches SWE-bench's UserWarning/SyntaxWarning filters. The requested base quantum-printing load check validated all 16 IDs in 26.47 s without executing test bodies. Largest base probes: Django-13297 314.82 s, Astropy-13977 344.26 s, SymPy-13480 1,152.48 s; no cap hits. Initial 83×2-tree estimates span 4.08–4.86 h serial, 2.04–2.43 h at two containers, 1.02–1.22 h at four. The range reflects selected-ID versus stage-aware models, not confidence bounds.
+- Caveat: Final unit suite: 1,141 passed, 6 failed, 6 skipped, 17 setup errors; the exact pre-existing failure/error set is unchanged. Cost probes use selection sizes alone, base trees only, and no correctness comparison. Confirmation cost depends on future paired failures and is separate from the 166 initial-pass estimate. No Phase 4 concurrency has been selected.
+- Commits: plan 171dbfc; SymPy alignment 9c0f387; Fix 6 24b1822; Fix 7 a8e1691; Fix 8 de3090f; cost driver 92c55b9; host-only active-timeout reader correction 0f193b4 (all three capture replays unchanged).
+
 ## Phase 4 — Controlled V2 rerun
 
 - Status: planned
 - Headline: Fixed draft baselines are B1 = 37,614 addressable slots and B2 = 21/83 projected strict yes/no verdicts with XFAIL/XPASS separate; H1 predicts at least 60% recovery and is falsified below 30%, while Policy C targets 50/83 and is falsified below 42/83.
 - Table or chart data: reports/next_phases/phase4_baselines/B1_B2.csv
 - Example: Seaborn-3069 has 5 XFAIL concrete tests on both trees and no ordinary skip, adding one strict projected PASS to the old 20/83; reports/next_phases/phase4_baselines/B2_tasks.csv:52.
-- Caveat: B2 is an offline projection, H3 is descriptive, no controlled rerun exists, and the fixed plan permits one run with a 1,800 s per-pass cap and a 12 h stopping rule.
+- Caveat: H1 is already met offline at 63.17%, largely from parsing. H1b, explicitly added after Fix 5 and before Phase 4, tests live admission of the fixed 13,853-slot residual: prediction at least 6,927, falsified below 25% (3,463); invalid IDs never count as admitted. H2 primary yes/no means PASS or FAIL; a secondary count adds REGRESSION_ERROR. B2 is an offline projection, H3 is descriptive, and the fixed plan permits one run with a 1,800 s per-pass cap and a 12 h stopping rule. No controlled rerun exists.
 - Commit: c4d17c8
 
 ## Phase 5 — Offline selector and ordering replay
