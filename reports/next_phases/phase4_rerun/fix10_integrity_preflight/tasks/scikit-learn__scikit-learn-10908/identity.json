@@ -1,0 +1,28 @@
+{
+  "image_id": "sha256:e6083af5e692056c551338bf46a9003242fb76df058c9f47f3167464555deafa",
+  "image_tag_metadata": "swebench/sweb.eval.x86_64.scikit-learn_1776_scikit-learn-10908:latest",
+  "base_commit": "67d06b18c68ee4452768f8a1e868565dd4354abf",
+  "archive_sha256": "1496481ba1b093439ab9437093b706e2744f99cfcd13394f1455083b90a37cf6",
+  "container_argv": [
+    "/usr/bin/docker",
+    "run",
+    "--pull=never",
+    "-d",
+    "--cpu-shares",
+    "2048",
+    "--name",
+    "verify_phase4_fix10_pristine_audit_scikit-learn__scikit-learn-10908_4ccd85bd",
+    "--label",
+    "experiment_id=phase4_fix10_pristine_audit",
+    "-w",
+    "/testbed",
+    "--network",
+    "none",
+    "sha256:e6083af5e692056c551338bf46a9003242fb76df058c9f47f3167464555deafa",
+    "sleep",
+    "infinity"
+  ],
+  "patch_applied": false,
+  "tests_executed": 0,
+  "collection_performed": false
+}

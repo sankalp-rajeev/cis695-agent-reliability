@@ -1,0 +1,28 @@
+{
+  "image_id": "sha256:f0eff75310a1b33ffcdcdaeb2c0e1f67af9711d82cb79cb9a84fc5640d6a2d07",
+  "image_tag_metadata": "swebench/sweb.eval.x86_64.mwaskom_1776_seaborn-3069:latest",
+  "base_commit": "54cab15bdacfaa05a88fbc5502a5b322d99f148e",
+  "archive_sha256": "c7ea642156e5e339d7a3cf4bdf1f712ad4dcdfdfbe523277a364afc981b005ca",
+  "container_argv": [
+    "/usr/bin/docker",
+    "run",
+    "--pull=never",
+    "-d",
+    "--cpu-shares",
+    "2048",
+    "--name",
+    "verify_phase4_fix10_pristine_audit_mwaskom__seaborn-3069_2c228679",
+    "--label",
+    "experiment_id=phase4_fix10_pristine_audit",
+    "-w",
+    "/testbed",
+    "--network",
+    "none",
+    "sha256:f0eff75310a1b33ffcdcdaeb2c0e1f67af9711d82cb79cb9a84fc5640d6a2d07",
+    "sleep",
+    "infinity"
+  ],
+  "patch_applied": false,
+  "tests_executed": 0,
+  "collection_performed": false
+}

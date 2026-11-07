@@ -1,0 +1,4 @@
+{
+  "path": "tox.ini",
+  "diff": "--- archive/tox.ini\n+++ image/tox.ini\n@@ -28,7 +28,7 @@\n setenv =\n     PYTHONWARNINGS = all,ignore::ImportWarning:importlib._bootstrap_external,ignore::DeprecationWarning:site,ignore::DeprecationWarning:distutils\n commands=\n-    pytest --durations 25 {posargs}\n+    pytest -rA --durations 25 {posargs}\n \n [testenv:flake8]\n basepython = python3\n"
+}

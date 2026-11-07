@@ -1,0 +1,4 @@
+{
+  "path": "lib/matplotlib/_version.py",
+  "diff": "--- archive/lib/matplotlib/_version.py\n+++ image/lib/matplotlib/_version.py\n@@ -20,8 +20,8 @@\n     # setup.py/versioneer.py will grep for the variable names, so they must\n     # each be defined on a line of their own. _version.py will just call\n     # get_keywords().\n-    git_refnames = \"\"\n-    git_full = \"d65c9ca20ddf81ef91199e6d819f9d3506ef477c\"\n+    git_refnames = \"$Format:%d$\"\n+    git_full = \"$Format:%H$\"\n     keywords = {\"refnames\": git_refnames, \"full\": git_full}\n     return keywords\n \n"
+}

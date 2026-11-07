@@ -1,0 +1,28 @@
+{
+  "image_id": "sha256:9ba92d212c060748bacf6410d82d24322460bf950db75b511a3eac41bd3f0720",
+  "image_tag_metadata": "swebench/sweb.eval.x86_64.pylint-dev_1776_pylint-6528:latest",
+  "base_commit": "273a8b25620467c1e5686aa8d2a1dbb8c02c78d0",
+  "archive_sha256": "ca2fab439b584b5b1e770fe335e2f3a7376fd13a43262c38a8969801e6f8a99c",
+  "container_argv": [
+    "/usr/bin/docker",
+    "run",
+    "--pull=never",
+    "-d",
+    "--cpu-shares",
+    "2048",
+    "--name",
+    "verify_phase4_fix10_pristine_audit_pylint-dev__pylint-6528_a23a996c",
+    "--label",
+    "experiment_id=phase4_fix10_pristine_audit",
+    "-w",
+    "/testbed",
+    "--network",
+    "none",
+    "sha256:9ba92d212c060748bacf6410d82d24322460bf950db75b511a3eac41bd3f0720",
+    "sleep",
+    "infinity"
+  ],
+  "patch_applied": false,
+  "tests_executed": 0,
+  "collection_performed": false
+}
