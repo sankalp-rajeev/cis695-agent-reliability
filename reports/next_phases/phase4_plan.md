@@ -176,6 +176,9 @@ V2 only, all 83 tasks, frozen selection lists, same images and `--network none`,
 
 - Any original native FAIL that disappears without an explained cause halts the analysis as an executor bug.
 - A cap hit is reported, never silently retried.
+- **Integrity stop:** the attempt is aborted and documented. Any fix must be label-free, becomes a new executor version with a new freeze tag, and the run restarts from task 1. An old freeze tag is never moved.
+- **Attempt 1 quarantine:** the 35-task attempt is **aborted, not analyzed**. Its captures are retained with a hash manifest; none of its outcomes may inform any fix or analysis.
+- **Generated, untracked version modules:** hash before and after each runtime stage. Any change sets `GENERATED_INPUT_CHANGED` on that task's evidence and is reported; it does not halt the run.
 
 ## 5. Post-hoc, only after `phase4-run-sealed`
 
@@ -191,4 +194,4 @@ These may use labels; the executor never changes in response:
 - **Concurrency:** serial (one container at a time), chosen so container contention cannot alter timing, timeouts or NOT_REACHED counts. Estimated 4.08-4.86 h plus confirmation runs; the 12 h stop rule applies.
 - **Engineering estimate:** 5–7 working days for fixes 0–8.
 - **Run estimate:** 3–8 h. Stop and report partial accounting at 12 h.
-- **One run only.** Any later executor change is a new version, reported as exploratory.
+- **One run per frozen executor version.** An integrity-aborted attempt is quarantined under the rule above; a label-free repair requires a new version and freeze tag, followed by a fresh run from task 1. Other later executor changes are reported as exploratory.
