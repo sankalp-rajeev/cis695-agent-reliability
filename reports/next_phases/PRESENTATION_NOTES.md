@@ -7,20 +7,20 @@ Planned CSVs contain roadmap scope, baseline or threshold values, not experiment
 ## Phase 1 — Known grader-failing existing tests
 
 - Status: done
-- Headline: Of 7 witnesses, 1 was blocked by a loader abort, 5 were skipped under CPU-count markers and 1 was already detected, while the Django abort also left 24 real test requests unexecuted per tree.
-- Table or chart data: reports/next_phases/presentation_data/phase1.csv
-- Example: Django-13297 / test_template_params_warning: a selected @property at batch position 9 aborted all 25 requests on both trees; reports/next_phases/phase1_known_failures/confirmations.md:28.
-- Caveat: E/F were added after inspection, and static skip conditions do not measure the container CPU count or prove repaired tests would pass.
-- Commit: 8db4978
+- Headline: Of 7 witnesses, 1 was blocked by a property-load abort with 24 collateral requests per tree, 5 skipped and 1 already detected, while the fresh Pylint CPU helper reports 1 by default and 2 with either 2048 shares or a two-CPU quota.
+- Table or chart data: reports/next_phases/presentation_data/phase1.csv (7-witness classification); reports/next_phases/presentation_data/phase1_cpu.csv (3 CPU probes)
+- Example: Pylint-6528 / test_multiprocessing[1]: its CPU-count skip guard is consistent with the measured default helper result 1; reports/next_phases/phase1_known_failures/cpu_check.md:261.
+- Caveat: The fresh CPU probe does not prove historical cgroup values, and E/F were added after inspecting the Phase 1 data.
+- Commit: 4d7c529 (CPU check); 8db4978 (classification)
 
 ## Phase 2 — Causes of incomplete evidence
 
-- Status: planned
-- Headline: Plan: explain all 39 INCOMPLETE cases and repeat the counts for 13 NOT_AVAILABLE cases from 780 captures, succeeding when every INCOMPLETE task has an evidenced cause and no gap is unexplained.
-- Table or chart data: reports/next_phases/presentation_data/phase2.csv
-- Example: Historical example, not a Phase 2 result: Django-13297 / test_template_params_warning stayed NOT_RUN after a loader abort; reports/next_phases/phase1_known_failures/confirmations.md:28.
-- Caveat: ROADMAP.md specifies complete attribution and a parser-only recovery measurement, not a numeric recovery target, and no Phase 2 analysis has run.
-- Commit: 15c3d9b
+- Status: done
+- Headline: Across 83 tasks, 942 aborts on 32 tasks strand 3,138/31,179 native NOT_RUN slots (10.06%), 13 PASS tasks accept skips (0 retain strict PASS; 2 CPU-only for ordinary skips, 0 including XFAIL; 4 incorrect-labelled post-hoc), and yes/no projections are 42/83 with current policy plus parser replay versus 20/83 with strict skips plus replay.
+- Table or chart data: reports/next_phases/phase2_incomplete_causes/charts/policy_projections.csv
+- Example: Django-13297 / test_template_params_warning: its property-load batch loses 24 collateral requests per tree, within 824 collateral slots across all task aborts (412/tree); reports/next_phases/phase2_incomplete_causes/charts/batch_collateral_top5.csv:2 and reports/next_phases/phase2_incomplete_causes/batch_aborts.csv:178.
+- Caveat: These are completeness-only projections retaining all 6 confirmed FAILs; source-derived reasons and ambiguous candidates stay explicit, and the 4/13 post-hoc label count does not establish detection.
+- Commit: this commit (resolve with git log -1 --format=%h -- reports/next_phases/phase2_incomplete_causes/BATCH_AND_POLICY_PROJECTIONS.md)
 
 ## Phase 3 — Repair V2 execution
 
