@@ -36,6 +36,7 @@ Each fix is one commit with unit tests. No fix changes which test families V2 se
    - Resolve every selected ID on each tree. pytest uses `--collect-only -q`; Django uses a dry `loadTestsFromName` per label.
    - Non-test objects (property, plain function, helper, class attribute) and not-found labels become `INVALID_ID`, with the reason. They are reported, never executed and never counted as NOT_RUN.
    - Parametrized families expand to concrete node IDs. Validation removes only invalid IDs; it never adds a family.
+   - A selected method whose owner is not a TestCase is expanded to the same method on concrete TestCase subclasses that inherit it unchanged (not overridden). This adds runnable identities for the same test code, not new families. The original slot counts as admitted only if all expanded instances are admitted. Expansion counts are reported separately. A label with no concrete subclass becomes INVALID_ID (no_runnable_owner).
 4. **Batch fault isolation:**
    - Run one runner process per test module, not per 25 IDs.
    - If a module aborts at load, rerun its remaining valid IDs individually, so one bad label cannot strand others.
