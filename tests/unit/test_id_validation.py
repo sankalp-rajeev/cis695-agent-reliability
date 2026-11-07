@@ -566,7 +566,13 @@ def test_expanded_django_regression_keys_are_runnable_canonical_identities():
         def run(self, tests, *, patched: bool, timeout_s):
             if patched:
                 assert all("::" in t for t in tests)
-            return make(TestStatus.FAILED) if patched else base
+            if tests == (selected.selected_id,):
+                return make(TestStatus.FAILED) if patched else base
+            # Each concrete confirmation has its own canonical selected owner,
+            # rather than returning the full original mixin expansion again.
+            assert len(tests) == 1 and tests[0] in ids
+            return RunResult(results=(TestResult(tests[0], TestStatus.FAILED if patched else TestStatus.PASSED),),
+                             requested_tests=tests, evidence_complete=True)
 
     report = run_regression("task", Selection(tests=(selected.selected_id,)), Executor())
     assert report.signal is Signal.FAIL

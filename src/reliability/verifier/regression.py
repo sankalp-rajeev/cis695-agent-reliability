@@ -27,7 +27,7 @@ from __future__ import annotations
 
 import json
 import time
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 from enum import Enum
 from pathlib import Path
 from typing import Protocol
@@ -140,6 +140,7 @@ class RunResult:
     raw_execution_map: dict[str, str] = field(default_factory=dict)
     validation_summary: dict = field(default_factory=dict)
     budget_s: float | None = None
+    confirmation: dict = field(default_factory=dict)
 
     def by_id(self) -> dict[str, TestResult]:
         return {r.test_id: r for r in self.results}
@@ -184,6 +185,7 @@ class RegressionReport:
     baseline: RunResult | None = None
     patched: RunResult | None = None
     confirmations: tuple[RunResult, ...] = ()
+    confirmation_summary: tuple[dict, ...] = ()
 
     @property
     def regressions(self) -> tuple[str, ...]:
@@ -514,25 +516,42 @@ def run_regression(
         for test in base_by_id
     }
 
-    # Policy §4.1: re-run regressions once in isolation. Rejecting a correct
-    # patch over a nondeterministic test lands in the false-rejection rate and
-    # distorts the risk-coverage curve directly.
-    confirmations = []
+    # Fix 8: each new failure gets three independent processes on EACH tree.
+    # Never batch candidates, reuse a baseline cache, or stop after one success.
+    confirmations, confirmation_summary = [], []
     if config.rerun_flaky:
-        suspects = tuple(t for t, o in outcomes.items() if o is Outcome.REGRESSION)
-        if suspects:
-            confirmation = executor.run(
-                suspects, patched=True, timeout_s=config.per_pass_timeout_s)
-            confirmations.append(confirmation)
-            rerun = confirmation.by_id()
-            for result in confirmation.raw_results:
-                if len(confirmation.raw_id_map.get(result.test_id, ())) == 1:
-                    rerun.setdefault(result.test_id, result)
-            for test in suspects:
-                result = rerun.get(test)
-                if result is not None and result.status is TestStatus.PASSED:
-                    outcomes[test] = Outcome.FLAKY
-                    notes.append(f"{test}: failed then passed on re-run, marked FLAKY")
+        suspects = tuple(t for t, o in outcomes.items()
+                         if o in (Outcome.REGRESSION, Outcome.REGRESSION_ERROR))
+        for test in suspects:
+            statuses = {False: [], True: []}
+            usable = True
+            for patched_tree in (False, True):
+                for attempt in range(1, 4):
+                    confirmation = executor.run(
+                        (test,), patched=patched_tree, timeout_s=config.per_pass_timeout_s)
+                    confirmation = replace(confirmation, confirmation={
+                        "candidate_id": test, "tree": "patched" if patched_tree else "base",
+                        "attempt": attempt, "attempts_per_tree": 3, "isolated": True})
+                    confirmations.append(confirmation)
+                    cases, _ = concrete_comparison((test,), confirmation, confirmation)
+                    result = cases.get(test)
+                    statuses[patched_tree].append(result.status if result else None)
+                    usable &= not (confirmation.timed_out or confirmation.infrastructure_errors
+                                   or confirmation.unmatched_ids)
+            stable = (usable and statuses[False] == [TestStatus.PASSED] * 3
+                      and all(s in (TestStatus.FAILED, TestStatus.ERROR) for s in statuses[True]))
+            confirmation_summary.append({
+                "candidate_id": test, "initial_outcome": outcomes[test].value,
+                "stable": stable, "base_PASS": statuses[False].count(TestStatus.PASSED),
+                "patched_non_PASS": sum(s in (TestStatus.FAILED, TestStatus.ERROR)
+                                        for s in statuses[True]),
+                "base_statuses": [s.value if s else "missing" for s in statuses[False]],
+                "patched_statuses": [s.value if s else "missing" for s in statuses[True]],
+                "attempts_per_tree": 3,
+            })
+            if not stable:
+                outcomes[test] = Outcome.FLAKY
+                notes.append(f"{test}: not stable across 3 isolated runs per tree, marked FLAKY")
 
     n_executed = sum(1 for o in outcomes.values() if o.executed)
     n_regressions = sum(1 for o in outcomes.values() if o.counts_as_regression)
@@ -574,4 +593,5 @@ def run_regression(
         notes=tuple(notes),
         original_signal=original_signal, completeness=completeness, incompleteness=gaps,
         baseline=baseline, patched=patched, confirmations=tuple(confirmations),
+        confirmation_summary=tuple(confirmation_summary),
     )

@@ -407,6 +407,7 @@ def signal_from_regression(report: RegressionReport) -> SignalRecord:
             "base": run_to_dict(report.baseline, inline_raw=False) if report.baseline else None,
             "patched": run_to_dict(report.patched, inline_raw=False) if report.patched else None,
             "confirmations": [run_to_dict(r, inline_raw=False) for r in report.confirmations],
+            "confirmation_summary": list(report.confirmation_summary),
         },
     )
 

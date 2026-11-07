@@ -105,13 +105,17 @@ def test_concrete_confirmation_does_not_use_a_sibling_failure_as_its_result():
     class RecordedExecutor:
         def run(self, requested, *, patched, timeout_s):
             calls.append(tuple(requested))
-            return [base, initial_patch, base][len(calls) - 1]
+            if len(calls) <= 2:
+                return [base, initial_patch][len(calls) - 1]
+            # Retain a sibling failure as unmatched raw evidence: it cannot
+            # confirm this concrete candidate's failure or count as complete.
+            return captured("t.py::test_it[old] FAILED\nt.py::test_it[new] PASSED\n", requested, code=1)
 
     initial_patch = patched
     report = run_regression("fixture", Selection(tests=tuple(tests)), RecordedExecutor())
-    assert calls[-1] == ("t.py::test_it[new]",)
+    assert calls[2:] == [("t.py::test_it[new]",)] * 6
     assert report.outcomes["t.py::test_it[new]"] is Outcome.FLAKY
-    assert report.signal is Signal.PASS
+    assert report.signal is Signal.INCOMPLETE
 
 
 def test_native_loader_placeholder_error_is_not_admitted_as_a_test_body():

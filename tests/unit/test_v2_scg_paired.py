@@ -232,13 +232,14 @@ def test_shared_executor_budgets_ids_policy_and_isolation(tmp_path, monkeypatch,
     monkeypatch.setattr(h.v2, "shadow_from_report", lambda *a, **k: {})
     row = h.execute_arm(task, selected, tmp_path, tmp_path / arm)
     assert row["signal"] == signal, row
-    assert requests[0] == (tuple(TESTS), False, 300)
+    assert requests[0] == (tuple(TESTS), False, 1800)
     if scenario != "baseline":
-        assert requests[1] == (tuple(TESTS), True, 300)
+        assert requests[1] == (tuple(TESTS), True, 1800)
     else:
         assert len(requests) == 1 and row["completeness"] != "COMPLETE"
     if scenario in ("regression", "flaky"):
-        assert requests[2] == ((TESTS[0],), True, 300)
+        assert requests[2:] == [((TESTS[0],), tree, 1800)
+                               for tree in (False, True) for _ in range(3)]
     assert instances[0].stopped and fidelity == [task["base_source_sha256"]]
     assert row["execution_status"] == ("EXECUTION_ERROR" if scenario == "bad_evidence" else "EXECUTED")
 
