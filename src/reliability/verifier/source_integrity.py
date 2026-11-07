@@ -15,6 +15,14 @@ import tarfile
 from dataclasses import dataclass, field
 from pathlib import Path, PurePosixPath
 
+from reliability.verifier.pre_install import (
+    PreInstallProofError,
+    PreInstallSpec,
+    corroborate,
+    replay_source_edits,
+    source_edit_commands,
+)
+
 CONFIG_NAMES = {'setup.cfg', 'tox.ini', 'pytest.ini', '.pytest.ini', 'pyproject.toml'}
 GENERATED_INPUT_CHANGED = 'GENERATED_INPUT_CHANGED'
 runtime_stage_var: contextvars.ContextVar[str] = contextvars.ContextVar('verifier_runtime_stage', default='initial')
@@ -34,6 +42,7 @@ class BaseSourceSpec:
     base_commit: str
     archive_path: Path
     archive_sha256: str
+    pre_install: PreInstallSpec | None = None
 
 
 class SourceArchive:
@@ -170,7 +179,8 @@ with tempfile.TemporaryDirectory(prefix='verifier-base-attributes-') as temporar
         return (b''.join(parts) if fallbacks else native), fallbacks
 
     records = {}
-    for name in sorted(set(request['files']) | set(exported)):
+    proof_paths = set(request.get('pre_install_paths', []))
+    for name in sorted(set(request['files']) | set(exported) | proof_paths):
         absolute = os.path.realpath(name)
         error = ''
         try:
@@ -181,9 +191,9 @@ with tempfile.TemporaryDirectory(prefix='verifier-base-attributes-') as temporar
         except (OSError, ValueError) as exc:
             data, digest, error = None, None, str(exc)
         row = dict(observed_sha256=digest, error=error, export_subst=name in exported)
-        if name in exported or digest != request['files'].get(name):
+        if name in exported or name in proof_paths or digest != request['files'].get(name):
             row['observed_b64'] = base64.b64encode(data).decode() if data is not None else None
-        if (name in exported or digest != request['files'].get(name)) and name in entries:
+        if (name in exported or name in proof_paths or digest != request['files'].get(name)) and name in entries:
             blob = git(['cat-file', 'blob', entries[name]])
             row['base_blob_b64'] = base64.b64encode(blob).decode()
             row['base_blob_sha256'] = hashlib.sha256(blob).hexdigest()
@@ -212,12 +222,12 @@ def only_format_expansions(blob: bytes, expanded: bytes) -> bool:
     return re.fullmatch(b''.join(parts), expanded, flags=re.DOTALL) is not None
 
 
-def compare_source(archive_files: dict[str, bytes], probe: dict) -> dict:
+def compare_source(archive_files: dict[str, bytes], probe: dict, pre_install_expected=None) -> dict:
     receipts, mismatches = [], []
     for path, row in probe['records'].items():
         archived = archive_files.get(path)
         archive_sha = hashlib.sha256(archived).hexdigest() if archived is not None else None
-        reason, accepted = '', False
+        reason, accepted, pre_accepted = '', False, False
         if row['export_subst']:
             blob = base64.b64decode(row['base_blob_b64'])
             expanded = base64.b64decode(row['git_archive_b64']) if row.get('git_archive_b64') is not None else None
@@ -231,17 +241,30 @@ def compare_source(archive_files: dict[str, bytes], probe: dict) -> dict:
                 reason = 'archive_differs_from_base_git_archive'
             else:
                 accepted = archive_sha != row['observed_sha256']
+        elif path in (pre_install_expected or {}):
+            expected = pre_install_expected[path]
+            if archive_sha != row.get('base_blob_sha256'):
+                reason = 'pre_install_archive_differs_from_base_blob'
+            elif row['observed_sha256'] != expected['expected_sha256']:
+                reason = 'pre_install_image_differs_from_exact_command_effects'
+            else:
+                pre_accepted = archive_sha != row['observed_sha256']
         elif archived is None or row['observed_sha256'] != archive_sha:
             reason = 'non_export_subst_source_mismatch'
         receipt = {'path': path, 'archive_sha256': archive_sha, **row,
-                   'accepted_export_subst_difference': accepted, 'reason': reason}
-        if reason:
+                   'accepted_export_subst_difference': accepted,
+                   'accepted_pre_install_difference': pre_accepted, 'reason': reason}
+        if path in (pre_install_expected or {}):
+            receipt['pre_install_replay'] = pre_install_expected[path]
+        if reason or archive_sha != row['observed_sha256']:
             receipt['archive_b64'] = base64.b64encode(archived).decode() if archived is not None else None
+        if reason:
             mismatches.append(receipt)
         receipts.append(receipt)
     return {'status': 'MISMATCH' if mismatches else 'VERIFIED', 'base_commit': probe['base_commit'],
             'attribute_authority': probe['attribute_authority'], 'export_subst_files': probe['export_subst_files'],
             'checked_files': len(receipts), 'accepted_export_subst_differences': [r['path'] for r in receipts if r['accepted_export_subst_difference']],
+            'accepted_pre_install_differences': [r['path'] for r in receipts if r['accepted_pre_install_difference']],
             'mismatches': mismatches, 'files': receipts, 'tests_executed': 0, 'collection_performed': False}
 
 
@@ -282,7 +305,24 @@ def describe_abbreviation_queries(archive_files, probe):
 def verify_base_source(container, spec: BaseSourceSpec, *, halt=True):
     archive = SourceArchive(spec)
     sources = archive.read_many(archive.paths)
+    provenance, edits = None, None
+    if spec.pre_install is not None:
+        try:
+            provenance = spec.pre_install.resolve()
+            if spec.pre_install.base_commit != spec.base_commit or (
+                hasattr(container, 'instance_id') and container.instance_id != spec.pre_install.instance_id
+            ):
+                raise ValueError('pre_install task/base identity mismatch')
+            edits = source_edit_commands(spec.pre_install.commands)
+        except (ValueError, OSError, StopIteration) as exc:
+            receipt = {'status': 'MISMATCH', 'base_commit': spec.base_commit,
+                       'mismatches': [{'path': '<pre_install_provenance>', 'reason': str(exc)}],
+                       'pre_install': provenance, 'tests_executed': 0, 'collection_performed': False}
+            raise SourceIntegrityError(receipt) from exc
+    proof_paths = [p for _, _, p in edits] if edits else []
+    sources.update(archive.read_many(proof_paths))
     request = {'base_commit': spec.base_commit,
+               'pre_install_paths': proof_paths,
                'files': {p: hashlib.sha256(raw).hexdigest() for p, raw in sources.items()}}
     rc, message = container.exec_input('cat > /tmp/verifier_source_request.json', json.dumps(request))
     if rc:
@@ -302,7 +342,25 @@ def verify_base_source(container, spec: BaseSourceSpec, *, halt=True):
         if rc:
             raise RuntimeError('Explicit Git describe proof failed: ' + raw[-4000:])
         probe = json.loads(raw)
-    receipt = compare_source(sources, probe)
+    expected, proof_error = {}, None
+    if provenance is not None:
+        provenance['image_corroboration'] = {'status': 'not required: no source-edit proof'}
+        provenance['replay'] = 'not needed; unsupported commands cannot justify differences' if edits is None else 'no commands'
+        if edits:
+            try:
+                expected = replay_source_edits(edits, probe)
+                provenance['replay'] = 'exact ordered commands in isolated host temporary directory; image unmodified'
+                if any(v['expected_sha256'] != v['base_blob_sha256'] for v in expected.values()):
+                    provenance['image_corroboration'] = corroborate(container, spec.pre_install.commands)
+            except (ValueError, OSError) as exc:
+                proof_error = str(exc)
+                if isinstance(exc, PreInstallProofError):
+                    provenance['image_corroboration'] = exc.evidence
+    receipt = compare_source(sources, probe, expected)
+    receipt['pre_install'] = provenance
+    if proof_error:
+        receipt['mismatches'].append({'path': '<pre_install_proof>', 'reason': proof_error})
+        receipt['status'] = 'MISMATCH'
     receipt['explicit_describe_abbreviation_queries'] = overrides
     receipt['archive_sha256'] = spec.archive_sha256
     if halt and receipt['mismatches']:
