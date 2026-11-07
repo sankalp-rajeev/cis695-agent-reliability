@@ -21,6 +21,17 @@ from reliability.verifier.container import (
 from reliability.verifier.regression import TestStatus
 
 
+@pytest.fixture(autouse=True)
+def parsed_capture_id_receipts(monkeypatch):
+    # These tests isolate driver/capture parsing. The separate validation suite
+    # exercises the real two-layer boundary, including native subprocesses.
+    from reliability.verifier.collection import ValidationPass
+    from reliability.verifier.id_validation import IDValidation
+    monkeypatch.setattr('reliability.verifier.container.validate_in_container',
+        lambda container, tests, runner, **kwargs: ValidationPass(tuple(
+            IDValidation(t, 'runnable_test', (t,)) for t in tests)))
+
+
 class FakeContainer:
     """Stands in for a live container, recording what was asked of it."""
 

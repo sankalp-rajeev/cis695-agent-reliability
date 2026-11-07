@@ -46,6 +46,7 @@ class TestStatus(str, Enum):
     XPASS = "xpass"
     TIMEOUT = "timeout"
     NOT_RUN = "not_run"
+    INVALID_ID = "invalid_id"
 
 
 class Outcome(str, Enum):
@@ -63,6 +64,7 @@ class Outcome(str, Enum):
     ERROR = "ERROR"
     TIMEOUT = "TIMEOUT"
     NOT_RUN = "NOT_RUN"
+    INVALID_ID = "INVALID_ID"
 
     @property
     def counts_as_regression(self) -> bool:
@@ -71,7 +73,7 @@ class Outcome(str, Enum):
     @property
     def executed(self) -> bool:
         """Whether this outcome reflects a test that actually ran to completion."""
-        return self not in (Outcome.NOT_RUN, Outcome.TIMEOUT)
+        return self not in (Outcome.NOT_RUN, Outcome.TIMEOUT, Outcome.INVALID_ID)
 
 
 class Signal(str, Enum):
@@ -90,7 +92,7 @@ class Signal(str, Enum):
 BASELINE_FAILURE_THRESHOLD = 0.5
 
 # Parsed baseline caches must preserve the same outcome model as patched results.
-_BASELINE_PARSER_REVISION = "native-capture-v2-outcomes"
+_BASELINE_PARSER_REVISION = "native-capture-v3-validation"
 
 
 @dataclass(frozen=True, slots=True)
@@ -124,6 +126,11 @@ class RunResult:
     evidence_files: dict[str, str] = field(default_factory=dict)
     evidence_sha256: dict[str, str] = field(default_factory=dict)
     requested_tests: tuple[str, ...] = ()
+    validation: tuple[dict, ...] = ()
+    execution_results: tuple[TestResult, ...] = ()
+    execution_id_map: dict[str, tuple[str, ...]] = field(default_factory=dict)
+    raw_execution_map: dict[str, str] = field(default_factory=dict)
+    validation_summary: dict = field(default_factory=dict)
 
     def by_id(self) -> dict[str, TestResult]:
         return {r.test_id: r for r in self.results}
@@ -215,13 +222,14 @@ def run_to_dict(run: RunResult, *, inline_raw: bool = True) -> dict:
 
 def run_from_dict(payload: dict) -> RunResult:
     fields = {key: payload[key] for key in RunResult.__dataclass_fields__ if key in payload}
-    for key in ("results", "raw_results"):
+    for key in ("results", "raw_results", "execution_results"):
         fields[key] = tuple(TestResult(r["test_id"], TestStatus(r["status"]),
                                       r.get("duration_s", 0.0), r.get("message", ""))
                             for r in fields.get(key, ()))
-    for key in ("unmatched_ids", "infrastructure_errors", "events", "requested_tests"):
+    for key in ("unmatched_ids", "infrastructure_errors", "events", "requested_tests", "validation"):
         fields[key] = tuple(fields.get(key, ()))
     fields["raw_id_map"] = {k: tuple(v) for k, v in fields.get("raw_id_map", {}).items()}
+    fields["execution_id_map"] = {k: tuple(v) for k, v in fields.get("execution_id_map", {}).items()}
     return RunResult(**fields)
 
 
@@ -230,6 +238,8 @@ def completeness_of(tests: tuple[str, ...], base: RunResult | None,
                     skip_compatible: bool = True) -> tuple[str, tuple[str, ...]]:
     """Separate known execution gaps from missing historical capture evidence."""
     gaps, unknown = [], []
+    excluded = {r.test_id for run in (base, patched) if run is not None
+                for r in run.results if r.status is TestStatus.INVALID_ID}
     healthy = {TestStatus.PASSED, TestStatus.XFAIL, TestStatus.XPASS}
     if skip_compatible:
         healthy.add(TestStatus.SKIPPED)
@@ -241,18 +251,31 @@ def completeness_of(tests: tuple[str, ...], base: RunResult | None,
         mapped_raw: dict[str, list[TestResult]] = {}
         for result in run.raw_results:
             mapped = run.raw_id_map.get(result.test_id, ())
-            if len(mapped) == 1:
-                mapped_raw.setdefault(mapped[0], []).append(result)
+            if len(mapped) == 1 or (run.validation and mapped):
+                for selected in mapped:
+                    mapped_raw.setdefault(selected, []).append(result)
+        expected_by_selected = {}
+        for identity, owners in run.execution_id_map.items():
+            for owner in owners:
+                expected_by_selected.setdefault(owner, []).append(identity)
+        actual = {r.test_id: r for r in run.execution_results}
         if len(by_id) != len(run.results):
             gaps.append(f"{label}: duplicate selected IDs")
         for tid in tests:
             result = by_id.get(tid)
+            if tid in excluded:
+                continue
+            expected = expected_by_selected.get(tid, ())
+            missing_expansion = any(t not in actual or actual[t].status in
+                                    (TestStatus.NOT_RUN, TestStatus.TIMEOUT) for t in expected)
+            if missing_expansion:
+                gaps.append(f"{label}: {tid}: expanded instance not admitted")
             # Lossless accounting can establish a healthy selected parameter
             # family even when the unchanged legacy parser admitted only exact
             # IDs. Do not invent a pass or silently absorb an unscored failure.
             cases = mapped_raw.get(tid, ())
             recovered = (cases and all(r.status in healthy for r in cases))
-            if (result is None or result.status is TestStatus.NOT_RUN) and recovered:
+            if (result is None or result.status is TestStatus.NOT_RUN) and recovered and not missing_expansion:
                 continue
             if (result is None or result.status in (TestStatus.NOT_RUN, TestStatus.TIMEOUT,
                                                     TestStatus.ERROR)
@@ -263,11 +286,15 @@ def completeness_of(tests: tuple[str, ...], base: RunResult | None,
         gaps.extend(f"{label}: infrastructure: {s}" for s in run.infrastructure_errors)
         gaps.extend(f"{label}: unmatched raw ID: {s}" for s in run.unmatched_ids)
         gaps.extend(f"{label}: ambiguous raw ID: {tid}" for tid, ids in run.raw_id_map.items()
-                    if len(ids) != 1)
+                    if len(ids) != 1 and not (run.validation and ids))
         gaps.extend(f"{label}: raw ERROR: {r.test_id}" for r in run.raw_results
-                    if r.status is TestStatus.ERROR)
+                    if r.status is TestStatus.ERROR
+                    and not (set(run.raw_id_map.get(r.test_id, ())) <= excluded
+                             and run.raw_id_map.get(r.test_id)))
         for result in run.raw_results:
             ids = run.raw_id_map.get(result.test_id, ())
+            if ids and set(ids) <= excluded:
+                continue
             if not skip_compatible and result.status is TestStatus.SKIPPED:
                 gaps.append(f"{label}: raw SKIPPED: {result.test_id}")
             if not ids:
@@ -278,8 +305,11 @@ def completeness_of(tests: tuple[str, ...], base: RunResult | None,
                     gaps.append(f"{label}: raw/selected status conflict: {result.test_id}")
         if not run.evidence_complete:
             unknown.append(f"{label}: complete raw/runner capture unavailable")
+    def comparable_ids(run):
+        return {r.test_id for r in run.raw_results
+                if not excluded or not set(run.raw_id_map.get(r.test_id, ())) <= excluded}
     if (base and patched and base.raw_results and patched.raw_results
-            and {r.test_id for r in base.raw_results} != {r.test_id for r in patched.raw_results}):
+            and comparable_ids(base) != comparable_ids(patched)):
         gaps.append("concrete raw test IDs differ between base and patched")
     state = "INCOMPLETE_CONFIRMED" if gaps else "UNVERIFIABLE" if unknown else "COMPLETE"
     return state, tuple(gaps + unknown)
@@ -318,6 +348,8 @@ def classify(
     single most important line in the module: absence of evidence is recorded as
     absence, not as success.
     """
+    if any(r is not None and r.status is TestStatus.INVALID_ID for r in (base, patched)):
+        return Outcome.INVALID_ID
     if patched is None or patched.status is TestStatus.NOT_RUN:
         return Outcome.NOT_RUN
     if patched.status is TestStatus.TIMEOUT:
@@ -366,14 +398,20 @@ def concrete_comparison(
         grouped: dict[str, dict[str, TestResult]] = {}
         for result in run.raw_results:
             selected = run.raw_id_map.get(result.test_id, ())
-            if len(selected) == 1 and selected[0] in wanted:
-                grouped.setdefault(selected[0], {})[result.test_id] = result
+            if len(selected) == 1 or (run.validation and selected):
+                for owner in selected:
+                    if owner in wanted:
+                        grouped.setdefault(owner, {})[run.raw_execution_map.get(result.test_id, result.test_id)] = result
         return grouped
 
     base_cases, patch_cases = families(baseline), families(patched)
     base, patch = {}, {}
     base_selected, patch_selected = baseline.by_id(), patched.by_id()
     for test in tests:
+        if any(r is not None and r.status is TestStatus.INVALID_ID
+               for r in (base_selected.get(test), patch_selected.get(test))):
+            base[test], patch[test] = base_selected.get(test), patch_selected.get(test)
+            continue
         b, p = base_cases.get(test, {}), patch_cases.get(test, {})
         ids = b.keys() | p.keys()
         if not ids:
@@ -382,7 +420,9 @@ def concrete_comparison(
         for raw_id in sorted(ids):
             # Keep the familiar selected key for a single unparameterized
             # Django/pytest case; parameter cases retain their concrete IDs.
-            key = raw_id if len(ids) > 1 or ("[" in raw_id and raw_id != test) else test
+            key = raw_id if (len(ids) > 1 or ("[" in raw_id and raw_id != test)
+                             or (raw_id != test and (raw_id in baseline.execution_id_map
+                                                     or raw_id in patched.execution_id_map))) else test
             base[key], patch[key] = b.get(raw_id), p.get(raw_id)
     return base, patch
 
@@ -411,7 +451,7 @@ def run_regression(
     if baseline is None:
         baseline = executor.run(
             selection.tests, patched=False, timeout_s=config.per_pass_timeout_s)
-        if any(r.status not in (TestStatus.NOT_RUN, TestStatus.TIMEOUT)
+        if any(r.status not in (TestStatus.NOT_RUN, TestStatus.TIMEOUT, TestStatus.INVALID_ID)
                for r in baseline.results):
             # A pass in which nothing ran is not a baseline, and caching it
             # would hand the same empty answer to every later run.
@@ -422,7 +462,7 @@ def run_regression(
     # Policy §5.5: a mostly-red baseline indicts the environment, not the patch.
     baseline_cases, _ = concrete_comparison(selection.tests, baseline, baseline)
     executed_base = [r for r in baseline_cases.values()
-                     if r is not None and r.status not in (TestStatus.NOT_RUN, TestStatus.TIMEOUT)]
+                     if r is not None and r.status not in (TestStatus.NOT_RUN, TestStatus.TIMEOUT, TestStatus.INVALID_ID)]
     if executed_base:
         failed_base = sum(
             1 for r in executed_base

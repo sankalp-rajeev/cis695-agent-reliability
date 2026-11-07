@@ -23,14 +23,16 @@ import os
 import shlex
 import subprocess
 import uuid
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Self
 
 from reliability.env import clean_env
+from reliability.verifier.collection import validate_in_container
 from reliability.verifier.regression import RunResult, TestResult, TestStatus
 from reliability.verifier.result_parser import mapping_for, parse_capture
 from reliability.verifier.selection import TestRunner, django_label
+from reliability.verifier.validated_run import apply_validation
 
 NAMESPACE = "swebench/sweb.eval.x86_64"
 WORKDIR = "/testbed"
@@ -331,6 +333,28 @@ class ContainerTestExecutor:
 
         self.container.set_patched(patched)
         runner = self.runner or TestRunner("pytest", "default")
+        validation = validate_in_container(self.container, tests, runner, timeout_s=timeout_s)
+        validation = replace(validation, context={
+            'instance_id': getattr(self.container, 'instance_id', ''),
+            'tree': 'patched' if patched else 'base', 'runner': runner.name})
+        if self.evidence_dir is not None:
+            folder = self.evidence_dir / (("patched" if patched else "base") + "_validation_" + uuid.uuid4().hex)
+            folder.mkdir(parents=True, exist_ok=False)
+            path = folder / 'validation.json'
+            raw = (json.dumps(validation.to_dict(), indent=2) + '\n').encode()
+            path.write_bytes(raw)
+            validation = replace(validation, evidence_files={'validation.json': str(path.resolve())},
+                                 evidence_sha256={'validation.json': hashlib.sha256(raw).hexdigest()})
+        if validation.errors:
+            return RunResult(results=tuple(TestResult(t, TestStatus.NOT_RUN) for t in tests),
+                             requested_tests=tests, infrastructure_errors=validation.errors,
+                             validation_summary=validation.to_dict(),
+                             evidence_files=validation.evidence_files,
+                             evidence_sha256=validation.evidence_sha256,
+                             note='ID validation unavailable')
+        tests = validation.runnable_ids
+        if not tests:
+            return apply_validation(RunResult(evidence_complete=True), validation)
         native = (
             tuple(django_label(test) for test in tests)
             if runner.name == "django" else tests
@@ -359,10 +383,10 @@ class ContainerTestExecutor:
             if rc or clear_timeout:
                 errors.append("could not clear previous capture")
             if errors:
-                return RunResult(
+                return apply_validation(RunResult(
                     results=tuple(TestResult(t, TestStatus.NOT_RUN) for t in tests),
                     infrastructure_errors=tuple(errors), requested_tests=tuple(tests),
-                    note="; ".join(errors))
+                    note="; ".join(errors)), validation)
             rc, raw_stdout, raw_stderr, timed_out = self._capture(command, timeout_s)
             if rc not in (0, None):
                 errors.append(f"capture driver exit {rc}")
@@ -398,12 +422,12 @@ class ContainerTestExecutor:
         except (ValueError, TypeError):
             events = ()
             errors.append("malformed capture events")
-        return run_from_capture(
+        return apply_validation(run_from_capture(
             runner, tests, runner_log=runner_log, raw_stderr=raw_stderr,
             raw_stdout=raw_stdout, events=events, timed_out=timed_out,
             infrastructure_errors=tuple(errors), evidence_files=files,
             evidence_sha256=digests,
-        )
+        ), validation)
 
     def _partial_statuses(self, runner: TestRunner, tests) -> dict:
         """Read whatever a timed-out run managed to write to its log."""
