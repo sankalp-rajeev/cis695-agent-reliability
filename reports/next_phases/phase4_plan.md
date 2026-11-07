@@ -152,9 +152,18 @@ V2 only, all 83 tasks, frozen selection lists, same images and `--network none`,
 - *Falsified if:* under **30% of B1**.
 - *Why it matters:* this measures execution directly, independent of verdict policy.
 - `INVALID_ID` slots are not admitted outcomes and do not count toward either the 60% prediction or the 30% falsification threshold of the unchanged B1 denominator. Also report an informational H1 with `INVALID_ID` removed from B1, clearly labelled **secondary**; it does not replace the primary H1 or change its thresholds.
+- H1 is already met in the Fix 5 stored-data projection: **23,761/37,614 = 63.17%**, largely from parsing. This offline result is not evidence of additional live execution recovery.
+
+**H1b — additional live recovery (added after the Fix 5 offline projection, before Phase 4):**
+
+- The fixed denominator is the B1 slots not admitted in that stored-data projection: **37,614 − 23,761 = 13,853**.
+- *Prediction:* the live Phase 4 run admits at least **50% (6,927 slots)** of this fixed residual set.
+- *Falsified if:* below **25% (3,463 slots)** of this residual set.
+- `INVALID_ID` never counts as admitted. Report H1b separately from H1; the existing H1 thresholds and B1/B2 remain unchanged.
 
 **H2 — verdict coverage (pre-registered in the roadmap; unchanged):**
 
+- A yes/no verdict means **PASS or FAIL (primary)**. Report a clearly labelled **secondary** count that also includes `REGRESSION_ERROR`; it does not replace the primary count.
 - *Prediction:* under Policy C, at least **50/83** tasks get a yes/no verdict.
 - *Falsified if:* under **42/83**. That equals the parser-only projection, so falsification means execution repair adds nothing beyond parsing.
 
