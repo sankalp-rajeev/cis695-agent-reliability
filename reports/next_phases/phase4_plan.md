@@ -36,6 +36,7 @@ Each fix is one commit with unit tests. No fix changes which test families V2 se
    - Resolve every selected ID on each tree. pytest uses `--collect-only -q`; Django uses a dry `loadTestsFromName` per label.
    - Non-test objects (property, plain function, helper, class attribute) and not-found labels become `INVALID_ID`, with the reason. They are reported, never executed and never counted as NOT_RUN.
    - Parametrized families expand to concrete node IDs. Validation removes only invalid IDs; it never adds a family.
+   - INVALID_ID accounting guard: `INVALID_ID` is used only when (a) the static layer proves the label is not in source, is a non-test object, or has no runnable owner; or (b) a native collector completed successfully and did not produce the label. Collector crash, missing runner, interpreter/import failure of the module, or nonzero collector exit becomes `COLLECTION_ERROR` or `RUNNER_UNAVAILABLE`, counted as missing evidence under both policies.
    - Runnable owner depends on the task's runner. unittest-loader runners (Django runtests.py): the owner must be a unittest.TestCase subclass. pytest: a unittest.TestCase subclass, or a class pytest collects under the repo's effective config (name matches python_classes from setup.cfg / tox.ini / pytest.ini / pyproject.toml, default Test*; no __init__; __test__ not False). SymPy bin/test: as its native collector reports. A selected method whose owner is not runnable under that runner is expanded to the same method on subclasses that are runnable under the same runner and inherit it unchanged (not overridden); this adds runnable identities for the same test code, not new families. The original slot counts as admitted only if all expanded instances are admitted; expansion counts are reported separately. A label with no runnable owner becomes INVALID_ID (no_runnable_owner). Native collection is authoritative; static predictions that disagree with it are reported.
 4. **Batch fault isolation:**
    - Run one runner process per test module, not per 25 IDs.
@@ -143,12 +144,14 @@ V2 only, all 83 tasks, frozen selection lists, same images and `--network none`,
 - **Policy C (skip-compatible):** the rule in force when the roadmap was written; SKIPPED counts toward completeness.
 - **Policy S (skip-strict, primary for claims about PASS):** SKIPPED and NOT_REACHED selected tests are missing evidence. XFAIL is evidence. `INVALID_ID` is excluded from the denominator and reported.
 - FAIL is never demoted under either policy.
+- Report Policy C and Policy S yes/no counts both with `INVALID_ID` excluded from completeness (the policy above) and with `INVALID_ID` treated as missing evidence. List every task whose verdict differs between these two accounting rules. `COLLECTION_ERROR` and `RUNNER_UNAVAILABLE` remain missing evidence in all four reports.
 
 **H1 — execution recovers evidence (primary):**
 
 - *Prediction:* the repaired executor turns at least **60% of B1** into admitted outcomes.
 - *Falsified if:* under **30% of B1**.
 - *Why it matters:* this measures execution directly, independent of verdict policy.
+- `INVALID_ID` slots are not admitted outcomes and do not count toward either the 60% prediction or the 30% falsification threshold of the unchanged B1 denominator. Also report an informational H1 with `INVALID_ID` removed from B1, clearly labelled **secondary**; it does not replace the primary H1 or change its thresholds.
 
 **H2 — verdict coverage (pre-registered in the roadmap; unchanged):**
 
