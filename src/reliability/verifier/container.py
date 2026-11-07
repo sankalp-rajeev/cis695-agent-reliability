@@ -102,7 +102,7 @@ class TaskContainer:
 
     def run_args(self) -> list[str]:
         """The `docker run` argv, including the experiment label when set."""
-        cmd = [_docker_bin(), "run", "-d", "--name", self.name]
+        cmd = [_docker_bin(), "run", "-d", "--cpu-shares", "2048", "--name", self.name]
         if self.experiment_id:
             cmd.extend(["--label", f"experiment_id={self.experiment_id}"])
         cmd.extend(["-w", WORKDIR, "--network", "none", self.image, "sleep", "infinity"])

@@ -148,6 +148,22 @@ def label_experiment(run_args: list[str], experiment_id: str) -> list[str]:
     return [*run_args, "--label", marker]
 
 
+def cpu_share_args(run_args: list[str]) -> list[str]:
+    """Apply Fix 6 to every agent/generator launch without a CPU-time cap."""
+    result, skip = [], False
+    for arg in run_args:
+        if skip:
+            skip = False
+            continue
+        if arg == "--cpus" or arg.startswith("--cpus="):
+            raise IsolationError("Fix 6 uses CPU shares, not a --cpus time cap")
+        if arg == "--cpu-shares":
+            skip = True
+        elif not arg.startswith("--cpu-shares="):
+            result.append(arg)
+    return [*result, "--cpu-shares", "2048"]
+
+
 def prepare_environment(config: dict, *, experiment_id: str = "") -> dict:
     """Force the agent container onto ``--network none`` before it is started.
 
@@ -160,7 +176,7 @@ def prepare_environment(config: dict, *, experiment_id: str = "") -> dict:
     env = config.setdefault("environment", {})
     env["executable"] = docker_bin()
     env["run_args"] = label_experiment(
-        isolate_run_args(list(env.get("run_args") or [])), experiment_id)
+        isolate_run_args(cpu_share_args(list(env.get("run_args") or ["--rm"]))), experiment_id)
     return config
 
 

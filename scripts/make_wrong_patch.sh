@@ -46,7 +46,7 @@ if [ -z "$TARGET_FILE" ]; then
   exit 1
 fi
 
-docker run --rm "$IMG" bash -c "
+docker run --rm --cpu-shares 2048 "$IMG" bash -c "
   cd /testbed
   printf '\n# Attempted fix for ${TARGET}: no functional change.\n' >> '${TARGET_FILE}'
   git diff
@@ -58,7 +58,7 @@ if [ ! -s "$PATCH_FILE" ]; then
 fi
 
 # Verify in a clean container that the harness will be able to apply it.
-if docker run --rm -v "$PWD/$PATCH_FILE:/tmp/p.diff:ro" "$IMG" \
+if docker run --rm --cpu-shares 2048 -v "$PWD/$PATCH_FILE:/tmp/p.diff:ro" "$IMG" \
      bash -c 'cd /testbed && git apply --check /tmp/p.diff' 2>/dev/null; then
   lines=$(grep -c '' "$PATCH_FILE")
   echo "$TARGET file=$TARGET_FILE applies=yes patch_lines=$lines"
