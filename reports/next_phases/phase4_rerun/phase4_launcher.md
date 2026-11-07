@@ -31,6 +31,6 @@ SourceIntegrityError aborts the attempt immediately, records the failing receipt
 
 ## Local evidence and verification
 
-Only local files are written: `progress.jsonl` (task/stage completion metadata, no verdict summaries), `plan.json`, `attempt.json`, per-task pristine receipts, generated inventories, `base.json`, `patched.json`, `raw/`, four-policy `result.json`, and final completion/abort metadata plus a capture hash manifest. Progress can be checked with `tail -f <new-run-directory>/progress.jsonl` after a separately approved launch.
+Only local files are written: `progress.jsonl` (task completion metadata, no verdict summaries), `plan.json`, `attempt.json`, per-task pristine receipts, generated inventories, `base.json`, `patched.json`, `raw/`, four-policy `result.json`, and final completion/abort metadata plus a capture hash manifest. Progress can be checked with `tail -f <new-run-directory>/progress.jsonl` after a separately approved launch.
 
 All **12 launcher unit cases passed**, including zero-container dry run, frozen-input tampering, unverified receipt refusal, immediate integrity abort, no resume, both-tree capture despite base abstention, exactly one confirmation set, CPU/network/pull configuration, old-tag rejection and 12 h stop. The full unit suite is **1,192 passed, 6 failed, 6 skipped, 17 errors**, exactly the historical failure/error identities. No executor semantics, H1/H1b/H2 thresholds, B1, B2, or selection policy changed with the launcher.
