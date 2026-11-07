@@ -531,6 +531,29 @@ class ContainerTestExecutor:
         return _parse_output(runner, logged, tests) if rc == 0 else {}
 
 
+def _active_test(kind, missing_ids, output):
+    """Recognize an unfinished verbose test start, never a terminal outcome."""
+    import re
+
+    pending = []
+    for identity in missing_ids:
+        if kind == "django":
+            owner, method = identity.rsplit(".", 1)
+            prefixes = (method + " (" + owner + ")", method + " (" + identity + ")")
+        elif kind == "sympy":
+            prefixes = (identity.rsplit("::", 1)[-1],)
+        else:
+            # Pytest may omit a configured root prefix in its displayed ID.
+            prefixes = tuple(identity[i:] for i in [0] +
+                             [m.end() for m in re.finditer("/", identity.split("::", 1)[0])])
+        for line_number, line in enumerate(output.splitlines()):
+            clean = re.sub(r"\x1b\[[0-?]*[ -/]*[@-~]", "", line).strip()
+            if any(clean == prefix or clean.startswith(prefix + " ") for prefix in prefixes):
+                # Completed cases are excluded by the event's missing_ids.
+                pending.append((line_number, identity))
+    return max(pending)[1] if pending else None
+
+
 def run_from_capture(
     runner: TestRunner, tests: tuple[str, ...], *, runner_log: bytes,
     raw_stderr: bytes = b"", raw_stdout: bytes = b"", events: tuple[dict, ...] = (),
@@ -567,6 +590,24 @@ def run_from_capture(
     complete = bool(events and events[-1].get("event") == "complete")
     timed_out |= any(e.get("timed_out") or e.get("event") == "not_reached" for e in events)
     reached_elapsed = {}
+    # A verbose runner can name the interrupted test before its terminal word.
+    # Preserve that positive start evidence as TIMEOUT; only the other pending
+    # identities are NOT_REACHED. This is capture interpretation, not a rerun.
+    for event in events:
+        if event.get("event") != "end" or not event.get("timed_out"):
+            continue
+        start = next((e for e in events if e.get("event") == "start"
+                      and e.get("batch") == event.get("batch")), {})
+        begin, finish = start.get("offset", 0), event.get("offset", len(runner_log))
+        text = runner_log[begin:finish].decode("utf-8", "replace")
+        active = _active_test(runner.name, event.get("missing_ids", ()), text)
+        elapsed = next((e.get("elapsed_s", 0.0) for e in events
+                        if e.get("event") == "not_reached"
+                        and e.get("module") == event.get("module")), budget_s or 0.0)
+        if active:
+            for tid in mapping_for(tests, runner.name)(active):
+                statuses[tid] = TestStatus.TIMEOUT
+                reached_elapsed[tid] = elapsed
     for event in events:
         if event.get("event") == "not_reached":
             mapper = mapping_for(tests, runner.name)

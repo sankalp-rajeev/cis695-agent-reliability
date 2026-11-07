@@ -99,7 +99,7 @@ class Signal(str, Enum):
 BASELINE_FAILURE_THRESHOLD = 0.5
 
 # Parsed baseline caches must preserve the same outcome model as patched results.
-_BASELINE_PARSER_REVISION = "native-capture-v7-budget-cpu"
+_BASELINE_PARSER_REVISION = "native-capture-v7-active-timeout"
 
 
 @dataclass(frozen=True, slots=True)
