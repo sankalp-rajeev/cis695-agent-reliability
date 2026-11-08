@@ -165,3 +165,114 @@ def test_mixed_or_timed_out_confirmations_are_FLAKY(patch_statuses):
     report=run_regression('fixture',Selection(tests=('t.py::test_a','t.py::test_b')),executor)
     assert report.outcomes['t.py::test_a'] is Outcome.FLAKY
     assert len(report.confirmations)==6
+
+
+def sealed_fixture(tmp_path,monkeypatch,collections=None,exclusions=None):
+    """A real Git commit binds a manifest and the receipt bytes used by the loader."""
+    import gzip,hashlib,json,subprocess
+    from pathlib import Path
+    from reliability.verifier.g1_reference import PUBLISHED_HYGIENE_PATH,published_spurious_ids
+    from tests.unit.test_phase4_launcher import launch
+    root=Path(__file__).resolve().parents[2]
+    published=root/PUBLISHED_HYGIENE_PATH
+    local=tmp_path/PUBLISHED_HYGIENE_PATH;local.parent.mkdir(parents=True);local.write_bytes(published.read_bytes())
+    sources=[PUBLISHED_HYGIENE_PATH,launch.DRIFT_REFERENCE_RELATIVE+'/manifest.json',launch.DRIFT_REFERENCE_RELATIVE+'/drift_ids.json.gz']
+    for name in sources[1:]:
+        destination=tmp_path/name;destination.parent.mkdir(parents=True,exist_ok=True);destination.write_bytes((root/name).read_bytes())
+    g1=tmp_path/'g1';g1.mkdir()
+    summary=dict(launch_allowed=True,task_tree_count=166,exhaustive=True,gate_evaluated_after_all_pairs=True,projected_halts=[])
+    (g1/'summary.json').write_text(json.dumps(summary))
+    expected=[dict(instance_id='pylint-dev__pylint-4970',tree=tree,selected_id=t)
+        for tree in ('base','patched') for t in sorted(published_spurious_ids())]
+    (g1/'reference_hygiene.json').write_text(json.dumps({'exclusions':expected if exclusions is None else exclusions}))
+    for name,data in (collections or {}).items():
+        path=g1/name;path.parent.mkdir(parents=True,exist_ok=True)
+        raw=json.dumps(data).encode();path.write_bytes(gzip.compress(raw,mtime=0) if name.endswith('.gz') else raw)
+    manifest={'source_sha256':{name:hashlib.sha256((tmp_path/name).read_bytes()).hexdigest() for name in sources},
+        'receipt_sha256':{str(p.relative_to(g1)):hashlib.sha256(p.read_bytes()).hexdigest() for p in g1.rglob('*') if p.is_file()}}
+    (g1/'manifest.json').write_text(json.dumps(manifest))
+    digest=hashlib.sha256((g1/'manifest.json').read_bytes()).hexdigest()
+    plan=tmp_path/'reports/next_phases/phase4_plan.md';plan.parent.mkdir(parents=True,exist_ok=True)
+    plan.write_text('Fix 16 G1 manifest SHA-256: '+digest+'\n')
+    subprocess.run(['git','init','-q'],cwd=tmp_path,check=True)
+    subprocess.run(['git','add','.'],cwd=tmp_path,check=True)
+    subprocess.run(['git','-c','user.name=Unit Test','-c','user.email=unit@example.invalid','commit','-qm','seal'],cwd=tmp_path,check=True)
+    monkeypatch.setattr(launch,'ROOT',tmp_path)
+    return g1,plan,digest
+
+
+def test_unpinned_plain_collection_cannot_shadow_verified_gzip(tmp_path,monkeypatch):
+    import json
+    from pathlib import Path
+    from types import SimpleNamespace
+    from tests.unit.test_phase4_launcher import launch
+    from reliability.verifier.g1_reference import read_collection
+    root=Path(__file__).resolve().parents[2];task='pylint-dev__pylint-4970'
+    original=launch.load_reference()[task]
+    collections={f'tasks/{task}/{tree}/collection.json.gz':read_collection(
+        root/'reports/next_phases/phase4_rerun/fix15_g1/tasks'/task/tree/'collection.json') for tree in ('base','patched')}
+    ids=tuple(r['selected_id'] for r in collections[f'tasks/{task}/base/collection.json.gz']['records'])
+    g1,_,_=sealed_fixture(tmp_path,monkeypatch,collections)
+    for tree in ('base','patched'):
+        (g1/'tasks'/task/tree/'collection.json').write_text('UNPINNED MALFORMED SHADOW')
+    refs=launch.with_g1_references({task:original},[SimpleNamespace(instance_id=task,tests=ids)],g1)
+    assert all(len(refs[task][tree]['excluded_spurious_ids'])==16 for tree in ('base','patched'))
+    assert read_collection(g1/'tasks'/task/'base/collection.json')['records']
+    (g1/'tasks'/task/'base/collection.json.gz').write_bytes(b'tampered')
+    with pytest.raises(ValueError,match='SHA-256 mismatch'):
+        read_collection(g1/'tasks'/task/'base/collection.json')
+
+
+def test_wrong_published_removal_set_blocks_real_launcher_before_inputs(tmp_path,monkeypatch):
+    from tests.unit.test_phase4_launcher import launch
+    g1,_,_=sealed_fixture(tmp_path,monkeypatch,exclusions=[])
+    monkeypatch.setattr(launch,'require_frozen_head',lambda *a:'unit-freeze')
+    monkeypatch.setattr(launch,'validate_inputs',lambda *a:pytest.fail('input work after hygiene mismatch'))
+    monkeypatch.setattr(launch,'execute',lambda *a,**k:pytest.fail('launch after hygiene mismatch'))
+    with pytest.raises(ValueError,match='Reference hygiene removal mismatch'):
+        launch.main(['--execute','--freeze-tag','unit-freeze','--health-preflight',str(g1),'--output',str(tmp_path/'out')])
+
+
+def test_native_proof_removing_fifteen_instead_of_sixteen_blocks_reference_loader(tmp_path,monkeypatch):
+    from pathlib import Path
+    from types import SimpleNamespace
+    from tests.unit.test_phase4_launcher import launch
+    from reliability.verifier.g1_reference import read_collection
+    root=Path(__file__).resolve().parents[2];task='pylint-dev__pylint-4970'
+    original=launch.load_reference()[task]
+    collection=read_collection(root/'reports/next_phases/phase4_rerun/fix15_g1/tasks'/task/'base/collection.json')
+    ids=tuple(r['selected_id'] for r in collection['records'])
+    first=next(r for r in collection['records'] if r.get('reason')=='not_a_test_module')
+    first['native_proven_absent']=False
+    g1,_,_=sealed_fixture(tmp_path,monkeypatch,{f'tasks/{task}/base/collection.json.gz':collection})
+    with pytest.raises(ValueError,match='Reference hygiene removal mismatch'):
+        launch.with_g1_references({task:original},[SimpleNamespace(instance_id=task,tests=ids)],g1)
+
+
+def test_unmapped_case_progress_remains_identity_loss_even_with_CRASH_outcome():
+    ids=identities(20)
+    raw=b'test_unknown.py::test_foreign FAILED\n'
+    run=run_from_capture(TestRunner('pytest','fixture'),ids,runner_log=raw,
+        events=({'event':'start','batch':1,'ids':ids,'offset':0},
+                {'event':'end','batch':1,'returncode':1,'missing_ids':ids,'per_test_output':True,'offset':len(raw)},
+                {'event':'complete'}))
+    assert run.results[0].status is TestStatus.CRASH
+    record=health_for_run('task','base',run,{'admitted_ids':ids,'g1_collected_ids':ids})
+    assert record['G2']['lost_count']==20 and record['halt']
+
+
+def test_exact_drift_projection_excludes_XFAIL_XPASS_and_never_decodes_labels(tmp_path,monkeypatch):
+    import json,hashlib
+    from reliability.verifier.admission_reference import JSONProjection
+    from reliability.verifier.drift_reference import drift_reference_ids
+    source=tmp_path/'original.json'
+    source.write_text(json.dumps({'signal':'FORBIDDEN_VERDICT','labels':['FORBIDDEN_LABEL'],
+        'calls':[{'patched':False,'run':{'results':[{'test_id':status,'status':status}
+          for status in ('passed','failed','error','xfail','xpass','skipped')]}}]}))
+    original=JSONProjection.scalar
+    def guarded(self):
+        value=original(self)
+        assert not (isinstance(value,str) and value.startswith('FORBIDDEN'))
+        return value
+    monkeypatch.setattr(JSONProjection,'scalar',guarded)
+    assert drift_reference_ids(source,hashlib.sha256(source.read_bytes()).hexdigest())['base']==['error','failed','passed']

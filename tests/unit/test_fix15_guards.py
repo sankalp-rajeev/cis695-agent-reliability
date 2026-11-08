@@ -17,7 +17,7 @@ def test_pylint_spurious_references_require_real_native_directory_proof():
     exclusions=[]
     for tree in ('base','patched'):
         collection=read_collection(ROOT/'reports/next_phases/phase4_rerun/fix14_g1/tasks/pylint-dev__pylint-4970'/tree/'collection.json')
-        cleaned=clean_reference(reference[tree],collection)
+        cleaned=clean_reference(reference[tree],collection,task='pylint-dev__pylint-4970',tree=tree)
         assert len(cleaned['excluded_spurious_ids'])==16
         assert all('consider_using_with.py::' in t for t in cleaned['excluded_spurious_ids'])
         assert set(reference[tree]['admitted_ids'])-set(cleaned['admitted_ids'])==set(cleaned['excluded_spurious_ids'])
@@ -30,7 +30,7 @@ def test_other_invalid_reference_is_never_removed():
     reference={'admitted_ids':[identity]}
     collection={'records':[{'selected_id':identity,'stage':'native','reason':'helper',
         'validation_status':'INVALID_ID','native_proven_absent':True}]}
-    assert clean_reference(reference,collection)['admitted_ids']==[identity]
+    assert clean_reference(reference,collection,task='task',tree='base')['admitted_ids']==[identity]
 
 
 def test_pylint_cleaned_reference_G2_projection_passes():
@@ -52,7 +52,7 @@ def test_G1_synthetic_projected_halt_blocks_gate(tmp_path,monkeypatch):
     module=G1_module(monkeypatch)
     spec=replace(task_spec(tmp_path),source=SimpleNamespace(pre_install=SimpleNamespace(repo='example/repo',version='1')))
     monkeypatch.setattr(launch,'validate_inputs',lambda *args:[spec])
-    monkeypatch.setattr(launch,'load_reference',lambda *args:{'task':{'base':['lost'],'patched':['lost']}})
+    monkeypatch.setattr(launch,'load_reference',lambda *args:{'task':{tree:['lost%d' % i for i in range(10)] for tree in ('base','patched')}})
     monkeypatch.setattr(launch,'plan_for',lambda *args:{})
     class Container(ContainerShell):
         def set_patched(self,value):pass
@@ -84,17 +84,15 @@ def test_confirmation_identity_loss_vs_unstable_through_real_launcher(tmp_path,m
     monkeypatch.setattr(launch,'FrozenContainer',ContainerShell)
     monkeypatch.setattr(launch,'ContainerTestExecutor',Executor)
     out=tmp_path/'task';health=tmp_path/'health.jsonl'
-    if confirmation_status is TestStatus.COLLECTION_ERROR:
-        from reliability.verifier.run_health import RunHealthError
-        with pytest.raises(RunHealthError):launch.run_task(spec,out,'fixture',{'base':spec.tests,'patched':spec.tests},health)
-        assert len(count)==3 and not (out/'result.json').exists()
-    else:
-        launch.run_task(spec,out,'fixture',{'base':spec.tests,'patched':spec.tests},health)
-        report=json.loads((out/'result.json').read_text())['policies']['C_invalid_excluded']
-        assert report['outcomes'][spec.tests[0]]==Outcome.FLAKY.value
-        assert len(count)==8
-        rows=[json.loads(line) for line in health.read_text().splitlines()]
-        assert all(not r['halt'] for r in rows)
+    launch.run_task(spec,out,'fixture',{'base':spec.tests,'patched':spec.tests},health)
+    report=json.loads((out/'result.json').read_text())['policies']['C_invalid_excluded']
+    expected={TestStatus.ERROR:Outcome.REGRESSION_ERROR,TestStatus.TIMEOUT:Outcome.FLAKY,
+              TestStatus.COLLECTION_ERROR:Outcome.COLLECTION_ERROR}[confirmation_status]
+    assert report['outcomes'][spec.tests[0]]==expected.value
+    assert len(count)==8
+    rows=[json.loads(line) for line in health.read_text().splitlines()]
+    assert all(not r['halt'] for r in rows)
+    if confirmation_status is TestStatus.TIMEOUT:
         assert any(r.get('unstable_confirmation_ids') for r in rows)
 
 
@@ -128,33 +126,23 @@ def test_budget_only_zero_admission_is_reported_without_halt():
     assert all(s['non_identity_gap_count']==2 for s in record['stages'])
 
 
-def test_frozen_nonempty_reference_still_enforces_full_admission_loss():
+def test_frozen_nonempty_reference_also_uses_identity_only_loss():
     identity='tests/test_real.py::test_a'
     run=RunResult(results=(TestResult(identity,TestStatus.NOT_REACHED),),requested_tests=(identity,))
     record=health_for_run('task','base',run,{'admitted_ids':[identity],'g1_collected_ids':[identity]})
-    assert record['G2']['halt'] and not record['G1_collected_guard']['halt']
+    assert not record['G2']['halt'] and not record['G1_collected_guard']['halt']
 
 
 def committed_plan_fixture(tmp_path,monkeypatch):
-    import subprocess,hashlib
-    monkeypatch.setattr(launch,'ROOT',tmp_path)
-    subprocess.run(['git','init','-q'],cwd=tmp_path,check=True)
-    g1=tmp_path/'g1';g1.mkdir()
-    manifest=g1/'manifest.json';manifest.write_text(json.dumps({'source_sha256':{},'receipt_sha256':{}}))
-    (g1/'summary.json').write_text(json.dumps(dict(launch_allowed=True,task_tree_count=166,exhaustive=True,gate_evaluated_after_all_pairs=True)))
-    plan=tmp_path/'reports/next_phases/phase4_plan.md';plan.parent.mkdir(parents=True)
-    digest=hashlib.sha256(manifest.read_bytes()).hexdigest()
-    plan.write_text('Fix 15 G1 manifest SHA-256: '+digest+'\n')
-    subprocess.run(['git','add','.'],cwd=tmp_path,check=True)
-    subprocess.run(['git','-c','user.name=Unit Test','-c','user.email=unit@example.invalid','commit','-qm','seal'],cwd=tmp_path,check=True)
-    return g1,plan,digest
+    from tests.unit.test_fix16_executor_health import sealed_fixture
+    return sealed_fixture(tmp_path,monkeypatch)
 
 
 def test_manifest_hash_is_read_from_committed_plan_and_verified(tmp_path,monkeypatch):
     g1,plan,digest=committed_plan_fixture(tmp_path,monkeypatch)
     assert launch.require_g1(g1)==digest
     (g1/'manifest.json').write_text('{}')
-    plan.write_text('Fix 15 G1 manifest SHA-256: '+launch.sha(g1/'manifest.json')+'\n')
+    plan.write_text('Fix 16 G1 manifest SHA-256: '+launch.sha(g1/'manifest.json')+'\n')
     with pytest.raises(ValueError,match='SHA-256 mismatch'):launch.require_g1(g1)
 
 
@@ -232,10 +220,11 @@ def test_module_execution_exception_on_real_collection_and_capture_paths(tmp_pat
         ('test_real.py::test_body',),patched=tree=='patched',timeout_s=30)
     stages=[s for s in run.stage_health if s['stage']=='module_execution']
     assert stages and bool(stages[-1]['allowed_exception'])==allowed
-    assert not marker.exists() and run.results[0].status is TestStatus.COLLECTION_ERROR
-    assert health.zero_output(run.stage_health)['halt']==(not allowed)
+    assert not marker.exists() and run.results[0].status is TestStatus.NOT_RUN
+    assert not health.zero_output(run.stage_health)['halt']
     record=health_for_run('fixture',tree,run,{'admitted_ids':[],'g1_collected_ids':['test_real.py::test_body']})
-    assert record['G1_collected_guard']['halt']
+    assert not record['G1_collected_guard']['halt']
+    assert record['G1_collected_guard']['lost_count']==1
 
 
 @pytest.mark.parametrize('tree,allowed',[('base',True),('patched',False)])

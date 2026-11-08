@@ -22,7 +22,7 @@ from pathlib import Path
 
 from reliability.verifier.accounting import ADMITTED_STATUSES
 from reliability.verifier.container import ContainerTestExecutor, TaskContainer
-from reliability.verifier.g1_reference import clean_reference, native_collected_ids, read_collection
+from reliability.verifier.g1_reference import (PUBLISHED_HYGIENE_PATH, assert_reference_hygiene, clean_reference, native_collected_ids, read_collection, read_receipt)
 from reliability.verifier.pre_install import load_specs
 from reliability.verifier.regression import RegressionConfig, run_regression, run_to_dict
 from reliability.verifier.run_health import (
@@ -48,7 +48,9 @@ TASK_COUNT = 83
 PASS_BUDGET_S = 1800
 STOP_S = 12*60*60
 REFERENCE = ROOT/'reports/next_phases/phase4_rerun/fix13_reference'
-G1_PREFLIGHT = ROOT/'reports/next_phases/phase4_rerun/fix15_g1'
+DRIFT_REFERENCE_RELATIVE = 'reports/next_phases/phase4_rerun/fix16_reference'
+DRIFT_REFERENCE = ROOT/DRIFT_REFERENCE_RELATIVE
+G1_PREFLIGHT = ROOT/'reports/next_phases/phase4_rerun/fix16_g1'
 
 
 def sha(path):
@@ -230,9 +232,10 @@ def confirmation_reference(initial, tests, g1_ids=()):
     concrete = {r.test_id for r in initial.execution_results if r.status in ADMITTED_STATUSES
                 and set(initial.execution_id_map.get(r.test_id, ())) & admitted}
     blocked = {r.test_id for r in (*initial.results, *initial.execution_results)
-               if r.status.value in ('passed', 'failed', 'error', 'xfail', 'xpass')}
+               if r.status.value in ('passed', 'failed', 'error', 'crash')}
     return {'admitted_ids': sorted((admitted | concrete) & set(tests)),
             'module_skip_blocked_ids': sorted(blocked & set(tests)),
+            'drift_reference_ids': sorted(blocked & set(tests)),
             'g1_collected_ids': sorted(t for t in tests if t in g1_ids or set(initial.execution_id_map.get(t,())) & set(g1_ids)), 'reference_source': 'INITIAL_ADMITTED_SUBSET'}
 
 
@@ -402,25 +405,47 @@ def load_reference(path=REFERENCE):
     require_hash(path/'reference_ids.json.gz',manifest['reference_sha256'])
     for source,expected in manifest['source_sha256'].items():
         require_hash(confined(ROOT,source),expected)
-    return json.loads(gzip.decompress((path/'reference_ids.json.gz').read_bytes()))
+    references=json.loads(gzip.decompress((path/'reference_ids.json.gz').read_bytes()))
+    drift_manifest=json.loads((DRIFT_REFERENCE/'manifest.json').read_bytes())
+    for source,expected in drift_manifest['source_sha256'].items():
+        require_hash(confined(ROOT,source),expected)
+    if drift_manifest['original_reference_sha256']!=manifest['reference_sha256']:
+        raise ValueError('Drift/original reference provenance mismatch')
+    raw=(DRIFT_REFERENCE/'drift_ids.json.gz').read_bytes()
+    if hashlib.sha256(raw).hexdigest()!=drift_manifest['data_sha256']:
+        raise ValueError('Drift reference SHA-256 mismatch')
+    drift=json.loads(gzip.decompress(raw))
+    if set(drift)!=set(references):
+        raise ValueError('Drift/original reference cohort mismatch')
+    for task,trees in references.items():
+        for tree,evidence in trees.items():
+            if not set(drift[task][tree]) <= set(evidence['module_skip_blocked_ids']):
+                raise ValueError('Drift identities exceed original strong reference')
+            evidence['drift_reference_ids']=drift[task][tree]
+    return references
 
 
 def with_g1_references(reference, specs, path):
     """Fill empty original tree references from sealed G1 collection only."""
+    require_g1(path)
+    manifest,_=pinned_g1_manifest(path)
     result = {}
+    exclusions=[]
     for spec in specs:
         result[spec.instance_id] = {}
         for tree in ('base', 'patched'):
             original = reference[spec.instance_id][tree]
             receipt = path/'tasks'/spec.instance_id/tree/'collection.json'
-            collection = read_collection(receipt)
-            evidence = clean_reference(original, collection)
+            collection = read_collection(receipt,root=path,manifest=manifest)
+            evidence = clean_reference(original, collection,task=spec.instance_id,tree=tree)
             records = collection['records']
             if {r['selected_id'] for r in records} != set(spec.tests):
                 raise ValueError('G1 collection/selection identity mismatch: '+spec.instance_id)
             evidence['g1_collected_ids'] = native_collected_ids(collection)
             evidence['g1_reference_required'] = True
+            exclusions.extend(dict(instance_id=spec.instance_id,tree=tree,selected_id=t) for t in evidence['excluded_spurious_ids'])
             result[spec.instance_id][tree] = evidence
+    assert_reference_hygiene(exclusions)
     return result
 
 
@@ -431,25 +456,36 @@ def committed_g1_manifest_sha():
         plan=subprocess.check_output(['git','show','HEAD:'+relative],cwd=ROOT,text=True)
     except subprocess.CalledProcessError as exc:
         raise ValueError('Committed G1 manifest checksum is unavailable') from exc
-    matches=re.findall(r'^Fix 15 G1 manifest SHA-256: ([0-9a-f]{64})$',plan,re.MULTILINE)
+    matches=re.findall(r'^Fix 16 G1 manifest SHA-256: ([0-9a-f]{64})$',plan,re.MULTILINE)
     if len(matches)!=1:
-        raise ValueError('Committed Fix 15 G1 manifest checksum is unset or ambiguous')
+        raise ValueError('Committed Fix 16 G1 manifest checksum is unset or ambiguous')
     return matches[0]
 
 
+def pinned_g1_manifest(path):
+    pin=committed_g1_manifest_sha()
+    raw=(path/'manifest.json').read_bytes()
+    if hashlib.sha256(raw).hexdigest()!=pin:
+        raise ValueError('SHA-256 mismatch: G1 manifest')
+    return json.loads(raw),pin
+
+
 def require_g1(path):
-    expected=committed_g1_manifest_sha()
-    require_hash(path/'manifest.json',expected)
-    summary=json.loads((path/'summary.json').read_text())
-    if (not summary['launch_allowed'] or summary['task_tree_count'] != TASK_COUNT*2
-        or not summary.get('exhaustive') or not summary.get('gate_evaluated_after_all_pairs')):
-        raise ValueError('G1 exhaustive stage preflight blocks launch')
-    manifest=json.loads((path/'manifest.json').read_text())
+    manifest,pin=pinned_g1_manifest(path)
+    required_sources={PUBLISHED_HYGIENE_PATH,DRIFT_REFERENCE_RELATIVE+'/manifest.json',DRIFT_REFERENCE_RELATIVE+'/drift_ids.json.gz'}
+    if not required_sources <= manifest['source_sha256'].keys():
+        raise ValueError('G1 manifest does not pin the published reference hygiene list')
     for source,expected in manifest['source_sha256'].items():
         require_hash(confined(ROOT,source),expected)
+    summary=read_receipt(path,'summary.json',manifest)
+    if (not summary['launch_allowed'] or summary['task_tree_count'] != TASK_COUNT*2
+        or not summary.get('exhaustive') or not summary.get('gate_evaluated_after_all_pairs') or summary.get('projected_halts')):
+        raise ValueError('G1 exhaustive stage preflight blocks launch')
     for name,expected in manifest['receipt_sha256'].items():
         require_hash(confined(path,name),expected)
-    return sha(path/'manifest.json')
+    hygiene=read_receipt(path,'reference_hygiene.json',manifest)
+    assert_reference_hygiene(hygiene['exclusions'])
+    return pin
 
 
 def main(argv=None):

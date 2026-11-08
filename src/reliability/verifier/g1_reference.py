@@ -2,12 +2,66 @@
 
 import gzip
 import json
-from pathlib import PurePosixPath
+import hashlib
+from pathlib import Path, PurePosixPath
 
 
-def read_collection(path):
-    raw = path.read_bytes() if path.exists() else gzip.decompress(path.with_suffix('.json.gz').read_bytes())
-    return json.loads(raw)
+PUBLISHED_HYGIENE_PATH = 'reports/next_phases/phase4_rerun/fix15_reference/spurious_reference_ids.json'
+
+
+def receipt_path(root, logical_name, manifest):
+    root=Path(root).resolve()
+    names=manifest['receipt_sha256']
+    candidates=(logical_name,) if logical_name.endswith('.gz') else (logical_name,logical_name+'.gz')
+    name=next((n for n in candidates if n in names),None)
+    if name is None:
+        raise ValueError('Receipt is not manifest-listed: '+logical_name)
+    path=(root/name).resolve()
+    if not path.is_relative_to(root):
+        raise ValueError('Receipt escapes manifest root: '+name)
+    return path,name
+
+
+def read_receipt(root, logical_name, manifest):
+    path,name=receipt_path(root,logical_name,manifest)
+    raw=path.read_bytes()
+    if hashlib.sha256(raw).hexdigest()!=manifest['receipt_sha256'][name]:
+        raise ValueError('Receipt SHA-256 mismatch: '+name)
+    return json.loads(gzip.decompress(raw) if name.endswith('.gz') else raw)
+
+
+def read_collection(path, *, root=None, manifest=None):
+    path=Path(path).absolute()
+    if root is None:
+        root=next((parent for parent in path.parents if (parent/'manifest.json').is_file()),None)
+        if root is None:
+            raise ValueError('Receipt manifest is unavailable: '+str(path))
+    root=Path(root).absolute()
+    if manifest is None:
+        manifest=json.loads((root/'manifest.json').read_bytes())
+    return read_receipt(root,path.relative_to(root).as_posix(),manifest)
+
+
+def published_spurious_ids():
+    root=Path(__file__).resolve().parents[3]
+    published=json.loads((root/PUBLISHED_HYGIENE_PATH).read_bytes())
+    ids=published['identities']
+    if len(ids)!=16 or len(set(ids))!=16 or published['tree_id_slots']!=32:
+        raise ValueError('Published 16-ID reference hygiene list is invalid')
+    return set(ids)
+
+
+def assert_reference_removal(task, tree, removed):
+    expected=published_spurious_ids() if task=='pylint-dev__pylint-4970' and tree in ('base','patched') else set()
+    if set(removed)!=expected:
+        raise ValueError('Reference hygiene removal mismatch: '+task+'/'+tree)
+
+
+def assert_reference_hygiene(exclusions):
+    expected={('pylint-dev__pylint-4970',tree,t) for tree in ('base','patched') for t in published_spurious_ids()}
+    actual=[(r['instance_id'],r['tree'],r['selected_id']) for r in exclusions]
+    if len(actual)!=32 or set(actual)!=expected:
+        raise ValueError('Reference hygiene removal mismatch: published 16-ID list')
 
 
 def native_collected_ids(collection):
@@ -37,10 +91,11 @@ def spurious_reference_ids(collection, reference):
     return sorted(set(reference) & proven)
 
 
-def clean_reference(original, collection):
+def clean_reference(original, collection, *, task, tree):
     evidence = dict(original) if isinstance(original, dict) else {'admitted_ids': list(original)}
     removed = set(spurious_reference_ids(collection, evidence['admitted_ids']))
-    for field in ('admitted_ids', 'skipped_reference_ids', 'module_skip_blocked_ids'):
+    assert_reference_removal(task,tree,removed)
+    for field in ('admitted_ids', 'skipped_reference_ids', 'module_skip_blocked_ids', 'drift_reference_ids'):
         if field in evidence:
             evidence[field] = sorted(set(evidence[field]) - removed)
     evidence['excluded_spurious_ids'] = sorted(removed)
@@ -52,7 +107,7 @@ def project_collection(task, tree, collection, original):
     from reliability.verifier.regression import RunResult, TestResult, TestStatus
     from reliability.verifier.run_health import health_for_run
 
-    reference = clean_reference(original, collection)
+    reference = clean_reference(original, collection,task=task,tree=tree)
     reference['g1_collected_ids'] = native_collected_ids(collection)
     results=[]; receipts=[]
     for raw in collection['records']:

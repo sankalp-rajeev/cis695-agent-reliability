@@ -11,7 +11,7 @@ from pathlib import Path
 
 import phase4_launch as launch
 from reliability.verifier.collection import validate_in_container
-from reliability.verifier.g1_reference import project_collection
+from reliability.verifier.g1_reference import PUBLISHED_HYGIENE_PATH, project_collection, read_collection, receipt_path
 from reliability.verifier.run_health import effective_runner, runner_startup, zero_output
 from reliability.verifier.source_integrity import GeneratedInputAudit
 
@@ -42,7 +42,7 @@ def audit_pair(spec, patched, output, reference=None):
     try:
         folder.mkdir(parents=True)
         with launch.FrozenContainer(spec.instance_id,spec.patch_path.read_text(),image=spec.image_id,
-            experiment_id='phase4_fix15_G1',source_spec=spec.source,
+            experiment_id='phase4_fix16_G1',source_spec=spec.source,
             source_receipt_path=folder/'pristine_source_receipt.json') as container:
             stages.append({'stage':'pristine_source','status':'VERIFIED','input_count':1,'output_count':1})
             audit=GeneratedInputAudit(container.generated_snapshot)
@@ -128,10 +128,10 @@ def compare_invalid_slots(before, output, rows):
     comparison=[];inputs={}
     for row in rows:
         path=before/'tasks'/row['instance_id']/row['tree']/'collection.json'
-        path=path if path.exists() else path.with_suffix('.json.gz')
-        raw=path.read_bytes()
-        inputs[str(path)]=hashlib.sha256(raw).hexdigest()
-        receipt=json.loads(gzip.decompress(raw) if path.suffix == '.gz' else raw)
+        manifest=json.loads((before/'manifest.json').read_bytes())
+        receipt=read_collection(path,root=before,manifest=manifest)
+        actual,name=receipt_path(before,path.relative_to(before).as_posix(),manifest)
+        inputs[str(actual)]=manifest['receipt_sha256'][name]
         previous=sum(r['validation_status']=='INVALID_ID' for r in receipt['records'])
         current=row['INVALID_ID_slots']
         comparison.append({'instance_id':row['instance_id'],'tree':row['tree'],
@@ -142,7 +142,7 @@ def compare_invalid_slots(before, output, rows):
         writer=csv.DictWriter(stream,fieldnames=list(comparison[0]),lineterminator='\n')
         writer.writeheader();writer.writerows(comparison)
     launch.write(output/'comparison_inputs.json',{'before_collection_sha256':inputs,
-        'before':str(before),'after':'Fix 15 G1 collection receipts only',
+        'before':str(before),'after':'Fix 16 G1 collection receipts only',
         'attempt2_outcomes_read':False,'tests_executed':0})
 
 
@@ -156,11 +156,12 @@ def main(output, before=None):
         raise ValueError("G1 requires the frozen reference for every task")
     output.mkdir(parents=True)
     launch.write(output/'plan.json',launch.plan_for(specs))
-    rows=[];failures=[];started=time.monotonic()
+    rows=[];failures=[];exclusions=[];started=time.monotonic()
     for spec in specs:
         for patched in (False,True):
             tree='patched' if patched else 'base';folder=output/'tasks'/spec.instance_id/tree
             health=guarded_pair(spec,patched,output,references[spec.instance_id][tree])
+            exclusions.extend(dict(instance_id=spec.instance_id,tree=tree,selected_id=t) for t in health.get('G2_projection',{}).get('excluded_spurious_ids',()))
             stages=health['stages'];collector_status=health['collector_status'];g3=health['G3']
             fallback=health['COLLECTOR_FALLBACK_slots']
             for stage in stages:
@@ -179,13 +180,6 @@ def main(output, before=None):
                 'G2_projected_halt':health.get('G2_projection',{}).get('halt',True),
                 'tests_executed':0,'duration_s':health['duration_s']}
             rows.append(row);print(json.dumps({'event':'G1_end',**row}),flush=True)
-    exclusions=[]
-    for spec in specs:
-        for tree in ('base','patched'):
-            health_path=output/'tasks'/spec.instance_id/tree/'health.json'
-            if health_path.exists():
-                evidence=json.loads(health_path.read_text())
-                exclusions.extend(dict(instance_id=spec.instance_id,tree=tree,selected_id=t) for t in evidence.get('G2_projection',{}).get('excluded_spurious_ids',()))
     launch.write(output/'reference_hygiene.json',{'exclusions':exclusions,'tree_id_slots':len(exclusions),'unique_ids':len({r['selected_id'] for r in exclusions})})
     with (output/'tasks.csv').open('w',newline='') as stream:
         writer=csv.DictWriter(stream,fieldnames=list(rows[0]),lineterminator='\n');writer.writeheader();writer.writerows(rows)
@@ -204,7 +198,8 @@ def main(output, before=None):
     paths=[Path(__file__).resolve(),launch.ROOT/'scripts/phase4_launch.py',
         *sorted((launch.ROOT/'src/reliability/verifier').glob('*.py')),
         launch.ROOT/'reports/next_phases/phase4_rerun/fix11_12_scope/run_health_exceptions.json',
-        launch.REFERENCE/'manifest.json',launch.REFERENCE/'reference_ids.json.gz']
+        launch.REFERENCE/'manifest.json',launch.REFERENCE/'reference_ids.json.gz',
+        launch.ROOT/PUBLISHED_HYGIENE_PATH,launch.DRIFT_REFERENCE/'manifest.json',launch.DRIFT_REFERENCE/'drift_ids.json.gz']
     launch.write(output/'manifest.json',{'source_sha256':{str(p.relative_to(launch.ROOT)):sha(p) for p in paths},
         'receipt_sha256':{str(p.relative_to(output)):sha(p) for p in sorted(output.rglob('*')) if p.is_file()},
         'tests_executed':0,'flags':{'cpu_shares':2048,'network':'none','parallelism':1,'pull':'never'}})
@@ -215,6 +210,6 @@ def main(output, before=None):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',type=Path,required=True)
-    parser.add_argument('--before',type=Path,default=launch.ROOT/'reports/next_phases/phase4_rerun/fix14_g1')
+    parser.add_argument('--before',type=Path,default=launch.ROOT/'reports/next_phases/phase4_rerun/fix15_g1')
     args=parser.parse_args()
     raise SystemExit(main(args.output,args.before))
