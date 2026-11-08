@@ -21,6 +21,7 @@ from pathlib import Path
 
 from reliability.verifier.accounting import ADMITTED_STATUSES
 from reliability.verifier.container import ContainerTestExecutor, TaskContainer
+from reliability.verifier.g1_reference import clean_reference, read_collection
 from reliability.verifier.pre_install import load_specs
 from reliability.verifier.regression import RegressionConfig, run_regression, run_to_dict
 from reliability.verifier.run_health import (
@@ -404,13 +405,13 @@ def with_g1_references(reference, specs, path):
         result[spec.instance_id] = {}
         for tree in ('base', 'patched'):
             original = reference[spec.instance_id][tree]
-            evidence = dict(original) if isinstance(original, dict) else {'admitted_ids': list(original)}
+            receipt = path/'tasks'/spec.instance_id/tree/'collection.json'
+            collection = read_collection(receipt)
+            evidence = clean_reference(original, collection)
+            records = collection['records']
+            if {r['selected_id'] for r in records} != set(spec.tests):
+                raise ValueError('G1 collection/selection identity mismatch: '+spec.instance_id)
             if not evidence['admitted_ids'] and spec.tests:
-                receipt = path/'tasks'/spec.instance_id/tree/'collection.json'
-                raw = receipt.read_bytes() if receipt.exists() else gzip.decompress(receipt.with_suffix('.json.gz').read_bytes())
-                records = json.loads(raw)['records']
-                if {r['selected_id'] for r in records} != set(spec.tests):
-                    raise ValueError('G1 collection/selection identity mismatch: '+spec.instance_id)
                 evidence['g1_collected_ids'] = [r['selected_id'] for r in records
                     if r.get('stage') == 'native' and r.get('valid') and not r.get('collector_fallback')
                     and not r.get('module_skip_reason') and r.get('runnable_ids')]
