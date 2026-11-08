@@ -1,0 +1,977 @@
+instance_id,tree,stage,module,inputs,outputs,status,allowed_exception,diagnostic,proposed_category
+astropy__astropy-7606,base,native_collection,astropy/time/tests/test_comparisons.py,3,0,COMPLETE,[],,zero_collection_without_recorded_module_skip
+astropy__astropy-7606,patched,native_collection,astropy/time/tests/test_comparisons.py,3,0,COMPLETE,[],,zero_collection_without_recorded_module_skip
+django__django-11820,base,native_collection,tests/gis_tests/inspectapp/tests.py,8,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 193, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-11820,base,native_collection,tests/gis_tests/layermap/tests.py,18,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 193, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-11820,patched,native_collection,tests/gis_tests/inspectapp/tests.py,8,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 193, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-11820,patched,native_collection,tests/gis_tests/layermap/tests.py,18,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 193, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-14140,base,native_collection,tests/gis_tests/distapp/tests.py,26,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 204, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-14140,base,native_collection,tests/gis_tests/rasterapp/test_rasterfield.py,17,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 204, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-14140,patched,native_collection,tests/gis_tests/distapp/tests.py,26,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 204, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-14140,patched,native_collection,tests/gis_tests/rasterapp/test_rasterfield.py,17,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 204, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-15930,base,native_collection,tests/gis_tests/geoapp/test_expressions.py,6,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-15930,base,native_collection,tests/gis_tests/distapp/tests.py,26,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-15930,base,native_collection,tests/gis_tests/gdal_tests/test_ds.py,2,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-15930,base,native_collection,tests/gis_tests/geoapp/test_serializers.py,7,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-15930,base,native_collection,tests/gis_tests/layermap/tests.py,19,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-15930,patched,native_collection,tests/gis_tests/geoapp/test_expressions.py,6,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-15930,patched,native_collection,tests/gis_tests/distapp/tests.py,26,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-15930,patched,native_collection,tests/gis_tests/gdal_tests/test_ds.py,2,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-15930,patched,native_collection,tests/gis_tests/geoapp/test_serializers.py,7,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-15930,patched,native_collection,tests/gis_tests/layermap/tests.py,19,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+pytest-dev__pytest-5787,base,native_collection,testing/test_junitxml.py,65,0,COLLECTION_ERROR,"[""XMLSCHEMA_MISSING""]","
+==================================== ERRORS ====================================
+__________________ ERROR collecting testing/test_junitxml.py ___________________
+ImportError while importing test module '/testbed/testing/test_junitxml.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+testing/test_junitxml.py:8: in <module>
+    import xmlschema
+E   ModuleNotFoundError: No module named 'xmlschema'
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 errors during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.13s
+",prelisted_missing_evidence
+pytest-dev__pytest-5787,patched,native_collection,testing/test_junitxml.py,65,0,COLLECTION_ERROR,"[""XMLSCHEMA_MISSING""]","
+==================================== ERRORS ====================================
+__________________ ERROR collecting testing/test_junitxml.py ___________________
+ImportError while importing test module '/testbed/testing/test_junitxml.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+testing/test_junitxml.py:8: in <module>
+    import xmlschema
+E   ModuleNotFoundError: No module named 'xmlschema'
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 errors during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.13s
+",prelisted_missing_evidence
+sympy__sympy-13480,base,native_collection,sympy/external/tests/test_sage.py,18,0,COMPLETE,[],,zero_collection_without_recorded_module_skip
+sympy__sympy-13480,patched,native_collection,sympy/external/tests/test_sage.py,18,0,COMPLETE,[],,zero_collection_without_recorded_module_skip
+django__django-11299,base,native_collection,tests/gis_tests/distapp/tests.py,20,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 195, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-11299,base,native_collection,tests/gis_tests/geoapp/tests.py,27,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 195, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-11299,patched,native_collection,tests/gis_tests/distapp/tests.py,20,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 195, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-11299,patched,native_collection,tests/gis_tests/geoapp/tests.py,27,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 195, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-12209,base,native_collection,tests/gis_tests/inspectapp/tests.py,8,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 193, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-12209,base,native_collection,tests/gis_tests/layermap/tests.py,18,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 193, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-12209,patched,native_collection,tests/gis_tests/inspectapp/tests.py,8,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 193, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-12209,patched,native_collection,tests/gis_tests/layermap/tests.py,18,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 193, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13023,base,native_collection,tests/gis_tests/inspectapp/tests.py,8,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13023,patched,native_collection,tests/gis_tests/inspectapp/tests.py,8,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13158,base,native_collection,tests/gis_tests/distapp/tests.py,25,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13158,base,native_collection,tests/gis_tests/geoapp/tests.py,31,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13158,patched,native_collection,tests/gis_tests/distapp/tests.py,25,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13158,patched,native_collection,tests/gis_tests/geoapp/tests.py,31,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13212,base,native_collection,tests/gis_tests/geoapp/test_regress.py,7,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13212,base,native_collection,tests/gis_tests/geos_tests/test_geos.py,80,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13212,patched,native_collection,tests/gis_tests/geoapp/test_regress.py,7,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13212,patched,native_collection,tests/gis_tests/geos_tests/test_geos.py,80,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,base,native_collection,tests/gis_tests/distapp/tests.py,25,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,base,native_collection,tests/gis_tests/gdal_tests/test_raster.py,33,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,base,native_collection,tests/gis_tests/geo3d/tests.py,11,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,base,native_collection,tests/gis_tests/geoapp/test_expressions.py,6,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,base,native_collection,tests/gis_tests/geoapp/test_feeds.py,3,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,base,native_collection,tests/gis_tests/geoapp/test_functions.py,37,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,base,native_collection,tests/gis_tests/geoapp/test_regress.py,7,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,base,native_collection,tests/gis_tests/geoapp/test_sitemaps.py,1,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,base,native_collection,tests/gis_tests/geoapp/tests.py,31,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,base,native_collection,tests/gis_tests/geogapp/tests.py,4,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,base,native_collection,tests/gis_tests/geos_tests/test_geos.py,80,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,base,native_collection,tests/gis_tests/geos_tests/test_mutable_list.py,2,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,base,native_collection,tests/gis_tests/inspectapp/tests.py,8,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,base,native_collection,tests/gis_tests/layermap/tests.py,18,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,base,native_collection,tests/gis_tests/rasterapp/test_rasterfield.py,17,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,base,native_collection,tests/gis_tests/relatedapp/tests.py,5,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,base,native_collection,tests/gis_tests/test_spatialrefsys.py,5,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,patched,native_collection,tests/gis_tests/distapp/tests.py,25,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,patched,native_collection,tests/gis_tests/gdal_tests/test_raster.py,33,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,patched,native_collection,tests/gis_tests/geo3d/tests.py,11,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,patched,native_collection,tests/gis_tests/geoapp/test_expressions.py,6,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,patched,native_collection,tests/gis_tests/geoapp/test_feeds.py,3,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,patched,native_collection,tests/gis_tests/geoapp/test_functions.py,37,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,patched,native_collection,tests/gis_tests/geoapp/test_regress.py,7,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,patched,native_collection,tests/gis_tests/geoapp/test_sitemaps.py,1,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,patched,native_collection,tests/gis_tests/geoapp/tests.py,31,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,patched,native_collection,tests/gis_tests/geogapp/tests.py,4,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,patched,native_collection,tests/gis_tests/geos_tests/test_geos.py,80,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,patched,native_collection,tests/gis_tests/geos_tests/test_mutable_list.py,2,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,patched,native_collection,tests/gis_tests/inspectapp/tests.py,8,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,patched,native_collection,tests/gis_tests/layermap/tests.py,18,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,patched,native_collection,tests/gis_tests/rasterapp/test_rasterfield.py,17,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,patched,native_collection,tests/gis_tests/relatedapp/tests.py,5,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13297,patched,native_collection,tests/gis_tests/test_spatialrefsys.py,5,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 199, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13786,base,native_collection,tests/gis_tests/gis_migrations/test_operations.py,11,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 206, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-13786,patched,native_collection,tests/gis_tests/gis_migrations/test_operations.py,11,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 206, in setup
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-14631,base,native_collection,tests/gis_tests/geoadmin/tests.py,6,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 287, in setup_run_tests
+    test_modules, state = setup_collect_tests(start_at, start_after, test_labels=test_labels)
+  File ""tests/runtests.py"", line 256, in setup_collect_tests
+    test_modules = list(get_filtered_test_modules(
+  File ""tests/runtests.py"", line 175, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-14631,base,native_collection,tests/gis_tests/geos_tests/test_geos.py,80,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 287, in setup_run_tests
+    test_modules, state = setup_collect_tests(start_at, start_after, test_labels=test_labels)
+  File ""tests/runtests.py"", line 256, in setup_collect_tests
+    test_modules = list(get_filtered_test_modules(
+  File ""tests/runtests.py"", line 175, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-14631,base,native_collection,tests/gis_tests/test_geoforms.py,20,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 287, in setup_run_tests
+    test_modules, state = setup_collect_tests(start_at, start_after, test_labels=test_labels)
+  File ""tests/runtests.py"", line 256, in setup_collect_tests
+    test_modules = list(get_filtered_test_modules(
+  File ""tests/runtests.py"", line 175, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-14631,patched,native_collection,tests/gis_tests/geoadmin/tests.py,6,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 287, in setup_run_tests
+    test_modules, state = setup_collect_tests(start_at, start_after, test_labels=test_labels)
+  File ""tests/runtests.py"", line 256, in setup_collect_tests
+    test_modules = list(get_filtered_test_modules(
+  File ""tests/runtests.py"", line 175, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-14631,patched,native_collection,tests/gis_tests/geos_tests/test_geos.py,80,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 287, in setup_run_tests
+    test_modules, state = setup_collect_tests(start_at, start_after, test_labels=test_labels)
+  File ""tests/runtests.py"", line 256, in setup_collect_tests
+    test_modules = list(get_filtered_test_modules(
+  File ""tests/runtests.py"", line 175, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-14631,patched,native_collection,tests/gis_tests/test_geoforms.py,20,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 287, in setup_run_tests
+    test_modules, state = setup_collect_tests(start_at, start_after, test_labels=test_labels)
+  File ""tests/runtests.py"", line 256, in setup_collect_tests
+    test_modules = list(get_filtered_test_modules(
+  File ""tests/runtests.py"", line 175, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-15499,base,native_collection,tests/gis_tests/gis_migrations/test_operations.py,13,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 288, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 252, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 169, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-15499,patched,native_collection,tests/gis_tests/gis_migrations/test_operations.py,13,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 288, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 252, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 169, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-16082,base,native_collection,tests/gis_tests/geoapp/test_expressions.py,6,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-16082,patched,native_collection,tests/gis_tests/geoapp/test_expressions.py,6,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-16136,base,native_collection,tests/gis_tests/gdal_tests/test_raster.py,38,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-16136,base,native_collection,tests/gis_tests/rasterapp/test_rasterfield.py,17,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-16136,base,native_collection,tests/gis_tests/test_geoforms.py,21,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-16136,base,native_collection,tests/gis_tests/test_geoip2.py,3,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-16136,base,native_collection,tests/gis_tests/test_gis_tests_utils.py,5,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-16136,base,native_collection,tests/gis_tests/tests.py,6,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-16136,patched,native_collection,tests/gis_tests/gdal_tests/test_raster.py,38,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-16136,patched,native_collection,tests/gis_tests/rasterapp/test_rasterfield.py,17,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-16136,patched,native_collection,tests/gis_tests/test_geoforms.py,21,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-16136,patched,native_collection,tests/gis_tests/test_geoip2.py,3,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-16136,patched,native_collection,tests/gis_tests/test_gis_tests_utils.py,5,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+django__django-16136,patched,native_collection,tests/gis_tests/tests.py,6,0,COLLECTION_ERROR,"[""GIS_GUARD""]","Aborting: A GIS database backend is required to run gis_tests.
+Traceback (most recent call last):
+  File ""/tmp/verifier_django_collect.py"", line 33, in <module>
+    setup(**dict((k, v) for k, v in values.items() if k in params))
+  File ""tests/runtests.py"", line 303, in setup_run_tests
+    test_modules, state = setup_collect_tests(
+  File ""tests/runtests.py"", line 267, in setup_collect_tests
+    test_modules = list(
+  File ""tests/runtests.py"", line 174, in get_filtered_test_modules
+    sys.exit(1)
+SystemExit: 1
+",prelisted_missing_evidence
+matplotlib__matplotlib-23476,base,native_collection,lib/matplotlib/tests/test_backend_bases.py,13,0,COLLECTION_ERROR,[],"
+==================================== ERRORS ====================================
+_________ ERROR collecting lib/matplotlib/tests/test_backend_bases.py __________
+lib/matplotlib/tests/test_backend_bases.py:8: in <module>
+    from matplotlib.testing._markers import needs_pgf_xelatex
+lib/matplotlib/testing/_markers.py:35: in <module>
+    ""eps"" not in matplotlib.testing.compare.converter,
+E   AttributeError: module 'matplotlib.testing' has no attribute 'compare'
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+no tests collected, 1 error in 0.61s
+",module_import_failure
+matplotlib__matplotlib-23476,patched,native_collection,lib/matplotlib/tests/test_backend_bases.py,13,0,COLLECTION_ERROR,[],"
+==================================== ERRORS ====================================
+_________ ERROR collecting lib/matplotlib/tests/test_backend_bases.py __________
+lib/matplotlib/tests/test_backend_bases.py:8: in <module>
+    from matplotlib.testing._markers import needs_pgf_xelatex
+lib/matplotlib/testing/_markers.py:35: in <module>
+    ""eps"" not in matplotlib.testing.compare.converter,
+E   AttributeError: module 'matplotlib.testing' has no attribute 'compare'
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+no tests collected, 1 error in 0.61s
+",module_import_failure
+pylint-dev__pylint-4970,base,native_collection,tests/functional/c/consider/consider_using_with_open.py,17,0,COLLECTION_ERROR,[],"
+==================================== ERRORS ====================================
+___ ERROR collecting tests/functional/c/consider/consider_using_with_open.py ___
+tests/functional/c/consider/consider_using_with_open.py:12: in <module>
+    myfile = open(""test.txt"", encoding=""utf-8"")  # [consider-using-with]
+E   FileNotFoundError: [Errno 2] No such file or directory: 'test.txt'
+=============================== warnings summary ===============================
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/node_classes.py:90
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/node_classes.py:90: DeprecationWarning: The 'astroid.node_classes' module is deprecated and will be replaced by 'astroid.nodes' in astroid 3.0.0
+    warnings.warn(
+
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/scoped_nodes.py:26
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/scoped_nodes.py:26: DeprecationWarning: The 'astroid.scoped_nodes' module is deprecated and will be replaced by 'astroid.nodes' in astroid 3.0.0
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+no tests collected, 1 error in 0.08s
+",module_import_failure
+pylint-dev__pylint-4970,patched,native_collection,tests/functional/c/consider/consider_using_with_open.py,17,0,COLLECTION_ERROR,[],"
+==================================== ERRORS ====================================
+___ ERROR collecting tests/functional/c/consider/consider_using_with_open.py ___
+tests/functional/c/consider/consider_using_with_open.py:12: in <module>
+    myfile = open(""test.txt"", encoding=""utf-8"")  # [consider-using-with]
+E   FileNotFoundError: [Errno 2] No such file or directory: 'test.txt'
+=============================== warnings summary ===============================
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/interpreter/_import/util.py:6: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+    import pkg_resources
+
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/node_classes.py:90
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/node_classes.py:90: DeprecationWarning: The 'astroid.node_classes' module is deprecated and will be replaced by 'astroid.nodes' in astroid 3.0.0
+    warnings.warn(
+
+../opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/scoped_nodes.py:26
+  /opt/miniconda3/envs/testbed/lib/python3.9/site-packages/astroid/scoped_nodes.py:26: DeprecationWarning: The 'astroid.scoped_nodes' module is deprecated and will be replaced by 'astroid.nodes' in astroid 3.0.0
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+no tests collected, 1 error in 0.09s
+",module_import_failure
