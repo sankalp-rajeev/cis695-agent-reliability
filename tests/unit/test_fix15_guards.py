@@ -133,3 +133,36 @@ def test_frozen_nonempty_reference_still_enforces_full_admission_loss():
     run=RunResult(results=(TestResult(identity,TestStatus.NOT_REACHED),),requested_tests=(identity,))
     record=health_for_run('task','base',run,{'admitted_ids':[identity],'g1_collected_ids':[identity]})
     assert record['G2']['halt'] and not record['G1_collected_guard']['halt']
+
+
+def committed_plan_fixture(tmp_path,monkeypatch):
+    import subprocess,hashlib
+    monkeypatch.setattr(launch,'ROOT',tmp_path)
+    subprocess.run(['git','init','-q'],cwd=tmp_path,check=True)
+    g1=tmp_path/'g1';g1.mkdir()
+    manifest=g1/'manifest.json';manifest.write_text(json.dumps({'source_sha256':{},'receipt_sha256':{}}))
+    (g1/'summary.json').write_text(json.dumps(dict(launch_allowed=True,task_tree_count=166,exhaustive=True,gate_evaluated_after_all_pairs=True)))
+    plan=tmp_path/'reports/next_phases/phase4_plan.md';plan.parent.mkdir(parents=True)
+    digest=hashlib.sha256(manifest.read_bytes()).hexdigest()
+    plan.write_text('Fix 15 G1 manifest SHA-256: '+digest+'\n')
+    subprocess.run(['git','add','.'],cwd=tmp_path,check=True)
+    subprocess.run(['git','-c','user.name=Unit Test','-c','user.email=unit@example.invalid','commit','-qm','seal'],cwd=tmp_path,check=True)
+    return g1,plan,digest
+
+
+def test_manifest_hash_is_read_from_committed_plan_and_verified(tmp_path,monkeypatch):
+    g1,plan,digest=committed_plan_fixture(tmp_path,monkeypatch)
+    assert launch.require_g1(g1)==digest
+    (g1/'manifest.json').write_text('{}')
+    plan.write_text('Fix 15 G1 manifest SHA-256: '+launch.sha(g1/'manifest.json')+'\n')
+    with pytest.raises(ValueError,match='SHA-256 mismatch'):launch.require_g1(g1)
+
+
+def test_manifest_mismatch_blocks_launcher_before_any_input_or_container_work(tmp_path,monkeypatch):
+    g1,_,_=committed_plan_fixture(tmp_path,monkeypatch)
+    (g1/'manifest.json').write_text('{}')
+    monkeypatch.setattr(launch,'require_frozen_head',lambda *a:'freeze')
+    monkeypatch.setattr(launch,'validate_inputs',lambda *a:pytest.fail('input work after manifest mismatch'))
+    monkeypatch.setattr(launch,'execute',lambda *a,**k:pytest.fail('launch after manifest mismatch'))
+    with pytest.raises(ValueError,match='SHA-256 mismatch'):
+        launch.main(['--execute','--freeze-tag','unit-freeze','--health-preflight',str(g1),'--output',str(tmp_path/'out')])

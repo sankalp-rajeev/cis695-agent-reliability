@@ -11,6 +11,7 @@ import argparse
 import gzip
 import hashlib
 import json
+import re
 import signal
 import subprocess
 import tarfile
@@ -47,7 +48,7 @@ TASK_COUNT = 83
 PASS_BUDGET_S = 1800
 STOP_S = 12*60*60
 REFERENCE = ROOT/'reports/next_phases/phase4_rerun/fix13_reference'
-G1_PREFLIGHT = ROOT/'reports/next_phases/phase4_rerun/fix14_g1'
+G1_PREFLIGHT = ROOT/'reports/next_phases/phase4_rerun/fix15_g1'
 
 
 def sha(path):
@@ -323,7 +324,7 @@ def capture_manifest(output):
         for p in sorted(output.rglob('*')) if p.is_file() and p.name != 'capture_manifest.json'})
 
 
-def execute(specs, output, tag, reference=None):
+def execute(specs, output, tag, reference=None, *, g1_manifest_sha256=None):
     head = require_frozen_head(tag)
     if reference is None or set(reference) != {s.instance_id for s in specs}:
         raise ValueError('G2 requires an admission reference for every task')
@@ -339,8 +340,10 @@ def execute(specs, output, tag, reference=None):
             stream.write(json.dumps({'utc': datetime.now(UTC).isoformat(), 'elapsed_s': time.monotonic()-started,
                                      'event': kind, **values})+'\n')
 
-    write(output/'plan.json', plan_for(specs))
-    write(output/'attempt.json', {'executor_commit': head, 'freeze_tag': tag, 'status': 'RUNNING',
+    execution_plan=plan_for(specs)
+    execution_plan['G1_manifest_sha256']=g1_manifest_sha256
+    write(output/'plan.json', execution_plan)
+    write(output/'attempt.json', {'executor_commit': head, 'freeze_tag': tag, 'status': 'RUNNING', 'G1_manifest_sha256':g1_manifest_sha256,
         'fresh_start_from_task': 1, 'started_utc': datetime.now(UTC).isoformat(),
         'attempt1_used': False, 'correctness_labels_read': False})
     previous_handler = signal.signal(signal.SIGALRM, time_limit_handler)
@@ -421,7 +424,22 @@ def with_g1_references(reference, specs, path):
     return result
 
 
+def committed_g1_manifest_sha():
+    """Read the checksum from the freeze commit, never a mutable working copy."""
+    relative='reports/next_phases/phase4_plan.md'
+    try:
+        plan=subprocess.check_output(['git','show','HEAD:'+relative],cwd=ROOT,text=True)
+    except subprocess.CalledProcessError as exc:
+        raise ValueError('Committed G1 manifest checksum is unavailable') from exc
+    matches=re.findall(r'^Fix 15 G1 manifest SHA-256: ([0-9a-f]{64})$',plan,re.MULTILINE)
+    if len(matches)!=1:
+        raise ValueError('Committed Fix 15 G1 manifest checksum is unset or ambiguous')
+    return matches[0]
+
+
 def require_g1(path):
+    expected=committed_g1_manifest_sha()
+    require_hash(path/'manifest.json',expected)
     summary=json.loads((path/'summary.json').read_text())
     if (not summary['launch_allowed'] or summary['task_tree_count'] != TASK_COUNT*2
         or not summary.get('exhaustive') or not summary.get('gate_evaluated_after_all_pairs')):
@@ -431,6 +449,7 @@ def require_g1(path):
         require_hash(confined(ROOT,source),expected)
     for name,expected in manifest['receipt_sha256'].items():
         require_hash(confined(path,name),expected)
+    return sha(path/'manifest.json')
 
 
 def main(argv=None):
@@ -452,7 +471,7 @@ def main(argv=None):
         raise ValueError('Output already exists; attempts are never resumed')
     if args.execute:
         require_frozen_head(args.freeze_tag)
-        require_g1(args.health_preflight)
+        g1_sha=require_g1(args.health_preflight)
     specs = validate_inputs(args.frozen, args.archives, args.wheel, args.provenance, args.preflight)
     if args.dry_run:
         plan = plan_for(specs)
@@ -465,7 +484,7 @@ def main(argv=None):
     reference=with_g1_references(load_reference(args.admission_reference), specs, args.health_preflight)
     if set(reference) != {s.instance_id for s in specs}:
         raise ValueError('G2 reference/frozen cohort mismatch')
-    return execute(specs, args.output, args.freeze_tag, reference)
+    return execute(specs, args.output, args.freeze_tag, reference, g1_manifest_sha256=g1_sha)
 
 
 if __name__ == '__main__':
