@@ -449,8 +449,10 @@ class ContainerTestExecutor:
         boundary_stage = 'confirmation' if runtime_stage_var.get() == 'confirmation' else 'pass'
         audit.capture(boundary_stage, 'before')
         result = None
+        stages = [{'stage':'pristine_source','status':getattr(self.container,'source_integrity',{}).get('status','STRUCTURED_EXECUTOR'),
+                   'input_count':1,'output_count':1}]
         try:
-            result = self._run_audited(tests, patched=patched, timeout_s=timeout_s, audit=audit, started=started, deadline=deadline)
+            result = self._run_audited(tests, patched=patched, timeout_s=timeout_s, audit=audit, started=started, deadline=deadline, stages=stages)
         finally:
             audit.capture(boundary_stage, 'after')
             details = audit.to_dict()
@@ -466,13 +468,17 @@ class ContainerTestExecutor:
                 files['generated_inputs.json'] = str(path.resolve())
                 hashes['generated_inputs.json'] = hashlib.sha256(raw).hexdigest()
         return replace(result, generated_inputs=details, duration_s=time.monotonic()-started, budget_s=timeout_s,
-                       evidence_flags=tuple(dict.fromkeys((*result.evidence_flags, *audit.flags))),
+                       evidence_flags=tuple(dict.fromkeys((*result.evidence_flags, *audit.flags,
+                           *(('COLLECTOR_FALLBACK',) if any(r.get('collector_fallback') for r in result.validation) else ())))),
+                       stage_health=tuple(stages),
                        source_integrity=getattr(self.container, 'source_integrity', {}),
                        evidence_files=files, evidence_sha256=hashes)
 
-    def _run_audited(self, tests, *, patched, timeout_s, audit, started, deadline) -> RunResult:
+    def _run_audited(self, tests, *, patched, timeout_s, audit, started, deadline, stages) -> RunResult:
         if not tests:
-            return RunResult()
+            stages.extend({'stage':name,'status':'EMPTY_INPUT','input_count':0,'output_count':0}
+                          for name in ('patch_application','native_collection','runner_startup','execution','admission'))
+            return RunResult(requested_tests=tests)
 
         if timeout_s <= 0:
             raise ValueError("per-pass budget must be positive")
@@ -480,11 +486,25 @@ class ContainerTestExecutor:
             value = max(0.001, deadline - time.monotonic())
             return min(value, limit) if limit is not None else value
         def finish(result, validation):
-            return replace(apply_validation(result, validation),
+            mapped = apply_validation(result, validation)
+            allowed_modules = {s.get('module') for s in validation.stage_health if s.get('allowed_exception')}
+            eligible = [r for r in validation.records if (r.valid or r.unavailable)
+                        and r.selected_id.split('::',1)[0] not in allowed_modules]
+            if not any(s['stage']=='execution' for s in stages):
+                stages.append({'stage':'execution','status':'NOT_STARTED' if validation.runnable_ids else 'EMPTY_INPUT',
+                    'input_count':len(validation.runnable_ids),'output_count':0})
+            stages.append({'stage':'admission','status':'COMPLETE' if any(r.get('admitted') for r in mapped.validation) else 'ZERO_OUTPUT' if eligible else 'EMPTY_INPUT',
+                'input_count':len(eligible),'output_count':sum(r.get('admitted',False) for r in mapped.validation),
+                'excluded_prelisted_modules':sorted(allowed_modules)})
+            for name in ('native_collection','runner_startup'):
+                if not any(s['stage']==name for s in stages):
+                    stages.append({'stage':name,'status':'BLOCKED_UPSTREAM','input_count':0,'output_count':0})
+            return replace(mapped,
                            duration_s=time.monotonic()-started, budget_s=timeout_s,
                            timed_out=result.timed_out or any(r.failure_status == "NOT_REACHED" for r in validation.records))
 
         audit.stage('patch_application', lambda: self.container.set_patched(patched))
+        stages.append({'stage':'patch_application','status':'APPLIED' if patched else 'BASE_READY','input_count':1,'output_count':1})
         runner = self.runner or TestRunner("pytest", "default")
         validation = audit.stage('native_collection', lambda: validate_in_container(
             self.container, tests, runner, timeout_s=remaining()))
@@ -493,6 +513,7 @@ class ContainerTestExecutor:
         validation = replace(validation, context={**validation.context,
             'instance_id': getattr(self.container, 'instance_id', ''),
             'tree': 'patched' if patched else 'base', 'runner': runner.name})
+        stages.extend(validation.stage_health)
         if self.evidence_dir is not None:
             folder = self.evidence_dir / (("patched" if patched else "base") + "_validation_" + uuid.uuid4().hex)
             folder.mkdir(parents=True, exist_ok=False)
@@ -511,6 +532,15 @@ class ContainerTestExecutor:
         tests = validation.runnable_ids
         if not tests:
             return finish(RunResult(evidence_complete=True), validation)
+        if isinstance(self.container,TaskContainer):
+            from reliability.verifier.run_health import runner_startup
+            startup = audit.stage('runner_startup',lambda:runner_startup(self.container,runner.name,timeout_s=remaining(60)))
+            stages.append(startup)
+            if startup['status'] != 'COMPLETE':
+                return finish(RunResult(results=tuple(TestResult(t,TestStatus.RUNNER_UNAVAILABLE,
+                    message=startup['message']) for t in tests),requested_tests=tests),validation)
+        else:
+            stages.append({'stage':'runner_startup','status':'STRUCTURED_EXECUTOR_NO_CONTAINER','input_count':0,'output_count':0})
         if time.monotonic() >= deadline:
             return finish(RunResult(results=tuple(TestResult(t, TestStatus.NOT_REACHED,
                 elapsed_s=time.monotonic()-started, message="per-pass budget exhausted before execution")
@@ -597,12 +627,16 @@ class ContainerTestExecutor:
         except (ValueError, TypeError):
             events = ()
             errors.append("malformed capture events")
-        return finish(run_from_capture(
+        parsed = run_from_capture(
             runner, tests, runner_log=runner_log, raw_stderr=raw_stderr,
             raw_stdout=raw_stdout, events=events, timed_out=timed_out,
             infrastructure_errors=tuple(errors), evidence_files=files,
             evidence_sha256=digests, budget_s=timeout_s,
-        ), validation)
+        )
+        from reliability.verifier.accounting import ADMITTED_STATUSES
+        stages.append({'stage':'execution','status':'NOT_REACHED' if timed_out else 'COMPLETE',
+            'input_count':len(tests),'output_count':sum(r.status in ADMITTED_STATUSES for r in parsed.results)})
+        return finish(parsed, validation)
 
     def _partial_statuses(self, runner: TestRunner, tests) -> dict:
         """Read whatever a timed-out run managed to write to its log."""

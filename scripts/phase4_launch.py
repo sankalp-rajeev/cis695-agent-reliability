@@ -8,6 +8,7 @@ tag at clean HEAD. This script never tags, pushes, resumes, or sends messages.
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 import json
 import signal
@@ -21,6 +22,12 @@ from pathlib import Path
 from reliability.verifier.container import ContainerTestExecutor, TaskContainer
 from reliability.verifier.pre_install import load_specs
 from reliability.verifier.regression import RegressionConfig, run_regression, run_to_dict
+from reliability.verifier.run_health import (
+    RunHealthError,
+    append_health,
+    covering_order,
+    health_for_run,
+)
 from reliability.verifier.selection import Selection, TestRunner
 from reliability.verifier.source_integrity import (
     BaseSourceSpec,
@@ -37,6 +44,8 @@ FROZEN_TASKS_SHA256 = '532df6e8eebd9afa91592ef39aa28f12d8b905fcf3987c7698e06c8ad
 TASK_COUNT = 83
 PASS_BUDGET_S = 1800
 STOP_S = 12*60*60
+REFERENCE = ROOT/'reports/next_phases/phase4_rerun/fix11_12_reference'
+G1_PREFLIGHT = ROOT/'reports/next_phases/phase4_rerun/fix11_12_g1'
 
 
 def sha(path):
@@ -97,7 +106,10 @@ def validate_inputs(frozen, archives, wheel, provenance, preflight):
     if manifest['frozen_tasks_sha256'] != FROZEN_TASKS_SHA256:
         raise ValueError('Pristine preflight used different tasks')
     for path, expected in manifest['source_sha256'].items():
-        require_hash(confined(ROOT, path), expected)
+        # Fix 10's byte-proof authority is unchanged. Collection/execution code
+        # is sealed by the new exhaustive G1 preflight instead of the old audit.
+        if path in ('src/reliability/verifier/source_integrity.py','src/reliability/verifier/pre_install.py','scripts/phase4_integrity_preflight.py'):
+            require_hash(confined(ROOT, path), expected)
     for path, expected in manifest['receipt_sha256'].items():
         require_hash(confined(preflight, path), expected)
     if manifest['pre_install_provenance'] != {
@@ -106,7 +118,7 @@ def validate_inputs(frozen, archives, wheel, provenance, preflight):
     }:
         raise ValueError('Preflight/provenance mismatch')
     result = []
-    for task in sorted(tasks, key=lambda t: t['instance_id']):
+    for task in tasks:
         iid = task['instance_id']
         if '/' in iid or '\\' in iid or iid in ('.', '..'):
             raise ValueError('Unsafe instance ID')
@@ -136,7 +148,7 @@ def validate_inputs(frozen, archives, wheel, provenance, preflight):
         if identity['image_id'] != image or identity['base_commit'] != source.base_commit or identity['archive_sha256'] != source.archive_sha256:
             raise ValueError('Pristine preflight identity mismatch')
         result.append(TaskSpec(iid, image, patch, selection, tests, TestRunner(**task['runner']), source))
-    return tuple(result)
+    return covering_order(result)
 
 
 def plan_for(specs):
@@ -146,6 +158,8 @@ def plan_for(specs):
             'confirmations': '3 isolated runs per tree for each new FAIL/REGRESSION_ERROR',
             'baseline_cache': None, 'resume': False, 'notifications': False,
             'fresh_pristine_receipt_required_before_runtime': True,
+            'run_health_guards': ['G1','G2','G3','G4','G5','G6'],
+            'task_order': [s.instance_id for s in specs],
             'task_specs': [{'instance_id': s.instance_id, 'image_id': s.image_id,
                 'base_commit': s.source.base_commit, 'archive_sha256': s.source.archive_sha256,
                 'archive_path': str(s.source.archive_path), 'selected_ids': len(s.tests),
@@ -205,7 +219,7 @@ def report_json(report):
     return data
 
 
-def run_task(spec, folder, experiment):
+def run_task(spec, folder, experiment, reference=None, health_path=None):
     folder.mkdir(parents=True, exist_ok=False)
     with FrozenContainer(spec.instance_id, spec.patch_path.read_text(), image=spec.image_id,
                          experiment_id=experiment, source_spec=spec.source,
@@ -220,6 +234,15 @@ def run_task(spec, folder, experiment):
         for patched in (False, True):
             run = calls.run(spec.tests, patched=patched, timeout_s=PASS_BUDGET_S)
             write(folder/('patched.json' if patched else 'base.json'), run_to_dict(run, inline_raw=False))
+        health = None
+        if reference is not None:
+            trees = [health_for_run(spec.instance_id, tree, calls.calls[i][3], reference[tree])
+                     for i,tree in enumerate(('base','patched'))]
+            reasons = [reason for tree in trees for reason in tree['halt_reasons']]
+            health = {'task':spec.instance_id,'trees':trees,'halt':bool(reasons),'halt_reasons':reasons}
+            if reasons:
+                append_health(health_path,health)
+                raise RunHealthError(health)
         selection = Selection(tests=spec.tests, runner=spec.runner)
         primary = run_regression(spec.instance_id, selection, Replay(calls.calls, fallback=calls),
                                  RegressionConfig(per_pass_timeout_s=PASS_BUDGET_S, rerun_flaky=True,
@@ -233,12 +256,17 @@ def run_task(spec, folder, experiment):
             reports[policy+('_invalid_missing' if invalid_missing else '_invalid_excluded')] = report_json(report)
         write(folder/'result.json', {'instance_id': spec.instance_id, 'policies': reports,
                                     'native_passes': len(calls.calls), 'both_initial_trees_captured': True})
+        if health is not None:
+            health['confirmation_collector_statuses'] = [r.validation_summary.get('collector_status','NOT_REPORTED')
+                                                        for _,_,_,r in calls.calls[2:]]
+            append_health(health_path,health)
+        return health
 
 
 def require_frozen_head(tag):
     def git(*args):
         return subprocess.check_output(['git', *args], cwd=ROOT, text=True).strip()
-    if not tag or tag == 'phase4-plan-frozen':
+    if not tag or tag in ('phase4-plan-frozen','phase4-plan-frozen-v2'):
         raise ValueError('Execution requires a new approved freeze tag')
     if git('cat-file', '-t', 'refs/tags/'+tag) != 'tag':
         raise ValueError('Freeze tag must be annotated')
@@ -253,8 +281,10 @@ def capture_manifest(output):
         for p in sorted(output.rglob('*')) if p.is_file() and p.name != 'capture_manifest.json'})
 
 
-def execute(specs, output, tag):
+def execute(specs, output, tag, reference=None):
     head = require_frozen_head(tag)
+    if reference is None or set(reference) != {s.instance_id for s in specs}:
+        raise ValueError('G2 requires an admission reference for every task')
     if not output.resolve().is_relative_to((ROOT/'runs').resolve()):
         raise ValueError('Raw captures must go in the ignored runs directory')
     output.mkdir(parents=True, exist_ok=False)  # No resume/restart into an existing attempt.
@@ -280,7 +310,16 @@ def execute(specs, output, tag):
             if time.monotonic()-started >= STOP_S:
                 raise AttemptTimeLimit('12 h attempt stop reached')
             event('task_start', task=current, index=index, total=len(specs))
-            run_task(spec, output/'tasks'/current, experiment)
+            try:
+                run_task(spec, output/'tasks'/current, experiment,
+                         reference[current] if reference is not None else None, output/'health.jsonl')
+            except (SourceIntegrityError, RunHealthError):
+                raise
+            except Exception as exc:
+                record={'task':current,'halt':True,'halt_reasons':['explicit task-stage error: '+repr(exc)],
+                        'stage_status':'ERROR','G2':'NOT_EVALUATED','G3':'BLOCKED_UPSTREAM'}
+                append_health(output/'health.jsonl',record)
+                raise RunHealthError(record) from exc
             completed.append(current)
             event('task_complete', task=current, index=index, total=len(specs))
     except SourceIntegrityError as exc:
@@ -288,6 +327,11 @@ def execute(specs, output, tag):
         error = str(exc)
         write(output/'integrity_abort.json', {'task': current, 'receipt': exc.receipt,
             'status': 'aborted, not analyzed', 'rule': 'Label-free repair, new executor/version and freeze tag; fresh run from task 1; never move old tag.'})
+        append_health(output/'health.jsonl',{'task':current,'halt':True,'stage_status':'SOURCE_INTEGRITY_ERROR',
+            'halt_reasons':[str(exc)],'G2':'NOT_EVALUATED','G3':'BLOCKED_UPSTREAM'})
+    except RunHealthError as exc:
+        status,error,exit_code='ABORTED_HEALTH',str(exc),2
+        write(output/'health_abort.json',exc.record)
     except AttemptTimeLimit as exc:
         status, error, exit_code = 'STOPPED_12H', str(exc), 3
     except KeyboardInterrupt:
@@ -306,6 +350,25 @@ def execute(specs, output, tag):
     return exit_code
 
 
+def load_reference(path=REFERENCE):
+    manifest=json.loads((path/'manifest.json').read_text())
+    require_hash(path/'reference_ids.json.gz',manifest['reference_sha256'])
+    for source,expected in manifest['source_sha256'].items():
+        require_hash(confined(ROOT,source),expected)
+    return json.loads(gzip.decompress((path/'reference_ids.json.gz').read_bytes()))
+
+
+def require_g1(path):
+    summary=json.loads((path/'summary.json').read_text())
+    if not summary['launch_allowed'] or summary['task_tree_count'] != TASK_COUNT*2:
+        raise ValueError('G1 exhaustive stage preflight blocks launch')
+    manifest=json.loads((path/'manifest.json').read_text())
+    for source,expected in manifest['source_sha256'].items():
+        require_hash(confined(ROOT,source),expected)
+    for name,expected in manifest['receipt_sha256'].items():
+        require_hash(confined(path,name),expected)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group(required=True)
@@ -317,12 +380,15 @@ def main(argv=None):
     parser.add_argument('--wheel', type=Path, default=ROOT/'runs/phase4_fix10_provenance/swebench-4.0.4-py3-none-any.whl')
     parser.add_argument('--provenance', type=Path, default=PROVENANCE)
     parser.add_argument('--preflight', type=Path, default=PREFLIGHT)
+    parser.add_argument('--health-preflight',type=Path,default=G1_PREFLIGHT)
+    parser.add_argument('--admission-reference',type=Path,default=REFERENCE)
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args(argv)
     if args.output.exists():
         raise ValueError('Output already exists; attempts are never resumed')
     if args.execute:
         require_frozen_head(args.freeze_tag)
+        require_g1(args.health_preflight)
     specs = validate_inputs(args.frozen, args.archives, args.wheel, args.provenance, args.preflight)
     if args.dry_run:
         plan = plan_for(specs)
@@ -332,7 +398,10 @@ def main(argv=None):
         print(json.dumps({'dry_run': True, 'specs_validated': len(specs), 'containers_started': 0,
                           'output': str(args.output)}))
         return 0
-    return execute(specs, args.output, args.freeze_tag)
+    reference=load_reference(args.admission_reference)
+    if set(reference) != {s.instance_id for s in specs}:
+        raise ValueError('G2 reference/frozen cohort mismatch')
+    return execute(specs, args.output, args.freeze_tag, reference)
 
 
 if __name__ == '__main__':

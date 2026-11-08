@@ -100,7 +100,7 @@ class Signal(str, Enum):
 BASELINE_FAILURE_THRESHOLD = 0.5
 
 # Parsed baseline caches must preserve the same outcome model as patched results.
-_BASELINE_PARSER_REVISION = "native-capture-v10-proven-pre-install"
+_BASELINE_PARSER_REVISION = "native-capture-v12-run-health"
 
 
 @dataclass(frozen=True, slots=True)
@@ -145,6 +145,7 @@ class RunResult:
     generated_inputs: dict = field(default_factory=dict)
     source_integrity: dict = field(default_factory=dict)
     evidence_flags: tuple[str, ...] = ()
+    stage_health: tuple[dict, ...] = ()
 
     def by_id(self) -> dict[str, TestResult]:
         return {r.test_id: r for r in self.results}
@@ -246,7 +247,7 @@ def run_from_dict(payload: dict) -> RunResult:
                                       r.get("duration_s", 0.0), r.get("message", ""),
                                       r.get("elapsed_s", 0.0))
                             for r in fields.get(key, ()))
-    for key in ("unmatched_ids", "infrastructure_errors", "events", "requested_tests", "validation", "evidence_flags"):
+    for key in ("unmatched_ids", "infrastructure_errors", "events", "requested_tests", "validation", "evidence_flags", "stage_health"):
         fields[key] = tuple(fields.get(key, ()))
     fields["raw_id_map"] = {k: tuple(v) for k, v in fields.get("raw_id_map", {}).items()}
     fields["execution_id_map"] = {k: tuple(v) for k, v in fields.get("execution_id_map", {}).items()}

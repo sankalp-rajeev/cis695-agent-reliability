@@ -36,6 +36,9 @@ class IDValidation:
     unavailable: bool = False
     failure_status: str = ""
     elapsed_s: float = 0.0
+    collector_fallback: bool = False
+    collector_failure_status: str = ""
+    collector_message: str = ""
 
     @property
     def valid(self):

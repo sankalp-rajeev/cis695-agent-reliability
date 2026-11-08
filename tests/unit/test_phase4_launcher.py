@@ -47,7 +47,7 @@ def inputs(tmp_path, monkeypatch):
                       'selections':{'v2':selection.name},'patch_path':patch.name,
                       'patch_sha256':launch.sha(patch),'base_archive_sha256':launch.sha(archive),
                       'image_binding':{'host_image_id':image},'runner':{'name':'pytest','evidence':'frozen'}})
-        specs[iid] = SimpleNamespace(repo='example/project', base_commit=base, resolve=lambda: {'commands': []})
+        specs[iid] = SimpleNamespace(repo='example/project', version='1', base_commit=base, resolve=lambda: {'commands': []})
         identity = preflight/'tasks'/iid/'identity.json'
         launch.write(identity, {'image_id':image,'base_commit':base,'archive_sha256':launch.sha(archive)})
         receipts[str(identity.relative_to(preflight))] = launch.sha(identity)
@@ -151,14 +151,14 @@ def test_source_failure_aborts_attempt_and_never_runs_next_task(tmp_path,monkeyp
         raise SourceIntegrityError(receipt)
     monkeypatch.setattr(launch,'run_task',fail)
     output=tmp_path/'runs/attempt'
-    assert launch.execute(specs,output,'new-freeze')==2
+    assert launch.execute(specs,output,'new-freeze',{'task':{}})==2
     assert calls==['task']
     complete=json.loads((output/'completion.json').read_text())
     assert complete['status']=='ABORTED_INTEGRITY' and complete['completed_tasks']==[]
     assert json.loads((output/'integrity_abort.json').read_text())['receipt']==receipt
     assert (output/'capture_manifest.json').is_file()
     with pytest.raises(FileExistsError):
-        launch.execute(specs,output,'new-freeze')
+        launch.execute(specs,output,'new-freeze',{'task':{}})
 
 
 def test_twelve_hour_stop_uses_same_cleanup_and_no_next_task(tmp_path,monkeypatch):
@@ -168,7 +168,7 @@ def test_twelve_hour_stop_uses_same_cleanup_and_no_next_task(tmp_path,monkeypatc
     def timed_out(*a): launch.time_limit_handler()
     monkeypatch.setattr(launch,'run_task',timed_out)
     output=tmp_path/'runs/cap'
-    assert launch.execute([task_spec(tmp_path)],output,'new-freeze')==3
+    assert launch.execute([task_spec(tmp_path)],output,'new-freeze',{'task':{}})==3
     assert json.loads((output/'completion.json').read_text())['status']=='STOPPED_12H'
 
 
