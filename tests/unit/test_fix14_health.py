@@ -128,3 +128,17 @@ def test_confirmation_guards_halt_inside_call_before_result_scoring(tmp_path,mon
     assert record['halt'] and record['scope']=='confirmation'
     if failure=='loss':assert record['G2']['lost_ids']==list(spec.tests)
     assert not (tmp_path/'task'/'result.json').exists()
+
+
+def test_partial_fallback_is_separate_from_admitted_slots():
+    from reliability.verifier.collection import ValidationPass
+    from reliability.verifier.validated_run import apply_validation
+    ids=('test_real.py::test_native','test_real.py::test_fallback')
+    validation=ValidationPass((IDValidation(ids[0],'runnable_test',(ids[0],),stage='native'),
+        IDValidation(ids[1],'runnable_test',(ids[1],),stage='collector_fallback',collector_fallback=True)))
+    run=apply_validation(RunResult(results=tuple(TestResult(t,TestStatus.PASSED) for t in ids)),validation)
+    assert run.validation[0]['admitted'] and not run.validation[1]['admitted']
+    health=health_for_run('task','base',run,ids)
+    assert health['admitted_ids']==1 and health['admitted_share']==0.5
+    assert health['COLLECTOR_FALLBACK_slots']==1
+    assert health['G2']['lost_ids']==[ids[1]]

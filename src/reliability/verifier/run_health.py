@@ -58,7 +58,9 @@ def health_for_run(task, tree, run, reference):
     admitted = {r.test_id for r in run.results if r.status in ADMITTED_STATUSES}
     # Expansion admission must be unanimous, as in the committed owner rule.
     receipts = {r['selected_id']: r for r in run.validation}
-    admitted = {t for t in admitted if not receipts or receipts.get(t, {}).get('admitted', False)}
+    fallback = {r['selected_id'] for r in run.validation if r.get('collector_fallback')}
+    admitted = {t for t in admitted if t not in fallback
+                and (not receipts or receipts.get(t, {}).get('admitted', False))}
     invalid = {r['selected_id'] for r in run.validation
                if r.get('validation_status') == 'INVALID_ID' and not r.get('unavailable')}
     reference_ids = set(reference['admitted_ids']) if isinstance(reference,dict) else set(reference)
@@ -88,7 +90,8 @@ def health_for_run(task, tree, run, reference):
         reasons.append('G2 ' + tree + ': non-empty selection requires G1 native reference')
     reasons += ['G3 ' + tree + ': zero output at ' + s for s in g3['zero_output_stages']]
     return {'task': task, 'tree': tree, 'collector_status': run.validation_summary.get('collector_status', 'NOT_REPORTED'),
-            'input_ids': len(run.requested_tests), 'admitted_ids': len(admitted-lost_to_skip),
+            'input_ids': len(run.requested_tests), 'COLLECTOR_FALLBACK_slots': len(fallback),
+            'collector_fallback_ids': sorted(fallback), 'admitted_ids': len(admitted-lost_to_skip),
             'admitted_share': len(admitted-lost_to_skip)/len(run.requested_tests) if run.requested_tests else None,
             'G2': g2, 'G3': g3, 'stages': stages, 'halt': bool(reasons), 'halt_reasons': reasons}
 

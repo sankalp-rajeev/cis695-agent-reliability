@@ -65,8 +65,10 @@ def apply_validation(run: RunResult, validation):
             TestStatus.COLLECTION_ERROR,
             TestStatus.RUNNER_UNAVAILABLE,
         )
-        receipt["admitted_instances"] = sum(s not in gaps for s in statuses)
-        receipt["admitted"] = bool(statuses) and all(s not in gaps for s in statuses)
+        terminal_instances = sum(s not in gaps for s in statuses)
+        receipt['fallback_terminal_instances'] = terminal_instances if record.collector_fallback else 0
+        receipt["admitted_instances"] = terminal_instances if not record.collector_fallback else 0
+        receipt["admitted"] = not record.collector_fallback and bool(statuses) and all(s not in gaps for s in statuses)
         status = max(statuses, key=_SEVERITY.get) if statuses else TestStatus.NOT_RUN
         results.append(TestResult(record.selected_id, status,
                                   message='module_skip: '+record.module_skip_reason if record.module_skip_reason else '',
