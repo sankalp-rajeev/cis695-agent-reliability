@@ -201,6 +201,62 @@ Attempt 2 is quarantined: its hashes and captures are kept, **"aborted at integr
 - **G2 module-skip compatibility:** a module-skipped ID counts as admitted only when its frozen original-run reference is SKIPPED or absent. If the original run admitted PASS/FAIL/ERROR for it, it counts as lost. Other present admitted evidence such as XFAIL/XPASS is not silently converted into a skip-compatible reference. The reference is derived from the frozen original run only; quarantined attempts and correctness labels remain excluded.
 - G1 is exhaustive even after unlisted failures; the launch gate remains closed if any unlisted failure remains at the end. No exception list, hypothesis threshold, B1 or B2 changes with this amendment.
 
+### Identity normalization and review fixes (before Fix 14)
+
+This amendment supersedes conflicting G2 and module-skip wording above. H1,
+H1b, H2, H3, all thresholds, B1 (37,614), and B2 remain unchanged. Attempt-2
+outcomes, verdicts and correctness labels remain quarantined. Collection-only
+diagnosis is in `phase4_rerun/fix14_diagnosis/`.
+
+1. Normalize pytest node IDs by removing `::()::` instance segments and a
+   trailing `::()` in collection and execution result mapping. Preserve the
+   parameter payload, including non-ASCII text, and the frozen selected IDs.
+2. Native collection is authoritative: send every selected ID, including
+   statically rejected IDs, to native collection, alongside any same-family
+   expansions. INVALID_ID requires agreement between static and native layers.
+   An originally admitted reference ID now INVALID_ID is LOST in G2; the same
+   applies to an expanded slot. Static rejection never exempts reference loss.
+3. For a tree with empty original reference and non-empty selection, use the
+   G1 natively collected set as its G2 reference, projected unanimously to the
+   frozen selected slots. Retain concrete collection identities in the receipt.
+4. Run G3 and G2 inside every confirmation call, before returning it to scoring.
+   Compare G2 with the corresponding initial run's admitted subset for that
+   confirmation selection, including expanded slots. Persist a halt immediately.
+5. Exclude COLLECTOR_FALLBACK slots from G2's admitted set and admitted share,
+   even if their execution emits terminal outcomes; report them separately.
+6. Remove natively proven-absent IDs from G3 input_count only after both layers
+   agree under rule 2. A module whose inputs are all proven absent reports
+   ALL_PROVEN_INVALID and does not halt; retain original and excluded counts.
+7. A reference ID admitted as PASS/FAIL/ERROR that is now SKIPPED for any reason
+   counts as lost in G2. Preserve the existing stricter XFAIL/XPASS skip guard.
+8. A native module skip covers every selected ID inside the module, including
+   statically rejected IDs: each becomes MODULE_SKIPPED, never INVALID_ID.
+9. SymPy module-level `disabled` true, as honored by that task's own runner,
+   is a native module-level skip with reason `module_skip: disabled`.
+10. INVALID_ID (`not_a_test_module`) requires native collection of the containing
+    directory under the effective repository config to exclude the file. Do not
+    attempt its explicit-file import. Config guesses alone are insufficient.
+11. Add a genuine module-import exception only for the exact task, module,
+    stage and diagnostic reproduced with SWE-bench's command form; it remains
+    missing evidence. For matplotlib-23476, repository-root `pytest -rA
+    --collect-only lib/matplotlib/tests/test_backend_bases.py` reproduces
+    `AttributeError: module 'matplotlib.testing' has no attribute 'compare'`;
+    collecting `lib/matplotlib/tests` succeeds. The exception is restricted to
+    that explicit module at native_collection/module_execution, on both trees.
+    Directory success grants no blanket task exemption or new admitted IDs.
+12. G1 records per-pair filesystem/write failures and BaseException, continues
+    through all 83 × 2 pairs, and evaluates the gate only after the complete audit.
+
+Diagnosis: all 52 frozen pytest-run images were queried with `pip show pytest`.
+Only astropy-7606 has pytest < 4.0 (3.3.1); five SymPy images have no pytest and
+use native bin/test. Astropy raw item.nodeid includes `::()::`, absent from -q
+stdout, affecting 536 base selected slots (1,078 raw collected instances).
+SymPy-13480 sets disabled on missing Sage and on Python 3; its native
+`SymPyTests.test_file` checks `gl.get("disabled", False)` before function
+collection. Pylint-4970 uses python_files `*test_*.py`, testpaths `tests`, and
+native `tests/functional` directory collection excludes
+`consider_using_with_open.py`. No benchmark test bodies were read or executed.
+
 ## 5. Post-hoc, only after `phase4-run-sealed`
 
 These may use labels; the executor never changes in response:
