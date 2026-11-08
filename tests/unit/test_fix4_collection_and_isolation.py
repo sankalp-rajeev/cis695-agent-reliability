@@ -202,7 +202,7 @@ def test_one_process_per_module_instead_of_batches_of_25(tmp_path):
     assert all(r.status is TestStatus.PASSED for r in result.results)
 
 
-def test_load_failure_retries_only_remaining_valid_ids(tmp_path):
+def test_process_death_after_per_test_output_is_not_retried(tmp_path):
     tests = tmp_path / "tests"
     tests.mkdir()
     (tests / "runtests.py").write_text("""import sys
@@ -217,13 +217,14 @@ for label in ids:
     ids = ("tests/sample.py::Case::test_a", "tests/sample.py::Case::test_b")
     result, events = driver_run(tmp_path, "django", ids)
     starts = [e for e in events if e["event"] == "start"]
-    assert len(starts) == 2
-    assert starts[1]["retry"] and starts[1]["ids"] == ["sample.Case.test_b"]
-    assert all(r.status is TestStatus.PASSED for r in result.results)
-    assert not result.unmatched_ids and result.evidence_complete
+    assert len(starts) == 1
+    assert result.results[0].status is TestStatus.PASSED
+    assert result.results[1].status is TestStatus.CRASH
+    assert "tests/sample.py::Case::test_b" not in result.unmatched_ids
+    assert "unittest.loader._FailedTest.bad" in result.unmatched_ids
 
 
-def test_gis_guard_is_isolated_not_retried_and_stays_missing(tmp_path):
+def test_gis_guard_without_test_progress_retries_then_counts_as_infrastructure(tmp_path):
     tests = tmp_path / "tests"
     tests.mkdir()
     (tests / "runtests.py").write_text("""import sys
@@ -236,10 +237,10 @@ for label in ids:
 """)
     ids = ("tests/gis_tests/test_a.py::Case::test_a", "tests/other/test_b.py::Case::test_b")
     result, events = driver_run(tmp_path, "django", ids)
-    assert len([e for e in events if e["event"] == "start"]) == 2
-    assert result.results[0].status is TestStatus.COLLECTION_ERROR
+    assert len([e for e in events if e["event"] == "start"]) == 3
+    assert result.results[0].status is TestStatus.NOT_RUN
     assert result.results[1].status is TestStatus.PASSED
-    assert "GIS environment guard" in result.infrastructure_errors
+    assert any("module_execution identity failure" in e for e in result.infrastructure_errors)
 
 
 def test_h1_invalid_never_increments_primary_numerator():

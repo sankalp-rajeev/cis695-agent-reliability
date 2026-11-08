@@ -66,3 +66,61 @@ def test_reference_skip_is_separate_thresholded_environment_drift(size,skips,hal
     assert record['G2']['lost_count']==0 and not record['G1_collected_guard']['halt']
     assert record['environment_drift']['skipped_reference_ids']==list(ids[:skips])
     assert record['environment_drift']['halt'] is halt and record['halt'] is halt
+
+
+def actual_execution(tmp_path,source,tests):
+    import subprocess
+    from tests.unit.test_fix14_health import LocalContainer
+    from reliability.verifier.container import ContainerTestExecutor
+    subprocess.run(['git','init','-q'],cwd=tmp_path,check=True)
+    (tmp_path/'test_real.py').write_text(source)
+    class Container(LocalContainer):
+        def set_patched(self,value):self._patch_applied=value
+        def generated_snapshot(self,*a,**k):return {'files':{}}
+        def exec(self,command,**kwargs):
+            return super().exec('ulimit -c 0\n'+command,**kwargs)
+    return ContainerTestExecutor(Container(tmp_path),runner=TestRunner('pytest','fixture'),
+        evidence_dir=tmp_path/'evidence').run(tests,patched=False,timeout_s=30)
+
+
+@pytest.mark.parametrize('death',['os._exit(0)','os._exit(17)','os.kill(os.getpid(), signal.SIGSEGV)'])
+def test_actual_process_death_after_test_start_is_CRASH_and_no_health_halt(tmp_path,death):
+    ids=('test_real.py::test_a','test_real.py::test_b','test_real.py::test_c')
+    run=actual_execution(tmp_path,'import os, signal\ndef test_a(): pass\ndef test_b(): '+death+'\ndef test_c(): pass\n',ids)
+    assert run.by_id()[ids[0]].status is TestStatus.PASSED
+    assert run.by_id()[ids[1]].status is TestStatus.CRASH
+    assert run.by_id()[ids[2]].status is TestStatus.NOT_REACHED
+    ends=[e for e in run.events if e['event']=='end']
+    assert len(ends)==1 and ends[0]['test_started'] and not ends[0]['load_failure']
+    assert run.evidence_complete and not run.infrastructure_errors
+    health=health_for_run('fixture','base',run,{'admitted_ids':ids,'g1_collected_ids':ids})
+    assert health['G2']['lost_count']==0 and not health['halt']
+    assert not any(s['stage']=='module_execution' for s in run.stage_health)
+    from reliability.verifier.regression import run_from_dict,run_to_dict
+    assert run_from_dict(run_to_dict(run))==run
+
+
+@pytest.mark.parametrize('termination',['raise RuntimeError("silent module execution")','os._exit(0)'])
+def test_module_execution_identity_failure_requires_actual_first_attempt_AND_retry(tmp_path,termination):
+    ids=('test_real.py::test_a',)
+    source='import os, sys\nif "--collect-only" not in sys.argv: '+termination+'\ndef test_a(): pass\n'
+    run=actual_execution(tmp_path,source,ids)
+    ends=[e for e in run.events if e['event']=='end']
+    assert len(ends)==2 and ends[1]['retry'] and ends[1]['parent']==ends[0]['batch']
+    assert all(not e['test_started'] and not e['per_test_output'] for e in ends)
+    assert run.results[0].status is TestStatus.NOT_RUN
+    stages=[s for s in run.stage_health if s['stage']=='module_execution']
+    assert len(stages)==1 and stages[0]['identity_failure']
+    health=health_for_run('fixture','base',run,{'admitted_ids':ids,'g1_collected_ids':ids})
+    assert health['G2']['lost_count']==1 and not health['halt']
+
+
+def test_one_failed_module_attempt_is_not_identity_failure():
+    ids=identities(20)
+    run=run_from_capture(TestRunner('pytest','fixture'),ids,runner_log=b'import failed\n',
+        events=({'event':'start','batch':1,'ids':ids,'offset':0},
+                {'event':'end','batch':1,'returncode':2,'offset':14,'missing_ids':ids,'load_failure':True},
+                {'event':'complete'}))
+    assert all(r.status is TestStatus.NOT_REACHED for r in run.results)
+    record=health_for_run('task','base',run,{'admitted_ids':ids,'g1_collected_ids':ids})
+    assert not record['halt'] and record['G2']['lost_count']==0

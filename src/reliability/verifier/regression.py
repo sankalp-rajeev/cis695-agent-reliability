@@ -42,6 +42,7 @@ class TestStatus(str, Enum):
     PASSED = "passed"
     FAILED = "failed"
     ERROR = "error"        # collection or import failure, not an assertion
+    CRASH = "crash"        # observed test process died; scored as ERROR
     SKIPPED = "skipped"
     XFAIL = "xfail"
     XPASS = "xpass"

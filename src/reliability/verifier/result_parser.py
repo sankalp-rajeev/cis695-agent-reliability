@@ -11,7 +11,7 @@ from reliability.verifier.selection import django_label
 
 ANSI = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
 PYTEST = re.compile(
-    r"^(?P<id>\S.*?::\S.*?)\s+(?P<status>PASSED|FAILED|ERROR|SKIPPED|XFAIL|XPASS)\b(?P<tail>.*)",
+    r"^(?P<id>\S.*?::\S.*?)\s+(?P<status>PASSED|FAILED|ERROR|SKIPPED|XFAIL|XPASS)(?=$|\s|\[)(?P<tail>.*)",
     re.IGNORECASE,
 )
 DJANGO = re.compile(r"^(?P<name>\w+) \((?P<label>[^)]+)\)(?P<tail>.*)$")
@@ -193,3 +193,40 @@ def mapping_for(selected, runner):
         return candidates if len(candidates) == 1 else []
 
     return map_id
+
+
+def active_test(kind, missing_ids, output):
+    """Recognize an unfinished verbose test start, never a terminal outcome."""
+    import re
+
+    pending = []
+    for identity in missing_ids:
+        if kind == "django":
+            owner, method = identity.rsplit(".", 1)
+            prefixes = (method + " (" + owner + ")", method + " (" + identity + ")")
+        elif kind == "sympy":
+            prefixes = (identity.rsplit("::", 1)[-1],)
+        else:
+            # Pytest may omit a configured root prefix in its displayed ID.
+            canonical = normalize_pytest_id(identity)
+            prefixes = tuple(canonical[i:] for i in [0] +
+                             [m.end() for m in re.finditer("/", canonical.split("::", 1)[0])])
+        for line_number, line in enumerate(output.splitlines()):
+            clean = re.sub(r"\x1b\[[0-?]*[ -/]*[@-~]", "", line).strip()
+            if kind == 'pytest':
+                clean = normalize_pytest_id(clean)
+            if any(clean == prefix or clean.startswith(prefix + " ") for prefix in prefixes):
+                # Completed cases are excluded by the event's missing_ids.
+                pending.append((line_number, identity))
+    return max(pending)[1] if pending else None
+
+
+def module_identity_failures(events):
+    """Only a first attempt AND its retry with no per-test progress prove loss."""
+    ends = {e.get('batch'): e for e in events if e.get('event') == 'end'}
+    def silent(e):
+        return bool(e and e.get('load_failure') and not e.get('timed_out')
+                    and not e.get('observed_ids') and not e.get('test_started')
+                    and not e.get('active_id') and not e.get('per_test_output'))
+    return [e for e in ends.values() if e.get('retry') and silent(e)
+            and silent(ends.get(e.get('parent')))]

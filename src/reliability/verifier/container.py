@@ -33,7 +33,7 @@ from reliability.verifier.accounting import ADMITTED_STATUSES
 from reliability.verifier.collection import validate_in_container
 from reliability.verifier.node_ids import normalize_pytest_id
 from reliability.verifier.regression import RunResult, TestResult, TestStatus
-from reliability.verifier.result_parser import mapping_for, parse_capture
+from reliability.verifier.result_parser import active_test, mapping_for, module_identity_failures, parse_capture
 from reliability.verifier.selection import TestRunner, django_label
 from reliability.verifier.source_integrity import (
     BaseSourceSpec,
@@ -373,13 +373,16 @@ def run(part, module, retry=False, parent=None):
     text = bytes(captured).decode("utf-8", "replace")
     gis = "Aborting: A GIS database backend is required to run gis_tests." in text
     missing = [tid for tid in part if tid not in observed]
-    # A negative exit with unreported identities is a load/collection abort.
-    # Ordinary assertion FAIL/ERROR with every identity observed is not retried.
-    load_failure = bool(code and missing and not timed_out)
-    retry_ids = missing if load_failure and not retry and not gis else []
+    active = active_test(kind, missing, text)
+    per_test_output=any(v["kind"]=="case" for v in parse_capture(text,kind).values())
+    progress = bool(per_test_output or active)
+    # A process death after execution progress is an outcome, never a loader retry.
+    load_failure = bool(missing and not timed_out and not progress)
+    retry_ids = missing if load_failure and not retry else []
     events.write(json.dumps(dict(event="end", batch=index, module=module,
         returncode=code, retry=retry, parent=parent, observed_ids=sorted(observed), timed_out=timed_out,
         load_failure=load_failure, gis_guard=gis, split=bool(retry_ids),
+        active_id=active, test_started=bool(active), per_test_output=per_test_output,
         missing_ids=missing, offset=log.tell(), duration_s=time.monotonic()-start)) + "\n")
     if timed_out:
         not_reached(missing, module)
@@ -673,29 +676,7 @@ class ContainerTestExecutor:
 
 
 def _active_test(kind, missing_ids, output):
-    """Recognize an unfinished verbose test start, never a terminal outcome."""
-    import re
-
-    pending = []
-    for identity in missing_ids:
-        if kind == "django":
-            owner, method = identity.rsplit(".", 1)
-            prefixes = (method + " (" + owner + ")", method + " (" + identity + ")")
-        elif kind == "sympy":
-            prefixes = (identity.rsplit("::", 1)[-1],)
-        else:
-            # Pytest may omit a configured root prefix in its displayed ID.
-            canonical = normalize_pytest_id(identity)
-            prefixes = tuple(canonical[i:] for i in [0] +
-                             [m.end() for m in re.finditer("/", canonical.split("::", 1)[0])])
-        for line_number, line in enumerate(output.splitlines()):
-            clean = re.sub(r"\x1b\[[0-?]*[ -/]*[@-~]", "", line).strip()
-            if kind == 'pytest':
-                clean = normalize_pytest_id(clean)
-            if any(clean == prefix or clean.startswith(prefix + " ") for prefix in prefixes):
-                # Completed cases are excluded by the event's missing_ids.
-                pending.append((line_number, identity))
-    return max(pending)[1] if pending else None
+    return active_test(kind, missing_ids, output)
 
 
 def run_from_capture(
@@ -771,6 +752,29 @@ def run_from_capture(
             if tid not in attempted and tid not in statuses:
                 statuses[tid] = TestStatus.NOT_REACHED
                 reached_elapsed[tid] = budget_s or 0.0
+    crashed_batches=set(); messages={}; unmapped_requested=set()
+    for event in events:
+        if event.get('event')!='end' or event.get('timed_out'):
+            continue
+        start=next((e for e in events if e.get('event')=='start' and e.get('batch')==event.get('batch')), {})
+        text=runner_log[start.get('offset',0):event.get('offset',len(runner_log))].decode('utf-8','replace')
+        missing=event.get('missing_ids',())
+        _,_,batch_unmatched=account_raw_output(runner,text,tests)
+        unmapped_cases=set(batch_unmatched) & {rid for rid,value in parse_capture(text,runner.name).items() if value['kind']=='case'}
+        if unmapped_cases:
+            for native in missing:
+                unmapped_requested.update(mapping_for(tests,runner.name)(native))
+        active=event.get('active_id') or _active_test(runner.name,missing,text)
+        progress=bool(active or event.get('observed_ids') or event.get('per_test_output')
+                      or any(value['kind']=='case' for value in parse_capture(text,runner.name).values()))
+        if progress and missing:
+            crashed_batches.add(event.get('batch'))
+            active=active or missing[0]
+            for native in missing:
+                for tid in mapping_for(tests,runner.name)(native):
+                    if tid not in statuses:
+                        statuses[tid]=TestStatus.CRASH if native==active else TestStatus.NOT_REACHED
+                        messages[tid]='process died after observed test progress' if native==active else 'not started after test process crash'
     starts = {e.get("batch") for e in events if e.get("event") == "start"}
     ends = {e.get("batch") for e in events if e.get("event") == "end"}
     if not starts:
@@ -778,7 +782,7 @@ def run_from_capture(
     if starts != ends:
         errors.append("unfinished runner batch")
     for event in events:
-        if event.get("event") == "end" and not event.get("split") and not event.get("timed_out"):
+        if event.get("event") == "end" and not event.get("split") and not event.get("timed_out") and event.get("batch") not in crashed_batches:
             if event.get("returncode") not in (0, 1):
                 errors.append(f"runner batch {event.get('batch')} exit {event.get('returncode')}")
             elif event.get("returncode") == 1:
@@ -797,31 +801,32 @@ def run_from_capture(
                         r.status is TestStatus.XPASS for r in cases)
                     if not explained:
                         errors.append("unexplained nonzero runner exit")
+    proven_failures=module_identity_failures(events)
+    for event in proven_failures:
+        for missing in event.get('missing_ids',()):
+            for tid in mapping_for(tests,runner.name)(missing):
+                statuses[tid]=TestStatus.NOT_RUN
+                messages[tid]='infrastructure: module_execution produced no test progress on first attempt and retry'
+        errors.append('module_execution identity failure: no test progress on first attempt and retry')
+    # A lone failed module attempt is not the required two-attempt proof.
     for event in events:
-        if event.get('event') != 'end' or event.get('split') or not event.get('load_failure'):
-            continue
-        start = next((e for e in events if e.get('event') == 'start'
-                      and e.get('batch') == event.get('batch')), {})
-        begin, finish = start.get('offset', 0), event.get('offset', len(runner_log))
-        message = runner_log[begin:finish].decode('utf-8', 'replace')
-        from reliability.verifier.collection import classify_collector_failure
-        failure = TestStatus(classify_collector_failure(message).lower())
-        mapper = mapping_for(tests, runner.name)
-        for missing in event.get('missing_ids', ()):
-            for tid in mapper(missing):
-                statuses[tid] = failure
-        errors.append('GIS environment guard' if event.get('gis_guard') else 'module collection failed')
+        if event.get('event')=='end' and event.get('load_failure') and event not in proven_failures:
+            for missing in event.get('missing_ids',()):
+                for tid in mapping_for(tests,runner.name)(missing):
+                    if tid not in statuses:
+                        statuses[tid]=TestStatus.NOT_REACHED
+                        messages[tid]='module retry evidence unavailable'
     # Anything the runner did not report on is NOT_RUN, never an implicit pass.
     return RunResult(
         results=tuple(
             TestResult(t, statuses.get(t, TestStatus.TIMEOUT if timed_out else TestStatus.NOT_RUN),
                        elapsed_s=reached_elapsed.get(t, 0.0),
-                       message="per-pass budget exhausted; no terminal outcome" if t in reached_elapsed else "")
+                       message=messages.get(t,"per-pass budget exhausted; no terminal outcome" if t in reached_elapsed else ""))
             for t in tests
         ),
         note="" if statuses else _no_results_note(output),
         timed_out=timed_out, budget_s=budget_s, raw_results=raw_results, raw_id_map=mappings,
-        unmatched_ids=unmatched, infrastructure_errors=tuple(errors),
+        unmatched_ids=tuple(dict.fromkeys((*unmatched,*sorted(unmapped_requested)))), infrastructure_errors=tuple(errors),
         evidence_complete=complete and not errors,
         raw_stdout_b64=base64.b64encode(raw_stdout).decode(),
         raw_stderr_b64=base64.b64encode(raw_stderr).decode(),
@@ -857,7 +862,7 @@ def _no_results_note(output: str) -> str:
 # Worst terminal observation wins, including a teardown ERROR after PASSED.
 _PYTEST_SEVERITY = {
     TestStatus.SKIPPED: 0, TestStatus.XFAIL: 1, TestStatus.PASSED: 2,
-    TestStatus.XPASS: 3, TestStatus.FAILED: 4, TestStatus.ERROR: 5, TestStatus.TIMEOUT: 6,
+    TestStatus.XPASS: 3, TestStatus.FAILED: 4, TestStatus.ERROR: 5, TestStatus.CRASH: 5.5, TestStatus.TIMEOUT: 6,
 }
 
 

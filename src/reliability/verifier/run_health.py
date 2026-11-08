@@ -209,19 +209,17 @@ def runner_startup(container, runner, *, timeout_s=60):
 
 def module_execution_stages(task, tree, runner, run, exceptions):
     """Independently match pre-registered load failures in actual execution events."""
-    from reliability.verifier.result_parser import mapping_for
+    from reliability.verifier.result_parser import mapping_for, module_identity_failures
     data=base64.b64decode(run.runner_log_b64 or '')
     mapper=mapping_for(tuple(r.test_id for r in run.results),runner)
     stages=[]
-    for event in run.events:
-        if event.get('event')!='end' or not event.get('load_failure') or event.get('split'):
-            continue
+    for event in module_identity_failures(run.events):
         start=next((e for e in run.events if e.get('event')=='start' and e.get('batch')==event.get('batch')),{})
         message=data[start.get('offset',0):event.get('offset',len(data))].decode('utf-8','replace')
         module=event.get('module',start.get('module',''))
         ids=sorted({t for native in event.get('missing_ids',start.get('ids',())) for t in mapper(native)})
         cause=allowed_failure(exceptions,task,module,'module_execution',message,tree=tree)
         stages.append(dict(stage='module_execution',module=module,tree=tree,
-            status='COLLECTION_ERROR',input_count=len(ids),input_ids=ids,output_count=0,
+            status='NOT_RUN',identity_failure=True,input_count=len(ids),input_ids=ids,output_count=0,
             allowed_exception=[cause] if cause else [],message=message))
     return stages
