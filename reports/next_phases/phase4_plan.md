@@ -327,6 +327,61 @@ The 16 excluded identities (the same list applies to base and patched) are:
 
 Fix 15 G1 manifest SHA-256: 2db4cbc30a2bcaa83df4dd5ec59b6477910ef56f299a5aa74c6a70bcdee2f377
 
+### Guards halt only on executor failure, never on test outcomes (before Fix 16)
+
+This amendment supersedes conflicting Fix 14/15 guard and confirmation wording.
+H1, H1b, H2, H3 thresholds, B1, B2, frozen selections and original reference
+provenance remain unchanged. Attempt-2 outcomes, verdicts and labels remain unread.
+
+1. Run-health guards halt only on executor/infrastructure identity failure.
+   Identity loss is COLLECTION_ERROR at collection, RUNNER_UNAVAILABLE, NOT_RUN
+   caused by infrastructure, unmatched/unmapped IDs, or a reference identity now
+   INVALID_ID. PASS, FAIL, ERROR, CRASH, SKIPPED, XFAIL, XPASS, TIMEOUT and
+   NOT_REACHED are outcomes and do not themselves cause an identity halt.
+   Retain collector-fallback and missing-identity evidence as executor gaps.
+2. Frozen-reference G2 and the G1-collected check both count identity loss only.
+   Halt only when lost >= 10 AND lost/reference >= 1%, replacing OR. Report
+   outcome statuses and changes per tree without treating them as identity loss.
+   Apply the same rule inside confirmation calls before scoring.
+3. A reference PASS/FAIL/ERROR becoming SKIPPED is reported separately as
+   environment drift. Its drift guard can halt only at >= 10 AND >= 1% of the
+   reference, using the same threshold; a skip is not otherwise identity loss.
+4. G3 zero-output applies only to static/native collection stages. It never
+   applies to execution, module_execution or admission results. Source-integrity,
+   runner availability and other explicit infrastructure failures retain their
+   own evidence and checks; test outcomes cannot create zero-output halts.
+5. If a test start was observed, or the batch emitted per-test lines, and its
+   process dies, attribute CRASH to the active test (or first unfinished ID
+   when only batch progress identifies it). Preserve earlier terminal results;
+   unstarted remaining IDs are NOT_REACHED, not infrastructure NOT_RUN.
+   CRASH is scored as ERROR. Do not retry an observed execution as a module-load
+   failure. A module_execution identity failure exists only after both its first
+   attempt and retry produce nothing with no observed test start. It enters the
+   identity-loss counts under rule 2, never an immediate G3 halt. Preserve both
+   attempts and distinguish collection errors from execution outcomes.
+6. Confirmation health is independent of scoring. Patched ERROR/CRASH counts as
+   non-PASS. A stable candidate requires base PASS 3/3 and patched non-PASS 3/3;
+   patched ERROR/CRASH 3/3 establishes REGRESSION_ERROR. FLAKY reflects mixed
+   PASS/non-PASS confirmations or a confirmation timeout, not repeated ERROR or
+   CRASH. Missing/infrastructure evidence remains unavailable evidence, not a
+   fabricated stable result. All three isolated calls per tree are retained.
+7. Read receipts only from manifest-listed paths after verifying their hashes.
+   An unlisted collection.json cannot shadow a listed collection.json.gz. Check
+   the committed manifest pin before using summary or collection receipts.
+   Rule-1 reference hygiene must equal the published 16-ID list on both Pylint
+   trees (32 slots), with no other removal; a mismatch blocks launch. Pin the
+   published list among the G1 sources as well.
+
+Implementation groups: identity/drift/collection-only guards; execution CRASH
+attribution and retry evidence; confirmation scoring; sealed receipt reading and
+exact reference hygiene. Each group receives its own commit and real-path tests.
+The changed launcher/verifier sources are pinned by G1, so rerun all 83 x 2
+collection-only pairs with G2 projection before sealing the new manifest. No
+benchmark test bodies, tag or experiment launch are authorized by this amendment.
+Synthetic unit test bodies for crash/runner validation are authorized.
+
+Fix 16 G1 manifest SHA-256: PENDING_EXHAUSTIVE_G1
+
 ## 5. Post-hoc, only after `phase4-run-sealed`
 
 These may use labels; the executor never changes in response:
