@@ -142,3 +142,26 @@ def test_partial_fallback_is_separate_from_admitted_slots():
     assert health['admitted_ids']==1 and health['admitted_share']==0.5
     assert health['COLLECTOR_FALLBACK_slots']==1
     assert health['G2']['lost_ids']==[ids[1]]
+
+
+def test_G3_removes_only_agreed_absence_and_reports_all_proven_invalid(tmp_path):
+    from reliability.verifier.run_health import zero_output
+    container=repository(tmp_path)
+    (tmp_path/'test_real.py').write_text('def helper(): raise AssertionError("body ran")\n')
+    identity='test_real.py::helper'
+    validation=validate_in_container(container,(identity,),TestRunner('pytest','fixture'))
+    assert validation.records[0].native_proven_absent
+    stage=validation.stage_health[0]
+    assert stage['original_input_count']==1 and stage['proven_absent_count']==1
+    assert stage['status']=='ALL_PROVEN_INVALID' and stage['input_count']==0
+    assert not zero_output(validation.stage_health)['halt']
+
+
+def test_G3_static_invalid_without_native_receipt_still_halts(tmp_path):
+    from reliability.verifier.collection import collection_stages
+    from reliability.verifier.run_health import zero_output
+    identity='test_real.py::helper'
+    merged=merge_native((IDValidation(identity,'helper',reason='helper'),),{})
+    stages=collection_stages('task',(identity,),{'ids':{}},(),merged)
+    assert not merged[0].native_proven_absent
+    assert stages[0]['input_count']==1 and zero_output(stages)['halt']

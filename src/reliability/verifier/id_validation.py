@@ -32,6 +32,8 @@ class IDValidation:
     invalid_instances: tuple[tuple[str, str], ...] = ()
     static_reason: str = ""
     native_disagrees: bool = False
+    native_proven_absent: bool = False
+    native_absent_instances: tuple[str, ...] = ()
     owner_instances: tuple[str, ...] = ()
     unavailable: bool = False
     failure_status: str = ""
@@ -48,6 +50,7 @@ class IDValidation:
 
     def to_dict(self):
         data = asdict(self)
+        data["native_absent_instances"] = list(self.native_absent_instances)
         data["runnable_ids"] = list(self.runnable_ids)
         data["decorators"] = list(self.decorators)
         data["invalid_instances"] = [list(pair) for pair in self.invalid_instances]
@@ -371,6 +374,13 @@ class StaticIndex:
             for d in decorators
         ):
             return replace(result, category="property", reason="property")
+        if self.runner == 'pytest':
+            # A fixture declaration is a helper even if its name starts test_.
+            # Resolve import aliases; a local decorator named fixture is no proof.
+            for decorator in getattr(node, 'decorator_list', ()):
+                decorator_name = ast.unparse(decorator.func if isinstance(decorator, ast.Call) else decorator)
+                if self.resolve(self.classes[owner][0] if owner in self.classes else module, decorator_name) in ('pytest.fixture', 'pytest.yield_fixture', '_pytest.fixtures.fixture'):
+                    return replace(result, category='fixture', reason='helper')
         if not isinstance(node, _FUNCTION):
             return replace(result, category="helper", reason="non_callable_attribute")
         if not (
@@ -431,7 +441,7 @@ def native_failure_status(observed):
         return "RUNNER_UNAVAILABLE"
     if (
         status == "COLLECTION_ERROR"
-        or observed.get("returncode", 0) != 0
+        or observed.get("returncode", 0) not in (0, 5)
         or reason in ("native_load_error", "collection_timeout", "native_identity_mismatch")
     ):
         return "COLLECTION_ERROR"
@@ -516,6 +526,11 @@ def merge_native(static, native):
                 invalid_instances=tuple(invalid),
                 static_reason=item.reason,
                 native_disagrees=item.valid != (not invalid and bool(concrete)),
+                native_proven_absent=static_proof and bool(invalid) and not failure_status,
+                native_absent_instances=(item.selected_id,) if (
+                    item.expanded and item.category == 'non_runnable_owner_method'
+                    and not native_failure_status(selected) and not selected.get('ids')
+                    and selected.get('reason') in ('native_not_found','not_a_test_module')) else (),
                 owner_instances=item.runnable_ids if item.expanded else (),
                 module_skip_reason='; '.join(dict.fromkeys(reason for _,reason in skips)),
                 module_skip_instances=tuple(skips),

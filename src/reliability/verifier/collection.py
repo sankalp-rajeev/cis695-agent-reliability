@@ -273,7 +273,7 @@ for module, identities in sorted(groups.items()):
                         module_skip_reason=skip['reason'], module_skip_receipt=skip,
                         collection_status='MODULE_SKIPPED', completed=True, returncode=proc.returncode)
                     continue
-                error = proc.returncode != 0 or not os.path.exists(receipt) or not collected
+                error = proc.returncode not in (0, 5) or not os.path.exists(receipt) or bool(payload.get("collection_errors", ()) if isinstance(payload, dict) else False)
                 status = failure_status(message) if error else "COMPLETE"
                 result[identity] = dict(ids=[] if error else ids,
                     reason=status.lower() if error else "" if ids else "native_not_found",
@@ -346,7 +346,7 @@ def contain_collection(static, merged, task, exceptions):
         original = by_id[record.selected_id]
         module = record.selected_id.split('::',1)[0]
         if (original.valid and record.unavailable and record.failure_status == 'COLLECTION_ERROR'
-            and not any(reason in ('collection_timeout','not_reached') for _,reason in record.invalid_instances)
+            and not any(reason in ('collection_timeout','not_reached','native_not_found','not_a_test_module') for _,reason in record.invalid_instances)
             and 'TimeoutExpired' not in record.message
             and not allowed_failure(exceptions,task,module,'native_collection',record.message)):
             record = replace(original, stage='collector_fallback', collector_fallback=True,
@@ -355,7 +355,10 @@ def contain_collection(static, merged, task, exceptions):
     return tuple(result)
 
 
-def collection_stages(task, ids, receipt, exceptions):
+def collection_stages(task, ids, receipt, exceptions, merged=()):
+    proven = {tid for r in merged if r.native_proven_absent
+              for tid in (r.selected_id, *(t for t, _ in r.invalid_instances))}
+    proven |= {tid for r in merged for tid in r.native_absent_instances}
     modules = {}
     for identity in ids:
         modules.setdefault(identity.split('::',1)[0],[]).append(identity)
@@ -364,13 +367,17 @@ def collection_stages(task, ids, receipt, exceptions):
         records = [receipt['ids'].get(i, {'completed':False,'message':'Missing collector receipt', 'collection_status':'COLLECTION_ERROR'}) for i in selected]
         skipped = [r for r in records if r.get('collection_status') == 'MODULE_SKIPPED' and r.get('completed')
                    and r.get('module_skip_reason','').strip() and r.get('returncode',0) in (0,5)]
-        bad = [r for r in records if r not in skipped and (not r.get('completed') or r.get('returncode',0) != 0)]
+        bad = [r for r in records if r not in skipped and (not r.get('completed') or r.get('returncode',0) not in (0,5))]
+        bad += [dict(collection_status=r.failure_status, message=r.message) for r in merged
+                if r.unavailable and r.selected_id.split('::',1)[0] == module]
         messages = list(dict.fromkeys(r.get('message','') for r in bad))
         causes = [allowed_failure(exceptions,task,module,'native_collection',m) for m in messages]
         allowed = bool(causes) and all(causes)
-        collected = {i for r in records if r.get('completed') and not r.get('returncode',0) for i in r.get('ids',[])}
-        result.append({'stage':'native_collection','module':module,'input_count':len(selected),
-            'output_count':len(collected),'status':bad[0].get('collection_status','COLLECTION_ERROR') if bad else 'MODULE_SKIPPED' if skipped else 'COMPLETE',
+        collected = {i for r in records if r.get('completed') and r.get('returncode',0) in (0,5) for i in r.get('ids',[])}
+        eligible = [i for i in selected if i not in proven]
+        result.append({'stage':'native_collection','module':module,'input_count':len(eligible),
+            'original_input_count':len(selected),'proven_absent_count':len(selected)-len(eligible),
+            'output_count':len(collected),'status':bad[0].get('collection_status','COLLECTION_ERROR') if bad else 'MODULE_SKIPPED' if skipped else 'ALL_PROVEN_INVALID' if not eligible else 'COMPLETE',
             'module_skip_reason':'; '.join(dict.fromkeys(r['module_skip_reason'] for r in skipped)),
             'module_skipped_instances':len(skipped),'native_skip_recorded':bool(skipped),
             'allowed_exception':sorted(set(causes)) if allowed else [], 'messages':messages,
@@ -439,10 +446,11 @@ def validate_in_container(container, tests, runner, *, timeout_s=1800):
         receipt = json.loads(raw)
         if receipt.get("tests_executed") != 0:
             raise RuntimeError("collection receipt missing zero-execution assertion")
-        merged = contain_collection(static, merge_native(static, receipt["ids"]), task, exceptions)
+        primary = merge_native(static, receipt["ids"])
+        merged = contain_collection(static, primary, task, exceptions)
         return ValidationPass(
             merged, duration_s=time.monotonic() - started, groups=tuple(receipt["groups"]), context=context,
-            stage_health=collection_stages(task,ids,receipt,exceptions)
+            stage_health=collection_stages(task,ids,receipt,exceptions,primary)
         )
     except (TimeoutError, RuntimeError, ValueError, OSError) as exc:
         if isinstance(exc, TimeoutError):
@@ -459,9 +467,10 @@ def validate_in_container(container, tests, runner, *, timeout_s=1800):
                     "collection_status": "NOT_REACHED", "completed": False,
                     "elapsed_s": time.monotonic()-started, "message": "per-pass collection budget exhausted"})
             if static:
-                return ValidationPass(merge_native(static, receipt["ids"]),
+                merged = merge_native(static, receipt["ids"])
+                return ValidationPass(merged,
                     duration_s=time.monotonic()-started, groups=tuple(receipt["groups"]), context=context,
-                    stage_health=collection_stages(task,ids,receipt,exceptions))
+                    stage_health=collection_stages(task,ids,receipt,exceptions,merged))
         status = "NOT_REACHED" if isinstance(exc, TimeoutError) else classify_collector_failure(str(exc))
         records = tuple(
             IDValidation(

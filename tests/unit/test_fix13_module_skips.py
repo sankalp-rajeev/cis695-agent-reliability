@@ -71,7 +71,8 @@ def test_native_module_skip_becomes_reasoned_SKIPPED_without_execution(tmp_path,
 
 def test_genuinely_empty_module_is_COLLECTION_ERROR_and_triggers_G3(tmp_path):
     identity,receipt,validation,run=collect(tmp_path,'VALUE = 1\n')
-    assert receipt['ids'][identity]['collection_status']=='COLLECTION_ERROR'
+    assert receipt['ids'][identity]['collection_status']=='COMPLETE'
+    # Static validity disagrees with native absence, so it remains missing.
     assert run.results[0].status is TestStatus.COLLECTION_ERROR
     assert zero_output(validation.stage_health)['halt']
 

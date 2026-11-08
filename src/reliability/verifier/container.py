@@ -493,13 +493,15 @@ class ContainerTestExecutor:
         def finish(result, validation):
             mapped = apply_validation(result, validation)
             allowed_modules = {s.get('module') for s in validation.stage_health if s.get('allowed_exception')}
-            eligible = [r for r in validation.records if (r.valid or r.unavailable)
+            eligible = [r for r in validation.records if not r.native_proven_absent
                         and r.selected_id.split('::',1)[0] not in allowed_modules]
             if not any(s['stage']=='execution' for s in stages):
                 stages.append({'stage':'execution','status':'NOT_STARTED' if validation.runnable_ids else 'EMPTY_INPUT',
                     'input_count':len(validation.runnable_ids),'output_count':0})
-            stages.append({'stage':'admission','status':'COMPLETE' if any(r.get('admitted') for r in mapped.validation) else 'ZERO_OUTPUT' if eligible else 'EMPTY_INPUT',
+            stages.append({'stage':'admission','status':'COMPLETE' if any(r.get('admitted') for r in mapped.validation) else 'ZERO_OUTPUT' if eligible else 'ALL_PROVEN_INVALID' if validation.records and all(r.native_proven_absent for r in validation.records) else 'EMPTY_INPUT',
                 'input_count':len(eligible),'output_count':sum(r.get('admitted',False) for r in mapped.validation),
+                'original_input_count':len(validation.records),
+                'proven_absent_count':sum(r.native_proven_absent for r in validation.records),
                 'excluded_prelisted_modules':sorted(allowed_modules)})
             for name in ('native_collection','runner_startup'):
                 if not any(s['stage']==name for s in stages):
