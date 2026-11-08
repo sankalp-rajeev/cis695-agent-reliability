@@ -124,3 +124,44 @@ def test_one_failed_module_attempt_is_not_identity_failure():
     assert all(r.status is TestStatus.NOT_REACHED for r in run.results)
     record=health_for_run('task','base',run,{'admitted_ids':ids,'g1_collected_ids':ids})
     assert not record['halt'] and record['G2']['lost_count']==0
+
+
+@pytest.mark.parametrize('patched_status',[TestStatus.ERROR,TestStatus.CRASH])
+def test_real_crash_capture_and_ERROR_confirmations_restore_REGRESSION_ERROR(tmp_path,patched_status):
+    from reliability.verifier.regression import run_regression,Outcome,Signal
+    from reliability.verifier.selection import Selection
+    ids=('test_real.py::test_b',)
+    crashed=actual_execution(tmp_path,'import os\ndef test_b(): os._exit(17)\n',ids)
+    assert crashed.results[0].status is TestStatus.CRASH
+    error=run_from_capture(TestRunner('pytest','fixture'),ids,runner_log=(ids[0]+' ERROR\n').encode())
+    patched=crashed if patched_status is TestStatus.CRASH else error
+    from dataclasses import replace
+    # A terminal ERROR fixture uses the same complete-capture status as the real driver.
+    patched=replace(patched,evidence_complete=True)
+    base=run_from_capture(TestRunner('pytest','fixture'),ids,runner_log=(ids[0]+' PASSED\n').encode())
+    base=replace(base,evidence_complete=True)
+    class Executor:
+        calls=[]
+        def run(self,tests,*,patched:bool,timeout_s):
+            self.calls.append((tests,patched))
+            return patch if patched else base
+    patch=patched;executor=Executor()
+    report=run_regression('fixture',Selection(tests=ids),executor)
+    assert report.outcomes[ids[0]] is Outcome.REGRESSION_ERROR and report.signal is Signal.REGRESSION_ERROR
+    assert report.confirmation_summary[0]['stable'] and report.confirmation_summary[0]['base_PASS']==3
+    assert report.confirmation_summary[0]['patched_non_PASS']==3 and len(executor.calls)==8
+    assert all(not health_for_run('fixture','patched',run,ids)['halt'] for run in report.confirmations)
+
+
+@pytest.mark.parametrize('patch_statuses',[
+    (TestStatus.ERROR,TestStatus.PASSED,TestStatus.ERROR),
+    (TestStatus.CRASH,TestStatus.ERROR,TestStatus.PASSED),
+    (TestStatus.ERROR,TestStatus.TIMEOUT,TestStatus.ERROR)])
+def test_mixed_or_timed_out_confirmations_are_FLAKY(patch_statuses):
+    from tests.unit.test_fix8_confirmation import Executor
+    from reliability.verifier.regression import run_regression,Outcome
+    from reliability.verifier.selection import Selection
+    executor=Executor(initial=TestStatus.ERROR,patches=list(patch_statuses))
+    report=run_regression('fixture',Selection(tests=('t.py::test_a','t.py::test_b')),executor)
+    assert report.outcomes['t.py::test_a'] is Outcome.FLAKY
+    assert len(report.confirmations)==6

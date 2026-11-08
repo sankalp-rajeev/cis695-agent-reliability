@@ -43,14 +43,14 @@ class Executor:
 
 
 @pytest.mark.parametrize('initial,outcome,signal', [(FAIL, Outcome.REGRESSION, Signal.FAIL),
-                                                   (ERROR, Outcome.FLAKY, Signal.INCOMPLETE)])
+                                                   (ERROR, Outcome.REGRESSION_ERROR, Signal.REGRESSION_ERROR)])
 def test_each_new_failure_requires_three_isolated_calls_per_tree(initial, outcome, signal):
     executor = Executor(initial)
     report = run_regression('task', Selection(tests=IDS), executor)
     assert report.signal is signal and report.outcomes[IDS[0]] is outcome
     assert len(report.confirmations) == 6
     assert executor.calls[2:] == [((IDS[0],), tree, 1800) for tree in (False, True) for _ in range(3)]
-    assert report.confirmation_summary[0]['stable'] is (initial is FAIL)
+    assert report.confirmation_summary[0]['stable']
     assert report.confirmation_summary[0]['base_PASS'] == 3
     assert report.confirmation_summary[0]['patched_non_PASS'] == 3
     for i, run in enumerate(report.confirmations):
@@ -69,10 +69,15 @@ def test_unstable_or_missing_confirmation_is_flaky_and_all_six_attempts_run(init
     (bases if tree == 'base' else patches)[1] = status
     executor = Executor(initial, bases, patches)
     report = run_regression('task', Selection(tests=IDS), executor)
-    assert report.outcomes[IDS[0]] is Outcome.FLAKY
-    assert report.signal not in (Signal.FAIL, Signal.REGRESSION_ERROR)
-    assert len(report.confirmations) == 6
-    assert not report.confirmation_summary[0]['stable']
+    expected=(Outcome.COLLECTION_ERROR if status is TestStatus.COLLECTION_ERROR else
+              Outcome.NOT_RUN if status is None else
+              (Outcome.REGRESSION if initial is FAIL else Outcome.REGRESSION_ERROR) if tree=='patched' and status is TestStatus.XFAIL else Outcome.FLAKY)
+    assert report.outcomes[IDS[0]] is expected
+    assert len(report.confirmations)==6
+    stable=tree=='patched' and status is TestStatus.XFAIL
+    assert report.confirmation_summary[0]['stable'] is stable
+    if not stable:
+        assert report.signal not in (Signal.FAIL,Signal.REGRESSION_ERROR)
     if status is None or status is TestStatus.COLLECTION_ERROR:
         assert report.signal is Signal.INCOMPLETE
 

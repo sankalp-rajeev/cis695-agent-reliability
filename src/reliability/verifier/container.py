@@ -775,6 +775,9 @@ def run_from_capture(
                     if tid not in statuses:
                         statuses[tid]=TestStatus.CRASH if native==active else TestStatus.NOT_REACHED
                         messages[tid]='process died after observed test progress' if native==active else 'not started after test process crash'
+                        if native==active and not any(r.test_id==native and r.status is TestStatus.CRASH for r in raw_results):
+                            raw_results += (TestResult(native,TestStatus.CRASH,message=messages[tid]),)
+                            mappings[native]=mapping_for(tests,runner.name)(native)
     starts = {e.get("batch") for e in events if e.get("event") == "start"}
     ends = {e.get("batch") for e in events if e.get("event") == "end"}
     if not starts:

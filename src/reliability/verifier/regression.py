@@ -101,7 +101,7 @@ class Signal(str, Enum):
 BASELINE_FAILURE_THRESHOLD = 0.5
 
 # Parsed baseline caches must preserve the same outcome model as patched results.
-_BASELINE_PARSER_REVISION = "native-capture-v15-identity-loss-health"
+_BASELINE_PARSER_REVISION = "native-capture-v16-executor-only-health"
 
 
 @dataclass(frozen=True, slots=True)
@@ -301,7 +301,7 @@ def completeness_of(tests: tuple[str, ...], base: RunResult | None,
             if (result is None or result.status is TestStatus.NOT_RUN) and recovered and not missing_expansion:
                 continue
             if (result is None or result.status in (TestStatus.NOT_RUN, TestStatus.NOT_REACHED, TestStatus.TIMEOUT,
-                                                    TestStatus.ERROR, TestStatus.COLLECTION_ERROR,
+                                                    TestStatus.ERROR, TestStatus.CRASH, TestStatus.COLLECTION_ERROR,
                                                     TestStatus.RUNNER_UNAVAILABLE, TestStatus.INVALID_ID)
                     or (not skip_compatible and result.status is TestStatus.SKIPPED)):
                 gaps.append(f"{label}: {tid}: {result.status.value if result else 'missing'}")
@@ -312,7 +312,7 @@ def completeness_of(tests: tuple[str, ...], base: RunResult | None,
         gaps.extend(f"{label}: ambiguous raw ID: {tid}" for tid, ids in run.raw_id_map.items()
                     if len(ids) != 1 and not (run.validation and ids))
         gaps.extend(f"{label}: raw ERROR: {r.test_id}" for r in run.raw_results
-                    if r.status is TestStatus.ERROR
+                    if r.status in (TestStatus.ERROR, TestStatus.CRASH)
                     and not (set(run.raw_id_map.get(r.test_id, ())) <= excluded
                              and run.raw_id_map.get(r.test_id)))
         for result in run.raw_results:
@@ -323,7 +323,7 @@ def completeness_of(tests: tuple[str, ...], base: RunResult | None,
                 gaps.append(f"{label}: raw SKIPPED: {result.test_id}")
             if not ids:
                 gaps.append(f"{label}: unaccounted raw ID: {result.test_id}")
-            if len(ids) == 1 and result.status in (TestStatus.FAILED, TestStatus.ERROR):
+            if len(ids) == 1 and result.status in (TestStatus.FAILED, TestStatus.ERROR, TestStatus.CRASH):
                 selected = by_id.get(ids[0])
                 if selected and selected.status in healthy:
                     gaps.append(f"{label}: raw/selected status conflict: {result.test_id}")
@@ -373,6 +373,9 @@ def classify(
     single most important line in the module: absence of evidence is recorded as
     absence, not as success.
     """
+    # Keep the raw CRASH receipt; only the scoring comparison treats it as ERROR.
+    base = replace(base,status=TestStatus.ERROR) if base and base.status is TestStatus.CRASH else base
+    patched = replace(patched,status=TestStatus.ERROR) if patched and patched.status is TestStatus.CRASH else patched
     if any(r is not None and r.status is TestStatus.INVALID_ID for r in (base, patched)):
         return Outcome.INVALID_ID
     for status, outcome in ((TestStatus.RUNNER_UNAVAILABLE, Outcome.RUNNER_UNAVAILABLE),
@@ -499,7 +502,7 @@ def run_regression(
     if executed_base:
         failed_base = sum(
             1 for r in executed_base
-            if r.status in (TestStatus.FAILED, TestStatus.ERROR))
+            if r.status in (TestStatus.FAILED, TestStatus.ERROR, TestStatus.CRASH))
         if failed_base / len(executed_base) > BASELINE_FAILURE_THRESHOLD:
             return RegressionReport(
                 instance_id=instance_id, signal=Signal.BASELINE_UNRELIABLE,
@@ -530,8 +533,10 @@ def run_regression(
         suspects = tuple(t for t, o in outcomes.items()
                          if o in (Outcome.REGRESSION, Outcome.REGRESSION_ERROR))
         for test in suspects:
+            initial_outcome=outcomes[test]
             statuses = {False: [], True: []}
             usable = True
+            confirmation_timeout = False
             for patched_tree in (False, True):
                 for attempt in range(1, 4):
                     stage_token = runtime_stage_var.set('confirmation')
@@ -549,24 +554,40 @@ def run_regression(
                     cases, _ = concrete_comparison((test,), confirmation, confirmation)
                     result = cases.get(test)
                     statuses[patched_tree].append(result.status if result else None)
-                    usable &= not (confirmation.timed_out or confirmation.infrastructure_errors
-                                   or confirmation.unmatched_ids
-                                   or any(r.status in (TestStatus.ERROR, TestStatus.TIMEOUT)
-                                          for r in (*confirmation.results, *confirmation.execution_results)))
-            stable = (usable and statuses[False] == [TestStatus.PASSED] * 3
-                      and all(s in (TestStatus.FAILED, TestStatus.ERROR) for s in statuses[True]))
+                    confirmation_timeout |= confirmation.timed_out or any(
+                        r.status is TestStatus.TIMEOUT for r in (*confirmation.results,*confirmation.execution_results))
+                    observed_outcomes={TestStatus.PASSED,TestStatus.FAILED,TestStatus.ERROR,TestStatus.CRASH,
+                                       TestStatus.SKIPPED,TestStatus.XFAIL,TestStatus.XPASS}
+                    usable &= not (confirmation.infrastructure_errors or confirmation.unmatched_ids)
+                    usable &= bool(result and result.status in observed_outcomes)
+            non_pass={TestStatus.FAILED,TestStatus.ERROR,TestStatus.CRASH,
+                      TestStatus.SKIPPED,TestStatus.XFAIL,TestStatus.XPASS}
+            stable = (usable and not confirmation_timeout
+                      and statuses[False] == [TestStatus.PASSED] * 3
+                      and all(s in non_pass for s in statuses[True]))
+            if stable and all(s in (TestStatus.ERROR,TestStatus.CRASH) for s in statuses[True]):
+                outcomes[test]=Outcome.REGRESSION_ERROR
             confirmation_summary.append({
-                "candidate_id": test, "initial_outcome": outcomes[test].value,
+                "candidate_id": test, "initial_outcome": initial_outcome.value,
                 "stable": stable, "base_PASS": statuses[False].count(TestStatus.PASSED),
-                "patched_non_PASS": sum(s in (TestStatus.FAILED, TestStatus.ERROR)
+                "patched_non_PASS": sum(s in non_pass
                                         for s in statuses[True]),
                 "base_statuses": [s.value if s else "missing" for s in statuses[False]],
                 "patched_statuses": [s.value if s else "missing" for s in statuses[True]],
                 "attempts_per_tree": 3,
             })
             if not stable:
-                outcomes[test] = Outcome.FLAKY
-                notes.append(f"{test}: not stable across 3 isolated runs per tree, marked FLAKY")
+                mixed = (any(s is TestStatus.PASSED for s in statuses[True])
+                         or any(s in non_pass for s in statuses[False]))
+                if confirmation_timeout or mixed:
+                    outcomes[test] = Outcome.FLAKY
+                    notes.append(f"{test}: mixed PASS/non-PASS observations or confirmation timeout, marked FLAKY")
+                else:
+                    unavailable=next((s for values in statuses.values() for s in values
+                        if s in (TestStatus.COLLECTION_ERROR,TestStatus.RUNNER_UNAVAILABLE,TestStatus.INVALID_ID,
+                                 TestStatus.NOT_REACHED)),TestStatus.NOT_RUN)
+                    outcomes[test]=Outcome(unavailable.value.upper())
+                    notes.append(f"{test}: confirmation identity/evidence unavailable: {unavailable.value}")
 
     n_executed = sum(1 for o in outcomes.values() if o.executed)
     n_regressions = sum(1 for o in outcomes.values() if o.counts_as_regression)
