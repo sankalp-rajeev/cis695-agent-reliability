@@ -71,3 +71,18 @@ def test_static_rejection_needs_successful_native_absence():
     static=(IDValidation(identity,'helper',reason='helper'),)
     assert merge_native(static,{})[0].unavailable
     assert merge_native(static,{identity:{'ids':[],'completed':True,'returncode':0}})[0].reason=='helper'
+
+
+def test_empty_original_uses_G1_native_set_and_halts_on_loss(tmp_path):
+    from tests.unit.test_phase4_launcher import launch, task_spec
+    spec=task_spec(tmp_path)
+    g1=tmp_path/'g1'
+    for tree in ('base','patched'):
+        launch.write(g1/'tasks'/spec.instance_id/tree/'collection.json',{'records':[
+            IDValidation(spec.tests[0],'runnable_test',spec.tests,stage='native').to_dict()]})
+    refs=launch.with_g1_references({'task':{'base':[],'patched':[]}},[spec],g1)
+    run=RunResult(results=(TestResult(spec.tests[0],TestStatus.NOT_RUN),),requested_tests=spec.tests)
+    health=health_for_run('task','base',run,refs['task']['base'])
+    assert health['G2']['reference_source']=='G1_NATIVE_COLLECTION'
+    assert health['G2']['halt'] and health['G2']['lost_ids']==list(spec.tests)
+    assert health_for_run('task','base',run,[])['G2']['missing_G1_reference']

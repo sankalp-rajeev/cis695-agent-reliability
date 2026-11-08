@@ -45,7 +45,7 @@ TASK_COUNT = 83
 PASS_BUDGET_S = 1800
 STOP_S = 12*60*60
 REFERENCE = ROOT/'reports/next_phases/phase4_rerun/fix13_reference'
-G1_PREFLIGHT = ROOT/'reports/next_phases/phase4_rerun/fix13_g1'
+G1_PREFLIGHT = ROOT/'reports/next_phases/phase4_rerun/fix14_g1'
 
 
 def sha(path):
@@ -360,6 +360,27 @@ def load_reference(path=REFERENCE):
     return json.loads(gzip.decompress((path/'reference_ids.json.gz').read_bytes()))
 
 
+def with_g1_references(reference, specs, path):
+    """Fill empty original tree references from sealed G1 collection only."""
+    result = {}
+    for spec in specs:
+        result[spec.instance_id] = {}
+        for tree in ('base', 'patched'):
+            original = reference[spec.instance_id][tree]
+            evidence = dict(original) if isinstance(original, dict) else {'admitted_ids': list(original)}
+            if not evidence['admitted_ids'] and spec.tests:
+                receipt = path/'tasks'/spec.instance_id/tree/'collection.json'
+                raw = receipt.read_bytes() if receipt.exists() else gzip.decompress(receipt.with_suffix('.json.gz').read_bytes())
+                records = json.loads(raw)['records']
+                if {r['selected_id'] for r in records} != set(spec.tests):
+                    raise ValueError('G1 collection/selection identity mismatch: '+spec.instance_id)
+                evidence['g1_collected_ids'] = [r['selected_id'] for r in records
+                    if r.get('stage') == 'native' and r.get('valid') and not r.get('collector_fallback')
+                    and not r.get('module_skip_reason') and r.get('runnable_ids')]
+            result[spec.instance_id][tree] = evidence
+    return result
+
+
 def require_g1(path):
     summary=json.loads((path/'summary.json').read_text())
     if (not summary['launch_allowed'] or summary['task_tree_count'] != TASK_COUNT*2
@@ -401,7 +422,7 @@ def main(argv=None):
         print(json.dumps({'dry_run': True, 'specs_validated': len(specs), 'containers_started': 0,
                           'output': str(args.output)}))
         return 0
-    reference=load_reference(args.admission_reference)
+    reference=with_g1_references(load_reference(args.admission_reference), specs, args.health_preflight)
     if set(reference) != {s.instance_id for s in specs}:
         raise ValueError('G2 reference/frozen cohort mismatch')
     return execute(specs, args.output, args.freeze_tag, reference)

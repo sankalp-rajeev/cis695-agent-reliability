@@ -106,6 +106,8 @@ def test_G2_module_skip_may_not_replace_stronger_original_evidence(tmp_path,orig
     original=tmp_path/'original.json';original.write_text(json.dumps({'calls':[{'patched':False,
         'run':{'results':[{'test_id':identity,'status':original_status}]}}]}))
     reference=original_admission_evidence(original,hashlib.sha256(original.read_bytes()).hexdigest())['base']
+    # G1 for this fixture also records a module skip, with no collected IDs.
+    reference['g1_collected_ids']=[]
     health=health_for_run('task','base',run,reference)
     assert health['G2']['lost_count']==int(blocked)
     assert health['G2']['halt']==blocked

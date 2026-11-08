@@ -62,7 +62,14 @@ def health_for_run(task, tree, run, reference):
     invalid = {r['selected_id'] for r in run.validation
                if r.get('validation_status') == 'INVALID_ID' and not r.get('unavailable')}
     reference_ids = set(reference['admitted_ids']) if isinstance(reference,dict) else set(reference)
+    empty_original = not reference_ids and (bool(run.requested_tests) or
+        (isinstance(reference, dict) and bool(reference.get('g1_collected_ids'))))
+    missing_g1 = empty_original and (not isinstance(reference, dict) or 'g1_collected_ids' not in reference)
+    if empty_original and not missing_g1:
+        reference_ids = set(reference['g1_collected_ids'])
     blocked_skip = set(reference.get('module_skip_blocked_ids',())) if isinstance(reference,dict) else reference_ids
+    if empty_original:
+        blocked_skip |= reference_ids
     skipped = {r.test_id for r in run.results if r.status is TestStatus.SKIPPED}
     skipped_instances = {r.test_id for r in run.execution_results if r.status is TestStatus.SKIPPED}
     skipped |= {r['selected_id'] for r in run.validation if r.get('module_skip_reason')
@@ -70,10 +77,15 @@ def health_for_run(task, tree, run, reference):
     lost_to_skip = skipped & blocked_skip
     # ERROR reference evidence also cannot be replaced by a module-level skip.
     g2 = monotonicity(reference_ids | lost_to_skip, admitted-lost_to_skip, invalid)
+    g2['reference_source'] = 'G1_NATIVE_COLLECTION' if empty_original else 'FROZEN_ORIGINAL'
+    g2['missing_G1_reference'] = missing_g1
+    g2['halt'] |= missing_g1
     g2['module_skip_incompatible_reference_ids'] = sorted(lost_to_skip)
     stages = list(run.stage_health)
     g3 = zero_output(stages)
     reasons = (['G2 ' + tree + ': lost ' + str(g2['lost_count']) + ' reference IDs'] if g2['halt'] else [])
+    if missing_g1:
+        reasons.append('G2 ' + tree + ': non-empty selection requires G1 native reference')
     reasons += ['G3 ' + tree + ': zero output at ' + s for s in g3['zero_output_stages']]
     return {'task': task, 'tree': tree, 'collector_status': run.validation_summary.get('collector_status', 'NOT_REPORTED'),
             'input_ids': len(run.requested_tests), 'admitted_ids': len(admitted-lost_to_skip),
