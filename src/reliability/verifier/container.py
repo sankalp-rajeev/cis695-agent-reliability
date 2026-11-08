@@ -30,6 +30,7 @@ from typing import Self
 
 from reliability.env import clean_env
 from reliability.verifier.collection import validate_in_container
+from reliability.verifier.node_ids import normalize_pytest_id
 from reliability.verifier.regression import RunResult, TestResult, TestStatus
 from reliability.verifier.result_parser import mapping_for, parse_capture
 from reliability.verifier.selection import TestRunner, django_label
@@ -284,7 +285,9 @@ _OUT_LOG = "/tmp/verifier_out.txt"
 # Embed the shared, Python-3.6-compatible terminal parser in the standalone driver.
 # No project package is required in a task image.
 _DRIVER_PARSER = Path(__file__).with_name('result_parser.py').read_text().replace(
-    'from reliability.verifier.selection import django_label\n', '')
+    'from reliability.verifier.selection import django_label\n', '').replace(
+    'from reliability.verifier.node_ids import normalize_pytest_id\n',
+    Path(__file__).with_name('node_ids.py').read_text() + '\n')
 _BATCH_DRIVER = 'exec(' + repr(_DRIVER_PARSER) + ')\n' + r'''
 import collections, json, os, pathlib, select, signal, subprocess, sys, time
 kind = sys.argv[1]
@@ -311,11 +314,13 @@ def seen(output, part, module):
     for rid, value in observed.items():
         if value["kind"] != "case":
             continue
+        if kind == "pytest":
+            rid = normalize_pytest_id(rid)
         if rid in part:
             found.add(rid)
         elif kind == "pytest" and "::" in rid:
             path, suffix = rid.split("::", 1)
-            canonical = module + "::" + suffix
+            canonical = normalize_pytest_id(module + "::" + suffix)
             if (module == path or module.endswith("/" + path)) and canonical in part:
                 found.add(canonical)
     return found
@@ -697,7 +702,8 @@ def run_from_capture(
         admitted = set(event.get('observed_ids', ()))
         observed = {rid: value for rid, value in observed.items()
                     if not (first <= value['line'] <= last and
-                            (value['kind'] != 'case' or rid not in admitted))}
+                            (value['kind'] != 'case' or
+                             (normalize_pytest_id(rid) if runner.name == 'pytest' else rid) not in admitted))}
     statuses = _parse_output(runner, output, tests, observed=observed)
     raw_results, mappings, unmatched = account_raw_output(runner, output, tests, observed=observed)
     complete = bool(events and events[-1].get("event") == "complete")

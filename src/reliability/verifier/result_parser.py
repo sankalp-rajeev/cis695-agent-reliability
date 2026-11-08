@@ -6,6 +6,7 @@ XFAIL/XPASS retain distinct statuses as well as their original runner flavor.
 import re
 from collections import defaultdict
 
+from reliability.verifier.node_ids import normalize_pytest_id
 from reliability.verifier.selection import django_label
 
 ANSI = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
@@ -170,7 +171,9 @@ def parse_sympy_capture(text):
 
 
 def mapping_for(selected, runner):
-    wanted = set(selected)
+    normalized = defaultdict(list)
+    for test in selected:
+        normalized[normalize_pytest_id(test) if runner == "pytest" else test].append(test)
     labels = defaultdict(list)
     if runner == "django":
         for test in selected:
@@ -178,8 +181,9 @@ def mapping_for(selected, runner):
 
     def map_id(rid):
         if runner != "django":
+            rid = normalize_pytest_id(rid) if runner == "pytest" else rid
             candidates = [rid, rid.split("[", 1)[0]] if "[" in rid else [rid]
-            return list(dict.fromkeys(t for t in candidates if t in wanted))
+            return list(dict.fromkeys(t for candidate in candidates for t in normalized.get(candidate, ())))
         if rid in labels:
             return labels[rid]
         # Only a unique shortened framework label is admitted; ambiguity stays visible.

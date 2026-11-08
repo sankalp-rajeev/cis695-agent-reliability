@@ -158,7 +158,9 @@ print(json.dumps(results))
 """
 )
 
-_PYTEST_PLUGIN = r"""
+_NODE_IDS = Path(__file__).with_name("node_ids.py").read_text()
+
+_PYTEST_PLUGIN = _NODE_IDS + r"""
 import json, os
 _module_skips, _collection_errors = [], []
 
@@ -177,13 +179,14 @@ def pytest_collection_finish(session):
         for item in session.items:
             parts = item.nodeid.split("::", 1)
             path = os.path.relpath(str(item.fspath), os.getcwd())
-            identities.append(path + ("::" + parts[1] if len(parts) == 2 else ""))
+            identities.append(normalize_pytest_id(path + ("::" + parts[1] if len(parts) == 2 else "")))
         json.dump(dict(ids=identities, module_skips=_module_skips, collection_errors=_collection_errors), stream)
 """
 
 
 _NATIVE_DRIVER = (
     _FAILURE_HELPER
+    + _NODE_IDS
     + Path(__file__).with_name('module_skips.py').read_text()
     + r"""
 import json, os, pathlib, subprocess, sys, time, traceback
