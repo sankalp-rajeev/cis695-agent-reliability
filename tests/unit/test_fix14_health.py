@@ -86,3 +86,45 @@ def test_empty_original_uses_G1_native_set_and_halts_on_loss(tmp_path):
     assert health['G2']['reference_source']=='G1_NATIVE_COLLECTION'
     assert health['G2']['halt'] and health['G2']['lost_ids']==list(spec.tests)
     assert health_for_run('task','base',run,[])['G2']['missing_G1_reference']
+
+
+import pytest
+from tests.unit.test_phase4_launcher import launch, task_spec
+
+
+class ContainerShell:
+    def __init__(self,*args,**kwargs):self.source_integrity={'status':'VERIFIED'}
+    def __enter__(self):return self
+    def __exit__(self,*args):pass
+    def generated_snapshot(self):return {'files':{}}
+
+
+@pytest.mark.parametrize('failure',['crash','zero_output','loss'])
+def test_confirmation_guards_halt_inside_call_before_result_scoring(tmp_path,monkeypatch,failure):
+    spec=task_spec(tmp_path);calls=[]
+    class Executor:
+        def __init__(self,*args,**kwargs):pass
+        def run(self,tests,*,patched,timeout_s):
+            calls.append(patched)
+            if len(calls)>2:
+                if failure=='crash':raise RuntimeError('confirmation crashed')
+                return RunResult(results=(TestResult(tests[0],TestStatus.NOT_RUN),),requested_tests=tests,
+                    stage_health=({'stage':'native_collection','input_count':1,'output_count':0},) if failure=='zero_output' else ())
+            return RunResult(results=(TestResult(tests[0],TestStatus.FAILED if patched else TestStatus.PASSED),),requested_tests=tests,evidence_complete=True)
+    monkeypatch.setattr(launch,'FrozenContainer',ContainerShell)
+    monkeypatch.setattr(launch,'ContainerTestExecutor',Executor)
+    scored=[]
+    original=launch.run_regression
+    def scoring(*args,**kwargs):
+        report=original(*args,**kwargs)
+        scored.append(report)
+        return report
+    monkeypatch.setattr(launch,'run_regression',scoring)
+    health=tmp_path/'health.jsonl'
+    with pytest.raises(launch.RunHealthError):
+        launch.run_task(spec,tmp_path/'task','fixture',{'base':spec.tests,'patched':spec.tests},health)
+    assert calls==[False,True,False] and not scored
+    record=json.loads(health.read_text().splitlines()[-1])
+    assert record['halt'] and record['scope']=='confirmation'
+    if failure=='loss':assert record['G2']['lost_ids']==list(spec.tests)
+    assert not (tmp_path/'task'/'result.json').exists()

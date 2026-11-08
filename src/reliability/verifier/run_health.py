@@ -77,7 +77,7 @@ def health_for_run(task, tree, run, reference):
     lost_to_skip = skipped & blocked_skip
     # ERROR reference evidence also cannot be replaced by a module-level skip.
     g2 = monotonicity(reference_ids | lost_to_skip, admitted-lost_to_skip, invalid)
-    g2['reference_source'] = 'G1_NATIVE_COLLECTION' if empty_original else 'FROZEN_ORIGINAL'
+    g2['reference_source'] = reference.get('reference_source', 'G1_NATIVE_COLLECTION' if empty_original else 'FROZEN_ORIGINAL') if isinstance(reference, dict) else 'FROZEN_ORIGINAL'
     g2['missing_G1_reference'] = missing_g1
     g2['halt'] |= missing_g1
     g2['module_skip_incompatible_reference_ids'] = sorted(lost_to_skip)

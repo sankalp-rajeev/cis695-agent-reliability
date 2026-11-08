@@ -19,6 +19,7 @@ from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 
+from reliability.verifier.accounting import ADMITTED_STATUSES
 from reliability.verifier.container import ContainerTestExecutor, TaskContainer
 from reliability.verifier.pre_install import load_specs
 from reliability.verifier.regression import RegressionConfig, run_regression, run_to_dict
@@ -184,14 +185,49 @@ def time_limit_handler(*_):
 
 class Calls:
     """Capture both initial trees, then confirm once; policy replays do no I/O."""
-    def __init__(self, executor):
+    def __init__(self, executor, task=None, health_path=None):
         self.executor = executor
+        self.task = task
+        self.health_path = health_path
         self.calls = []
 
     def run(self, tests, *, patched, timeout_s):
-        result = self.executor.run(tests, patched=patched, timeout_s=timeout_s)
+        confirmation = len(self.calls) >= 2 and self.task is not None
+        try:
+            result = self.executor.run(tests, patched=patched, timeout_s=timeout_s)
+        except Exception as exc:
+            if not confirmation:
+                raise
+            record = {'task': self.task, 'scope': 'confirmation', 'halt': True,
+                      'halt_reasons': ['confirmation stage error: '+repr(exc)],
+                      'G2': 'BLOCKED_UPSTREAM', 'G3': 'BLOCKED_UPSTREAM'}
+            append_health(self.health_path, record)
+            raise RunHealthError(record) from exc
+        if confirmation:
+            initial = self.calls[int(patched)][3]
+            reference = confirmation_reference(initial, tests)
+            record = health_for_run(self.task, 'patched' if patched else 'base', result, reference)
+            record['scope'] = 'confirmation'
+            record['call'] = len(self.calls) + 1
+            append_health(self.health_path, record)
+            if record['halt']:
+                raise RunHealthError(record)
         self.calls.append((tests, patched, timeout_s, result))
         return result
+
+
+def confirmation_reference(initial, tests):
+    receipts = {r['selected_id']: r for r in initial.validation}
+    admitted = {r.test_id for r in initial.results if r.status in ADMITTED_STATUSES
+                and (not receipts or (receipts.get(r.test_id, {}).get('admitted')
+                     and not receipts.get(r.test_id, {}).get('collector_fallback')))}
+    concrete = {r.test_id for r in initial.execution_results if r.status in ADMITTED_STATUSES
+                and set(initial.execution_id_map.get(r.test_id, ())) & admitted}
+    blocked = {r.test_id for r in (*initial.results, *initial.execution_results)
+               if r.status.value in ('passed', 'failed', 'error', 'xfail', 'xpass')}
+    return {'admitted_ids': sorted((admitted | concrete) & set(tests)),
+            'module_skip_blocked_ids': sorted(blocked & set(tests)),
+            'g1_collected_ids': [], 'reference_source': 'INITIAL_ADMITTED_SUBSET'}
 
 
 class Replay:
@@ -229,7 +265,8 @@ def run_task(spec, folder, experiment, reference=None, health_path=None):
         # Pin the generated-input inventory before any runtime stage. The
         # executor takes before/after hashes and carries changes across passes.
         write(folder/'pristine_generated_inputs.json', container.generated_snapshot())
-        calls = Calls(ContainerTestExecutor(container, runner=spec.runner, evidence_dir=folder/'raw'))
+        calls = Calls(ContainerTestExecutor(container, runner=spec.runner, evidence_dir=folder/'raw'),
+                      spec.instance_id, health_path or folder/'health.jsonl')
         # Both trees are captured even if scoring later abstains on a red base.
         for patched in (False, True):
             run = calls.run(spec.tests, patched=patched, timeout_s=PASS_BUDGET_S)
