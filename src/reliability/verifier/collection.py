@@ -9,7 +9,6 @@ from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 from reliability.verifier.id_validation import (
-    STATIC_INVALID_REASONS,
     IDValidation,
     SourceTree,
     StaticIndex,
@@ -409,7 +408,7 @@ def validate_in_container(container, tests, runner, *, timeout_s=1800):
         static = StaticIndex(sources, runner.name).validate(tests)
         ids = tuple(
             dict.fromkeys(
-                t for r in static for t in (r.runnable_ids if r.valid else () if r.reason in STATIC_INVALID_REASONS else (r.selected_id,))
+                t for r in static for t in (r.selected_id, *(r.runnable_ids if r.valid else ()))
             )
         )
         if not ids:

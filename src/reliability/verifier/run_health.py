@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 
 from reliability.verifier.accounting import ADMITTED_STATUSES
+from reliability.verifier.regression import TestStatus
 
 
 class RunHealthError(RuntimeError):
@@ -37,7 +38,7 @@ def allowed_failure(exceptions, task, module, stage, message):
 
 def monotonicity(reference, admitted, invalid):
     reference, admitted, invalid = set(reference), set(admitted), set(invalid)
-    lost = sorted(reference - admitted - invalid)
+    lost = sorted(reference - admitted)
     fraction = len(lost)/len(reference) if reference else 0.0
     return {'reference_ids': len(reference), 'admitted_reference_ids': len(reference & admitted),
             'proven_INVALID_ID_reference_ids': len(reference & invalid), 'lost_ids': lost,
@@ -62,8 +63,11 @@ def health_for_run(task, tree, run, reference):
                if r.get('validation_status') == 'INVALID_ID' and not r.get('unavailable')}
     reference_ids = set(reference['admitted_ids']) if isinstance(reference,dict) else set(reference)
     blocked_skip = set(reference.get('module_skip_blocked_ids',())) if isinstance(reference,dict) else reference_ids
-    module_skipped = {r['selected_id'] for r in run.validation if r.get('module_skip_reason')}
-    lost_to_skip = module_skipped & blocked_skip
+    skipped = {r.test_id for r in run.results if r.status is TestStatus.SKIPPED}
+    skipped_instances = {r.test_id for r in run.execution_results if r.status is TestStatus.SKIPPED}
+    skipped |= {r['selected_id'] for r in run.validation if r.get('module_skip_reason')
+                or skipped_instances.intersection(r.get('runnable_ids', ()))}
+    lost_to_skip = skipped & blocked_skip
     # ERROR reference evidence also cannot be replaced by a module-level skip.
     g2 = monotonicity(reference_ids | lost_to_skip, admitted-lost_to_skip, invalid)
     g2['module_skip_incompatible_reference_ids'] = sorted(lost_to_skip)

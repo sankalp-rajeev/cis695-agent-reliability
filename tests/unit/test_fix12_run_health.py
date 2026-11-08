@@ -58,8 +58,8 @@ def test_admission_loss_thresholds_are_OR_and_exact(count,lost,halt):
     assert monotonicity(reference,admitted,())['halt']==halt
 
 
-def test_only_proven_invalid_can_exempt_a_reference_identity():
-    assert monotonicity({'one'},(),{'one'})['lost_count']==0
+def test_proven_invalid_reference_is_still_lost():
+    assert monotonicity({'one'},(),{'one'})['lost_count']==1
     assert monotonicity({'one'},(),())['halt']
 
 

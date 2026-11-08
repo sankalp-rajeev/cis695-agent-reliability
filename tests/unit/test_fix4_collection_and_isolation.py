@@ -96,7 +96,7 @@ def test_collector_failure_is_missing_under_both_policies(status):
             assert not next(iter(report.outcomes.values())).executed
 
 
-def test_only_successful_native_absence_or_static_proof_can_be_invalid():
+def test_only_agreed_static_and_native_absence_can_be_invalid():
     tid = "t.py::test_a"
     record = IDValidation(tid, "runnable_test", (tid,))
     for completed, code in ((False, 0), (True, 5), (True, 2)):
@@ -113,12 +113,12 @@ def test_only_successful_native_absence_or_static_proof_can_be_invalid():
         )[0]
         assert r.unavailable and r.failure_status == "COLLECTION_ERROR"
     r = merge_native((record,), {tid: {"ids": [], "completed": True, "returncode": 0}})[0]
-    assert not r.unavailable and r.reason == "native_not_found"
+    assert r.unavailable and r.failure_status == "COLLECTION_ERROR"
     proven = IDValidation(tid, "property", reason="property")
     r = merge_native(
         (proven,), {tid: {"ids": [], "completed": False, "collection_status": "RUNNER_UNAVAILABLE"}}
     )[0]
-    assert not r.unavailable and r.reason == "property"
+    assert r.unavailable and r.failure_status == "RUNNER_UNAVAILABLE"
     unknown = IDValidation(tid, "not_found", reason="source_parse_error")
     r = merge_native((unknown,), {})[0]
     assert r.unavailable

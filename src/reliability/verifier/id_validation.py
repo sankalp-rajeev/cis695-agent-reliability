@@ -441,16 +441,19 @@ def native_failure_status(observed):
 
 
 def merge_native(static, native):
-    """Only static proof or successful native absence can establish INVALID_ID."""
+    """INVALID_ID needs static rejection AND completed native absence."""
     output = []
     for item in static:
         concrete, invalid, messages, failures, skips = [], [], [], [], []
-        for tid in item.runnable_ids if item.valid else (item.selected_id,):
+        selected = native.get(item.selected_id, {})
+        direct = selected.get('ids') and not native_failure_status(selected)
+        members = (item.selected_id,) if direct or selected.get('collection_status') == 'MODULE_SKIPPED' else (item.runnable_ids if item.valid else (item.selected_id,))
+        for tid in members:
             observed = native.get(tid, {})
             ids = observed.get("ids", ())
             failure = native_failure_status(observed)
             if (not failure and observed.get('collection_status') == 'MODULE_SKIPPED'
-                and observed.get('module_skip_reason') and item.valid):
+                and observed.get('module_skip_reason')):
                 skips.append((tid,observed['module_skip_reason']))
                 concrete.append(tid)
                 continue
@@ -483,7 +486,10 @@ def merge_native(static, native):
             if failures
             else ""
         )
-        unavailable = bool(failure_status) and not static_proof
+        if invalid and not failure_status and not static_proof:
+            failure_status = 'COLLECTION_ERROR'
+            messages.append('Static/native disagreement: native absence alone is not INVALID_ID')
+        unavailable = bool(failure_status)
         if unavailable:
             reason = failure_status.lower()
         elif invalid:
