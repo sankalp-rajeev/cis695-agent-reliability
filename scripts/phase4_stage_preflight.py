@@ -48,7 +48,7 @@ def audit_pair(spec, patched, output, reference=None):
             audit=GeneratedInputAudit(container.generated_snapshot)
             audit.stage('patch_application',lambda patched=patched:container.set_patched(patched))
             stages.append({'stage':'patch_application','status':'APPLIED' if patched else 'BASE_READY','input_count':1,'output_count':1})
-            validation=audit.stage('native_collection',lambda spec=spec,deadline=deadline:validate_in_container(container,spec.tests,spec.runner,timeout_s=max(0.001,deadline-time.monotonic())))
+            validation=audit.stage('native_collection',lambda spec=spec,deadline=deadline:validate_in_container(container,spec.tests,spec.runner,timeout_s=max(0.001,deadline-time.monotonic()),tree=tree))
             stages.extend(validation.stage_health)
             launch.write(folder/'collection.json',validation.to_dict())
             if time.monotonic() >= deadline:

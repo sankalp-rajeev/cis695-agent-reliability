@@ -14,7 +14,7 @@ from reliability.verifier.id_validation import (
     StaticIndex,
     merge_native,
 )
-from reliability.verifier.run_health import allowed_failure
+from reliability.verifier.run_health import allowed_failure, exception_rules
 from reliability.verifier.selection import TestRunner
 from reliability.verifier.sympy_adapter import _SYMPY_PROGRAM
 
@@ -393,7 +393,7 @@ class ValidationPass:
         }
 
 
-def contain_collection(static, merged, task, exceptions):
+def contain_collection(static, merged, task, exceptions, *, tree=None):
     by_id = {r.selected_id:r for r in static}
     result = []
     for record in merged:
@@ -402,14 +402,14 @@ def contain_collection(static, merged, task, exceptions):
         if (original.valid and record.unavailable and record.failure_status == 'COLLECTION_ERROR'
             and not any(reason in ('collection_timeout','not_reached','native_not_found','not_a_test_module') for _,reason in record.invalid_instances)
             and 'TimeoutExpired' not in record.message
-            and not allowed_failure(exceptions,task,module,'native_collection',record.message)):
+            and not allowed_failure(exceptions,task,module,'native_collection',record.message,tree=tree)):
             record = replace(original, stage='collector_fallback', collector_fallback=True,
                 collector_failure_status=record.failure_status, collector_message=record.message)
         result.append(record)
     return tuple(result)
 
 
-def collection_stages(task, ids, receipt, exceptions, merged=()):
+def collection_stages(task, ids, receipt, exceptions, merged=(), *, tree=None):
     proven = {tid for r in merged if r.native_proven_absent
               for tid in (r.selected_id, *(t for t, _ in r.invalid_instances))}
     proven |= {tid for r in merged for tid in r.native_absent_instances}
@@ -425,7 +425,7 @@ def collection_stages(task, ids, receipt, exceptions, merged=()):
         bad += [dict(collection_status=r.failure_status, message=r.message) for r in merged
                 if r.unavailable and r.selected_id.split('::',1)[0] == module]
         messages = list(dict.fromkeys(r.get('message','') for r in bad))
-        causes = [allowed_failure(exceptions,task,module,'native_collection',m) for m in messages]
+        causes = [allowed_failure(exceptions,task,module,'native_collection',m,tree=tree) for m in messages]
         allowed = bool(causes) and all(causes)
         collected = {i for r in records if r.get('completed') and r.get('returncode',0) in (0,5) for i in r.get('ids',[])}
         eligible = [i for i in selected if i not in proven]
@@ -440,13 +440,13 @@ def collection_stages(task, ids, receipt, exceptions, merged=()):
     return tuple(result)
 
 
-def validate_in_container(container, tests, runner, *, timeout_s=1800):
+def validate_in_container(container, tests, runner, *, timeout_s=1800, tree=None):
     """Snapshot the current (already base/patched) tree, then collect valid identities."""
     started = time.monotonic()
     deadline = started + timeout_s
     static, context = (), {}
-    exception_path = Path(__file__).resolve().parents[3]/'reports/next_phases/phase4_rerun/fix11_12_scope/run_health_exceptions.json'
-    exceptions = json.loads(exception_path.read_text())['exceptions']
+    exceptions = exception_rules()
+    tree = tree or ('patched' if getattr(container,'_patch_applied',False) else 'base')
     task = getattr(container,'instance_id','')
     def remaining(limit=None):
         value = max(0.001, deadline-time.monotonic())
@@ -508,10 +508,10 @@ def validate_in_container(container, tests, runner, *, timeout_s=1800):
         if receipt.get("tests_executed") != 0:
             raise RuntimeError("collection receipt missing zero-execution assertion")
         primary = merge_native(static, receipt["ids"])
-        merged = contain_collection(static, primary, task, exceptions)
+        merged = contain_collection(static, primary, task, exceptions,tree=tree)
         return ValidationPass(
             merged, duration_s=time.monotonic() - started, groups=tuple(receipt["groups"]), context=context,
-            stage_health=collection_stages(task,ids,receipt,exceptions,primary)
+            stage_health=collection_stages(task,ids,receipt,exceptions,primary,tree=tree)
         )
     except (TimeoutError, RuntimeError, ValueError, OSError) as exc:
         if isinstance(exc, TimeoutError):
@@ -531,7 +531,7 @@ def validate_in_container(container, tests, runner, *, timeout_s=1800):
                 merged = merge_native(static, receipt["ids"])
                 return ValidationPass(merged,
                     duration_s=time.monotonic()-started, groups=tuple(receipt["groups"]), context=context,
-                    stage_health=collection_stages(task,ids,receipt,exceptions,merged))
+                    stage_health=collection_stages(task,ids,receipt,exceptions,merged,tree=tree))
         status = "NOT_REACHED" if isinstance(exc, TimeoutError) else classify_collector_failure(str(exc))
         records = tuple(
             IDValidation(
@@ -546,7 +546,7 @@ def validate_in_container(container, tests, runner, *, timeout_s=1800):
             for t in tests
         )
         if static and status == 'COLLECTION_ERROR':
-            records = contain_collection(static, records, task, exceptions)
+            records = contain_collection(static, records, task, exceptions,tree=tree)
         return ValidationPass(records=records, errors=() if any(r.collector_fallback for r in records) else (str(exc),),
             duration_s=time.monotonic() - started, context=context,
             stage_health=({'stage':'native_collection','status':status,'input_count':len(tests),

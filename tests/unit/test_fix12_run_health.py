@@ -89,10 +89,10 @@ def test_collector_crash_falls_back_only_to_validated_same_family():
 
 def test_exception_scope_is_exact_and_never_a_blanket_task_exemption():
     exception={'instance_id':'task','module':'tests/gis_tests/a.py','stages':['native_collection'],
-               'required_message':'GIS backend required','cause':'GIS_GUARD'}
-    assert allowed_failure([exception],'task','tests/gis_tests/a.py','native_collection','GIS backend required')=='GIS_GUARD'
-    assert allowed_failure([exception],'task','tests/other.py','native_collection','GIS backend required') is None
-    assert allowed_failure([exception],'task','tests/gis_tests/a.py','runner_startup','GIS backend required') is None
+               'required_message':'GIS backend required','cause':'GIS_GUARD','trees':['base']}
+    assert allowed_failure([exception],'task','tests/gis_tests/a.py','native_collection','GIS backend required',tree='base')=='GIS_GUARD'
+    assert allowed_failure([exception],'task','tests/other.py','native_collection','GIS backend required',tree='base') is None
+    assert allowed_failure([exception],'task','tests/gis_tests/a.py','runner_startup','GIS backend required',tree='base') is None
 
 
 def test_zero_output_halts_but_empty_input_and_exact_exception_are_explicit():

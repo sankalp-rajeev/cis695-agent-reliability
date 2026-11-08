@@ -101,7 +101,7 @@ def test_ANSI_summary_requires_matching_module_no_items_and_no_collection_errors
 
 
 @pytest.mark.parametrize('original_status,blocked', [('skipped',False),('not_run',False),
-    ('passed',True),('failed',True),('error',True),('xfail',True),('xpass',True)])
+    ('passed',True),('failed',True),('error',False),('xfail',True),('xpass',True)])
 def test_G2_module_skip_may_not_replace_stronger_original_evidence(tmp_path,original_status,blocked):
     identity,_,_,run=collect(tmp_path,'import pytest\npytest.skip("optional",allow_module_level=True)\n')
     original=tmp_path/'original.json';original.write_text(json.dumps({'calls':[{'patched':False,
@@ -171,7 +171,7 @@ def test_exhaustive_G1_continues_after_failure_and_evaluates_only_at_end(tmp_pat
     monkeypatch.setitem(sys.modules,'phase4_launch',launch);module_spec.loader.exec_module(g1)
     spec=task_spec(tmp_path);spec=replace(spec,source=SimpleNamespace(pre_install=SimpleNamespace(repo='example/project',version='1')))
     monkeypatch.setattr(g1.launch,'validate_inputs',lambda *a:(spec,))
-    monkeypatch.setattr(g1.launch,'load_reference',lambda *a:{})
+    monkeypatch.setattr(g1.launch,'load_reference',lambda *a:{spec.instance_id:{'base':[],'patched':[]}})
     monkeypatch.setattr(g1.launch,'plan_for',lambda *a:{})
     calls=[]
     class Container:

@@ -200,3 +200,53 @@ def test_guarded_pair_records_and_reraises_interruptions(tmp_path,monkeypatch,ex
     record=json.loads(path.read_text())
     assert record['interruption']==exception.__name__ and record['status']=='INTERRUPTED'
     assert not record['gate_evaluated'] and caught.value.g1_record==record
+
+
+def test_exception_matching_requires_tree_and_registered_stage():
+    from reliability.verifier.run_health import allowed_failure
+    row=dict(instance_id='task',module='tests/test_real.py',stages=['module_execution'],trees=['base'],
+        required_message='known dependency',cause='KNOWN')
+    assert allowed_failure([row],'task',row['module'],'module_execution','known dependency',tree='base')=='KNOWN'
+    assert allowed_failure([row],'task',row['module'],'module_execution','known dependency',tree='patched') is None
+    assert allowed_failure([row],'task',row['module'],'native_collection','known dependency',tree='base') is None
+    assert allowed_failure([row],'task',row['module'],'module_execution','known dependency') is None
+
+
+@pytest.mark.parametrize('tree,stage,allowed',[('base','module_execution',True),('patched','module_execution',False),('base','native_collection',False)])
+def test_module_execution_exception_on_real_collection_and_capture_paths(tmp_path,monkeypatch,tree,stage,allowed):
+    from tests.unit.test_fix14_health import LocalContainer
+    from reliability.verifier.container import ContainerTestExecutor
+    from reliability.verifier.selection import TestRunner
+    import reliability.verifier.run_health as health
+    import subprocess
+    root=tmp_path/'repo';root.mkdir();subprocess.run(['git','init','-q'],cwd=root,check=True)
+    marker=root/'body_ran'
+    (root/'test_real.py').write_text('import sys\nif "--collect-only" not in sys.argv:\n    raise RuntimeError("known module execution guard")\ndef test_body():\n    open("body_ran","w").write("bad")\n')
+    class Container(LocalContainer):
+        def set_patched(self,value):self._patch_applied=value
+        def generated_snapshot(self,*a,**k):return {'files':{}}
+    row=dict(instance_id='fixture',module='test_real.py',stages=[stage],trees=['base'],
+        required_message='known module execution guard',cause='KNOWN')
+    monkeypatch.setattr(health,'exception_rules',lambda:[row])
+    run=ContainerTestExecutor(Container(root),runner=TestRunner('pytest','fixture'),evidence_dir=tmp_path/'evidence').run(
+        ('test_real.py::test_body',),patched=tree=='patched',timeout_s=30)
+    stages=[s for s in run.stage_health if s['stage']=='module_execution']
+    assert stages and bool(stages[-1]['allowed_exception'])==allowed
+    assert not marker.exists() and run.results[0].status is TestStatus.COLLECTION_ERROR
+    assert health.zero_output(run.stage_health)['halt']==(not allowed)
+    record=health_for_run('fixture',tree,run,{'admitted_ids':[],'g1_collected_ids':['test_real.py::test_body']})
+    assert record['G1_collected_guard']['halt']
+
+
+@pytest.mark.parametrize('tree,allowed',[('base',True),('patched',False)])
+def test_native_collection_exception_tree_scope_on_real_driver(tmp_path,monkeypatch,tree,allowed):
+    from tests.unit.test_fix14_health import repository
+    import reliability.verifier.collection as collection_module
+    from reliability.verifier.selection import TestRunner
+    container=repository(tmp_path)
+    (tmp_path/'test_real.py').write_text('raise RuntimeError("known native guard")\ndef test_body(): raise AssertionError("body ran")\n')
+    row=dict(instance_id='fixture',module='test_real.py',stages=['native_collection'],trees=['base'],required_message='known native guard',cause='KNOWN')
+    monkeypatch.setattr(collection_module,'exception_rules',lambda:[row])
+    receipt=collection_module.validate_in_container(container,('test_real.py::test_body',),TestRunner('pytest','fixture'),tree=tree)
+    assert bool(receipt.stage_health[0]['allowed_exception'])==allowed
+    assert receipt.records[0].collector_fallback==(not allowed)

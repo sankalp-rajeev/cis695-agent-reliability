@@ -29,6 +29,7 @@ from pathlib import Path
 from typing import Self
 
 from reliability.env import clean_env
+from reliability.verifier.accounting import ADMITTED_STATUSES
 from reliability.verifier.collection import validate_in_container
 from reliability.verifier.node_ids import normalize_pytest_id
 from reliability.verifier.regression import RunResult, TestResult, TestStatus
@@ -492,9 +493,30 @@ class ContainerTestExecutor:
             return min(value, limit) if limit is not None else value
         def finish(result, validation):
             mapped = apply_validation(result, validation)
-            allowed_modules = {s.get('module') for s in validation.stage_health if s.get('allowed_exception')}
-            eligible = [r for r in validation.records if not r.native_proven_absent
-                        and r.selected_id.split('::',1)[0] not in allowed_modules]
+            from reliability.verifier.run_health import allowed_failure, exception_rules, module_execution_stages
+            tree='patched' if patched else 'base'
+            task=getattr(self.container,'instance_id','')
+            exceptions=exception_rules()
+            execution_stages=module_execution_stages(task,tree,runner.name,result,exceptions)
+            stages.extend(execution_stages)
+            allowed_execution={t for stage in execution_stages if stage.get('allowed_exception') for t in stage['input_ids']}
+            for stage in stages:
+                if stage['stage']=='execution' and allowed_execution:
+                    stage['original_input_count']=stage['input_count']
+                    stage['input_count']=max(0,stage['input_count']-len(allowed_execution))
+                    stage['excluded_prelisted_ids']=sorted(allowed_execution)
+            by_id=result.by_id()
+            allowed_native={r.selected_id for r in validation.records if r.unavailable and allowed_failure(
+                exceptions,task,r.selected_id.split('::',1)[0],'native_collection',r.message,tree=tree)}
+            eligible=[]
+            for record in validation.records:
+                if record.native_proven_absent or record.selected_id in allowed_native:
+                    continue
+                gaps={t for t in record.runnable_ids if t not in by_id or by_id[t].status not in ADMITTED_STATUSES}
+                if gaps and gaps <= allowed_execution:
+                    continue
+                eligible.append(record)
+            allowed_modules={s.get('module') for s in (*validation.stage_health,*execution_stages) if s.get('allowed_exception')}
             if not any(s['stage']=='execution' for s in stages):
                 stages.append({'stage':'execution','status':'NOT_STARTED' if validation.runnable_ids else 'EMPTY_INPUT',
                     'input_count':len(validation.runnable_ids),'output_count':0})
@@ -514,7 +536,7 @@ class ContainerTestExecutor:
         stages.append({'stage':'patch_application','status':'APPLIED' if patched else 'BASE_READY','input_count':1,'output_count':1})
         runner = self.runner or TestRunner("pytest", "default")
         validation = audit.stage('native_collection', lambda: validate_in_container(
-            self.container, tests, runner, timeout_s=remaining()))
+            self.container, tests, runner, timeout_s=remaining(),tree='patched' if patched else 'base'))
         actual = validation.context.get('runner', runner.name)
         runner = TestRunner(actual, validation.context.get('runner_evidence', runner.evidence))
         validation = replace(validation, context={**validation.context,
@@ -640,7 +662,6 @@ class ContainerTestExecutor:
             infrastructure_errors=tuple(errors), evidence_files=files,
             evidence_sha256=digests, budget_s=timeout_s,
         )
-        from reliability.verifier.accounting import ADMITTED_STATUSES
         stages.append({'stage':'execution','status':'NOT_REACHED' if timed_out else 'COMPLETE',
             'input_count':len(tests),'output_count':sum(r.status in ADMITTED_STATUSES for r in parsed.results)})
         return finish(parsed, validation)
