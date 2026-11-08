@@ -11,6 +11,7 @@ from pathlib import Path
 
 import phase4_launch as launch
 from reliability.verifier.collection import validate_in_container
+from reliability.verifier.g1_reference import project_collection
 from reliability.verifier.run_health import effective_runner, runner_startup, zero_output
 from reliability.verifier.source_integrity import GeneratedInputAudit
 
@@ -32,7 +33,7 @@ def proposed_failure_category(stage):
     return 'stage_error_requires_review'
 
 
-def audit_pair(spec, patched, output):
+def audit_pair(spec, patched, output, reference=None):
     tree='patched' if patched else 'base'
     folder=output/'tasks'/spec.instance_id/tree
     stages=[];audit=None;validation=None;start=time.monotonic()
@@ -41,7 +42,7 @@ def audit_pair(spec, patched, output):
     try:
         folder.mkdir(parents=True)
         with launch.FrozenContainer(spec.instance_id,spec.patch_path.read_text(),image=spec.image_id,
-            experiment_id='phase4_fix14_G1',source_spec=spec.source,
+            experiment_id='phase4_fix15_G1',source_spec=spec.source,
             source_receipt_path=folder/'pristine_source_receipt.json') as container:
             stages.append({'stage':'pristine_source','status':'VERIFIED','input_count':1,'output_count':1})
             audit=GeneratedInputAudit(container.generated_snapshot)
@@ -72,6 +73,12 @@ def audit_pair(spec, patched, output):
         'INVALID_ID_slots':sum(r.to_dict()['validation_status']=='INVALID_ID' for r in validation.records) if validation else None,
         'native_collected_ids':[r.selected_id for r in validation.records if r.valid and not r.collector_fallback and not r.module_skip_reason] if validation else [],
         'zero_body_commands_only':True,'duration_s':time.monotonic()-start}
+    if reference is not None:
+        projection = project_collection(spec.instance_id,tree,validation.to_dict(),reference) if validation else {'halt':True,'G2':{'halt':True,'reason':'native receipt unavailable'},'excluded_spurious_ids':[]}
+        health['G2_projection']=projection
+        health['G2']=projection['G2']
+        if projection['halt']:
+            health['status']='BLOCKED'
     # Each persistence error belongs to this pair, even when its folder is unwritable.
     for name, value in [('generated_inputs.json', audit.to_dict() if audit else None), ('health.json', health)]:
         if value is None:
@@ -86,9 +93,9 @@ def audit_pair(spec, patched, output):
     return health
 
 
-def guarded_pair(spec, patched, output):
+def guarded_pair(spec, patched, output, reference=None):
     try:
-        return audit_pair(spec, patched, output)
+        return audit_pair(spec, patched, output, reference)
     except BaseException as exc:
         # Even receipt construction and writes are inside the per-pair boundary.
         stage = {'stage':'pair_error','status':'ERROR','input_count':1,'output_count':0,'message':repr(exc)}
@@ -117,7 +124,7 @@ def compare_invalid_slots(before, output, rows):
         writer=csv.DictWriter(stream,fieldnames=list(comparison[0]),lineterminator='\n')
         writer.writeheader();writer.writerows(comparison)
     launch.write(output/'comparison_inputs.json',{'before_collection_sha256':inputs,
-        'before':'Fix 13 G1 collection receipts only','after':'Fix 14 G1 collection receipts only',
+        'before':str(before),'after':'Fix 15 G1 collection receipts only',
         'attempt2_outcomes_read':False,'tests_executed':0})
 
 
@@ -126,14 +133,16 @@ def main(output, before=None):
         raise ValueError('Use a fresh G1 directory')
     specs=launch.validate_inputs(launch.DEFAULT_FROZEN,Path('/home/sankalp/cg_repos/task_archives'),
         launch.ROOT/'runs/phase4_fix10_provenance/swebench-4.0.4-py3-none-any.whl',launch.PROVENANCE,launch.PREFLIGHT)
-    launch.load_reference()
+    references=launch.load_reference()
+    if set(references) != {s.instance_id for s in specs}:
+        raise ValueError("G1 requires the frozen reference for every task")
     output.mkdir(parents=True)
     launch.write(output/'plan.json',launch.plan_for(specs))
     rows=[];failures=[];started=time.monotonic()
     for spec in specs:
         for patched in (False,True):
             tree='patched' if patched else 'base';folder=output/'tasks'/spec.instance_id/tree
-            health=guarded_pair(spec,patched,output)
+            health=guarded_pair(spec,patched,output,references[spec.instance_id][tree])
             stages=health['stages'];collector_status=health['collector_status'];g3=health['G3']
             fallback=health['COLLECTOR_FALLBACK_slots']
             for stage in stages:
@@ -149,8 +158,17 @@ def main(output, before=None):
                 'status':health['status'],'collector_status':collector_status,'fallback_slots':fallback,
                 'zero_output_halt':g3['halt'],'module_skipped_slots':health['module_skipped_slots'],
                 'INVALID_ID_slots':health['INVALID_ID_slots'],
+                'G2_projected_halt':health.get('G2_projection',{}).get('halt',True),
                 'tests_executed':0,'duration_s':health['duration_s']}
             rows.append(row);print(json.dumps({'event':'G1_end',**row}),flush=True)
+    exclusions=[]
+    for spec in specs:
+        for tree in ('base','patched'):
+            health_path=output/'tasks'/spec.instance_id/tree/'health.json'
+            if health_path.exists():
+                evidence=json.loads(health_path.read_text())
+                exclusions.extend(dict(instance_id=spec.instance_id,tree=tree,selected_id=t) for t in evidence.get('G2_projection',{}).get('excluded_spurious_ids',()))
+    launch.write(output/'reference_hygiene.json',{'exclusions':exclusions,'tree_id_slots':len(exclusions),'unique_ids':len({r['selected_id'] for r in exclusions})})
     with (output/'tasks.csv').open('w',newline='') as stream:
         writer=csv.DictWriter(stream,fieldnames=list(rows[0]),lineterminator='\n');writer.writeheader();writer.writerows(rows)
     with (output/'failures.csv').open('w',newline='') as stream:
@@ -160,6 +178,7 @@ def main(output, before=None):
         compare_invalid_slots(before,output,rows)
     summary={'launch_allowed':len(rows)==len(specs)*2 and all(r['status']=='READY' for r in rows),'task_tree_count':len(rows),
         'exhaustive':True,'gate_evaluated_after_all_pairs':True,
+        'projected_halts':[{'task':r['instance_id'],'tree':r['tree']} for r in rows if r['G2_projected_halt']],
         'blocked_task_trees':[{'task':r['instance_id'],'tree':r['tree']} for r in rows if r['status']!='READY'],
         'tests_executed':0,'wall_s':time.monotonic()-started,'correctness_labels_read':False,
         'attempt2_outcomes_read':False}
@@ -178,6 +197,6 @@ def main(output, before=None):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',type=Path,required=True)
-    parser.add_argument('--before',type=Path,default=launch.ROOT/'reports/next_phases/phase4_rerun/fix13_g1')
+    parser.add_argument('--before',type=Path,default=launch.ROOT/'reports/next_phases/phase4_rerun/fix14_g1')
     args=parser.parse_args()
     raise SystemExit(main(args.output,args.before))

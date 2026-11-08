@@ -272,7 +272,7 @@ def test_G1_records_per_pair_failures_and_still_visits_every_pair(tmp_path,monke
     spec=replace(task_spec(tmp_path),source=SimpleNamespace(pre_install=SimpleNamespace(repo='example/repo',version='1')))
     specs=[spec,replace(spec,instance_id='second')]
     monkeypatch.setattr(launch,'validate_inputs',lambda *args:specs)
-    monkeypatch.setattr(launch,'load_reference',lambda *args:{})
+    monkeypatch.setattr(launch,'load_reference',lambda *args:{s.instance_id:{'base':[],'patched':[]} for s in specs})
     monkeypatch.setattr(launch,'plan_for',lambda specs:{})
     visited=[]
     class Container(ContainerShell):

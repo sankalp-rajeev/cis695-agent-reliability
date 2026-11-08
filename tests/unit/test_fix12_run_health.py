@@ -178,7 +178,7 @@ def test_G1_runs_both_trees_without_instantiating_an_execution_adapter(tmp_path,
     from dataclasses import replace
     fake=replace(fake,source=SimpleNamespace(pre_install=SimpleNamespace(repo='example/project',version='1')))
     monkeypatch.setattr(module.launch,'validate_inputs',lambda *a:(fake,))
-    monkeypatch.setattr(module.launch,'load_reference',lambda *a:{})
+    monkeypatch.setattr(module.launch,'load_reference',lambda *a:{fake.instance_id:{'base':[],'patched':[]}})
     monkeypatch.setattr(module.launch,'plan_for',lambda *a:{})
     monkeypatch.setattr(module.launch,'ContainerTestExecutor',lambda *a,**k:pytest.fail('G1 instantiated execution adapter'))
     patches=[]
