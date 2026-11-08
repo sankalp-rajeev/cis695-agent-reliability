@@ -4,6 +4,7 @@
 import argparse
 import csv
 import hashlib
+import gzip
 import json
 import time
 from pathlib import Path
@@ -31,7 +32,96 @@ def proposed_failure_category(stage):
     return 'stage_error_requires_review'
 
 
-def main(output):
+def audit_pair(spec, patched, output):
+    tree='patched' if patched else 'base'
+    folder=output/'tasks'/spec.instance_id/tree
+    stages=[];audit=None;validation=None;start=time.monotonic()
+    deadline=start+1800
+    print(json.dumps({'event':'G1_start','task':spec.instance_id,'tree':tree}),flush=True)
+    try:
+        folder.mkdir(parents=True)
+        with launch.FrozenContainer(spec.instance_id,spec.patch_path.read_text(),image=spec.image_id,
+            experiment_id='phase4_fix14_G1',source_spec=spec.source,
+            source_receipt_path=folder/'pristine_source_receipt.json') as container:
+            stages.append({'stage':'pristine_source','status':'VERIFIED','input_count':1,'output_count':1})
+            audit=GeneratedInputAudit(container.generated_snapshot)
+            audit.stage('patch_application',lambda patched=patched:container.set_patched(patched))
+            stages.append({'stage':'patch_application','status':'APPLIED' if patched else 'BASE_READY','input_count':1,'output_count':1})
+            validation=audit.stage('native_collection',lambda spec=spec,deadline=deadline:validate_in_container(container,spec.tests,spec.runner,timeout_s=max(0.001,deadline-time.monotonic())))
+            stages.extend(validation.stage_health)
+            launch.write(folder/'collection.json',validation.to_dict())
+            if time.monotonic() >= deadline:
+                stages.append({'stage':'runner_startup','status':'NOT_REACHED','input_count':1,'output_count':0,'tests_executed':0})
+            else:
+                stages.append(audit.stage('runner_startup',lambda spec=spec,deadline=deadline:runner_startup(container,effective_runner(spec),timeout_s=min(60,deadline-time.monotonic()))))
+            fallback=sum(r.collector_fallback for r in validation.records)
+            collector_status=validation.to_dict()['collector_status']
+            unexpected=[s for s in stages if s['status'] in ('COLLECTION_ERROR','RUNNER_UNAVAILABLE','NOT_REACHED') and not s.get('allowed_exception')]
+            g3=zero_output(stages)
+            ok=not unexpected and not g3['halt']
+    except BaseException as exc:  # noqa: BLE001
+        stages.append({'stage':'stage_error','status':'ERROR','input_count':1,'output_count':0,'message':repr(exc)})
+        fallback=0;collector_status='BLOCKED_UPSTREAM';g3=zero_output(stages);ok=False
+    for name in ('pristine_source','patch_application','native_collection','runner_startup'):
+        if not any(s['stage']==name for s in stages):
+            stages.append({'stage':name,'status':'BLOCKED_UPSTREAM','input_count':0,'output_count':0})
+    health={'task':spec.instance_id,'tree':tree,'status':'READY' if ok else 'BLOCKED',
+        'collector_status':collector_status,'stages':stages,'COLLECTOR_FALLBACK_slots':fallback,
+        'G2':'NOT_EVALUATED_NO_TEST_EXECUTION','G3':g3,'tests_executed':0,
+        'module_skipped_slots':validation.to_dict()['module_skipped_slots'] if validation else 0,
+        'INVALID_ID_slots':sum(r.to_dict()['validation_status']=='INVALID_ID' for r in validation.records) if validation else None,
+        'native_collected_ids':[r.selected_id for r in validation.records if r.valid and not r.collector_fallback and not r.module_skip_reason] if validation else [],
+        'zero_body_commands_only':True,'duration_s':time.monotonic()-start}
+    # Each persistence error belongs to this pair, even when its folder is unwritable.
+    for name, value in [('generated_inputs.json', audit.to_dict() if audit else None), ('health.json', health)]:
+        if value is None:
+            continue
+        try:
+            launch.write(folder/name, value)
+        except BaseException as exc:
+            stages.append({'stage':'pair_recording','status':'ERROR','input_count':1,'output_count':0,
+                           'message':name+': '+repr(exc)})
+            health['status']='BLOCKED'
+            health['G3']=zero_output(stages)
+    return health
+
+
+def guarded_pair(spec, patched, output):
+    try:
+        return audit_pair(spec, patched, output)
+    except BaseException as exc:
+        # Even receipt construction and writes are inside the per-pair boundary.
+        stage = {'stage':'pair_error','status':'ERROR','input_count':1,'output_count':0,'message':repr(exc)}
+        return {'task':spec.instance_id,'tree':'patched' if patched else 'base','status':'BLOCKED',
+                'collector_status':'BLOCKED_UPSTREAM','stages':[stage], 'COLLECTOR_FALLBACK_slots':0,
+                'module_skipped_slots':0,'INVALID_ID_slots':None,'native_collected_ids':[],
+                'G2':'NOT_EVALUATED_NO_TEST_EXECUTION','G3':zero_output([stage]),
+                'tests_executed':0,'zero_body_commands_only':True,'duration_s':0}
+
+
+def compare_invalid_slots(before, output, rows):
+    comparison=[];inputs={}
+    for row in rows:
+        path=before/'tasks'/row['instance_id']/row['tree']/'collection.json'
+        path=path if path.exists() else path.with_suffix('.json.gz')
+        raw=path.read_bytes()
+        inputs[str(path)]=hashlib.sha256(raw).hexdigest()
+        receipt=json.loads(gzip.decompress(raw) if path.suffix == '.gz' else raw)
+        previous=sum(r['validation_status']=='INVALID_ID' for r in receipt['records'])
+        current=row['INVALID_ID_slots']
+        comparison.append({'instance_id':row['instance_id'],'tree':row['tree'],
+            'INVALID_ID_before':previous,'INVALID_ID_after':current,
+            'delta':current-previous if current is not None else None,
+            'after_collection_available':current is not None})
+    with (output/'invalid_id_comparison.csv').open('w',newline='') as stream:
+        writer=csv.DictWriter(stream,fieldnames=list(comparison[0]),lineterminator='\n')
+        writer.writeheader();writer.writerows(comparison)
+    launch.write(output/'comparison_inputs.json',{'before_collection_sha256':inputs,
+        'before':'Fix 13 G1 collection receipts only','after':'Fix 14 G1 collection receipts only',
+        'attempt2_outcomes_read':False,'tests_executed':0})
+
+
+def main(output, before=None):
     if output.exists():
         raise ValueError('Use a fresh G1 directory')
     specs=launch.validate_inputs(launch.DEFAULT_FROZEN,Path('/home/sankalp/cg_repos/task_archives'),
@@ -43,43 +133,9 @@ def main(output):
     for spec in specs:
         for patched in (False,True):
             tree='patched' if patched else 'base';folder=output/'tasks'/spec.instance_id/tree
-            folder.mkdir(parents=True)
-            stages=[];audit=None;start=time.monotonic()
-            deadline=start+1800
-            print(json.dumps({'event':'G1_start','task':spec.instance_id,'tree':tree}),flush=True)
-            try:
-                with launch.FrozenContainer(spec.instance_id,spec.patch_path.read_text(),image=spec.image_id,
-                    experiment_id='phase4_fix13_G1',source_spec=spec.source,
-                    source_receipt_path=folder/'pristine_source_receipt.json') as container:
-                    stages.append({'stage':'pristine_source','status':'VERIFIED','input_count':1,'output_count':1})
-                    audit=GeneratedInputAudit(container.generated_snapshot)
-                    audit.stage('patch_application',lambda patched=patched:container.set_patched(patched))
-                    stages.append({'stage':'patch_application','status':'APPLIED' if patched else 'BASE_READY','input_count':1,'output_count':1})
-                    validation=audit.stage('native_collection',lambda spec=spec,deadline=deadline:validate_in_container(container,spec.tests,spec.runner,timeout_s=max(0.001,deadline-time.monotonic())))
-                    stages.extend(validation.stage_health)
-                    launch.write(folder/'collection.json',validation.to_dict())
-                    if time.monotonic() >= deadline:
-                        stages.append({'stage':'runner_startup','status':'NOT_REACHED','input_count':1,'output_count':0,'tests_executed':0})
-                    else:
-                        stages.append(audit.stage('runner_startup',lambda spec=spec,deadline=deadline:runner_startup(container,effective_runner(spec),timeout_s=min(60,deadline-time.monotonic()))))
-                    fallback=sum(r.collector_fallback for r in validation.records)
-                    collector_status=validation.to_dict()['collector_status']
-                    unexpected=[s for s in stages if s['status'] in ('COLLECTION_ERROR','RUNNER_UNAVAILABLE','NOT_REACHED') and not s.get('allowed_exception')]
-                    g3=zero_output(stages)
-                    ok=not unexpected and not g3['halt']
-            except Exception as exc:  # noqa: BLE001
-                stages.append({'stage':'stage_error','status':'ERROR','input_count':1,'output_count':0,'message':repr(exc)})
-                fallback=0;collector_status='BLOCKED_UPSTREAM';g3=zero_output(stages);ok=False
-            for name in ('pristine_source','patch_application','native_collection','runner_startup'):
-                if not any(s['stage']==name for s in stages):
-                    stages.append({'stage':name,'status':'BLOCKED_UPSTREAM','input_count':0,'output_count':0})
-            health={'task':spec.instance_id,'tree':tree,'status':'READY' if ok else 'BLOCKED',
-                'collector_status':collector_status,'stages':stages,'COLLECTOR_FALLBACK_slots':fallback,
-                'G2':'NOT_EVALUATED_NO_TEST_EXECUTION','G3':g3,'tests_executed':0,
-                'module_skipped_slots':validation.to_dict()['module_skipped_slots'] if collector_status!='BLOCKED_UPSTREAM' else 0,
-                'zero_body_commands_only':True,'duration_s':time.monotonic()-start}
-            if audit is not None:launch.write(folder/'generated_inputs.json',audit.to_dict())
-            launch.write(folder/'health.json',health)
+            health=guarded_pair(spec,patched,output)
+            stages=health['stages'];collector_status=health['collector_status'];g3=health['G3']
+            fallback=health['COLLECTOR_FALLBACK_slots']
             for stage in stages:
                 failed = stage['status'] in ('COLLECTION_ERROR','RUNNER_UNAVAILABLE','NOT_REACHED','ERROR')
                 if failed or zero_output([stage])['halt']:
@@ -92,6 +148,7 @@ def main(output):
                 'repo':spec.source.pre_install.repo,'version':spec.source.pre_install.version,
                 'status':health['status'],'collector_status':collector_status,'fallback_slots':fallback,
                 'zero_output_halt':g3['halt'],'module_skipped_slots':health['module_skipped_slots'],
+                'INVALID_ID_slots':health['INVALID_ID_slots'],
                 'tests_executed':0,'duration_s':health['duration_s']}
             rows.append(row);print(json.dumps({'event':'G1_end',**row}),flush=True)
     with (output/'tasks.csv').open('w',newline='') as stream:
@@ -99,6 +156,8 @@ def main(output):
     with (output/'failures.csv').open('w',newline='') as stream:
         fields=['instance_id','tree','stage','module','inputs','outputs','status','allowed_exception','diagnostic','proposed_category']
         writer=csv.DictWriter(stream,fieldnames=fields,lineterminator='\n');writer.writeheader();writer.writerows(failures)
+    if before is not None:
+        compare_invalid_slots(before,output,rows)
     summary={'launch_allowed':len(rows)==len(specs)*2 and all(r['status']=='READY' for r in rows),'task_tree_count':len(rows),
         'exhaustive':True,'gate_evaluated_after_all_pairs':True,
         'blocked_task_trees':[{'task':r['instance_id'],'tree':r['tree']} for r in rows if r['status']!='READY'],
@@ -119,4 +178,6 @@ def main(output):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',type=Path,required=True)
-    raise SystemExit(main(parser.parse_args().output))
+    parser.add_argument('--before',type=Path,default=launch.ROOT/'reports/next_phases/phase4_rerun/fix13_g1')
+    args=parser.parse_args()
+    raise SystemExit(main(args.output,args.before))

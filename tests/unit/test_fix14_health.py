@@ -2,7 +2,6 @@
 import json
 import os
 import sys
-import shlex
 import subprocess
 from pathlib import Path
 
@@ -86,6 +85,8 @@ def test_empty_original_uses_G1_native_set_and_halts_on_loss(tmp_path):
     assert health['G2']['reference_source']=='G1_NATIVE_COLLECTION'
     assert health['G2']['halt'] and health['G2']['lost_ids']==list(spec.tests)
     assert health_for_run('task','base',run,[])['G2']['missing_G1_reference']
+    # A broken executor cannot bypass the sealed G1 set by dropping requested_tests.
+    assert health_for_run('task','base',RunResult(),refs['task']['base'])['G2']['halt']
 
 
 import pytest
@@ -189,6 +190,7 @@ def test_non_test_module_requires_native_directory_proof_without_explicit_import
     record=validation.records[0]
     assert record.reason=='not_a_test_module' and record.native_proven_absent
     assert validation.groups[0]['command'][-1]=='tests/functional'
+    assert validation.groups[0]['directory_collection']['file_collected'] is False
     assert all(g['command'][-1]!='tests/functional/consider_using_with_open.py' for g in validation.groups)
     assert 'lint input was imported' not in record.message
 
@@ -201,6 +203,8 @@ def test_native_directory_custom_hook_overrides_static_file_pattern(tmp_path):
     validation=validate_in_container(container,(identity,),TestRunner('pytest','fixture'))
     assert validation.records[0].valid and validation.records[0].native_disagrees
     assert validation.groups[0]['command'][-1]=='.'
+    assert validation.groups[0]['directory_collection']['command'][-1]=='.'
+    assert validation.groups[0]['directory_collection']['file_collected']
 
 
 def test_SymPy_disabled_is_observed_inside_native_test_file(tmp_path):
@@ -216,3 +220,176 @@ def test_SymPy_disabled_is_observed_inside_native_test_file(tmp_path):
     record=json.loads(proc.stdout)['ids'][identity]
     assert record['collection_status']=='MODULE_SKIPPED' and record['module_skip_reason']=='disabled'
     assert record['message']=='module_skip: disabled' and not canary.exists()
+
+
+def test_RunHealthError_task1_stops_task2_end_to_end_without_fake_health_records(tmp_path,monkeypatch):
+    from dataclasses import replace
+    spec=task_spec(tmp_path)
+    spec=replace(spec,instance_id='task1',tests=('test_real.py::helper',))
+    other=replace(spec,instance_id='task2')
+    root=tmp_path/'repository';root.mkdir()
+    subprocess.run(['git','init','-q'],cwd=root,check=True)
+    (root/'test_real.py').write_text('def helper(): raise AssertionError("body ran")\ndef test_real(): raise AssertionError("body ran")\n')
+    started=[]
+    class RealCollectionContainer(LocalContainer):
+        def __init__(self,instance_id,*args,**kwargs):
+            super().__init__(root)
+            started.append(instance_id);self.instance_id=instance_id
+            self.source_integrity={'status':'VERIFIED'}
+        def __enter__(self):return self
+        def __exit__(self,*args):pass
+        def set_patched(self,value):pass
+        def generated_snapshot(self,*args,**kwargs):return {'files':{}}
+    monkeypatch.setattr(launch,'FrozenContainer',RealCollectionContainer)
+    monkeypatch.setattr(launch,'ROOT',tmp_path)
+    monkeypatch.setattr(launch,'require_frozen_head',lambda tag:'unit-test-commit')
+    monkeypatch.setattr(launch,'plan_for',lambda specs:{'task_order':[s.instance_id for s in specs]})
+    monkeypatch.setattr(launch,'run_regression',lambda *args,**kwargs:pytest.fail('Scoring after health halt'))
+    output=tmp_path/'runs'/'attempt'
+    reference={s.instance_id:{'base':s.tests,'patched':s.tests} for s in (spec,other)}
+    assert launch.execute([spec,other],output,'unit-freeze',reference)==2
+    assert started==['task1']
+    record=json.loads((output/'health.jsonl').read_text())
+    assert record['halt'] and all(t['G2']['lost_ids']==list(spec.tests) for t in record['trees'])
+    assert json.loads((output/'completion.json').read_text())['status']=='ABORTED_HEALTH'
+    assert not (output/'tasks'/'task2').exists()
+
+
+def G1_module(monkeypatch):
+    import importlib.util
+    monkeypatch.setitem(sys.modules,'phase4_launch',launch)
+    path=Path(__file__).resolve().parents[2]/'scripts/phase4_stage_preflight.py'
+    spec=importlib.util.spec_from_file_location('fix14_G1_tested',path)
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    return module
+
+
+@pytest.mark.parametrize('failure',['mkdir','health_write','base_exception'])
+def test_G1_records_per_pair_failures_and_still_visits_every_pair(tmp_path,monkeypatch,failure):
+    from dataclasses import replace
+    from types import SimpleNamespace
+    module=G1_module(monkeypatch)
+    spec=replace(task_spec(tmp_path),source=SimpleNamespace(pre_install=SimpleNamespace(repo='example/repo',version='1')))
+    specs=[spec,replace(spec,instance_id='second')]
+    monkeypatch.setattr(launch,'validate_inputs',lambda *args:specs)
+    monkeypatch.setattr(launch,'load_reference',lambda *args:{})
+    monkeypatch.setattr(launch,'plan_for',lambda specs:{})
+    visited=[]
+    class Container(ContainerShell):
+        def __init__(self,iid,*args,**kwargs):
+            super().__init__();self.iid=iid
+            if failure=='base_exception' and iid=='task':raise SystemExit('native startup aborted')
+        def set_patched(self,value):visited.append((self.iid,value))
+        def generated_snapshot(self,*args,**kwargs):return {'files':{}}
+    monkeypatch.setattr(launch,'FrozenContainer',Container)
+    from reliability.verifier.collection import ValidationPass
+    monkeypatch.setattr(module,'validate_in_container',lambda *args,**kwargs:ValidationPass())
+    monkeypatch.setattr(module,'runner_startup',lambda *args,**kwargs:{'stage':'runner_startup','status':'COMPLETE','input_count':1,'output_count':1})
+    original_mkdir=Path.mkdir;original_write=launch.write
+    def mkdir(path,*args,**kwargs):
+        if failure=='mkdir' and path.name=='base' and path.parent.name=='task':raise PermissionError('pair directory denied')
+        return original_mkdir(path,*args,**kwargs)
+    def write(path,value):
+        if failure=='health_write' and path.name=='health.json' and path.parent.parent.name=='task':raise OSError('pair receipt denied')
+        return original_write(path,value)
+    monkeypatch.setattr(Path,'mkdir',mkdir);monkeypatch.setattr(launch,'write',write)
+    output=tmp_path/'g1'
+    assert module.main(output)==1
+    summary=json.loads((output/'summary.json').read_text())
+    assert summary['task_tree_count']==4 and summary['exhaustive'] and not summary['launch_allowed']
+    assert ('second',False) in visited and ('second',True) in visited
+    assert 'denied' in (output/'failures.csv').read_text() or 'SystemExit' in (output/'failures.csv').read_text()
+
+
+def test_non_ASCII_parameter_identity_through_real_native_collection(tmp_path):
+    container=repository(tmp_path)
+    (tmp_path/'pytest.ini').write_text('[pytest]\ndisable_test_id_escaping_and_forfeit_all_rights_to_community_support = True\n')
+    (tmp_path/'test_real.py').write_text('import pytest\n@pytest.mark.parametrize("value",[1],ids=["é::()::雪"])\ndef test_param(value): raise AssertionError("body ran")\n')
+    identity='test_real.py::test_param[é::()::雪]'
+    validation=validate_in_container(container,(identity,),TestRunner('pytest','fixture'))
+    assert validation.records[0].valid and validation.runnable_ids==(identity,)
+
+
+def test_confirmation_reference_preserves_initial_expansion_members():
+    from reliability.verifier.collection import ValidationPass
+    from reliability.verifier.validated_run import apply_validation
+    slot='tests/base.py::Base::test_body';member='tests/test_real.py::TestReal::test_body'
+    initial=apply_validation(RunResult(results=(TestResult(member,TestStatus.PASSED),)),
+        ValidationPass((IDValidation(slot,'runnable_test',(member,),expanded=True),)))
+    reference=launch.confirmation_reference(initial,(member,))
+    assert reference['admitted_ids']==[member]
+    missing=RunResult(results=(TestResult(member,TestStatus.INVALID_ID),),requested_tests=(member,))
+    assert health_for_run('task','base',missing,reference)['G2']['halt']
+
+
+def test_native_parent_probe_does_not_create_false_G3_for_cross_module_expansion(tmp_path):
+    from reliability.verifier.run_health import zero_output
+    container=repository(tmp_path)
+    folder=tmp_path/'tests';folder.mkdir();(folder/'__init__.py').write_text('')
+    (folder/'base.py').write_text('class Mixin:\n    def test_body(self): raise AssertionError("body ran")\n')
+    (folder/'test_real.py').write_text('from tests.base import Mixin\nclass TestReal(Mixin): pass\n')
+    identity='tests/base.py::Mixin::test_body'
+    validation=validate_in_container(container,(identity,),TestRunner('pytest','fixture'))
+    assert validation.records[0].valid and validation.records[0].expanded
+    assert validation.runnable_ids==('tests/test_real.py::TestReal::test_body',)
+    assert not zero_output(validation.stage_health)['halt']
+    parent=next(s for s in validation.stage_health if s['module']=='tests/base.py')
+    assert parent['status']=='ALL_PROVEN_INVALID' and parent['input_count']==0
+    assert parent['original_input_count']==1 and parent['proven_absent_count']==1
+
+
+@pytest.mark.parametrize('declaration',['import pytest\n@pytest.fixture',
+    'from pytest import fixture as resource\n@resource()',
+    'import pytest as pt\n@pt.fixture(scope="module")'])
+def test_native_absent_fixture_is_agreed_static_helper_not_collector_fallback(tmp_path,declaration):
+    container=repository(tmp_path)
+    (tmp_path/'test_real.py').write_text(declaration+'\ndef test_fixture(): raise AssertionError("fixture body ran")\n')
+    identity='test_real.py::test_fixture'
+    validation=validate_in_container(container,(identity,),TestRunner('pytest','fixture'))
+    record=validation.records[0]
+    assert record.to_dict()['validation_status']=='INVALID_ID'
+    assert record.native_proven_absent and not record.collector_fallback
+    assert validation.stage_health[0]['status']=='ALL_PROVEN_INVALID'
+
+
+def test_native_absence_disagreement_never_falls_back_as_if_collector_crashed():
+    from reliability.verifier.collection import contain_collection,collection_stages
+    identity='test_real.py::test_body'
+    static=(IDValidation(identity,'runnable_test',(identity,)),)
+    native={'ids':{identity:{'ids':[],'reason':'native_not_found','completed':True,
+                             'collection_status':'COMPLETE','returncode':0}}}
+    merged=merge_native(static,native['ids'])
+    contained=contain_collection(static,merged,'task',())
+    assert contained[0].unavailable and not contained[0].collector_fallback
+    assert collection_stages('task',(identity,),native,(),merged)[0]['status']=='COLLECTION_ERROR'
+
+
+def test_native_directory_positive_discovery_is_followed_by_selected_file_collection(tmp_path):
+    container=repository(tmp_path)
+    (tmp_path/'example.py').write_text('def test_body(): raise AssertionError("body ran")\n')
+    (tmp_path/'test_unselected.py').write_text('import _fix14_missing_unselected_\n')
+    (tmp_path/'conftest.py').write_text('import pytest\ndef pytest_collect_file(file_path,parent):\n    if file_path.name == "example.py":\n        return pytest.Module.from_parent(parent,path=file_path)\n')
+    identity='example.py::test_body'
+    validation=validate_in_container(container,(identity,),TestRunner('pytest','fixture'))
+    assert validation.records[0].valid and not validation.records[0].collector_fallback
+    assert validation.stage_health[0]['status']=='COMPLETE'
+    group=validation.groups[0]
+    assert group['command'][-1]=='example.py' and group['returncode']==0
+    assert group['directory_collection']['file_collected']
+    assert group['directory_collection']['returncode']==2
+    assert group['directory_collection']['collection_errors']
+
+
+@pytest.mark.parametrize('unrelated_error',[False,True])
+def test_directory_doctest_helper_never_gets_explicit_test_module_import(tmp_path,unrelated_error):
+    container=repository(tmp_path)
+    (tmp_path/'pytest.ini').write_text('[pytest]\naddopts = --doctest-modules\nnorecursedirs = driver_files\nfilterwarnings = error::pytest.PytestCollectionWarning\n')
+    (tmp_path/'helper.py').write_text('class TestRunner:\n    def __init__(self): pass\ndef raises():\n    def test_foo(): raise AssertionError("body ran")\n')
+    if unrelated_error:(tmp_path/'test_bad.py').write_text('import _fix14_missing_unselected_\n')
+    identity='helper.py::raises::test_foo'
+    validation=validate_in_container(container,(identity,),TestRunner('pytest','fixture'))
+    record=validation.records[0]
+    assert validation.groups[0]['command'][-1]=='.'
+    assert 'cannot collect test class' not in record.message
+    assert record.unavailable==unrelated_error
+    assert record.native_proven_absent==(not unrelated_error)
