@@ -1,0 +1,35 @@
+{
+  "status": "ABORTED_INTEGRITY",
+  "freeze_commit": "f840ce93f52d0a09462bc69124c00f3545b50519",
+  "no_executor_changes": true,
+  "input_sha256": {
+    "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/src/reliability/verifier/collection.py": "e37c760a601701085246a4a4eba0e87ca6e755d18fbc8ed3a88a31cb3c72381e",
+    "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/reports/next_phases/phase4_plan.md": "5bcebe60d3767861b7dd1d44603d76cd5aa7d673934bd49ff4fd2999cc9c82de",
+    "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/reports/next_phases/phase3_fix2/native_FAIL_evidence.csv": "34cb40ebb13fb14931b977119365951b5fa872b60a6b4619bff6beb22ee5fcd6",
+    "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/reports/next_phases/phase4_rerun/fix10_provenance/dataset_projection.json": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+    "/home/sankalp/cg_repos/task_archives/django__django-14631.tar": "f705aef70b484877d0ead66e3c957bfc13fda0e598ae2ba82b43c13fb0b11755"
+  },
+  "report_sha256": {
+    "reports/next_phases/phase4_rerun/attempt2/README.md": "acefdc6cf5751586294dbd7276ef46feb517de67e56bb11a8a95542c199e6d2b",
+    "reports/next_phases/phase4_rerun/attempt2/integrity_stop.json": "56c562ea9afb3d45e0da1d415495b74facfe86250228f624eded057a3ef2928f",
+    "reports/next_phases/phase4_rerun/attempt2/manifest.json": "d55b2c3838e1a495093609d77bbbc8a2ddb2c7a739512fda2e8e1c8c46d96306",
+    "reports/next_phases/phase4_rerun/attempt2/native_FAIL_integrity.csv": "bb3304c3e6bb306fc97c4c31580f646f4b17c079c06a93d99267c56ba00b92e7",
+    "reports/next_phases/PRESENTATION_NOTES.md": "347d0f2bc2555f0369caeaa46eb4f222debc4d307c747298595c14695087058f"
+  },
+  "checks": {
+    "every_run_file_hash_recorded": true,
+    "existing_capture_manifest_agrees": true,
+    "all_run_file_sizes_unchanged": true,
+    "frozen_archive_hash_verified": true,
+    "json_parse": true,
+    "CSV_rows_at_most_15": true,
+    "six_required_FAIL_tasks_checked": true,
+    "FAIL_evidence_retained": 5,
+    "FAIL_evidence_required": 6
+  },
+  "correctness_labels_read": false,
+  "attempt1_outcomes_read": false,
+  "aggregate_metrics_computed": false,
+  "phase4_run_sealed_tag_created": false,
+  "note": "Report-only change after required integrity gate failed; no task retry, test execution, or executor repair."
+}

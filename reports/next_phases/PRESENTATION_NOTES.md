@@ -42,7 +42,7 @@ Planned CSVs contain roadmap scope, baseline or threshold values, not experiment
 
 ## Phase 4 — Controlled V2 rerun
 
-- Status: executor and launcher prepared for tag approval; no new controlled attempt launched
+- Status: attempt 2 captures sealed; analysis aborted at the required native FAIL integrity gate
 - Headline: Fixed draft baselines are B1 = 37,614 addressable slots and B2 = 21/83 projected strict yes/no verdicts with XFAIL/XPASS separate; H1 predicts at least 60% recovery and is falsified below 30%, while Policy C targets 50/83 and is falsified below 42/83.
 - Table or chart data: reports/next_phases/phase4_baselines/B1_B2.csv
 - Example: Seaborn-3069 has 5 XFAIL concrete tests on both trees and no ordinary skip, adding one strict projected PASS to the old 20/83; reports/next_phases/phase4_baselines/B2_tasks.csv:52.
@@ -51,6 +51,8 @@ Planned CSVs contain roadmap scope, baseline or threshold values, not experiment
 
 - Integrity update: Fix 9/10 pristine preflight verified **83/83 images** in 171.26 s: 18 task-level export-subst proofs and seven task-level pre_install proofs (eight files), with no remaining mismatches. The project stays on swebench 5.0.2; the isolated, hash-pinned 4.0.4 wheel supplies AST-only pre_install specs. Only four dataset metadata columns were decoded. All seven affected images recorded "no image script" at the checked setup paths. Runtime changes to generated untracked version modules are flagged without halting.
 - Launcher verification: all 83 specs validated without containers. The fresh serial launcher requires a new annotated tag at clean HEAD, rechecks pristine source before runtime, uses CPU shares 2048/network none/1,800 s per pass, confirms each new failure 3x per tree, and aborts on integrity errors or the 12 h stop. No notifications. Full unit suite: **1,192 passed, 6 failed, 6 skipped, 17 errors**; exact pre-existing failure/error set, no new failures. All 29 Fix 10/launcher cases pass. Report: reports/next_phases/phase4_rerun/fix10_integrity_preflight.md; launcher: phase4_launcher.md in that directory.
+
+- Attempt 2 integrity stop: driver completed 83/83 tasks in **4 h 24 min 9 s**, but only **5/6 original native FAIL tasks** retain evidence. Django-14631 is NOT_AVAILABLE: the native collector assumes `runtests.setup`, while this Django 4.0 tree exposes `setup_run_tests`/`setup_collect_tests`; both trees have 4,462 COLLECTION_ERROR slots and no test execution. This is an executor bug, not a task verdict result to analyze. All 1,642 raw files are hash-sealed in `phase4_rerun/attempt2/manifest.json`; raw captures stay ignored. H1/H1b/H2/H3 and aggregate tables are withheld, `phase4-run-sealed` was not created, and labels remain unopened. Report: `reports/next_phases/phase4_rerun/attempt2/README.md`. No executor repair or rerun performed; the integrity-stop rule requires a new version/freeze and a fresh task-1 attempt.
 
 ## Phase 5 — Offline selector and ordering replay
 
