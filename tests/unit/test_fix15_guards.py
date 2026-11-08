@@ -166,3 +166,17 @@ def test_manifest_mismatch_blocks_launcher_before_any_input_or_container_work(tm
     monkeypatch.setattr(launch,'execute',lambda *a,**k:pytest.fail('launch after manifest mismatch'))
     with pytest.raises(ValueError,match='SHA-256 mismatch'):
         launch.main(['--execute','--freeze-tag','unit-freeze','--health-preflight',str(g1),'--output',str(tmp_path/'out')])
+
+
+def test_pytest3_timeout_attribution_uses_normalized_identity_and_keeps_unicode():
+    from reliability.verifier.container import run_from_capture
+    from reliability.verifier.selection import TestRunner
+    active='tests/test_real.py::TestReal::test_body[é::()::雪]'
+    other='tests/test_real.py::TestReal::test_other'
+    raw=b'tests/test_real.py::TestReal::()::test_body['+'é::()::雪'.encode()+b']\n'
+    events=({'event':'start','batch':0,'ids':[active,other],'offset':0},
+        {'event':'end','batch':0,'timed_out':True,'missing_ids':[active,other],'offset':len(raw)},
+        {'event':'not_reached','module':'tests/test_real.py','ids':[active,other],'elapsed_s':10})
+    run=run_from_capture(TestRunner('pytest','fixture'),(active,other),runner_log=raw,events=events,timed_out=True,budget_s=10)
+    assert run.by_id()[active].status is TestStatus.TIMEOUT
+    assert run.by_id()[other].status is TestStatus.NOT_REACHED

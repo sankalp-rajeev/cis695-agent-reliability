@@ -664,10 +664,13 @@ def _active_test(kind, missing_ids, output):
             prefixes = (identity.rsplit("::", 1)[-1],)
         else:
             # Pytest may omit a configured root prefix in its displayed ID.
-            prefixes = tuple(identity[i:] for i in [0] +
-                             [m.end() for m in re.finditer("/", identity.split("::", 1)[0])])
+            canonical = normalize_pytest_id(identity)
+            prefixes = tuple(canonical[i:] for i in [0] +
+                             [m.end() for m in re.finditer("/", canonical.split("::", 1)[0])])
         for line_number, line in enumerate(output.splitlines()):
             clean = re.sub(r"\x1b\[[0-?]*[ -/]*[@-~]", "", line).strip()
+            if kind == 'pytest':
+                clean = normalize_pytest_id(clean)
             if any(clean == prefix or clean.startswith(prefix + " ") for prefix in prefixes):
                 # Completed cases are excluded by the event's missing_ids.
                 pending.append((line_number, identity))
