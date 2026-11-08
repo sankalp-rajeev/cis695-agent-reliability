@@ -8,7 +8,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from reliability.verifier.admission_reference import original_admitted
+from reliability.verifier.admission_reference import original_admission_evidence
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = Path('/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z')
@@ -24,13 +24,13 @@ def main(output):
     for task in tasks:
         iid = task['instance_id']
         path = DATA/'full_83_20261105T231219_643682Z/results/tasks'/iid/'v2/result.json'
-        ids = original_admitted(path, expected[str(path)])
+        ids = original_admission_evidence(path, expected[str(path)])
         selected = set(json.loads((frozen/task['selections']['v2']).read_text())['tests'])
-        if any(set(values)-selected for values in ids.values()):
+        if any(set(values)-selected for tree in ids.values() for values in tree.values()):
             raise ValueError('Original admission contains a non-frozen identity: '+iid)
         sets[iid] = ids
-        counts.append({'instance_id':iid,'base_reference_admitted_IDs':len(ids['base']),
-                       'patched_reference_admitted_IDs':len(ids['patched'])})
+        counts.append({'instance_id':iid,**{tree+'_'+kind:len(values)
+                       for tree,kinds in ids.items() for kind,values in kinds.items()}})
         hashes[str(path)] = expected[str(path)]
         print('reference_projected',iid,flush=True)
     if len(sets) != 83:
@@ -42,6 +42,7 @@ def main(output):
         writer=csv.DictWriter(stream,fieldnames=list(counts[0]),lineterminator='\n')
         writer.writeheader();writer.writerows(counts)
     manifest = {'source':'frozen original V2 run; not attempt 1, attempt 2, or offline projection',
+        'reference_schema':2,'module_skip_rule':'only original SKIPPED or absent evidence is compatible; preserve stronger reference identity sets without retaining outcome classes',
         'tasks':83,'input_sha256':hashes,'projected_fields':['calls[0:2].patched','calls[0:2].run.results[*].test_id','calls[0:2].run.results[*].status -> admission Boolean only'],
         'verdict_fields_decoded':False,'outcome_classes_retained':False,'correctness_labels_read':False,
         'reference_sha256':hashlib.sha256((output/'reference_ids.json.gz').read_bytes()).hexdigest(),

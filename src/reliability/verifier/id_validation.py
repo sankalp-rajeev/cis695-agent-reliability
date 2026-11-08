@@ -39,6 +39,8 @@ class IDValidation:
     collector_fallback: bool = False
     collector_failure_status: str = ""
     collector_message: str = ""
+    module_skip_reason: str = ""
+    module_skip_instances: tuple[tuple[str, str], ...] = ()
 
     @property
     def valid(self):
@@ -50,11 +52,11 @@ class IDValidation:
         data["decorators"] = list(self.decorators)
         data["invalid_instances"] = [list(pair) for pair in self.invalid_instances]
         data["owner_instances"] = list(self.owner_instances)
+        data['module_skip_instances'] = [list(pair) for pair in self.module_skip_instances]
         return {
             **data,
             "valid": self.valid,
-            "validation_status": "VALID"
-            if self.valid
+            "validation_status": ("MODULE_SKIPPED" if self.module_skip_reason else "VALID") if self.valid
             else (self.failure_status or "COLLECTION_ERROR")
             if self.unavailable
             else "INVALID_ID",
@@ -420,6 +422,9 @@ def native_failure_status(observed):
     """Require an explicit successful receipt before absence can prove invalidity."""
     status = observed.get("collection_status")
     reason = observed.get("reason", "")
+    if (status == 'MODULE_SKIPPED' and observed.get('module_skip_reason','').strip()
+        and observed.get('completed') is True and observed.get('returncode',0) in (0,5)):
+        return ''
     if status == "NOT_REACHED":
         return "NOT_REACHED"
     if status == "RUNNER_UNAVAILABLE" or reason == "runner_unavailable":
@@ -439,11 +444,16 @@ def merge_native(static, native):
     """Only static proof or successful native absence can establish INVALID_ID."""
     output = []
     for item in static:
-        concrete, invalid, messages, failures = [], [], [], []
+        concrete, invalid, messages, failures, skips = [], [], [], [], []
         for tid in item.runnable_ids if item.valid else (item.selected_id,):
             observed = native.get(tid, {})
             ids = observed.get("ids", ())
             failure = native_failure_status(observed)
+            if (not failure and observed.get('collection_status') == 'MODULE_SKIPPED'
+                and observed.get('module_skip_reason') and item.valid):
+                skips.append((tid,observed['module_skip_reason']))
+                concrete.append(tid)
+                continue
             if any(
                 node != tid and not ("[" not in tid and node.startswith(tid + "[")) for node in ids
             ):
@@ -501,6 +511,8 @@ def merge_native(static, native):
                 static_reason=item.reason,
                 native_disagrees=item.valid != (not invalid and bool(concrete)),
                 owner_instances=item.runnable_ids if item.expanded else (),
+                module_skip_reason='; '.join(dict.fromkeys(reason for _,reason in skips)),
+                module_skip_instances=tuple(skips),
             )
         )
     return tuple(output)

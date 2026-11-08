@@ -47,7 +47,9 @@ def monotonicity(reference, admitted, invalid):
 
 def zero_output(stages):
     failed = [s['stage'] for s in stages if s['input_count'] > 0 and s['output_count'] == 0
-              and not s.get('allowed_exception')]
+              and not s.get('allowed_exception') and not (
+                  s.get('status')=='MODULE_SKIPPED' and s.get('module_skip_reason','').strip()
+                  and s.get('native_skip_recorded'))]
     return {'halt': bool(failed), 'zero_output_stages': failed}
 
 
@@ -58,14 +60,20 @@ def health_for_run(task, tree, run, reference):
     admitted = {t for t in admitted if not receipts or receipts.get(t, {}).get('admitted', False)}
     invalid = {r['selected_id'] for r in run.validation
                if r.get('validation_status') == 'INVALID_ID' and not r.get('unavailable')}
-    g2 = monotonicity(reference, admitted, invalid)
+    reference_ids = set(reference['admitted_ids']) if isinstance(reference,dict) else set(reference)
+    blocked_skip = set(reference.get('module_skip_blocked_ids',())) if isinstance(reference,dict) else reference_ids
+    module_skipped = {r['selected_id'] for r in run.validation if r.get('module_skip_reason')}
+    lost_to_skip = module_skipped & blocked_skip
+    # ERROR reference evidence also cannot be replaced by a module-level skip.
+    g2 = monotonicity(reference_ids | lost_to_skip, admitted-lost_to_skip, invalid)
+    g2['module_skip_incompatible_reference_ids'] = sorted(lost_to_skip)
     stages = list(run.stage_health)
     g3 = zero_output(stages)
     reasons = (['G2 ' + tree + ': lost ' + str(g2['lost_count']) + ' reference IDs'] if g2['halt'] else [])
     reasons += ['G3 ' + tree + ': zero output at ' + s for s in g3['zero_output_stages']]
     return {'task': task, 'tree': tree, 'collector_status': run.validation_summary.get('collector_status', 'NOT_REPORTED'),
-            'input_ids': len(run.requested_tests), 'admitted_ids': len(admitted),
-            'admitted_share': len(admitted)/len(run.requested_tests) if run.requested_tests else None,
+            'input_ids': len(run.requested_tests), 'admitted_ids': len(admitted-lost_to_skip),
+            'admitted_share': len(admitted-lost_to_skip)/len(run.requested_tests) if run.requested_tests else None,
             'G2': g2, 'G3': g3, 'stages': stages, 'halt': bool(reasons), 'halt_reasons': reasons}
 
 

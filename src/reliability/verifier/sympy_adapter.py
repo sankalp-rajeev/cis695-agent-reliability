@@ -56,6 +56,7 @@ def prepare():
     return native, found, errors, original_generator
 
 if mode == "collect":
+    module_skips = []
     try:
         with contextlib.redirect_stdout(stream), contextlib.redirect_stderr(stream):
             native, found, errors, original_generator = prepare()
@@ -65,7 +66,15 @@ if mode == "collect":
                 def entering_test(self, function):
                     raise RuntimeError("Collection attempted test execution")
                 def test_exception(self, exc_info):
-                    errors.append("".join(traceback.format_exception(*exc_info)))
+                    error = exc_info[1]
+                    native_skip = ((error.__class__.__module__ in ('sympy.testing.pytest','sympy.utilities.pytest')
+                                    and error.__class__.__name__ == 'Skipped') or
+                                   (error.__class__.__module__ == 'unittest.case' and error.__class__.__name__ == 'SkipTest'))
+                    reason = re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]', '', str(error)).strip()
+                    if native_skip and reason:
+                        module_skips.append(reason)
+                    else:
+                        errors.append("".join(traceback.format_exception(*exc_info)))
                 def import_error(self, filename, exc_info):
                     errors.append("".join(traceback.format_exception(*exc_info)))
                 def __getattr__(self, name):
@@ -79,6 +88,10 @@ if mode == "collect":
         result = {t: dict(ids=[t] if t in found else [], reason="" if t in found else "native_not_found",
                          completed=True, collection_status="COMPLETE", returncode=0,
                          message=stream.getvalue() if t not in found else "") for t in identities}
+        if module_skips and not found:
+            reason = '; '.join(dict.fromkeys(module_skips))
+            result = {t: dict(ids=[], reason='', module_skip_reason=reason, message='module_skip: '+reason,
+                completed=True, collection_status='MODULE_SKIPPED', returncode=0) for t in identities}
     except BaseException:
         message = stream.getvalue() + traceback.format_exc()
         status = failure(message)

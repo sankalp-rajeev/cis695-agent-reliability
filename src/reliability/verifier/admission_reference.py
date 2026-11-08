@@ -93,21 +93,32 @@ class JSONProjection:
         raise ValueError('Unexpected reference JSON structure')
 
 
-def original_admitted(path: Path, expected_sha256: str):
+def original_admission_evidence(path: Path, expected_sha256: str):
     raw = path.read_bytes()
     if hashlib.sha256(raw).hexdigest() != expected_sha256:
         raise ValueError('Original-run input hash mismatch: ' + str(path))
     schema = {'calls': {'*': {'patched': True, 'run': {'results': {
         '*': {'test_id': True, 'status': True}}}}}}
     projection = JSONProjection(raw.decode()).project(schema)
-    result = {'base': set(), 'patched': set()}
+    result = {tree:{'admitted_ids':set(),'skipped_reference_ids':set(),
+                    'module_skip_blocked_ids':set()} for tree in ('base','patched')}
     seen = set()
     for call in projection.get('calls', []):
         tree = 'patched' if call['patched'] else 'base'
         if tree in seen:
             raise ValueError('Duplicate initial reference tree')
         seen.add(tree)
-        result[tree] = {r['test_id'] for r in call['run']['results']
-                        if r['status'].lower() in _ADMITTED}
+        for row in call['run']['results']:
+            identity,status=row['test_id'],row['status'].lower()
+            if status in _ADMITTED:
+                result[tree]['admitted_ids'].add(identity)
+            if status == 'skipped':
+                result[tree]['skipped_reference_ids'].add(identity)
+            elif status in _ADMITTED or status == 'error':
+                result[tree]['module_skip_blocked_ids'].add(identity)
     # Empty original selections can legitimately have no native calls.
-    return {tree: sorted(ids) for tree, ids in result.items()}
+    return {tree:{kind:sorted(ids) for kind,ids in evidence.items()} for tree,evidence in result.items()}
+
+
+def original_admitted(path: Path, expected_sha256: str):
+    return {tree:values['admitted_ids'] for tree,values in original_admission_evidence(path,expected_sha256).items()}

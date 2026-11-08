@@ -91,6 +91,12 @@ try:
         setup(**dict((k, v) for k, v in values.items() if k in params))
         # Import failure is never evidence that a selected attribute is absent.
         module = importlib.import_module(module_name)
+except unittest.SkipTest as exc:
+    reason = re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]', '', str(exc)).strip()
+    for label in labels:
+        results[label] = dict(ids=[], reason='' if reason else 'collection_error', message=capture.getvalue(),
+            module_skip_reason=reason, collection_status='MODULE_SKIPPED' if reason else 'COLLECTION_ERROR',
+            completed=bool(reason), returncode=0)
 except BaseException:
     message = capture.getvalue() + traceback.format_exc()
     status = failure_status(message)
@@ -154,6 +160,16 @@ print(json.dumps(results))
 
 _PYTEST_PLUGIN = r"""
 import json, os
+_module_skips, _collection_errors = [], []
+
+def pytest_collectreport(report):
+    if report.skipped:
+        location = report.longrepr
+        if isinstance(location, tuple) and len(location) == 3:
+            _module_skips.append(dict(nodeid=report.nodeid, path=str(location[0]),
+                line=location[1], reason=str(location[2]), when='collect'))
+    elif report.failed:
+        _collection_errors.append(dict(nodeid=report.nodeid, message=str(report.longrepr)))
 
 def pytest_collection_finish(session):
     with open(os.environ["VERIFIER_COLLECTION_RECEIPT"], "w") as stream:
@@ -162,12 +178,13 @@ def pytest_collection_finish(session):
             parts = item.nodeid.split("::", 1)
             path = os.path.relpath(str(item.fspath), os.getcwd())
             identities.append(path + ("::" + parts[1] if len(parts) == 2 else ""))
-        json.dump(identities, stream)
+        json.dump(dict(ids=identities, module_skips=_module_skips, collection_errors=_collection_errors), stream)
 """
 
 
 _NATIVE_DRIVER = (
     _FAILURE_HELPER
+    + Path(__file__).with_name('module_skips.py').read_text()
     + r"""
 import json, os, pathlib, subprocess, sys, time, traceback
 request = json.loads(pathlib.Path("/tmp/verifier_collect_request.json").read_text())
@@ -230,7 +247,7 @@ for module, identities in sorted(groups.items()):
                 result[identity] = observed
             command = [sys.executable, "/tmp/verifier_django_collect.py"]
         else:
-            command = [sys.executable, "-m", "pytest", "--collect-only", "-q", "-p", "no:cacheprovider", "-p", "verifier_collect_plugin", "--", module]
+            command = [sys.executable, "-m", "pytest", "--collect-only", "-q", "-rs", "-p", "no:cacheprovider", "-p", "verifier_collect_plugin", "--", module]
             receipt = os.path.join(os.path.dirname(__file__), "verifier_collection_nodes.json")
             if os.path.exists(receipt):
                 os.unlink(receipt)
@@ -241,11 +258,20 @@ for module, identities in sorted(groups.items()):
                                   timeout=module_timeout, env=environment)
             stdout = proc.stdout.decode("utf-8", "replace")
             message = stdout + proc.stderr.decode("utf-8", "replace")
-            collected = json.loads(pathlib.Path(receipt).read_text()) if os.path.exists(receipt) else []
+            payload = json.loads(pathlib.Path(receipt).read_text()) if os.path.exists(receipt) else {}
+            collected = payload if isinstance(payload, list) else payload.get('ids', [])
+            skip = pytest_module_skip(module, collected,
+                [] if isinstance(payload,list) else payload.get('module_skips',[]), message, proc.returncode,
+                () if isinstance(payload,list) else payload.get('collection_errors',())) if os.path.exists(receipt) else None
             for identity in identities:
                 ids = [node for node in collected if node == identity or
                        ("[" not in identity and node.startswith(identity + "["))]
-                error = proc.returncode != 0 or not os.path.exists(receipt)
+                if skip:
+                    result[identity] = dict(ids=[], reason='', message='module_skip: '+skip['reason'],
+                        module_skip_reason=skip['reason'], module_skip_receipt=skip,
+                        collection_status='MODULE_SKIPPED', completed=True, returncode=proc.returncode)
+                    continue
+                error = proc.returncode != 0 or not os.path.exists(receipt) or not collected
                 status = failure_status(message) if error else "COMPLETE"
                 result[identity] = dict(ids=[] if error else ids,
                     reason=status.lower() if error else "" if ids else "native_not_found",
@@ -284,9 +310,8 @@ class ValidationPass:
     @property
     def runnable_ids(self):
         # An original slot is executed only when all its expansion members validate.
-        return tuple(
-            dict.fromkeys(t for item in self.records if item.valid for t in item.runnable_ids)
-        )
+        skips = {tid for item in self.records for tid,_ in item.module_skip_instances}
+        return tuple(dict.fromkeys(t for item in self.records if item.valid for t in item.runnable_ids if t not in skips))
 
     def to_dict(self):
         return {
@@ -303,6 +328,8 @@ class ValidationPass:
                 len(r.owner_instances or r.runnable_ids) for r in self.records if r.expanded
             ),
             "runnable_instances": len(self.runnable_ids),
+            'module_skipped_slots': sum(bool(r.module_skip_reason) for r in self.records),
+            'module_skip_reasons': list(dict.fromkeys(r.module_skip_reason for r in self.records if r.module_skip_reason)),
             "collector_status": 'COLLECTION_ERROR' if any(s['status'] in ('COLLECTION_ERROR','RUNNER_UNAVAILABLE','NOT_REACHED') and not s.get('allowed_exception') for s in self.stage_health)
                 else 'ALLOWED_FAILURE' if any(s.get('allowed_exception') for s in self.stage_health)
                 else 'EMPTY_INPUT' if not self.records else 'COMPLETE',
@@ -333,13 +360,17 @@ def collection_stages(task, ids, receipt, exceptions):
     result = []
     for module, selected in modules.items():
         records = [receipt['ids'].get(i, {'completed':False,'message':'Missing collector receipt', 'collection_status':'COLLECTION_ERROR'}) for i in selected]
-        bad = [r for r in records if not r.get('completed') or r.get('returncode',0) != 0]
+        skipped = [r for r in records if r.get('collection_status') == 'MODULE_SKIPPED' and r.get('completed')
+                   and r.get('module_skip_reason','').strip() and r.get('returncode',0) in (0,5)]
+        bad = [r for r in records if r not in skipped and (not r.get('completed') or r.get('returncode',0) != 0)]
         messages = list(dict.fromkeys(r.get('message','') for r in bad))
         causes = [allowed_failure(exceptions,task,module,'native_collection',m) for m in messages]
         allowed = bool(causes) and all(causes)
         collected = {i for r in records if r.get('completed') and not r.get('returncode',0) for i in r.get('ids',[])}
         result.append({'stage':'native_collection','module':module,'input_count':len(selected),
-            'output_count':len(collected),'status':bad[0].get('collection_status','COLLECTION_ERROR') if bad else 'COMPLETE',
+            'output_count':len(collected),'status':bad[0].get('collection_status','COLLECTION_ERROR') if bad else 'MODULE_SKIPPED' if skipped else 'COMPLETE',
+            'module_skip_reason':'; '.join(dict.fromkeys(r['module_skip_reason'] for r in skipped)),
+            'module_skipped_instances':len(skipped),'native_skip_recorded':bool(skipped),
             'allowed_exception':sorted(set(causes)) if allowed else [], 'messages':messages,
             'collector_exit_codes':[g.get('returncode') for g in receipt.get('groups',[]) if g['module']==module],
             'tests_executed':0})

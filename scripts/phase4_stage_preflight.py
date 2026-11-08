@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""G1: all 83 task x two pristine trees, collection/start-up only, zero bodies."""
+"""Exhaustive G1: record all 166 pairs, then evaluate the launch gate."""
 
 import argparse
 import csv
@@ -18,6 +18,19 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def proposed_failure_category(stage):
+    if stage.get('allowed_exception'):
+        return 'prelisted_missing_evidence'
+    message='\n'.join(stage.get('messages',[]))+'\n'+stage.get('message','')
+    if stage['status']=='RUNNER_UNAVAILABLE':return 'runner_startup_or_interpreter_unavailable'
+    if stage['status']=='NOT_REACHED':return 'stage_budget_exhausted'
+    if 'SourceIntegrityError' in message:return 'source_integrity_mismatch'
+    if 'No module named' in message:return 'module_import_dependency_failure'
+    if 'AttributeError' in message or 'FileNotFoundError' in message:return 'module_import_failure'
+    if stage['stage']=='native_collection' and stage['output_count']==0:return 'zero_collection_without_recorded_module_skip'
+    return 'stage_error_requires_review'
+
+
 def main(output):
     if output.exists():
         raise ValueError('Use a fresh G1 directory')
@@ -26,7 +39,7 @@ def main(output):
     launch.load_reference()
     output.mkdir(parents=True)
     launch.write(output/'plan.json',launch.plan_for(specs))
-    rows=[];started=time.monotonic()
+    rows=[];failures=[];started=time.monotonic()
     for spec in specs:
         for patched in (False,True):
             tree='patched' if patched else 'base';folder=output/'tasks'/spec.instance_id/tree
@@ -36,7 +49,7 @@ def main(output):
             print(json.dumps({'event':'G1_start','task':spec.instance_id,'tree':tree}),flush=True)
             try:
                 with launch.FrozenContainer(spec.instance_id,spec.patch_path.read_text(),image=spec.image_id,
-                    experiment_id='phase4_fix12_G1',source_spec=spec.source,
+                    experiment_id='phase4_fix13_G1',source_spec=spec.source,
                     source_receipt_path=folder/'pristine_source_receipt.json') as container:
                     stages.append({'stage':'pristine_source','status':'VERIFIED','input_count':1,'output_count':1})
                     audit=GeneratedInputAudit(container.generated_snapshot)
@@ -63,17 +76,31 @@ def main(output):
             health={'task':spec.instance_id,'tree':tree,'status':'READY' if ok else 'BLOCKED',
                 'collector_status':collector_status,'stages':stages,'COLLECTOR_FALLBACK_slots':fallback,
                 'G2':'NOT_EVALUATED_NO_TEST_EXECUTION','G3':g3,'tests_executed':0,
+                'module_skipped_slots':validation.to_dict()['module_skipped_slots'] if collector_status!='BLOCKED_UPSTREAM' else 0,
                 'zero_body_commands_only':True,'duration_s':time.monotonic()-start}
             if audit is not None:launch.write(folder/'generated_inputs.json',audit.to_dict())
             launch.write(folder/'health.json',health)
+            for stage in stages:
+                failed = stage['status'] in ('COLLECTION_ERROR','RUNNER_UNAVAILABLE','NOT_REACHED','ERROR')
+                if failed or zero_output([stage])['halt']:
+                    failures.append({'instance_id':spec.instance_id,'tree':tree,'stage':stage['stage'],
+                        'module':stage.get('module',''),'inputs':stage['input_count'],'outputs':stage['output_count'],
+                        'status':stage['status'],'allowed_exception':json.dumps(stage.get('allowed_exception',[])),
+                        'diagnostic':'\n'.join(stage.get('messages',[])) or stage.get('message',''),
+                        'proposed_category':proposed_failure_category(stage)})
             row={'instance_id':spec.instance_id,'tree':tree,'runner':effective_runner(spec),
                 'repo':spec.source.pre_install.repo,'version':spec.source.pre_install.version,
                 'status':health['status'],'collector_status':collector_status,'fallback_slots':fallback,
-                'zero_output_halt':g3['halt'],'tests_executed':0,'duration_s':health['duration_s']}
+                'zero_output_halt':g3['halt'],'module_skipped_slots':health['module_skipped_slots'],
+                'tests_executed':0,'duration_s':health['duration_s']}
             rows.append(row);print(json.dumps({'event':'G1_end',**row}),flush=True)
     with (output/'tasks.csv').open('w',newline='') as stream:
         writer=csv.DictWriter(stream,fieldnames=list(rows[0]),lineterminator='\n');writer.writeheader();writer.writerows(rows)
-    summary={'launch_allowed':all(r['status']=='READY' for r in rows),'task_tree_count':len(rows),
+    with (output/'failures.csv').open('w',newline='') as stream:
+        fields=['instance_id','tree','stage','module','inputs','outputs','status','allowed_exception','diagnostic','proposed_category']
+        writer=csv.DictWriter(stream,fieldnames=fields,lineterminator='\n');writer.writeheader();writer.writerows(failures)
+    summary={'launch_allowed':len(rows)==len(specs)*2 and all(r['status']=='READY' for r in rows),'task_tree_count':len(rows),
+        'exhaustive':True,'gate_evaluated_after_all_pairs':True,
         'blocked_task_trees':[{'task':r['instance_id'],'tree':r['tree']} for r in rows if r['status']!='READY'],
         'tests_executed':0,'wall_s':time.monotonic()-started,'correctness_labels_read':False,
         'attempt2_outcomes_read':False}
@@ -81,8 +108,7 @@ def main(output):
     paths=[Path(__file__).resolve(),launch.ROOT/'scripts/phase4_launch.py',
         *sorted((launch.ROOT/'src/reliability/verifier').glob('*.py')),
         launch.ROOT/'reports/next_phases/phase4_rerun/fix11_12_scope/run_health_exceptions.json',
-        launch.ROOT/'reports/next_phases/phase4_rerun/fix11_12_reference/manifest.json',
-        launch.ROOT/'reports/next_phases/phase4_rerun/fix11_12_reference/reference_ids.json.gz']
+        launch.REFERENCE/'manifest.json',launch.REFERENCE/'reference_ids.json.gz']
     launch.write(output/'manifest.json',{'source_sha256':{str(p.relative_to(launch.ROOT)):sha(p) for p in paths},
         'receipt_sha256':{str(p.relative_to(output)):sha(p) for p in sorted(output.rglob('*')) if p.is_file()},
         'tests_executed':0,'flags':{'cpu_shares':2048,'network':'none','parallelism':1,'pull':'never'}})

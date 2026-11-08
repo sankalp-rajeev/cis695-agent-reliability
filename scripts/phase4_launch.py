@@ -44,8 +44,8 @@ FROZEN_TASKS_SHA256 = '532df6e8eebd9afa91592ef39aa28f12d8b905fcf3987c7698e06c8ad
 TASK_COUNT = 83
 PASS_BUDGET_S = 1800
 STOP_S = 12*60*60
-REFERENCE = ROOT/'reports/next_phases/phase4_rerun/fix11_12_reference'
-G1_PREFLIGHT = ROOT/'reports/next_phases/phase4_rerun/fix11_12_g1'
+REFERENCE = ROOT/'reports/next_phases/phase4_rerun/fix13_reference'
+G1_PREFLIGHT = ROOT/'reports/next_phases/phase4_rerun/fix13_g1'
 
 
 def sha(path):
@@ -352,6 +352,8 @@ def execute(specs, output, tag, reference=None):
 
 def load_reference(path=REFERENCE):
     manifest=json.loads((path/'manifest.json').read_text())
+    if manifest.get('reference_schema') != 2:
+        raise ValueError('G2 requires module-skip-aware original-run references')
     require_hash(path/'reference_ids.json.gz',manifest['reference_sha256'])
     for source,expected in manifest['source_sha256'].items():
         require_hash(confined(ROOT,source),expected)
@@ -360,7 +362,8 @@ def load_reference(path=REFERENCE):
 
 def require_g1(path):
     summary=json.loads((path/'summary.json').read_text())
-    if not summary['launch_allowed'] or summary['task_tree_count'] != TASK_COUNT*2:
+    if (not summary['launch_allowed'] or summary['task_tree_count'] != TASK_COUNT*2
+        or not summary.get('exhaustive') or not summary.get('gate_evaluated_after_all_pairs')):
         raise ValueError('G1 exhaustive stage preflight blocks launch')
     manifest=json.loads((path/'manifest.json').read_text())
     for source,expected in manifest['source_sha256'].items():
