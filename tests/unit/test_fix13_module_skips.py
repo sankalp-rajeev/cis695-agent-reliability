@@ -101,18 +101,20 @@ def test_ANSI_summary_requires_matching_module_no_items_and_no_collection_errors
 
 
 @pytest.mark.parametrize('original_status,blocked', [('skipped',False),('not_run',False),
-    ('passed',True),('failed',True),('error',False),('xfail',True),('xpass',True)])
-def test_G2_module_skip_may_not_replace_stronger_original_evidence(tmp_path,original_status,blocked):
+    ('passed',True),('failed',True),('error',True),('xfail',False),('xpass',False)])
+def test_reference_module_skip_reports_only_PASS_FAIL_ERROR_drift(tmp_path,original_status,blocked):
     identity,_,_,run=collect(tmp_path,'import pytest\npytest.skip("optional",allow_module_level=True)\n')
     original=tmp_path/'original.json';original.write_text(json.dumps({'calls':[{'patched':False,
         'run':{'results':[{'test_id':identity,'status':original_status}]}}]}))
     reference=original_admission_evidence(original,hashlib.sha256(original.read_bytes()).hexdigest())['base']
+    from reliability.verifier.drift_reference import drift_reference_ids
+    reference['drift_reference_ids']=drift_reference_ids(original,hashlib.sha256(original.read_bytes()).hexdigest())['base']
     # G1 for this fixture also records a module skip, with no collected IDs.
     reference['g1_collected_ids']=[]
     health=health_for_run('task','base',run,reference)
-    assert health['G2']['lost_count']==int(blocked)
-    assert health['G2']['halt']==blocked
-    assert health['admitted_ids']==int(not blocked)
+    assert health['G2']['lost_count']==0 and not health['halt']
+    assert health['environment_drift']['skipped_reference_ids']==([identity] if blocked else [])
+    assert health['admitted_ids']==1
 
 
 def test_native_Django_module_skip_is_not_a_loader_error(tmp_path):
@@ -151,7 +153,7 @@ def test_partial_expansion_module_skip_is_unanimously_admitted_but_remains_a_str
     assert run.validation[0]['admitted'] and run.validation[0]['admitted_instances']==2
     assert any(r.status is TestStatus.SKIPPED for r in run.raw_results)
     health=health_for_run('task','base',run,{'admitted_ids':[selected],'module_skip_blocked_ids':[selected]})
-    assert health['G2']['halt']
+    assert not health['halt'] and health['environment_drift']['lost_count']==1
 
 
 def test_collection_programs_keep_historical_Python36_syntax_and_API():

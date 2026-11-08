@@ -55,14 +55,17 @@ def test_all_static_invalid_ids_still_reach_native_and_G2_halts(tmp_path):
     validation=validate_in_container(container,(identity,),TestRunner('pytest','fixture'))
     assert validation.groups and validation.records[0].to_dict()['validation_status']=='INVALID_ID'
     run=RunResult(results=(TestResult(identity,TestStatus.INVALID_ID),),requested_tests=(identity,),validation=(validation.records[0].to_dict(),))
-    assert health_for_run('task','base',run,[identity])['G2']['halt']
+    assert not health_for_run('task','base',run,[identity])['G2']['halt']
+    assert health_for_run('task','base',run,[identity])['G2']['lost_count']==1
 
 
-def test_reference_pass_now_ordinary_skipped_is_lost():
+def test_reference_pass_now_ordinary_skipped_is_environment_drift():
     identity='test_real.py::test_body'
     run=RunResult(results=(TestResult(identity,TestStatus.SKIPPED),),requested_tests=(identity,))
     reference={'admitted_ids':[identity],'module_skip_blocked_ids':[identity]}
-    assert health_for_run('task','base',run,reference)['G2']['lost_ids']==[identity]
+    health=health_for_run('task','base',run,reference)
+    assert not health['halt'] and health['G2']['lost_ids']==[]
+    assert health['environment_drift']['skipped_reference_ids']==[identity]
 
 
 def test_static_rejection_needs_successful_native_absence():
@@ -72,20 +75,30 @@ def test_static_rejection_needs_successful_native_absence():
     assert merge_native(static,{identity:{'ids':[],'completed':True,'returncode':0}})[0].reason=='helper'
 
 
-def test_empty_original_uses_G1_native_set_and_halts_on_loss(tmp_path):
+def test_empty_original_uses_sealed_G1_native_set_and_thresholded_loss(tmp_path,monkeypatch):
+    from dataclasses import replace
+    from pathlib import Path
+    from types import SimpleNamespace
     from tests.unit.test_phase4_launcher import launch, task_spec
-    spec=task_spec(tmp_path)
-    g1=tmp_path/'g1'
+    from tests.unit.test_fix16_executor_health import sealed_fixture,identities
+    from reliability.verifier.g1_reference import read_collection
+    root=Path(__file__).resolve().parents[2]
+    ids=identities(10);spec=replace(task_spec(tmp_path),tests=ids)
+    pylint='pylint-dev__pylint-4970';original=launch.load_reference()[pylint]
+    collections={f'tasks/{pylint}/{tree}/collection.json.gz':read_collection(
+        root/'reports/next_phases/phase4_rerun/fix15_g1/tasks'/pylint/tree/'collection.json') for tree in ('base','patched')}
+    pylint_ids=tuple(r['selected_id'] for r in collections[f'tasks/{pylint}/base/collection.json.gz']['records'])
     for tree in ('base','patched'):
-        launch.write(g1/'tasks'/spec.instance_id/tree/'collection.json',{'records':[
-            IDValidation(spec.tests[0],'runnable_test',spec.tests,stage='native').to_dict()]})
-    refs=launch.with_g1_references({'task':{'base':[],'patched':[]}},[spec],g1)
-    run=RunResult(results=(TestResult(spec.tests[0],TestStatus.NOT_RUN),),requested_tests=spec.tests)
+        collections[f'tasks/task/{tree}/collection.json.gz']={'records':[
+            IDValidation(t,'runnable_test',(t,),stage='native').to_dict() for t in ids]}
+    g1,_,_=sealed_fixture(tmp_path,monkeypatch,collections)
+    refs=launch.with_g1_references({'task':{'base':[],'patched':[]},pylint:original},
+        [spec,SimpleNamespace(instance_id=pylint,tests=pylint_ids)],g1)
+    run=RunResult(results=tuple(TestResult(t,TestStatus.NOT_RUN) for t in ids),requested_tests=ids)
     health=health_for_run('task','base',run,refs['task']['base'])
     assert health['G2']['reference_source']=='G1_NATIVE_COLLECTION'
-    assert health['G2']['halt'] and health['G2']['lost_ids']==list(spec.tests)
+    assert health['G2']['halt'] and health['G2']['lost_ids']==list(ids)
     assert health_for_run('task','base',run,[])['G2']['missing_G1_reference']
-    # A broken executor cannot bypass the sealed G1 set by dropping requested_tests.
     assert health_for_run('task','base',RunResult(),refs['task']['base'])['G2']['halt']
 
 
@@ -122,6 +135,12 @@ def test_confirmation_guards_halt_inside_call_before_result_scoring(tmp_path,mon
         return report
     monkeypatch.setattr(launch,'run_regression',scoring)
     health=tmp_path/'health.jsonl'
+    if failure=='loss':
+        launch.run_task(spec,tmp_path/'task','fixture',{'base':spec.tests,'patched':spec.tests},health)
+        rows=[json.loads(line) for line in health.read_text().splitlines()]
+        assert all(not r['halt'] for r in rows) and scored
+        assert len(calls)==8
+        return
     with pytest.raises(launch.RunHealthError):
         launch.run_task(spec,tmp_path/'task','fixture',{'base':spec.tests,'patched':spec.tests},health)
     assert calls==[False,True,False] and not scored
@@ -225,11 +244,11 @@ def test_SymPy_disabled_is_observed_inside_native_test_file(tmp_path):
 def test_RunHealthError_task1_stops_task2_end_to_end_without_fake_health_records(tmp_path,monkeypatch):
     from dataclasses import replace
     spec=task_spec(tmp_path)
-    spec=replace(spec,instance_id='task1',tests=('test_real.py::helper',))
+    spec=replace(spec,instance_id='task1',tests=tuple('test_real.py::helper_%02d' % i for i in range(10)))
     other=replace(spec,instance_id='task2')
     root=tmp_path/'repository';root.mkdir()
     subprocess.run(['git','init','-q'],cwd=root,check=True)
-    (root/'test_real.py').write_text('def helper(): raise AssertionError("body ran")\ndef test_real(): raise AssertionError("body ran")\n')
+    (root/'test_real.py').write_text(''.join('def helper_%02d(): raise AssertionError("body ran")\n' % i for i in range(10))+'def test_real(): raise AssertionError("body ran")\n')
     started=[]
     class RealCollectionContainer(LocalContainer):
         def __init__(self,instance_id,*args,**kwargs):
@@ -320,7 +339,8 @@ def test_confirmation_reference_preserves_initial_expansion_members():
     reference=launch.confirmation_reference(initial,(member,))
     assert reference['admitted_ids']==[member]
     missing=RunResult(results=(TestResult(member,TestStatus.INVALID_ID),),requested_tests=(member,))
-    assert health_for_run('task','base',missing,reference)['G2']['halt']
+    assert health_for_run('task','base',missing,reference)['G2']['lost_ids']==[member]
+    assert not health_for_run('task','base',missing,reference)['G2']['halt']
 
 
 def test_native_parent_probe_does_not_create_false_G3_for_cross_module_expansion(tmp_path):

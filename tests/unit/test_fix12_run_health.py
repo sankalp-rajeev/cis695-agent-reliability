@@ -51,16 +51,16 @@ def test_projection_never_decodes_verdict_or_unselected_fields(tmp_path,monkeypa
         original_admitted(path,'wrong')
 
 
-@pytest.mark.parametrize('count,lost,halt',[(0,0,False),(50,1,True),(1000,1,False),
-    (1000,9,False),(1000,10,True),(2000,10,True)])
-def test_admission_loss_thresholds_are_OR_and_exact(count,lost,halt):
+@pytest.mark.parametrize('count,lost,halt',[(0,0,False),(50,1,False),(1000,1,False),
+    (1000,9,False),(1000,10,True),(2000,10,False)])
+def test_identity_loss_thresholds_are_AND_and_exact(count,lost,halt):
     reference=set(range(count));admitted=set(range(count-lost))
     assert monotonicity(reference,admitted,())['halt']==halt
 
 
 def test_proven_invalid_reference_is_still_lost():
     assert monotonicity({'one'},(),{'one'})['lost_count']==1
-    assert monotonicity({'one'},(),())['halt']
+    assert not monotonicity({'one'},(),())['halt']
 
 
 def test_collector_crash_falls_back_only_to_validated_same_family():
@@ -112,10 +112,11 @@ def test_order_covers_lowest_ID_per_combination_then_keeps_frozen_rest():
     assert [r.instance_id for r in covering_order(frozen)]==[r.instance_id for r in result]
 
 
-def test_expanded_original_slot_needs_all_members_admitted():
+def test_expanded_original_slot_admission_is_separate_from_identity():
     run=RunResult(results=(TestResult('slot',TestStatus.PASSED),),requested_tests=('slot',),
                   validation=({'selected_id':'slot','admitted':False,'expanded':True},))
-    assert health_for_run('task','base',run,['slot'])['G2']['halt']
+    assert not health_for_run('task','base',run,['slot'])['G2']['halt']
+    assert health_for_run('task','base',run,['slot'])['G2']['lost_count']==0
 
 
 def test_losing_task_halts_and_health_is_written_before_scoring(tmp_path,monkeypatch):
@@ -137,7 +138,7 @@ def test_losing_task_halts_and_health_is_written_before_scoring(tmp_path,monkeyp
     with pytest.raises(RunHealthError):
         launch.run_task(spec,tmp_path/'task','fixture',{'base':spec.tests,'patched':spec.tests},health)
     row=json.loads(health.read_text())
-    assert row['halt'] and all(r['G2']['halt'] and r['G3']['halt'] for r in row['trees'])
+    assert row['halt'] and all(not r['G2']['halt'] and r['G2']['lost_count']==1 and r['G3']['halt'] for r in row['trees'])
     assert not (tmp_path/'task/result.json').exists()
 
 

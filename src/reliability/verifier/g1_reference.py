@@ -72,7 +72,8 @@ def project_collection(task, tree, collection, original):
     health=health_for_run(task,tree,run,reference)
     guard=health.get('G1_collected_guard',{'halt':False})
     return {'G2':health['G2'],'G1_collected_guard':guard,
-            'halt':health['G2']['halt'] or guard['halt'],
+            'environment_drift':health['environment_drift'],
+            'halt':health['G2']['halt'] or guard['halt'] or health['environment_drift']['halt'],
             'excluded_spurious_ids':reference['excluded_spurious_ids'],
             'natively_collected_slots':len(reference['g1_collected_ids']),
             'collection_only':True,'tests_executed':0}
