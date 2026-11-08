@@ -225,7 +225,8 @@ class StaticIndex:
         return "", None
 
     def pytest_patterns(self, path, option="python_classes"):
-        defaults = ("Test",) if option == "python_classes" else ("test",)
+        defaults = {"python_classes": ("Test",), "python_functions": ("test",),
+                    "python_files": ("test_*.py", "*_test.py")}[option]
         # pytest searches from the selected path toward the repo root. At each
         # level these files have the same precedence as its native config loader.
         for folder in (PurePosixPath(path).parent, *PurePosixPath(path).parent.parents):
@@ -418,6 +419,7 @@ class StaticIndex:
 STATIC_INVALID_REASONS = frozenset(
     {
         "not_found",
+        "not_a_test_module",
         "property",
         "plain_function",
         "helper",
@@ -486,7 +488,13 @@ def merge_native(static, native):
                     messages.append(tid + ": " + observed["message"])
             else:
                 concrete.extend(ids)
-        static_proof = not item.valid and item.reason in STATIC_INVALID_REASONS
+        static_reason = item.reason
+        if static_reason == 'not_a_test_module':
+            directory = selected.get('directory_collection', {})
+            if not (selected.get('reason') == 'not_a_test_module'
+                    and directory.get('file_collected') is False and directory.get('command')):
+                static_reason = item.static_reason
+        static_proof = not item.valid and static_reason in STATIC_INVALID_REASONS
         failure_status = (
             "RUNNER_UNAVAILABLE"
             if "RUNNER_UNAVAILABLE" in failures
@@ -504,7 +512,7 @@ def merge_native(static, native):
             reason = failure_status.lower()
         elif invalid:
             reason = (
-                item.reason
+                static_reason
                 if static_proof
                 else "invalid_expansion"
                 if item.expanded

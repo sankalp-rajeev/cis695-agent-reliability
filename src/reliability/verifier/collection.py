@@ -160,8 +160,12 @@ print(json.dumps(results))
 _NODE_IDS = Path(__file__).with_name("node_ids.py").read_text()
 
 _PYTEST_PLUGIN = _NODE_IDS + r"""
-import json, os
-_module_skips, _collection_errors = [], []
+import json, os, pytest
+_module_skips, _collection_errors, _collected_modules = [], [], []
+
+def pytest_collectstart(collector):
+    if isinstance(collector, pytest.Module):
+        _collected_modules.append(os.path.relpath(str(collector.fspath), os.getcwd()))
 
 def pytest_collectreport(report):
     if report.skipped:
@@ -179,7 +183,7 @@ def pytest_collection_finish(session):
             parts = item.nodeid.split("::", 1)
             path = os.path.relpath(str(item.fspath), os.getcwd())
             identities.append(normalize_pytest_id(path + ("::" + parts[1] if len(parts) == 2 else "")))
-        json.dump(dict(ids=identities, module_skips=_module_skips, collection_errors=_collection_errors), stream)
+        json.dump(dict(ids=identities, module_skips=_module_skips, collection_errors=_collection_errors, collected_modules=_collected_modules), stream)
 """
 
 
@@ -199,7 +203,7 @@ pathlib.Path("/tmp/verifier_collect_pgid").write_text(str(os.getpgrp()))
 groups = {}
 for identity in request["ids"]:
     groups.setdefault(identity.split("::", 1)[0], []).append(identity)
-result, groups_log = {}, []
+result, groups_log, directory_cache = {}, [], {}
 started = time.monotonic()
 deadline = started + request.get("budget_s", 1800)
 prior_elapsed = request.get("prior_elapsed_s", 0.0)
@@ -211,6 +215,7 @@ def save():
     temporary.replace(str(target))
 for module, identities in sorted(groups.items()):
     start = time.monotonic()
+    directory_evidence = {}
     if start >= deadline:
         for identity in identities:
             result[identity] = dict(ids=[], reason="not_reached", message="per-pass budget exhausted before collection",
@@ -256,31 +261,80 @@ for module, identities in sorted(groups.items()):
             environment = dict(os.environ)
             environment["PYTHONPATH"] = os.path.dirname(__file__) + os.pathsep + environment.get("PYTHONPATH", "")
             environment["VERIFIER_COLLECTION_RECEIPT"] = receipt
-            proc = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                  timeout=module_timeout, env=environment)
-            stdout = proc.stdout.decode("utf-8", "replace")
-            message = stdout + proc.stderr.decode("utf-8", "replace")
-            payload = json.loads(pathlib.Path(receipt).read_text()) if os.path.exists(receipt) else {}
-            collected = payload if isinstance(payload, list) else payload.get('ids', [])
-            skip = pytest_module_skip(module, collected,
-                [] if isinstance(payload,list) else payload.get('module_skips',[]), message, proc.returncode,
-                () if isinstance(payload,list) else payload.get('collection_errors',())) if os.path.exists(receipt) else None
+            directory_probe = module in request.get('directory_check_modules', ())
+            reuse_directory = False
+            if directory_probe:
+                directory = os.path.dirname(module) or '.'
+                command[-1] = directory
+                if directory not in directory_cache:
+                    proc = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                          timeout=module_timeout, env=environment)
+                    message = (proc.stdout + proc.stderr).decode('utf-8', 'replace')
+                    payload = json.loads(pathlib.Path(receipt).read_text()) if os.path.exists(receipt) else {}
+                    directory_cache[directory] = (proc.returncode, message, payload)
+                returncode, message, payload = directory_cache[directory]
+                collected = payload.get('ids', [])
+                skip = pytest_module_skip(module, [n for n in collected if n.split('::',1)[0] == module], payload.get('module_skips', []), message,
+                                          returncode, payload.get('collection_errors', ()))
+                recognized = module in payload.get('collected_modules', []) or any(n.split('::',1)[0] == module for n in collected)
+                directory_evidence = dict(directory=directory, command=list(command), file_collected=recognized,
+                    returncode=returncode, collection_errors=payload.get('collection_errors', []))
+                if skip or not recognized:
+                    successful = bool(payload) and returncode in (0,5) and not payload.get('collection_errors')
+                    for identity in identities:
+                        result[identity] = dict(ids=[], completed=successful, returncode=returncode,
+                            reason='' if skip else 'not_a_test_module' if successful else 'collection_error',
+                            collection_status='MODULE_SKIPPED' if skip else 'COMPLETE' if successful else failure_status(message),
+                            module_skip_reason=skip['reason'] if skip else '',
+                            message='module_skip: '+skip['reason'] if skip else message,
+                            directory_collection=directory_evidence)
+                    groups_log.append(dict(module=module,duration_s=time.monotonic()-start,returncode=returncode,command=command,
+                                           directory_collection=directory_evidence))
+                    save()
+                    continue
+                selected_items = [node for node in collected if any(node == identity or
+                    ('[' not in identity and node.startswith(identity + '[')) for identity in identities)]
+                successful = returncode in (0,5) and not payload.get('collection_errors')
+                # Preserve the effective directory context on successful discovery.
+                # Retry a selected file only after actual selected items prove its
+                # eligibility, when an unrelated directory error needs isolation.
+                reuse_directory = successful or not selected_items
+                if reuse_directory:
+                    collected = [n for n in collected if n.split('::',1)[0] == module]
+                    proc_returncode = returncode
+                    receipt_exists = bool(payload)
+                else:
+                    command[-1] = module
+                    if os.path.exists(receipt):
+                        os.unlink(receipt)
+            if not reuse_directory:
+                proc = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                      timeout=max(0.001, min(module_timeout-(time.monotonic()-start), deadline-time.monotonic())), env=environment)
+                message = (proc.stdout + proc.stderr).decode('utf-8', 'replace')
+                payload = json.loads(pathlib.Path(receipt).read_text()) if os.path.exists(receipt) else {}
+                collected = payload if isinstance(payload,list) else payload.get('ids', [])
+                proc_returncode = proc.returncode
+                receipt_exists = os.path.exists(receipt)
+                skip = pytest_module_skip(module, collected,
+                    [] if isinstance(payload,list) else payload.get('module_skips',[]), message, proc_returncode,
+                    () if isinstance(payload,list) else payload.get('collection_errors',())) if receipt_exists else None
             for identity in identities:
                 ids = [node for node in collected if node == identity or
                        ("[" not in identity and node.startswith(identity + "["))]
                 if skip:
                     result[identity] = dict(ids=[], reason='', message='module_skip: '+skip['reason'],
                         module_skip_reason=skip['reason'], module_skip_receipt=skip,
-                        collection_status='MODULE_SKIPPED', completed=True, returncode=proc.returncode)
+                        collection_status='MODULE_SKIPPED', completed=True, returncode=proc_returncode)
                     continue
-                error = proc.returncode not in (0, 5) or not os.path.exists(receipt) or bool(payload.get("collection_errors", ()) if isinstance(payload, dict) else False)
+                error = proc_returncode not in (0, 5) or not receipt_exists or bool(payload.get("collection_errors", ()) if isinstance(payload, dict) else False)
                 status = failure_status(message) if error else "COMPLETE"
                 result[identity] = dict(ids=[] if error else ids,
                     reason=status.lower() if error else "" if ids else "native_not_found",
                     message=message if error or not ids else "",
-                    collection_status=status, completed=not error, returncode=proc.returncode)
+                    collection_status=status, completed=not error, returncode=proc_returncode)
         groups_log.append(dict(module=module, duration_s=time.monotonic()-start,
-                               returncode=proc.returncode, command=command))
+                               returncode=proc_returncode if kind == "pytest" else proc.returncode, command=command,
+                               directory_collection=directory_evidence))
     except subprocess.TimeoutExpired:
         message = traceback.format_exc()
         for identity in identities:
@@ -412,7 +466,14 @@ def validate_in_container(container, tests, runner, *, timeout_s=1800):
         if runner.name == 'pytest' and 'bin/test' in sources.sources and 'sympy/__init__.py' in sources.sources:
             runner = TestRunner('sympy', 'native SymPy bin/test present; repairs frozen pytest runner')
         context = {'runner': runner.name, 'frozen_runner': frozen_runner, 'runner_evidence': runner.evidence}
-        static = StaticIndex(sources, runner.name).validate(tests)
+        index = StaticIndex(sources, runner.name)
+        static = index.validate(tests)
+        directory_check_modules = {t.split('::',1)[0] for t in tests if runner.name == 'pytest'
+            and not index.matches(Path(t.split('::',1)[0]).name,
+                                  index.pytest_patterns(t.split('::',1)[0], 'python_files'))}
+        static = tuple(replace(r, static_reason=r.reason, reason='not_a_test_module', runnable_ids=())
+                       if r.selected_id.split('::',1)[0] in directory_check_modules and not r.expanded else r
+                       for r in static)
         ids = tuple(
             dict.fromkeys(
                 t for r in static for t in (r.selected_id, *(r.runnable_ids if r.valid else ()))
@@ -422,7 +483,7 @@ def validate_in_container(container, tests, runner, *, timeout_s=1800):
             return ValidationPass(static, duration_s=time.monotonic() - started, context=context,
                 stage_health=({'stage':'native_collection','status':'EMPTY_INPUT','input_count':0,'output_count':0,'tests_executed':0},))
         payload = json.dumps(
-            {"runner": runner.name, "ids": ids, "module_timeout_s": min(timeout_s, 120),
+            {"runner": runner.name, "ids": ids, "directory_check_modules": sorted(directory_check_modules), "module_timeout_s": min(timeout_s, 120),
              "budget_s": remaining(), "prior_elapsed_s": time.monotonic()-started}
         )
         for path, data in (

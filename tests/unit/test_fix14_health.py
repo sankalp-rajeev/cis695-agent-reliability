@@ -165,3 +165,54 @@ def test_G3_static_invalid_without_native_receipt_still_halts(tmp_path):
     stages=collection_stages('task',(identity,),{'ids':{}},(),merged)
     assert not merged[0].native_proven_absent
     assert stages[0]['input_count']==1 and zero_output(stages)['halt']
+
+
+def test_all_selected_ids_in_native_skipped_module_are_MODULE_SKIPPED(tmp_path):
+    from reliability.verifier.validated_run import apply_validation
+    container=repository(tmp_path)
+    (tmp_path/'test_real.py').write_text('import pytest\npytest.skip("optional module",allow_module_level=True)\ndef helper(): raise AssertionError("body ran")\n')
+    ids=('test_real.py::helper','test_real.py::missing')
+    validation=validate_in_container(container,ids,TestRunner('pytest','fixture'))
+    assert all(r.to_dict()['validation_status']=='MODULE_SKIPPED' for r in validation.records)
+    run=apply_validation(RunResult(),validation)
+    assert all(r.status is TestStatus.SKIPPED for r in run.results)
+
+
+def test_non_test_module_requires_native_directory_proof_without_explicit_import(tmp_path):
+    container=repository(tmp_path)
+    (tmp_path/'pytest.ini').write_text('[pytest]\npython_files = *test_*.py\ntestpaths = tests\n')
+    folder=tmp_path/'tests'/'functional';folder.mkdir(parents=True)
+    (folder/'test_real.py').write_text('def test_body(): raise AssertionError("body ran")\n')
+    (folder/'consider_using_with_open.py').write_text('raise RuntimeError("lint input was imported")\ndef test_body(): pass\n')
+    identity='tests/functional/consider_using_with_open.py::test_body'
+    validation=validate_in_container(container,(identity,),TestRunner('pytest','fixture'))
+    record=validation.records[0]
+    assert record.reason=='not_a_test_module' and record.native_proven_absent
+    assert validation.groups[0]['command'][-1]=='tests/functional'
+    assert all(g['command'][-1]!='tests/functional/consider_using_with_open.py' for g in validation.groups)
+    assert 'lint input was imported' not in record.message
+
+
+def test_native_directory_custom_hook_overrides_static_file_pattern(tmp_path):
+    container=repository(tmp_path)
+    (tmp_path/'example.py').write_text('def test_body(): raise AssertionError("body ran")\n')
+    (tmp_path/'conftest.py').write_text('import pytest\ndef pytest_collect_file(file_path,parent):\n    if file_path.name == "example.py":\n        return pytest.Module.from_parent(parent,path=file_path)\n')
+    identity='example.py::test_body'
+    validation=validate_in_container(container,(identity,),TestRunner('pytest','fixture'))
+    assert validation.records[0].valid and validation.records[0].native_disagrees
+    assert validation.groups[0]['command'][-1]=='.'
+
+
+def test_SymPy_disabled_is_observed_inside_native_test_file(tmp_path):
+    from tests.unit.test_sympy_adapter import fake_repo
+    program,canary=fake_repo(tmp_path)
+    native=tmp_path/'sympy/testing/runtests.py'
+    source=native.read_text().replace('  functions=[fn for name,fn in gl.items()',
+        '  disabled = gl.get("disabled", False)\n  if disabled: return\n  functions=[fn for name,fn in gl.items()')
+    native.write_text(source)
+    (tmp_path/'sympy/tests/test_sample.py').write_text('disabled = True\ndef test_one(): raise AssertionError("body ran")\n')
+    identity='sympy/tests/test_sample.py::test_one'
+    proc=subprocess.run([sys.executable,str(program),'collect','sympy/tests/test_sample.py'],cwd=tmp_path,env=clean_env(),input=json.dumps({'ids':[identity]}),capture_output=True,text=True,check=True)
+    record=json.loads(proc.stdout)['ids'][identity]
+    assert record['collection_status']=='MODULE_SKIPPED' and record['module_skip_reason']=='disabled'
+    assert record['message']=='module_skip: disabled' and not canary.exists()

@@ -719,6 +719,21 @@
       ],
       "cause": "XMLSCHEMA_MISSING",
       "required_message": "No module named 'xmlschema'"
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-23476",
+      "repo": "matplotlib/matplotlib",
+      "module": "lib/matplotlib/tests/test_backend_bases.py",
+      "trees": [
+        "base",
+        "patched"
+      ],
+      "stages": [
+        "native_collection",
+        "module_execution"
+      ],
+      "cause": "MATPLOTLIB_COMPARE_IMPORT",
+      "required_message": "AttributeError: module 'matplotlib.testing' has no attribute 'compare'"
     }
   ],
   "blanket_task_exemptions": false,

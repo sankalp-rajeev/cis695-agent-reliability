@@ -522,13 +522,14 @@ def test_collection_timeout_remains_missing_evidence_instead_of_invalid_id():
     assert completeness_of((tid,), run, run)[0] == "INCOMPLETE_CONFIRMED"
 
 
-def test_no_runnable_owner_reason_survives_native_rejection():
+def test_no_runnable_owner_still_needs_native_absence_proof():
     tid = label("Other::test_orphan")
     record = index().classify(tid)
     merged = merge_native(
         (record,), {tid: {"ids": [], "reason": "native_load_error", "message": "not TestCase"}}
     )[0]
-    assert merged.reason == "no_runnable_owner"
+    assert merged.reason == "collection_error"
+    assert merged.static_reason == "no_runnable_owner" and merged.unavailable
     assert merged.invalid_instances == ((tid, "native_load_error"),)
 
 

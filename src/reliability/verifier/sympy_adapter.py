@@ -81,7 +81,20 @@ if mode == "collect":
                     return lambda *args, **kwargs: None
             collector = native.SymPyTests(Reporter(), kw=())
             if any(os.path.abspath(p) == os.path.abspath(module) for p in collector.get_test_files('sympy')):
-                collector.test_file(os.path.abspath(module))
+                # Observe the flag computed by this checkout's native runner.
+                # Reading module text or guessing dependency presence is not a skip.
+                native_code = collector.test_file.__func__.__code__
+                previous_trace = sys.gettrace()
+                def disabled_trace(frame, event, arg):
+                    if frame.f_code is native_code and event == 'return':
+                        if frame.f_locals.get('disabled') and frame.f_locals.get('gl', {}).get('disabled'):
+                            module_skips.append('disabled')
+                    return disabled_trace if frame.f_code is native_code else None
+                sys.settrace(disabled_trace)
+                try:
+                    collector.test_file(os.path.abspath(module))
+                finally:
+                    sys.settrace(previous_trace)
             inspect.isgeneratorfunction = original_generator
             if errors:
                 raise RuntimeError("\n".join(errors))
