@@ -325,7 +325,7 @@ The 16 excluded identities (the same list applies to base and patched) are:
 - `tests/functional/c/consider/consider_using_with.py::test_urlopen`
 - `tests/functional/c/consider/consider_using_with.py::test_zipfile`
 
-Fix 15 G1 manifest SHA-256: PENDING_EXHAUSTIVE_G1
+Fix 15 G1 manifest SHA-256: 2db4cbc30a2bcaa83df4dd5ec59b6477910ef56f299a5aa74c6a70bcdee2f377
 
 ## 5. Post-hoc, only after `phase4-run-sealed`
 
