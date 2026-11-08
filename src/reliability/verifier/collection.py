@@ -38,14 +38,27 @@ _FAILURE_HELPER = (
     + ", message) else 'COLLECTION_ERROR'\n"
 )
 
+DJANGO_SETUP_NAMES = ('setup', 'setup_run_tests')
+
+
+def django_setup_entry_point(names):
+    """Choose from the checked-out runner API, not a dataset version guess."""
+    for name in DJANGO_SETUP_NAMES:
+        if name in names:
+            return name
+    raise ValueError('Unsupported Django runtests setup API: expected setup or setup_run_tests')
+
+
 _DJANGO_COLLECT = (
     _FAILURE_HELPER
+    + 'DJANGO_SETUP_NAMES = ' + repr(DJANGO_SETUP_NAMES) + '\n'
     + r"""
 import contextlib, importlib, importlib.util, inspect, io, json, os, sys, traceback, unittest
 request = json.load(sys.stdin)
 labels, module_name = request["labels"], request["module"]
 results = {}
 capture = io.StringIO()
+setup_entry_point = None
 try:
     with contextlib.redirect_stdout(capture), contextlib.redirect_stderr(capture):
         sys.path.insert(0, os.path.abspath("tests"))
@@ -54,8 +67,20 @@ try:
         runner = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(runner)
         values = dict(verbosity=0, test_labels=labels, parallel=1, start_at=None, start_after=None)
-        params = inspect.signature(runner.setup).parameters
-        runner.setup(**dict((k, v) for k, v in values.items() if k in params))
+        setup_entry_point = next((name for name in DJANGO_SETUP_NAMES
+                                  if callable(getattr(runner, name, None))), None)
+        if setup_entry_point is None:
+            raise RuntimeError('Unsupported Django runtests setup API: expected setup or setup_run_tests')
+        setup = getattr(runner, setup_entry_point)
+        params = inspect.signature(setup).parameters
+        unsupported = [name for name, p in params.items()
+            if p.kind == inspect.Parameter.POSITIONAL_ONLY or
+            (p.default == inspect.Parameter.empty and
+             p.kind not in (inspect.Parameter.VAR_POSITIONAL, inspect.Parameter.VAR_KEYWORD)
+             and name not in values)]
+        if unsupported:
+            raise RuntimeError('Unsupported Django setup parameters for ' + setup_entry_point + ': ' + ', '.join(unsupported))
+        setup(**dict((k, v) for k, v in values.items() if k in params))
         # Import failure is never evidence that a selected attribute is absent.
         module = importlib.import_module(module_name)
 except BaseException:
@@ -113,6 +138,8 @@ else:
             status = failure_status(message)
             results[label] = dict(ids=[], reason=status.lower(), message=message,
                 collection_status=status, completed=False, returncode=0)
+for value in results.values():
+    value['setup_entry_point'] = setup_entry_point
 print(json.dumps(results))
 """
 )
