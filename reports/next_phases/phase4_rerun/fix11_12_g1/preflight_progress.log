@@ -1,0 +1,35 @@
+{"event": "G1_start", "task": "astropy__astropy-13977", "tree": "base"}
+{"event": "G1_end", "instance_id": "astropy__astropy-13977", "tree": "base", "runner": "pytest", "repo": "astropy/astropy", "version": "5.1", "status": "BLOCKED", "collector_status": "COLLECTION_ERROR", "fallback_slots": 105, "zero_output_halt": true, "tests_executed": 0, "duration_s": 123.43331289199705}
+{"event": "G1_start", "task": "astropy__astropy-13977", "tree": "patched"}
+Traceback (most recent call last):
+  File "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/scripts/phase4_stage_preflight.py", line 96, in <module>
+    raise SystemExit(main(parser.parse_args().output))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/scripts/phase4_stage_preflight.py", line 45, in main
+    validation=audit.stage('native_collection',lambda spec=spec,deadline=deadline:validate_in_container(container,spec.tests,spec.runner,timeout_s=max(0.001,deadline-time.monotonic())))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/src/reliability/verifier/source_integrity.py", line 437, in stage
+    return action()
+           ^^^^^^^^
+  File "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/scripts/phase4_stage_preflight.py", line 45, in <lambda>
+    validation=audit.stage('native_collection',lambda spec=spec,deadline=deadline:validate_in_container(container,spec.tests,spec.runner,timeout_s=max(0.001,deadline-time.monotonic())))
+                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/src/reliability/verifier/collection.py", line 403, in validate_in_container
+    rc, raw = container.exec("python /tmp/verifier_collect_driver.py", timeout_s=remaining()+2)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/src/reliability/verifier/container.py", line 173, in exec
+    proc = subprocess.run(
+           ^^^^^^^^^^^^^^^
+  File "/home/sankalp/.local/share/uv/python/cpython-3.11.17-linux-x86_64-gnu/lib/python3.11/subprocess.py", line 550, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sankalp/.local/share/uv/python/cpython-3.11.17-linux-x86_64-gnu/lib/python3.11/subprocess.py", line 1209, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sankalp/.local/share/uv/python/cpython-3.11.17-linux-x86_64-gnu/lib/python3.11/subprocess.py", line 2115, in _communicate
+    ready = selector.select(timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sankalp/.local/share/uv/python/cpython-3.11.17-linux-x86_64-gnu/lib/python3.11/selectors.py", line 415, in select
+    fd_event_list = self._selector.poll(timeout)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

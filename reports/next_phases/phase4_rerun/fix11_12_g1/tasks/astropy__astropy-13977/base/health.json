@@ -1,0 +1,1335 @@
+{
+  "task": "astropy__astropy-13977",
+  "tree": "base",
+  "status": "BLOCKED",
+  "collector_status": "COLLECTION_ERROR",
+  "stages": [
+    {
+      "stage": "pristine_source",
+      "status": "VERIFIED",
+      "input_count": 1,
+      "output_count": 1
+    },
+    {
+      "stage": "patch_application",
+      "status": "BASE_READY",
+      "input_count": 1,
+      "output_count": 1
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/units/tests/test_quantity.py",
+      "input_count": 92,
+      "output_count": 94,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/coordinates/tests/test_spectral_quantity.py",
+      "input_count": 12,
+      "output_count": 29,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/io/misc/asdf/tags/unit/tests/test_quantity.py",
+      "input_count": 4,
+      "output_count": 0,
+      "status": "COLLECTION_ERROR",
+      "allowed_exception": [],
+      "messages": [
+        "Internet access disabled\n\n\u001b[33m\u001b[33mno tests collected\u001b[0m\u001b[33m in 0.02s\u001b[0m\u001b[0m\n<frozen importlib._bootstrap>:228: RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility. Expected 80 from C header, got 96 from PyObject\n"
+      ],
+      "collector_exit_codes": [
+        5
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/time/tests/test_quantity_interaction.py",
+      "input_count": 19,
+      "output_count": 22,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/units/tests/test_quantity_annotations.py",
+      "input_count": 24,
+      "output_count": 36,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/units/tests/test_quantity_array_methods.py",
+      "input_count": 72,
+      "output_count": 75,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/units/tests/test_quantity_decorator.py",
+      "input_count": 27,
+      "output_count": 569,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/units/tests/test_quantity_non_ufuncs.py",
+      "input_count": 258,
+      "output_count": 276,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/units/tests/test_quantity_typing.py",
+      "input_count": 5,
+      "output_count": 5,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/units/tests/test_quantity_ufuncs.py",
+      "input_count": 84,
+      "output_count": 205,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/constants/tests/test_constant.py",
+      "input_count": 8,
+      "output_count": 8,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/constants/tests/test_prior_version.py",
+      "input_count": 10,
+      "output_count": 10,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/convolution/tests/test_convolve.py",
+      "input_count": 41,
+      "output_count": 613,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/convolution/tests/test_convolve_fft.py",
+      "input_count": 27,
+      "output_count": 617,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/coordinates/tests/test_angles.py",
+      "input_count": 51,
+      "output_count": 95,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/coordinates/tests/test_angular_separation.py",
+      "input_count": 4,
+      "output_count": 4,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/coordinates/tests/test_api_ape5.py",
+      "input_count": 5,
+      "output_count": 5,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/coordinates/tests/test_distance.py",
+      "input_count": 11,
+      "output_count": 11,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/coordinates/tests/test_earth.py",
+      "input_count": 17,
+      "output_count": 19,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/coordinates/tests/test_iau_fullstack.py",
+      "input_count": 3,
+      "output_count": 52,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/coordinates/tests/test_intermediate_transformations.py",
+      "input_count": 38,
+      "output_count": 76,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/coordinates/tests/test_regression.py",
+      "input_count": 33,
+      "output_count": 37,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/coordinates/tests/test_representation.py",
+      "input_count": 123,
+      "output_count": 132,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/coordinates/tests/test_representation_arithmetic.py",
+      "input_count": 56,
+      "output_count": 147,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/coordinates/tests/test_sky_coord.py",
+      "input_count": 71,
+      "output_count": 432,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/coordinates/tests/test_solar_system.py",
+      "input_count": 19,
+      "output_count": 34,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/coordinates/tests/test_spectral_coordinate.py",
+      "input_count": 22,
+      "output_count": 78,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/coordinates/tests/test_unit_representation.py",
+      "input_count": 1,
+      "output_count": 1,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/coordinates/tests/test_velocity_corrs.py",
+      "input_count": 9,
+      "output_count": 10,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/cosmology/flrw/tests/test_base.py",
+      "input_count": 42,
+      "output_count": 42,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/cosmology/flrw/tests/test_lambdacdm.py",
+      "input_count": 59,
+      "output_count": 77,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/cosmology/flrw/tests/test_w0cdm.py",
+      "input_count": 61,
+      "output_count": 320,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/cosmology/flrw/tests/test_w0wacdm.py",
+      "input_count": 61,
+      "output_count": 320,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/cosmology/flrw/tests/test_w0wzcdm.py",
+      "input_count": 25,
+      "output_count": 156,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/cosmology/flrw/tests/test_wpwazpcdm.py",
+      "input_count": 25,
+      "output_count": 156,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/cosmology/funcs/tests/test_funcs.py",
+      "input_count": 10,
+      "output_count": 29,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/cosmology/io/tests/test_json.py",
+      "input_count": 1,
+      "output_count": 8,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/cosmology/tests/test_connect.py",
+      "input_count": 1,
+      "output_count": 8,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/cosmology/tests/test_core.py",
+      "input_count": 24,
+      "output_count": 31,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/cosmology/tests/test_cosmology.py",
+      "input_count": 35,
+      "output_count": 49,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/io/ascii/tests/test_ecsv.py",
+      "input_count": 34,
+      "output_count": 217,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/io/fits/tests/test_connect.py",
+      "input_count": 59,
+      "output_count": 154,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/io/misc/asdf/tags/coordinates/tests/test_earthlocation.py",
+      "input_count": 4,
+      "output_count": 0,
+      "status": "COLLECTION_ERROR",
+      "allowed_exception": [],
+      "messages": [
+        "Internet access disabled\n\n\u001b[33m\u001b[33mno tests collected\u001b[0m\u001b[33m in 0.02s\u001b[0m\u001b[0m\n<frozen importlib._bootstrap>:228: RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility. Expected 80 from C header, got 96 from PyObject\n"
+      ],
+      "collector_exit_codes": [
+        5
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/io/misc/asdf/tags/coordinates/tests/test_skycoord.py",
+      "input_count": 12,
+      "output_count": 0,
+      "status": "COLLECTION_ERROR",
+      "allowed_exception": [],
+      "messages": [
+        "Internet access disabled\n\n\u001b[33m\u001b[33mno tests collected\u001b[0m\u001b[33m in 0.07s\u001b[0m\u001b[0m\n<frozen importlib._bootstrap>:228: RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility. Expected 80 from C header, got 96 from PyObject\n"
+      ],
+      "collector_exit_codes": [
+        5
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/io/misc/asdf/tags/table/tests/test_table.py",
+      "input_count": 14,
+      "output_count": 0,
+      "status": "COLLECTION_ERROR",
+      "allowed_exception": [],
+      "messages": [
+        "Internet access disabled\n\n\u001b[33m\u001b[33mno tests collected\u001b[0m\u001b[33m in 0.03s\u001b[0m\u001b[0m\n<frozen importlib._bootstrap>:228: RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility. Expected 80 from C header, got 96 from PyObject\n"
+      ],
+      "collector_exit_codes": [
+        5
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/io/misc/tests/test_hdf5.py",
+      "input_count": 44,
+      "output_count": 105,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/io/misc/tests/test_parquet.py",
+      "input_count": 28,
+      "output_count": 0,
+      "status": "COLLECTION_ERROR",
+      "allowed_exception": [],
+      "messages": [
+        "Internet access disabled\n\n\u001b[33m\u001b[33mno tests collected\u001b[0m\u001b[33m in 0.09s\u001b[0m\u001b[0m\n<frozen importlib._bootstrap>:228: RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility. Expected 80 from C header, got 96 from PyObject\n"
+      ],
+      "collector_exit_codes": [
+        5
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/io/misc/tests/test_yaml.py",
+      "input_count": 11,
+      "output_count": 46,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/modeling/tests/test_core.py",
+      "input_count": 56,
+      "output_count": 65,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/modeling/tests/test_models_quantities.py",
+      "input_count": 10,
+      "output_count": 493,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/modeling/tests/test_parameters.py",
+      "input_count": 62,
+      "output_count": 70,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/modeling/tests/test_physical_models.py",
+      "input_count": 15,
+      "output_count": 23,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/modeling/tests/test_quantities_evaluation.py",
+      "input_count": 20,
+      "output_count": 20,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/modeling/tests/test_quantities_fitting.py",
+      "input_count": 8,
+      "output_count": 44,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/modeling/tests/test_quantities_model.py",
+      "input_count": 9,
+      "output_count": 197,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/modeling/tests/test_quantities_parameters.py",
+      "input_count": 13,
+      "output_count": 14,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/modeling/tests/test_rotations.py",
+      "input_count": 17,
+      "output_count": 33,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/modeling/tests/test_units_mapping.py",
+      "input_count": 1,
+      "output_count": 5,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/nddata/mixins/tests/test_ndarithmetic.py",
+      "input_count": 25,
+      "output_count": 178,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/nddata/tests/test_ccddata.py",
+      "input_count": 70,
+      "output_count": 102,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/nddata/tests/test_nddata.py",
+      "input_count": 28,
+      "output_count": 29,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/nddata/tests/test_nduncertainty.py",
+      "input_count": 20,
+      "output_count": 83,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/stats/tests/test_biweight.py",
+      "input_count": 35,
+      "output_count": 35,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/stats/tests/test_circstats.py",
+      "input_count": 9,
+      "output_count": 9,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/table/tests/test_column.py",
+      "input_count": 55,
+      "output_count": 102,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/table/tests/test_index.py",
+      "input_count": 24,
+      "output_count": 525,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/table/tests/test_info.py",
+      "input_count": 12,
+      "output_count": 16,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/table/tests/test_masked.py",
+      "input_count": 43,
+      "output_count": 91,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/table/tests/test_mixin.py",
+      "input_count": 30,
+      "output_count": 211,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/table/tests/test_operations.py",
+      "input_count": 87,
+      "output_count": 185,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/table/tests/test_pickle.py",
+      "input_count": 6,
+      "output_count": 36,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/table/tests/test_table.py",
+      "input_count": 198,
+      "output_count": 473,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/time/tests/test_comparisons.py",
+      "input_count": 8,
+      "output_count": 18,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/time/tests/test_delta.py",
+      "input_count": 26,
+      "output_count": 97,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/time/tests/test_precision.py",
+      "input_count": 41,
+      "output_count": 79,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/timeseries/periodograms/lombscargle/tests/test_lombscargle.py",
+      "input_count": 14,
+      "output_count": 1146,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/timeseries/periodograms/lombscargle/tests/test_statistics.py",
+      "input_count": 6,
+      "output_count": 336,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/timeseries/tests/test_binned.py",
+      "input_count": 23,
+      "output_count": 24,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/timeseries/tests/test_downsample.py",
+      "input_count": 11,
+      "output_count": 17,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/timeseries/tests/test_sampled.py",
+      "input_count": 24,
+      "output_count": 25,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/uncertainty/tests/test_distribution.py",
+      "input_count": 37,
+      "output_count": 42,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/units/tests/test_equivalencies.py",
+      "input_count": 49,
+      "output_count": 78,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/units/tests/test_logarithmic.py",
+      "input_count": 59,
+      "output_count": 225,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/units/tests/test_physical.py",
+      "input_count": 24,
+      "output_count": 216,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/units/tests/test_structured.py",
+      "input_count": 61,
+      "output_count": 70,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/units/tests/test_structured_erfa_ufuncs.py",
+      "input_count": 34,
+      "output_count": 38,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/units/tests/test_utils.py",
+      "input_count": 2,
+      "output_count": 2,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/utils/iers/tests/test_iers.py",
+      "input_count": 16,
+      "output_count": 17,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/utils/masked/tests/test_functions.py",
+      "input_count": 49,
+      "output_count": 102,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/utils/masked/tests/test_masked.py",
+      "input_count": 136,
+      "output_count": 344,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/utils/masked/tests/test_table.py",
+      "input_count": 7,
+      "output_count": 9,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/visualization/wcsaxes/tests/test_formatter_locator.py",
+      "input_count": 29,
+      "output_count": 0,
+      "status": "COLLECTION_ERROR",
+      "allowed_exception": [],
+      "messages": [
+        "Internet access disabled\n\n\u001b[33m\u001b[33mno tests collected\u001b[0m\u001b[33m in 0.03s\u001b[0m\u001b[0m\n<frozen importlib._bootstrap>:228: RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility. Expected 80 from C header, got 96 from PyObject\n"
+      ],
+      "collector_exit_codes": [
+        5
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/visualization/wcsaxes/tests/test_wcsapi.py",
+      "input_count": 14,
+      "output_count": 0,
+      "status": "COLLECTION_ERROR",
+      "allowed_exception": [],
+      "messages": [
+        "Internet access disabled\n\n\u001b[33m\u001b[33mno tests collected\u001b[0m\u001b[33m in 0.02s\u001b[0m\u001b[0m\n<frozen importlib._bootstrap>:228: RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility. Expected 80 from C header, got 96 from PyObject\n"
+      ],
+      "collector_exit_codes": [
+        5
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/wcs/tests/test_utils.py",
+      "input_count": 50,
+      "output_count": 79,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/wcs/wcsapi/tests/test_fitswcs.py",
+      "input_count": 29,
+      "output_count": 60,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/wcs/wcsapi/tests/test_high_level_api.py",
+      "input_count": 5,
+      "output_count": 5,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/wcs/wcsapi/tests/test_utils.py",
+      "input_count": 4,
+      "output_count": 4,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "native_collection",
+      "module": "astropy/wcs/wcsapi/wrappers/tests/test_sliced_wcs.py",
+      "input_count": 20,
+      "output_count": 41,
+      "status": "COMPLETE",
+      "allowed_exception": [],
+      "messages": [],
+      "collector_exit_codes": [
+        0
+      ],
+      "tests_executed": 0
+    },
+    {
+      "stage": "runner_startup",
+      "status": "COMPLETE",
+      "input_count": 1,
+      "output_count": 1,
+      "returncode": 0,
+      "command": "python -m pytest --help",
+      "message": "",
+      "tests_executed": 0
+    }
+  ],
+  "COLLECTOR_FALLBACK_slots": 105,
+  "G2": "NOT_EVALUATED_NO_TEST_EXECUTION",
+  "G3": {
+    "halt": true,
+    "zero_output_stages": [
+      "native_collection",
+      "native_collection",
+      "native_collection",
+      "native_collection",
+      "native_collection",
+      "native_collection",
+      "native_collection"
+    ]
+  },
+  "tests_executed": 0,
+  "zero_body_commands_only": true,
+  "duration_s": 123.43331289199705
+}
