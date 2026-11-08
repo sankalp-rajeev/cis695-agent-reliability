@@ -207,7 +207,7 @@ class Calls:
         if confirmation:
             initial = self.calls[int(patched)][3]
             reference = confirmation_reference(initial, tests)
-            record = health_for_run(self.task, 'patched' if patched else 'base', result, reference)
+            record = health_for_run(self.task, 'patched' if patched else 'base', result, reference, confirmation=True)
             record['scope'] = 'confirmation'
             record['call'] = len(self.calls) + 1
             append_health(self.health_path, record)

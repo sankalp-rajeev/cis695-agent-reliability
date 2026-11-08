@@ -43,14 +43,14 @@ class Executor:
 
 
 @pytest.mark.parametrize('initial,outcome,signal', [(FAIL, Outcome.REGRESSION, Signal.FAIL),
-                                                   (ERROR, Outcome.REGRESSION_ERROR, Signal.REGRESSION_ERROR)])
+                                                   (ERROR, Outcome.FLAKY, Signal.INCOMPLETE)])
 def test_each_new_failure_requires_three_isolated_calls_per_tree(initial, outcome, signal):
     executor = Executor(initial)
     report = run_regression('task', Selection(tests=IDS), executor)
     assert report.signal is signal and report.outcomes[IDS[0]] is outcome
     assert len(report.confirmations) == 6
     assert executor.calls[2:] == [((IDS[0],), tree, 1800) for tree in (False, True) for _ in range(3)]
-    assert report.confirmation_summary[0]['stable']
+    assert report.confirmation_summary[0]['stable'] is (initial is FAIL)
     assert report.confirmation_summary[0]['base_PASS'] == 3
     assert report.confirmation_summary[0]['patched_non_PASS'] == 3
     for i, run in enumerate(report.confirmations):

@@ -100,7 +100,7 @@ class Signal(str, Enum):
 BASELINE_FAILURE_THRESHOLD = 0.5
 
 # Parsed baseline caches must preserve the same outcome model as patched results.
-_BASELINE_PARSER_REVISION = "native-capture-v14-normalized-authoritative-collection"
+_BASELINE_PARSER_REVISION = "native-capture-v15-identity-loss-health"
 
 
 @dataclass(frozen=True, slots=True)
@@ -549,7 +549,9 @@ def run_regression(
                     result = cases.get(test)
                     statuses[patched_tree].append(result.status if result else None)
                     usable &= not (confirmation.timed_out or confirmation.infrastructure_errors
-                                   or confirmation.unmatched_ids)
+                                   or confirmation.unmatched_ids
+                                   or any(r.status in (TestStatus.ERROR, TestStatus.TIMEOUT)
+                                          for r in (*confirmation.results, *confirmation.execution_results)))
             stable = (usable and statuses[False] == [TestStatus.PASSED] * 3
                       and all(s in (TestStatus.FAILED, TestStatus.ERROR) for s in statuses[True]))
             confirmation_summary.append({

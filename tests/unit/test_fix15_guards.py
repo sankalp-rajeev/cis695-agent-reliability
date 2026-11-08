@@ -66,3 +66,33 @@ def test_G1_synthetic_projected_halt_blocks_gate(tmp_path,monkeypatch):
     assert module.main(out)==1
     summary=json.loads((out/'summary.json').read_text())
     assert len(summary['projected_halts'])==2 and not summary['launch_allowed']
+
+
+@pytest.mark.parametrize('confirmation_status',[TestStatus.ERROR,TestStatus.TIMEOUT,TestStatus.COLLECTION_ERROR])
+def test_confirmation_identity_loss_vs_unstable_through_real_launcher(tmp_path,monkeypatch,confirmation_status):
+    from tests.unit.test_fix14_health import ContainerShell
+    from reliability.verifier.regression import Outcome
+    spec=task_spec(tmp_path);count=[]
+    class Executor:
+        def __init__(self,*a,**k):pass
+        def run(self,tests,*,patched,timeout_s):
+            count.append(patched)
+            status=(TestStatus.FAILED if patched else TestStatus.PASSED) if len(count)<=2 else (confirmation_status if patched or confirmation_status is TestStatus.COLLECTION_ERROR else TestStatus.PASSED)
+            return RunResult(results=(TestResult(tests[0],status),),requested_tests=tests,evidence_complete=True,
+                stage_health=({'stage':'execution','input_count':1,'output_count':int(status in (TestStatus.PASSED,TestStatus.FAILED))},
+                              {'stage':'admission','input_count':1,'output_count':int(status in (TestStatus.PASSED,TestStatus.FAILED))}))
+    monkeypatch.setattr(launch,'FrozenContainer',ContainerShell)
+    monkeypatch.setattr(launch,'ContainerTestExecutor',Executor)
+    out=tmp_path/'task';health=tmp_path/'health.jsonl'
+    if confirmation_status is TestStatus.COLLECTION_ERROR:
+        from reliability.verifier.run_health import RunHealthError
+        with pytest.raises(RunHealthError):launch.run_task(spec,out,'fixture',{'base':spec.tests,'patched':spec.tests},health)
+        assert len(count)==3 and not (out/'result.json').exists()
+    else:
+        launch.run_task(spec,out,'fixture',{'base':spec.tests,'patched':spec.tests},health)
+        report=json.loads((out/'result.json').read_text())['policies']['C_invalid_excluded']
+        assert report['outcomes'][spec.tests[0]]==Outcome.FLAKY.value
+        assert len(count)==8
+        rows=[json.loads(line) for line in health.read_text().splitlines()]
+        assert all(not r['halt'] for r in rows)
+        assert any(r.get('unstable_confirmation_ids') for r in rows)

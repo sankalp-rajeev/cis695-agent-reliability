@@ -51,7 +51,9 @@ def score(base, patch, tests, strict=False):
         "task",
         Selection(tests=tests),
         Paired(base, patch),
-        RegressionConfig(skip_compatible=not strict),
+        # These cases classify the initial captures; confirmation policy has
+        # its own real call-path coverage in test_fix8/15.
+        RegressionConfig(skip_compatible=not strict, rerun_flaky=False),
     )
 
 
