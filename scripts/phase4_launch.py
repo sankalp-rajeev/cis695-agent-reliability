@@ -21,7 +21,7 @@ from pathlib import Path
 
 from reliability.verifier.accounting import ADMITTED_STATUSES
 from reliability.verifier.container import ContainerTestExecutor, TaskContainer
-from reliability.verifier.g1_reference import clean_reference, read_collection
+from reliability.verifier.g1_reference import clean_reference, native_collected_ids, read_collection
 from reliability.verifier.pre_install import load_specs
 from reliability.verifier.regression import RegressionConfig, run_regression, run_to_dict
 from reliability.verifier.run_health import (
@@ -186,10 +186,11 @@ def time_limit_handler(*_):
 
 class Calls:
     """Capture both initial trees, then confirm once; policy replays do no I/O."""
-    def __init__(self, executor, task=None, health_path=None):
+    def __init__(self, executor, task=None, health_path=None, g1_reference=None):
         self.executor = executor
         self.task = task
         self.health_path = health_path
+        self.g1_reference = g1_reference or {}
         self.calls = []
 
     def run(self, tests, *, patched, timeout_s):
@@ -206,7 +207,10 @@ class Calls:
             raise RunHealthError(record) from exc
         if confirmation:
             initial = self.calls[int(patched)][3]
-            reference = confirmation_reference(initial, tests)
+            tree='patched' if patched else 'base'
+            evidence=self.g1_reference.get(tree,{})
+            g1_ids=evidence.get('g1_collected_ids',()) if isinstance(evidence,dict) else ()
+            reference = confirmation_reference(initial, tests, g1_ids)
             record = health_for_run(self.task, 'patched' if patched else 'base', result, reference, confirmation=True)
             record['scope'] = 'confirmation'
             record['call'] = len(self.calls) + 1
@@ -217,7 +221,7 @@ class Calls:
         return result
 
 
-def confirmation_reference(initial, tests):
+def confirmation_reference(initial, tests, g1_ids=()):
     receipts = {r['selected_id']: r for r in initial.validation}
     admitted = {r.test_id for r in initial.results if r.status in ADMITTED_STATUSES
                 and (not receipts or (receipts.get(r.test_id, {}).get('admitted')
@@ -228,7 +232,7 @@ def confirmation_reference(initial, tests):
                if r.status.value in ('passed', 'failed', 'error', 'xfail', 'xpass')}
     return {'admitted_ids': sorted((admitted | concrete) & set(tests)),
             'module_skip_blocked_ids': sorted(blocked & set(tests)),
-            'g1_collected_ids': [], 'reference_source': 'INITIAL_ADMITTED_SUBSET'}
+            'g1_collected_ids': sorted(t for t in tests if t in g1_ids or set(initial.execution_id_map.get(t,())) & set(g1_ids)), 'reference_source': 'INITIAL_ADMITTED_SUBSET'}
 
 
 class Replay:
@@ -267,7 +271,7 @@ def run_task(spec, folder, experiment, reference=None, health_path=None):
         # executor takes before/after hashes and carries changes across passes.
         write(folder/'pristine_generated_inputs.json', container.generated_snapshot())
         calls = Calls(ContainerTestExecutor(container, runner=spec.runner, evidence_dir=folder/'raw'),
-                      spec.instance_id, health_path or folder/'health.jsonl')
+                      spec.instance_id, health_path or folder/'health.jsonl', reference)
         # Both trees are captured even if scoring later abstains on a red base.
         for patched in (False, True):
             run = calls.run(spec.tests, patched=patched, timeout_s=PASS_BUDGET_S)
@@ -411,10 +415,8 @@ def with_g1_references(reference, specs, path):
             records = collection['records']
             if {r['selected_id'] for r in records} != set(spec.tests):
                 raise ValueError('G1 collection/selection identity mismatch: '+spec.instance_id)
-            if not evidence['admitted_ids'] and spec.tests:
-                evidence['g1_collected_ids'] = [r['selected_id'] for r in records
-                    if r.get('stage') == 'native' and r.get('valid') and not r.get('collector_fallback')
-                    and not r.get('module_skip_reason') and r.get('runnable_ids')]
+            evidence['g1_collected_ids'] = native_collected_ids(collection)
+            evidence['g1_reference_required'] = True
             result[spec.instance_id][tree] = evidence
     return result
 

@@ -67,7 +67,8 @@ def identity_monotonicity(reference, run):
               or receipt.get('validation_status') in ('INVALID_ID','COLLECTION_ERROR','RUNNER_UNAVAILABLE'))
         if not lost and execution and receipt.get('runnable_ids'):
             skipped={p[0] for p in receipt.get('module_skip_instances',())}
-            lost=any(t not in skipped and (t not in execution or execution[t].status in IDENTITY_LOSS_STATUSES
+            lost=any(t not in skipped and ((t not in execution and result.status not in BUDGET_STATUSES) or
+                     (t in execution and execution[t].status in IDENTITY_LOSS_STATUSES)
                      or t in unmatched) for t in receipt['runnable_ids'])
         if not lost:preserved.add(identity)
     result=monotonicity(reference,preserved,invalid)
@@ -129,15 +130,23 @@ def health_for_run(task, tree, run, reference, *, confirmation=False):
     lost_to_skip = skipped & blocked_skip
     # ERROR reference evidence also cannot be replaced by a module-level skip.
     g2 = monotonicity(reference_ids | lost_to_skip, admitted-lost_to_skip, invalid)
-    if confirmation:
+    if confirmation or empty_original:
+        lost_to_skip=set()
         g2=identity_monotonicity(reference_ids,run)
     g2['reference_source'] = reference.get('reference_source', 'G1_NATIVE_COLLECTION' if empty_original else 'FROZEN_ORIGINAL') if isinstance(reference, dict) else 'FROZEN_ORIGINAL'
     g2['missing_G1_reference'] = missing_g1
     g2['halt'] |= missing_g1
     g2['module_skip_incompatible_reference_ids'] = sorted(lost_to_skip)
+    g1_ids=set(reference.get('g1_collected_ids',())) if isinstance(reference,dict) else set()
+    g1_guard=identity_monotonicity(g1_ids,run)
+    g1_guard['reference_source']='G1_NATIVE_COLLECTION'
+    if isinstance(reference,dict) and reference.get('g1_reference_required') and 'g1_collected_ids' not in reference:
+        g1_guard.update(halt=True,missing_G1_reference=True)
     stages = identity_stage_health(run,confirmation=confirmation)
     g3 = zero_output(stages)
     reasons = (['G2 ' + tree + ': lost ' + str(g2['lost_count']) + ' reference IDs'] if g2['halt'] else [])
+    if g1_guard['halt']:
+        reasons.append('G1-collected ' + tree + ': lost ' + str(g1_guard['lost_count']) + ' native identities')
     if missing_g1:
         reasons.append('G2 ' + tree + ': non-empty selection requires G1 native reference')
     reasons += ['G3 ' + tree + ': zero output at ' + s for s in g3['zero_output_stages']]
@@ -145,7 +154,7 @@ def health_for_run(task, tree, run, reference, *, confirmation=False):
             'input_ids': len(run.requested_tests), 'COLLECTOR_FALLBACK_slots': len(fallback),
             'collector_fallback_ids': sorted(fallback), 'admitted_ids': len(admitted-lost_to_skip),
             'admitted_share': len(admitted-lost_to_skip)/len(run.requested_tests) if run.requested_tests else None,
-            'G2': g2, 'G3': g3,
+            'G2': g2, 'G1_collected_guard':g1_guard, 'G3': g3,
             'unstable_confirmation_ids':sorted({r.test_id for r in (*run.results,*run.execution_results) if confirmation and r.status in (TestStatus.ERROR,TestStatus.TIMEOUT)}), 'stages': stages, 'halt': bool(reasons), 'halt_reasons': reasons}
 
 

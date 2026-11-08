@@ -96,3 +96,40 @@ def test_confirmation_identity_loss_vs_unstable_through_real_launcher(tmp_path,m
         rows=[json.loads(line) for line in health.read_text().splitlines()]
         assert all(not r['halt'] for r in rows)
         assert any(r.get('unstable_confirmation_ids') for r in rows)
+
+
+@pytest.mark.parametrize('status,halt',[(TestStatus.NOT_RUN,True),(TestStatus.COLLECTION_ERROR,True),
+    (TestStatus.INVALID_ID,True),(TestStatus.RUNNER_UNAVAILABLE,True),(TestStatus.NOT_REACHED,False),
+    (TestStatus.TIMEOUT,False),(TestStatus.ERROR,False)])
+def test_G1_collected_guard_identity_loss_vs_budget_on_real_G1_paths(status,halt):
+    from reliability.verifier.g1_reference import native_collected_ids
+    collection=read_collection(ROOT/'reports/next_phases/phase4_rerun/fix14_g1/tasks/astropy__astropy-7606/base/collection.json')
+    ids=native_collected_ids(collection)
+    assert len(ids)>10
+    reference={'admitted_ids':[],'g1_collected_ids':ids}
+    results=tuple(TestResult(t,status if i<10 else TestStatus.PASSED) for i,t in enumerate(ids))
+    run=RunResult(results=results,requested_tests=tuple(ids))
+    record=health_for_run('task','base',run,reference)
+    assert record['G1_collected_guard']['halt']==halt
+    assert record['G2']['halt']==halt
+    assert record['G2']['mode']=='IDENTITY_ONLY'
+    assert record['G1_collected_guard']['lost_count']==(10 if halt else 0)
+
+
+def test_budget_only_zero_admission_is_reported_without_halt():
+    ids=('tests/test_real.py::test_a','tests/test_real.py::test_b')
+    run=RunResult(results=tuple(TestResult(t,TestStatus.NOT_REACHED) for t in ids),requested_tests=ids,
+        stage_health=({'stage':'execution','input_count':2,'output_count':0},
+                      {'stage':'admission','input_count':2,'output_count':0}))
+    reference={'admitted_ids':[],'g1_collected_ids':ids}
+    record=health_for_run('task','base',run,reference)
+    assert not record['halt'] and record['admitted_share']==0
+    assert record['G1_collected_guard']['budget_ids']==list(ids)
+    assert all(s['non_identity_gap_count']==2 for s in record['stages'])
+
+
+def test_frozen_nonempty_reference_still_enforces_full_admission_loss():
+    identity='tests/test_real.py::test_a'
+    run=RunResult(results=(TestResult(identity,TestStatus.NOT_REACHED),),requested_tests=(identity,))
+    record=health_for_run('task','base',run,{'admitted_ids':[identity],'g1_collected_ids':[identity]})
+    assert record['G2']['halt'] and not record['G1_collected_guard']['halt']
