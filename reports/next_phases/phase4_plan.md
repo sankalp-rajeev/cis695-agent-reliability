@@ -257,6 +257,76 @@ collection. Pylint-4970 uses python_files `*test_*.py`, testpaths `tests`, and
 native `tests/functional` directory collection excludes
 `consider_using_with_open.py`. No benchmark test bodies were read or executed.
 
+### Reference hygiene, confirmation loss and G1-collected guard (before Fix 15)
+
+This amendment supersedes conflicting Fix 14 guard wording. All H1/H1b/H2/H3
+thresholds, B1 (37,614), B2, frozen selections and the original reference
+provenance remain unchanged. Attempt-2 outcomes, verdicts and labels remain unread.
+
+1. Remove a frozen-reference ID only with native containing-directory proof of
+   `not_a_test_module` under rule 10. Its historical explicit-file import was
+   spurious admission. Publish the exact exclusions and their directory receipts.
+   The existing receipts identify 16 unique IDs in pylint-4970's
+   `tests/functional/c/consider/consider_using_with.py`, on both trees (32 tree-ID
+   slots). No other reference removal is permitted; ordinary INVALID_ID remains
+   a loss, including expanded slots. Remove these same IDs from skip-blocking
+   reference sets so they cannot be reintroduced by skip accounting.
+2. G1 projects G2 for every task/tree from its native receipts against the cleaned
+   frozen reference. An ID is potentially admitted only with native collection
+   or a compatible native module skip; fallback is excluded. Any projected halt
+   blocks the launch gate. All 166 pairs still run before gate evaluation.
+3. Confirmation G2 counts identity loss only: COLLECTION_ERROR, INVALID_ID,
+   NOT_RUN, RUNNER_UNAVAILABLE, missing/unmatched identities, and collector
+   fallback. ERROR or TIMEOUT in any confirmation makes its candidate FLAKY,
+   even if all patched confirmations consistently return ERROR; it never causes
+   a health halt. Native collection/start-up failures remain identity failures.
+   G3 must not reinterpret terminal ERROR/TIMEOUT execution/admission output as
+   zero identity output. Preserve the missing/unstable evidence in the record.
+4. Every tree also checks identity loss against its G1 natively collected valid
+   set, unanimously projected to frozen slots and excluding fallback/module skips.
+   Apply the unchanged >= 10 OR >= 1% loss thresholds. NOT_REACHED and TIMEOUT
+   remain reported budget gaps, never identity loss; they are H1b's missing
+   evidence. For the 16 empty-original-reference trees this identity-only G1 rule
+   replaces Fix 14's full-admission-loss fallback. Non-empty original references
+   retain their existing full-admission G2 rule and stronger-reference skip rule.
+   Confirmation calls check the corresponding G1 subset as well as the initial
+   run's admitted subset. Execution/admission G3 accounting reports budget-only
+   gaps without creating a zero-output halt in these identity-only checks.
+5. The launcher verifies the G1 manifest's SHA-256 from phase4_plan.md as stored
+   in the committed freeze HEAD, before starting a container. An unset/mismatched
+   anchor fails closed. The plan is excluded from the G1 source manifest to avoid
+   a circular hash; the freeze commit binds the plan and manifest together.
+6. Normalize pytest instance segments in timeout attribution (`_active_test`),
+   preserving parameter payloads and the original selected identity.
+7. G1 records KeyboardInterrupt/SystemExit per pair and re-raises them, including
+   recording failures encountered while persisting the interruption. Other
+   per-pair filesystem errors and BaseException remain contained and recorded.
+8. Pre-registered exceptions match exact task, tree, module, stage and diagnostic.
+   Apply native_collection and module_execution independently. A collection-stage
+   allowance does not authorize an execution-stage allowance. Both remain missing
+   evidence; neither relaxes G2 or the G1-collected identity guard.
+
+The 16 excluded identities (the same list applies to base and patched) are:
+
+- `tests/functional/c/consider/consider_using_with.py::test_codecs_open`
+- `tests/functional/c/consider/consider_using_with.py::test_futures`
+- `tests/functional/c/consider/consider_using_with.py::test_lock_acquisition`
+- `tests/functional/c/consider/consider_using_with.py::test_lock_acquisition_in_context_manager1`
+- `tests/functional/c/consider/consider_using_with.py::test_multiprocessing`
+- `tests/functional/c/consider/consider_using_with.py::test_named_temporary_file`
+- `tests/functional/c/consider/consider_using_with.py::test_popen`
+- `tests/functional/c/consider/consider_using_with.py::test_pyzipfile`
+- `tests/functional/c/consider/consider_using_with.py::test_spooled_temporary_file`
+- `tests/functional/c/consider/consider_using_with.py::test_subscript_assignment`
+- `tests/functional/c/consider/consider_using_with.py::test_suppress_in_exit_stack`
+- `tests/functional/c/consider/consider_using_with.py::test_tarfile`
+- `tests/functional/c/consider/consider_using_with.py::test_temporary_directory`
+- `tests/functional/c/consider/consider_using_with.py::test_temporary_file`
+- `tests/functional/c/consider/consider_using_with.py::test_urlopen`
+- `tests/functional/c/consider/consider_using_with.py::test_zipfile`
+
+Fix 15 G1 manifest SHA-256: PENDING_EXHAUSTIVE_G1
+
 ## 5. Post-hoc, only after `phase4-run-sealed`
 
 These may use labels; the executor never changes in response:
