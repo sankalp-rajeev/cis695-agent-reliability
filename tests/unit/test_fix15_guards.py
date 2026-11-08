@@ -180,3 +180,23 @@ def test_pytest3_timeout_attribution_uses_normalized_identity_and_keeps_unicode(
     run=run_from_capture(TestRunner('pytest','fixture'),(active,other),runner_log=raw,events=events,timed_out=True,budget_s=10)
     assert run.by_id()[active].status is TestStatus.TIMEOUT
     assert run.by_id()[other].status is TestStatus.NOT_REACHED
+
+
+@pytest.mark.parametrize('exception',[KeyboardInterrupt,SystemExit])
+@pytest.mark.parametrize('record_failure',[False,True])
+def test_guarded_pair_records_and_reraises_interruptions(tmp_path,monkeypatch,exception,record_failure):
+    from tests.unit.test_fix14_health import G1_module
+    module=G1_module(monkeypatch);spec=task_spec(tmp_path)
+    def interrupt(*args,**kwargs):raise exception('stop')
+    monkeypatch.setattr(launch,'FrozenContainer',interrupt)
+    original_write=launch.write
+    def write(path,value):
+        if record_failure and path.name=='health.json':raise PermissionError('pair receipt denied')
+        return original_write(path,value)
+    monkeypatch.setattr(launch,'write',write)
+    out=tmp_path/'g1'
+    with pytest.raises(exception) as caught:module.guarded_pair(spec,False,out)
+    path=out/'interruption.json' if record_failure else out/'tasks/task/base/health.json'
+    record=json.loads(path.read_text())
+    assert record['interruption']==exception.__name__ and record['status']=='INTERRUPTED'
+    assert not record['gate_evaluated'] and caught.value.g1_record==record

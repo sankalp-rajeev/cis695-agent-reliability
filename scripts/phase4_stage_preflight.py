@@ -60,6 +60,8 @@ def audit_pair(spec, patched, output, reference=None):
             unexpected=[s for s in stages if s['status'] in ('COLLECTION_ERROR','RUNNER_UNAVAILABLE','NOT_REACHED') and not s.get('allowed_exception')]
             g3=zero_output(stages)
             ok=not unexpected and not g3['halt']
+    except (KeyboardInterrupt,SystemExit):
+        raise
     except BaseException as exc:  # noqa: BLE001
         stages.append({'stage':'stage_error','status':'ERROR','input_count':1,'output_count':0,'message':repr(exc)})
         fallback=0;collector_status='BLOCKED_UPSTREAM';g3=zero_output(stages);ok=False
@@ -85,6 +87,8 @@ def audit_pair(spec, patched, output, reference=None):
             continue
         try:
             launch.write(folder/name, value)
+        except (KeyboardInterrupt,SystemExit):
+            raise
         except BaseException as exc:
             stages.append({'stage':'pair_recording','status':'ERROR','input_count':1,'output_count':0,
                            'message':name+': '+repr(exc)})
@@ -96,6 +100,20 @@ def audit_pair(spec, patched, output, reference=None):
 def guarded_pair(spec, patched, output, reference=None):
     try:
         return audit_pair(spec, patched, output, reference)
+    except (KeyboardInterrupt,SystemExit) as exc:
+        health={'task':spec.instance_id,'tree':'patched' if patched else 'base',
+                'status':'INTERRUPTED','interruption':type(exc).__name__,'message':repr(exc),
+                'tests_executed':0,'gate_evaluated':False}
+        try:
+            launch.write(output/'tasks'/spec.instance_id/health['tree']/'health.json',health)
+        except BaseException as write_error:
+            health['recording_error']=repr(write_error)
+            try:
+                launch.write(output/'interruption.json',health)
+            except BaseException as fallback_error:
+                health['fallback_recording_error']=repr(fallback_error)
+        exc.g1_record=health
+        raise
     except BaseException as exc:
         # Even receipt construction and writes are inside the per-pair boundary.
         stage = {'stage':'pair_error','status':'ERROR','input_count':1,'output_count':0,'message':repr(exc)}

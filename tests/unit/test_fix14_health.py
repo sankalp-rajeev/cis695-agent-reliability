@@ -275,10 +275,11 @@ def test_G1_records_per_pair_failures_and_still_visits_every_pair(tmp_path,monke
     monkeypatch.setattr(launch,'load_reference',lambda *args:{s.instance_id:{'base':[],'patched':[]} for s in specs})
     monkeypatch.setattr(launch,'plan_for',lambda specs:{})
     visited=[]
+    class ContainedFailure(BaseException): pass
     class Container(ContainerShell):
         def __init__(self,iid,*args,**kwargs):
             super().__init__();self.iid=iid
-            if failure=='base_exception' and iid=='task':raise SystemExit('native startup aborted')
+            if failure=='base_exception' and iid=='task':raise ContainedFailure('native startup aborted')
         def set_patched(self,value):visited.append((self.iid,value))
         def generated_snapshot(self,*args,**kwargs):return {'files':{}}
     monkeypatch.setattr(launch,'FrozenContainer',Container)
@@ -298,7 +299,7 @@ def test_G1_records_per_pair_failures_and_still_visits_every_pair(tmp_path,monke
     summary=json.loads((output/'summary.json').read_text())
     assert summary['task_tree_count']==4 and summary['exhaustive'] and not summary['launch_allowed']
     assert ('second',False) in visited and ('second',True) in visited
-    assert 'denied' in (output/'failures.csv').read_text() or 'SystemExit' in (output/'failures.csv').read_text()
+    assert 'denied' in (output/'failures.csv').read_text() or 'ContainedFailure' in (output/'failures.csv').read_text()
 
 
 def test_non_ASCII_parameter_identity_through_real_native_collection(tmp_path):
