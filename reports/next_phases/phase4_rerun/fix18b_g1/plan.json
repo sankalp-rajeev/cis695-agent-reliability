@@ -1,0 +1,3244 @@
+{
+  "mode": "V2 only",
+  "tasks": 83,
+  "trees": [
+    "base",
+    "patched"
+  ],
+  "parallelism": 1,
+  "cpu_shares": 2048,
+  "network": "none",
+  "pull": "never",
+  "per_pass_budget_s": 1800,
+  "stop_s": 43200,
+  "confirmations": "3 isolated runs per tree for each new FAIL/REGRESSION_ERROR",
+  "baseline_cache": null,
+  "resume": false,
+  "notifications": false,
+  "fresh_pristine_receipt_required_before_runtime": true,
+  "run_health_guards": [
+    "G1",
+    "G2",
+    "G3",
+    "G4",
+    "G5",
+    "G6"
+  ],
+  "task_order": [
+    "astropy__astropy-13977",
+    "astropy__astropy-7606",
+    "django__django-10973",
+    "django__django-11820",
+    "django__django-12965",
+    "django__django-14140",
+    "django__django-15037",
+    "django__django-15930",
+    "django__django-16612",
+    "matplotlib__matplotlib-14623",
+    "matplotlib__matplotlib-20488",
+    "matplotlib__matplotlib-22719",
+    "matplotlib__matplotlib-24026",
+    "matplotlib__matplotlib-25287",
+    "mwaskom__seaborn-3069",
+    "pallets__flask-5014",
+    "pydata__xarray-4629",
+    "pydata__xarray-6599",
+    "pydata__xarray-6744",
+    "pylint-dev__pylint-4661",
+    "pylint-dev__pylint-6528",
+    "pylint-dev__pylint-6903",
+    "pytest-dev__pytest-10051",
+    "pytest-dev__pytest-5787",
+    "pytest-dev__pytest-5809",
+    "pytest-dev__pytest-6202",
+    "pytest-dev__pytest-7236",
+    "pytest-dev__pytest-7521",
+    "scikit-learn__scikit-learn-10908",
+    "scikit-learn__scikit-learn-12585",
+    "scikit-learn__scikit-learn-14141",
+    "sphinx-doc__sphinx-10323",
+    "sphinx-doc__sphinx-7910",
+    "sympy__sympy-13480",
+    "sympy__sympy-17318",
+    "sympy__sympy-19783",
+    "sympy__sympy-24562",
+    "astropy__astropy-14365",
+    "astropy__astropy-14508",
+    "django__django-11095",
+    "django__django-11299",
+    "django__django-12209",
+    "django__django-13023",
+    "django__django-13033",
+    "django__django-13158",
+    "django__django-13212",
+    "django__django-13297",
+    "django__django-13569",
+    "django__django-13786",
+    "django__django-13807",
+    "django__django-13820",
+    "django__django-14631",
+    "django__django-15103",
+    "django__django-15278",
+    "django__django-15375",
+    "django__django-15499",
+    "django__django-15572",
+    "django__django-16082",
+    "django__django-16136",
+    "django__django-16255",
+    "django__django-16315",
+    "django__django-16631",
+    "django__django-16667",
+    "matplotlib__matplotlib-20676",
+    "matplotlib__matplotlib-22871",
+    "matplotlib__matplotlib-23299",
+    "matplotlib__matplotlib-23476",
+    "matplotlib__matplotlib-24177",
+    "matplotlib__matplotlib-24637",
+    "matplotlib__matplotlib-24970",
+    "matplotlib__matplotlib-25122",
+    "matplotlib__matplotlib-25479",
+    "matplotlib__matplotlib-26291",
+    "pydata__xarray-4695",
+    "pydata__xarray-4966",
+    "pylint-dev__pylint-4970",
+    "pylint-dev__pylint-7277",
+    "pytest-dev__pytest-7432",
+    "scikit-learn__scikit-learn-14629",
+    "scikit-learn__scikit-learn-14894",
+    "sphinx-doc__sphinx-10435",
+    "sphinx-doc__sphinx-10466",
+    "sympy__sympy-14711"
+  ],
+  "task_specs": [
+    {
+      "instance_id": "astropy__astropy-13977",
+      "image_id": "sha256:ba3d2b723b6698da914da64befdbf7a075799e65a970a56355b8f1ef1543c835",
+      "base_commit": "5250b2442501e6c671c6b380536f1edb352602d1",
+      "archive_sha256": "1f6604aec29c5bb012035f5b5778602eb4a3d645a43a5bda607ba6f4e2946248",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/astropy__astropy-13977.tar",
+      "selected_ids": 3080,
+      "selection_sha256": "2c6c6a2ed66eaa7f102418621ad0a0986b19f63ede82a5556353fdf856c535c4",
+      "patch_sha256": "8c9bef88b67b264fb5bcdf2ff232064826900e5cf694285c7bdaeba469614e34",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "astropy/astropy",
+          "5.1",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "sed -i 's/requires = \\[\"setuptools\",/requires = \\[\"setuptools==68.0.0\",/' pyproject.toml"
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "5250b2442501e6c671c6b380536f1edb352602d1",
+          "instance_id": "astropy__astropy-13977",
+          "repo": "astropy/astropy",
+          "version": "5.1"
+        }
+      }
+    },
+    {
+      "instance_id": "astropy__astropy-7606",
+      "image_id": "sha256:8e8fdd966e0ce7264fa909835125e934869c97660819936121230a49d0dac142",
+      "base_commit": "3cedd79e6c121910220f8e6df77c54a0b344ea94",
+      "archive_sha256": "16fc4feb03e118f4e9a95eaaeba3ae57cabe22a7307ef41a7b3c0f37185e5232",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/astropy__astropy-7606.tar",
+      "selected_ids": 738,
+      "selection_sha256": "6de2ac8eed3bb3fcc7d8118006a6ea68a8825b578b4dffc614b6d5c037b23a8b",
+      "patch_sha256": "af932a2c4ac4e1e50b2c1a79751e8fdd1b3d99a002e315d079c4e6ae4130eeea",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "astropy/astropy",
+          "1.3",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "3cedd79e6c121910220f8e6df77c54a0b344ea94",
+          "instance_id": "astropy__astropy-7606",
+          "repo": "astropy/astropy",
+          "version": "1.3"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-10973",
+      "image_id": "sha256:ee9c2383c3890dd7ff00392325aff3ee2b422eb399baf04c20648662b602624a",
+      "base_commit": "ddb293685235fd09e932805771ae97f72e817181",
+      "archive_sha256": "e404015a3c65563474f8c0f8c0ca9b68adb2ba78c124484617e2ca5dc70c3caa",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-10973.tar",
+      "selected_ids": 13,
+      "selection_sha256": "ed621908a360d1618eed60e9042e5ea8adb9979841a1b6b6a07e5a526ebd91b8",
+      "patch_sha256": "716aa9190548cb54fefceff7e2461dbca9328548a5d246fad8fe5ddf14533022",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "3.0",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "ddb293685235fd09e932805771ae97f72e817181",
+          "instance_id": "django__django-10973",
+          "repo": "django/django",
+          "version": "3.0"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-11820",
+      "image_id": "sha256:0985b3dac3609373287faaf74a7a72b807427f128af1444069e3193bd8e997cf",
+      "base_commit": "c2678e49759e5c4c329bff0eeca2886267005d21",
+      "archive_sha256": "10c199c039524c63a6bacd7ae72c0b1c6e9625e6c006f948106e238e715ecdbc",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-11820.tar",
+      "selected_ids": 3167,
+      "selection_sha256": "3b036f36aab177ca40b98284628fea539908ecb72e129e35abb575fb45d5635c",
+      "patch_sha256": "7c3a9c8a78aff5064d0a1880b61f5ded53b7d1cb58251c7f9f677a81765d51d8",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "3.1",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "c2678e49759e5c4c329bff0eeca2886267005d21",
+          "instance_id": "django__django-11820",
+          "repo": "django/django",
+          "version": "3.1"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-12965",
+      "image_id": "sha256:86891379c72823490524a9ac9badd617344ae634c6a42b1f969dca148e93a868",
+      "base_commit": "437196da9a386bd4cc62b0ce3f2de4aba468613d",
+      "archive_sha256": "f721ddedde9fd9bd15ec901592ca9c5d7f222162430bf153bd1e774ee8664836",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-12965.tar",
+      "selected_ids": 17,
+      "selection_sha256": "10777d55d5b1a510f36f9708e630497922779e266a34ca061f579864614ba1b4",
+      "patch_sha256": "356858b9ca47dd33fad7dd498d3b72e1ae773d0c5a517b8044be7d6f70b45615",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "3.2",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "437196da9a386bd4cc62b0ce3f2de4aba468613d",
+          "instance_id": "django__django-12965",
+          "repo": "django/django",
+          "version": "3.2"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-14140",
+      "image_id": "sha256:3ed1a9652b0476ebb99bf82373ad2017b6809963312a72fc2457d87d21555180",
+      "base_commit": "45814af6197cfd8f4dc72ee43b90ecde305a1d5a",
+      "archive_sha256": "861138861d1ac05775652e58978c26aea92a5c54a6aa2c14fbe8216d2ddf08ba",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-14140.tar",
+      "selected_ids": 2334,
+      "selection_sha256": "3dcda780065354ac25d82c99cfe9bf1c200ae8a4846bf79b6a5e5e0243da040c",
+      "patch_sha256": "df8d46c9d620658f932306f3c0c899f4389533ff37a27afc171434bf7be2fc9b",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "4.0",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "45814af6197cfd8f4dc72ee43b90ecde305a1d5a",
+          "instance_id": "django__django-14140",
+          "repo": "django/django",
+          "version": "4.0"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-15037",
+      "image_id": "sha256:1a016025bfbddd6e8bce37805238019a57bba016eab7fac5c2df58d0476bd55b",
+      "base_commit": "dab48b7482295956973879d15bfd4d3bb0718772",
+      "archive_sha256": "b0c2db0dc7c1f46d8b9ebb60d163085a0c53c44e574666c2acc5dc9911ec050d",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-15037.tar",
+      "selected_ids": 679,
+      "selection_sha256": "fddca9cb40f3ba7c8314957798bd6a80c5416c1d0937cd3482e46bbf59c54928",
+      "patch_sha256": "57485f2efd21180c8ef0dbfe5aad38e4cc007b0f81aaedf5e8358d527643df60",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "4.1",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "dab48b7482295956973879d15bfd4d3bb0718772",
+          "instance_id": "django__django-15037",
+          "repo": "django/django",
+          "version": "4.1"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-15930",
+      "image_id": "sha256:7fd0b34caf0995b4eb8d32b7f7980baabeedf55beef301d0c3e1571b1145651b",
+      "base_commit": "63884829acd207404f2a5c3cc1d6b4cd0a822b70",
+      "archive_sha256": "c982b7e555cc411aacad13b1a58b9a8f23d31c0c04289928e242d2ddff30619e",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-15930.tar",
+      "selected_ids": 4416,
+      "selection_sha256": "a3c7b24b49906188fa725088659537bc82d56e3ee09ac11ce34858b50c3a9eb1",
+      "patch_sha256": "39897e9c43b94fcf972dd7bff6d72c70f4a005fd5297acf3d758967e59200b6a",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "4.2",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "63884829acd207404f2a5c3cc1d6b4cd0a822b70",
+          "instance_id": "django__django-15930",
+          "repo": "django/django",
+          "version": "4.2"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-16612",
+      "image_id": "sha256:1e8dc70a0bdce4d51bfa0a3b6959756271e2f91d2ff386be999db8327ffcf96f",
+      "base_commit": "55bcbd8d172b689811fae17cde2f09218dd74e9c",
+      "archive_sha256": "a6160c85cd8f8da72d2d191b3b0d48984d157077b7d677d31f70a8ee1da44b41",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-16612.tar",
+      "selected_ids": 771,
+      "selection_sha256": "203903ae63d0c9cea895efa796d28467ea427eba96e1da4f09c97c7421a498b0",
+      "patch_sha256": "bfc9590cfd500d3dc9d0ded69dda30ec9a86426c82ac725cd8fc7f2d81d243ef",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "5.0",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "55bcbd8d172b689811fae17cde2f09218dd74e9c",
+          "instance_id": "django__django-16612",
+          "repo": "django/django",
+          "version": "5.0"
+        }
+      }
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-14623",
+      "image_id": "sha256:30368e1c136e8eded62e7229d134a132cabb4bb47b5a2c56e1d1e0dc5e9752b3",
+      "base_commit": "d65c9ca20ddf81ef91199e6d819f9d3506ef477c",
+      "archive_sha256": "32d9e0ee89a2638b07416ab4a7cefe86bc9c285bba77849ab6e292bef507e87c",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-14623.tar",
+      "selected_ids": 0,
+      "selection_sha256": "f9733c756fc530bb5269b8bc529e171ff136e1f917a761d5dd93c0ed574ad61d",
+      "patch_sha256": "90ca07500c28ff5020e5ee77bb1aa6ea61fcf6810bdfef3f43f81d9af384e262",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "matplotlib/matplotlib",
+          "3.1",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg libfreetype6-dev pkg-config texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super",
+          "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_BUILD_DIR=\"/testbed/build\"",
+          "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+          "mkdir -p \"$QHULL_BUILD_DIR\"",
+          "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "d65c9ca20ddf81ef91199e6d819f9d3506ef477c",
+          "instance_id": "matplotlib__matplotlib-14623",
+          "repo": "matplotlib/matplotlib",
+          "version": "3.1"
+        }
+      }
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-20488",
+      "image_id": "sha256:e2c911dc9bc0a8847e18cb83b76ec901c5ab5945bf819ac8a6989b55b2c6a1aa",
+      "base_commit": "b7ce415c15eb39b026a097a2865da73fbcf15c9c",
+      "archive_sha256": "73106be4d07b72480bd249c4b895bedc60af3b1b5f29dac3fb46a3d6fcfab02d",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-20488.tar",
+      "selected_ids": 828,
+      "selection_sha256": "59f857ac404cbcfa6bcaa74e724909b30af29d43460afd39fa2c1ccba0ac41ce",
+      "patch_sha256": "3a8bac2c3a77e2461382531c4b393b9993bcefe5ef9f766e8d4b1ec22f80f548",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "matplotlib/matplotlib",
+          "3.4",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg libfreetype6-dev pkg-config texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super",
+          "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_BUILD_DIR=\"/testbed/build\"",
+          "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+          "mkdir -p \"$QHULL_BUILD_DIR\"",
+          "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "b7ce415c15eb39b026a097a2865da73fbcf15c9c",
+          "instance_id": "matplotlib__matplotlib-20488",
+          "repo": "matplotlib/matplotlib",
+          "version": "3.4"
+        }
+      }
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-22719",
+      "image_id": "sha256:0f55c832135008f1d9b575014e39cb63dee081b55bac874ec3d6924066e3ab6e",
+      "base_commit": "a2a1b0a11b993fe5f8fab64b6161e99243a6393c",
+      "archive_sha256": "eae05019339509b226e14c1fab71831a0174eff27d75be46fc3262a609fdf697",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-22719.tar",
+      "selected_ids": 40,
+      "selection_sha256": "a4be068a5142e1c742f275c2f19a91685517202a8e6af417b761d3ee54de24ab",
+      "patch_sha256": "356271cf075062febc20d1d73cc890ffdfe7a9e2c6e8429addaea85e3f226d18",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "matplotlib/matplotlib",
+          "3.5",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super dvipng",
+          "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_BUILD_DIR=\"/testbed/build\"",
+          "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+          "mkdir -p \"$QHULL_BUILD_DIR\"",
+          "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "a2a1b0a11b993fe5f8fab64b6161e99243a6393c",
+          "instance_id": "matplotlib__matplotlib-22719",
+          "repo": "matplotlib/matplotlib",
+          "version": "3.5"
+        }
+      }
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-24026",
+      "image_id": "sha256:9b40e12cdc21b8a394369d233a346fc9faf9b5b76fc62e824a8cdc0151acaceb",
+      "base_commit": "14c96b510ebeba40f573e512299b1976f35b620e",
+      "archive_sha256": "6e5396b93a5319b9a062b5959c088a2d5b22464b1e0cd7d2e1ef8827524a59ce",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-24026.tar",
+      "selected_ids": 611,
+      "selection_sha256": "2f1a5aefda95264bb9e3fc8b1044cf25fc13c843feec8f49d9d79c391357216f",
+      "patch_sha256": "dedb15c244ac9e2c689a7c29bfa96c35224736fe563805835398782c3cf03dde",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "matplotlib/matplotlib",
+          "3.6",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super dvipng",
+          "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_BUILD_DIR=\"/testbed/build\"",
+          "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+          "mkdir -p \"$QHULL_BUILD_DIR\"",
+          "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "14c96b510ebeba40f573e512299b1976f35b620e",
+          "instance_id": "matplotlib__matplotlib-24026",
+          "repo": "matplotlib/matplotlib",
+          "version": "3.6"
+        }
+      }
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-25287",
+      "image_id": "sha256:0a721ca71f4cfd2858777c2a451a954e50fa78f2551661a4cbcd0a9d6aa71c73",
+      "base_commit": "f8ffce6d44127d4ea7d6491262ab30046b03294b",
+      "archive_sha256": "2e2293cb6fd83f4f61a98628cc5753802817027454cd73cdd057a6dec18bf32f",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-25287.tar",
+      "selected_ids": 2,
+      "selection_sha256": "c1ac92f4a394d31cf8a2ec9f8a437f8a02a5293d3a5cfbd281f1efe9fb1eaf40",
+      "patch_sha256": "b6aa5c4e0c6cb6bcbcdf62568e44d8b974e9f3bb726cb539ed143edf129f6871",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "matplotlib/matplotlib",
+          "3.7",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super dvipng",
+          "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_BUILD_DIR=\"/testbed/build\"",
+          "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+          "mkdir -p \"$QHULL_BUILD_DIR\"",
+          "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "f8ffce6d44127d4ea7d6491262ab30046b03294b",
+          "instance_id": "matplotlib__matplotlib-25287",
+          "repo": "matplotlib/matplotlib",
+          "version": "3.7"
+        }
+      }
+    },
+    {
+      "instance_id": "mwaskom__seaborn-3069",
+      "image_id": "sha256:f0eff75310a1b33ffcdcdaeb2c0e1f67af9711d82cb79cb9a84fc5640d6a2d07",
+      "base_commit": "54cab15bdacfaa05a88fbc5502a5b322d99f148e",
+      "archive_sha256": "c7ea642156e5e339d7a3cf4bdf1f712ad4dcdfdfbe523277a364afc981b005ca",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/mwaskom__seaborn-3069.tar",
+      "selected_ids": 150,
+      "selection_sha256": "647b27ff9df996e05efe335cfb6b3093ba36296f701c57051699179797537bc9",
+      "patch_sha256": "a87cf5c233c7fb11393a91e5a844547773e30a2fa53f851a193f25b3946b310e",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "mwaskom/seaborn",
+          "0.12",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "54cab15bdacfaa05a88fbc5502a5b322d99f148e",
+          "instance_id": "mwaskom__seaborn-3069",
+          "repo": "mwaskom/seaborn",
+          "version": "0.12"
+        }
+      }
+    },
+    {
+      "instance_id": "pallets__flask-5014",
+      "image_id": "sha256:bf8242431f5c177d67996b3c888a0f51e4bb7bd0b67009bee6c70842baca1241",
+      "base_commit": "7ee9ceb71e868944a46e1ff00b506772a53a4f1d",
+      "archive_sha256": "4cc98bbed4b03a91c6c47dbe581056ba77bb5f2436aa5e41c405ecf19da307a9",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/pallets__flask-5014.tar",
+      "selected_ids": 203,
+      "selection_sha256": "0a14efc3d6121e710825d71c744b12b9c6cd489fe9c212a19d57d8c18e1e788f",
+      "patch_sha256": "165c0d5aca96068ddb66053d70b8a51a70edd79f8087216d290d41fdf6bb9300",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "pallets/flask",
+          "2.3",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "7ee9ceb71e868944a46e1ff00b506772a53a4f1d",
+          "instance_id": "pallets__flask-5014",
+          "repo": "pallets/flask",
+          "version": "2.3"
+        }
+      }
+    },
+    {
+      "instance_id": "pydata__xarray-4629",
+      "image_id": "sha256:6ef760ecc8a78780f669f3e24a32e11a5ad5adaec505fce12cc15d27648657d0",
+      "base_commit": "a41edc7bf5302f2ea327943c0c48c532b12009bc",
+      "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/pydata__xarray-4629.tar",
+      "selected_ids": 22,
+      "selection_sha256": "a0d019c1e9690d866a04aafad82ee9e7ade1895e794af52d744eab40f3e76315",
+      "patch_sha256": "cc30a4de6932cb13c73ecfd9577b35eb03be3017e981c4ec61eabf96858efb13",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "pydata/xarray",
+          "0.12",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "a41edc7bf5302f2ea327943c0c48c532b12009bc",
+          "instance_id": "pydata__xarray-4629",
+          "repo": "pydata/xarray",
+          "version": "0.12"
+        }
+      }
+    },
+    {
+      "instance_id": "pydata__xarray-6599",
+      "image_id": "sha256:0a831641c7ae90ccec15f9d1a925fa68b42cb5b616fe9bf3fcbf98ce3fdf77bc",
+      "base_commit": "6bb2b855498b5c68d7cca8cceb710365d58e6048",
+      "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/pydata__xarray-6599.tar",
+      "selected_ids": 58,
+      "selection_sha256": "e05f34aec5feb490a537d1dba2af01692293167328a6e6ca01b13c30d5ae34cf",
+      "patch_sha256": "810aa2a801cb4c1c9be5c123ac651f5b9efa1c9e33128f9399684f6e551c23d1",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "pydata/xarray",
+          "2022.03",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "6bb2b855498b5c68d7cca8cceb710365d58e6048",
+          "instance_id": "pydata__xarray-6599",
+          "repo": "pydata/xarray",
+          "version": "2022.03"
+        }
+      }
+    },
+    {
+      "instance_id": "pydata__xarray-6744",
+      "image_id": "sha256:95b5b0360c485da9e666e0ae98c98677b75c24aa6e4859093e09a260de067bb8",
+      "base_commit": "7cc6cc991e586a6158bb656b8001234ccda25407",
+      "archive_sha256": "697be3b6258703c641c7bd656d7cc45bec00d64c07b3126438245c878e560e61",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/pydata__xarray-6744.tar",
+      "selected_ids": 362,
+      "selection_sha256": "47f8ee15bf7586b9de56f731b86050ec1736031a250315b7ec8d141c15e3a7bf",
+      "patch_sha256": "c81fd169410f0b73aaab09fbb63fa8bd5545d41e82b203e27e76500527411096",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "pydata/xarray",
+          "2022.06",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "7cc6cc991e586a6158bb656b8001234ccda25407",
+          "instance_id": "pydata__xarray-6744",
+          "repo": "pydata/xarray",
+          "version": "2022.06"
+        }
+      }
+    },
+    {
+      "instance_id": "pylint-dev__pylint-4661",
+      "image_id": "sha256:1d80bb3d2a01d74af46243b013c234b7f3e127aa34645317737baf9622007e0f",
+      "base_commit": "1d1619ef913b99b06647d2030bddff4800abdf63",
+      "archive_sha256": "4b8d946b14620123dbdd0a42ecb504727a32298d00e07bc07a201ef9ae1fcfe8",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-4661.tar",
+      "selected_ids": 4,
+      "selection_sha256": "e3d44e9724ee365522c0e358cda19937fbbe25612d27cd54bf742b58805b4e2a",
+      "patch_sha256": "8ac7714c86f29132bc2f301d7d23e6e54b50a5d686d3045f24a18be2eb76e94b",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "pylint-dev/pylint",
+          "2.10",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "1d1619ef913b99b06647d2030bddff4800abdf63",
+          "instance_id": "pylint-dev__pylint-4661",
+          "repo": "pylint-dev/pylint",
+          "version": "2.10"
+        }
+      }
+    },
+    {
+      "instance_id": "pylint-dev__pylint-6528",
+      "image_id": "sha256:9ba92d212c060748bacf6410d82d24322460bf950db75b511a3eac41bd3f0720",
+      "base_commit": "273a8b25620467c1e5686aa8d2a1dbb8c02c78d0",
+      "archive_sha256": "ca2fab439b584b5b1e770fe335e2f3a7376fd13a43262c38a8969801e6f8a99c",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-6528.tar",
+      "selected_ids": 217,
+      "selection_sha256": "784e22e8b9c41a26e6256e6770a11cd41754dfed70a65a54ca1dfd6f55922c88",
+      "patch_sha256": "f7e4f6955ed10efc5cdc95faefd807bbbc63dff78ad28818c52c14115b111d0d",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "pylint-dev/pylint",
+          "2.14",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "273a8b25620467c1e5686aa8d2a1dbb8c02c78d0",
+          "instance_id": "pylint-dev__pylint-6528",
+          "repo": "pylint-dev/pylint",
+          "version": "2.14"
+        }
+      }
+    },
+    {
+      "instance_id": "pylint-dev__pylint-6903",
+      "image_id": "sha256:bdb24d06e2cd96bb0b363bc07b293affb26cca5b2f92edeb3bf428281e53551e",
+      "base_commit": "ca80f03a43bc39e4cc2c67dc99817b3c9f13b8a6",
+      "archive_sha256": "59df8e8680c8cbddf8ffee35fa364fec068d6a7fbb95bb43d84522aa2a28acd5",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-6903.tar",
+      "selected_ids": 0,
+      "selection_sha256": "7642c63d6f846c8970865011ae1b67c100b0ecb6b3af15396bf1a55630baf979",
+      "patch_sha256": "f457e9ecb491118c499fa2e08444cfcf4e2c4f719f1cb298b397daf7cab576f8",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "pylint-dev/pylint",
+          "2.15",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "ca80f03a43bc39e4cc2c67dc99817b3c9f13b8a6",
+          "instance_id": "pylint-dev__pylint-6903",
+          "repo": "pylint-dev/pylint",
+          "version": "2.15"
+        }
+      }
+    },
+    {
+      "instance_id": "pytest-dev__pytest-10051",
+      "image_id": "sha256:47249870b662ac39235d6cc8231cac31ee17fe1524ec594fe957fd205e9f33a3",
+      "base_commit": "aa55975c7d3f6c9f6d7f68accc41bb7cadf0eb9a",
+      "archive_sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/pytest-dev__pytest-10051.tar",
+      "selected_ids": 275,
+      "selection_sha256": "2c6820e3d2945e05c4a5639b2a7d133aaaa56a4d5e69ef5739795daea1e12bbb",
+      "patch_sha256": "c5209d2d0198d24bc78db4e51ea340d0c6f2533e9f987288f32c251b51470977",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "pytest-dev/pytest",
+          "7.2",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "aa55975c7d3f6c9f6d7f68accc41bb7cadf0eb9a",
+          "instance_id": "pytest-dev__pytest-10051",
+          "repo": "pytest-dev/pytest",
+          "version": "7.2"
+        }
+      }
+    },
+    {
+      "instance_id": "pytest-dev__pytest-5787",
+      "image_id": "sha256:ca528098711358de35ca735f19449005d611c5d112a714890298505afbb7e65d",
+      "base_commit": "955e54221008aba577ecbaefa15679f6777d3bf8",
+      "archive_sha256": "eaafdc717635a6a0f20ce7db81a373eaaa61c4e9bd5d024975576db0a9367328",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/pytest-dev__pytest-5787.tar",
+      "selected_ids": 206,
+      "selection_sha256": "2c0ff83e632932934813f522a6eada3ee1958b0b73ae3eadf4d71c4b8184b7dd",
+      "patch_sha256": "e4ba245a66f1c64f0678874646e9d30685f2830c96ec9e2b37971313124c7054",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "pytest-dev/pytest",
+          "5.1",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "955e54221008aba577ecbaefa15679f6777d3bf8",
+          "instance_id": "pytest-dev__pytest-5787",
+          "repo": "pytest-dev/pytest",
+          "version": "5.1"
+        }
+      }
+    },
+    {
+      "instance_id": "pytest-dev__pytest-5809",
+      "image_id": "sha256:f60a775b879d5b770d9969b17dcfd45e717410059234e727e02236080b2e47c1",
+      "base_commit": "8aba863a634f40560e25055d179220f0eefabe9a",
+      "archive_sha256": "8690468c8668fa44be1553d6e5742dbcbd63deaf7453f22ce2e84fa360b27d3c",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/pytest-dev__pytest-5809.tar",
+      "selected_ids": 4,
+      "selection_sha256": "1e77e4db1e8c2712a25699eb7ca56f2c6fb93c62a694968737184d6c94f7c4f8",
+      "patch_sha256": "82f7a2cecf06bb50a79120584ae083240b215e5e7fd40ff190ab52b0c1632d77",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "pytest-dev/pytest",
+          "4.6",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "8aba863a634f40560e25055d179220f0eefabe9a",
+          "instance_id": "pytest-dev__pytest-5809",
+          "repo": "pytest-dev/pytest",
+          "version": "4.6"
+        }
+      }
+    },
+    {
+      "instance_id": "pytest-dev__pytest-6202",
+      "image_id": "sha256:eaf4c3f99339665936db9a9fee2ae21ded5c3d5bbd1168b2d5f1bad68208c1a8",
+      "base_commit": "3a668ea6ff24b0c8f00498c3144c63bac561d925",
+      "archive_sha256": "1081df715e0db2286a8e3b534cbd6af6900a35e420551c694735979a4adf73ae",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/pytest-dev__pytest-6202.tar",
+      "selected_ids": 268,
+      "selection_sha256": "5ceb40d14f7eab2d15b86afed1937791e8c3df11a7a5079e173b9614ff920896",
+      "patch_sha256": "8d4eb69476716c9ae4f68d84e8349188b3d3e36e9335c6630c1129604c4bf060",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "pytest-dev/pytest",
+          "5.2",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "3a668ea6ff24b0c8f00498c3144c63bac561d925",
+          "instance_id": "pytest-dev__pytest-6202",
+          "repo": "pytest-dev/pytest",
+          "version": "5.2"
+        }
+      }
+    },
+    {
+      "instance_id": "pytest-dev__pytest-7236",
+      "image_id": "sha256:c1f5ff162a4837fdcaf7017fffbe91b583e063e8d8f1af1455c78e0e2fcf55f5",
+      "base_commit": "c98bc4cd3d687fe9b392d8eecd905627191d4f06",
+      "archive_sha256": "c71daad03ecd5aea44e5c6773cd1028c5e258ce73fe41ff7a4ce2660776e9f65",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/pytest-dev__pytest-7236.tar",
+      "selected_ids": 102,
+      "selection_sha256": "497ebf086872ef460da6ecd40488896cdf56a2362540c2515168c159aa373b6b",
+      "patch_sha256": "5f2b1e8b65e35aa55bd46515b9e30a7a276fd22c2ffab0ec205b5ff345c13902",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "pytest-dev/pytest",
+          "5.4",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "c98bc4cd3d687fe9b392d8eecd905627191d4f06",
+          "instance_id": "pytest-dev__pytest-7236",
+          "repo": "pytest-dev/pytest",
+          "version": "5.4"
+        }
+      }
+    },
+    {
+      "instance_id": "pytest-dev__pytest-7521",
+      "image_id": "sha256:51c980a7224c91f6fa9fcb3b7e062dcaf8461db441e4758e9cb24c607506ab26",
+      "base_commit": "41d211c24a6781843b174379d6d6538f5c17adb9",
+      "archive_sha256": "5cc2bfd941abbe54c8dfa18ad569a665055bf86ef089baef138a41decc1eb1b8",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/pytest-dev__pytest-7521.tar",
+      "selected_ids": 90,
+      "selection_sha256": "20d1b44312a5240d24256b7190ec2790b68d50c1a589e68d95a73de1b6352fee",
+      "patch_sha256": "127638e0b5eef52a85014e78b3a8e9fb9b7de1dddb1edfc745929b280afa39fb",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "pytest-dev/pytest",
+          "6.0",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "41d211c24a6781843b174379d6d6538f5c17adb9",
+          "instance_id": "pytest-dev__pytest-7521",
+          "repo": "pytest-dev/pytest",
+          "version": "6.0"
+        }
+      }
+    },
+    {
+      "instance_id": "scikit-learn__scikit-learn-10908",
+      "image_id": "sha256:e6083af5e692056c551338bf46a9003242fb76df058c9f47f3167464555deafa",
+      "base_commit": "67d06b18c68ee4452768f8a1e868565dd4354abf",
+      "archive_sha256": "1496481ba1b093439ab9437093b706e2744f99cfcd13394f1455083b90a37cf6",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/scikit-learn__scikit-learn-10908.tar",
+      "selected_ids": 46,
+      "selection_sha256": "65742fda4410de705b8ed2db63b5d69d1a96762a8d871297c3b751675d759b68",
+      "patch_sha256": "196f3a946f2affc60ad2335a7bc864fc62858c17ed50891f61fa749b22cf5f45",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "scikit-learn/scikit-learn",
+          "0.20",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "67d06b18c68ee4452768f8a1e868565dd4354abf",
+          "instance_id": "scikit-learn__scikit-learn-10908",
+          "repo": "scikit-learn/scikit-learn",
+          "version": "0.20"
+        }
+      }
+    },
+    {
+      "instance_id": "scikit-learn__scikit-learn-12585",
+      "image_id": "sha256:ba5660d9c4c9895365e0d7b355c423a16e7d895f34051bcaf64efd079bdf62a9",
+      "base_commit": "bfc4a566423e036fbdc9fb02765fd893e4860c85",
+      "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/scikit-learn__scikit-learn-12585.tar",
+      "selected_ids": 769,
+      "selection_sha256": "3b41ea30dc1d4756429836b62d7f341c83d090585667b7d9bb25ba9c04786542",
+      "patch_sha256": "523c6ff9c83223e18894f590f8e12d476dffb7582dd2c1d68ca8fdfb659e8547",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "scikit-learn/scikit-learn",
+          "0.21",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "bfc4a566423e036fbdc9fb02765fd893e4860c85",
+          "instance_id": "scikit-learn__scikit-learn-12585",
+          "repo": "scikit-learn/scikit-learn",
+          "version": "0.21"
+        }
+      }
+    },
+    {
+      "instance_id": "scikit-learn__scikit-learn-14141",
+      "image_id": "sha256:b66d524a1b44b0ed09a517d06fcdf5326ff47e64a0cb847a683ba95b8540137d",
+      "base_commit": "3d997697fdd166eff428ea9fd35734b6a8ba113e",
+      "archive_sha256": "17e32385bf6ca4a42cfcda214d559f76373500278d653a343d38cb147d9de3f8",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/scikit-learn__scikit-learn-14141.tar",
+      "selected_ids": 3,
+      "selection_sha256": "9d6d103bd272cbea8b5824fee10a821cb14cbd1337bba20b8853306624e79186",
+      "patch_sha256": "11476aa67b90601866f79d3ef1f9b65169005c6ad10fb22c2247989547e7baec",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "scikit-learn/scikit-learn",
+          "0.22",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "3d997697fdd166eff428ea9fd35734b6a8ba113e",
+          "instance_id": "scikit-learn__scikit-learn-14141",
+          "repo": "scikit-learn/scikit-learn",
+          "version": "0.22"
+        }
+      }
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-10323",
+      "image_id": "sha256:281cbc5b09566efc9f4cac8efb9932167415d174d4e76a93aba8f83c563e849a",
+      "base_commit": "31eba1a76dd485dc633cae48227b46879eda5df4",
+      "archive_sha256": "9ae3a481e38d3838569b2e33fb7200e31884120e32f7f60adba00024545d1a25",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/sphinx-doc__sphinx-10323.tar",
+      "selected_ids": 40,
+      "selection_sha256": "d8156d214ebff8ad7162d8ec7472c8008cd065cdc681fdb35f5bb31d73bd65e3",
+      "patch_sha256": "70c4e812759b90582ccac3080310deb9898bf8176ec885e7211efa88b2982eaa",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "sphinx-doc/sphinx",
+          "5.0",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "sed -i 's/pytest/pytest -rA/' tox.ini"
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "31eba1a76dd485dc633cae48227b46879eda5df4",
+          "instance_id": "sphinx-doc__sphinx-10323",
+          "repo": "sphinx-doc/sphinx",
+          "version": "5.0"
+        }
+      }
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-7910",
+      "image_id": "sha256:ec5340981198f66dd55251502e1975c9b9151dabfca48bee8593b0e820bca826",
+      "base_commit": "27ac10de04697e2372d31db5548e56a7c6d9265d",
+      "archive_sha256": "7bf484b5654f8fb373be47fda0a405f8421ea3745f090edeafd3e4a0ba6d0075",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/sphinx-doc__sphinx-7910.tar",
+      "selected_ids": 16,
+      "selection_sha256": "d28e78bcd8ac897ac8329dbbcba373daa082b529b620078e2cdee902c0eeb4b8",
+      "patch_sha256": "8d9a6a072887d0b97d1f0c8b85f17508e5cb9bc99d61d286b5c4f5f08f41d750",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "sphinx-doc/sphinx",
+          "3.2",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "sed -i 's/pytest/pytest -rA/' tox.ini",
+          "sed -i 's/Jinja2>=2.3/Jinja2<3.0/' setup.py",
+          "sed -i 's/sphinxcontrib-applehelp/sphinxcontrib-applehelp<=1.0.7/' setup.py",
+          "sed -i 's/sphinxcontrib-devhelp/sphinxcontrib-devhelp<=1.0.5/' setup.py",
+          "sed -i 's/sphinxcontrib-qthelp/sphinxcontrib-qthelp<=1.0.6/' setup.py",
+          "sed -i 's/alabaster>=0.7,<0.8/alabaster>=0.7,<0.7.12/' setup.py",
+          "sed -i \"s/'packaging',/'packaging', 'markupsafe<=2.0.1',/\" setup.py",
+          "sed -i 's/sphinxcontrib-htmlhelp/sphinxcontrib-htmlhelp<=2.0.4/' setup.py",
+          "sed -i 's/sphinxcontrib-serializinghtml/sphinxcontrib-serializinghtml<=1.1.9/' setup.py"
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "27ac10de04697e2372d31db5548e56a7c6d9265d",
+          "instance_id": "sphinx-doc__sphinx-7910",
+          "repo": "sphinx-doc/sphinx",
+          "version": "3.2"
+        }
+      }
+    },
+    {
+      "instance_id": "sympy__sympy-13480",
+      "image_id": "sha256:99b0638822c415d519f20b0b0c776978d93c84eb49ada0e072fd817b2d69325e",
+      "base_commit": "f57fe3f4b3f2cab225749e1b3b38ae1bf80b62f0",
+      "archive_sha256": "70f23345e2ded9dac73b1db75a982e3080a40fd917a7335a5e0dedc1056589c1",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/sympy__sympy-13480.tar",
+      "selected_ids": 781,
+      "selection_sha256": "fcec57631f032ce07adf0ca215b5b8712e8f68c4c1ea033c3a4536d8f9d24d85",
+      "patch_sha256": "b437756d00885b7a1749b7fe8026d9a155de75ca3c1b5a28a5eff299e4385a44",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "sympy/sympy",
+          "1.1",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "f57fe3f4b3f2cab225749e1b3b38ae1bf80b62f0",
+          "instance_id": "sympy__sympy-13480",
+          "repo": "sympy/sympy",
+          "version": "1.1"
+        }
+      }
+    },
+    {
+      "instance_id": "sympy__sympy-17318",
+      "image_id": "sha256:6ab2a7ead49c4168a9ac145bb257918d33c50c6bbdd8f98fc80d98f1c0672a83",
+      "base_commit": "d4e0231b08147337745dcf601e62de7eefe2fb2d",
+      "archive_sha256": "fdbe743ca7bb7fc718d43e8bc0a635760e77bf9facfe081616f26f8ffe50e1f5",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/sympy__sympy-17318.tar",
+      "selected_ids": 21,
+      "selection_sha256": "cb01cdb54e1dd978ed6a4fa23bea6d20aacb6b2b67d6e5dc81dedcd0d7d3817b",
+      "patch_sha256": "ec660195991c803d89ece67e457d400281458499814ad37f442047d29c570aff",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "sympy/sympy",
+          "1.5",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "d4e0231b08147337745dcf601e62de7eefe2fb2d",
+          "instance_id": "sympy__sympy-17318",
+          "repo": "sympy/sympy",
+          "version": "1.5"
+        }
+      }
+    },
+    {
+      "instance_id": "sympy__sympy-19783",
+      "image_id": "sha256:ce7f364920d9b00f5c5a2a04a7bace60ab81870047bfcb62896875eb38c72023",
+      "base_commit": "586a43201d0357e92e8c93548d69a9f42bf548f4",
+      "archive_sha256": "b5463b4f43e379ad1eca071f4a77a8b5e952618ef3f8dc1b3d413be10a41cfd3",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/sympy__sympy-19783.tar",
+      "selected_ids": 729,
+      "selection_sha256": "b0184839e0cc9186f5790a39ea87978d6a33a483eec13d44573ec30c8a53941f",
+      "patch_sha256": "2f39638c2023f8a9b7e47816f9b3c52394773e749a2223766860a80d44ad26e2",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "sympy/sympy",
+          "1.7",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "586a43201d0357e92e8c93548d69a9f42bf548f4",
+          "instance_id": "sympy__sympy-19783",
+          "repo": "sympy/sympy",
+          "version": "1.7"
+        }
+      }
+    },
+    {
+      "instance_id": "sympy__sympy-24562",
+      "image_id": "sha256:3ef71ece5680e83345988ba0a6b88703f48d5b1f597405efc75f46b5122cca72",
+      "base_commit": "b1cb676cf92dd1a48365b731979833375b188bf2",
+      "archive_sha256": "98dfa2a194e07fb6332c506cb459014794dd932d9286ea7f8299e470a02aac7d",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/sympy__sympy-24562.tar",
+      "selected_ids": 662,
+      "selection_sha256": "d512deadbc537bdcac36007fe660355756330377bf295ec25861a5e720acfec5",
+      "patch_sha256": "a32d6f46bb14412e947380e75305f3fc5b7cd6bdc4f7268832432c9cccf8b5ce",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "sympy/sympy",
+          "1.12",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "b1cb676cf92dd1a48365b731979833375b188bf2",
+          "instance_id": "sympy__sympy-24562",
+          "repo": "sympy/sympy",
+          "version": "1.12"
+        }
+      }
+    },
+    {
+      "instance_id": "astropy__astropy-14365",
+      "image_id": "sha256:186d28b0d249e6d87d9d65aaada7688fc0e2cf4f8d70dfef591dfdfaaa283492",
+      "base_commit": "7269fa3e33e8d02485a647da91a5a2a60a06af61",
+      "archive_sha256": "52c5b392a42c15f7a36dde4a000d39b75544e6297f2a34dfe49a5f80eeffdc60",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/astropy__astropy-14365.tar",
+      "selected_ids": 8,
+      "selection_sha256": "f25f73a9aab23e3143e0844a8fd79dff7e8fa5e1a9d374763cec7f406061e8a3",
+      "patch_sha256": "6ff9f26e6678288f100dbd78f6f23c138cf0508a59b8a1a3964ced783309ec4e",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "astropy/astropy",
+          "5.1",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "sed -i 's/requires = \\[\"setuptools\",/requires = \\[\"setuptools==68.0.0\",/' pyproject.toml"
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "7269fa3e33e8d02485a647da91a5a2a60a06af61",
+          "instance_id": "astropy__astropy-14365",
+          "repo": "astropy/astropy",
+          "version": "5.1"
+        }
+      }
+    },
+    {
+      "instance_id": "astropy__astropy-14508",
+      "image_id": "sha256:5bddfb5a01db7352b58157f7bfe41674a36ab915efc6fd6586303cc048b974a7",
+      "base_commit": "a3f4ae6cd24d5ecdf49f213d77b3513dd509a06c",
+      "archive_sha256": "b1aefb2d243c97a5d58dbe7e2c7a1c24cb74ea8c904f10852a6895e584d6c373",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/astropy__astropy-14508.tar",
+      "selected_ids": 0,
+      "selection_sha256": "f2955c2fea04efe28aed38271f093eb5303e22f4c41fc64ad45d149473d662a8",
+      "patch_sha256": "fa4fabe32c6c4de19644ea45a14d4c56da42f98c9362c83a4c045c32be39c018",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "astropy/astropy",
+          "5.1",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "sed -i 's/requires = \\[\"setuptools\",/requires = \\[\"setuptools==68.0.0\",/' pyproject.toml"
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "a3f4ae6cd24d5ecdf49f213d77b3513dd509a06c",
+          "instance_id": "astropy__astropy-14508",
+          "repo": "astropy/astropy",
+          "version": "5.1"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-11095",
+      "image_id": "sha256:65bbc6a96f5a5dfe5d975e38fb271d7cfe87d6f5cca27a05e04ada5ee006f675",
+      "base_commit": "7d49ad76562e8c0597a0eb66046ab423b12888d8",
+      "archive_sha256": "82c797c818e9cfec24618214e23300f13bd7aea79b11f773e6417963ef26c67a",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-11095.tar",
+      "selected_ids": 836,
+      "selection_sha256": "62639022320c4da5bb8cfca90bc3104e91050f40aeb6d3ab61f323ccf9659206",
+      "patch_sha256": "28bbf4f50f3d24d5ac205270b77429109baf18abef87c83ad7a853c2b3bb5466",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "3.0",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "7d49ad76562e8c0597a0eb66046ab423b12888d8",
+          "instance_id": "django__django-11095",
+          "repo": "django/django",
+          "version": "3.0"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-11299",
+      "image_id": "sha256:c55c879edb9908a117b0fa10e3f2841b6b8fb7e0df5b5f0e32e79a41a2d7f8c9",
+      "base_commit": "6866c91b638de5368c18713fa851bfe56253ea55",
+      "archive_sha256": "1f406b75f7eb1041c54bb1ae0bb5e3dc39d1a94ffd66f15deacb620e2f293b23",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-11299.tar",
+      "selected_ids": 747,
+      "selection_sha256": "ed7a7c0882c53605bc8834c0fb4f3631b18dba28dea5ed2c53088649214a2600",
+      "patch_sha256": "420c688fc3b8de1d91c442ccdee9c0199f4e4bd51ed30a93fb0ce0ea17ad3a9d",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "3.0",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "6866c91b638de5368c18713fa851bfe56253ea55",
+          "instance_id": "django__django-11299",
+          "repo": "django/django",
+          "version": "3.0"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-12209",
+      "image_id": "sha256:eae3d1fa6ff84b74fef3a0c9b01633f0ed67c9e004d66f3f63b1bdc4e9b04f6a",
+      "base_commit": "5a68f024987e6d16c2626a31bf653a2edddea579",
+      "archive_sha256": "06653b4aed8604f85110d9190f8a6933cd6308b3eeaa3cab76e6b5707c47d06d",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-12209.tar",
+      "selected_ids": 3319,
+      "selection_sha256": "2b269e30a890d10805897192dcece055cc458d5b6db1fbc74638e3deab559bc4",
+      "patch_sha256": "1e622963ee5f06181f2963ef66a1c6e44d6afbf9fb270fedd99c1e28ff8dc5aa",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "3.1",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "5a68f024987e6d16c2626a31bf653a2edddea579",
+          "instance_id": "django__django-12209",
+          "repo": "django/django",
+          "version": "3.1"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-13023",
+      "image_id": "sha256:c62eb7d71aba8970d858d9d93f2d1ec8b34c53702a4d736dea747597b9ceb2ce",
+      "base_commit": "f83b44075dafa429d59e8755aa47e15577cc49f9",
+      "archive_sha256": "0b3e23fd17b2f1decc95ee743badb54e33aeb502e05f2282fc769f5ac5b486b4",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-13023.tar",
+      "selected_ids": 459,
+      "selection_sha256": "451e6a9fed3af39a63a93521125652766288ea4604d2cc20dcdbaa2cc0f1c80c",
+      "patch_sha256": "4e76fcb7309ef7c8c23599e839cf221c9dac9d677c1164d72918a5f48382eacf",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "3.2",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "f83b44075dafa429d59e8755aa47e15577cc49f9",
+          "instance_id": "django__django-13023",
+          "repo": "django/django",
+          "version": "3.2"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-13033",
+      "image_id": "sha256:45361a6ede057fd3cf72220aa2402888084464dd2cbc62b05112bea65289b6c8",
+      "base_commit": "a59de6e89e8dc1f3e71c9a5a5bbceb373ea5247e",
+      "archive_sha256": "234c251613841bdb25bdbd57b3785895b1b83368afdc30806b14677ddfbdc6b0",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-13033.tar",
+      "selected_ids": 4,
+      "selection_sha256": "ddfd8483c8abce0925e2c8375e5d9872200cbb214d5ff45bff162a6ff41c91be",
+      "patch_sha256": "30a10e5abddfb0597339d36c7354c953f7e93377b3dafc2d0fa74c976b652519",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "3.2",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "a59de6e89e8dc1f3e71c9a5a5bbceb373ea5247e",
+          "instance_id": "django__django-13033",
+          "repo": "django/django",
+          "version": "3.2"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-13158",
+      "image_id": "sha256:d22b7b2807b45299ef5abf8066975a656322e376111fbb6927994af442ea9c03",
+      "base_commit": "7af8f4127397279d19ef7c7899e93018274e2f9b",
+      "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-13158.tar",
+      "selected_ids": 873,
+      "selection_sha256": "01baac25032dcd68241ad4b07e9ce11aa16773ac407c69ba8baad9c40cb6becc",
+      "patch_sha256": "f8afa41c84dabdfb162c037cd30d376241db272236bb41f598e4cbdd2a61350d",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "3.2",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "7af8f4127397279d19ef7c7899e93018274e2f9b",
+          "instance_id": "django__django-13158",
+          "repo": "django/django",
+          "version": "3.2"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-13212",
+      "image_id": "sha256:96ec8d3c284106346882f675d94344cc5b5b5f474a987c8aac45c3d9cfa9df4a",
+      "base_commit": "f4e93919e4608cfc50849a1f764fd856e0917401",
+      "archive_sha256": "3e249f2def29df7904f2a2f9a473809d810b17cbf84d3e015b7c481bb9350cd5",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-13212.tar",
+      "selected_ids": 1383,
+      "selection_sha256": "59b25d07a75f8d28572b9ec8e56d37345ebb3fd08157453c8d70785129816be4",
+      "patch_sha256": "19b62a02876575a137c3ed155bd5a8d4c3e40cee3e1821a09526af98fd95526d",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "3.2",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "f4e93919e4608cfc50849a1f764fd856e0917401",
+          "instance_id": "django__django-13212",
+          "repo": "django/django",
+          "version": "3.2"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-13297",
+      "image_id": "sha256:ca66a7eeb804ce23b06420dd501f6e5fe4149dc62b3efe9ef6a56049852db755",
+      "base_commit": "8954f255bbf5f4ee997fd6de62cb50fc9b5dd697",
+      "archive_sha256": "4f499ef39fae21bfb9ce3eb9cbf2b3878158435323828e5e1a480e90aa810da4",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar",
+      "selected_ids": 8152,
+      "selection_sha256": "d14f8d119e80c23014b88c466b88032cb2a5b11536b5be647ca424ee19d302a1",
+      "patch_sha256": "69181c9a98281a325159813f1b8a53aa13bf3dd5bb8bd375894c1d344a9cdc85",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "3.2",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "8954f255bbf5f4ee997fd6de62cb50fc9b5dd697",
+          "instance_id": "django__django-13297",
+          "repo": "django/django",
+          "version": "3.2"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-13569",
+      "image_id": "sha256:66aca58a4dea91d51fa8932d182faf25aa5224469f0739142d4dae9e4844a570",
+      "base_commit": "257f8495d6c93e30ab0f52af4c488d7344bcf112",
+      "archive_sha256": "4cdd836b256946adbb1dd644b70cf9ba6be0d69ddaffa6bacb6c70b96fbcef2c",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-13569.tar",
+      "selected_ids": 342,
+      "selection_sha256": "ea1a0f776bc65b7b072948fe94701424efced085b251f7b878989415f4db3f2f",
+      "patch_sha256": "c04ac359539efbf9587e3cde3d8ad90aeba95a49d3c82b8eae62628a1006faf2",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "3.2",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "257f8495d6c93e30ab0f52af4c488d7344bcf112",
+          "instance_id": "django__django-13569",
+          "repo": "django/django",
+          "version": "3.2"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-13786",
+      "image_id": "sha256:b0647556424fdd8811cf5bb493f58c24b6a5223ca0f80c4faab7c9f7fc586db9",
+      "base_commit": "bb64b99b78a579cb2f6178011a4cf9366e634438",
+      "archive_sha256": "0a28ac27d65a544e84a282902c869dc79a9a81ff43530286bd94c9275baa2e26",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-13786.tar",
+      "selected_ids": 460,
+      "selection_sha256": "d6ad26a50ffffee4ecb370b720df63b55e657e73fe79f662a02178c5bd6a07af",
+      "patch_sha256": "ec988f62f85b0c4e0a5611d9a6c0092f1aaa83d194c53bf8e6b611b357c5c8b8",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "3.2",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "bb64b99b78a579cb2f6178011a4cf9366e634438",
+          "instance_id": "django__django-13786",
+          "repo": "django/django",
+          "version": "3.2"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-13807",
+      "image_id": "sha256:8dd6ade9c734c99748320547a9dcc0147e6fa2fe337c0ee159a36cdbe6dff983",
+      "base_commit": "89fc144dedc737a79929231438f035b1d4a993c9",
+      "archive_sha256": "1df71fcac3bfe08ab1daa97fabbb980d333f17b9d03647c6dac79a2249914a84",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-13807.tar",
+      "selected_ids": 66,
+      "selection_sha256": "cd8975cf5dd24c49ef39750ea81dadf01f513547a2076edf8e5132e9b9282277",
+      "patch_sha256": "1a6309ffbe5b6999aeb9e5d6e401d0c050b008dc7402c800381d875cede180ce",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "3.2",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "89fc144dedc737a79929231438f035b1d4a993c9",
+          "instance_id": "django__django-13807",
+          "repo": "django/django",
+          "version": "3.2"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-13820",
+      "image_id": "sha256:272e3cbbefa5280d2b9030473cd003d029114722bba97cd06fa08b35eec5a070",
+      "base_commit": "98ad327864aed8df245fd19ea9d2743279e11643",
+      "archive_sha256": "6d51cf33848f5709745d23ece414239cd8a82074f7bb349315f4f5a39d9203ed",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-13820.tar",
+      "selected_ids": 262,
+      "selection_sha256": "f9b3312902848ef68b454814ec0dafbf93754044103771dca5aed815c57eb5ba",
+      "patch_sha256": "eeef8e96e68508ec3a0d0f063767819c7d22bd71ae2af6e2380884943c3a4495",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "3.2",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "98ad327864aed8df245fd19ea9d2743279e11643",
+          "instance_id": "django__django-13820",
+          "repo": "django/django",
+          "version": "3.2"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-14631",
+      "image_id": "sha256:d8117c513c689dec4730707dde0b3ade0c4b1768d266208d3937e04ad37c4774",
+      "base_commit": "84400d2e9db7c51fee4e9bb04c028f665b8e7624",
+      "archive_sha256": "f705aef70b484877d0ead66e3c957bfc13fda0e598ae2ba82b43c13fb0b11755",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-14631.tar",
+      "selected_ids": 4468,
+      "selection_sha256": "466e97171b5326bef0807416aca3cadeb302c513adbd162e7871956192cf063b",
+      "patch_sha256": "3ce8fb57b66084cab959a27496c17ec64c765adde69cea663f76c12e68d15853",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "4.0",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "84400d2e9db7c51fee4e9bb04c028f665b8e7624",
+          "instance_id": "django__django-14631",
+          "repo": "django/django",
+          "version": "4.0"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-15103",
+      "image_id": "sha256:10ca209ff265ccb996602e08fe0362a94b3f6b3f80a0f4fb34cabc22fe697ae8",
+      "base_commit": "dd528cb2cefc0db8b91a7ff0a2bc87305b976597",
+      "archive_sha256": "effa38fed33a5b2fad179e9a23b6553d2b194fb2f4ffc5c8b8493d695ad4309d",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-15103.tar",
+      "selected_ids": 47,
+      "selection_sha256": "d583aa013cd81245e7269c24c2b2df6ecb80edf2570d6a127dc7f7661be3bf44",
+      "patch_sha256": "daf6c01d806c149cf637a9199b35731daba6801d8b48ccf37e18a2b7534ea55e",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "4.1",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "dd528cb2cefc0db8b91a7ff0a2bc87305b976597",
+          "instance_id": "django__django-15103",
+          "repo": "django/django",
+          "version": "4.1"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-15278",
+      "image_id": "sha256:d6f8a7aa1e47de97370a03fa3d4d7815fd96b27d8e6dd688f5336c2d3eedfcff",
+      "base_commit": "0ab58c120939093fea90822f376e1866fc714d1f",
+      "archive_sha256": "bac872228ee80da8e86cbcaf8c6126ec2c38e83b1dd0eefa12c80e714cf32db2",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-15278.tar",
+      "selected_ids": 306,
+      "selection_sha256": "c5abae79195b346105b61f9d1713bb5d67299b959e1600f80c8e909d83d671e4",
+      "patch_sha256": "11564a05fc5f98985e7b311de34b92f3ee6eb20090487bf94a3e351cb59440ab",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "4.1",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "0ab58c120939093fea90822f376e1866fc714d1f",
+          "instance_id": "django__django-15278",
+          "repo": "django/django",
+          "version": "4.1"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-15375",
+      "image_id": "sha256:0466fc9414c86e16c54630011c760c6fab88f8cdfd757e144f6c1150cdcf962f",
+      "base_commit": "beb7ddbcee03270e833b2f74927ccfc8027aa693",
+      "archive_sha256": "0b577e2cddc6e8166388fb88ffa5b787b2f72d76bde9d209c53ba30350897d71",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-15375.tar",
+      "selected_ids": 430,
+      "selection_sha256": "08e1611e5a138c281e3b5d20d9b5d7efab50a1854e8f27af51335f2963d47fba",
+      "patch_sha256": "a484d6ff92b8c434549a174dcec4792dfe6e4a0c2da08ebc849245da3273fef9",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "4.1",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "beb7ddbcee03270e833b2f74927ccfc8027aa693",
+          "instance_id": "django__django-15375",
+          "repo": "django/django",
+          "version": "4.1"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-15499",
+      "image_id": "sha256:86f6a8b39f21a9094d5f352edacd6052ff061aab6175054291d6d28be8947051",
+      "base_commit": "d90e34c61b27fba2527834806639eebbcfab9631",
+      "archive_sha256": "24fd17768dab750beb3150b42b50d2bcc47e07f26e4bb8c7cbf2906914794680",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-15499.tar",
+      "selected_ids": 526,
+      "selection_sha256": "3912ea1beb7b57da05865640e172c7d947bdd3b89844a04bd872ed230918fd4f",
+      "patch_sha256": "24dbabc7d22a7ce42cf23dc5c5b92d09dec726fcb8752eac7594b7d427d7e084",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "4.1",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "d90e34c61b27fba2527834806639eebbcfab9631",
+          "instance_id": "django__django-15499",
+          "repo": "django/django",
+          "version": "4.1"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-15572",
+      "image_id": "sha256:d2e4011d8607464cec27ee3387b19b7316bb3e2771319e5353f9ff3d21cd5f78",
+      "base_commit": "0b31e024873681e187b574fe1c4afe5e48aeeecf",
+      "archive_sha256": "d93ff6be9297a2893a4f9e72e6634f64a1fb0c0b3fafc4f3599e1672bdc71c94",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-15572.tar",
+      "selected_ids": 84,
+      "selection_sha256": "2d90cd25f6edc0e5b403040d57c59ecfc41370bff3529b4e8bf70ad5c699f278",
+      "patch_sha256": "c9a99bc0917e6cc40c01bdf932518279b8ac23942a0c5695587f00b8f4ae0aca",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "4.1",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "0b31e024873681e187b574fe1c4afe5e48aeeecf",
+          "instance_id": "django__django-15572",
+          "repo": "django/django",
+          "version": "4.1"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-16082",
+      "image_id": "sha256:7c100d59942555019000e212bddc7178a551ae435b30df50eeb4a062574fddf4",
+      "base_commit": "bf47c719719d0e190a99fa2e7f959d5bbb7caf8a",
+      "archive_sha256": "90b14df00d0e368629e6f4963e7ecb55116349d91be363dfb55ff6125f26ef64",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-16082.tar",
+      "selected_ids": 181,
+      "selection_sha256": "ebc852878395e2686993f8eac40102f97e5146691c157d639209f96fa68e3525",
+      "patch_sha256": "5de455d32eb4b4b58703ac9ae2f8c654a7644a97d73ed20793523c0cc5dba51a",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "4.2",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "bf47c719719d0e190a99fa2e7f959d5bbb7caf8a",
+          "instance_id": "django__django-16082",
+          "repo": "django/django",
+          "version": "4.2"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-16136",
+      "image_id": "sha256:2afbffff7caf2c80d2ea852dfe4e3634743fe49218321597329fb8a01b7f3c61",
+      "base_commit": "19e6efa50b603af325e7f62058364f278596758f",
+      "archive_sha256": "a74a9610df885472979cacf20605f81933da748507225073a59333b5e37a9d83",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-16136.tar",
+      "selected_ids": 3925,
+      "selection_sha256": "bfc04ff33964307d6efd78788b7380a7d0504ebc290b6e54f8a4e367365382db",
+      "patch_sha256": "fa5c21fe0691229eafdd4f7b50f64369234ac447657a1d3211c3c6f80cf70795",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "4.2",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "19e6efa50b603af325e7f62058364f278596758f",
+          "instance_id": "django__django-16136",
+          "repo": "django/django",
+          "version": "4.2"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-16255",
+      "image_id": "sha256:fb1593929bbd32a6856c86c56f9f5badf56e2fadd4eeb7b81885b37d2bfcd862",
+      "base_commit": "444b6da7cc229a58a2c476a52e45233001dc7073",
+      "archive_sha256": "fe79ef87fe8572b08ecd1cf05a2665180bfe8ec6471a58eea3d0aff16fe2ad29",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-16255.tar",
+      "selected_ids": 47,
+      "selection_sha256": "85be28d5a7bd340d0eb02678e84b358c74de81035ad09bf3daa2261781dfb355",
+      "patch_sha256": "83ed90041ac47cdb4b3502104831bd5b24745f8b689fae5d6d811a27ebb41d03",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "4.2",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "444b6da7cc229a58a2c476a52e45233001dc7073",
+          "instance_id": "django__django-16255",
+          "repo": "django/django",
+          "version": "4.2"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-16315",
+      "image_id": "sha256:cf002ee478c283d0ec0a48939a01ee6eb25ac27f636f699214af5214a9400f1a",
+      "base_commit": "7d5329852f19c6ae78c6f6f3d3e41835377bf295",
+      "archive_sha256": "aa5b40e5ec0e028b89f1449868fa2f0d04efc3df6589d4446f5cc84067426e0d",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-16315.tar",
+      "selected_ids": 18,
+      "selection_sha256": "4e8067850fdff9b6259b94f24ddd1b38e569d5859a0398292871ea0cc7c7a19e",
+      "patch_sha256": "0ddaef22970c24626c59ebcfafe7f32f28b298996d444266cdefb9f450e39bfa",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "4.2",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "7d5329852f19c6ae78c6f6f3d3e41835377bf295",
+          "instance_id": "django__django-16315",
+          "repo": "django/django",
+          "version": "4.2"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-16631",
+      "image_id": "sha256:f98d847d93a79e92472e6320cccd2cd56b5219cc372f0cc43c8ee30101f740cd",
+      "base_commit": "9b224579875e30203d079cc2fee83b116d98eb78",
+      "archive_sha256": "3f304d24d2539f01996a502ee8789cd957f5b284dd31dc4b06523a14d6fead32",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-16631.tar",
+      "selected_ids": 478,
+      "selection_sha256": "b75da9d257260f3eeda9729ded8cb3124507909a161769f0ef223dab34ad45ed",
+      "patch_sha256": "56f8c2684e3abe6d656f940e1fc77fa12a1f7571294ac66566488d4e1d9facda",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "5.0",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "9b224579875e30203d079cc2fee83b116d98eb78",
+          "instance_id": "django__django-16631",
+          "repo": "django/django",
+          "version": "5.0"
+        }
+      }
+    },
+    {
+      "instance_id": "django__django-16667",
+      "image_id": "sha256:9db8497f2ece3a7339aef6c29aead8d52d657a6b294cdf8da9fab325a7630300",
+      "base_commit": "02c356f2f3945b8075735d485c3cf48cad991011",
+      "archive_sha256": "1136733b52d49e6b83ff1d18dac4723d15ca2b849425d44d7f1255816629a9ef",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/django__django-16667.tar",
+      "selected_ids": 272,
+      "selection_sha256": "5da40eea79b467e100e66506d50ce49b9cf4ffd877a2bfc95b9dc3ff381ee96c",
+      "patch_sha256": "14f6480df1bc9efc47471fde901b2f28be0dced80d8e02be899c9930acf54db9",
+      "django_parallel_one": false,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "django/django",
+          "5.0",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "02c356f2f3945b8075735d485c3cf48cad991011",
+          "instance_id": "django__django-16667",
+          "repo": "django/django",
+          "version": "5.0"
+        }
+      }
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-20676",
+      "image_id": "sha256:7f603ecba31ab182ad9b6c2005d4810b6b52c0e238e662820339e21319ca6871",
+      "base_commit": "6786f437df54ca7780a047203cbcfaa1db8dc542",
+      "archive_sha256": "0674b115a501ba5974056c9f233899412d7facb9576221d578be3d3fb8cfc440",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-20676.tar",
+      "selected_ids": 736,
+      "selection_sha256": "4223e7a775083385c600415299a2e1ee5c09c1e86cc2af9a18805a8bc10344d6",
+      "patch_sha256": "9240f7376d7530a0ec8d1f85948a277c2fcea18bf1c7696a93a503ba9f3684d1",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "matplotlib/matplotlib",
+          "3.4",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg libfreetype6-dev pkg-config texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super",
+          "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_BUILD_DIR=\"/testbed/build\"",
+          "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+          "mkdir -p \"$QHULL_BUILD_DIR\"",
+          "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "6786f437df54ca7780a047203cbcfaa1db8dc542",
+          "instance_id": "matplotlib__matplotlib-20676",
+          "repo": "matplotlib/matplotlib",
+          "version": "3.4"
+        }
+      }
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-22871",
+      "image_id": "sha256:f65f6e248b99e1a6c2316f49450dabd7c1af9cfaccc2e4bfd6d3498fdde7a5cd",
+      "base_commit": "a7b7260bf06c20d408215d95ce20a1a01c12e5b1",
+      "archive_sha256": "426e96186d0e97a30d656eb820e224fcab29dc8f6bf8c0fbeabeff3734939a45",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-22871.tar",
+      "selected_ids": 54,
+      "selection_sha256": "3d81c234d722767cac95cc27959fc7ce6910a5a42d160cdbd4255d6e9abc678f",
+      "patch_sha256": "285855f058a1faca61805008975e28f9d9c481b19a9ecb245b82fc9961177585",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "matplotlib/matplotlib",
+          "3.5",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super dvipng",
+          "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_BUILD_DIR=\"/testbed/build\"",
+          "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+          "mkdir -p \"$QHULL_BUILD_DIR\"",
+          "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "a7b7260bf06c20d408215d95ce20a1a01c12e5b1",
+          "instance_id": "matplotlib__matplotlib-22871",
+          "repo": "matplotlib/matplotlib",
+          "version": "3.5"
+        }
+      }
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-23299",
+      "image_id": "sha256:535541839dafcef6ab19014cafbb02fdc5ddc9a6748ea985939bf8e3d9c38418",
+      "base_commit": "3eadeacc06c9f2ddcdac6ae39819faa9fbee9e39",
+      "archive_sha256": "7531311200f87a71157499e9c9b4312640fdb3d488bfbded42f327afa0fe8726",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-23299.tar",
+      "selected_ids": 46,
+      "selection_sha256": "c4b1aca6244867545190ca5d52642e1517b879a8af5eff2bf21d3db0efd84b3b",
+      "patch_sha256": "3a3d22c35255452e24505f916cafe94453b644e76bc85209c9addbf4c195cf90",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "matplotlib/matplotlib",
+          "3.5",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super dvipng",
+          "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_BUILD_DIR=\"/testbed/build\"",
+          "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+          "mkdir -p \"$QHULL_BUILD_DIR\"",
+          "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "3eadeacc06c9f2ddcdac6ae39819faa9fbee9e39",
+          "instance_id": "matplotlib__matplotlib-23299",
+          "repo": "matplotlib/matplotlib",
+          "version": "3.5"
+        }
+      }
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-23476",
+      "image_id": "sha256:fb4a58349c84df8568bdfcadc657c01157c99a3a8aead4b82e8fc43f8cb448d4",
+      "base_commit": "33a0599711d26dc2b79f851c6daed4947df7c167",
+      "archive_sha256": "98195c402fa72b14389d260191430b8e518fa3d977393f3cb2bcd805c0d6bdd4",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-23476.tar",
+      "selected_ids": 694,
+      "selection_sha256": "c1649372151cb86fb4f1a17ccc20e0930f5fe80c96d55f69eef35efa73eb4452",
+      "patch_sha256": "f6baaa6722117e4817414373c2646246066f4864ab6f1dee4708c547a4b11918",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "matplotlib/matplotlib",
+          "3.5",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super dvipng",
+          "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_BUILD_DIR=\"/testbed/build\"",
+          "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+          "mkdir -p \"$QHULL_BUILD_DIR\"",
+          "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "33a0599711d26dc2b79f851c6daed4947df7c167",
+          "instance_id": "matplotlib__matplotlib-23476",
+          "repo": "matplotlib/matplotlib",
+          "version": "3.5"
+        }
+      }
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-24177",
+      "image_id": "sha256:5b52f28e9ada3fed0770b503d3c853977b9621797e1d947f97c14a0201c06505",
+      "base_commit": "493d608e39d32a67173c23a7bbc47d6bfedcef61",
+      "archive_sha256": "ea13c27cdc101ed397c725b512f639a2eaca10364253ec453b25930472bbfb94",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-24177.tar",
+      "selected_ids": 0,
+      "selection_sha256": "7d21a7f7805ea901682e89323f79a2b2cd724146979c4db57ae0d0dd2fd15f6c",
+      "patch_sha256": "4dbb7257e6d4f18b4ab4f42e5041dea99fd58664970eec9441b95c32ae5a4252",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "matplotlib/matplotlib",
+          "3.6",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super dvipng",
+          "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_BUILD_DIR=\"/testbed/build\"",
+          "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+          "mkdir -p \"$QHULL_BUILD_DIR\"",
+          "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "493d608e39d32a67173c23a7bbc47d6bfedcef61",
+          "instance_id": "matplotlib__matplotlib-24177",
+          "repo": "matplotlib/matplotlib",
+          "version": "3.6"
+        }
+      }
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-24637",
+      "image_id": "sha256:110fd3b0522934576c87b69557d3d05a554c86cd5694f2e76ec1e1a920956bf0",
+      "base_commit": "a9ba9d5d3fe9d5ac15fbdb06127f97d381148dd0",
+      "archive_sha256": "5819075eeb56b37df2d63e8f07a785ddcac929f372fc608007791873470e66fd",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-24637.tar",
+      "selected_ids": 16,
+      "selection_sha256": "3708e493f6b912f0f1ba9a62cae7ed282b0e4bfead51d6651380613b6135b02e",
+      "patch_sha256": "429c2ec056eb5441acba7b1782cf77c304ce491a706325b5a9f31887a1022c1e",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "matplotlib/matplotlib",
+          "3.6",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super dvipng",
+          "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_BUILD_DIR=\"/testbed/build\"",
+          "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+          "mkdir -p \"$QHULL_BUILD_DIR\"",
+          "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "a9ba9d5d3fe9d5ac15fbdb06127f97d381148dd0",
+          "instance_id": "matplotlib__matplotlib-24637",
+          "repo": "matplotlib/matplotlib",
+          "version": "3.6"
+        }
+      }
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-24970",
+      "image_id": "sha256:fe9fa82078f27c181b8b6015a0cb6d8efec0601e9bf50f146fe0fd16e8b975f1",
+      "base_commit": "a3011dfd1aaa2487cce8aa7369475533133ef777",
+      "archive_sha256": "438c3932c975f18c08df08415ab695aa35d7d2fa69acd440e9e389927bac6ce3",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-24970.tar",
+      "selected_ids": 80,
+      "selection_sha256": "d39b31108dfa284df2fa61030c3c8ce1a3d5d8992ce0cd1365e0397af071d804",
+      "patch_sha256": "ea5fa10186718caa4a46e26d770a5c4900cd78de6bb957a7a9a9df350dbabc75",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "matplotlib/matplotlib",
+          "3.6",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super dvipng",
+          "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_BUILD_DIR=\"/testbed/build\"",
+          "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+          "mkdir -p \"$QHULL_BUILD_DIR\"",
+          "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "a3011dfd1aaa2487cce8aa7369475533133ef777",
+          "instance_id": "matplotlib__matplotlib-24970",
+          "repo": "matplotlib/matplotlib",
+          "version": "3.6"
+        }
+      }
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-25122",
+      "image_id": "sha256:17b35fcaeadf12ee4d1900b19e6b598166ac699a6824385677b8d1a8ea011de4",
+      "base_commit": "5ec2bd279729ff534719b8bf238dbbca907b93c5",
+      "archive_sha256": "55447bb4a7814a92d07a4c4e2db9a51023a2fcd83e5a7066e34af1df669030ef",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-25122.tar",
+      "selected_ids": 54,
+      "selection_sha256": "cd9ac0dabd1b626e5d61ce20a4084bf0f988a9ca76fff7b77d0f0051968e4f44",
+      "patch_sha256": "d90258463035a063dbabb8e861cfcd2f9ddd84f94bff5bd81fd920e8cc34cf28",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "matplotlib/matplotlib",
+          "3.6",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super dvipng",
+          "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_BUILD_DIR=\"/testbed/build\"",
+          "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+          "mkdir -p \"$QHULL_BUILD_DIR\"",
+          "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "5ec2bd279729ff534719b8bf238dbbca907b93c5",
+          "instance_id": "matplotlib__matplotlib-25122",
+          "repo": "matplotlib/matplotlib",
+          "version": "3.6"
+        }
+      }
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-25479",
+      "image_id": "sha256:8d5dd308f77d3ff7efd7970809557b2221abb357218104390ba0489af7e25e90",
+      "base_commit": "7fdf772201e4c9bafbc16dfac23b5472d6a53fa2",
+      "archive_sha256": "16c168660552fd8f0b616a500014fbb1ca517441feff6e8dc55d0931667e629a",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-25479.tar",
+      "selected_ids": 88,
+      "selection_sha256": "59b6908ab412b2c25b6acb33c6926b34ed4bff8c247d04810619850e90a07339",
+      "patch_sha256": "5cabaa4a2bc80de34b9ca6c49c1ebbba00cb7be597b5dce3f3c0c3e0519c7740",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "matplotlib/matplotlib",
+          "3.7",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super dvipng",
+          "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_BUILD_DIR=\"/testbed/build\"",
+          "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+          "mkdir -p \"$QHULL_BUILD_DIR\"",
+          "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "7fdf772201e4c9bafbc16dfac23b5472d6a53fa2",
+          "instance_id": "matplotlib__matplotlib-25479",
+          "repo": "matplotlib/matplotlib",
+          "version": "3.7"
+        }
+      }
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-26291",
+      "image_id": "sha256:757855ad838faa91630ec9c1be7207a03a3edcd8eba0c23e974a1d11aa783625",
+      "base_commit": "fa68f46289adf4a8a4bc7ba97ded8258ec9d079c",
+      "archive_sha256": "dd2459c6e236a19cc6c427df62c03ad1b6cf9cb8718cac80dd9fba45976372db",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-26291.tar",
+      "selected_ids": 107,
+      "selection_sha256": "c3e9d1617d002184e418b477d2552f6ab287f6bc19c5165d8ee031e1ed42319c",
+      "patch_sha256": "abc5ddad17424edb8dece388e173d1ded02b796df1039fcc8682f115612427c1",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "matplotlib/matplotlib",
+          "3.7",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super dvipng",
+          "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+          "QHULL_BUILD_DIR=\"/testbed/build\"",
+          "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+          "mkdir -p \"$QHULL_BUILD_DIR\"",
+          "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "fa68f46289adf4a8a4bc7ba97ded8258ec9d079c",
+          "instance_id": "matplotlib__matplotlib-26291",
+          "repo": "matplotlib/matplotlib",
+          "version": "3.7"
+        }
+      }
+    },
+    {
+      "instance_id": "pydata__xarray-4695",
+      "image_id": "sha256:dacf663fa4ed2c8ce6001ceea04c245277b5f3431555062729e46234f142c2c0",
+      "base_commit": "51ef2a66c4e0896eab7d2b03e3dfb3963e338e3c",
+      "archive_sha256": "5b715a12032e888307b1502ad416b181dc52d02c20a6a3eea3da89fcccce8515",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/pydata__xarray-4695.tar",
+      "selected_ids": 277,
+      "selection_sha256": "13f017295f3c4a2a8d445eac47c9b55d9be8a145029544a8251e0c28e577dcdf",
+      "patch_sha256": "e3c08b25fd67e1749afb35cafa794688d3c5b6e6699bfcad15f3708c895a4403",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "pydata/xarray",
+          "0.12",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "51ef2a66c4e0896eab7d2b03e3dfb3963e338e3c",
+          "instance_id": "pydata__xarray-4695",
+          "repo": "pydata/xarray",
+          "version": "0.12"
+        }
+      }
+    },
+    {
+      "instance_id": "pydata__xarray-4966",
+      "image_id": "sha256:8031b0afcc4b54bb3e24f14ad85a1ea1629e27837e43ca557c23c904a9bf3c3b",
+      "base_commit": "37522e991a32ee3c0ad1a5ff8afe8e3eb1885550",
+      "archive_sha256": "3be1b856e4c2045b6816862357888446862c5a43000a660d745db94331a4e75e",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/pydata__xarray-4966.tar",
+      "selected_ids": 0,
+      "selection_sha256": "feda7217b3f01e66589641a1b2b9f09c2596c25de4d76b25bd9a1676a6161197",
+      "patch_sha256": "9393116565f227c5c3b4f14bff2f33d8c925b78ab409124a98e10975dc5e0b02",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "pydata/xarray",
+          "0.12",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "37522e991a32ee3c0ad1a5ff8afe8e3eb1885550",
+          "instance_id": "pydata__xarray-4966",
+          "repo": "pydata/xarray",
+          "version": "0.12"
+        }
+      }
+    },
+    {
+      "instance_id": "pylint-dev__pylint-4970",
+      "image_id": "sha256:38d291155fde177f64d176d45b2e78d37336feac9ab05cf05f3c96fb12d506bf",
+      "base_commit": "40cc2ffd7887959157aaf469e09585ec2be7f528",
+      "archive_sha256": "e37e8d856e2ff94017924827a29384c71021a974f396f9dc88e79b2f888b5891",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-4970.tar",
+      "selected_ids": 204,
+      "selection_sha256": "b8f5c207dd75adb3216a699706676dababe98bb79a1def2df6534763fd1a0536",
+      "patch_sha256": "a945a23def845b5340a8c3bd468c282be93a70c524912dd44f05d926d07a3354",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "pylint-dev/pylint",
+          "2.10",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "40cc2ffd7887959157aaf469e09585ec2be7f528",
+          "instance_id": "pylint-dev__pylint-4970",
+          "repo": "pylint-dev/pylint",
+          "version": "2.10"
+        }
+      }
+    },
+    {
+      "instance_id": "pylint-dev__pylint-7277",
+      "image_id": "sha256:0303aebc7a42cad95668e97e913c52f3f9cf435f61b5f2c1a50313890bb3e07a",
+      "base_commit": "684a1d6aa0a6791e20078bc524f97c8906332390",
+      "archive_sha256": "baac4682f2541d8489225f5e3049f46e605e14fb89a70290d447e50c1ed46aa2",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-7277.tar",
+      "selected_ids": 70,
+      "selection_sha256": "4a2466121cec2c438470e65a59631ac94808207d84d8fae86be9e5588cb9c528",
+      "patch_sha256": "b8f25fcc32031c547c2a6856c78518f6dfe20256924f232c4d6b06fda2fb6e1f",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "pylint-dev/pylint",
+          "2.15",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "684a1d6aa0a6791e20078bc524f97c8906332390",
+          "instance_id": "pylint-dev__pylint-7277",
+          "repo": "pylint-dev/pylint",
+          "version": "2.15"
+        }
+      }
+    },
+    {
+      "instance_id": "pytest-dev__pytest-7432",
+      "image_id": "sha256:674d7208a4eb6438b0d992b7173c380f2682a85322c084e327ae178f19a38f68",
+      "base_commit": "e6e300e729dd33956e5448d8be9a0b1540b4e53a",
+      "archive_sha256": "bd7b7fc125d6b7b45032c6c1281811f6f86e43379672c497a5b8b9a7ba6b644a",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/pytest-dev__pytest-7432.tar",
+      "selected_ids": 268,
+      "selection_sha256": "123e0b1e592e8f6d32ac2be01c7c71c8963301f6fa5c7df74ce5a486d894984b",
+      "patch_sha256": "85c2adb175ee8f9d7aefa1586f26ec2848b1e8d4db3c1ea6dd3aead284efe448",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "pytest-dev/pytest",
+          "5.4",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "e6e300e729dd33956e5448d8be9a0b1540b4e53a",
+          "instance_id": "pytest-dev__pytest-7432",
+          "repo": "pytest-dev/pytest",
+          "version": "5.4"
+        }
+      }
+    },
+    {
+      "instance_id": "scikit-learn__scikit-learn-14629",
+      "image_id": "sha256:ef188267fdee8526c64b76d0fb767f17be1652f629bf47f12a5d6da6fc96e01b",
+      "base_commit": "4aded39b5663d943f6a4809abacfa9cae3d7fb6a",
+      "archive_sha256": "0fd4d23a3bffec70462a5eb05f630565a95e4fb562ef7abb06b01e8beceb41cc",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/scikit-learn__scikit-learn-14629.tar",
+      "selected_ids": 2789,
+      "selection_sha256": "bdeec778387dfce2f3250d2e0f96c77a761fab73b479df41bcce41cfcc0a6043",
+      "patch_sha256": "97265359b05455190bd914fe3f33229ba07feeeb25af17b17fd14ce97795adc2",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "scikit-learn/scikit-learn",
+          "0.22",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "4aded39b5663d943f6a4809abacfa9cae3d7fb6a",
+          "instance_id": "scikit-learn__scikit-learn-14629",
+          "repo": "scikit-learn/scikit-learn",
+          "version": "0.22"
+        }
+      }
+    },
+    {
+      "instance_id": "scikit-learn__scikit-learn-14894",
+      "image_id": "sha256:8da183c4aec240716abed4c4f4a079d95ab47b6bdb83a9f4e472d9a79fc0501d",
+      "base_commit": "fdbaa58acbead5a254f2e6d597dc1ab3b947f4c6",
+      "archive_sha256": "687ee5baf21850e55cc1110e5f9722a85f4f4e5e45c17761391cd88b782e2a98",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/scikit-learn__scikit-learn-14894.tar",
+      "selected_ids": 1919,
+      "selection_sha256": "244b20b93b53a172885a1db3b79d1ff9787389ead764929759874601aa203d7a",
+      "patch_sha256": "67cf07ea1b2360d1bbdbe9aa1d6c61ab7768d252808c955867e001b5fdd955b4",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "scikit-learn/scikit-learn",
+          "0.22",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "fdbaa58acbead5a254f2e6d597dc1ab3b947f4c6",
+          "instance_id": "scikit-learn__scikit-learn-14894",
+          "repo": "scikit-learn/scikit-learn",
+          "version": "0.22"
+        }
+      }
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-10435",
+      "image_id": "sha256:80919e420ca2c5ed3308b2cc90b313a76f1aca5b8b9621a76ebf8894e3472ed3",
+      "base_commit": "f1061c012e214f16fd8790dec3c283d787e3daa8",
+      "archive_sha256": "14f4bb6001c30c652150a969de8746c6dbcdb9d465a2423671ffcd29ecc33abd",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/sphinx-doc__sphinx-10435.tar",
+      "selected_ids": 90,
+      "selection_sha256": "ba725df2ba954fbba3be55868e6b72aa7054944abb93e0709dd0075742bd29c5",
+      "patch_sha256": "eea4b0658df8920da6cc160acae7c997cf35b2bae2821830283354861b3fd17d",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "sphinx-doc/sphinx",
+          "5.0",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "sed -i 's/pytest/pytest -rA/' tox.ini"
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "f1061c012e214f16fd8790dec3c283d787e3daa8",
+          "instance_id": "sphinx-doc__sphinx-10435",
+          "repo": "sphinx-doc/sphinx",
+          "version": "5.0"
+        }
+      }
+    },
+    {
+      "instance_id": "sphinx-doc__sphinx-10466",
+      "image_id": "sha256:f15976cde5dec10d8ce602441d432d9858067e15828ee21bf684c24b482fd376",
+      "base_commit": "cab2d93076d0cca7c53fac885f927dde3e2a5fec",
+      "archive_sha256": "311723ac277e0aa438a7b32ef9b644ce737def09175a38e1424ff894cbeb388a",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/sphinx-doc__sphinx-10466.tar",
+      "selected_ids": 344,
+      "selection_sha256": "2503d7078e138348206310c8e16a436808fa22fb8c1f2b46bd4f8b645189e24c",
+      "patch_sha256": "212ceef7bc7ce61d88e6399090995e4eddfb29a7504da86ee5142c4ec5478b7f",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "sphinx-doc/sphinx",
+          "5.0",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [
+          "sed -i 's/pytest/pytest -rA/' tox.ini"
+        ],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "cab2d93076d0cca7c53fac885f927dde3e2a5fec",
+          "instance_id": "sphinx-doc__sphinx-10466",
+          "repo": "sphinx-doc/sphinx",
+          "version": "5.0"
+        }
+      }
+    },
+    {
+      "instance_id": "sympy__sympy-14711",
+      "image_id": "sha256:bba8a91b93b45d122124ca49f4a9aea5efec3cf1877997b46f33433e1a9e5fd5",
+      "base_commit": "c6753448b5c34f95e250105d76709fe4d349ca1f",
+      "archive_sha256": "2dc2195d9b655e79fb14b02beb6cb7fdc9876fc840977e7ad70bb7841ad1b36d",
+      "archive_path": "/home/sankalp/cg_repos/task_archives/sympy__sympy-14711.tar",
+      "selected_ids": 429,
+      "selection_sha256": "f3a1798f717b049b40277f5b6eb82a69dc948b0f0981ebbcd98c07be7f85a356",
+      "patch_sha256": "027bfcfe8b6ba74d8ed2b02dc6e00b67156b94bf68688040928ad1b553a6e7fd",
+      "django_parallel_one": null,
+      "pre_install": {
+        "swebench_version": "4.0.4",
+        "project_swebench_version": "5.0.2",
+        "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl",
+        "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+        "constants_path": "swebench/harness/constants/python.py",
+        "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+        "spec_key": [
+          "sympy/sympy",
+          "1.1",
+          "pre_install"
+        ],
+        "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+        "commands": [],
+        "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+        "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "dataset_row": {
+          "base_commit": "c6753448b5c34f95e250105d76709fe4d349ca1f",
+          "instance_id": "sympy__sympy-14711",
+          "repo": "sympy/sympy",
+          "version": "1.1"
+        }
+      }
+    }
+  ]
+}

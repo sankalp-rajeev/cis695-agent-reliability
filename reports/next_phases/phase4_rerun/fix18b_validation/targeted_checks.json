@@ -1,0 +1,24 @@
+{
+  "command": "scripts/test.sh tests/unit/test_fix18b_scope.py tests/unit/test_fix18_sympy_imports.py tests/unit/test_fix17_execution.py tests/unit/test_phase4_launcher.py",
+  "summary_masked": "40 <MASKED> in 12.44s",
+  "log_sha256": "15c95280fb763674eba348bb0116ce914e1a43d05e7346c0e4ff533eaab8ebad",
+  "new_checks": 5,
+  "manifest_lookup_precedence": [
+    {
+      "preferred": "18b",
+      "verified": true
+    },
+    {
+      "preferred": "18",
+      "verified": true
+    },
+    {
+      "preferred": "17",
+      "verified": true
+    },
+    {
+      "preferred": "16",
+      "verified": true
+    }
+  ]
+}

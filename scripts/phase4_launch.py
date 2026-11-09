@@ -52,7 +52,7 @@ STOP_S = 12*60*60
 REFERENCE = ROOT/'reports/next_phases/phase4_rerun/fix13_reference'
 DRIFT_REFERENCE_RELATIVE = 'reports/next_phases/phase4_rerun/fix16_reference'
 DRIFT_REFERENCE = ROOT/DRIFT_REFERENCE_RELATIVE
-G1_PREFLIGHT = ROOT/'reports/next_phases/phase4_rerun/fix18_g1'
+G1_PREFLIGHT = ROOT/'reports/next_phases/phase4_rerun/fix18b_g1'
 
 
 def sha(path):
@@ -497,7 +497,9 @@ def committed_g1_manifest_sha():
         plan=subprocess.check_output(['git','show','HEAD:'+relative],cwd=ROOT,text=True)
     except subprocess.CalledProcessError as exc:
         raise ValueError('Committed G1 manifest checksum is unavailable') from exc
-    matches=re.findall(r'^Fix 18 G1 manifest SHA-256: ([0-9a-f]{64})$',plan,re.MULTILINE)
+    matches=re.findall(r'^Fix 18b G1 manifest SHA-256: ([0-9a-f]{64})$',plan,re.MULTILINE)
+    if not matches:
+        matches=re.findall(r'^Fix 18 G1 manifest SHA-256: ([0-9a-f]{64})$',plan,re.MULTILINE)
     if not matches:
         matches=re.findall(r'^Fix 17 G1 manifest SHA-256: ([0-9a-f]{64})$',plan,re.MULTILINE)
     if not matches:

@@ -469,6 +469,8 @@ Fix 18 G1 manifest SHA-256: 946873c02a84475f6e42a99cef824adfcac8e7391a01b6d7b797
   B1/B2 and frozen selections are unchanged. Leave attempt 3 quarantined;
   commit and push, with no freeze tag, force-push or launch.
 
+Fix 18b G1 manifest SHA-256: d2c4277141abcc2bfdf20fb87ee82a92a10dd44b251879b74c0f30c5d8ccc3bb
+
 ## 5. Post-hoc, only after `phase4-run-sealed`
 
 These may use labels; the executor never changes in response:

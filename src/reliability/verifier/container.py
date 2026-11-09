@@ -348,15 +348,16 @@ def run(part, module, retry=False, parent=None):
         cmd = ["python", "-m", "pytest", "-p", "no:cacheprovider", "-v", "--"] + part
     sequence[0] += 1
     index, start = sequence[0], time.monotonic()
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True)
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE if kind == "sympy" else subprocess.STDOUT, start_new_session=True)
     events.write(json.dumps(dict(event="start", batch=index, module=module, pid=proc.pid,
                                 retry=retry, parent=parent, argv=cmd, ids=part,
                                 offset=log.tell())) + "\n")
     captured = bytearray()
     captured_stderr = bytearray()
-    streams = {proc.stdout.fileno(): proc.stdout, proc.stderr.fileno(): proc.stderr}
+    streams = {proc.stdout.fileno(): proc.stdout, proc.stderr.fileno(): proc.stderr} if kind == "sympy" else None
     timed_out = False
-    while streams:
+    while streams if kind == "sympy" else True:
         remaining = deadline - time.monotonic()
         if remaining <= 0 and not timed_out:
             timed_out = True
@@ -365,8 +366,17 @@ def run(part, module, retry=False, parent=None):
                 os.killpg(proc.pid, signal.SIGKILL)
             except ProcessLookupError:
                 pass
-        ready, _, _ = select.select(list(streams), [], [], max(0.001, min(0.1, remaining)))
+        ready, _, _ = select.select(list(streams) if kind == "sympy" else [proc.stdout], [], [], max(0.001, min(0.1, remaining)))
         if not ready:
+            continue
+        if kind != "sympy":
+            chunk = os.read(proc.stdout.fileno(), 65536)
+            if not chunk:
+                break
+            captured.extend(chunk)
+            log.write(chunk)
+            sys.stdout.buffer.write(chunk)
+            sys.stdout.buffer.flush()
             continue
         for descriptor in ready:
             chunk = os.read(descriptor, 65536)
@@ -394,8 +404,8 @@ def run(part, module, retry=False, parent=None):
         returncode=code, retry=retry, parent=parent, observed_ids=sorted(observed), timed_out=timed_out,
         load_failure=load_failure, gis_guard=gis, split=bool(retry_ids),
         active_id=active, test_started=bool(active), per_test_output=per_test_output,
-        stderr_b64=base64.b64encode(bytes(captured_stderr)).decode('ascii'),
-        missing_ids=missing, offset=log.tell(), duration_s=time.monotonic()-start)) + "\n")
+        missing_ids=missing, offset=log.tell(), duration_s=time.monotonic()-start,
+        **({'stderr_b64':base64.b64encode(bytes(captured_stderr)).decode('ascii')} if kind == "sympy" else {}))) + "\n")
     if timed_out:
         not_reached(missing, module)
     return index, retry_ids
@@ -843,6 +853,8 @@ def run_from_capture(
                     message='patched module silent after base module progress'),)
                 mappings[missing] = selected
             for tid in mapping_for(tests,runner.name)(missing):
+                if runner.name == 'sympy' and tid in statuses:
+                    continue
                 statuses[tid]=(TestStatus.ERROR if induced else TestStatus.COLLECTION_ERROR
                     if event.get('batch') in import_batches else TestStatus.NOT_RUN)
                 messages[tid]=('patched module silent after base module progress' if induced else
@@ -851,15 +863,19 @@ def run_from_capture(
         if event.get('module') not in base_progress_modules and event.get('batch') not in import_batches:
             errors.append('module_execution identity failure: no test progress on first attempt and retry')
     if runner.name == 'sympy':
-        unproven = [e for e in events if sympy_silent_nonzero(e)
-                    and e.get('batch') not in import_batches and e.get('batch') not in induced_batches]
+        unproven = [e for e in events if sympy_silent_nonzero(e) and not e.get('split')
+                    and e.get('batch') not in import_batches and e.get('batch') not in induced_batches
+                    and any(tid not in statuses
+                            for native in e.get('missing_ids', ())
+                            for tid in mapping_for(tests, runner.name)(native))]
         for event in unproven:
             start = next((e for e in events if e.get('event') == 'start'
                           and e.get('batch') == event.get('batch')), {})
             for native in event.get('missing_ids', start.get('ids', ())):
                 for tid in mapping_for(tests, runner.name)(native):
-                    statuses[tid] = TestStatus.NOT_RUN
-                    messages[tid] = 'infrastructure: unproven SymPy module-import identity loss'
+                    if tid not in statuses:
+                        statuses[tid] = TestStatus.NOT_RUN
+                        messages[tid] = 'infrastructure: unproven SymPy module-import identity loss'
         if unproven or any(e.get('batch') not in import_batches and e.get('batch') not in induced_batches
                            for e in proven_failures):
             errors.append('SymPy module identity loss: no verified stderr traceback and healthy-runner proof')
