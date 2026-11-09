@@ -1,0 +1,52 @@
+Tree: base; batch: 8
+17:   File "/testbed/sympy/utilities/runtests.py", line 1155, in test_file
+19:   File "/testbed/sympy/physics/quantum/tests/test_printing.py", line 11, in <module>
+21:   File "/testbed/sympy/physics/quantum/gate.py", line 33, in <module>
+23:   File "/testbed/sympy/physics/quantum/matrixcache.py", line 96, in <module>
+25:   File "/testbed/sympy/core/function.py", line 439, in __new__
+27:   File "/testbed/sympy/core/function.py", line 250, in __new__
+29:   File "/testbed/sympy/functions/elementary/exponential.py", line 251, in eval
+31:   File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+33:   File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+35:   File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+37:   File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+38:   File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+40: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+44: Traceback (most recent call last):
+45:   File "/tmp/verifier_sympy_driver.py", line 116, in <module>
+47:   File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path
+49:   File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code
+51:   File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+53:   File "bin/test", line 107, in <module>
+55:   File "/testbed/sympy/utilities/runtests.py", line 487, in test
+57:   File "/testbed/sympy/utilities/runtests.py", line 574, in _test
+59:   File "/testbed/sympy/utilities/runtests.py", line 1087, in test
+61:   File "/testbed/sympy/utilities/runtests.py", line 1162, in test_file
+63:   File "/testbed/sympy/utilities/runtests.py", line 2298, in test_exception
+65: AttributeError: 'PyTestReporter' object has no attribute '_active_file'
+Tree: patched; batch: 8
+17:   File "/testbed/sympy/utilities/runtests.py", line 1155, in test_file
+19:   File "/testbed/sympy/physics/quantum/tests/test_printing.py", line 11, in <module>
+21:   File "/testbed/sympy/physics/quantum/gate.py", line 33, in <module>
+23:   File "/testbed/sympy/physics/quantum/matrixcache.py", line 96, in <module>
+25:   File "/testbed/sympy/core/function.py", line 439, in __new__
+27:   File "/testbed/sympy/core/function.py", line 250, in __new__
+29:   File "/testbed/sympy/functions/elementary/exponential.py", line 251, in eval
+31:   File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+33:   File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+35:   File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+37:   File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+38:   File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+40: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+44: Traceback (most recent call last):
+45:   File "/tmp/verifier_sympy_driver.py", line 116, in <module>
+47:   File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path
+49:   File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code
+51:   File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+53:   File "bin/test", line 107, in <module>
+55:   File "/testbed/sympy/utilities/runtests.py", line 487, in test
+57:   File "/testbed/sympy/utilities/runtests.py", line 574, in _test
+59:   File "/testbed/sympy/utilities/runtests.py", line 1087, in test
+61:   File "/testbed/sympy/utilities/runtests.py", line 1162, in test_file
+63:   File "/testbed/sympy/utilities/runtests.py", line 2298, in test_exception
+65: AttributeError: 'PyTestReporter' object has no attribute '_active_file'

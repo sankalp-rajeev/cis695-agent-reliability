@@ -1,0 +1,1660 @@
+{
+  "task": "sympy__sympy-13480",
+  "launch_index": 34,
+  "category": "C",
+  "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning",
+  "trees": [
+    {
+      "tree": "base",
+      "lost_id_count": 16,
+      "covering_invocation_count": 17,
+      "pass_elapsed_s": 1115.3091487080019,
+      "pass_cap_s": 1800,
+      "driver_runtime_budget_s": 1764.4083811620003,
+      "driver_receipt_elapsed_s": 1113.882710617996,
+      "cap_hit": false,
+      "all_batch_ends_recorded": true,
+      "driver_complete_recorded": true,
+      "invocation_duration_min_s": 0.6267645819971221,
+      "invocation_duration_max_s": 0.7015541660002782,
+      "source_capture_sha256": {
+        "stdout.raw": "77d13554eb6a907ccd9de0e293dbf52939b3b84bc7bb8f3f3dbc3090ae917151",
+        "stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runner.raw": "77d13554eb6a907ccd9de0e293dbf52939b3b84bc7bb8f3f3dbc3090ae917151",
+        "events.jsonl": "ee8bc3dd18123a365a95224443b081199a81ab9daed500f901c95c1365729b69",
+        "validation.json": "c4ad7d8917c59339b9c2a8575e561c717dd6ba6dd9df7df39f8d83bc6ae1c311",
+        "generated_inputs.json": "d934e58f4bfafea24404fd87793475cbb33333a1512b6fdb2ecca270af8f9dde"
+      }
+    },
+    {
+      "tree": "patched",
+      "lost_id_count": 16,
+      "covering_invocation_count": 17,
+      "pass_elapsed_s": 1097.946872143999,
+      "pass_cap_s": 1800,
+      "driver_runtime_budget_s": 1762.5157928830013,
+      "driver_receipt_elapsed_s": 1096.6246982930024,
+      "cap_hit": false,
+      "all_batch_ends_recorded": true,
+      "driver_complete_recorded": true,
+      "invocation_duration_min_s": 0.638750924001215,
+      "invocation_duration_max_s": 0.7165403189937933,
+      "source_capture_sha256": {
+        "stdout.raw": "774d52c1946ec21a4771f9dae43e952188511bd43bc56167654ddff5ec78d28a",
+        "stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runner.raw": "774d52c1946ec21a4771f9dae43e952188511bd43bc56167654ddff5ec78d28a",
+        "events.jsonl": "27e7847a8a045179c56015841c6011b402301aee4017835967e6430d88c439ca",
+        "validation.json": "6b92f4d264db1a9221ea76319a2e35e2435e86e21a4121b261386a00fb62347e",
+        "generated_inputs.json": "09eb4fa5ecbd9dffdcdcb0d3045f7f332bf2382f77974f9207a0e886832c7b11"
+      }
+    }
+  ],
+  "identities": [
+    {
+      "tree": "base",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_anticommutator",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        9
+      ]
+    },
+    {
+      "tree": "base",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_big_expr",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        24
+      ]
+    },
+    {
+      "tree": "base",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_cg",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        10
+      ]
+    },
+    {
+      "tree": "base",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_commutator",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        11
+      ]
+    },
+    {
+      "tree": "base",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_constants",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        12
+      ]
+    },
+    {
+      "tree": "base",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_dagger",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        13
+      ]
+    },
+    {
+      "tree": "base",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_gate",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        15
+      ]
+    },
+    {
+      "tree": "base",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_gate_failing",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        14
+      ]
+    },
+    {
+      "tree": "base",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_hilbert",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        16
+      ]
+    },
+    {
+      "tree": "base",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_innerproduct",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        17
+      ]
+    },
+    {
+      "tree": "base",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_operator",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        18
+      ]
+    },
+    {
+      "tree": "base",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_qexpr",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        19
+      ]
+    },
+    {
+      "tree": "base",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_qubit",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        20
+      ]
+    },
+    {
+      "tree": "base",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_spin",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        21
+      ]
+    },
+    {
+      "tree": "base",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_state",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        22
+      ]
+    },
+    {
+      "tree": "base",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_tensorproduct",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        23
+      ]
+    },
+    {
+      "tree": "patched",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_anticommutator",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        9
+      ]
+    },
+    {
+      "tree": "patched",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_big_expr",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        24
+      ]
+    },
+    {
+      "tree": "patched",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_cg",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        10
+      ]
+    },
+    {
+      "tree": "patched",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_commutator",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        11
+      ]
+    },
+    {
+      "tree": "patched",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_constants",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        12
+      ]
+    },
+    {
+      "tree": "patched",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_dagger",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        13
+      ]
+    },
+    {
+      "tree": "patched",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_gate",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        15
+      ]
+    },
+    {
+      "tree": "patched",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_gate_failing",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        14
+      ]
+    },
+    {
+      "tree": "patched",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_hilbert",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        16
+      ]
+    },
+    {
+      "tree": "patched",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_innerproduct",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        17
+      ]
+    },
+    {
+      "tree": "patched",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_operator",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        18
+      ]
+    },
+    {
+      "tree": "patched",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_qexpr",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        19
+      ]
+    },
+    {
+      "tree": "patched",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_qubit",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        20
+      ]
+    },
+    {
+      "tree": "patched",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_spin",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        21
+      ]
+    },
+    {
+      "tree": "patched",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_state",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        22
+      ]
+    },
+    {
+      "tree": "patched",
+      "selected_id": "sympy/physics/quantum/tests/test_printing.py::test_tensorproduct",
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "runner_raw_name_occurrences": 0,
+      "stdout_raw_name_occurrences": 0,
+      "stderr_raw_name_occurrences": 0,
+      "line_format": "absent from all raw streams",
+      "category": "C",
+      "covering_batches": [
+        8,
+        23
+      ]
+    }
+  ],
+  "invocations": [
+    {
+      "tree": "base",
+      "batch": 8,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_anticommutator",
+        "sympy/physics/quantum/tests/test_printing.py::test_big_expr",
+        "sympy/physics/quantum/tests/test_printing.py::test_cg",
+        "sympy/physics/quantum/tests/test_printing.py::test_commutator",
+        "sympy/physics/quantum/tests/test_printing.py::test_constants",
+        "sympy/physics/quantum/tests/test_printing.py::test_dagger",
+        "sympy/physics/quantum/tests/test_printing.py::test_gate",
+        "sympy/physics/quantum/tests/test_printing.py::test_gate_failing",
+        "sympy/physics/quantum/tests/test_printing.py::test_hilbert",
+        "sympy/physics/quantum/tests/test_printing.py::test_innerproduct",
+        "sympy/physics/quantum/tests/test_printing.py::test_operator",
+        "sympy/physics/quantum/tests/test_printing.py::test_qexpr",
+        "sympy/physics/quantum/tests/test_printing.py::test_qubit",
+        "sympy/physics/quantum/tests/test_printing.py::test_spin",
+        "sympy/physics/quantum/tests/test_printing.py::test_state",
+        "sympy/physics/quantum/tests/test_printing.py::test_tensorproduct"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_anticommutator",
+        "sympy/physics/quantum/tests/test_printing.py::test_cg",
+        "sympy/physics/quantum/tests/test_printing.py::test_commutator",
+        "sympy/physics/quantum/tests/test_printing.py::test_constants",
+        "sympy/physics/quantum/tests/test_printing.py::test_dagger",
+        "sympy/physics/quantum/tests/test_printing.py::test_gate_failing",
+        "sympy/physics/quantum/tests/test_printing.py::test_gate",
+        "sympy/physics/quantum/tests/test_printing.py::test_hilbert",
+        "sympy/physics/quantum/tests/test_printing.py::test_innerproduct",
+        "sympy/physics/quantum/tests/test_printing.py::test_operator",
+        "sympy/physics/quantum/tests/test_printing.py::test_qexpr",
+        "sympy/physics/quantum/tests/test_printing.py::test_qubit",
+        "sympy/physics/quantum/tests/test_printing.py::test_spin",
+        "sympy/physics/quantum/tests/test_printing.py::test_state",
+        "sympy/physics/quantum/tests/test_printing.py::test_tensorproduct",
+        "sympy/physics/quantum/tests/test_printing.py::test_big_expr"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.7015541660002782,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1115.3091487080019,
+      "cap_hit": false,
+      "retry": false,
+      "parent": null,
+      "runner_log_begin_byte": 21637,
+      "runner_log_end_byte": 25840,
+      "runner_log_slice_sha256": "f2c5c42c912273544d9a5ef058f06431c22457172665d080b3779d0cdbc41c3b",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "base",
+      "batch": 9,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_anticommutator"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_anticommutator"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6870273470049142,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1115.3091487080019,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 25840,
+      "runner_log_end_byte": 30042,
+      "runner_log_slice_sha256": "b77f38fbdcfaabd50699f8c54f025d7664d127567093a55f337ea5a8286caf05",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "base",
+      "batch": 10,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_cg"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_cg"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6400947090005502,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1115.3091487080019,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 30042,
+      "runner_log_end_byte": 34245,
+      "runner_log_slice_sha256": "ea361a2900e52b57a78da8a7fae64167a2dbb8912560da07e15a41aa2bd21ee4",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "base",
+      "batch": 11,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_commutator"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_commutator"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.677021273993887,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1115.3091487080019,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 34245,
+      "runner_log_end_byte": 38448,
+      "runner_log_slice_sha256": "947b22096426beb390c48e9fcb6d30f703346e5f20981483a3f0e022c64d7112",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "base",
+      "batch": 12,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_constants"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_constants"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6400353600038216,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1115.3091487080019,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 38448,
+      "runner_log_end_byte": 42651,
+      "runner_log_slice_sha256": "1a5b5add0e55a8dd3c073edfaadd04e08d7bffaad2fe2107eb3c07300bca3ac7",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "base",
+      "batch": 13,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_dagger"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_dagger"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6825988159980625,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1115.3091487080019,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 42651,
+      "runner_log_end_byte": 46854,
+      "runner_log_slice_sha256": "0961e58690644fb584ab6e105a6221d49b876a3e763ebbb4748375816b33a63e",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "base",
+      "batch": 14,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_gate_failing"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_gate_failing"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6306909459963208,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1115.3091487080019,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 46854,
+      "runner_log_end_byte": 51057,
+      "runner_log_slice_sha256": "630d927008e86bea81ac67ddb4b325eabe8a217354e08e680d509e668a78a0dd",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "base",
+      "batch": 15,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_gate"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_gate"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.678248217998771,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1115.3091487080019,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 51057,
+      "runner_log_end_byte": 55260,
+      "runner_log_slice_sha256": "165bbbfbbcdfec6e49713908cdfe41db441524eca7ea12da33816bb44690fba1",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "base",
+      "batch": 16,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_hilbert"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_hilbert"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6873411979977391,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1115.3091487080019,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 55260,
+      "runner_log_end_byte": 59463,
+      "runner_log_slice_sha256": "1414d2e97b12228be4b715962a849337c6570a69d5e602a887fa1769e3d42066",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "base",
+      "batch": 17,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_innerproduct"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_innerproduct"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6314929559957818,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1115.3091487080019,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 59463,
+      "runner_log_end_byte": 63666,
+      "runner_log_slice_sha256": "a8d49477e1783b83c11dc098c6e8ba263b20619000767479001ce2bf54295fcb",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "base",
+      "batch": 18,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_operator"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_operator"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.70073627900274,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1115.3091487080019,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 63666,
+      "runner_log_end_byte": 67869,
+      "runner_log_slice_sha256": "f465819da7aa9a2c2f5ffa1247744cdff6528622526e30fb8d75f846114b0c84",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "base",
+      "batch": 19,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_qexpr"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_qexpr"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6418219569968642,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1115.3091487080019,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 67869,
+      "runner_log_end_byte": 72072,
+      "runner_log_slice_sha256": "27c5f1014ad6f51415a24191ff56b63a6ceaaf32f86f73dea270585d8d680019",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "base",
+      "batch": 20,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_qubit"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_qubit"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6782172989987885,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1115.3091487080019,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 72072,
+      "runner_log_end_byte": 76275,
+      "runner_log_slice_sha256": "c5f99d66053d269b07129503c728b8fb4b6e74838ce6aa845e32ef85633104af",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "base",
+      "batch": 21,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_spin"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_spin"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6330222550022881,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1115.3091487080019,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 76275,
+      "runner_log_end_byte": 80478,
+      "runner_log_slice_sha256": "47ac4a12e607a371044845b112e21a95c0cdc6156671eb28d08be14d546428e5",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "base",
+      "batch": 22,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_state"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_state"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6608203570067417,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1115.3091487080019,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 80478,
+      "runner_log_end_byte": 84681,
+      "runner_log_slice_sha256": "17a90055ed04dc103471bcef75013812519301acadef2b0b63a9184e30b69843",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "base",
+      "batch": 23,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_tensorproduct"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_tensorproduct"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6267645819971221,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1115.3091487080019,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 84681,
+      "runner_log_end_byte": 88884,
+      "runner_log_slice_sha256": "41a41acdcc7dfac59d7c03cd89e496bed6ba8d7da2fa555b622faf6314bfbe5b",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "base",
+      "batch": 24,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_big_expr"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_big_expr"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.637313172002905,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1115.3091487080019,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 88884,
+      "runner_log_end_byte": 93086,
+      "runner_log_slice_sha256": "98dd4de576f027d246c75f443c2cd12bb245e0d8f09eb34329508f3fb2a0f53b",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "patched",
+      "batch": 8,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_anticommutator",
+        "sympy/physics/quantum/tests/test_printing.py::test_big_expr",
+        "sympy/physics/quantum/tests/test_printing.py::test_cg",
+        "sympy/physics/quantum/tests/test_printing.py::test_commutator",
+        "sympy/physics/quantum/tests/test_printing.py::test_constants",
+        "sympy/physics/quantum/tests/test_printing.py::test_dagger",
+        "sympy/physics/quantum/tests/test_printing.py::test_gate",
+        "sympy/physics/quantum/tests/test_printing.py::test_gate_failing",
+        "sympy/physics/quantum/tests/test_printing.py::test_hilbert",
+        "sympy/physics/quantum/tests/test_printing.py::test_innerproduct",
+        "sympy/physics/quantum/tests/test_printing.py::test_operator",
+        "sympy/physics/quantum/tests/test_printing.py::test_qexpr",
+        "sympy/physics/quantum/tests/test_printing.py::test_qubit",
+        "sympy/physics/quantum/tests/test_printing.py::test_spin",
+        "sympy/physics/quantum/tests/test_printing.py::test_state",
+        "sympy/physics/quantum/tests/test_printing.py::test_tensorproduct"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_anticommutator",
+        "sympy/physics/quantum/tests/test_printing.py::test_cg",
+        "sympy/physics/quantum/tests/test_printing.py::test_commutator",
+        "sympy/physics/quantum/tests/test_printing.py::test_constants",
+        "sympy/physics/quantum/tests/test_printing.py::test_dagger",
+        "sympy/physics/quantum/tests/test_printing.py::test_gate_failing",
+        "sympy/physics/quantum/tests/test_printing.py::test_gate",
+        "sympy/physics/quantum/tests/test_printing.py::test_hilbert",
+        "sympy/physics/quantum/tests/test_printing.py::test_innerproduct",
+        "sympy/physics/quantum/tests/test_printing.py::test_operator",
+        "sympy/physics/quantum/tests/test_printing.py::test_qexpr",
+        "sympy/physics/quantum/tests/test_printing.py::test_qubit",
+        "sympy/physics/quantum/tests/test_printing.py::test_spin",
+        "sympy/physics/quantum/tests/test_printing.py::test_state",
+        "sympy/physics/quantum/tests/test_printing.py::test_tensorproduct",
+        "sympy/physics/quantum/tests/test_printing.py::test_big_expr"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6758737449999899,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1097.946872143999,
+      "cap_hit": false,
+      "retry": false,
+      "parent": null,
+      "runner_log_begin_byte": 21637,
+      "runner_log_end_byte": 25840,
+      "runner_log_slice_sha256": "f46087fbaedb2a006e981f2e12873ac939d9485c6a953edbbfe59c6445628d29",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "patched",
+      "batch": 9,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_anticommutator"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_anticommutator"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.7165403189937933,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1097.946872143999,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 25840,
+      "runner_log_end_byte": 30043,
+      "runner_log_slice_sha256": "9b991b93249fc77eddb7a33967b91f5fee2ab5018f532e326148ae23a3c10bb4",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "patched",
+      "batch": 10,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_cg"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_cg"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6433415680003236,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1097.946872143999,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 30043,
+      "runner_log_end_byte": 34246,
+      "runner_log_slice_sha256": "9a8abebaf75cfa04267dc26476823a1325c50712ca3c9475b87aa18b5e1598e2",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "patched",
+      "batch": 11,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_commutator"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_commutator"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6407245270020212,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1097.946872143999,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 34246,
+      "runner_log_end_byte": 38449,
+      "runner_log_slice_sha256": "3d53fbec4929ad7016b46923b5fa88cab6e790658fe6c22e44eb00dd43676b7c",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "patched",
+      "batch": 12,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_constants"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_constants"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.638750924001215,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1097.946872143999,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 38449,
+      "runner_log_end_byte": 42652,
+      "runner_log_slice_sha256": "eb06f09ef992ce7dcc834ea432b2fa57f61cd4aadf310ac994eea96b7d028d98",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "patched",
+      "batch": 13,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_dagger"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_dagger"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.697870267998951,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1097.946872143999,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 42652,
+      "runner_log_end_byte": 46855,
+      "runner_log_slice_sha256": "27204043ec8443576edfa954ab7d69ad7e282dc241069683d4afea0d85b51415",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "patched",
+      "batch": 14,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_gate_failing"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_gate_failing"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6756406909989892,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1097.946872143999,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 46855,
+      "runner_log_end_byte": 51058,
+      "runner_log_slice_sha256": "c0d919222936da84ef93e7b1633f799bc97ac65bbe7cb457f9dcd587f87e48a3",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "patched",
+      "batch": 15,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_gate"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_gate"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6471929859981174,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1097.946872143999,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 51058,
+      "runner_log_end_byte": 55261,
+      "runner_log_slice_sha256": "3dad70f6a34125ef08005bab664e7d1a960d1e94e88d1eaa0e0c3d69a2668f38",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "patched",
+      "batch": 16,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_hilbert"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_hilbert"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6695928800036199,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1097.946872143999,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 55261,
+      "runner_log_end_byte": 59464,
+      "runner_log_slice_sha256": "505d795d83b89697c19919fd081e7e370d9a7dc681d16878f785c2b15d0b3b96",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "patched",
+      "batch": 17,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_innerproduct"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_innerproduct"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6747466609958792,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1097.946872143999,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 59464,
+      "runner_log_end_byte": 63667,
+      "runner_log_slice_sha256": "8bdf26221545aa337acdcc1d9ca715d3204b445345943002454ebf735287b19c",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "patched",
+      "batch": 18,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_operator"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_operator"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.7063852880019112,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1097.946872143999,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 63667,
+      "runner_log_end_byte": 67870,
+      "runner_log_slice_sha256": "4458558ca99c981655b961eedf6d0c8695bd8936c816635b91282b7304d963b3",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "patched",
+      "batch": 19,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_qexpr"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_qexpr"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6719361579962424,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1097.946872143999,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 67870,
+      "runner_log_end_byte": 72073,
+      "runner_log_slice_sha256": "455ac5899ce1c78acd8692c72eb140290c5dde4bd4ec7ea32eb011836b482267",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "patched",
+      "batch": 20,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_qubit"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_qubit"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6696783890001825,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1097.946872143999,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 72073,
+      "runner_log_end_byte": 76276,
+      "runner_log_slice_sha256": "a6928c9c1996bde414379fb7154e28bbc8eb0e9f153e566ab98748c7441ca4d6",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "patched",
+      "batch": 21,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_spin"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_spin"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6449570559998392,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1097.946872143999,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 76276,
+      "runner_log_end_byte": 80479,
+      "runner_log_slice_sha256": "335c87c629b54b4baf9cfd2b3c9e58b4c7dde20c3b61c6dfb256f5b7a1d6ecc9",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "patched",
+      "batch": 22,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_state"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_state"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6647746559974621,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1097.946872143999,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 80479,
+      "runner_log_end_byte": 84682,
+      "runner_log_slice_sha256": "6096d3fee8bc5f3be9be94c4032098d32977e1e12c051e565c06317913bd3b2a",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "patched",
+      "batch": 23,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_tensorproduct"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_tensorproduct"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.7101030440026079,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1097.946872143999,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 84682,
+      "runner_log_end_byte": 88885,
+      "runner_log_slice_sha256": "9ceba18833612f12e3442dd76fdc96776c38514c10a0a92a78ad17197a102b90",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    },
+    {
+      "tree": "patched",
+      "batch": 24,
+      "selected_ids": [
+        "sympy/physics/quantum/tests/test_printing.py::test_big_expr"
+      ],
+      "module": "sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_big_expr"
+      ],
+      "returncode": 1,
+      "signal_termination": false,
+      "os_exit_recorded": true,
+      "runner_finished_normally": false,
+      "batch_end_recorded": true,
+      "driver_complete_recorded": true,
+      "duration_s": 0.6465198809964932,
+      "pass_cap_s": 1800,
+      "pass_elapsed_s": 1097.946872143999,
+      "cap_hit": false,
+      "retry": true,
+      "parent": 8,
+      "runner_log_begin_byte": 88885,
+      "runner_log_end_byte": 93088,
+      "runner_log_slice_sha256": "06040510e05fb334f07b339eb3d650ea7003bd0ba6c6c11c22becf05310564c2",
+      "category": "C",
+      "cause": "unhandled native reporter AttributeError: missing _active_file after import-time DeprecationWarning"
+    }
+  ],
+  "correctness_labels_read": false,
+  "oracle_data_read": false,
+  "pass_fail_outcomes_read": false,
+  "code_changed": false,
+  "G1_rerun": false,
+  "runtime_smoke_run": false,
+  "unit_suite_rerun": false,
+  "stop_reason": "Category C: stop and report; do not change code."
+}
