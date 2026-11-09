@@ -382,6 +382,34 @@ Synthetic unit test bodies for crash/runner validation are authorized.
 
 Fix 16 G1 manifest SHA-256: 27972b20156c9c972c618e3e547d692184ed948026aa79e700543780d7369bde
 
+### Patch-induced module failures and small-tree executor halts (before Fix 17)
+
+This amendment supersedes conflicting Fix 16 wording. H1, H1b, H2, H3,
+thresholds, B1, B2 and frozen selections remain unchanged. Attempt-2 outcomes,
+verdicts and labels remain unread.
+
+1. On the patched tree, a module batch silent on both its first attempt and
+   retry (no case lines or observed test start) is an ERROR outcome for its
+   selected IDs when the same module made progress on the base tree of the
+   same task. It is not identity loss and does not itself halt. If the base
+   module is also silent, retain identity loss and its existing thresholds.
+2. Runner start-up not completing, driver death, an unfinished runner batch or
+   malformed capture events halt immediately on every tree size, including a
+   three-ID tree. These explicit executor failures do not use identity-loss
+   count or percentage thresholds.
+3. For each Django task, inspect only the frozen original V2 runner command,
+   report whether it passed `--parallel 1`, and use exactly that choice. Record
+   the choice and its frozen provenance. Make no other command change.
+4. Interpretation rules are pre-registered here and applied in post-run
+   analysis from raw captures before correctness labels are read: CRASH
+   attribution requires process-death evidence; stable confirmation's patched
+   non-PASS set is exactly FAILED/ERROR/CRASH. These interpretation rules
+   require no executor change in Fix 17.
+
+Run the full unit suite and compare its failure/error set with the pre-existing
+set. Rerun exhaustive collection-only G1 only if the launcher's source pins
+require it. Do not launch an experiment or read quarantined outcomes.
+
 ## 5. Post-hoc, only after `phase4-run-sealed`
 
 These may use labels; the executor never changes in response:
