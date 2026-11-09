@@ -16,6 +16,7 @@ sys.path.insert(0, str(ROOT / 'scripts'))
 import phase4_launch as launch
 from reliability.verifier.g1_reference import native_collected_ids, read_collection
 from reliability.verifier.regression import TestStatus
+from reliability.verifier.run_health import effective_runner
 
 REPORT = Path(__file__).resolve().parent
 RAW = ROOT / 'runs/phase4_fix18b_identity_smoke'
@@ -32,7 +33,7 @@ class IdentityBoundary(BaseException):
 def main():
     if RAW.exists():
         raise ValueError('Use a fresh raw smoke directory')
-    RAW.mkdir()
+    print(json.dumps({'event': 'smoke_initializing', 'stage': 'verify_g1_and_frozen_inputs'}), flush=True)
     head = launch.subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     pin = launch.require_g1(launch.G1_PREFLIGHT)
     manifest = json.loads((launch.G1_PREFLIGHT / 'manifest.json').read_bytes())
@@ -40,7 +41,7 @@ def main():
         ROOT / 'runs/phase4_fix10_provenance/swebench-4.0.4-py3-none-any.whl',
         launch.PROVENANCE, launch.PREFLIGHT)
     reference = launch.with_g1_references(launch.load_reference(), specs, launch.G1_PREFLIGHT)
-    sympy = [s for s in specs if s.runner.name == 'sympy']
+    sympy = [s for s in specs if effective_runner(s) == 'sympy']
     first = next(s for s in sympy if s.instance_id == 'sympy__sympy-13480')
     assert specs[0].runner.name == 'pytest'
     django = next(s for s in specs if s.runner.name == 'django')
@@ -50,6 +51,7 @@ def main():
     # The base pass of the paired 13480 check also belongs to the five-base check.
     scope = [(first, False)] + [(s, True) for s in sympy if s != first]
     scope += [(specs[0], False), (django, False)]
+    RAW.mkdir()
     rows = []
     all_clean = True
     count_matches = True
@@ -107,7 +109,7 @@ def main():
             duplicates = sum(counts[t] > 1 for t in native)
             signatures = sorted({stage['import_signature'] for stage in run.stage_health if stage.get('import_signature')})
             stderr_keys = sum('stderr_b64' in event for event in run.events)
-            row = {'task': spec.instance_id, 'tree': tree, 'runner': spec.runner.name,
+            row = {'task': spec.instance_id, 'tree': tree, 'runner': effective_runner(spec),
                    'selected_ids': len(spec.tests), 'G1_collected_ids': len(native),
                    'recorded_once': sum(counts[t] == 1 for t in native),
                    'missing_ids_count': missing, 'duplicate_ids_count': duplicates,
@@ -119,8 +121,8 @@ def main():
                    'stderr_b64_event_count': stderr_keys, 'elapsed_task_s': time.monotonic() - started}
             row['identity_check_clean'] = (not health['halt'] and missing == duplicates == unexplained == 0
                 and row['recorded_once'] == len(native) and len(executor_ids) == 1
-                and (spec.runner.name == 'sympy' or stderr_keys == 0))
-            if spec.runner.name == 'sympy' and tree == 'base':
+                and (effective_runner(spec) == 'sympy' or stderr_keys == 0))
+            if effective_runner(spec) == 'sympy' and tree == 'base':
                 old = expected[spec.instance_id]
                 row['matches_Fix18_base_counts'] = (len(native) == old['G1_collected_ids']
                     and row['recorded_once'] == old['recorded_once']
