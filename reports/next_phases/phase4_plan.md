@@ -380,7 +380,7 @@ collection-only pairs with G2 projection before sealing the new manifest. No
 benchmark test bodies, tag or experiment launch are authorized by this amendment.
 Synthetic unit test bodies for crash/runner validation are authorized.
 
-Fix 16 G1 manifest SHA-256: PENDING_EXHAUSTIVE_G1
+Fix 16 G1 manifest SHA-256: 27972b20156c9c972c618e3e547d692184ed948026aa79e700543780d7369bde
 
 ## 5. Post-hoc, only after `phase4-run-sealed`
 
