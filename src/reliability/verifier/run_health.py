@@ -172,6 +172,10 @@ def health_for_run(task, tree, run, reference, *, confirmation=False):
     if missing_g1:
         reasons.append('G2 ' + tree + ': non-empty selection requires G1 native reference')
     reasons += ['G3 ' + tree + ': zero output at ' + s for s in g3['zero_output_stages']]
+    sympy = (run.validation_summary.get('context', {}).get('runner') == 'sympy'
+             or any(s.get('runner') == 'sympy' for s in stages))
+    if sympy and (g2['lost_count'] or g1_guard['lost_count']):
+        reasons.append('SymPy ' + tree + ': unexplained identity loss')
     executor_failures = explicit_executor_failures(run)
     reasons += ['Executor ' + tree + ': ' + error for error in executor_failures]
     return {'task': task, 'tree': tree, 'collector_status': run.validation_summary.get('collector_status', 'NOT_REPORTED'),
@@ -195,7 +199,7 @@ def append_health(path: Path, record):
 
 def explicit_executor_failures(run):
     failures = [error for error in run.infrastructure_errors if error.startswith(
-        ('capture driver ', 'unfinished runner batch', 'malformed capture events'))]
+        ('capture driver ', 'unfinished runner batch', 'malformed capture events', 'SymPy module identity loss:'))]
     failures.extend('runner start-up did not complete: ' + stage.get('status', 'UNKNOWN')
         for stage in run.stage_health if stage['stage'] == 'runner_startup'
         and stage.get('input_count', 0) > 0 and stage.get('status') != 'COMPLETE')
@@ -221,19 +225,28 @@ def runner_startup(container, runner, *, timeout_s=60):
 
 def module_execution_stages(task, tree, runner, run, exceptions):
     """Independently match pre-registered load failures in actual execution events."""
-    from reliability.verifier.result_parser import mapping_for, module_identity_failures
+    from reliability.verifier.result_parser import mapping_for, module_identity_failures, sympy_import_batches
     data=base64.b64decode(run.runner_log_b64 or '')
     mapper=mapping_for(tuple(r.test_id for r in run.results),runner)
     stages=[]
-    for event in module_identity_failures(run.events):
+    imports = sympy_import_batches(run.events) if runner == 'sympy' else {}
+    failed = module_identity_failures(run.events)
+    failed_modules = {e.get('module') for e in failed}
+    extra = [e for e in run.events if e.get('event') == 'end' and e.get('batch') in imports
+             and e.get('module') not in failed_modules]
+    for event in [*failed, *extra]:
         start=next((e for e in run.events if e.get('event')=='start' and e.get('batch')==event.get('batch')),{})
         message=data[start.get('offset',0):event.get('offset',len(data))].decode('utf-8','replace')
         module=event.get('module',start.get('module',''))
         ids=sorted({t for native in event.get('missing_ids',start.get('ids',())) for t in mapper(native)})
         cause=allowed_failure(exceptions,task,module,'module_execution',message,tree=tree)
         induced = bool(ids) and all(run.by_id()[t].status is TestStatus.ERROR for t in ids)
+        imported = (event.get('batch') in imports and bool(ids)
+                    and all(run.by_id()[t].status is TestStatus.COLLECTION_ERROR for t in ids))
         stages.append(dict(stage='module_execution',module=module,tree=tree,
-            status='ERROR' if induced else 'NOT_RUN',identity_failure=not induced,
+            status='ERROR' if induced else 'COLLECTION_ERROR' if imported else 'NOT_RUN',
+            identity_failure=not (induced or imported),
+            import_signature=imports.get(event.get('batch'), ''),
             input_count=len(ids),input_ids=ids,output_count=len(ids) if induced else 0,
             allowed_exception=[cause] if cause else [],message=message))
     return stages

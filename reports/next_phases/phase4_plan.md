@@ -445,6 +445,8 @@ the current adapter command; the invocation comparison records their differences
   because its source pins cover the changed capture/accounting code. Seal,
   commit and push; do not create a freeze tag or launch an experiment.
 
+Fix 18 G1 manifest SHA-256: 946873c02a84475f6e42a99cef824adfcac8e7391a01b6d7b797f33d6410723a
+
 ## 5. Post-hoc, only after `phase4-run-sealed`
 
 These may use labels; the executor never changes in response:

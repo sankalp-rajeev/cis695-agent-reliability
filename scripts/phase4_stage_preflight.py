@@ -42,7 +42,7 @@ def audit_pair(spec, patched, output, reference=None):
     try:
         folder.mkdir(parents=True)
         with launch.FrozenContainer(spec.instance_id,spec.patch_path.read_text(),image=spec.image_id,
-            experiment_id='phase4_fix17_G1',source_spec=spec.source,
+            experiment_id='phase4_fix18_G1',source_spec=spec.source,
             source_receipt_path=folder/'pristine_source_receipt.json') as container:
             stages.append({'stage':'pristine_source','status':'VERIFIED','input_count':1,'output_count':1})
             audit=GeneratedInputAudit(container.generated_snapshot)

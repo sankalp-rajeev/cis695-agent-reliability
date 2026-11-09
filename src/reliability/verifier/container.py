@@ -33,7 +33,8 @@ from reliability.verifier.accounting import ADMITTED_STATUSES
 from reliability.verifier.collection import validate_in_container
 from reliability.verifier.node_ids import normalize_pytest_id
 from reliability.verifier.regression import RunResult, TestResult, TestStatus
-from reliability.verifier.result_parser import active_test, mapping_for, module_identity_failures, parse_capture
+from reliability.verifier.result_parser import (active_test, mapping_for, module_identity_failures,
+    parse_capture, sympy_import_batches, sympy_silent_nonzero)
 from reliability.verifier.selection import TestRunner, django_label
 from reliability.verifier.source_integrity import (
     BaseSourceSpec,
@@ -291,6 +292,7 @@ _DRIVER_PARSER = Path(__file__).with_name('result_parser.py').read_text().replac
     Path(__file__).with_name('node_ids.py').read_text() + '\n')
 _BATCH_DRIVER = 'exec(' + repr(_DRIVER_PARSER) + ')\n' + r'''
 import collections, json, os, pathlib, select, signal, subprocess, sys, time
+import base64
 kind = sys.argv[1]
 budget = float(sys.argv[2]) if len(sys.argv) > 2 else 1800.0
 prior_elapsed = float(sys.argv[3]) if len(sys.argv) > 3 else 0.0
@@ -346,13 +348,15 @@ def run(part, module, retry=False, parent=None):
         cmd = ["python", "-m", "pytest", "-p", "no:cacheprovider", "-v", "--"] + part
     sequence[0] += 1
     index, start = sequence[0], time.monotonic()
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, start_new_session=True)
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True)
     events.write(json.dumps(dict(event="start", batch=index, module=module, pid=proc.pid,
                                 retry=retry, parent=parent, argv=cmd, ids=part,
                                 offset=log.tell())) + "\n")
     captured = bytearray()
+    captured_stderr = bytearray()
+    streams = {proc.stdout.fileno(): proc.stdout, proc.stderr.fileno(): proc.stderr}
     timed_out = False
-    while True:
+    while streams:
         remaining = deadline - time.monotonic()
         if remaining <= 0 and not timed_out:
             timed_out = True
@@ -361,16 +365,20 @@ def run(part, module, retry=False, parent=None):
                 os.killpg(proc.pid, signal.SIGKILL)
             except ProcessLookupError:
                 pass
-        ready, _, _ = select.select([proc.stdout], [], [], max(0.001, min(0.1, remaining)))
+        ready, _, _ = select.select(list(streams), [], [], max(0.001, min(0.1, remaining)))
         if not ready:
             continue
-        chunk = os.read(proc.stdout.fileno(), 65536)
-        if not chunk:
-            break
-        captured.extend(chunk)
-        log.write(chunk)
-        sys.stdout.buffer.write(chunk)
-        sys.stdout.buffer.flush()
+        for descriptor in ready:
+            chunk = os.read(descriptor, 65536)
+            if not chunk:
+                streams.pop(descriptor)
+                continue
+            if descriptor == proc.stderr.fileno():
+                captured_stderr.extend(chunk)
+            captured.extend(chunk)
+            log.write(chunk)
+            sys.stdout.buffer.write(chunk)
+            sys.stdout.buffer.flush()
     code = proc.wait()
     observed = seen(bytes(captured), part, module)
     text = bytes(captured).decode("utf-8", "replace")
@@ -386,6 +394,7 @@ def run(part, module, retry=False, parent=None):
         returncode=code, retry=retry, parent=parent, observed_ids=sorted(observed), timed_out=timed_out,
         load_failure=load_failure, gis_guard=gis, split=bool(retry_ids),
         active_id=active, test_started=bool(active), per_test_output=per_test_output,
+        stderr_b64=base64.b64encode(bytes(captured_stderr)).decode('ascii'),
         missing_ids=missing, offset=log.tell(), duration_s=time.monotonic()-start)) + "\n")
     if timed_out:
         not_reached(missing, module)
@@ -680,7 +689,7 @@ class ContainerTestExecutor:
             evidence_sha256=digests, budget_s=timeout_s,
             base_progress_modules=self._base_progress_modules if patched else (),
         )
-        stages.append({'stage':'execution','status':'NOT_REACHED' if timed_out else 'COMPLETE',
+        stages.append({'stage':'execution','runner':runner.name,'status':'NOT_REACHED' if timed_out else 'COMPLETE',
             'input_count':len(tests),'output_count':sum(r.status in ADMITTED_STATUSES for r in parsed.results)})
         return finish(parsed, validation)
 
@@ -803,8 +812,9 @@ def run_from_capture(
     proven_failures=module_identity_failures(events)
     induced_batches={batch for e in proven_failures if e.get('module') in base_progress_modules
                      for batch in (e.get('batch'), e.get('parent'))}
+    import_batches = sympy_import_batches(events) if runner.name == 'sympy' else {}
     for event in events:
-        if event.get("event") == "end" and not event.get("split") and not event.get("timed_out") and event.get("batch") not in crashed_batches | induced_batches:
+        if event.get("event") == "end" and not event.get("split") and not event.get("timed_out") and event.get("batch") not in crashed_batches | induced_batches | import_batches.keys():
             if event.get("returncode") not in (0, 1):
                 errors.append(f"runner batch {event.get('batch')} exit {event.get('returncode')}")
             elif event.get("returncode") == 1:
@@ -823,20 +833,36 @@ def run_from_capture(
                         r.status is TestStatus.XPASS for r in cases)
                     if not explained:
                         errors.append("unexplained nonzero runner exit")
-    for event in proven_failures:
+    import_events = [e for e in events if e.get('event') == 'end' and e.get('batch') in import_batches]
+    for event in [*import_events, *(e for e in proven_failures if e not in import_events)]:
         for missing in event.get('missing_ids',()):
             induced = event.get('module') in base_progress_modules
-            if induced:
+            if induced and not any(r.test_id == missing for r in raw_results):
                 selected = mapping_for(tests, runner.name)(missing)
                 raw_results += (TestResult(missing, TestStatus.ERROR,
                     message='patched module silent after base module progress'),)
                 mappings[missing] = selected
             for tid in mapping_for(tests,runner.name)(missing):
-                statuses[tid]=TestStatus.ERROR if induced else TestStatus.NOT_RUN
+                statuses[tid]=(TestStatus.ERROR if induced else TestStatus.COLLECTION_ERROR
+                    if event.get('batch') in import_batches else TestStatus.NOT_RUN)
                 messages[tid]=('patched module silent after base module progress' if induced else
+                    'sympy_module_import: ' + import_batches[event['batch']] if event.get('batch') in import_batches else
                     'infrastructure: module_execution produced no test progress on first attempt and retry')
-        if event.get('module') not in base_progress_modules:
+        if event.get('module') not in base_progress_modules and event.get('batch') not in import_batches:
             errors.append('module_execution identity failure: no test progress on first attempt and retry')
+    if runner.name == 'sympy':
+        unproven = [e for e in events if sympy_silent_nonzero(e)
+                    and e.get('batch') not in import_batches and e.get('batch') not in induced_batches]
+        for event in unproven:
+            start = next((e for e in events if e.get('event') == 'start'
+                          and e.get('batch') == event.get('batch')), {})
+            for native in event.get('missing_ids', start.get('ids', ())):
+                for tid in mapping_for(tests, runner.name)(native):
+                    statuses[tid] = TestStatus.NOT_RUN
+                    messages[tid] = 'infrastructure: unproven SymPy module-import identity loss'
+        if unproven or any(e.get('batch') not in import_batches and e.get('batch') not in induced_batches
+                           for e in proven_failures):
+            errors.append('SymPy module identity loss: no verified stderr traceback and healthy-runner proof')
     # A lone failed module attempt is not the required two-attempt proof.
     for event in events:
         if event.get('event')=='end' and event.get('load_failure') and event not in proven_failures:

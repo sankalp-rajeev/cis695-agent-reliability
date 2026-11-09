@@ -1,0 +1,56 @@
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+Traceback (most recent call last):
+  File "/testbed/sympy/utilities/runtests.py", line 1155, in test_file
+    exec_(code, gl)
+  File "/testbed/sympy/physics/quantum/tests/test_printing.py", line 11, in <module>
+    from sympy.physics.quantum.gate import CGate, CNotGate, IdentityGate, UGate, XGate
+  File "/testbed/sympy/physics/quantum/gate.py", line 33, in <module>
+    from sympy.physics.quantum.matrixcache import matrix_cache
+  File "/testbed/sympy/physics/quantum/matrixcache.py", line 96, in <module>
+    matrix_cache.cache_matrix('T', Matrix([[1, 0], [0, exp(I*pi/4)]]))
+  File "/testbed/sympy/core/function.py", line 439, in __new__
+    result = super(Function, cls).__new__(cls, *args, **options)
+  File "/testbed/sympy/core/function.py", line 250, in __new__
+    evaluated = cls.eval(*args)
+  File "/testbed/sympy/functions/elementary/exponential.py", line 251, in eval
+    if ask(Q.integer(2*coeff)):
+  File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+    from sympy.assumptions.satask import satask
+  File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+    from sympy.assumptions.sathandlers import fact_registry
+  File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+    from collections import MutableMapping, defaultdict
+  File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+    warnings.warn("Using or importing the ABCs from 'collections' instead "
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/verifier_sympy_driver.py", line 116, in <module>
+    runpy.run_path("bin/test", run_name="__main__")
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "bin/test", line 107, in <module>
+    <MASKED> = sympy.test(*args, verbose=options.verbose, kw=options.kw,
+  File "/testbed/sympy/utilities/runtests.py", line 487, in test
+    val = not bool(_test(*paths, **kwargs))
+  File "/testbed/sympy/utilities/runtests.py", line 574, in _test
+    return int(not t.test(sort=sort, timeout=timeout, slow=slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1087, in test
+    self.test_file(f, sort, timeout, slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1162, in test_file
+    reporter.test_exception(sys.exc_info())
+  File "/testbed/sympy/utilities/runtests.py", line 2298, in test_exception
+    self._exceptions.append((self._active_file, self._active_f, exc_info))
+AttributeError: 'PyTestReporter' object has no attribute '_active_file'

@@ -230,3 +230,57 @@ def module_identity_failures(events):
                     and not e.get('active_id') and not e.get('per_test_output'))
     return [e for e in ends.values() if e.get('retry') and silent(e)
             and silent(ends.get(e.get('parent')))]
+
+
+def sympy_import_signature(module, stderr):
+    """Require a real module-import traceback, never an outcome or summary."""
+    text = ANSI.sub('', stderr)
+    frame = r'File [\"\'](?:/testbed/)?' + re.escape(module) + r'[\"\'], line \d+, in <module>'
+    if not module or 'Traceback (most recent call last):' not in text or not re.search(frame, text):
+        return ''
+    exceptions = re.findall(r'^([A-Za-z_]\w*(?:Error|Exception|Warning)): (.+)$', text, re.MULTILINE)
+    if not exceptions:
+        return ''
+    # A reporter exception qualifies only while handling the module import.
+    terminal, message = exceptions[-1]
+    if "'PyTestReporter' object has no attribute '_active_file'" in message:
+        if 'in test_exception' not in text or len(exceptions) < 2:
+            return ''
+        return exceptions[0][0] + ' -> PyTestReporter._active_file during import of ' + module
+    return terminal + ': ' + re.sub(r'0x[0-9a-fA-F]+', '<address>', message)[:1000]
+
+
+def sympy_silent_nonzero(event):
+    return (event.get('event') == 'end' and isinstance(event.get('returncode'), int)
+            and event['returncode'] != 0 and not event.get('timed_out')
+            and not any(event.get(k) for k in ('observed_ids', 'test_started', 'active_id', 'per_test_output')))
+
+
+def sympy_import_batches(events):
+    """A different, normally completed invocation must prove this tree's runner."""
+    import base64
+    import binascii
+
+    starts = {e.get('batch'): e for e in events if e.get('event') == 'start'}
+    healthy = [e for e in events if e.get('event') == 'end'
+               and e.get('returncode') in (0, 1) and e.get('observed_ids')
+               and not e.get('timed_out') and not e.get('load_failure')
+               and not e.get('missing_ids')
+               and starts.get(e.get('batch'), {}).get('ids')
+               and set(starts.get(e.get('batch'), {}).get('ids', ())) <= set(e['observed_ids'])]
+    matched = {}
+    for event in events:
+        if not sympy_silent_nonzero(event) or event['returncode'] < 0:
+            continue
+        start = starts.get(event.get('batch'), {})
+        module = event.get('module', start.get('module', ''))
+        if not any(e.get('batch') != event.get('batch') for e in healthy):
+            continue
+        try:
+            stderr = base64.b64decode(event.get('stderr_b64', ''), validate=True).decode('utf-8', 'replace')
+        except (ValueError, binascii.Error):
+            continue
+        signature = sympy_import_signature(module, stderr)
+        if signature:
+            matched[event['batch']] = signature
+    return matched
