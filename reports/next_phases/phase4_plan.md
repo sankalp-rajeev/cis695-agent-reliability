@@ -447,6 +447,28 @@ the current adapter command; the invocation comparison records their differences
 
 Fix 18 G1 manifest SHA-256: 946873c02a84475f6e42a99cef824adfcac8e7391a01b6d7b797f33d6410723a
 
+### Fix 18b scope corrections (before v4 freeze)
+
+- Separate stderr capture applies to the SymPy runner only. pytest and Django
+  keep the merged stdout+stderr capture exactly as validated through Fix 17,
+  with no `stderr_b64`.
+- The unproven SymPy identity-loss halt applies only to IDs that end with no
+  recorded result. A split parent whose individual reruns recorded its IDs is
+  not identity loss, and a status recorded by a rerun is never overwritten.
+  A silent rerun without import proof still halts.
+- Rerun exhaustive G1 with the changed source pins and zero test bodies. Runtime
+  identity smoke uses the launcher's per-task path, counts only with outcome
+  tokens masked: `sympy__sympy-13480` on base then patched with the same executor;
+  all five SymPy base trees again; task 1 (pytest) and the first Django task in
+  launch order, each on base then patched. Check each G1 identity is recorded
+  exactly once; report non-run category counts, import signatures and health
+  trips. Expect 763/763 identities and 16 proven COLLECTION_ERROR on each
+  `sympy__sympy-13480` tree without a health trip, and the five base-tree counts
+  to match Fix 18. Run the full unit suite (1,362 checks plus the new tests;
+  the same six pre-existing failures and 17 errors). H1/H1b/H2/H3, thresholds,
+  B1/B2 and frozen selections are unchanged. Leave attempt 3 quarantined;
+  commit and push, with no freeze tag, force-push or launch.
+
 ## 5. Post-hoc, only after `phase4-run-sealed`
 
 These may use labels; the executor never changes in response:
