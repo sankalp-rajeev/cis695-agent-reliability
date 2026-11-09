@@ -410,6 +410,8 @@ Run the full unit suite and compare its failure/error set with the pre-existing
 set. Rerun exhaustive collection-only G1 only if the launcher's source pins
 require it. Do not launch an experiment or read quarantined outcomes.
 
+Fix 17 G1 manifest SHA-256: 013ca59ede5a8d36d3b9fb60d38c4dd6558cac2100f594cc38bbbe76a7209e8d
+
 ## 5. Post-hoc, only after `phase4-run-sealed`
 
 These may use labels; the executor never changes in response:

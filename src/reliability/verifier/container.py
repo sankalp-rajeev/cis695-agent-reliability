@@ -338,7 +338,10 @@ def run(part, module, retry=False, parent=None):
     if kind == "sympy":
         cmd = ["python", "/tmp/verifier_sympy_driver.py", "execute", module] + part
     elif kind == "django":
-        cmd = ["python", "tests/runtests.py", "--verbosity=2"] + part
+        cmd = ["python", "tests/runtests.py", "--verbosity=2"]
+        if len(sys.argv) > 4 and sys.argv[4] == "parallel_one":
+            cmd += ["--parallel", "1"]
+        cmd += part
     else:
         cmd = ["python", "-m", "pytest", "-p", "no:cacheprovider", "-v", "--"] + part
     sequence[0] += 1
@@ -417,6 +420,7 @@ class ContainerTestExecutor:
     container: TaskContainer
     runner: TestRunner | None = None
     evidence_dir: Path | None = None
+    _base_progress_modules: frozenset[str] = field(default_factory=frozenset, init=False, repr=False)
 
     def _capture(self, command, timeout_s):
         if hasattr(self.container, "exec_raw"):
@@ -476,6 +480,10 @@ class ContainerTestExecutor:
                 path.write_bytes(raw)
                 files['generated_inputs.json'] = str(path.resolve())
                 hashes['generated_inputs.json'] = hashlib.sha256(raw).hexdigest()
+        if not patched:
+            self._base_progress_modules = frozenset(e.get('module', '') for e in result.events
+                if e.get('event') == 'end' and (e.get('observed_ids') or e.get('test_started')
+                    or e.get('active_id') or e.get('per_test_output')))
         return replace(result, generated_inputs=details, duration_s=time.monotonic()-started, budget_s=timeout_s,
                        evidence_flags=tuple(dict.fromkeys((*result.evidence_flags, *audit.flags,
                            *(('COLLECTOR_FALLBACK',) if any(r.get('collector_fallback') for r in result.validation) else ())))),
@@ -541,7 +549,7 @@ class ContainerTestExecutor:
         validation = audit.stage('native_collection', lambda: validate_in_container(
             self.container, tests, runner, timeout_s=remaining(),tree='patched' if patched else 'base'))
         actual = validation.context.get('runner', runner.name)
-        runner = TestRunner(actual, validation.context.get('runner_evidence', runner.evidence))
+        runner = replace(runner, name=actual, evidence=validation.context.get('runner_evidence', runner.evidence))
         validation = replace(validation, context={**validation.context,
             'instance_id': getattr(self.container, 'instance_id', ''),
             'tree': 'patched' if patched else 'base', 'runner': runner.name})
@@ -622,6 +630,8 @@ class ContainerTestExecutor:
                         message="per-pass budget exhausted before execution") for t in tests),
                     timed_out=True, evidence_complete=True), validation)
             command += " " + str(remaining()) + " " + str(time.monotonic()-started)
+            if runner.name == 'django' and runner.django_parallel_one:
+                command += " parallel_one"
             driver_started = True
             rc, raw_stdout, raw_stderr, timed_out = audit.stage('execution',
                 lambda: self._execute_once(command, remaining() + 2))
@@ -656,14 +666,19 @@ class ContainerTestExecutor:
             events = tuple(json.loads(line) for line in event_bytes.splitlines())
             if not all(isinstance(event, dict) for event in events):
                 raise ValueError("capture event is not an object")
+            if any(event.get('event') not in ('start', 'end', 'complete', 'not_reached') for event in events):
+                raise ValueError("unknown capture event")
         except (ValueError, TypeError):
             events = ()
             errors.append("malformed capture events")
+        if driver_started and not timed_out and (not events or events[-1].get('event') != 'complete'):
+            errors.append("capture driver did not complete")
         parsed = run_from_capture(
             runner, tests, runner_log=runner_log, raw_stderr=raw_stderr,
             raw_stdout=raw_stdout, events=events, timed_out=timed_out,
             infrastructure_errors=tuple(errors), evidence_files=files,
             evidence_sha256=digests, budget_s=timeout_s,
+            base_progress_modules=self._base_progress_modules if patched else (),
         )
         stages.append({'stage':'execution','status':'NOT_REACHED' if timed_out else 'COMPLETE',
             'input_count':len(tests),'output_count':sum(r.status in ADMITTED_STATUSES for r in parsed.results)})
@@ -686,6 +701,7 @@ def run_from_capture(
     evidence_files: dict[str, str] | None = None,
     evidence_sha256: dict[str, str] | None = None,
     budget_s: float | None = None,
+    base_progress_modules: tuple[str, ...] | frozenset[str] = (),
 ) -> RunResult:
     """Parse one captured pass identically for live execution and offline replay.
 
@@ -784,8 +800,11 @@ def run_from_capture(
         complete = False
     if starts != ends:
         errors.append("unfinished runner batch")
+    proven_failures=module_identity_failures(events)
+    induced_batches={batch for e in proven_failures if e.get('module') in base_progress_modules
+                     for batch in (e.get('batch'), e.get('parent'))}
     for event in events:
-        if event.get("event") == "end" and not event.get("split") and not event.get("timed_out") and event.get("batch") not in crashed_batches:
+        if event.get("event") == "end" and not event.get("split") and not event.get("timed_out") and event.get("batch") not in crashed_batches | induced_batches:
             if event.get("returncode") not in (0, 1):
                 errors.append(f"runner batch {event.get('batch')} exit {event.get('returncode')}")
             elif event.get("returncode") == 1:
@@ -804,13 +823,20 @@ def run_from_capture(
                         r.status is TestStatus.XPASS for r in cases)
                     if not explained:
                         errors.append("unexplained nonzero runner exit")
-    proven_failures=module_identity_failures(events)
     for event in proven_failures:
         for missing in event.get('missing_ids',()):
+            induced = event.get('module') in base_progress_modules
+            if induced:
+                selected = mapping_for(tests, runner.name)(missing)
+                raw_results += (TestResult(missing, TestStatus.ERROR,
+                    message='patched module silent after base module progress'),)
+                mappings[missing] = selected
             for tid in mapping_for(tests,runner.name)(missing):
-                statuses[tid]=TestStatus.NOT_RUN
-                messages[tid]='infrastructure: module_execution produced no test progress on first attempt and retry'
-        errors.append('module_execution identity failure: no test progress on first attempt and retry')
+                statuses[tid]=TestStatus.ERROR if induced else TestStatus.NOT_RUN
+                messages[tid]=('patched module silent after base module progress' if induced else
+                    'infrastructure: module_execution produced no test progress on first attempt and retry')
+        if event.get('module') not in base_progress_modules:
+            errors.append('module_execution identity failure: no test progress on first attempt and retry')
     # A lone failed module attempt is not the required two-attempt proof.
     for event in events:
         if event.get('event')=='end' and event.get('load_failure') and event not in proven_failures:

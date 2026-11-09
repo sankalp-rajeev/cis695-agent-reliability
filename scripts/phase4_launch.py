@@ -21,6 +21,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from reliability.verifier.accounting import ADMITTED_STATUSES
+from reliability.verifier.admission_reference import JSONProjection
 from reliability.verifier.container import ContainerTestExecutor, TaskContainer
 from reliability.verifier.g1_reference import (PUBLISHED_HYGIENE_PATH, assert_reference_hygiene, clean_reference, native_collected_ids, read_collection, read_receipt)
 from reliability.verifier.pre_install import load_specs
@@ -30,6 +31,7 @@ from reliability.verifier.run_health import (
     append_health,
     covering_order,
     health_for_run,
+    explicit_executor_failures,
 )
 from reliability.verifier.selection import Selection, TestRunner
 from reliability.verifier.source_integrity import (
@@ -50,7 +52,7 @@ STOP_S = 12*60*60
 REFERENCE = ROOT/'reports/next_phases/phase4_rerun/fix13_reference'
 DRIFT_REFERENCE_RELATIVE = 'reports/next_phases/phase4_rerun/fix16_reference'
 DRIFT_REFERENCE = ROOT/DRIFT_REFERENCE_RELATIVE
-G1_PREFLIGHT = ROOT/'reports/next_phases/phase4_rerun/fix16_g1'
+G1_PREFLIGHT = ROOT/'reports/next_phases/phase4_rerun/fix17_g1'
 
 
 def sha(path):
@@ -89,6 +91,33 @@ class TaskSpec:
     tests: tuple[str, ...]
     runner: TestRunner
     source: BaseSourceSpec
+
+
+def frozen_django_command_choice(instance_id):
+    """Project command argv only; never decode outcomes, verdicts or labels."""
+    manifest = json.loads((REFERENCE/'manifest.json').read_text())
+    matches = [(Path(path), digest) for path, digest in manifest['input_sha256'].items()
+               if Path(path).parts[-3:] == (instance_id, 'v2', 'result.json')]
+    if len(matches) != 1:
+        raise ValueError('Missing unique frozen Django command: ' + instance_id)
+    path, digest = matches[0]
+    require_hash(path, digest)
+    calls = JSONProjection(path.read_text()).project(
+        {'calls': {'*': {'run': {'events': {'*': {'argv': True}}}}}})['calls']
+    commands = [event['argv'] for call in calls for event in call['run'].get('events', ())
+                if 'argv' in event]
+    choices = set()
+    for argv in commands:
+        if argv[:3] != ['python', 'tests/runtests.py', '--verbosity=2']:
+            raise ValueError('Unexpected frozen Django command: ' + instance_id)
+        parallel = [token for token in argv if token.startswith('--parallel')]
+        enabled = '--parallel' in argv and argv[argv.index('--parallel')+1:argv.index('--parallel')+2] == ['1']
+        if parallel and (parallel != ['--parallel'] or not enabled):
+            raise ValueError('Unsupported frozen Django parallel choice: ' + instance_id)
+        choices.add(enabled)
+    if len(choices) != 1:
+        raise ValueError('Missing or inconsistent frozen Django commands: ' + instance_id)
+    return {'parallel_one': choices.pop(), 'source': str(path), 'source_sha256': digest}
 
 
 def validate_inputs(frozen, archives, wheel, provenance, preflight):
@@ -152,7 +181,11 @@ def validate_inputs(frozen, archives, wheel, provenance, preflight):
         identity = json.loads((preflight/'tasks'/iid/'identity.json').read_text())
         if identity['image_id'] != image or identity['base_commit'] != source.base_commit or identity['archive_sha256'] != source.archive_sha256:
             raise ValueError('Pristine preflight identity mismatch')
-        result.append(TaskSpec(iid, image, patch, selection, tests, TestRunner(**task['runner']), source))
+        runner = TestRunner(**task['runner'])
+        if runner.name == 'django':
+            choice = frozen_django_command_choice(iid)
+            runner = TestRunner(runner.name, runner.evidence, choice['parallel_one'])
+        result.append(TaskSpec(iid, image, patch, selection, tests, runner, source))
     return covering_order(result)
 
 
@@ -169,6 +202,7 @@ def plan_for(specs):
                 'base_commit': s.source.base_commit, 'archive_sha256': s.source.archive_sha256,
                 'archive_path': str(s.source.archive_path), 'selected_ids': len(s.tests),
                 'selection_sha256': sha(s.selection_path), 'patch_sha256': sha(s.patch_path),
+                'django_parallel_one': s.runner.django_parallel_one if s.runner.name == 'django' else None,
                 'pre_install': s.source.pre_install.resolve()} for s in specs]}
 
 
@@ -208,6 +242,13 @@ class Calls:
                       'G2': 'BLOCKED_UPSTREAM', 'G3': 'BLOCKED_UPSTREAM'}
             append_health(self.health_path, record)
             raise RunHealthError(record) from exc
+        failures = explicit_executor_failures(result)
+        if failures:
+            record = {'task': self.task, 'scope': 'confirmation' if confirmation else 'initial',
+                      'tree': 'patched' if patched else 'base', 'halt': True,
+                      'halt_reasons': failures, 'capture': run_to_dict(result, inline_raw=False)}
+            append_health(self.health_path, record)
+            raise RunHealthError(record)
         if confirmation:
             initial = self.calls[int(patched)][3]
             tree='patched' if patched else 'base'
@@ -456,9 +497,11 @@ def committed_g1_manifest_sha():
         plan=subprocess.check_output(['git','show','HEAD:'+relative],cwd=ROOT,text=True)
     except subprocess.CalledProcessError as exc:
         raise ValueError('Committed G1 manifest checksum is unavailable') from exc
-    matches=re.findall(r'^Fix 16 G1 manifest SHA-256: ([0-9a-f]{64})$',plan,re.MULTILINE)
+    matches=re.findall(r'^Fix 17 G1 manifest SHA-256: ([0-9a-f]{64})$',plan,re.MULTILINE)
+    if not matches:
+        matches=re.findall(r'^Fix 16 G1 manifest SHA-256: ([0-9a-f]{64})$',plan,re.MULTILINE)
     if len(matches)!=1:
-        raise ValueError('Committed Fix 16 G1 manifest checksum is unset or ambiguous')
+        raise ValueError('Committed Fix 17 G1 manifest checksum is unset or ambiguous')
     return matches[0]
 
 

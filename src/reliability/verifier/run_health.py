@@ -172,11 +172,14 @@ def health_for_run(task, tree, run, reference, *, confirmation=False):
     if missing_g1:
         reasons.append('G2 ' + tree + ': non-empty selection requires G1 native reference')
     reasons += ['G3 ' + tree + ': zero output at ' + s for s in g3['zero_output_stages']]
+    executor_failures = explicit_executor_failures(run)
+    reasons += ['Executor ' + tree + ': ' + error for error in executor_failures]
     return {'task': task, 'tree': tree, 'collector_status': run.validation_summary.get('collector_status', 'NOT_REPORTED'),
             'input_ids': len(run.requested_tests), 'COLLECTOR_FALLBACK_slots': len(fallback),
             'collector_fallback_ids': sorted(fallback), 'admitted_ids': len(admitted),
             'admitted_share': len(admitted)/len(run.requested_tests) if run.requested_tests else None,
             'G2': g2, 'G1_collected_guard':g1_guard, 'environment_drift':drift, 'G3': g3,
+            'executor_failures': executor_failures,
             'outcome_counts':{status.value:sum(r.status is status for r in run.results) for status in TestStatus},
             'reference_current_outcomes':{r.test_id:r.status.value for r in run.results if r.test_id in reference_ids},
             'unstable_confirmation_ids':sorted({r.test_id for r in (*run.results,*run.execution_results) if confirmation and r.status is TestStatus.TIMEOUT}), 'stages': stages, 'halt': bool(reasons), 'halt_reasons': reasons}
@@ -188,6 +191,15 @@ def append_health(path: Path, record):
         stream.write(json.dumps(record)+'\n')
         stream.flush()
         os.fsync(stream.fileno())
+
+
+def explicit_executor_failures(run):
+    failures = [error for error in run.infrastructure_errors if error.startswith(
+        ('capture driver ', 'unfinished runner batch', 'malformed capture events'))]
+    failures.extend('runner start-up did not complete: ' + stage.get('status', 'UNKNOWN')
+        for stage in run.stage_health if stage['stage'] == 'runner_startup'
+        and stage.get('input_count', 0) > 0 and stage.get('status') != 'COMPLETE')
+    return failures
 
 
 def runner_startup(container, runner, *, timeout_s=60):
@@ -219,7 +231,9 @@ def module_execution_stages(task, tree, runner, run, exceptions):
         module=event.get('module',start.get('module',''))
         ids=sorted({t for native in event.get('missing_ids',start.get('ids',())) for t in mapper(native)})
         cause=allowed_failure(exceptions,task,module,'module_execution',message,tree=tree)
+        induced = bool(ids) and all(run.by_id()[t].status is TestStatus.ERROR for t in ids)
         stages.append(dict(stage='module_execution',module=module,tree=tree,
-            status='NOT_RUN',identity_failure=True,input_count=len(ids),input_ids=ids,output_count=0,
+            status='ERROR' if induced else 'NOT_RUN',identity_failure=not induced,
+            input_count=len(ids),input_ids=ids,output_count=len(ids) if induced else 0,
             allowed_exception=[cause] if cause else [],message=message))
     return stages
