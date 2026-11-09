@@ -412,6 +412,39 @@ require it. Do not launch an experiment or read quarantined outcomes.
 
 Fix 17 G1 manifest SHA-256: 013ca59ede5a8d36d3b9fb60d38c4dd6558cac2100f594cc38bbbe76a7209e8d
 
+### SymPy module-import evidence after attempt 3 (before Fix 18)
+
+Attempt 3 remains quarantined as-is. Only identity/process metadata and masked
+module-import tracebacks inform this amendment; no correctness labels, oracle
+data or test outcomes are read. H1/H1b/H2/H3, thresholds, B1/B2 and frozen
+selections remain unchanged. Fresh base containers reproduced the same import
+warning and native reporter exception with both the exact harness command and
+the current adapter command; the invocation comparison records their differences.
+
+- A SymPy invocation with nonzero exit, no reported selected IDs or observed
+  test start, and a stderr traceback proving module-import failure records
+  COLLECTION_ERROR for that module's IDs, with its signature. Proof must name
+  the module's import frame and exception, including a native reporter failure
+  while reporting that import exception.
+- Apply this classification only with a healthy-runner proof on the same tree:
+  at least one other invocation reported its selected IDs and finished normally.
+  Without that proof, or without the matching stderr traceback, retain identity
+  loss and halt, including on small trees. Executor death and malformed or
+  unfinished captures still halt immediately.
+- The rule applies independently on both trees. COLLECTION_ERROR on both is
+  missing evidence, not an identity halt. A patched-only import failure after
+  base-module progress retains ERROR under Fix 17. Timeouts and tests not reached
+  remain TIMEOUT/NOT_REACHED, never identity loss.
+- Keep stdout and stderr attribution per invocation, retain raw captures, and
+  build unit fixtures from masked fresh-container stderr. Do not infer a
+  traceback's stream from previously merged output.
+- Validate base trees only for launch tasks 34–37 plus every SymPy-runner task
+  (five distinct tasks). Check one recorded status or allowed non-run status per
+  G1-collected identity and no health trip; report only identity counts and
+  module-import signatures. Run the full unit suite and rerun exhaustive G1
+  because its source pins cover the changed capture/accounting code. Seal,
+  commit and push; do not create a freeze tag or launch an experiment.
+
 ## 5. Post-hoc, only after `phase4-run-sealed`
 
 These may use labels; the executor never changes in response:
