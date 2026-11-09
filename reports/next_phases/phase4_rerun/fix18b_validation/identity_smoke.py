@@ -139,7 +139,9 @@ def main():
 
     for source, digest in manifest['source_sha256'].items():
         launch.require_hash(ROOT / source, digest)
-    summary = {'rows': rows, 'complete': len(rows) == 9, 'identity_checks_clean': all_clean,
+    expected_trees = sum(1 if base_only else 2 for _, base_only in scope)
+    summary = {'rows': rows, 'complete': len(rows) == expected_trees,
+               'expected_trees': expected_trees, 'identity_checks_clean': all_clean,
                'expected_counts_match': count_matches, 'G1_manifest_sha256': pin,
                'validated_HEAD': head, 'source_sha256': manifest['source_sha256'],
                'launcher_path': 'run_task -> Calls.run -> ContainerTestExecutor.run',
