@@ -130,6 +130,12 @@ The 83-task audit finds **72 SUPPORTED, 9 BINDING_MISMATCH, 2 SKIP_ONLY, 0 missi
 
 Primary FAIL-only rates with exact 95% Clopper-Pearson intervals: C: detection 1/14 = 7.14% [0.18%, 33.87%] → 1/13 = 7.69% [0.19%, 36.03%]; false alarms 5/69 = 7.25% [2.39%, 16.11%] → 5/70 = 7.14% [2.36%, 15.89%]; S: detection 1/14 = 7.14% [0.18%, 33.87%] → 1/13 = 7.69% [0.19%, 36.03%]; false alarms 5/69 = 7.25% [2.39%, 16.11%] → 5/70 = 7.14% [2.36%, 15.89%]. All verdict × label tables, conditional rates, REGRESSION_ERROR-inclusive results and INVALID_ID sensitivities are reported side by side in [label_audit/analysis.md](phase4_posthoc/label_audit/analysis.md), with [per-task evidence](phase4_posthoc/label_audit/tasks.csv). Audited grades are separate measurements, never replacements for the original labels. Sealed results, executor and tags remain unchanged.
 
+### Label integrity slide — provenance and propagated headlines
+
+**9/83 mismatched bindings; 3 default label changes; 2 CPU-dependent Pylint labels.** Binding mismatch proportion: 9/83 = 10.84% [5.08%, 19.59%] (exact 95% CP). Reused harness IDs retained grades from excluded attempts; the wrapper attached current frozen hashes to those cached grades. A stays pre-registered, B is primary for interpretation, and B-cpu is sensitivity.
+
+Changed headline counts (A → B → B-cpu): correct labels: 69 → 70 → 72; Full ACCEPT correct: 45 → 45 → 46; Full false accepts: 7 → 7 → 6; Phase 4 C incorrect PASS: 9 → 10 → 8; incorrect in fixed skip cohort: 4 → 5 → 3; old-test PASS on incorrect patches: 6 → 5 → 0. Full rates and exact intervals: [propagation report](phase4_posthoc/label_propagation/analysis.md) and [all changed numbers](phase4_posthoc/label_propagation/changed_numbers.csv). Original labels, sealed results, executor and tags are unchanged.
+
 ### Cap hit and four disclosures
 
 - Cap: `sympy__sympy-24562`, base and patched, each hits 1,800 seconds with 463 NOT_REACHED and one TIMEOUT. No cap retry was performed.
