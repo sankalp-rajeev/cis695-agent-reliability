@@ -379,7 +379,8 @@ RUN_SCHEMA = {'results': {'*': ROW}, 'raw_results': {'*': ROW}, 'raw_id_map': Tr
     'validation': {'*': VALIDATION}, 'timed_out': True, 'budget_s': True,
     'evidence_flags': True, 'confirmation': True,
     'stage_health': {'*': {k: True for k in ('stage', 'module', 'status', 'import_signature')}},
-    'requested_tests': True}
+    'requested_tests': True, 'evidence_files': True, 'evidence_sha256': True,
+    'validation_summary': {'context': {'runner': True}}}
 CONFIRM_SCHEMA = {k: v for k, v in RUN_SCHEMA.items() if k not in
                   ('raw_results', 'raw_id_map', 'execution_results', 'execution_id_map', 'stage_health')}
 REPORT_SCHEMA = {'signal': True, 'outcomes': True, 'incompleteness': True,
@@ -539,7 +540,7 @@ def compute(entries, manifest_info):
     original_fail_tasks = []
 
     def skip_reason(run, identity, receipt):
-        reasons = []
+        reasons = list(run.get('_captured_skip_reasons', {}).get(identity, ()))
         for result in run.get('raw_results', []):
             if result['status'] == 'skipped' and identity in run.get('raw_id_map', {}).get(result['test_id'], []):
                 if result.get('message'):
@@ -584,6 +585,30 @@ def compute(entries, manifest_info):
         counts = collections.Counter({c: 0 for c in CATEGORIES})
         tree_counts, skipped_selected = {}, []
         for tree, run in runs.items():
+            # Serialized raw_results omit reason strings. Recover them only
+            # from hash-verified, manifested native captures, without execution.
+            streams = []
+            for key in ('runner.raw', 'stderr.raw'):
+                path = run.get('evidence_files', {}).get(key)
+                if not path:
+                    continue
+                path = Path(path)
+                if not path.is_absolute():
+                    path = ROOT / path
+                relative = path.resolve().relative_to(RUN.resolve()).as_posix()
+                assert relative in entries, relative
+                raw = path.read_bytes()
+                if sha(raw) != entries[relative] or sha(raw) != run['evidence_sha256'][key]:
+                    raise ManifestMismatch('Captured skip-reason input changed: ' + relative)
+                streams.append(raw)
+            runner = run.get('validation_summary', {}).get('context', {}).get('runner')
+            runner = runner or ('sympy' if iid.startswith('sympy__') else by_task[iid]['runner']['name'])
+            captured_reasons = collections.defaultdict(set)
+            for raw_id, observation in parser['parse_capture'](b''.join(streams).decode('utf-8', 'replace'), runner).items():
+                if observation['status'] == 'skipped' and observation.get('reason'):
+                    for identity in run.get('raw_id_map', {}).get(raw_id, []):
+                        captured_reasons[identity].add(observation['reason'])
+            run['_captured_skip_reasons'] = captured_reasons
             results = {r['test_id']: r for r in run['results']}
             receipts = {r['selected_id']: r for r in run['validation']}
             assert len(run['results']) == len(results) and set(results) == set(tests)
@@ -712,6 +737,7 @@ def compute(entries, manifest_info):
     h3 = {'Policy_S_yes_no': policy_counts['S_invalid_excluded']['yes_no_primary_PASS_or_FAIL'],
           'B2': 21, 'delta_vs_B2': policy_counts['S_invalid_excluded']['yes_no_primary_PASS_or_FAIL'] - 21,
           'verdict': 'DESCRIPTIVE; no prediction/falsification thresholds registered',
+          'skip_reason_source': 'Manifest-verified native runner captures and stored module-skip receipts; absence is reported explicitly',
           'remaining_selected_tree_SKIPPED_by_reason_group': dict(sorted(skip_groups.items())),
           'remaining_selected_tree_SKIPPED_by_recorded_reason': dict(sorted(skip_reasons.items())),
           'strict_nonbinary_tasks_by_reason_group_overlapping': dict(sorted(strict_abstention_groups.items())),
