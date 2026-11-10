@@ -118,6 +118,12 @@ All intervals below are exact two-sided 95% Clopper-Pearson. Primary positive = 
 - All 72 isolated confirmation calls have positive native-capture proofs. Twelve candidates satisfy base PASS 3/3 and patched FAILED/ERROR/CRASH 3/3. The five Django-10973 candidates have patched ERROR 3/3; that correct-labelled task adds one secondary false alarm, with raw exception signatures reported.
 - Among the four incorrect patches in the fixed 13-task skip-dependent original PASS set, Django-16667 and Matplotlib-23299 remain C PASS but S INCOMPLETE; Pylint-6528 and Pylint-7277 remain PASS under both policies.
 
+### Why old tests miss bad patches — grader-gap follow-up
+
+The nominal ceiling is **4 of 14 incorrect-labelled patches (28.6%)** with any historical grader-failing pre-existing test. The seven recorded witnesses require qualification: five Pylint entries were native **CPU skips**, despite appearing in the grader's failure bucket. With 1024 CPU shares, Pylint detects one CPU and skips them; our executor's 2048 shares makes it detect two, and all five unchanged tests pass. Ten fresh official SWE-bench 5.0.2 single-test replays reproduce those skips both with and without `test_patch`.
+
+Django-13297's archived grader applied a different candidate (`25022237…`) from the frozen candidate (`69181c9a…`). The archived patch removes the warning the old test requires; the frozen patch retains it and passes both fresh single-test variants. The oracle changes the enclosing class but leaves the test method unchanged. Matplotlib-25479 remains the positive control: the same candidate fails `test_register_cmap` in the grader and our sealed run. These gaps therefore do not demonstrate six assertion failures missed by the executor. Labels and sealed results remain unchanged; the Django provenance mismatch is disclosed rather than repaired here. Evidence, source/helper diffs, exact commands, environment measurements, and per-test classifications: [grader_gap/analysis.md](phase4_posthoc/grader_gap/analysis.md) and [classification.csv](phase4_posthoc/grader_gap/classification.csv). This follow-up adds twelve isolated diagnostic test invocations and three resource-only probes; it does not rerun the benchmark suite.
+
 ### Cap hit and four disclosures
 
 - Cap: `sympy__sympy-24562`, base and patched, each hits 1,800 seconds with 463 NOT_REACHED and one TIMEOUT. No cap retry was performed.
