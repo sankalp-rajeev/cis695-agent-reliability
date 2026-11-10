@@ -157,9 +157,17 @@ Earlier Fix 13 prelaunch checks were historical milestones, superseded by the co
 
 ## Phase 6 — Runtime instrumentation: tracing and coverage selection
 
-- Status: planned
-- Headline: Plan: trace 13 known tests in 6a and trial about 15 tasks in 6b, succeeding at file level with 100% reference regressions and all reachable known tests retained plus at least 50% fewer patched executions, failing on any missed reference regression or changed traced outcome, and adopting only if total cost beats full-list execution.
+- Status: 6a completed with disclosed thread limits (below); 6b planned
+- Headline: 6a results are below. Plan for 6b: trial about 15 tasks, succeeding at file level with 100% reference regressions and all reachable known tests retained plus at least 50% fewer patched executions, failing on any missed reference regression or changed traced outcome, and adopting only if total cost beats full-list execution.
 - Table or chart data: reports/next_phases/presentation_data/phase6.csv
 - Example: Historical example to account for before tracing, not a runtime trace: pylint-6528 / test_multiprocessing[1] was skipped by the needs_two_cores collection guard; reports/next_phases/phase1_known_failures/confirmations.md:62.
 - Caveat: 6a is post-hoc diagnosis with all 13 traces or explicit failure reasons required, while 6b must count cold-start tracing cost and report patch-only functions, non-Python dependencies and data-file blind spots.
 - Commit: 15c3d9b
+
+## Phase 6a — Runtime trace versus static graph (post-hoc)
+
+13 fixed witnesses on 9 tasks completed 52 isolated invocations using the Phase 4 images, network none and CPU shares 2048; no tests skipped. Across 15 changed functions (3 patch-only), the 50 test/tree/function rows show 25 runtime entries, all statically unreachable, 13 without an observed entry, 6 absent definitions and 6 unknown entries. All 26 traced/untraced pairs match; TRACE_PERTURBS = 0. First missing-edge causes: fixture 8, inheritance 5, re-export 4, property 3, other receiver resolution 3, decorator 2. Sphinx additionally exposes a later visitor-dispatch gap.
+
+The two pylint-6528 pool witnesses (`test_multiprocessing[2]` and `test_jobs_score`) have partial traces on both trees: sys.settrace does not observe their feeder thread, so six function rows remain UNKNOWN. These outcome-informed witnesses must never feed selection. Summary generation was byte-identical across two runs; 9 tooling checks and the secret scan passed. Phase 6b remains planned.
+
+Evidence: [Phase 6a report and per-test table](https://github.com/sankalp-rajeev/cis695-agent-reliability/blob/d77762ec75b418d62717d2fb3c76ab844aa6b830/reports/next_phases/phase6a_runtime_trace/README.md); [observed chart counts](presentation_data/phase6a.csv). Result commit on `experiment/runtime-instrumentation`: `d77762ec75b418d62717d2fb3c76ab844aa6b830`.
