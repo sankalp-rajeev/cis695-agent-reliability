@@ -479,7 +479,12 @@ def compute(entries, manifest_info):
     parser = {'django_label': django_label}
     exec(compile(FIX5_PARSER_SOURCE.replace('from reliability.verifier.selection import django_label\n', ''),
                  '<embedded-hash-verified-Fix5-parser>', 'exec'), parser)
-    projection_admitted, cpu_ids, originals, selections = set(), set(), {}, {}
+    # CPU membership comes from frozen metadata, never from live outcomes.
+    cpu_ids = {(iid, tid) for (iid, tree, tid), record in static.items()
+               if any(re.search(r'\bneeds_two_cores\b', decorator)
+                      for decorator in json.loads(record['decorators']))}
+    cpu_original_native_instances = set()
+    projection_admitted, originals, selections = set(), {}, {}
     for iid in order:
         meta = by_task[iid]
         tests = project(frozen_read(frozen / meta['selections']['v2']), {'tests': True})['tests']
@@ -509,6 +514,8 @@ def compute(entries, manifest_info):
                     projection_admitted.add((iid, tree, record['selected_id']))
             mapper = parser['mapping_for'](tests, runner)
             for native_id, observation in observed.items():
+                if observation['kind'] == 'case' and any((iid, tid) in cpu_ids for tid in mapper(native_id)):
+                    cpu_original_native_instances.add((iid, tree, native_id))
                 if observation['status'] == 'skipped' and re.search(r'\b(cpu|cpus|core|cores|processor|processors)\b', observation.get('reason', ''), re.I):
                     for selected_id in mapper(native_id):
                         cpu_ids.add((iid, selected_id))
@@ -526,6 +533,7 @@ def compute(entries, manifest_info):
     skip_groups, skip_reasons = collections.Counter(), collections.Counter()
     strict_abstention_groups = collections.defaultdict(list)
     cpu_statuses = collections.Counter()
+    cpu_native_statuses = collections.Counter()
     confirmations_total = 0
     integrity_rows, unexplained = [], []
     original_fail_tasks = []
@@ -600,6 +608,13 @@ def compute(entries, manifest_info):
                     skipped_selected.append(tid)
                 if (iid, tid) in cpu_ids:
                     cpu_statuses[result['status']] += 1
+            cpu_seen = set()
+            for native_result in run.get('raw_results', []):
+                raw_id = native_result['test_id']
+                if raw_id not in cpu_seen and any((iid, tid) in cpu_ids
+                        for tid in run.get('raw_id_map', {}).get(raw_id, [])):
+                    cpu_native_statuses[native_result['status']] += 1
+                    cpu_seen.add(raw_id)
             tree_counts[tree] = {'admitted': admitted_count, 'selected': len(tests),
                                 'status_counts': dict(sorted(collections.Counter(r['status'] for r in results.values()).items()))}
             cap_record(iid, tree, run, 'initial')
@@ -700,7 +715,10 @@ def compute(entries, manifest_info):
           'remaining_selected_tree_SKIPPED_by_reason_group': dict(sorted(skip_groups.items())),
           'remaining_selected_tree_SKIPPED_by_recorded_reason': dict(sorted(skip_reasons.items())),
           'strict_nonbinary_tasks_by_reason_group_overlapping': dict(sorted(strict_abstention_groups.items())),
-          'CPU_conditioned': {'fixed_original_unique_task_test_ids': len(cpu_ids),
+          'CPU_conditioned': {'source': 'Fix5 frozen needs_two_cores decorators and any explicit frozen-original CPU skip reasons',
+              'fixed_original_unique_task_test_ids': len(cpu_ids),
+              'fixed_original_native_tree_instances': len(cpu_original_native_instances),
+              'current_native_tree_status_counts': dict(sorted(cpu_native_statuses.items())),
               'current_initial_tree_status_counts': dict(sorted(cpu_statuses.items())),
               'remaining_SKIPPED_tree_slots': cpu_statuses['skipped'],
               'fixed_ids': [{'task': iid, 'test_id': tid} for iid, tid in sorted(cpu_ids)]}}
@@ -746,7 +764,7 @@ def markdown(result):
     for reason,count in result['H3']['remaining_selected_tree_SKIPPED_by_reason_group'].items():
         lines.append('| %s | %s |' % (reason,count))
     cpu = result['H3']['CPU_conditioned']
-    lines += ['', '**CPU-conditioned tests (separate):** %s fixed original task/test identities; %s remain SKIPPED tree slots. Current statuses: `%s`.' % (cpu['fixed_original_unique_task_test_ids'], cpu['remaining_SKIPPED_tree_slots'], json.dumps(cpu['current_initial_tree_status_counts'],sort_keys=True)),
+    lines += ['', '**CPU-conditioned tests (separate):** %s fixed selected families, covering %s frozen-original native tree instances; %s remain SKIPPED selected tree slots. Current selected-tree statuses: `%s`. Current concrete native-tree statuses: `%s`.' % (cpu['fixed_original_unique_task_test_ids'], cpu['fixed_original_native_tree_instances'], cpu['remaining_SKIPPED_tree_slots'], json.dumps(cpu['current_initial_tree_status_counts'],sort_keys=True), json.dumps(cpu['current_native_tree_status_counts'],sort_keys=True)),
               '', '## Integrity', '', '**%s**: %s original native FAIL tasks reconciled; %s unexplained disappearing native FAILs. Run bytes were reverified before and after computation.' % ('PASS' if result['integrity']['ok'] else 'FAIL — STOP; no seal tag',result['integrity']['original_native_FAIL_tasks'],len(result['integrity']['unexplained_disappearing_native_FAILs'])), '', '| Original native FAIL task | Present as FAIL under all four policies |', '|---|---|']
     for row in result['integrity']['original_native_FAIL_audit']:
         lines.append('| `%s` | %s |' % (row['task'],'Yes' if row['present_under_all_four_policies'] else 'Recorded cause; see results.json'))
