@@ -40,13 +40,93 @@ Planned CSVs contain roadmap scope, baseline or threshold values, not experiment
 - Caveat: Final unit suite: 1,141 passed, 6 failed, 6 skipped, 17 setup errors; the exact pre-existing failure/error set is unchanged. Cost probes use selection sizes alone, base trees only, and no correctness comparison. Confirmation cost depends on future paired failures and is separate from the 166 initial-pass estimate. No Phase 4 concurrency has been selected.
 - Commits: plan 171dbfc; SymPy alignment 9c0f387; Fix 6 24b1822; Fix 7 a8e1691; Fix 8 de3090f; cost driver 92c55b9; host-only active-timeout reader correction 0f193b4 (all three capture replays unchanged).
 
-## Phase 4 — Controlled V2 rerun
+## Phase 4 — Sealed attempt 4 and post-hoc analysis
 
-Attempt 2 remains quarantined, aborted at the integrity gate and not analyzed. Fix 13's plan amendment precedes code; H1/H1b/H2 thresholds, B1/B2 and the GIS/xmlschema exceptions are unchanged. Native module-level skips require a recorded reason and zero collected items; they become ordinary SKIPPED, with G2 preserving stronger original-run evidence.
+- Status: completed and sealed; post-hoc analysis completed after the seal. The executor, sealed results and every tag are unchanged.
+- Seal: `phase4-run-sealed` at `e40d60afac6534bba03a20168ea681fca24228af`. The 1,799-file run manifest was reverified before analysis and after both deterministic executions.
+- Labels: 69 correct, 14 incorrect. Candidate-bound source: `/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/reports/v2_scg_analysis/full83_postcollection_20261106T012810_258795Z/correctness_sidecar.json`; SHA-256 `cd61a6e726a32e159db87a5040be5ea49c5c67e147faac424bf9a756d4e0c990`.
+- Tables and raw-capture audit: `phase4_posthoc/analysis.md` and `phase4_posthoc/analysis.json`. Per-test and per-task details are retained; no new tests or Docker execution.
+- Result commits: sealed runtime results `e40d60a`; post-hoc report is this commit (resolve with `git log -1 --format=%h -- reports/next_phases/phase4_posthoc/analysis.json`).
 
-The new exhaustive collection-only G1 finished all **166 task/tree pairs** in **54.74 minutes**: **158 READY, 8 BLOCKED**, with zero benchmark test bodies executed. Astropy-13977's seven modules now record native missing-asdf/pyarrow/matplotlib skips on both trees (105 selected slots per tree). The remaining blocked tasks on both trees are Astropy-7606 (native identity receipt mismatch), SymPy-13480 (source-disabled Sage module without a native skip record), Matplotlib-23476 (import AttributeError) and Pylint-4970 (import-time missing test.txt). All 96 pre-listed GIS/xmlschema module/tree failures are also catalogued.
+### Sealed quantities and INVALID_ID sensitivity
 
-Full units: **1,235 passed, 6 failed, 6 skipped, 17 errors**, exactly the pre-existing failure/error set; all 19 new Fix 13 cases pass. [Fix 13 health report](phase4_rerun/fix13_report.md) includes source/package diagnosis, every failure and sealed collection receipts. **Launch remains blocked; no new tag or controlled run.** No attempt-2 outcomes/verdicts or correctness labels were read.
+| Quantity | Sealed value | Registered result |
+|---|---:|---|
+| H1 primary | 35774/37614 = 95.11% | prediction met; not falsified |
+| H1b fixed residual | 12013/13853 = 86.72% | prediction met; not falsified |
+| H2 C yes/no primary | 58/83 | prediction met; not falsified |
+| H3 S yes/no | 26/83 versus B2 = 21 | descriptive; no prediction/falsification threshold |
+
+H1 secondary informational, INVALID_ID removed from B1: 35774/37074 = 96.49%. H2 secondary including REGRESSION_ERROR: 59/83. Primary C coverage is **58 versus 48** with INVALID_ID excluded versus treated as missing; S is **26 versus 25**. No sealed number was recomputed or changed.
+
+### Verdict × label tables
+
+| Policy | Verdict | Correct | Incorrect |
+|---|---|---:|---:|
+| C_invalid_excluded | PASS | 43 | 9 |
+| C_invalid_excluded | FAIL | 5 | 1 |
+| C_invalid_excluded | REGRESSION_ERROR | 1 | 0 |
+| C_invalid_excluded | INCOMPLETE | 15 | 4 |
+| C_invalid_excluded | NOT_AVAILABLE | 5 | 0 |
+| C_invalid_missing | PASS | 33 | 9 |
+| C_invalid_missing | FAIL | 5 | 1 |
+| C_invalid_missing | REGRESSION_ERROR | 1 | 0 |
+| C_invalid_missing | INCOMPLETE | 25 | 4 |
+| C_invalid_missing | NOT_AVAILABLE | 5 | 0 |
+| S_invalid_excluded | PASS | 14 | 6 |
+| S_invalid_excluded | FAIL | 5 | 1 |
+| S_invalid_excluded | REGRESSION_ERROR | 1 | 0 |
+| S_invalid_excluded | INCOMPLETE | 44 | 7 |
+| S_invalid_excluded | NOT_AVAILABLE | 5 | 0 |
+| S_invalid_missing | PASS | 13 | 6 |
+| S_invalid_missing | FAIL | 5 | 1 |
+| S_invalid_missing | REGRESSION_ERROR | 1 | 0 |
+| S_invalid_missing | INCOMPLETE | 45 | 7 |
+| S_invalid_missing | NOT_AVAILABLE | 5 | 0 |
+
+Frozen original V2 native comparison (no invented original Policy S or INVALID_ID replay):
+
+| Verdict | Correct | Incorrect |
+|---|---:|---:|
+| PASS | 20 | 5 |
+| FAIL | 5 | 1 |
+| REGRESSION_ERROR | 0 | 0 |
+| INCOMPLETE | 33 | 6 |
+| NOT_AVAILABLE | 11 | 2 |
+
+### Detection, false alarms and missed incorrect PASS
+
+All intervals below are exact two-sided 95% Clopper-Pearson. Primary positive = FAIL; secondary positive = FAIL or REGRESSION_ERROR. The conditional denominator is PASS+FAIL for primary, and PASS+FAIL+REGRESSION_ERROR for secondary. No verdict is reclassified.
+
+| Policy | Rule | Detection /14 | Detection among verdicted incorrect | False alarms /69 | False alarms among verdicted correct | Missed PASS /14 | Missed among verdicted incorrect |
+|---|---|---|---|---|---|---|---|
+| C_invalid_excluded | primary_FAIL_only | 1/14 = 7.14% [0.18%, 33.87%] | 1/10 = 10.00% [0.25%, 44.50%] | 5/69 = 7.25% [2.39%, 16.11%] | 5/48 = 10.42% [3.47%, 22.66%] | 9/14 = 64.29% [35.14%, 87.24%] | 9/10 = 90.00% [55.50%, 99.75%] |
+| C_invalid_excluded | secondary_FAIL_plus_REGRESSION_ERROR | 1/14 = 7.14% [0.18%, 33.87%] | 1/10 = 10.00% [0.25%, 44.50%] | 6/69 = 8.70% [3.26%, 17.97%] | 6/49 = 12.24% [4.63%, 24.77%] | 9/14 = 64.29% [35.14%, 87.24%] | 9/10 = 90.00% [55.50%, 99.75%] |
+| C_invalid_missing | primary_FAIL_only | 1/14 = 7.14% [0.18%, 33.87%] | 1/10 = 10.00% [0.25%, 44.50%] | 5/69 = 7.25% [2.39%, 16.11%] | 5/38 = 13.16% [4.41%, 28.09%] | 9/14 = 64.29% [35.14%, 87.24%] | 9/10 = 90.00% [55.50%, 99.75%] |
+| C_invalid_missing | secondary_FAIL_plus_REGRESSION_ERROR | 1/14 = 7.14% [0.18%, 33.87%] | 1/10 = 10.00% [0.25%, 44.50%] | 6/69 = 8.70% [3.26%, 17.97%] | 6/39 = 15.38% [5.86%, 30.53%] | 9/14 = 64.29% [35.14%, 87.24%] | 9/10 = 90.00% [55.50%, 99.75%] |
+| S_invalid_excluded | primary_FAIL_only | 1/14 = 7.14% [0.18%, 33.87%] | 1/7 = 14.29% [0.36%, 57.87%] | 5/69 = 7.25% [2.39%, 16.11%] | 5/19 = 26.32% [9.15%, 51.20%] | 6/14 = 42.86% [17.66%, 71.14%] | 6/7 = 85.71% [42.13%, 99.64%] |
+| S_invalid_excluded | secondary_FAIL_plus_REGRESSION_ERROR | 1/14 = 7.14% [0.18%, 33.87%] | 1/7 = 14.29% [0.36%, 57.87%] | 6/69 = 8.70% [3.26%, 17.97%] | 6/20 = 30.00% [11.89%, 54.28%] | 6/14 = 42.86% [17.66%, 71.14%] | 6/7 = 85.71% [42.13%, 99.64%] |
+| S_invalid_missing | primary_FAIL_only | 1/14 = 7.14% [0.18%, 33.87%] | 1/7 = 14.29% [0.36%, 57.87%] | 5/69 = 7.25% [2.39%, 16.11%] | 5/18 = 27.78% [9.69%, 53.48%] | 6/14 = 42.86% [17.66%, 71.14%] | 6/7 = 85.71% [42.13%, 99.64%] |
+| S_invalid_missing | secondary_FAIL_plus_REGRESSION_ERROR | 1/14 = 7.14% [0.18%, 33.87%] | 1/7 = 14.29% [0.36%, 57.87%] | 6/69 = 8.70% [3.26%, 17.97%] | 6/19 = 31.58% [12.58%, 56.55%] | 6/14 = 42.86% [17.66%, 71.14%] | 6/7 = 85.71% [42.13%, 99.64%] |
+| original_V2_native | primary_FAIL_only | 1/14 = 7.14% [0.18%, 33.87%] | 1/6 = 16.67% [0.42%, 64.12%] | 5/69 = 7.25% [2.39%, 16.11%] | 5/25 = 20.00% [6.83%, 40.70%] | 5/14 = 35.71% [12.76%, 64.86%] | 5/6 = 83.33% [35.88%, 99.58%] |
+| original_V2_native | secondary_FAIL_plus_REGRESSION_ERROR | 1/14 = 7.14% [0.18%, 33.87%] | 1/6 = 16.67% [0.42%, 64.12%] | 5/69 = 7.25% [2.39%, 16.11%] | 5/25 = 20.00% [6.83%, 40.70%] | 5/14 = 35.71% [12.76%, 64.86%] | 5/6 = 83.33% [35.88%, 99.58%] |
+
+### Witnesses and captured execution
+
+- Of the seven grader-failing existing tests, six now pass on both trees. Only `matplotlib__matplotlib-25479::test_register_cmap` remains base-pass/patched-fail. `django__django-13297::test_template_params_warning` passes on both trees while the task remains INCOMPLETE. The five Pylint witnesses pass on both trees; both incorrect-labelled Pylint tasks are PASS under C and S.
+- All six known regression witnesses remain base-pass/patched-fail. They belong to five correct-labelled tasks that receive FAIL under C and S; the report treats these as false alarms relative to the project labels.
+- All 72 isolated confirmation calls have positive native-capture proofs. Twelve candidates satisfy base PASS 3/3 and patched FAILED/ERROR/CRASH 3/3. The five Django-10973 candidates have patched ERROR 3/3; that correct-labelled task adds one secondary false alarm, with raw exception signatures reported.
+- Among the four incorrect patches in the fixed 13-task skip-dependent original PASS set, Django-16667 and Matplotlib-23299 remain C PASS but S INCOMPLETE; Pylint-6528 and Pylint-7277 remain PASS under both policies.
+
+### Cap hit and four disclosures
+
+- Cap: `sympy__sympy-24562`, base and patched, each hits 1,800 seconds with 463 NOT_REACHED and one TIMEOUT. No cap retry was performed.
+- **INVALID_ID sensitivity:** C yes/no coverage changes from 58 to 48 when invalid IDs are missing rather than excluded; the full label tables and conditional denominators change accordingly.
+- **Six non-cap NOT_REACHED:** one `ForcedTimeZoneDatabaseTests.test_write_datetime` per tree in Django-13297, 14631 and 15930. Each batch exits 0 with an OK summary after other tests finish. Neither ForcedTimeZoneDatabaseTests method emits a result/start; there is no explicit class-skip record establishing the underlying cause. These are normal-exit unreported requests, not supported crash collateral. The companion sealed CRASH attributions fail the pre-registered process-death requirement; all sealed statuses and verdicts are preserved.
+- **COLLECTION_ERROR is the main remaining loss category:** 1,934 initial selected tree slots, the largest overall missing-evidence status category. This statement is about all initial selected tree slots, not its share within the fixed B1 residual. The complete task/module/signature breakdown and 15 largest distinct modules are in the analysis report.
+- **CPU-conditioned outcomes were reported at seal:** all 38 concrete tests (76 tree instances across the two Pylint tasks, within 12 fixed selected families) passed once they ran. This post-hoc analysis lists their statuses and labels; it creates no new execution evidence.
+
+Earlier Fix 13 prelaunch checks were historical milestones, superseded by the completed v4 attempt. Their report remains at `phase4_rerun/fix13_report.md`. Quarantined attempts were not used for this analysis.
 
 ## Phase 5 — Offline selector and ordering replay
 
