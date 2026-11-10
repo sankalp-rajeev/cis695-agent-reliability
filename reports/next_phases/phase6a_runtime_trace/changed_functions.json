@@ -1,0 +1,1038 @@
+{
+  "django__django-12209": {
+    "AST_errors": [],
+    "changed_functions": [
+      {
+        "base": {
+          "decorator_start": 829,
+          "decorators": [],
+          "end": 890,
+          "name": "_save_table",
+          "path": "django/db/models/base.py",
+          "qualname": "Model._save_table",
+          "start": 829
+        },
+        "id": "django/db/models/base.py::Model._save_table",
+        "patch_only": false,
+        "patched": {
+          "decorator_start": 829,
+          "decorators": [],
+          "end": 882,
+          "name": "_save_table",
+          "path": "django/db/models/base.py",
+          "qualname": "Model._save_table",
+          "start": 829
+        },
+        "path": "django/db/models/base.py",
+        "qualname": "Model._save_table",
+        "removed": false
+      }
+    ],
+    "hunks": [
+      {
+        "header": "@@ -16,7 +16,7 @@ from django.db import (",
+        "mapped_functions": {
+          "base": [],
+          "patched": []
+        },
+        "new_changed": [
+          19
+        ],
+        "new_start": 16,
+        "old_changed": [
+          19
+        ],
+        "old_start": 16,
+        "path": "django/db/models/base.py"
+      },
+      {
+        "header": "@@ -847,14 +847,6 @@ class Model(metaclass=ModelBase):",
+        "mapped_functions": {
+          "base": [
+            [
+              "django/db/models/base.py",
+              "Model._save_table"
+            ]
+          ],
+          "patched": []
+        },
+        "new_changed": [],
+        "new_start": 847,
+        "old_changed": [
+          850,
+          851,
+          852,
+          853,
+          854,
+          855,
+          856,
+          857
+        ],
+        "old_start": 847,
+        "path": "django/db/models/base.py"
+      }
+    ]
+  },
+  "django__django-13297": {
+    "AST_errors": [],
+    "changed_functions": [
+      {
+        "base": {
+          "decorator_start": 159,
+          "decorators": [],
+          "end": 164,
+          "name": "get",
+          "path": "django/views/generic/base.py",
+          "qualname": "TemplateView.get",
+          "start": 159
+        },
+        "id": "django/views/generic/base.py::TemplateView.get",
+        "patch_only": false,
+        "patched": {
+          "decorator_start": 159,
+          "decorators": [],
+          "end": 164,
+          "name": "get",
+          "path": "django/views/generic/base.py",
+          "qualname": "TemplateView.get",
+          "start": 159
+        },
+        "path": "django/views/generic/base.py",
+        "qualname": "TemplateView.get",
+        "removed": false
+      },
+      {
+        "base": {
+          "decorator_start": 168,
+          "decorators": [],
+          "end": 182,
+          "name": "_wrap_url_kwargs_with_deprecation_warning",
+          "path": "django/views/generic/base.py",
+          "qualname": "_wrap_url_kwargs_with_deprecation_warning",
+          "start": 168
+        },
+        "id": "django/views/generic/base.py::_wrap_url_kwargs_with_deprecation_warning",
+        "patch_only": false,
+        "patched": {
+          "decorator_start": 168,
+          "decorators": [],
+          "end": 184,
+          "name": "_wrap_url_kwargs_with_deprecation_warning",
+          "path": "django/views/generic/base.py",
+          "qualname": "_wrap_url_kwargs_with_deprecation_warning",
+          "start": 168
+        },
+        "path": "django/views/generic/base.py",
+        "qualname": "_wrap_url_kwargs_with_deprecation_warning",
+        "removed": false
+      }
+    ],
+    "hunks": [
+      {
+        "header": "@@ -157,17 +157,19 @@ class TemplateResponseMixin:",
+        "mapped_functions": {
+          "base": [
+            [
+              "django/views/generic/base.py",
+              "TemplateView.get"
+            ],
+            [
+              "django/views/generic/base.py",
+              "_wrap_url_kwargs_with_deprecation_warning"
+            ]
+          ],
+          "patched": [
+            [
+              "django/views/generic/base.py",
+              "TemplateView.get"
+            ],
+            [
+              "django/views/generic/base.py",
+              "_wrap_url_kwargs_with_deprecation_warning"
+            ]
+          ]
+        },
+        "new_changed": [
+          160,
+          161,
+          162,
+          163,
+          168,
+          170,
+          171,
+          172
+        ],
+        "new_start": 157,
+        "old_changed": [
+          160,
+          161,
+          162,
+          163,
+          168,
+          169
+        ],
+        "old_start": 157,
+        "path": "django/views/generic/base.py"
+      },
+      {
+        "header": "@@ -178,8 +180,8 @@ def _wrap_url_kwargs_with_deprecation_warning(url_kwargs):",
+        "mapped_functions": {
+          "base": [
+            [
+              "django/views/generic/base.py",
+              "_wrap_url_kwargs_with_deprecation_warning"
+            ]
+          ],
+          "patched": [
+            [
+              "django/views/generic/base.py",
+              "_wrap_url_kwargs_with_deprecation_warning"
+            ]
+          ]
+        },
+        "new_changed": [
+          183,
+          184
+        ],
+        "new_start": 180,
+        "old_changed": [
+          181,
+          182
+        ],
+        "old_start": 178,
+        "path": "django/views/generic/base.py"
+      }
+    ]
+  },
+  "django__django-14140": {
+    "AST_errors": [],
+    "changed_functions": [
+      {
+        "base": {
+          "decorator_start": 83,
+          "decorators": [],
+          "end": 97,
+          "name": "deconstruct",
+          "path": "django/db/models/query_utils.py",
+          "qualname": "Q.deconstruct",
+          "start": 83
+        },
+        "id": "django/db/models/query_utils.py::Q.deconstruct",
+        "patch_only": false,
+        "patched": {
+          "decorator_start": 83,
+          "decorators": [],
+          "end": 93,
+          "name": "deconstruct",
+          "path": "django/db/models/query_utils.py",
+          "qualname": "Q.deconstruct",
+          "start": 83
+        },
+        "path": "django/db/models/query_utils.py",
+        "qualname": "Q.deconstruct",
+        "removed": false
+      }
+    ],
+    "hunks": [
+      {
+        "header": "@@ -84,14 +84,10 @@ class Q(tree.Node):",
+        "mapped_functions": {
+          "base": [
+            [
+              "django/db/models/query_utils.py",
+              "Q.deconstruct"
+            ]
+          ],
+          "patched": [
+            [
+              "django/db/models/query_utils.py",
+              "Q.deconstruct"
+            ]
+          ]
+        },
+        "new_changed": [
+          87,
+          88,
+          89,
+          90
+        ],
+        "new_start": 84,
+        "old_changed": [
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94
+        ],
+        "old_start": 84,
+        "path": "django/db/models/query_utils.py"
+      }
+    ]
+  },
+  "django__django-14631": {
+    "AST_errors": [],
+    "changed_functions": [
+      {
+        "base": null,
+        "id": "django/forms/boundfield.py::BoundField._did_change",
+        "patch_only": true,
+        "patched": {
+          "decorator_start": 134,
+          "decorators": [],
+          "end": 152,
+          "name": "_did_change",
+          "path": "django/forms/boundfield.py",
+          "qualname": "BoundField._did_change",
+          "start": 134
+        },
+        "path": "django/forms/boundfield.py",
+        "qualname": "BoundField._did_change",
+        "removed": false
+      },
+      {
+        "base": null,
+        "id": "django/forms/forms.py::BaseForm._bound_items",
+        "patch_only": true,
+        "patched": {
+          "decorator_start": 170,
+          "decorators": [],
+          "end": 173,
+          "name": "_bound_items",
+          "path": "django/forms/forms.py",
+          "qualname": "BaseForm._bound_items",
+          "start": 170
+        },
+        "path": "django/forms/forms.py",
+        "qualname": "BaseForm._bound_items",
+        "removed": false
+      },
+      {
+        "base": {
+          "decorator_start": 389,
+          "decorators": [],
+          "end": 406,
+          "name": "_clean_fields",
+          "path": "django/forms/forms.py",
+          "qualname": "BaseForm._clean_fields",
+          "start": 389
+        },
+        "id": "django/forms/forms.py::BaseForm._clean_fields",
+        "patch_only": false,
+        "patched": {
+          "decorator_start": 394,
+          "decorators": [],
+          "end": 408,
+          "name": "_clean_fields",
+          "path": "django/forms/forms.py",
+          "qualname": "BaseForm._clean_fields",
+          "start": 394
+        },
+        "path": "django/forms/forms.py",
+        "qualname": "BaseForm._clean_fields",
+        "removed": false
+      },
+      {
+        "base": {
+          "decorator_start": 437,
+          "decorators": [
+            "cached_property"
+          ],
+          "end": 459,
+          "name": "changed_data",
+          "path": "django/forms/forms.py",
+          "qualname": "BaseForm.changed_data",
+          "start": 438
+        },
+        "id": "django/forms/forms.py::BaseForm.changed_data",
+        "patch_only": false,
+        "patched": {
+          "decorator_start": 439,
+          "decorators": [
+            "cached_property"
+          ],
+          "end": 441,
+          "name": "changed_data",
+          "path": "django/forms/forms.py",
+          "qualname": "BaseForm.changed_data",
+          "start": 440
+        },
+        "path": "django/forms/forms.py",
+        "qualname": "BaseForm.changed_data",
+        "removed": false
+      }
+    ],
+    "hunks": [
+      {
+        "header": "@@ -1,6 +1,7 @@",
+        "mapped_functions": {
+          "base": [],
+          "patched": []
+        },
+        "new_changed": [
+          4
+        ],
+        "new_start": 1,
+        "old_changed": [],
+        "old_start": 1,
+        "path": "django/forms/boundfield.py"
+      },
+      {
+        "header": "@@ -130,6 +131,26 @@ class BoundField:",
+        "mapped_functions": {
+          "base": [],
+          "patched": [
+            [
+              "django/forms/boundfield.py",
+              "BoundField._did_change"
+            ]
+          ]
+        },
+        "new_changed": [
+          134,
+          135,
+          136,
+          137,
+          138,
+          139,
+          140,
+          141,
+          142,
+          143,
+          144,
+          145,
+          146,
+          147,
+          148,
+          149,
+          150,
+          151,
+          152,
+          153
+        ],
+        "new_start": 131,
+        "old_changed": [],
+        "old_start": 130,
+        "path": "django/forms/boundfield.py"
+      },
+      {
+        "header": "@@ -167,6 +167,11 @@ class BaseForm:",
+        "mapped_functions": {
+          "base": [],
+          "patched": [
+            [
+              "django/forms/forms.py",
+              "BaseForm._bound_items"
+            ]
+          ]
+        },
+        "new_changed": [
+          170,
+          171,
+          172,
+          173,
+          174
+        ],
+        "new_start": 167,
+        "old_changed": [],
+        "old_start": 167,
+        "path": "django/forms/forms.py"
+      },
+      {
+        "header": "@@ -387,15 +392,12 @@ class BaseForm:",
+        "mapped_functions": {
+          "base": [
+            [
+              "django/forms/forms.py",
+              "BaseForm._clean_fields"
+            ]
+          ],
+          "patched": [
+            [
+              "django/forms/forms.py",
+              "BaseForm._clean_fields"
+            ]
+          ]
+        },
+        "new_changed": [
+          395,
+          396,
+          397,
+          400
+        ],
+        "new_start": 392,
+        "old_changed": [
+          390,
+          391,
+          392,
+          393,
+          394,
+          397,
+          398
+        ],
+        "old_start": 387,
+        "path": "django/forms/forms.py"
+      },
+      {
+        "header": "@@ -436,27 +438,7 @@ class BaseForm:",
+        "mapped_functions": {
+          "base": [
+            [
+              "django/forms/forms.py",
+              "BaseForm.changed_data"
+            ]
+          ],
+          "patched": [
+            [
+              "django/forms/forms.py",
+              "BaseForm.changed_data"
+            ]
+          ]
+        },
+        "new_changed": [
+          441
+        ],
+        "new_start": 438,
+        "old_changed": [
+          439,
+          440,
+          441,
+          442,
+          443,
+          444,
+          445,
+          446,
+          447,
+          448,
+          449,
+          450,
+          451,
+          452,
+          453,
+          454,
+          455,
+          456,
+          457,
+          458,
+          459
+        ],
+        "old_start": 436,
+        "path": "django/forms/forms.py"
+      }
+    ]
+  },
+  "matplotlib__matplotlib-25479": {
+    "AST_errors": [],
+    "changed_functions": [
+      {
+        "base": {
+          "decorator_start": 103,
+          "decorators": [],
+          "end": 148,
+          "name": "register",
+          "path": "lib/matplotlib/cm.py",
+          "qualname": "ColormapRegistry.register",
+          "start": 103
+        },
+        "id": "lib/matplotlib/cm.py::ColormapRegistry.register",
+        "patch_only": false,
+        "patched": {
+          "decorator_start": 103,
+          "decorators": [],
+          "end": 150,
+          "name": "register",
+          "path": "lib/matplotlib/cm.py",
+          "qualname": "ColormapRegistry.register",
+          "start": 103
+        },
+        "path": "lib/matplotlib/cm.py",
+        "qualname": "ColormapRegistry.register",
+        "removed": false
+      }
+    ],
+    "hunks": [
+      {
+        "header": "@@ -145,7 +145,9 @@ class ColormapRegistry(Mapping):",
+        "mapped_functions": {
+          "base": [
+            [
+              "lib/matplotlib/cm.py",
+              "ColormapRegistry.register"
+            ]
+          ],
+          "patched": [
+            [
+              "lib/matplotlib/cm.py",
+              "ColormapRegistry.register"
+            ]
+          ]
+        },
+        "new_changed": [
+          148,
+          149,
+          150
+        ],
+        "new_start": 145,
+        "old_changed": [
+          148
+        ],
+        "old_start": 145,
+        "path": "lib/matplotlib/cm.py"
+      }
+    ]
+  },
+  "pylint-dev__pylint-6528": {
+    "AST_errors": [],
+    "changed_functions": [
+      {
+        "base": null,
+        "id": "pylint/lint/expand_modules.py::_is_ignored_file",
+        "patch_only": true,
+        "patched": {
+          "decorator_start": 49,
+          "decorators": [],
+          "end": 61,
+          "name": "_is_ignored_file",
+          "path": "pylint/lint/expand_modules.py",
+          "qualname": "_is_ignored_file",
+          "start": 49
+        },
+        "path": "pylint/lint/expand_modules.py",
+        "qualname": "_is_ignored_file",
+        "removed": false
+      },
+      {
+        "base": {
+          "decorator_start": 49,
+          "decorators": [],
+          "end": 149,
+          "name": "expand_modules",
+          "path": "pylint/lint/expand_modules.py",
+          "qualname": "expand_modules",
+          "start": 49
+        },
+        "id": "pylint/lint/expand_modules.py::expand_modules",
+        "patch_only": false,
+        "patched": {
+          "decorator_start": 64,
+          "decorators": [],
+          "end": 162,
+          "name": "expand_modules",
+          "path": "pylint/lint/expand_modules.py",
+          "qualname": "expand_modules",
+          "start": 64
+        },
+        "path": "pylint/lint/expand_modules.py",
+        "qualname": "expand_modules",
+        "removed": false
+      },
+      {
+        "base": {
+          "decorator_start": 567,
+          "decorators": [
+            "staticmethod"
+          ],
+          "end": 592,
+          "name": "_discover_files",
+          "path": "pylint/lint/pylinter.py",
+          "qualname": "PyLinter._discover_files",
+          "start": 568
+        },
+        "id": "pylint/lint/pylinter.py::PyLinter._discover_files",
+        "patch_only": false,
+        "patched": {
+          "decorator_start": 567,
+          "decorators": [],
+          "end": 601,
+          "name": "_discover_files",
+          "path": "pylint/lint/pylinter.py",
+          "qualname": "PyLinter._discover_files",
+          "start": 567
+        },
+        "path": "pylint/lint/pylinter.py",
+        "qualname": "PyLinter._discover_files",
+        "removed": false
+      }
+    ],
+    "hunks": [
+      {
+        "header": "@@ -46,6 +46,21 @@ def _is_in_ignore_list_re(element: str, ignore_list_re: list[Pattern[str]]) -> b",
+        "mapped_functions": {
+          "base": [],
+          "patched": [
+            [
+              "pylint/lint/expand_modules.py",
+              "_is_ignored_file"
+            ]
+          ]
+        },
+        "new_changed": [
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63
+        ],
+        "new_start": 46,
+        "old_changed": [],
+        "old_start": 46,
+        "path": "pylint/lint/expand_modules.py"
+      },
+      {
+        "header": "@@ -61,10 +76,8 @@ def expand_modules(",
+        "mapped_functions": {
+          "base": [
+            [
+              "pylint/lint/expand_modules.py",
+              "expand_modules"
+            ]
+          ],
+          "patched": [
+            [
+              "pylint/lint/expand_modules.py",
+              "expand_modules"
+            ]
+          ]
+        },
+        "new_changed": [
+          79,
+          80
+        ],
+        "new_start": 76,
+        "old_changed": [
+          64,
+          65,
+          66,
+          67
+        ],
+        "old_start": 61,
+        "path": "pylint/lint/expand_modules.py"
+      },
+      {
+        "header": "@@ -128,9 +141,9 @@ def expand_modules(",
+        "mapped_functions": {
+          "base": [
+            [
+              "pylint/lint/expand_modules.py",
+              "expand_modules"
+            ]
+          ],
+          "patched": [
+            [
+              "pylint/lint/expand_modules.py",
+              "expand_modules"
+            ]
+          ]
+        },
+        "new_changed": [
+          144,
+          145,
+          146
+        ],
+        "new_start": 141,
+        "old_changed": [
+          131,
+          132,
+          133
+        ],
+        "old_start": 128,
+        "path": "pylint/lint/expand_modules.py"
+      },
+      {
+        "header": "@@ -31,7 +31,7 @@ from pylint.constants import (",
+        "mapped_functions": {
+          "base": [],
+          "patched": []
+        },
+        "new_changed": [
+          34
+        ],
+        "new_start": 31,
+        "old_changed": [
+          34
+        ],
+        "old_start": 31,
+        "path": "pylint/lint/pylinter.py"
+      },
+      {
+        "header": "@@ -564,8 +564,7 @@ class PyLinter(",
+        "mapped_functions": {
+          "base": [
+            [
+              "pylint/lint/pylinter.py",
+              "PyLinter._discover_files"
+            ]
+          ],
+          "patched": [
+            [
+              "pylint/lint/pylinter.py",
+              "PyLinter._discover_files"
+            ]
+          ]
+        },
+        "new_changed": [
+          567
+        ],
+        "new_start": 564,
+        "old_changed": [
+          567,
+          568
+        ],
+        "old_start": 564,
+        "path": "pylint/lint/pylinter.py"
+      },
+      {
+        "header": "@@ -575,10 +574,20 @@ class PyLinter(",
+        "mapped_functions": {
+          "base": [
+            [
+              "pylint/lint/pylinter.py",
+              "PyLinter._discover_files"
+            ]
+          ],
+          "patched": [
+            [
+              "pylint/lint/pylinter.py",
+              "PyLinter._discover_files"
+            ]
+          ]
+        },
+        "new_changed": [
+          577,
+          581,
+          582,
+          583,
+          584,
+          585,
+          586,
+          587,
+          588,
+          589,
+          590
+        ],
+        "new_start": 574,
+        "old_changed": [
+          578
+        ],
+        "old_start": 575,
+        "path": "pylint/lint/pylinter.py"
+      }
+    ]
+  },
+  "pylint-dev__pylint-7277": {
+    "AST_errors": [],
+    "changed_functions": [
+      {
+        "base": {
+          "decorator_start": 80,
+          "decorators": [],
+          "end": 105,
+          "name": "modify_sys_path",
+          "path": "pylint/__init__.py",
+          "qualname": "modify_sys_path",
+          "start": 80
+        },
+        "id": "pylint/__init__.py::modify_sys_path",
+        "patch_only": false,
+        "patched": {
+          "decorator_start": 80,
+          "decorators": [],
+          "end": 108,
+          "name": "modify_sys_path",
+          "path": "pylint/__init__.py",
+          "qualname": "modify_sys_path",
+          "start": 80
+        },
+        "path": "pylint/__init__.py",
+        "qualname": "modify_sys_path",
+        "removed": false
+      }
+    ],
+    "hunks": [
+      {
+        "header": "@@ -86,7 +86,8 @@ def modify_sys_path() -> None:",
+        "mapped_functions": {
+          "base": [
+            [
+              "pylint/__init__.py",
+              "modify_sys_path"
+            ]
+          ],
+          "patched": [
+            [
+              "pylint/__init__.py",
+              "modify_sys_path"
+            ]
+          ]
+        },
+        "new_changed": [
+          89,
+          90
+        ],
+        "new_start": 86,
+        "old_changed": [
+          89
+        ],
+        "old_start": 86,
+        "path": "pylint/__init__.py"
+      },
+      {
+        "header": "@@ -96,9 +97,11 @@ def modify_sys_path() -> None:",
+        "mapped_functions": {
+          "base": [
+            [
+              "pylint/__init__.py",
+              "modify_sys_path"
+            ]
+          ],
+          "patched": [
+            [
+              "pylint/__init__.py",
+              "modify_sys_path"
+            ]
+          ]
+        },
+        "new_changed": [
+          100,
+          101,
+          102
+        ],
+        "new_start": 97,
+        "old_changed": [
+          101
+        ],
+        "old_start": 96,
+        "path": "pylint/__init__.py"
+      }
+    ]
+  },
+  "pytest-dev__pytest-5809": {
+    "AST_errors": [],
+    "changed_functions": [
+      {
+        "base": {
+          "decorator_start": 65,
+          "decorators": [],
+          "end": 91,
+          "name": "create_new_paste",
+          "path": "src/_pytest/pastebin.py",
+          "qualname": "create_new_paste",
+          "start": 65
+        },
+        "id": "src/_pytest/pastebin.py::create_new_paste",
+        "patch_only": false,
+        "patched": {
+          "decorator_start": 65,
+          "decorators": [],
+          "end": 91,
+          "name": "create_new_paste",
+          "path": "src/_pytest/pastebin.py",
+          "qualname": "create_new_paste",
+          "start": 65
+        },
+        "path": "src/_pytest/pastebin.py",
+        "qualname": "create_new_paste",
+        "removed": false
+      }
+    ],
+    "hunks": [
+      {
+        "header": "@@ -79,7 +79,7 @@ def create_new_paste(contents):",
+        "mapped_functions": {
+          "base": [
+            [
+              "src/_pytest/pastebin.py",
+              "create_new_paste"
+            ]
+          ],
+          "patched": [
+            [
+              "src/_pytest/pastebin.py",
+              "create_new_paste"
+            ]
+          ]
+        },
+        "new_changed": [
+          82
+        ],
+        "new_start": 79,
+        "old_changed": [
+          82
+        ],
+        "old_start": 79,
+        "path": "src/_pytest/pastebin.py"
+      }
+    ]
+  },
+  "sphinx-doc__sphinx-10435": {
+    "AST_errors": [],
+    "changed_functions": [
+      {
+        "base": {
+          "decorator_start": 1695,
+          "decorators": [],
+          "end": 1718,
+          "name": "visit_literal",
+          "path": "sphinx/writers/latex.py",
+          "qualname": "LaTeXTranslator.visit_literal",
+          "start": 1695
+        },
+        "id": "sphinx/writers/latex.py::LaTeXTranslator.visit_literal",
+        "patch_only": false,
+        "patched": {
+          "decorator_start": 1695,
+          "decorators": [],
+          "end": 1719,
+          "name": "visit_literal",
+          "path": "sphinx/writers/latex.py",
+          "qualname": "LaTeXTranslator.visit_literal",
+          "start": 1695
+        },
+        "path": "sphinx/writers/latex.py",
+        "qualname": "LaTeXTranslator.visit_literal",
+        "removed": false
+      }
+    ],
+    "hunks": [
+      {
+        "header": "@@ -1710,9 +1710,10 @@ class LaTeXTranslator(SphinxTranslator):",
+        "mapped_functions": {
+          "base": [
+            [
+              "sphinx/writers/latex.py",
+              "LaTeXTranslator.visit_literal"
+            ]
+          ],
+          "patched": [
+            [
+              "sphinx/writers/latex.py",
+              "LaTeXTranslator.visit_literal"
+            ]
+          ]
+        },
+        "new_changed": [
+          1713,
+          1716
+        ],
+        "new_start": 1710,
+        "old_changed": [
+          1713
+        ],
+        "old_start": 1710,
+        "path": "sphinx/writers/latex.py"
+      }
+    ]
+  }
+}

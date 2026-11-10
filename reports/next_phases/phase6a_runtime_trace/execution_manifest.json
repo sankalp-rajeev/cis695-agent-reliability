@@ -1,0 +1,2606 @@
+[
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/lint/unittest_lint.py::test_custom_should_analyze_file"
+    ],
+    "artifact_sha256": {
+      "executions/01-base-traced/source_receipt.json": "13390f799e700ec049d70800fae4edf1908c9c9ec194f2f79f49be93a91e8891",
+      "executions/01-base-traced/stdout.txt": "b29bf895241007cdfa8c20004a1430d822f25093fe049e5742cf09787025a8fc",
+      "executions/01-base-traced/trace_config.json": "ba288e711de601e15a6682559bdb6974ff37103a5e4468cc2a93fc254d5e496f",
+      "executions/01-base-traced/traces/trace-29.jsonl": "eadd42c5f810ad565f59c50c66f8650005bd5443116aa46fa3f8a937dde82415"
+    },
+    "candidate_sha256": "f7e4f6955ed10efc5cdc95faefd807bbbc63dff78ad28818c52c14115b111d0d",
+    "duration_s": 3.2069781640020665,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:9ba92d212c060748bacf6410d82d24322460bf950db75b511a3eac41bd3f0720",
+    "key": "01-base-traced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 2580,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 4368206
+    },
+    "stream_errors": [],
+    "task": "pylint-dev__pylint-6528",
+    "test_id": "tests/lint/unittest_lint.py::test_custom_should_analyze_file",
+    "timed_out": false,
+    "trace_entry_records": 2,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 4.324956707016099
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/lint/unittest_lint.py::test_custom_should_analyze_file"
+    ],
+    "artifact_sha256": {
+      "executions/01-base-untraced/source_receipt.json": "13390f799e700ec049d70800fae4edf1908c9c9ec194f2f79f49be93a91e8891",
+      "executions/01-base-untraced/stdout.txt": "83bd134faca8ee8ac9ac9f742132ea55976d1fd22ed3ddd60794370f45758a4a",
+      "executions/01-base-untraced/trace_config.json": "ba288e711de601e15a6682559bdb6974ff37103a5e4468cc2a93fc254d5e496f"
+    },
+    "candidate_sha256": "f7e4f6955ed10efc5cdc95faefd807bbbc63dff78ad28818c52c14115b111d0d",
+    "duration_s": 1.6194320840004366,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:9ba92d212c060748bacf6410d82d24322460bf950db75b511a3eac41bd3f0720",
+    "key": "01-base-untraced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 2580,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 4368206
+    },
+    "stream_errors": [],
+    "task": "pylint-dev__pylint-6528",
+    "test_id": "tests/lint/unittest_lint.py::test_custom_should_analyze_file",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 2.7150681909988634
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/lint/unittest_lint.py::test_custom_should_analyze_file"
+    ],
+    "artifact_sha256": {
+      "executions/01-patched-traced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/01-patched-traced/source_receipt.json": "0b13c2d676edc11381be94ed143b4c1cd657fbc1f49992018524afb7a7214544",
+      "executions/01-patched-traced/stdout.txt": "4bd64b687aa0122a4c958615ce8111d6f2f5cc21755d83d29af01aef4f6770d7",
+      "executions/01-patched-traced/trace_config.json": "25e3224db620b5afc901ea64c4a63990ae9da59a45fea66304edda1dfe59d6e5",
+      "executions/01-patched-traced/traces/trace-35.jsonl": "cdeeacc33db5e1dd6abe3adb2d7e23d1448759515e3cc032bdd332661ec18255"
+    },
+    "candidate_sha256": "f7e4f6955ed10efc5cdc95faefd807bbbc63dff78ad28818c52c14115b111d0d",
+    "duration_s": 3.0809952749987133,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:9ba92d212c060748bacf6410d82d24322460bf950db75b511a3eac41bd3f0720",
+    "key": "01-patched-traced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 2580,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 4368869
+    },
+    "stream_errors": [],
+    "task": "pylint-dev__pylint-6528",
+    "test_id": "tests/lint/unittest_lint.py::test_custom_should_analyze_file",
+    "timed_out": false,
+    "trace_entry_records": 4,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 4.1759510330157354
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/lint/unittest_lint.py::test_custom_should_analyze_file"
+    ],
+    "artifact_sha256": {
+      "executions/01-patched-untraced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/01-patched-untraced/source_receipt.json": "0b13c2d676edc11381be94ed143b4c1cd657fbc1f49992018524afb7a7214544",
+      "executions/01-patched-untraced/stdout.txt": "0faa6f66ececca4a688faadc6360e953288fc67bbc1f963ba9c464a264243ea2",
+      "executions/01-patched-untraced/trace_config.json": "25e3224db620b5afc901ea64c4a63990ae9da59a45fea66304edda1dfe59d6e5"
+    },
+    "candidate_sha256": "f7e4f6955ed10efc5cdc95faefd807bbbc63dff78ad28818c52c14115b111d0d",
+    "duration_s": 1.6604183409945108,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:9ba92d212c060748bacf6410d82d24322460bf950db75b511a3eac41bd3f0720",
+    "key": "01-patched-untraced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 2580,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 4368869
+    },
+    "stream_errors": [],
+    "task": "pylint-dev__pylint-6528",
+    "test_id": "tests/lint/unittest_lint.py::test_custom_should_analyze_file",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 2.760854007996386
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/lint/unittest_lint.py::test_multiprocessing[1]"
+    ],
+    "artifact_sha256": {
+      "executions/02-base-traced/source_receipt.json": "13390f799e700ec049d70800fae4edf1908c9c9ec194f2f79f49be93a91e8891",
+      "executions/02-base-traced/stdout.txt": "5d05095b15e863b513f4e57f0e0b2f49ca3c80d7ec96b29eb3098659586299bd",
+      "executions/02-base-traced/trace_config.json": "32050a37efe1553a915ffdff40ed1104bcd689cdf276b3e5c8aca5a76dc8caac",
+      "executions/02-base-traced/traces/trace-29.jsonl": "55855961acb18a5daf5c5ecdacd71ff67ca1fce19b065ce5f9279f8c20228b69"
+    },
+    "candidate_sha256": "f7e4f6955ed10efc5cdc95faefd807bbbc63dff78ad28818c52c14115b111d0d",
+    "duration_s": 2.9693735770124476,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:9ba92d212c060748bacf6410d82d24322460bf950db75b511a3eac41bd3f0720",
+    "key": "02-base-traced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 2580,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 4368206
+    },
+    "stream_errors": [],
+    "task": "pylint-dev__pylint-6528",
+    "test_id": "tests/lint/unittest_lint.py::test_multiprocessing[1]",
+    "timed_out": false,
+    "trace_entry_records": 2,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 4.030483553011436
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/lint/unittest_lint.py::test_multiprocessing[1]"
+    ],
+    "artifact_sha256": {
+      "executions/02-base-untraced/source_receipt.json": "13390f799e700ec049d70800fae4edf1908c9c9ec194f2f79f49be93a91e8891",
+      "executions/02-base-untraced/stdout.txt": "d7086f7f5f46bb7310888283eca1dbbc8f6dcb1bcc220341cb4b0ed01c2cac05",
+      "executions/02-base-untraced/trace_config.json": "32050a37efe1553a915ffdff40ed1104bcd689cdf276b3e5c8aca5a76dc8caac"
+    },
+    "candidate_sha256": "f7e4f6955ed10efc5cdc95faefd807bbbc63dff78ad28818c52c14115b111d0d",
+    "duration_s": 1.5334396309917793,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:9ba92d212c060748bacf6410d82d24322460bf950db75b511a3eac41bd3f0720",
+    "key": "02-base-untraced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 2580,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 4368206
+    },
+    "stream_errors": [],
+    "task": "pylint-dev__pylint-6528",
+    "test_id": "tests/lint/unittest_lint.py::test_multiprocessing[1]",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 2.6013713959837332
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/lint/unittest_lint.py::test_multiprocessing[1]"
+    ],
+    "artifact_sha256": {
+      "executions/02-patched-traced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/02-patched-traced/source_receipt.json": "0b13c2d676edc11381be94ed143b4c1cd657fbc1f49992018524afb7a7214544",
+      "executions/02-patched-traced/stdout.txt": "30c37ee1eb9e85a7367f0101e1639ff071f8476bc2ae27ac2c6f3e4e930c937a",
+      "executions/02-patched-traced/trace_config.json": "d5f62611e220ce116e23ffa4f646496aade089e7dcde31fe91b079f009fb8130",
+      "executions/02-patched-traced/traces/trace-35.jsonl": "1a1b5cd672eb3b73f7da88f170b2e6a38bab15a4afb61a05568ac165b2c6f3cb"
+    },
+    "candidate_sha256": "f7e4f6955ed10efc5cdc95faefd807bbbc63dff78ad28818c52c14115b111d0d",
+    "duration_s": 3.1124717270140536,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:9ba92d212c060748bacf6410d82d24322460bf950db75b511a3eac41bd3f0720",
+    "key": "02-patched-traced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 2580,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 4368869
+    },
+    "stream_errors": [],
+    "task": "pylint-dev__pylint-6528",
+    "test_id": "tests/lint/unittest_lint.py::test_multiprocessing[1]",
+    "timed_out": false,
+    "trace_entry_records": 4,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 4.228065731993411
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/lint/unittest_lint.py::test_multiprocessing[1]"
+    ],
+    "artifact_sha256": {
+      "executions/02-patched-untraced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/02-patched-untraced/source_receipt.json": "0b13c2d676edc11381be94ed143b4c1cd657fbc1f49992018524afb7a7214544",
+      "executions/02-patched-untraced/stdout.txt": "c1e646f35e226041c45eaa5e123aceb94af7150a03f72959c4ed5aa293bb5290",
+      "executions/02-patched-untraced/trace_config.json": "d5f62611e220ce116e23ffa4f646496aade089e7dcde31fe91b079f009fb8130"
+    },
+    "candidate_sha256": "f7e4f6955ed10efc5cdc95faefd807bbbc63dff78ad28818c52c14115b111d0d",
+    "duration_s": 1.5919074660050683,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:9ba92d212c060748bacf6410d82d24322460bf950db75b511a3eac41bd3f0720",
+    "key": "02-patched-untraced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 2580,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 4368869
+    },
+    "stream_errors": [],
+    "task": "pylint-dev__pylint-6528",
+    "test_id": "tests/lint/unittest_lint.py::test_multiprocessing[1]",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 2.699202489980962
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/lint/unittest_lint.py::test_multiprocessing[2]"
+    ],
+    "artifact_sha256": {
+      "executions/03-base-traced/source_receipt.json": "13390f799e700ec049d70800fae4edf1908c9c9ec194f2f79f49be93a91e8891",
+      "executions/03-base-traced/stdout.txt": "7bc53966d04747b124340f55ecb1b3659bf7a2a693f3e6965487e4a4bc1eafb4",
+      "executions/03-base-traced/trace_config.json": "e48e135c26015ab064b921f2364a4f4d37bb7a43926ccb0175cac0cc52dfa5ce",
+      "executions/03-base-traced/traces/trace-29.jsonl": "719f42c5448f2f3d19392512147c8c5096eac4d50ff67ae4b98c13f14ef24c33"
+    },
+    "candidate_sha256": "f7e4f6955ed10efc5cdc95faefd807bbbc63dff78ad28818c52c14115b111d0d",
+    "duration_s": 3.068093649984803,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:9ba92d212c060748bacf6410d82d24322460bf950db75b511a3eac41bd3f0720",
+    "key": "03-base-traced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 2580,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 4368206
+    },
+    "stream_errors": [],
+    "task": "pylint-dev__pylint-6528",
+    "test_id": "tests/lint/unittest_lint.py::test_multiprocessing[2]",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 4.1360071130038705
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/lint/unittest_lint.py::test_multiprocessing[2]"
+    ],
+    "artifact_sha256": {
+      "executions/03-base-untraced/source_receipt.json": "13390f799e700ec049d70800fae4edf1908c9c9ec194f2f79f49be93a91e8891",
+      "executions/03-base-untraced/stdout.txt": "4bca939ab3c3ab8e0b3485cc470bb7c111729224fa0ecbae51bf0612147229a9",
+      "executions/03-base-untraced/trace_config.json": "e48e135c26015ab064b921f2364a4f4d37bb7a43926ccb0175cac0cc52dfa5ce"
+    },
+    "candidate_sha256": "f7e4f6955ed10efc5cdc95faefd807bbbc63dff78ad28818c52c14115b111d0d",
+    "duration_s": 1.6216059360012878,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:9ba92d212c060748bacf6410d82d24322460bf950db75b511a3eac41bd3f0720",
+    "key": "03-base-untraced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 2580,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 4368206
+    },
+    "stream_errors": [],
+    "task": "pylint-dev__pylint-6528",
+    "test_id": "tests/lint/unittest_lint.py::test_multiprocessing[2]",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 2.7196501739963423
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/lint/unittest_lint.py::test_multiprocessing[2]"
+    ],
+    "artifact_sha256": {
+      "executions/03-patched-traced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/03-patched-traced/source_receipt.json": "0b13c2d676edc11381be94ed143b4c1cd657fbc1f49992018524afb7a7214544",
+      "executions/03-patched-traced/stdout.txt": "02a01f8e5ed4f599c86a89c78b1b24e7495e71336f231deeb2f01ddd99c69063",
+      "executions/03-patched-traced/trace_config.json": "b5f5cbf64a0dd947d16e4289da996d5c4bdf5a8174aca10b5360ed44c2f22900",
+      "executions/03-patched-traced/traces/trace-35.jsonl": "8c4b98a3736b0c950adad6a08327d43e6264118a70dda0cb2ac23b29dc8eb922"
+    },
+    "candidate_sha256": "f7e4f6955ed10efc5cdc95faefd807bbbc63dff78ad28818c52c14115b111d0d",
+    "duration_s": 3.2151825109904166,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:9ba92d212c060748bacf6410d82d24322460bf950db75b511a3eac41bd3f0720",
+    "key": "03-patched-traced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 2580,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 4368869
+    },
+    "stream_errors": [],
+    "task": "pylint-dev__pylint-6528",
+    "test_id": "tests/lint/unittest_lint.py::test_multiprocessing[2]",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 4.290965080988826
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/lint/unittest_lint.py::test_multiprocessing[2]"
+    ],
+    "artifact_sha256": {
+      "executions/03-patched-untraced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/03-patched-untraced/source_receipt.json": "0b13c2d676edc11381be94ed143b4c1cd657fbc1f49992018524afb7a7214544",
+      "executions/03-patched-untraced/stdout.txt": "4bca939ab3c3ab8e0b3485cc470bb7c111729224fa0ecbae51bf0612147229a9",
+      "executions/03-patched-untraced/trace_config.json": "b5f5cbf64a0dd947d16e4289da996d5c4bdf5a8174aca10b5360ed44c2f22900"
+    },
+    "candidate_sha256": "f7e4f6955ed10efc5cdc95faefd807bbbc63dff78ad28818c52c14115b111d0d",
+    "duration_s": 1.684455104987137,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:9ba92d212c060748bacf6410d82d24322460bf950db75b511a3eac41bd3f0720",
+    "key": "03-patched-untraced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 2580,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 4368869
+    },
+    "stream_errors": [],
+    "task": "pylint-dev__pylint-6528",
+    "test_id": "tests/lint/unittest_lint.py::test_multiprocessing[2]",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 2.794569154008059
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/test_self.py::TestRunTC::test_jobs_score"
+    ],
+    "artifact_sha256": {
+      "executions/04-base-traced/source_receipt.json": "13390f799e700ec049d70800fae4edf1908c9c9ec194f2f79f49be93a91e8891",
+      "executions/04-base-traced/stdout.txt": "d20242bd8f4b694965fd2d3c281fad4df811410eaac9f7a4356e09ed27d11ac6",
+      "executions/04-base-traced/trace_config.json": "4ad4108bd8ab09b0df8eb1c2eb40b40e1fdc4f8798b52d259a192d8b3a654f75",
+      "executions/04-base-traced/traces/trace-29.jsonl": "c136b453cfcff853a31c1258eee3e6fe9e2dd0c25b54210e7a835908439268e1"
+    },
+    "candidate_sha256": "f7e4f6955ed10efc5cdc95faefd807bbbc63dff78ad28818c52c14115b111d0d",
+    "duration_s": 3.4950095580134075,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:9ba92d212c060748bacf6410d82d24322460bf950db75b511a3eac41bd3f0720",
+    "key": "04-base-traced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 2580,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 4368206
+    },
+    "stream_errors": [],
+    "task": "pylint-dev__pylint-6528",
+    "test_id": "tests/test_self.py::TestRunTC::test_jobs_score",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 4.5730295829998795
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/test_self.py::TestRunTC::test_jobs_score"
+    ],
+    "artifact_sha256": {
+      "executions/04-base-untraced/source_receipt.json": "13390f799e700ec049d70800fae4edf1908c9c9ec194f2f79f49be93a91e8891",
+      "executions/04-base-untraced/stdout.txt": "05a9dbaaff6e6d05f630ed19a68a92a858b35d48da01a4bbcf2850d764b87843",
+      "executions/04-base-untraced/trace_config.json": "4ad4108bd8ab09b0df8eb1c2eb40b40e1fdc4f8798b52d259a192d8b3a654f75"
+    },
+    "candidate_sha256": "f7e4f6955ed10efc5cdc95faefd807bbbc63dff78ad28818c52c14115b111d0d",
+    "duration_s": 1.6666031549975742,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:9ba92d212c060748bacf6410d82d24322460bf950db75b511a3eac41bd3f0720",
+    "key": "04-base-untraced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 2580,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 4368206
+    },
+    "stream_errors": [],
+    "task": "pylint-dev__pylint-6528",
+    "test_id": "tests/test_self.py::TestRunTC::test_jobs_score",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 2.7528513360011857
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/test_self.py::TestRunTC::test_jobs_score"
+    ],
+    "artifact_sha256": {
+      "executions/04-patched-traced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/04-patched-traced/source_receipt.json": "0b13c2d676edc11381be94ed143b4c1cd657fbc1f49992018524afb7a7214544",
+      "executions/04-patched-traced/stdout.txt": "38ac30a476d1d476b28d3274968f646a51a4e615dd2cb08768ac9cae3e5e6765",
+      "executions/04-patched-traced/trace_config.json": "062551c543a8f9bd6028afeb536aa3acd8445c6d9db6bd714c7a85ba189652d9",
+      "executions/04-patched-traced/traces/trace-35.jsonl": "ff97df1f490252e2eb977b08084ad254a0ad098460b2a9c86a7aa6e58b0c929e"
+    },
+    "candidate_sha256": "f7e4f6955ed10efc5cdc95faefd807bbbc63dff78ad28818c52c14115b111d0d",
+    "duration_s": 3.359042647993192,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:9ba92d212c060748bacf6410d82d24322460bf950db75b511a3eac41bd3f0720",
+    "key": "04-patched-traced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 2580,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 4368869
+    },
+    "stream_errors": [],
+    "task": "pylint-dev__pylint-6528",
+    "test_id": "tests/test_self.py::TestRunTC::test_jobs_score",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 4.43836333102081
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/test_self.py::TestRunTC::test_jobs_score"
+    ],
+    "artifact_sha256": {
+      "executions/04-patched-untraced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/04-patched-untraced/source_receipt.json": "0b13c2d676edc11381be94ed143b4c1cd657fbc1f49992018524afb7a7214544",
+      "executions/04-patched-untraced/stdout.txt": "057070e66eec10c893911385f33d70ae3954563bf01a8f82e4a3c3225d6f718d",
+      "executions/04-patched-untraced/trace_config.json": "062551c543a8f9bd6028afeb536aa3acd8445c6d9db6bd714c7a85ba189652d9"
+    },
+    "candidate_sha256": "f7e4f6955ed10efc5cdc95faefd807bbbc63dff78ad28818c52c14115b111d0d",
+    "duration_s": 1.6841518270084634,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:9ba92d212c060748bacf6410d82d24322460bf950db75b511a3eac41bd3f0720",
+    "key": "04-patched-untraced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 2580,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 4368869
+    },
+    "stream_errors": [],
+    "task": "pylint-dev__pylint-6528",
+    "test_id": "tests/test_self.py::TestRunTC::test_jobs_score",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 2.7739465910126455
+  },
+  {
+    "argv": [
+      "python",
+      "tests/runtests.py",
+      "--verbosity=2",
+      "generic_views.test_base.DeprecationTests.test_template_params_warning"
+    ],
+    "artifact_sha256": {
+      "executions/05-base-traced/source_receipt.json": "2ec60e96e0b4cdfbf76084b39c02f35726a3c092945074d0f6a11a60aeaad14d",
+      "executions/05-base-traced/stdout.txt": "98ef3ccf6b88b7e5d4e1f6aaee2a015cbbf602a8f31d687162780cfb17027e5a",
+      "executions/05-base-traced/trace_config.json": "88ce27554caed6f10e29f697da417deb46e03c633bda4472321b7c4eadc7b4dc",
+      "executions/05-base-traced/traces/trace-28.jsonl": "242f02ab4a1b989c7f9fe8161028ac8a0486c73a756c43b232fbc4308fb3e3c5"
+    },
+    "candidate_sha256": "69181c9a98281a325159813f1b8a53aa13bf3dd5bb8bd375894c1d344a9cdc85",
+    "duration_s": 1.2123322229890618,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:ca66a7eeb804ce23b06420dd501f6e5fe4149dc62b3efe9ef6a56049852db755",
+    "key": "05-base-traced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 6395,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.6.13 |Anaconda, Inc.| (default, Jun  4 2021, 14:25:59) \n[GCC 7.5.0]",
+      "total_bytes": 38530587
+    },
+    "stream_errors": [],
+    "task": "django__django-13297",
+    "test_id": "tests/generic_views/test_base.py::DeprecationTests::test_template_params_warning",
+    "timed_out": false,
+    "trace_entry_records": 4,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 3.429860414995346
+  },
+  {
+    "argv": [
+      "python",
+      "tests/runtests.py",
+      "--verbosity=2",
+      "generic_views.test_base.DeprecationTests.test_template_params_warning"
+    ],
+    "artifact_sha256": {
+      "executions/05-base-untraced/source_receipt.json": "2ec60e96e0b4cdfbf76084b39c02f35726a3c092945074d0f6a11a60aeaad14d",
+      "executions/05-base-untraced/stdout.txt": "bbdf6f56281d9689b26154e453287632f1104459e0522d5c088802bb67cc1db3",
+      "executions/05-base-untraced/trace_config.json": "88ce27554caed6f10e29f697da417deb46e03c633bda4472321b7c4eadc7b4dc"
+    },
+    "candidate_sha256": "69181c9a98281a325159813f1b8a53aa13bf3dd5bb8bd375894c1d344a9cdc85",
+    "duration_s": 0.9578647989837918,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:ca66a7eeb804ce23b06420dd501f6e5fe4149dc62b3efe9ef6a56049852db755",
+    "key": "05-base-untraced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 6395,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.6.13 |Anaconda, Inc.| (default, Jun  4 2021, 14:25:59) \n[GCC 7.5.0]",
+      "total_bytes": 38530587
+    },
+    "stream_errors": [],
+    "task": "django__django-13297",
+    "test_id": "tests/generic_views/test_base.py::DeprecationTests::test_template_params_warning",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 3.138387533981586
+  },
+  {
+    "argv": [
+      "python",
+      "tests/runtests.py",
+      "--verbosity=2",
+      "generic_views.test_base.DeprecationTests.test_template_params_warning"
+    ],
+    "artifact_sha256": {
+      "executions/05-patched-traced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/05-patched-traced/source_receipt.json": "406883dee49b7ca216cbe284ae3e62b9662b783688e9ce9658fa4eafcf412d4e",
+      "executions/05-patched-traced/stdout.txt": "e9465c85ac857ed48716ee87112d2edb40a96cb695fccc67ec19c6119c531ed6",
+      "executions/05-patched-traced/trace_config.json": "64309944c7d764405ee8d3d280f4d7f011b8fd0b72ee1d865cade4ce5c8d3953",
+      "executions/05-patched-traced/traces/trace-35.jsonl": "24593181b3c3badaec6b08c2db61c18afdc641da6b4041c1c5fafe6849d13f39"
+    },
+    "candidate_sha256": "69181c9a98281a325159813f1b8a53aa13bf3dd5bb8bd375894c1d344a9cdc85",
+    "duration_s": 1.2316551250114571,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:ca66a7eeb804ce23b06420dd501f6e5fe4149dc62b3efe9ef6a56049852db755",
+    "key": "05-patched-traced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 6395,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.6.13 |Anaconda, Inc.| (default, Jun  4 2021, 14:25:59) \n[GCC 7.5.0]",
+      "total_bytes": 38530706
+    },
+    "stream_errors": [],
+    "task": "django__django-13297",
+    "test_id": "tests/generic_views/test_base.py::DeprecationTests::test_template_params_warning",
+    "timed_out": false,
+    "trace_entry_records": 4,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 3.4533300059847534
+  },
+  {
+    "argv": [
+      "python",
+      "tests/runtests.py",
+      "--verbosity=2",
+      "generic_views.test_base.DeprecationTests.test_template_params_warning"
+    ],
+    "artifact_sha256": {
+      "executions/05-patched-untraced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/05-patched-untraced/source_receipt.json": "406883dee49b7ca216cbe284ae3e62b9662b783688e9ce9658fa4eafcf412d4e",
+      "executions/05-patched-untraced/stdout.txt": "d3cce990069242f4170cc6d8a9d0391b13a16d773fb3dda3689682810612aea8",
+      "executions/05-patched-untraced/trace_config.json": "64309944c7d764405ee8d3d280f4d7f011b8fd0b72ee1d865cade4ce5c8d3953"
+    },
+    "candidate_sha256": "69181c9a98281a325159813f1b8a53aa13bf3dd5bb8bd375894c1d344a9cdc85",
+    "duration_s": 0.977989498001989,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:ca66a7eeb804ce23b06420dd501f6e5fe4149dc62b3efe9ef6a56049852db755",
+    "key": "05-patched-untraced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 6395,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.6.13 |Anaconda, Inc.| (default, Jun  4 2021, 14:25:59) \n[GCC 7.5.0]",
+      "total_bytes": 38530706
+    },
+    "stream_errors": [],
+    "task": "django__django-13297",
+    "test_id": "tests/generic_views/test_base.py::DeprecationTests::test_template_params_warning",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 3.2580486760125495
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "lib/matplotlib/tests/test_colors.py::test_register_cmap"
+    ],
+    "artifact_sha256": {
+      "executions/06-base-traced/source_receipt.json": "04ffdbd74648b79d5cfc066c37c2770225b49238fa6ae6bcf5fe96bc3d0fe8d9",
+      "executions/06-base-traced/stdout.txt": "5143c6c720730b0ef82dc357f84ab2ac1141bc6b468f3515a2700f88abae0baf",
+      "executions/06-base-traced/trace_config.json": "798c2198f95f1d9799d9a86a1073dd5aa9d7a3693f148788ffa660fcceef6c9e",
+      "executions/06-base-traced/traces/trace-29.jsonl": "72f46c1d70cbca77aec08d342aae9b50ea66dd4a7b6ac90320c558a25b746846"
+    },
+    "candidate_sha256": "5cabaa4a2bc80de34b9ca6c49c1ebbba00cb7be597b5dce3f3c0c3e0519c7740",
+    "duration_s": 10.899142025009496,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:8d5dd308f77d3ff7efd7970809557b2221abb357218104390ba0489af7e25e90",
+    "key": "06-base-traced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 4535,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.11.11 | packaged by conda-forge | (main, Dec  5 2024, 14:17:24) [GCC 13.3.0]",
+      "total_bytes": 69990512
+    },
+    "stream_errors": [],
+    "task": "matplotlib__matplotlib-25479",
+    "test_id": "lib/matplotlib/tests/test_colors.py::test_register_cmap",
+    "timed_out": false,
+    "trace_entry_records": 2,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 12.875111299013952
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "lib/matplotlib/tests/test_colors.py::test_register_cmap"
+    ],
+    "artifact_sha256": {
+      "executions/06-base-untraced/source_receipt.json": "04ffdbd74648b79d5cfc066c37c2770225b49238fa6ae6bcf5fe96bc3d0fe8d9",
+      "executions/06-base-untraced/stdout.txt": "da7c74320d6cd31884f329c124ce5d6304eb2cbbf7566d263fa21a3c01d2db3f",
+      "executions/06-base-untraced/trace_config.json": "798c2198f95f1d9799d9a86a1073dd5aa9d7a3693f148788ffa660fcceef6c9e"
+    },
+    "candidate_sha256": "5cabaa4a2bc80de34b9ca6c49c1ebbba00cb7be597b5dce3f3c0c3e0519c7740",
+    "duration_s": 3.669264755997574,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:8d5dd308f77d3ff7efd7970809557b2221abb357218104390ba0489af7e25e90",
+    "key": "06-base-untraced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 4535,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.11.11 | packaged by conda-forge | (main, Dec  5 2024, 14:17:24) [GCC 13.3.0]",
+      "total_bytes": 69990512
+    },
+    "stream_errors": [],
+    "task": "matplotlib__matplotlib-25479",
+    "test_id": "lib/matplotlib/tests/test_colors.py::test_register_cmap",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 5.595763154007727
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "lib/matplotlib/tests/test_colors.py::test_register_cmap"
+    ],
+    "artifact_sha256": {
+      "executions/06-patched-traced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/06-patched-traced/source_receipt.json": "0c92ae9c7d4c35755c1a5d6a1f9fc4e5cd73a3400821a8ef626519f94fc3b7af",
+      "executions/06-patched-traced/stdout.txt": "91b73271af93a1329b854fe38cfb5b94e62b572e921c602bea3648569bf5409c",
+      "executions/06-patched-traced/trace_config.json": "70a313b76dafbbc377954e7f7acc7acbd5689f5e8a16b1c54951cef6c5a8c0c5",
+      "executions/06-patched-traced/traces/trace-35.jsonl": "ff928ce23ced94d5f33dfb289d9b5bc3e830db8c9f9c977919ee6c975f364519"
+    },
+    "candidate_sha256": "5cabaa4a2bc80de34b9ca6c49c1ebbba00cb7be597b5dce3f3c0c3e0519c7740",
+    "duration_s": 10.278647257975535,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:8d5dd308f77d3ff7efd7970809557b2221abb357218104390ba0489af7e25e90",
+    "key": "06-patched-traced",
+    "outcome": "FAILED",
+    "reason": null,
+    "returncode": 1,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 4535,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.11.11 | packaged by conda-forge | (main, Dec  5 2024, 14:17:24) [GCC 13.3.0]",
+      "total_bytes": 69990557
+    },
+    "stream_errors": [],
+    "task": "matplotlib__matplotlib-25479",
+    "test_id": "lib/matplotlib/tests/test_colors.py::test_register_cmap",
+    "timed_out": false,
+    "trace_entry_records": 2,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 12.277937143022427
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "lib/matplotlib/tests/test_colors.py::test_register_cmap"
+    ],
+    "artifact_sha256": {
+      "executions/06-patched-untraced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/06-patched-untraced/source_receipt.json": "0c92ae9c7d4c35755c1a5d6a1f9fc4e5cd73a3400821a8ef626519f94fc3b7af",
+      "executions/06-patched-untraced/stdout.txt": "e6107a544428ed9f9b1f9cf1d2a55f72f5617002357b8f2a23e50a3264f5efcb",
+      "executions/06-patched-untraced/trace_config.json": "70a313b76dafbbc377954e7f7acc7acbd5689f5e8a16b1c54951cef6c5a8c0c5"
+    },
+    "candidate_sha256": "5cabaa4a2bc80de34b9ca6c49c1ebbba00cb7be597b5dce3f3c0c3e0519c7740",
+    "duration_s": 3.8234874170157127,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:8d5dd308f77d3ff7efd7970809557b2221abb357218104390ba0489af7e25e90",
+    "key": "06-patched-untraced",
+    "outcome": "FAILED",
+    "reason": null,
+    "returncode": 1,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 4535,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.11.11 | packaged by conda-forge | (main, Dec  5 2024, 14:17:24) [GCC 13.3.0]",
+      "total_bytes": 69990557
+    },
+    "stream_errors": [],
+    "task": "matplotlib__matplotlib-25479",
+    "test_id": "lib/matplotlib/tests/test_colors.py::test_register_cmap",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 5.805168052989757
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/test_self.py::TestRunTC::test_jobs_score"
+    ],
+    "artifact_sha256": {
+      "executions/07-base-traced/source_receipt.json": "37ff179bd54032cca7fdf8f2d3ee03580df36f33b6153068416d2321e6f31849",
+      "executions/07-base-traced/stdout.txt": "10065907c7e3563c7d50db2eca1b3539b7ec8744b1a3392e39cce17467c17224",
+      "executions/07-base-traced/trace_config.json": "b22d3e07d80e163483250c93585a68f85a228da8bf047298d36f4e8f17fd6daa",
+      "executions/07-base-traced/traces/trace-29.jsonl": "c136b453cfcff853a31c1258eee3e6fe9e2dd0c25b54210e7a835908439268e1"
+    },
+    "candidate_sha256": "b8f25fcc32031c547c2a6856c78518f6dfe20256924f232c4d6b06fda2fb6e1f",
+    "duration_s": 3.252210707985796,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:0303aebc7a42cad95668e97e913c52f3f9cf435f61b5f2c1a50313890bb3e07a",
+    "key": "07-base-traced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 3382,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 4803523
+    },
+    "stream_errors": [],
+    "task": "pylint-dev__pylint-7277",
+    "test_id": "tests/test_self.py::TestRunTC::test_jobs_score",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 4.466518052999163
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/test_self.py::TestRunTC::test_jobs_score"
+    ],
+    "artifact_sha256": {
+      "executions/07-base-untraced/source_receipt.json": "37ff179bd54032cca7fdf8f2d3ee03580df36f33b6153068416d2321e6f31849",
+      "executions/07-base-untraced/stdout.txt": "4f2f0ce2b14c0b12f3d84ea4a22d5a86728c48940cee9f85a0f401ffe68f5542",
+      "executions/07-base-untraced/trace_config.json": "b22d3e07d80e163483250c93585a68f85a228da8bf047298d36f4e8f17fd6daa"
+    },
+    "candidate_sha256": "b8f25fcc32031c547c2a6856c78518f6dfe20256924f232c4d6b06fda2fb6e1f",
+    "duration_s": 1.7335155659820884,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:0303aebc7a42cad95668e97e913c52f3f9cf435f61b5f2c1a50313890bb3e07a",
+    "key": "07-base-untraced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 3382,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 4803523
+    },
+    "stream_errors": [],
+    "task": "pylint-dev__pylint-7277",
+    "test_id": "tests/test_self.py::TestRunTC::test_jobs_score",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 2.9686322360066697
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/test_self.py::TestRunTC::test_jobs_score"
+    ],
+    "artifact_sha256": {
+      "executions/07-patched-traced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/07-patched-traced/source_receipt.json": "549c85884b2d4c2315977c7cf1ee8f75c353f8d48a3d2920e67e507cbf555bce",
+      "executions/07-patched-traced/stdout.txt": "9868a81f505ac9998313f9b100126b44f7658ea15550cddf27304849b2534555",
+      "executions/07-patched-traced/trace_config.json": "679b91a3f3a37a17b1d9a3d8b8807d185280a1227fd1beb284133020d306e491",
+      "executions/07-patched-traced/traces/trace-33.jsonl": "233868cde12ed06e70f6693b10e13df691a99db792fa5405b4f95c5445e3c715"
+    },
+    "candidate_sha256": "b8f25fcc32031c547c2a6856c78518f6dfe20256924f232c4d6b06fda2fb6e1f",
+    "duration_s": 3.2906264330085833,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:0303aebc7a42cad95668e97e913c52f3f9cf435f61b5f2c1a50313890bb3e07a",
+    "key": "07-patched-traced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 3382,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 4803632
+    },
+    "stream_errors": [],
+    "task": "pylint-dev__pylint-7277",
+    "test_id": "tests/test_self.py::TestRunTC::test_jobs_score",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 4.447408703999827
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/test_self.py::TestRunTC::test_jobs_score"
+    ],
+    "artifact_sha256": {
+      "executions/07-patched-untraced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/07-patched-untraced/source_receipt.json": "549c85884b2d4c2315977c7cf1ee8f75c353f8d48a3d2920e67e507cbf555bce",
+      "executions/07-patched-untraced/stdout.txt": "c3b25712e86d97c600c5129d25541add189fcdb5b4a91e23f4671939a7de1b9b",
+      "executions/07-patched-untraced/trace_config.json": "679b91a3f3a37a17b1d9a3d8b8807d185280a1227fd1beb284133020d306e491"
+    },
+    "candidate_sha256": "b8f25fcc32031c547c2a6856c78518f6dfe20256924f232c4d6b06fda2fb6e1f",
+    "duration_s": 1.707145980995847,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:0303aebc7a42cad95668e97e913c52f3f9cf435f61b5f2c1a50313890bb3e07a",
+    "key": "07-patched-untraced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 3382,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 4803632
+    },
+    "stream_errors": [],
+    "task": "pylint-dev__pylint-7277",
+    "test_id": "tests/test_self.py::TestRunTC::test_jobs_score",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 2.958439334994182
+  },
+  {
+    "argv": [
+      "python",
+      "tests/runtests.py",
+      "--verbosity=2",
+      "queries.test_q.QTests.test_deconstruct"
+    ],
+    "artifact_sha256": {
+      "executions/08-base-traced/source_receipt.json": "72111693b03355081d1c8732a30cd8cd986f20200b76a60d91b66656e7d01259",
+      "executions/08-base-traced/stdout.txt": "462a4206606fdbc8faa39b86db378313c3c2a9bf7f7ec255c96f755817f41cd3",
+      "executions/08-base-traced/trace_config.json": "ac8cd33a788d08d17246bc0b28b85b0150e1717bda8af0441f59c8df49830f22",
+      "executions/08-base-traced/traces/trace-28.jsonl": "d68f1c72fc6f0d9a8905a0a109ee770146da1ab385b7a47f8eaeb68c72245a96"
+    },
+    "candidate_sha256": "df8d46c9d620658f932306f3c0c899f4389533ff37a27afc171434bf7be2fc9b",
+    "duration_s": 1.5212606379936915,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:3ed1a9652b0476ebb99bf82373ad2017b6809963312a72fc2457d87d21555180",
+    "key": "08-base-traced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 6437,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.8.20 (default, Oct  3 2024, 15:24:27) \n[GCC 11.2.0]",
+      "total_bytes": 39126829
+    },
+    "stream_errors": [],
+    "task": "django__django-14140",
+    "test_id": "tests/queries/test_q.py::QTests::test_deconstruct",
+    "timed_out": false,
+    "trace_entry_records": 2,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 3.654489021981135
+  },
+  {
+    "argv": [
+      "python",
+      "tests/runtests.py",
+      "--verbosity=2",
+      "queries.test_q.QTests.test_deconstruct"
+    ],
+    "artifact_sha256": {
+      "executions/08-base-untraced/source_receipt.json": "72111693b03355081d1c8732a30cd8cd986f20200b76a60d91b66656e7d01259",
+      "executions/08-base-untraced/stdout.txt": "9d1db6d437c5e1b2735323740e00cf175e6826888349314bce13641798c904e9",
+      "executions/08-base-untraced/trace_config.json": "ac8cd33a788d08d17246bc0b28b85b0150e1717bda8af0441f59c8df49830f22"
+    },
+    "candidate_sha256": "df8d46c9d620658f932306f3c0c899f4389533ff37a27afc171434bf7be2fc9b",
+    "duration_s": 1.060513856005855,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:3ed1a9652b0476ebb99bf82373ad2017b6809963312a72fc2457d87d21555180",
+    "key": "08-base-untraced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 6437,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.8.20 (default, Oct  3 2024, 15:24:27) \n[GCC 11.2.0]",
+      "total_bytes": 39126829
+    },
+    "stream_errors": [],
+    "task": "django__django-14140",
+    "test_id": "tests/queries/test_q.py::QTests::test_deconstruct",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 3.2641835400136188
+  },
+  {
+    "argv": [
+      "python",
+      "tests/runtests.py",
+      "--verbosity=2",
+      "queries.test_q.QTests.test_deconstruct"
+    ],
+    "artifact_sha256": {
+      "executions/08-patched-traced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/08-patched-traced/source_receipt.json": "f495f24a2872af4cd5566b090e31fc48c3e15593160498eb286c91caf9c5e700",
+      "executions/08-patched-traced/stdout.txt": "cb335a9abe8cbb7a67b16fce5655f79163320bdd9f50b3e337332c71e9b95637",
+      "executions/08-patched-traced/trace_config.json": "7a4a4679e6b4e44a0a4b9997a7c16a3907ae91a98a9dc58c90f4d524f2b8b09e",
+      "executions/08-patched-traced/traces/trace-35.jsonl": "0b8ffa153bb07cd6352fbe9ece21c72e9d87fbfef596acbcc98c7cfd41537199"
+    },
+    "candidate_sha256": "df8d46c9d620658f932306f3c0c899f4389533ff37a27afc171434bf7be2fc9b",
+    "duration_s": 1.5356811259989627,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:3ed1a9652b0476ebb99bf82373ad2017b6809963312a72fc2457d87d21555180",
+    "key": "08-patched-traced",
+    "outcome": "FAILED",
+    "reason": null,
+    "returncode": 1,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 6437,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.8.20 (default, Oct  3 2024, 15:24:27) \n[GCC 11.2.0]",
+      "total_bytes": 39126638
+    },
+    "stream_errors": [],
+    "task": "django__django-14140",
+    "test_id": "tests/queries/test_q.py::QTests::test_deconstruct",
+    "timed_out": false,
+    "trace_entry_records": 2,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 3.7540522610070184
+  },
+  {
+    "argv": [
+      "python",
+      "tests/runtests.py",
+      "--verbosity=2",
+      "queries.test_q.QTests.test_deconstruct"
+    ],
+    "artifact_sha256": {
+      "executions/08-patched-untraced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/08-patched-untraced/source_receipt.json": "f495f24a2872af4cd5566b090e31fc48c3e15593160498eb286c91caf9c5e700",
+      "executions/08-patched-untraced/stdout.txt": "6709e0c700937b5567078b2210204fe70a95f18c4393c7733a1f5d14d472de48",
+      "executions/08-patched-untraced/trace_config.json": "7a4a4679e6b4e44a0a4b9997a7c16a3907ae91a98a9dc58c90f4d524f2b8b09e"
+    },
+    "candidate_sha256": "df8d46c9d620658f932306f3c0c899f4389533ff37a27afc171434bf7be2fc9b",
+    "duration_s": 1.0598570419824682,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:3ed1a9652b0476ebb99bf82373ad2017b6809963312a72fc2457d87d21555180",
+    "key": "08-patched-untraced",
+    "outcome": "FAILED",
+    "reason": null,
+    "returncode": 1,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 6437,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.8.20 (default, Oct  3 2024, 15:24:27) \n[GCC 11.2.0]",
+      "total_bytes": 39126638
+    },
+    "stream_errors": [],
+    "task": "django__django-14140",
+    "test_id": "tests/queries/test_q.py::QTests::test_deconstruct",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 3.289204709988553
+  },
+  {
+    "argv": [
+      "python",
+      "tests/runtests.py",
+      "--verbosity=2",
+      "queries.test_q.QTests.test_deconstruct_negated"
+    ],
+    "artifact_sha256": {
+      "executions/09-base-traced/source_receipt.json": "72111693b03355081d1c8732a30cd8cd986f20200b76a60d91b66656e7d01259",
+      "executions/09-base-traced/stdout.txt": "954a641c5bfc9ecafd5bd35f78a52066a132391a8548a51206030a75961a5453",
+      "executions/09-base-traced/trace_config.json": "1f2e3661a1e421b7e8338b83a5bfdc312dd6d874a148267a2e57b48c2c854114",
+      "executions/09-base-traced/traces/trace-28.jsonl": "8880636707e22b0d73f47597f9592a01a0e669e02c00ea4f21a83f802f11bdb4"
+    },
+    "candidate_sha256": "df8d46c9d620658f932306f3c0c899f4389533ff37a27afc171434bf7be2fc9b",
+    "duration_s": 1.5214450519997627,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:3ed1a9652b0476ebb99bf82373ad2017b6809963312a72fc2457d87d21555180",
+    "key": "09-base-traced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 6437,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.8.20 (default, Oct  3 2024, 15:24:27) \n[GCC 11.2.0]",
+      "total_bytes": 39126829
+    },
+    "stream_errors": [],
+    "task": "django__django-14140",
+    "test_id": "tests/queries/test_q.py::QTests::test_deconstruct_negated",
+    "timed_out": false,
+    "trace_entry_records": 2,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 3.711521563003771
+  },
+  {
+    "argv": [
+      "python",
+      "tests/runtests.py",
+      "--verbosity=2",
+      "queries.test_q.QTests.test_deconstruct_negated"
+    ],
+    "artifact_sha256": {
+      "executions/09-base-untraced/source_receipt.json": "72111693b03355081d1c8732a30cd8cd986f20200b76a60d91b66656e7d01259",
+      "executions/09-base-untraced/stdout.txt": "59c36572dd51cf18d1c0cffe2323e3ff6ffc38c62d8725179fdbe732e82035a5",
+      "executions/09-base-untraced/trace_config.json": "1f2e3661a1e421b7e8338b83a5bfdc312dd6d874a148267a2e57b48c2c854114"
+    },
+    "candidate_sha256": "df8d46c9d620658f932306f3c0c899f4389533ff37a27afc171434bf7be2fc9b",
+    "duration_s": 1.0459258150076494,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:3ed1a9652b0476ebb99bf82373ad2017b6809963312a72fc2457d87d21555180",
+    "key": "09-base-untraced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 6437,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.8.20 (default, Oct  3 2024, 15:24:27) \n[GCC 11.2.0]",
+      "total_bytes": 39126829
+    },
+    "stream_errors": [],
+    "task": "django__django-14140",
+    "test_id": "tests/queries/test_q.py::QTests::test_deconstruct_negated",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 3.2538091339811217
+  },
+  {
+    "argv": [
+      "python",
+      "tests/runtests.py",
+      "--verbosity=2",
+      "queries.test_q.QTests.test_deconstruct_negated"
+    ],
+    "artifact_sha256": {
+      "executions/09-patched-traced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/09-patched-traced/source_receipt.json": "f495f24a2872af4cd5566b090e31fc48c3e15593160498eb286c91caf9c5e700",
+      "executions/09-patched-traced/stdout.txt": "8b04002efcf6656b80e320ffd62efe4505816d3bf374ea2a2b05307999ca2b02",
+      "executions/09-patched-traced/trace_config.json": "73190807508d45d6adce00d950489d44a53da3ac85bebf6d920093478e0798af",
+      "executions/09-patched-traced/traces/trace-34.jsonl": "6c5e79f93f6c74e6410eae3e378533a6b4ec8c2dca2ec40ba6f5521b239785ae"
+    },
+    "candidate_sha256": "df8d46c9d620658f932306f3c0c899f4389533ff37a27afc171434bf7be2fc9b",
+    "duration_s": 1.511658000992611,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:3ed1a9652b0476ebb99bf82373ad2017b6809963312a72fc2457d87d21555180",
+    "key": "09-patched-traced",
+    "outcome": "FAILED",
+    "reason": null,
+    "returncode": 1,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 6437,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.8.20 (default, Oct  3 2024, 15:24:27) \n[GCC 11.2.0]",
+      "total_bytes": 39126638
+    },
+    "stream_errors": [],
+    "task": "django__django-14140",
+    "test_id": "tests/queries/test_q.py::QTests::test_deconstruct_negated",
+    "timed_out": false,
+    "trace_entry_records": 2,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 3.7535060129885096
+  },
+  {
+    "argv": [
+      "python",
+      "tests/runtests.py",
+      "--verbosity=2",
+      "queries.test_q.QTests.test_deconstruct_negated"
+    ],
+    "artifact_sha256": {
+      "executions/09-patched-untraced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/09-patched-untraced/source_receipt.json": "f495f24a2872af4cd5566b090e31fc48c3e15593160498eb286c91caf9c5e700",
+      "executions/09-patched-untraced/stdout.txt": "8f081454a3ac358d5a0c961a28ceb7806ea4347324c419b7b74771f66772a57b",
+      "executions/09-patched-untraced/trace_config.json": "73190807508d45d6adce00d950489d44a53da3ac85bebf6d920093478e0798af"
+    },
+    "candidate_sha256": "df8d46c9d620658f932306f3c0c899f4389533ff37a27afc171434bf7be2fc9b",
+    "duration_s": 1.084755032992689,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:3ed1a9652b0476ebb99bf82373ad2017b6809963312a72fc2457d87d21555180",
+    "key": "09-patched-untraced",
+    "outcome": "FAILED",
+    "reason": null,
+    "returncode": 1,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 6437,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.8.20 (default, Oct  3 2024, 15:24:27) \n[GCC 11.2.0]",
+      "total_bytes": 39126638
+    },
+    "stream_errors": [],
+    "task": "django__django-14140",
+    "test_id": "tests/queries/test_q.py::QTests::test_deconstruct_negated",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 3.338024171971483
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+    ],
+    "artifact_sha256": {
+      "executions/10-base-traced/source_receipt.json": "11f9d0d5c7da6e6211c9387ac6a61d28105d0d3d5daae4b083a3defae65ac0f1",
+      "executions/10-base-traced/stdout.txt": "701524114e7e115c67077e6cea06a726f4d3ac48b3a0140e19794fda58821c4c",
+      "executions/10-base-traced/trace_config.json": "f976d2cd958b8f6f7928eaf91c966789e42ef2b0a3480bb25f6320426e62f41d",
+      "executions/10-base-traced/traces/trace-29.jsonl": "f888b61007f68a80c6eae93fa716677d4ad41d84b6aed2423a59082645ca6012"
+    },
+    "candidate_sha256": "82f7a2cecf06bb50a79120584ae083240b215e5e7fd40ff190ab52b0c1632d77",
+    "duration_s": 0.8451141600089613,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:f60a775b879d5b770d9969b17dcfd45e717410059234e727e02236080b2e47c1",
+    "key": "10-base-traced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 423,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 3205633
+    },
+    "stream_errors": [],
+    "task": "pytest-dev__pytest-5809",
+    "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+    "timed_out": false,
+    "trace_entry_records": 2,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 1.5467513280163985
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+    ],
+    "artifact_sha256": {
+      "executions/10-base-untraced/source_receipt.json": "11f9d0d5c7da6e6211c9387ac6a61d28105d0d3d5daae4b083a3defae65ac0f1",
+      "executions/10-base-untraced/stdout.txt": "8cccd91007e3b547aa6a8660297ac5f1efa0441838d6b58fc2809500e784d8cf",
+      "executions/10-base-untraced/trace_config.json": "f976d2cd958b8f6f7928eaf91c966789e42ef2b0a3480bb25f6320426e62f41d"
+    },
+    "candidate_sha256": "82f7a2cecf06bb50a79120584ae083240b215e5e7fd40ff190ab52b0c1632d77",
+    "duration_s": 0.5943292789743282,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:f60a775b879d5b770d9969b17dcfd45e717410059234e727e02236080b2e47c1",
+    "key": "10-base-untraced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 423,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 3205633
+    },
+    "stream_errors": [],
+    "task": "pytest-dev__pytest-5809",
+    "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 1.3186612729914486
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+    ],
+    "artifact_sha256": {
+      "executions/10-patched-traced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/10-patched-traced/source_receipt.json": "d4a3f92ec2943485f2e228bb53cc96210fe8630bfa7c913e5e3efe406fcffc8c",
+      "executions/10-patched-traced/stdout.txt": "86983316d875f1b64158c909c6f039f6181c4e4dd4235ea154b94120bb25a115",
+      "executions/10-patched-traced/trace_config.json": "b785e2b7e874f559a374a1c98fcb405de7b0e41981c524f9cd0fc3800c4bc3dd",
+      "executions/10-patched-traced/traces/trace-34.jsonl": "4f2146386d87ab5374029228145a7e2bf58254e0991f42e41dd44bed815b0926"
+    },
+    "candidate_sha256": "82f7a2cecf06bb50a79120584ae083240b215e5e7fd40ff190ab52b0c1632d77",
+    "duration_s": 0.890033317002235,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:f60a775b879d5b770d9969b17dcfd45e717410059234e727e02236080b2e47c1",
+    "key": "10-patched-traced",
+    "outcome": "FAILED",
+    "reason": null,
+    "returncode": 1,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 423,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 3205588
+    },
+    "stream_errors": [],
+    "task": "pytest-dev__pytest-5809",
+    "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+    "timed_out": false,
+    "trace_entry_records": 2,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 1.6461921770242043
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+    ],
+    "artifact_sha256": {
+      "executions/10-patched-untraced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/10-patched-untraced/source_receipt.json": "d4a3f92ec2943485f2e228bb53cc96210fe8630bfa7c913e5e3efe406fcffc8c",
+      "executions/10-patched-untraced/stdout.txt": "8619aa08696349f9e5a022d45115b988ce0f788071d13ed6814483dd20d57b65",
+      "executions/10-patched-untraced/trace_config.json": "b785e2b7e874f559a374a1c98fcb405de7b0e41981c524f9cd0fc3800c4bc3dd"
+    },
+    "candidate_sha256": "82f7a2cecf06bb50a79120584ae083240b215e5e7fd40ff190ab52b0c1632d77",
+    "duration_s": 0.6189705569995567,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:f60a775b879d5b770d9969b17dcfd45e717410059234e727e02236080b2e47c1",
+    "key": "10-patched-untraced",
+    "outcome": "FAILED",
+    "reason": null,
+    "returncode": 1,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 423,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 3205588
+    },
+    "stream_errors": [],
+    "task": "pytest-dev__pytest-5809",
+    "test_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 1.3612795670051128
+  },
+  {
+    "argv": [
+      "python",
+      "tests/runtests.py",
+      "--verbosity=2",
+      "basic.tests.ModelInstanceCreationTests.test_save_primary_with_default"
+    ],
+    "artifact_sha256": {
+      "executions/11-base-traced/source_receipt.json": "56b18d16ebc54ab02660c449d2b08d640849e13781cbaa4ed062bc66e7962134",
+      "executions/11-base-traced/stdout.txt": "7d4beb7b444798e0b43addea4b20f0a662ed0062f5a0ffa3ddbf20c041cc0b89",
+      "executions/11-base-traced/trace_config.json": "aa5c78f625008fdf3b1cba5d595482f7a1821cba0b62b652243e0f2a3959de1a",
+      "executions/11-base-traced/traces/trace-29.jsonl": "450eae7c51c03b245ed8fae5b7720be08aaf3ed670e570966a2fc21fe6db73f7"
+    },
+    "candidate_sha256": "1e622963ee5f06181f2963ef66a1c6e44d6afbf9fb270fedd99c1e28ff8dc5aa",
+    "duration_s": 1.5254274499893654,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:eae3d1fa6ff84b74fef3a0c9b01633f0ed67c9e004d66f3f63b1bdc4e9b04f6a",
+    "key": "11-base-traced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 6172,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.6.13 |Anaconda, Inc.| (default, Jun  4 2021, 14:25:59) \n[GCC 7.5.0]",
+      "total_bytes": 36816398
+    },
+    "stream_errors": [],
+    "task": "django__django-12209",
+    "test_id": "tests/basic/tests.py::ModelInstanceCreationTests::test_save_primary_with_default",
+    "timed_out": false,
+    "trace_entry_records": 2,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 3.651386593002826
+  },
+  {
+    "argv": [
+      "python",
+      "tests/runtests.py",
+      "--verbosity=2",
+      "basic.tests.ModelInstanceCreationTests.test_save_primary_with_default"
+    ],
+    "artifact_sha256": {
+      "executions/11-base-untraced/source_receipt.json": "56b18d16ebc54ab02660c449d2b08d640849e13781cbaa4ed062bc66e7962134",
+      "executions/11-base-untraced/stdout.txt": "35ff06088c6cca95088e95deec947eddccceb7d62eebbfb89fa03b66b41a19c2",
+      "executions/11-base-untraced/trace_config.json": "aa5c78f625008fdf3b1cba5d595482f7a1821cba0b62b652243e0f2a3959de1a"
+    },
+    "candidate_sha256": "1e622963ee5f06181f2963ef66a1c6e44d6afbf9fb270fedd99c1e28ff8dc5aa",
+    "duration_s": 1.0543023459904362,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:eae3d1fa6ff84b74fef3a0c9b01633f0ed67c9e004d66f3f63b1bdc4e9b04f6a",
+    "key": "11-base-untraced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 6172,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.6.13 |Anaconda, Inc.| (default, Jun  4 2021, 14:25:59) \n[GCC 7.5.0]",
+      "total_bytes": 36816398
+    },
+    "stream_errors": [],
+    "task": "django__django-12209",
+    "test_id": "tests/basic/tests.py::ModelInstanceCreationTests::test_save_primary_with_default",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 3.208732039987808
+  },
+  {
+    "argv": [
+      "python",
+      "tests/runtests.py",
+      "--verbosity=2",
+      "basic.tests.ModelInstanceCreationTests.test_save_primary_with_default"
+    ],
+    "artifact_sha256": {
+      "executions/11-patched-traced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/11-patched-traced/source_receipt.json": "aea82a5828d91b9f56333569e1fcb5353db7b654f90fcc7667e8e9a2850d51e3",
+      "executions/11-patched-traced/stdout.txt": "1089297a348a05f7b9ec807b0ba2bdb3cda42ebaca2b519215e2d171de2f65ce",
+      "executions/11-patched-traced/trace_config.json": "7d37dfdf6ccd9578e825e18acadd0f941d2d8406d0ec36269445c8404014d319",
+      "executions/11-patched-traced/traces/trace-35.jsonl": "c24c9ccbc4d83055adaa3c230048658d2b7e2beaaaa8c413d5218a47646590c7"
+    },
+    "candidate_sha256": "1e622963ee5f06181f2963ef66a1c6e44d6afbf9fb270fedd99c1e28ff8dc5aa",
+    "duration_s": 1.481617184006609,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:eae3d1fa6ff84b74fef3a0c9b01633f0ed67c9e004d66f3f63b1bdc4e9b04f6a",
+    "key": "11-patched-traced",
+    "outcome": "FAILED",
+    "reason": null,
+    "returncode": 1,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 6172,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.6.13 |Anaconda, Inc.| (default, Jun  4 2021, 14:25:59) \n[GCC 7.5.0]",
+      "total_bytes": 36816088
+    },
+    "stream_errors": [],
+    "task": "django__django-12209",
+    "test_id": "tests/basic/tests.py::ModelInstanceCreationTests::test_save_primary_with_default",
+    "timed_out": false,
+    "trace_entry_records": 2,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 3.6755871109780855
+  },
+  {
+    "argv": [
+      "python",
+      "tests/runtests.py",
+      "--verbosity=2",
+      "basic.tests.ModelInstanceCreationTests.test_save_primary_with_default"
+    ],
+    "artifact_sha256": {
+      "executions/11-patched-untraced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/11-patched-untraced/source_receipt.json": "aea82a5828d91b9f56333569e1fcb5353db7b654f90fcc7667e8e9a2850d51e3",
+      "executions/11-patched-untraced/stdout.txt": "5aafc9517770162596f2a94078f4346cba1f344fb5db2188f21e6c88eba1e2a7",
+      "executions/11-patched-untraced/trace_config.json": "7d37dfdf6ccd9578e825e18acadd0f941d2d8406d0ec36269445c8404014d319"
+    },
+    "candidate_sha256": "1e622963ee5f06181f2963ef66a1c6e44d6afbf9fb270fedd99c1e28ff8dc5aa",
+    "duration_s": 1.1553517089923844,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:eae3d1fa6ff84b74fef3a0c9b01633f0ed67c9e004d66f3f63b1bdc4e9b04f6a",
+    "key": "11-patched-untraced",
+    "outcome": "FAILED",
+    "reason": null,
+    "returncode": 1,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 6172,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.6.13 |Anaconda, Inc.| (default, Jun  4 2021, 14:25:59) \n[GCC 7.5.0]",
+      "total_bytes": 36816088
+    },
+    "stream_errors": [],
+    "task": "django__django-12209",
+    "test_id": "tests/basic/tests.py::ModelInstanceCreationTests::test_save_primary_with_default",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 3.4707226369937416
+  },
+  {
+    "argv": [
+      "python",
+      "tests/runtests.py",
+      "--verbosity=2",
+      "forms_tests.tests.test_forms.FormsTestCase.test_datetime_clean_initial_callable_disabled"
+    ],
+    "artifact_sha256": {
+      "executions/12-base-traced/source_receipt.json": "450a889cf36383cb55cbc2f396e22064a15b4eecf1a1c34297578ee7b6a1392d",
+      "executions/12-base-traced/stdout.txt": "87ce26051d5242833efb4b37bfc1f839d6d03a89cd75820de318b222202f8e83",
+      "executions/12-base-traced/trace_config.json": "7bc802e16c333d8de72a0085b7d63c68b0e27811a3ce70316f2b7c477f225c7b",
+      "executions/12-base-traced/traces/trace-28.jsonl": "19324d0a5b60fbbd02aec8d7355a10faf55048ee470ecd5ee099686f37ae8d62"
+    },
+    "candidate_sha256": "3ce8fb57b66084cab959a27496c17ec64c765adde69cea663f76c12e68d15853",
+    "duration_s": 1.1573676129919477,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:d8117c513c689dec4730707dde0b3ade0c4b1768d266208d3937e04ad37c4774",
+    "key": "12-base-traced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 6481,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.8.20 (default, Oct  3 2024, 15:24:27) \n[GCC 11.2.0]",
+      "total_bytes": 39488837
+    },
+    "stream_errors": [],
+    "task": "django__django-14631",
+    "test_id": "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled",
+    "timed_out": false,
+    "trace_entry_records": 2,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 3.3721964200085495
+  },
+  {
+    "argv": [
+      "python",
+      "tests/runtests.py",
+      "--verbosity=2",
+      "forms_tests.tests.test_forms.FormsTestCase.test_datetime_clean_initial_callable_disabled"
+    ],
+    "artifact_sha256": {
+      "executions/12-base-untraced/source_receipt.json": "450a889cf36383cb55cbc2f396e22064a15b4eecf1a1c34297578ee7b6a1392d",
+      "executions/12-base-untraced/stdout.txt": "ce45035beac4868530033660d40d49a959c62e6f79a460843a3b8466c4e73c0d",
+      "executions/12-base-untraced/trace_config.json": "7bc802e16c333d8de72a0085b7d63c68b0e27811a3ce70316f2b7c477f225c7b"
+    },
+    "candidate_sha256": "3ce8fb57b66084cab959a27496c17ec64c765adde69cea663f76c12e68d15853",
+    "duration_s": 0.9575620859977789,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:d8117c513c689dec4730707dde0b3ade0c4b1768d266208d3937e04ad37c4774",
+    "key": "12-base-untraced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 6481,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.8.20 (default, Oct  3 2024, 15:24:27) \n[GCC 11.2.0]",
+      "total_bytes": 39488837
+    },
+    "stream_errors": [],
+    "task": "django__django-14631",
+    "test_id": "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 3.1960126939811744
+  },
+  {
+    "argv": [
+      "python",
+      "tests/runtests.py",
+      "--verbosity=2",
+      "forms_tests.tests.test_forms.FormsTestCase.test_datetime_clean_initial_callable_disabled"
+    ],
+    "artifact_sha256": {
+      "executions/12-patched-traced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/12-patched-traced/source_receipt.json": "d6e1b4ab509f20f6f2d9add83bc697680c8e32a6b9d62440cee91d26fbac13ad",
+      "executions/12-patched-traced/stdout.txt": "64a5ca4e380d3b76d3187d01d7a4b479410fbd2ac041bb378459e841dc4a2a6e",
+      "executions/12-patched-traced/trace_config.json": "2bc1c6465b1c24f0097ec04539887b9f7c47978b8103b2530a330854f3d032df",
+      "executions/12-patched-traced/traces/trace-34.jsonl": "444abd3d427b83012222d05ac2f9fe130be60df81f3378eb7b64bee20f5279f9"
+    },
+    "candidate_sha256": "3ce8fb57b66084cab959a27496c17ec64c765adde69cea663f76c12e68d15853",
+    "duration_s": 1.1606010280083865,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:d8117c513c689dec4730707dde0b3ade0c4b1768d266208d3937e04ad37c4774",
+    "key": "12-patched-traced",
+    "outcome": "FAILED",
+    "reason": null,
+    "returncode": 1,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 6481,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.8.20 (default, Oct  3 2024, 15:24:27) \n[GCC 11.2.0]",
+      "total_bytes": 39488741
+    },
+    "stream_errors": [],
+    "task": "django__django-14631",
+    "test_id": "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled",
+    "timed_out": false,
+    "trace_entry_records": 4,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 3.3719025480095297
+  },
+  {
+    "argv": [
+      "python",
+      "tests/runtests.py",
+      "--verbosity=2",
+      "forms_tests.tests.test_forms.FormsTestCase.test_datetime_clean_initial_callable_disabled"
+    ],
+    "artifact_sha256": {
+      "executions/12-patched-untraced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/12-patched-untraced/source_receipt.json": "d6e1b4ab509f20f6f2d9add83bc697680c8e32a6b9d62440cee91d26fbac13ad",
+      "executions/12-patched-untraced/stdout.txt": "426963e0c244cadb2ee02da88e49b116e32c544020006581fa4b085bf47cc040",
+      "executions/12-patched-untraced/trace_config.json": "2bc1c6465b1c24f0097ec04539887b9f7c47978b8103b2530a330854f3d032df"
+    },
+    "candidate_sha256": "3ce8fb57b66084cab959a27496c17ec64c765adde69cea663f76c12e68d15853",
+    "duration_s": 0.9350069230131339,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:d8117c513c689dec4730707dde0b3ade0c4b1768d266208d3937e04ad37c4774",
+    "key": "12-patched-untraced",
+    "outcome": "FAILED",
+    "reason": null,
+    "returncode": 1,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 6481,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.8.20 (default, Oct  3 2024, 15:24:27) \n[GCC 11.2.0]",
+      "total_bytes": 39488741
+    },
+    "stream_errors": [],
+    "task": "django__django-14631",
+    "test_id": "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 3.2069417129969224
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/test_build_latex.py::test_latex_code_role"
+    ],
+    "artifact_sha256": {
+      "executions/13-base-traced/source_receipt.json": "431d38412b4a0becc1f90bc89de749b9847e5635f2befbfe626c692785d8ae0e",
+      "executions/13-base-traced/stdout.txt": "0d6c6fc0a5438311c261dd015e6de364a85d01800aeaf2f7046044fd20f5ff9b",
+      "executions/13-base-traced/trace_config.json": "ff4ee6b7e23d96af32bd259cc58fe90d888ee7e65202512c9e1e266ca765b760",
+      "executions/13-base-traced/traces/trace-29.jsonl": "06a54d3a385712d28e87ffce932ab13758f4898dc5cb2f621e6df55b1e7f72a7"
+    },
+    "candidate_sha256": "eea4b0658df8920da6cc160acae7c997cf35b2bae2821830283354861b3fd17d",
+    "duration_s": 3.1652859169989824,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:80919e420ca2c5ed3308b2cc90b313a76f1aca5b8b9621a76ebf8894e3472ed3",
+    "key": "13-base-traced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 1596,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 17730369
+    },
+    "stream_errors": [],
+    "task": "sphinx-doc__sphinx-10435",
+    "test_id": "tests/test_build_latex.py::test_latex_code_role",
+    "timed_out": false,
+    "trace_entry_records": 2,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 4.252456326998072
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/test_build_latex.py::test_latex_code_role"
+    ],
+    "artifact_sha256": {
+      "executions/13-base-untraced/source_receipt.json": "431d38412b4a0becc1f90bc89de749b9847e5635f2befbfe626c692785d8ae0e",
+      "executions/13-base-untraced/stdout.txt": "9ef853c127b6c5895450252223e1b49d597053a0d48c5c8e8f4b4a511e5250e5",
+      "executions/13-base-untraced/trace_config.json": "ff4ee6b7e23d96af32bd259cc58fe90d888ee7e65202512c9e1e266ca765b760"
+    },
+    "candidate_sha256": "eea4b0658df8920da6cc160acae7c997cf35b2bae2821830283354861b3fd17d",
+    "duration_s": 1.4892155249835923,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:80919e420ca2c5ed3308b2cc90b313a76f1aca5b8b9621a76ebf8894e3472ed3",
+    "key": "13-base-untraced",
+    "outcome": "PASSED",
+    "reason": null,
+    "returncode": 0,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 1596,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 17730369
+    },
+    "stream_errors": [],
+    "task": "sphinx-doc__sphinx-10435",
+    "test_id": "tests/test_build_latex.py::test_latex_code_role",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "base",
+    "wall_s": 2.5468790289887693
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/test_build_latex.py::test_latex_code_role"
+    ],
+    "artifact_sha256": {
+      "executions/13-patched-traced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/13-patched-traced/source_receipt.json": "52e6ac3f2a4a64f532d46400cd94925a88925f6aea024ff41597364a0088d1fc",
+      "executions/13-patched-traced/stdout.txt": "5bac66db82751a59f20de7a4a33148f656d3e4f9490113d826d109c00dbcbd16",
+      "executions/13-patched-traced/trace_config.json": "e0e92e3109beb244897a206f7e380bb3f72a7faa0ae36342f5c298c41ea7e597",
+      "executions/13-patched-traced/traces/trace-35.jsonl": "3c8d31c90ea8abff46615b879571c5036fb7bd803161e779977e6c0bbff65d9e"
+    },
+    "candidate_sha256": "eea4b0658df8920da6cc160acae7c997cf35b2bae2821830283354861b3fd17d",
+    "duration_s": 3.095594613987487,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:80919e420ca2c5ed3308b2cc90b313a76f1aca5b8b9621a76ebf8894e3472ed3",
+    "key": "13-patched-traced",
+    "outcome": "FAILED",
+    "reason": null,
+    "returncode": 1,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 1596,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 17730411
+    },
+    "stream_errors": [],
+    "task": "sphinx-doc__sphinx-10435",
+    "test_id": "tests/test_build_latex.py::test_latex_code_role",
+    "timed_out": false,
+    "trace_entry_records": 2,
+    "trace_errors": [],
+    "trace_installed_processes": 1,
+    "traced": true,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 4.172398007998709
+  },
+  {
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "-v",
+      "-rA",
+      "--",
+      "tests/test_build_latex.py::test_latex_code_role"
+    ],
+    "artifact_sha256": {
+      "executions/13-patched-untraced/patch_application.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executions/13-patched-untraced/source_receipt.json": "52e6ac3f2a4a64f532d46400cd94925a88925f6aea024ff41597364a0088d1fc",
+      "executions/13-patched-untraced/stdout.txt": "fbce33cdc4ca5343c4e50975cd1ade67ad5c3d42208f3540317e28a3a863e3f5",
+      "executions/13-patched-untraced/trace_config.json": "e0e92e3109beb244897a206f7e380bb3f72a7faa0ae36342f5c298c41ea7e597"
+    },
+    "candidate_sha256": "eea4b0658df8920da6cc160acae7c997cf35b2bae2821830283354861b3fd17d",
+    "duration_s": 1.5595657500089146,
+    "host_config": {
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuShares": 2048,
+      "NetworkMode": "none"
+    },
+    "image_id": "sha256:80919e420ca2c5ed3308b2cc90b313a76f1aca5b8b9621a76ebf8894e3472ed3",
+    "key": "13-patched-untraced",
+    "outcome": "FAILED",
+    "reason": null,
+    "returncode": 1,
+    "source_receipt": {
+      "PYTHONHASHSEED": null,
+      "PYTHONWARNINGS": null,
+      "checked_files": 1596,
+      "mismatches": [],
+      "os_cpu_count": 16,
+      "python": "3.9.20 (main, Oct  3 2024, 07:27:41) \n[GCC 11.2.0]",
+      "total_bytes": 17730411
+    },
+    "stream_errors": [],
+    "task": "sphinx-doc__sphinx-10435",
+    "test_id": "tests/test_build_latex.py::test_latex_code_role",
+    "timed_out": false,
+    "trace_entry_records": 0,
+    "trace_errors": [],
+    "trace_installed_processes": 0,
+    "traced": false,
+    "tracer_sha256": "e7e7497228cedf53b56cb58843960b48df0bb33d75365676ac2c7997decfcb9e",
+    "tree": "patched",
+    "wall_s": 2.6338335589971393
+  }
+]

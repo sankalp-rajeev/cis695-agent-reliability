@@ -1,0 +1,27 @@
+task,test,group,tree,traced_outcome,untraced_outcome,traced_exit,untraced_exit,outcome_match,trace_status,reason,thread_names,test_enter_receipt
+matplotlib__matplotlib-25479,lib/matplotlib/tests/test_colors.py::test_register_cmap,grader_failing_pre_existing,base,PASSED,PASSED,0,0,MATCH,TRACED,,Thread-1 (run_server);Thread-2,True
+matplotlib__matplotlib-25479,lib/matplotlib/tests/test_colors.py::test_register_cmap,grader_failing_pre_existing,patched,FAILED,FAILED,1,1,MATCH,TRACED,,Thread-1 (run_server);Thread-2,True
+pytest-dev__pytest-5809,testing/test_pastebin.py::TestPaste::test_create_new_paste,known_regression_witnesses,base,PASSED,PASSED,0,0,MATCH,TRACED,,,True
+pytest-dev__pytest-5809,testing/test_pastebin.py::TestPaste::test_create_new_paste,known_regression_witnesses,patched,FAILED,FAILED,1,1,MATCH,TRACED,,,True
+django__django-12209,tests/basic/tests.py::ModelInstanceCreationTests::test_save_primary_with_default,known_regression_witnesses,base,PASSED,PASSED,0,0,MATCH,TRACED,,,True
+django__django-12209,tests/basic/tests.py::ModelInstanceCreationTests::test_save_primary_with_default,known_regression_witnesses,patched,FAILED,FAILED,1,1,MATCH,TRACED,,,True
+django__django-14631,tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled,known_regression_witnesses,base,PASSED,PASSED,0,0,MATCH,TRACED,,,True
+django__django-14631,tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled,known_regression_witnesses,patched,FAILED,FAILED,1,1,MATCH,TRACED,,,True
+django__django-13297,tests/generic_views/test_base.py::DeprecationTests::test_template_params_warning,grader_failing_pre_existing,base,PASSED,PASSED,0,0,MATCH,TRACED,,,True
+django__django-13297,tests/generic_views/test_base.py::DeprecationTests::test_template_params_warning,grader_failing_pre_existing,patched,PASSED,PASSED,0,0,MATCH,TRACED,,,True
+pylint-dev__pylint-6528,tests/lint/unittest_lint.py::test_custom_should_analyze_file,grader_failing_pre_existing,base,PASSED,PASSED,0,0,MATCH,TRACED,,Thread-1;Thread-2;Thread-3,True
+pylint-dev__pylint-6528,tests/lint/unittest_lint.py::test_custom_should_analyze_file,grader_failing_pre_existing,patched,PASSED,PASSED,0,0,MATCH,TRACED,,Thread-1;Thread-2;Thread-3,True
+pylint-dev__pylint-6528,tests/lint/unittest_lint.py::test_multiprocessing[1],grader_failing_pre_existing,base,PASSED,PASSED,0,0,MATCH,TRACED,,,True
+pylint-dev__pylint-6528,tests/lint/unittest_lint.py::test_multiprocessing[1],grader_failing_pre_existing,patched,PASSED,PASSED,0,0,MATCH,TRACED,,,True
+pylint-dev__pylint-6528,tests/lint/unittest_lint.py::test_multiprocessing[2],grader_failing_pre_existing,base,PASSED,PASSED,0,0,MATCH,PARTIAL_THREAD_LIMIT,"sys.settrace is local to the installing thread. multiprocessing.Pool task feeder consumes _iterate_file_descrs, which calls expand_modules (and patched _is_ignored_file), in an untraced thread. Absence there is UNKNOWN, not NO.",Thread-1;Thread-2;Thread-3,True
+pylint-dev__pylint-6528,tests/lint/unittest_lint.py::test_multiprocessing[2],grader_failing_pre_existing,patched,PASSED,PASSED,0,0,MATCH,PARTIAL_THREAD_LIMIT,"sys.settrace is local to the installing thread. multiprocessing.Pool task feeder consumes _iterate_file_descrs, which calls expand_modules (and patched _is_ignored_file), in an untraced thread. Absence there is UNKNOWN, not NO.",Thread-1;Thread-2;Thread-3,True
+django__django-14140,tests/queries/test_q.py::QTests::test_deconstruct,known_regression_witnesses,base,PASSED,PASSED,0,0,MATCH,TRACED,,,True
+django__django-14140,tests/queries/test_q.py::QTests::test_deconstruct,known_regression_witnesses,patched,FAILED,FAILED,1,1,MATCH,TRACED,,,True
+django__django-14140,tests/queries/test_q.py::QTests::test_deconstruct_negated,known_regression_witnesses,base,PASSED,PASSED,0,0,MATCH,TRACED,,,True
+django__django-14140,tests/queries/test_q.py::QTests::test_deconstruct_negated,known_regression_witnesses,patched,FAILED,FAILED,1,1,MATCH,TRACED,,,True
+sphinx-doc__sphinx-10435,tests/test_build_latex.py::test_latex_code_role,known_regression_witnesses,base,PASSED,PASSED,0,0,MATCH,TRACED,,,True
+sphinx-doc__sphinx-10435,tests/test_build_latex.py::test_latex_code_role,known_regression_witnesses,patched,FAILED,FAILED,1,1,MATCH,TRACED,,,True
+pylint-dev__pylint-6528,tests/test_self.py::TestRunTC::test_jobs_score,grader_failing_pre_existing,base,PASSED,PASSED,0,0,MATCH,PARTIAL_THREAD_LIMIT,"sys.settrace is local to the installing thread. multiprocessing.Pool task feeder consumes _iterate_file_descrs, which calls expand_modules (and patched _is_ignored_file), in an untraced thread. Absence there is UNKNOWN, not NO.",Thread-1;Thread-2;Thread-3,True
+pylint-dev__pylint-6528,tests/test_self.py::TestRunTC::test_jobs_score,grader_failing_pre_existing,patched,PASSED,PASSED,0,0,MATCH,PARTIAL_THREAD_LIMIT,"sys.settrace is local to the installing thread. multiprocessing.Pool task feeder consumes _iterate_file_descrs, which calls expand_modules (and patched _is_ignored_file), in an untraced thread. Absence there is UNKNOWN, not NO.",Thread-1;Thread-2;Thread-3,True
+pylint-dev__pylint-7277,tests/test_self.py::TestRunTC::test_jobs_score,grader_failing_pre_existing,base,PASSED,PASSED,0,0,MATCH,TRACED,,Thread-1;Thread-2;Thread-3,True
+pylint-dev__pylint-7277,tests/test_self.py::TestRunTC::test_jobs_score,grader_failing_pre_existing,patched,PASSED,PASSED,0,0,MATCH,TRACED,,Thread-1;Thread-2;Thread-3,True

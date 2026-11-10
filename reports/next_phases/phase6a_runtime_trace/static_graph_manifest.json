@@ -1,0 +1,365 @@
+{
+  "comparison": "Regenerated frozen TypeGraph/TypeAmendedGraph, PRIMARY_RESOLVED_ONLY. Baseline amendment manifest chooses the builder; its old pre-typeprop edge hashes are not hashes of this enhanced graph.",
+  "graphs": [
+    {
+      "counts": {
+        "ambiguous_edges": 9257,
+        "ast_nodes": 1750244,
+        "call_sites": 137337,
+        "definitions": 32979,
+        "edge_records": 137337,
+        "nodes": 35567,
+        "parsed_files": 2588,
+        "python_files": 2588,
+        "resolved_edges": 22522,
+        "source_bytes": 13672577,
+        "unresolved_edges": 105558
+      },
+      "edges": 137337,
+      "failures": [],
+      "graph_sha256": "921e02e78e44329e659caa2a76792a80e4dc6b049770b8bb5d6011808fb1aae7",
+      "nodes": 35567,
+      "status": "complete",
+      "task": "django__django-12209"
+    },
+    {
+      "counts": {
+        "ambiguous_edges": 10477,
+        "ast_nodes": 1821720,
+        "call_sites": 143010,
+        "definitions": 34087,
+        "edge_records": 143010,
+        "nodes": 36760,
+        "parsed_files": 2673,
+        "python_files": 2673,
+        "resolved_edges": 22590,
+        "source_bytes": 14256675,
+        "unresolved_edges": 109943
+      },
+      "edges": 143010,
+      "failures": [],
+      "graph_sha256": "4bedea45d7e3e8ff14d82a475d3db0de84dec39a44208b29cd80bed4c818c4bb",
+      "nodes": 36760,
+      "status": "complete",
+      "task": "django__django-13297"
+    },
+    {
+      "counts": {
+        "ambiguous_edges": 10976,
+        "ast_nodes": 1880392,
+        "call_sites": 147732,
+        "definitions": 34945,
+        "edge_records": 147732,
+        "nodes": 37631,
+        "parsed_files": 2686,
+        "python_files": 2686,
+        "resolved_edges": 23239,
+        "source_bytes": 14629696,
+        "unresolved_edges": 113517
+      },
+      "edges": 147732,
+      "failures": [],
+      "graph_sha256": "aa8bf07b6a7d84f6c827e9f843b66ca14491a0a5bb5692643078da0621b5b375",
+      "nodes": 37631,
+      "status": "complete",
+      "task": "django__django-14140"
+    },
+    {
+      "counts": {
+        "ambiguous_edges": 11321,
+        "ast_nodes": 1910250,
+        "call_sites": 150088,
+        "definitions": 35494,
+        "edge_records": 150088,
+        "nodes": 38191,
+        "parse_failures": 1,
+        "parsed_files": 2697,
+        "python_files": 2698,
+        "resolved_edges": 23624,
+        "source_bytes": 14864073,
+        "unresolved_edges": 115143
+      },
+      "edges": 150088,
+      "failures": [
+        {
+          "line": 11,
+          "message": "invalid decimal literal (tests_syntax_error.py, line 11)",
+          "path": "tests/test_runner_apps/tagged/tests_syntax_error.py",
+          "reason": "SyntaxError"
+        }
+      ],
+      "graph_sha256": "a4b72f929dce206a8ee7d086f1c35c5fcd95d3defd78610fd745f06de5e389b5",
+      "nodes": 38191,
+      "status": "partial",
+      "task": "django__django-14631"
+    },
+    {
+      "counts": {
+        "ambiguous_edges": 5434,
+        "ast_nodes": 1138949,
+        "call_sites": 69885,
+        "definitions": 10844,
+        "edge_records": 69885,
+        "nodes": 11738,
+        "parsed_files": 894,
+        "python_files": 894,
+        "resolved_edges": 12118,
+        "source_bytes": 8481009,
+        "unresolved_edges": 52333
+      },
+      "edges": 69885,
+      "failures": [],
+      "graph_sha256": "9e566d0313cc260c493964576fdd1a7c780a20507ec5c7ceb35688b867ce7b54",
+      "nodes": 11738,
+      "status": "complete",
+      "task": "matplotlib__matplotlib-25479"
+    },
+    {
+      "counts": {
+        "ambiguous_edges": 1076,
+        "ast_nodes": 348619,
+        "call_sites": 17630,
+        "definitions": 7838,
+        "edge_records": 17630,
+        "nodes": 9278,
+        "omitted_files": 2,
+        "parse_failures": 10,
+        "parsed_files": 1440,
+        "python_files": 1450,
+        "resolved_edges": 2891,
+        "source_bytes": 3024540,
+        "unresolved_edges": 13663
+      },
+      "edges": 17630,
+      "failures": [
+        {
+          "line": 15,
+          "message": "cannot use starred expression here (star_needs_assignment_target_py37.py, line 15)",
+          "path": "tests/functional/s/star/star_needs_assignment_target_py37.py",
+          "reason": "SyntaxError"
+        },
+        {
+          "line": 1,
+          "message": "expected '(' (syntax_error.py, line 1)",
+          "path": "tests/functional/s/syntax/syntax_error.py",
+          "reason": "SyntaxError"
+        },
+        {
+          "line": 1,
+          "message": "expected '(' (syntax_error_jython.py, line 1)",
+          "path": "tests/functional/s/syntax/syntax_error_jython.py",
+          "reason": "SyntaxError"
+        },
+        {
+          "line": 6,
+          "message": "unexpected EOF while parsing (tokenize_error.py, line 6)",
+          "path": "tests/functional/t/tokenize_error.py",
+          "reason": "SyntaxError"
+        },
+        {
+          "line": 7,
+          "message": "unexpected EOF while parsing (tokenize_error_jython.py, line 7)",
+          "path": "tests/functional/t/tokenize_error_jython.py",
+          "reason": "SyntaxError"
+        },
+        {
+          "line": 0,
+          "message": "encoding problem: IBO-8859-1 with BOM (unknown_encoding_jython.py, line 0)",
+          "path": "tests/functional/u/unknown_encoding_jython.py",
+          "reason": "SyntaxError"
+        },
+        {
+          "line": 5,
+          "message": "Missing parentheses in call to 'exec'. Did you mean exec(...)? (func_w0122_py_30.py, line 5)",
+          "path": "tests/input/func_w0122_py_30.py",
+          "reason": "SyntaxError"
+        },
+        {
+          "line": 2,
+          "message": "invalid syntax (__init__.py, line 2)",
+          "path": "tests/regrtest_data/bad_package/__init__.py",
+          "reason": "SyntaxError"
+        },
+        {
+          "line": 20,
+          "message": "Missing parentheses in call to 'print'. Did you mean print(...)? (descriptor_crash.py, line 20)",
+          "path": "tests/regrtest_data/descriptor_crash.py",
+          "reason": "SyntaxError"
+        },
+        {
+          "line": 1,
+          "message": "invalid syntax (syntax_error.py, line 1)",
+          "path": "tests/regrtest_data/syntax_error.py",
+          "reason": "SyntaxError"
+        },
+        {
+          "path": "tests/functional/s/symlink/_binding/__init__.py",
+          "reason": "archive_link_or_special_file_not_followed"
+        },
+        {
+          "path": "tests/functional/s/symlink/_binding/symlink_module.py",
+          "reason": "archive_link_or_special_file_not_followed"
+        }
+      ],
+      "graph_sha256": "de8451b7c53415892b60ab5bb0184e3d8691c15ee8675edd52e39a6c7e8a44e3",
+      "nodes": 9278,
+      "status": "partial",
+      "task": "pylint-dev__pylint-6528"
+    },
+    {
+      "counts": {
+        "ambiguous_edges": 1125,
+        "ast_nodes": 373837,
+        "call_sites": 18844,
+        "definitions": 8380,
+        "edge_records": 18844,
+        "nodes": 10293,
+        "omitted_files": 2,
+        "parse_failures": 10,
+        "parsed_files": 1913,
+        "python_files": 1923,
+        "resolved_edges": 3033,
+        "source_bytes": 3219580,
+        "unresolved_edges": 14686
+      },
+      "edges": 18844,
+      "failures": [
+        {
+          "line": 15,
+          "message": "cannot use starred expression here (star_needs_assignment_target_py37.py, line 15)",
+          "path": "tests/functional/s/star/star_needs_assignment_target_py37.py",
+          "reason": "SyntaxError"
+        },
+        {
+          "line": 1,
+          "message": "invalid syntax (syntax_error.py, line 1)",
+          "path": "tests/functional/s/syntax/syntax_error.py",
+          "reason": "SyntaxError"
+        },
+        {
+          "line": 1,
+          "message": "expected '(' (syntax_error_jython.py, line 1)",
+          "path": "tests/functional/s/syntax/syntax_error_jython.py",
+          "reason": "SyntaxError"
+        },
+        {
+          "line": 6,
+          "message": "unexpected EOF while parsing (tokenize_error.py, line 6)",
+          "path": "tests/functional/t/tokenize_error.py",
+          "reason": "SyntaxError"
+        },
+        {
+          "line": 7,
+          "message": "unexpected EOF while parsing (tokenize_error_jython.py, line 7)",
+          "path": "tests/functional/t/tokenize_error_jython.py",
+          "reason": "SyntaxError"
+        },
+        {
+          "line": 0,
+          "message": "encoding problem: IBO-8859-1 with BOM (unknown_encoding_jython.py, line 0)",
+          "path": "tests/functional/u/unknown_encoding_jython.py",
+          "reason": "SyntaxError"
+        },
+        {
+          "line": 5,
+          "message": "Missing parentheses in call to 'exec'. Did you mean exec(...)? (func_w0122_py_30.py, line 5)",
+          "path": "tests/input/func_w0122_py_30.py",
+          "reason": "SyntaxError"
+        },
+        {
+          "line": 2,
+          "message": "invalid syntax (__init__.py, line 2)",
+          "path": "tests/regrtest_data/bad_package/__init__.py",
+          "reason": "SyntaxError"
+        },
+        {
+          "line": 20,
+          "message": "Missing parentheses in call to 'print'. Did you mean print(...)? (descriptor_crash.py, line 20)",
+          "path": "tests/regrtest_data/descriptor_crash.py",
+          "reason": "SyntaxError"
+        },
+        {
+          "line": 1,
+          "message": "invalid syntax (syntax_error.py, line 1)",
+          "path": "tests/regrtest_data/syntax_error.py",
+          "reason": "SyntaxError"
+        },
+        {
+          "path": "tests/functional/s/symlink/_binding/__init__.py",
+          "reason": "archive_link_or_special_file_not_followed"
+        },
+        {
+          "path": "tests/functional/s/symlink/_binding/symlink_module.py",
+          "reason": "archive_link_or_special_file_not_followed"
+        }
+      ],
+      "graph_sha256": "8cb907b3c0d9aa080279c549777083d8e4c138f3185f7453aa7984ab62cbaf32",
+      "nodes": 10293,
+      "status": "partial",
+      "task": "pylint-dev__pylint-7277"
+    },
+    {
+      "counts": {
+        "ambiguous_edges": 765,
+        "ast_nodes": 229006,
+        "call_sites": 16308,
+        "definitions": 4434,
+        "edge_records": 16308,
+        "nodes": 4632,
+        "parse_failures": 1,
+        "parsed_files": 198,
+        "python_files": 199,
+        "resolved_edges": 2219,
+        "source_bytes": 1982504,
+        "unresolved_edges": 13324
+      },
+      "edges": 16308,
+      "failures": [
+        {
+          "line": 4,
+          "message": "multiple exception types must be parenthesized (test_py2.py, line 4)",
+          "path": "doc/en/example/py2py3/test_py2.py",
+          "reason": "SyntaxError"
+        }
+      ],
+      "graph_sha256": "7f5aa4330964103bdd34d111f86683e43f8d0ba4b94956a994ab908d573ebda1",
+      "nodes": 4632,
+      "status": "partial",
+      "task": "pytest-dev__pytest-5809"
+    },
+    {
+      "counts": {
+        "ambiguous_edges": 1509,
+        "ast_nodes": 513558,
+        "call_sites": 28898,
+        "definitions": 7201,
+        "edge_records": 28898,
+        "nodes": 7754,
+        "parsed_files": 553,
+        "python_files": 553,
+        "resolved_edges": 6557,
+        "source_bytes": 3804487,
+        "unresolved_edges": 20832
+      },
+      "edges": 28898,
+      "failures": [],
+      "graph_sha256": "4b239d75b3b16653dbbe63e5dcb5a79bbcd582247a1564a1c36bb1148ee085dd",
+      "nodes": 7754,
+      "status": "complete",
+      "task": "sphinx-doc__sphinx-10435"
+    }
+  ],
+  "revision": "e1a3ed1c74fd304493c3fe3811de755af77e306c",
+  "source_sha256": {
+    "reports/callgraph_selection/amended_graph.py": "c225233ad195adca1dc9084e16ae37d52e856fc1ec6cf274e55e4329409c2dcb",
+    "reports/callgraph_selection/amendment2_72ad21b/graph_manifest.json": "c99976e64b6be840fe19495adce7c5aa6767f980e86cfa8ca12ba99c2e04e566",
+    "reports/callgraph_selection/build_graphs.py": "9aacb9d064fdacdb61cfe576793d26e93d1ae15dbe8e0ff5db76b94b1a432771",
+    "reports/callgraph_selection/phase2/callgraph_selector.py": "fa501c76f7a65dab70494da6971d1449c83ade0bd1b23b2c47e8e39c2fcea1dc",
+    "reports/callgraph_selection/phase2/inputs.py": "fede9e039cf1efb38a31fc35636034bb0a9f1ca13c509adbf27cbfd1e3c57909",
+    "reports/callgraph_selection/static_graph.py": "f1f13ec5ac470c8a142c412cc8d62e1a38e6e5c1cac020aac7c8fcc30c9e02b6",
+    "reports/callgraph_selection/typeprop_experiment/qualified_mapping/mapper.py": "2fc773f95d8b9fed6157b672a1f5ab6f144235e2b08ce1fa5bbbf63c95b2030d",
+    "reports/callgraph_selection/typeprop_experiment/typeprop_graph.py": "5108a97ff0b2018f7f8df9d41d929548b3ca9cff44bd9b8867e64197f850803d",
+    "reports/v2_diagnostic/diagnostic.py": "592d61df27db8041b3de0d4636b4a5c0e432588c045773313611c86a6a7e647e",
+    "reports/v2_diagnostic/oracle_posthoc.py": "75c2607d057364d813e8d51d3df1319b8eeeaae34d59dede36fa9a2a75561ea9"
+  }
+}
