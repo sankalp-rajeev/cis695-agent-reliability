@@ -25,7 +25,7 @@ TRACE_INCOMPLETE: 0; without usable traces: 940; patch-only absent definitions/f
 
 Break-even uses the frozen inequality `(T - 1) * B < r * P`. Both sides and the strict comparison appear per task in per_task.csv. Costs sum all module-process end events, including retries and fallback events; collection and setup costs are excluded.
 
-Limits: these results cover this frozen set and these Phase 4 images. Shared initialization can touch a changed file and retain every test in scope; this is the primary definition. Missing, skipped, errored and unreached traces are retained. Reduction uses actual executed selected IDs over the frozen V2 list size, so retained skipped IDs contribute no execution. The patched baseline is sealed Phase 4 data, not a simultaneous full patched rerun.
+Limits: these results cover this frozen set and these Phase 4 images. Reference recall is measured on the 12 fixed IDs; seeded tasks have no reference regression, so their recall is vacuous. Observed completeness flags do not establish universal visibility into native threads or private launch mechanisms beyond the recorded Python call events. Shared initialization can touch a changed file and retain every test in scope; this is the primary definition. Missing, skipped, errored and unreached traces are retained. Reduction uses actual executed selected IDs over the frozen V2 list size, so retained skipped IDs contribute no execution. The patched baseline is sealed Phase 4 data, not a simultaneous full patched rerun.
 
 Function-level selection, test-window-only selection and all time ratios are exploratory. They do not alter the primary verdict or adoption rule. No patched pass was run for the test-window-only selection; its table reports selection counts only.
 
@@ -36,4 +36,4 @@ None.
 
 Unspecified cases: none; no incomplete evaluation task was omitted.
 
-Run: `/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/runs/phase6b_eval_20261114`. Frozen harness: `phase6b-harness-frozen` at `92a1e8e04d4cc788322eca3152739504dced2319`. Independent verification is documented in verification.md; this report must not be sealed before that check passes.
+Run: `/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/runs/phase6b_eval_20261114`. Frozen harness: `phase6b-harness-frozen` at `92a1e8e04d4cc788322eca3152739504dced2319`. Independent verification passed; all result fields, 5,678 numeric values and 7,579 raw-file hashes match (verification.md).

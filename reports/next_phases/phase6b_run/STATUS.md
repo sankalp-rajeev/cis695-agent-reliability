@@ -1,7 +1,7 @@
 # Phase 6b status
 
 Start: 2026-11-14T07:28:16Z; deadline: 2026-11-14T17:28:16Z (10 hours, not reset).
-Branch: experiment/runtime-instrumentation. Stage: 3 mechanical report complete; independent verification pending.
+Branch: experiment/runtime-instrumentation. Stage: 4 independently verified; seal checkpoint ready, Stage 5 next.
 Last completed step: Stage 1 harness frozen after all gates passed.
 Last recorded HEAD / frozen harness commit: 92a1e8e04d4cc788322eca3152739504dced2319.
 Current checkpoint HEAD: resolve with git log -1 -- this file.
@@ -74,3 +74,12 @@ code diff remains empty. Last observed publication HEAD: 54e8227fda438136ade3332
 Mechanical report generated at reports/next_phases/phase6b_results/. No new
 tests or evaluation reinterpretation. Results are NOT sealed or independently
 verified yet; Stage 4 must succeed before claiming the headline numbers.
+
+Stage 4 PASS: 5,678 numeric values and 7,579 raw-file hashes verified for all
+13 tasks without importing analysis code. Full result-field comparison passes;
+code diffs empty in both worktrees; protected tags and plan prefix unchanged;
+command/input audit complete. Verified primary verdict INCONCLUSIVE, 12/12 kept,
+median reduction 0.033333333333333326, stable disagreements 0, cost
+1464.8375306980233s vs 741.7207032771039s baseline. ADOPT=false. No incomplete
+tasks or unspecified cases. No r2 rerun. Seal manifest is run_manifest.sha256.
+Stage 5 merge candidate remains pending. No active BLOCKED condition.
