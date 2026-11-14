@@ -9,6 +9,10 @@ from __future__ import annotations
 
 import argparse
 import csv
+import datetime
+import hashlib
+import os
+import shutil
 import json
 import math
 import shlex
@@ -17,6 +21,10 @@ import subprocess
 import sys
 from dataclasses import replace
 from pathlib import Path
+
+# Resolve source imports from the detached frozen worktree, even with an
+# editable installation pointing at the publication worktree.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
 
 import phase4_launch as p4
 import phase5_replay as replay
@@ -115,6 +123,7 @@ class Inputs:
         self.specs = {r['instance_id']: r for r in plan['task_specs']}
         self.evaluation = self.inputs.pinned(EVAL, EVAL_SHA, {'tasks': True})['tasks']
         self.eval_ids = {r['instance_id'] for r in self.evaluation}
+        require(len(self.evaluation) == 13, 'Evaluation must contain all 13 frozen tasks')
         costs_path = ROOT / 'reports/next_phases/phase5_replay/per_task_costs.csv'
         p4.require_hash(costs_path, '86c97ee2e0c64aebd10629e58c8bce3d739a803350768f8573245c8bd9f7ca97')
         self.costs = {r['task']: r for r in csv.DictReader(costs_path.open())}
@@ -205,6 +214,7 @@ def capture(executor, spec, folder, name, tests, *, patched=False, traced=False)
     if traced:
         trace_dir.mkdir(exist_ok=False)
     result = executor.run(tuple(tests), patched=patched, timeout_s=p4.PASS_BUDGET_S)
+    write(folder / (name + '.json'), run_to_dict(result, inline_raw=False))
     failures = explicit_executor_failures(result)
     require(not failures, 'Infrastructure halt: ' + repr(failures))
     require(not result.timed_out, 'Infrastructure halt: pass budget exhausted')
@@ -224,7 +234,11 @@ def capture(executor, spec, folder, name, tests, *, patched=False, traced=False)
 def selection_for(spec, run, directory, targets):
     codes, flags, info = load_traces(directory, run, spec.runner.name)
     require(info['process_count'] > 0 and info['trace_nonempty'], 'Infrastructure halt: missing/empty attributed trace')
-    return build_selection(spec.tests, statuses(run), codes, flags, targets), info
+    secondary_codes, secondary_flags, _ = load_traces(directory, run, spec.runner.name, test_window_only=True)
+    selected = build_selection(spec.tests, statuses(run), codes, flags, targets)
+    selected['secondary_test_window_exploratory'] = build_selection(
+        spec.tests, statuses(run), secondary_codes, secondary_flags, targets)
+    return selected, info
 
 
 def check_parallel_smoke(info, parallel_smoke):
@@ -241,6 +255,9 @@ def one_task(inputs, iid, folder, *, smoke=False, parallel_smoke=False):
     paths = {change.old_path or change.path for change in parse_patch(patch_text)}
     targets = changed_targets(patch_text, archive.read_many(paths))
     folder.mkdir(parents=True, exist_ok=False)
+    write(folder / 'task_inputs.json', {'task': iid, 'tests': list(spec.tests),
+        'targets': targets, 'image': spec.image_id, 'source_archive_sha256': inputs.specs[iid]['archive_sha256'],
+        'patch_sha256': inputs.specs[iid]['patch_sha256'], 'runner': spec.runner.name})
     trace_root = folder / 'traces'
     trace_root.mkdir()
     container = TraceContainer(iid, patch_text, image=spec.image_id, experiment_id='phase6b_smoke' if smoke else 'phase6b',
@@ -253,10 +270,18 @@ def one_task(inputs, iid, folder, *, smoke=False, parallel_smoke=False):
         untraced, _ = capture(executor, spec, folder, 'base_untraced', spec.tests)
         traced, trace_path = capture(executor, spec, folder, 'base_traced', spec.tests, traced=True)
         selected, trace_info = selection_for(spec, traced, trace_path, targets)
+        require(trace_info['incomplete_fraction'] <= .05,
+                'TRACE_INCOMPLETE stop: more than 5% of executed tests')
         stable = inputs.inputs.run('tasks/' + iid + '/result.json', {
             'policies': {'C_invalid_excluded': {'outcomes': True}}})['policies']['C_invalid_excluded']['outcomes']
         disagreement = [t for t in spec.tests if statuses(untraced).get(t) != statuses(traced).get(t)]
         stable_disagreement = [t for t in disagreement if stable.get(t) != 'FLAKY']
+        write(folder / 'selection.json', selected)
+        write(folder / 'trace_accounting.json', trace_info)
+        write(folder / 'phase4_comparison.json', {'stable_outcomes': stable,
+            'patched': inputs.sealed(iid, 'patched'), 'reference_ids': next(
+                (t['reference_ids'] for t in inputs.evaluation if t['instance_id'] == iid), []),
+            'sealed_patched_execution_s': float(inputs.costs[iid]['patched_execution_s'])})
         if smoke:
             require(not disagreement, 'Smoke gate: traced/untraced outcomes differ')
             repeated, repeated_path = capture(executor, spec, folder, 'base_traced_repeat', spec.tests, traced=True)
@@ -272,11 +297,14 @@ def one_task(inputs, iid, folder, *, smoke=False, parallel_smoke=False):
     if smoke:
         return {'task': iid, 'v2_count': len(spec.tests), 'outcomes_match': True,
                 'trace_nonempty': True, 'selection_repeat_identical': True,
-                'trace_accounting': trace_info,
+                'trace_accounting': trace_info, 'selection': selected,
                 'time_ratio_information_only': execution_s(traced) / execution_s(untraced),
                 'smoke_only': True, 'used_in_experiment_numbers': False}
     B, traced_B = execution_s(untraced), execution_s(traced)
     P = float(inputs.costs[iid]['patched_execution_s'])
+    require(math.isclose(P, math.fsum(e['duration_s'] for e in inputs.sealed(iid, 'patched')['events']
+                                    if e['event'] == 'end'), rel_tol=1e-12),
+            'Sealed patched cost disagrees with Phase 5 pinned cost')
     sealed = {r['test_id']: r['status'] for r in inputs.sealed(iid, 'patched')['results']}
     refs = next(t['reference_ids'] for t in inputs.evaluation if t['instance_id'] == iid)
     metrics = {'task': iid, 'v2_size': len(spec.tests), 'base_untraced_s': B,
@@ -322,6 +350,7 @@ def aggregate(rows):
         success = kept == 12 and median_r >= .5 and disagreements == 0
         median_cost_below = statistics.median(r['total_cost_s'] for r in data) < statistics.median(r['baseline_cost_s'] for r in data)
         result['pooled'][mode] = {
+            'reading': 'preregistered' if mode == 'file' else 'exploratory',
             'reference_kept_count': kept, 'reference_total': 12, 'recall': kept / 12,
             'median_task_reduction': median_r,
             'selected_count': sum(r['selected_count'] for r in data),
@@ -345,7 +374,37 @@ def aggregate(rows):
             'success': success, 'failure': kept < 12 or disagreements > 0,
             'adopt': success and total < baseline and median_cost_below,
         }
+    primary = result['pooled']['file']
+    result['verdict'] = 'FAILURE' if primary['failure'] else ('SUCCESS' if primary['success'] else 'INCONCLUSIVE')
+    result['adopt'] = primary['adopt']
+    result['unspecified_cases'] = []
+    result['secondary_selection_reading'] = 'exploratory: test-window records only; no secondary patched pass'
     return result
+
+
+def code_identity():
+    paths = ['scripts', 'src', 'tools/phase6b_trace']
+    trees = {path: subprocess.check_output(['git', 'rev-parse', 'HEAD:' + path], cwd=ROOT, text=True).strip()
+             for path in paths}
+    raw = subprocess.check_output(['git', 'ls-tree', '-r', 'HEAD', '--', *paths], cwd=ROOT)
+    return {'trees': trees, 'sha256': hashlib.sha256(raw).hexdigest()}
+
+
+def task_checkpoint(folder, metrics):
+    write(folder / 'metrics.json', metrics)
+    paths = sorted(p for p in folder.rglob('*') if p.is_file() and p.name != 'capture_manifest.json')
+    write(folder / 'capture_manifest.json', {str(p.relative_to(folder)): p4.sha(p) for p in paths})
+
+
+def completed_task(folder):
+    manifest = folder / 'capture_manifest.json'
+    require(manifest.is_file(), 'Incomplete prior task: preserve it and follow frozen infrastructure-halt rule')
+    hashes = json.loads(manifest.read_text())
+    files = {str(p.relative_to(folder)): p for p in folder.rglob('*') if p.is_file() and p != manifest}
+    require(files.keys() == hashes.keys(), 'Completed task file set changed')
+    for name, path in files.items():
+        require(p4.sha(path) == hashes[name], 'Completed task capture hash mismatch: ' + name)
+    return json.loads((folder / 'metrics.json').read_text())
 
 
 def main(argv=None):
@@ -353,41 +412,73 @@ def main(argv=None):
     parser.add_argument('command', choices=('smoke', 'run'))
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--freeze-tag')
+    parser.add_argument('--resume', action='store_true')
+    parser.add_argument('--task-limit', type=int, default=13)
+    parser.add_argument('--deadline', default='2026-11-14T17:28:16+00:00')
     args = parser.parse_args(argv)
     output = args.output.resolve()
     require(output.is_relative_to((ROOT / 'runs').resolve()), 'Outputs/traces must stay in ignored runs/')
-    require(not output.exists(), 'Never overwrite or resume an existing output directory')
+    require(args.command == 'run' or not args.resume, 'Only evaluation checkpoints can resume')
     if args.command == 'run':
-        require(args.freeze_tag == FROZEN_TAG, 'Run requires the annotated harness freeze tag')
+        require(args.freeze_tag in (FROZEN_TAG, FROZEN_TAG + '-r2'), 'Run requires the annotated harness freeze tag')
         head = p4.require_frozen_head(args.freeze_tag)
-        tag_hash = subprocess.check_output(['git', 'rev-parse', 'refs/tags/' + args.freeze_tag], text=True).strip()
+        detached = subprocess.run(['git', 'symbolic-ref', '-q', 'HEAD'], cwd=ROOT, capture_output=True)
+        require(detached.returncode == 1, 'Evaluation must run in a detached frozen worktree')
+        tag_hash = subprocess.check_output(['git', 'rev-parse', 'refs/tags/' + args.freeze_tag], cwd=ROOT, text=True).strip()
     else:
         require('smoke' in output.name.lower(), 'Smoke output directory must be explicitly marked smoke')
-        head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+        head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
         tag_hash = None
     inputs = Inputs()
-    # Inspect every evaluation command without starting any evaluation task.
-    for iid in sorted(inputs.eval_ids):
-        inputs.prefixes(iid)
-    ids, rejected = inputs.smoke_ids() if args.command == 'smoke' else (sorted(inputs.eval_ids), [])
+    for row in inputs.evaluation:
+        inputs.prefixes(row['instance_id'])
+    ids, rejected = inputs.smoke_ids() if args.command == 'smoke' else ([r['instance_id'] for r in inputs.evaluation], [])
     require(args.command != 'smoke' or not set(ids) & inputs.eval_ids, 'Refuse evaluation task in smoke')
-    output.mkdir(parents=True, exist_ok=False)
-    write(output / 'invocation.json', {'mode': args.command, 'HEAD': head, 'freeze_tag': args.freeze_tag,
+    identity = code_identity()
+    invocation = {'mode': args.command, 'HEAD': head, 'freeze_tag': args.freeze_tag,
         'tag_hash': tag_hash, 'task_order': ids, 'smoke_only': args.command == 'smoke', 'rejected_smoke': rejected,
-        'manifest': inputs.manifest, 'cpu_shares': 2048, 'network': 'none'})
-    rows = []
+        'manifest': inputs.manifest, 'cpu_shares': 2048, 'network': 'none', 'code_identity': identity}
+    if output.exists():
+        require(args.resume, 'Never overwrite an existing output directory')
+        require(not (output / 'HALT.json').exists(), 'Frozen plan h prohibits resuming an infrastructure halt')
+        require(json.loads((output / 'invocation.json').read_text()) == invocation, 'Checkpoint invocation changed')
+    else:
+        require(not args.resume, 'Cannot resume absent checkpoint')
+        output.mkdir(parents=True)
+        write(output / 'invocation.json', invocation)
+    rows, launched = [], 0
+    current = None
     try:
         for iid in ids:
+            current = iid
             folder = output / iid
-            rows.append(one_task(inputs, iid, folder, smoke=args.command == 'smoke',
-                                 parallel_smoke=args.command == 'smoke' and iid == ids[2]))
-        write(output / ('smoke_gates.json' if args.command == 'smoke' else 'results.json'),
-              {'smoke_only': True, 'gates': rows} if args.command == 'smoke' else aggregate(rows))
-        print(json.dumps({'mode': args.command, 'tasks': ids, 'gates_passed': True, 'output': str(output)}))
+            if folder.exists():
+                rows.append(completed_task(folder))
+                continue
+            if launched >= args.task_limit:
+                break
+            free = shutil.disk_usage(output).free
+            require(free >= 20 * 1024 ** 3, 'Disk halt: less than 20 GiB free before ' + iid)
+            deadline = datetime.datetime.fromisoformat(args.deadline)
+            if datetime.datetime.now(datetime.timezone.utc) >= deadline:
+                write(output / 'CAP_CHECKPOINT.json', {'task_not_started': iid, 'complete_tasks': len(rows)})
+                break
+            require(code_identity() == identity, 'Harness code identity changed during evaluation')
+            metrics = one_task(inputs, iid, folder, smoke=args.command == 'smoke',
+                               parallel_smoke=args.command == 'smoke' and iid == ids[2])
+            task_checkpoint(folder, metrics)
+            rows.append(metrics)
+            launched += 1
+            write(output / 'progress.json', {'completed': [r['task'] for r in rows], 'total': len(ids)})
+            print(json.dumps({'completed_task': iid, 'complete_count': len(rows), 'total': len(ids)}), flush=True)
+        if len(rows) == len(ids):
+            write(output / ('smoke_gates.json' if args.command == 'smoke' else 'results.json'),
+                  {'smoke_only': True, 'gates': rows} if args.command == 'smoke' else aggregate(rows))
+        print(json.dumps({'mode': args.command, 'complete_count': len(rows),
+                          'all_tasks_complete': len(rows) == len(ids), 'output': str(output)}))
     except BaseException as exc:
-        write(output / 'HALT.json', {'task': ids[len(rows)] if len(rows) < len(ids) else None,
-                                    'reason': str(exc), 'metrics_published': False,
-                                    'instruction': 'Fix infrastructure, amend plan, restart evaluation from task 1; never resume'})
+        write(output / 'HALT.json', {'task': current, 'reason': str(exc), 'metrics_published': False,
+                                    'instruction': 'Stop; diagnose harness bug vs infrastructure; frozen plan h governs'})
         raise
 
 

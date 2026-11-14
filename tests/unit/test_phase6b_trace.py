@@ -508,3 +508,31 @@ def test_unittest_class_scope_does_not_leak_to_other_class(tmp_path, monkeypatch
             assert 'marker_shared' in names(rec, tid)
         else:
             assert 'marker_shared' not in names(rec, tid)
+
+
+def test_checkpoint_resume_rejects_capture_tampering(tmp_path):
+    module = harness()
+    (tmp_path / 'base_traced.json').write_text('{"capture": "original"}')
+    module.task_checkpoint(tmp_path, {'task': 'synthetic', 'count': 1})
+    assert module.completed_task(tmp_path) == {'task': 'synthetic', 'count': 1}
+    (tmp_path / 'base_traced.json').write_text('{"capture": "changed"}')
+    with pytest.raises(ValueError, match='capture hash mismatch'):
+        module.completed_task(tmp_path)
+
+
+def test_python_shebang_child_is_traced(tmp_path):
+    child = tmp_path / 'helper'
+    child.write_text('#!' + sys.executable + '\ndef shebang_marker(): pass\nshebang_marker()\n')
+    child.chmod(0o755)
+    rec = Recorder(tmp_path, str(tmp_path / 'traces'))
+    rec.start()
+    try:
+        rec.begin('raw_a')
+        subprocess.run([str(child)], env={}, check=True, timeout=10)
+        rec.end('raw_a')
+    finally:
+        rec.flush()
+    codes, flags, info = load_traces(tmp_path / 'traces', fake_run(['raw_a'], pid=rec.pid), 'django')
+    assert 'shebang_marker' in {c[1] for c in codes['synthetic.py::0']}
+    assert info['incomplete_count'] == 0 and not any(flags.values())
+    assert rec.children[-1]['python'] is True

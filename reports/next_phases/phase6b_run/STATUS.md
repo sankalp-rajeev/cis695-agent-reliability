@@ -27,7 +27,10 @@ Original frozen plan remains a byte-identical prefix (SHA-256
 Child-rule implementation and explicit scope records complete; 35 synthetic
 gates passed, including new branches, exec replacement, posix_spawn, scope
 isolation and the 5% cutoff on every smoke. Repair iterations used: 1 / 5.
-All three repaired smoke gates pending.
+Repair-1 captures show 0% incomplete on all three smokes and 3 parallel
+workers with tests; final smoke completion pending. Harness now also enforces
+eval_set order, detached frozen execution, per-task hash checkpoints, disk and
+original deadline checks. 37 synthetic checks pass. Final harness smoke pending.
 Evaluation not started. All 13 tasks pending in eval_set.json order.
 Stages 2, 3, 4 and 5 pending. No scientific verdict or headline metrics verified.
 Merge candidate not ready. Next: all three repaired smokes, harness execution

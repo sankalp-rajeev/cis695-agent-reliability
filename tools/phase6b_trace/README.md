@@ -3,16 +3,14 @@
 `scripts/phase6b_run.py` has two commands. `smoke` uses the smallest nonempty,
 executable pytest and Django lists outside the 13-task evaluation set, plus the
 smallest non-evaluation Django task with sealed parallel-worker evidence. `run`
-requires clean HEAD at the annotated `phase6b-harness-frozen` tag. Neither command
-can resume or overwrite a directory. All output stays under ignored `runs/`.
+requires clean HEAD at the annotated `phase6b-harness-frozen` tag. Evaluation resumes only from hash-verified per-task checkpoints; neither command overwrites captures. All output stays under ignored `runs/`.
 
 ```sh
 env -u PYTHONPATH .venv/bin/python scripts/phase6b_run.py smoke --output runs/phase6b_smoke_NEW
 env -u PYTHONPATH .venv/bin/python scripts/phase6b_run.py run --freeze-tag phase6b-harness-frozen --output runs/phase6b_NEW
 ```
 
-The second command is documented for later authorization; it is not part of the
-build/freeze gates. Smoke outputs are marked `smoke_only` and never enter the
+Evaluation is authorized by the overnight protocol after the build/freeze gates; it runs only from a detached worktree at the annotated harness tag. Smoke outputs are marked `smoke_only` and never enter the
 evaluation aggregation. Smoke timing ratios are information only: interpreter startup dominates these
 small lists. They never enter experiment overhead or cost numbers.
 
@@ -76,3 +74,18 @@ bash scripts/test.sh tests/unit/test_phase6b_trace.py tests/unit/test_phase5_rep
 
 No correctness labels, oracle inputs, coverage.py, image installation, model
 calls, or Phase 6a file changes are used by this implementation.
+
+A1 scope records use an interned code index and a `scopes` array: every call-set
+record includes session/module/class/test, explicit owning tests, and code IDs.
+Primary selection includes every scope. The exploratory test-window selection
+uses only test-scope records and conservatively retains missing records. Python
+helpers inherit explicit scope ownership even when replacing their environment;
+exec replacements write separate PID segments. Non-Python observations do not
+flag tests. An unfollowable Python child flags only its recorded scope.
+
+Evaluation task order is exactly eval_set.json. `--task-limit 3` checkpoints in
+batches; subsequent invocations use `--resume`. Completed task manifests must
+match every capture hash and file path before skipping. `HALT.json` prevents
+resuming an infrastructure halt, as required by frozen section h. A disk check
+runs before each task; the original wall-clock deadline is retained across
+resumption. Scripts, source, and tracer tree hashes identify the frozen code.
