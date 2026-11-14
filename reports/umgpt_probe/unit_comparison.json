@@ -1,0 +1,566 @@
+{
+  "baseline": {
+    "counts": {
+      "passed": 1375,
+      "error": 47,
+      "skipped": 6,
+      "failure": 6
+    },
+    "issues": [
+      {
+        "name": "tests.unit.test_loader::test_dataset_has_exactly_500_instances",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_required_fields_are_present",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_instance_ids_are_unique",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_every_instance_yields_a_task_with_populated_fields",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_spans_multiple_repositories",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_load_instance_returns_matching_halves",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_unknown_instance_raises",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_test_name_lists_are_normalised_to_tuples",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_no_leakage::test_real_task_json_contains_no_oracle_values",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_no_leakage::test_agent_task_and_oracle_record_are_separate_objects",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_no_leakage::test_whole_dataset_is_free_of_oracle_values",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_sample_has_requested_size",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_sample_spans_at_least_three_repositories",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_sample_covers_every_task_type",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_sample_has_no_duplicate_instances",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_rows_are_in_canonical_order",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_excluded_instances_never_appear",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_exclusion_shrinks_the_population_not_the_request",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_excluding_everything_fails_loudly",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_no_exclusion_is_the_default",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_same_seed_reproduces_identical_manifest",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_same_seed_is_stable_across_input_order",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_different_seed_gives_a_different_sample",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_rerunning_the_builder_reproduces_the_hash",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_sidecar_hash_matches_file_contents",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_manifest_is_lf_terminated_and_has_expected_columns",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_manifest_round_trips_through_csv",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_every_instance_in_the_population_classifies",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_oversized_request_fails_loudly",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_manifest_row_is_immutable",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_selection_ground_truth::test_django_16899_selects_admin_checks",
+        "kind": "failure",
+        "category": "existing failure"
+      },
+      {
+        "name": "tests.unit.test_superseded_shadow::test_kernel_blocks_actual_file_access_in_classifier_process",
+        "kind": "failure",
+        "category": "existing failure"
+      },
+      {
+        "name": "tests.unit.test_superseded_shadow_v2::test_v2_worker_still_cannot_open_oracle_files",
+        "kind": "failure",
+        "category": "existing failure"
+      },
+      {
+        "name": "tests.unit.test_superseded_shadow_v2::test_only_one_extra_base_reuses_patch_confirmation_and_preserves_signal",
+        "kind": "failure",
+        "category": "existing failure"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_frozen_configuration_defaults_are_unchanged",
+        "kind": "failure",
+        "category": "existing failure"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_all_83_have_one_manifest_per_arm_and_original_identity",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[selection]",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[source]",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[protocol]",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[snapshot]",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[image_binding]",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_resealed_selection_cannot_bypass_protocol_bound_inputs",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_source_drift_detected_without_container",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_end_to_end_scoped_dry_run_accounts_for_both_abstentions",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_host_drift_blocks_launch_after_freeze",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_archived_v2_inputs_are_portable_without_changing_frozen_policy",
+        "kind": "failure",
+        "category": "existing failure"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_binding_inventory_has_all_83_historical_records_unchanged",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_validation_detects_image_drift_before_plan_creation",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_validation_detects_docker_daemon_drift",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_resealed_binding_still_bound_to_protocol",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_new_freeze_binds_host_images_for_all_83_without_rewriting_history[host-images]",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_image_inspection_error_blocks_preparation",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_image_binding_cannot_change_task_cohort",
+        "kind": "error",
+        "category": "frozen-input drift"
+      }
+    ],
+    "xml_sha256": "ce74c2883494b6f4ee3cbb8383f284cca321725cf2784c7cc1b772e665c05c40"
+  },
+  "candidate": {
+    "counts": {
+      "passed": 1396,
+      "error": 47,
+      "skipped": 6,
+      "failure": 6
+    },
+    "issues": [
+      {
+        "name": "tests.unit.test_loader::test_dataset_has_exactly_500_instances",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_required_fields_are_present",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_instance_ids_are_unique",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_every_instance_yields_a_task_with_populated_fields",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_spans_multiple_repositories",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_load_instance_returns_matching_halves",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_unknown_instance_raises",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_test_name_lists_are_normalised_to_tuples",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_no_leakage::test_real_task_json_contains_no_oracle_values",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_no_leakage::test_agent_task_and_oracle_record_are_separate_objects",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_no_leakage::test_whole_dataset_is_free_of_oracle_values",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_sample_has_requested_size",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_sample_spans_at_least_three_repositories",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_sample_covers_every_task_type",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_sample_has_no_duplicate_instances",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_rows_are_in_canonical_order",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_excluded_instances_never_appear",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_exclusion_shrinks_the_population_not_the_request",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_excluding_everything_fails_loudly",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_no_exclusion_is_the_default",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_same_seed_reproduces_identical_manifest",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_same_seed_is_stable_across_input_order",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_different_seed_gives_a_different_sample",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_rerunning_the_builder_reproduces_the_hash",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_sidecar_hash_matches_file_contents",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_manifest_is_lf_terminated_and_has_expected_columns",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_manifest_round_trips_through_csv",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_every_instance_in_the_population_classifies",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_oversized_request_fails_loudly",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_manifest_row_is_immutable",
+        "kind": "error",
+        "category": "Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_selection_ground_truth::test_django_16899_selects_admin_checks",
+        "kind": "failure",
+        "category": "existing failure"
+      },
+      {
+        "name": "tests.unit.test_superseded_shadow::test_kernel_blocks_actual_file_access_in_classifier_process",
+        "kind": "failure",
+        "category": "existing failure"
+      },
+      {
+        "name": "tests.unit.test_superseded_shadow_v2::test_v2_worker_still_cannot_open_oracle_files",
+        "kind": "failure",
+        "category": "existing failure"
+      },
+      {
+        "name": "tests.unit.test_superseded_shadow_v2::test_only_one_extra_base_reuses_patch_confirmation_and_preserves_signal",
+        "kind": "failure",
+        "category": "existing failure"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_frozen_configuration_defaults_are_unchanged",
+        "kind": "failure",
+        "category": "existing failure"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_all_83_have_one_manifest_per_arm_and_original_identity",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[selection]",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[source]",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[protocol]",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[snapshot]",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[image_binding]",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_resealed_selection_cannot_bypass_protocol_bound_inputs",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_source_drift_detected_without_container",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_end_to_end_scoped_dry_run_accounts_for_both_abstentions",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_host_drift_blocks_launch_after_freeze",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_archived_v2_inputs_are_portable_without_changing_frozen_policy",
+        "kind": "failure",
+        "category": "existing failure"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_binding_inventory_has_all_83_historical_records_unchanged",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_validation_detects_image_drift_before_plan_creation",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_validation_detects_docker_daemon_drift",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_resealed_binding_still_bound_to_protocol",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_new_freeze_binds_host_images_for_all_83_without_rewriting_history[host-images]",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_image_inspection_error_blocks_preparation",
+        "kind": "error",
+        "category": "frozen-input drift"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_image_binding_cannot_change_task_cohort",
+        "kind": "error",
+        "category": "frozen-input drift"
+      }
+    ],
+    "xml_sha256": "5af9230a392df2a00c218d6921b9cb8b91de5878b8ae7438e9cfe79c20f75fbc"
+  },
+  "new_issues": [],
+  "resolved_issues": [],
+  "no_new_issues": true,
+  "provided_baseline": {
+    "errors": 47,
+    "failures": 6,
+    "cache_lock_errors": 30,
+    "drift_errors": 17
+  },
+  "baseline_head": "bc0b8fa",
+  "candidate_head": "5659540b58d7d798751bed9fdf3e104f872e2116",
+  "command": "env -u PYTHONPATH .venv/bin/python -m pytest tests/unit --junitxml=runs/umgpt_tests/<baseline|final_complete>.xml"
+}
