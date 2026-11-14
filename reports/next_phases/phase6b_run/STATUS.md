@@ -1,7 +1,7 @@
 # Phase 6b status
 
 Start: 2026-11-14T07:28:16Z; deadline: 2026-11-14T17:28:16Z (10 hours, not reset).
-Branch: experiment/runtime-instrumentation. Stage: 2, evaluation ready to start.
+Branch: experiment/runtime-instrumentation. Stage: 2, first evaluation batch running (tasks 1–3).
 Last completed step: Stage 1 harness frozen after all gates passed.
 Last recorded HEAD / frozen harness commit: 92a1e8e04d4cc788322eca3152739504dced2319.
 Current checkpoint HEAD: resolve with git log -1 -- this file.
@@ -45,3 +45,8 @@ Task completion (in frozen order):
 
 Stages 3–5 pending. No scientific verdict or headline numbers verified.
 Merge candidate not ready. Checkpoint status after each three completed tasks.
+
+Pre-execution worktree guard caught an untracked raw-output symlink. Added
+/runs to local Git info/exclude, verified clean detached state, then launched
+task 1. No capture or evaluation task existed at the guard refusal. Frozen
+code remains unchanged; this was worktree configuration, not a harness repair.
