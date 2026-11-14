@@ -6,6 +6,8 @@ import contextlib
 import gzip
 import json
 import os
+import inspect
+import shutil
 import sys
 import threading
 import unittest
@@ -194,7 +196,29 @@ class Recorder:
         def popen_init(process, *args, **kwargs):
             targets = list(recorder.targets())
             result = recorder.originals['popen_init'](process, *args, **kwargs)
-            recorder.children.append({'pid': process.pid, 'tests': targets, 'kind': 'exec'})
+            bound = inspect.signature(recorder.originals['popen_init']).bind(process, *args, **kwargs)
+            arguments = bound.arguments
+            argv = arguments.get('args', [])
+            argv = list(argv) if isinstance(argv, (list, tuple)) else [argv]
+            executable = arguments.get('executable') or (argv[0] if argv else '')
+            environment = arguments.get('env')
+            resolved = shutil.which(str(executable), path=(environment or os.environ).get('PATH'))
+            python = bool(resolved and os.path.basename(os.path.realpath(resolved)).startswith('python'))
+            shebang = None
+            if resolved and not python:
+                try:
+                    with open(resolved, 'rb') as stream:
+                        header = stream.read(256)
+                    if header.startswith(b'#!'):
+                        shebang = header.split(b'\n')[0].decode('utf-8', 'replace')
+                        python = 'python' in shebang
+                except OSError:
+                    pass
+            recorder.children.append({'pid': process.pid, 'tests': targets, 'kind': 'exec',
+                'executable': str(executable), 'resolved_executable': resolved,
+                'argv': [str(a) for a in argv[:3]], 'python': python, 'shebang': shebang,
+                'scope': 'test' if targets else 'session',
+                'inherited_environment': environment is None or environment.get('PHASE6B_TRACE') == '1'})
             environment = kwargs.get('env')
             if environment is not None and environment.get('PHASE6B_TRACE') != '1':
                 recorder.incomplete('child_did_not_inherit_environment', targets)

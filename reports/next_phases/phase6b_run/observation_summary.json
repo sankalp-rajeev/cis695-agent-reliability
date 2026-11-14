@@ -1,0 +1,281 @@
+{
+  "diagnostic_only": true,
+  "stage4_verified": false,
+  "tasks": {
+    "django__django-12965": {
+      "children": [
+        {
+          "argv": [
+            "git",
+            "log",
+            "--pretty=format:%ct"
+          ],
+          "executable": "git",
+          "inherited_environment": true,
+          "kind": "exec",
+          "pid": 948,
+          "python": false,
+          "resolved_executable": "/usr/bin/git",
+          "scope": "session",
+          "shebang": null,
+          "tests": []
+        },
+        {
+          "argv": [
+            "/sbin/ldconfig",
+            "-p"
+          ],
+          "executable": "/sbin/ldconfig",
+          "inherited_environment": false,
+          "kind": "exec",
+          "pid": 950,
+          "python": false,
+          "resolved_executable": "/sbin/ldconfig",
+          "scope": "session",
+          "shebang": "#!/bin/sh",
+          "tests": []
+        }
+      ],
+      "trace_accounting": {
+        "executed_count": 16,
+        "incomplete_count": 16,
+        "incomplete_fraction": 1.0,
+        "incomplete_ids": [
+          "tests/model_regress/tests.py::EvaluateMethodTest::test_model_with_evaluate_method",
+          "tests/model_regress/tests.py::ModelTests::test_chained_fks",
+          "tests/model_regress/tests.py::ModelTests::test_date_filter_null",
+          "tests/model_regress/tests.py::ModelTests::test_date_lookup",
+          "tests/model_regress/tests.py::ModelTests::test_empty_choice",
+          "tests/model_regress/tests.py::ModelTests::test_get_next_prev_by_field",
+          "tests/model_regress/tests.py::ModelTests::test_get_next_prev_by_field_unsaved",
+          "tests/model_regress/tests.py::ModelTests::test_long_textfield",
+          "tests/model_regress/tests.py::ModelTests::test_long_unicode_textfield",
+          "tests/model_regress/tests.py::ModelTests::test_metaclass_can_access_attribute_dict",
+          "tests/model_regress/tests.py::ModelTests::test_model_init_too_many_args",
+          "tests/model_regress/tests.py::ModelTests::test_primary_key_foreign_key_types",
+          "tests/model_regress/tests.py::ModelTests::test_related_gte_lookup",
+          "tests/model_regress/tests.py::ModelTests::test_related_lte_lookup",
+          "tests/model_regress/tests.py::ModelTests::test_sql_insert_compiler_return_id_attribute",
+          "tests/model_regress/tests.py::ModelValidationTest::test_pk_validation"
+        ],
+        "missing_record_ids": [],
+        "process_count": 17,
+        "trace_nonempty": true,
+        "worker_pids": [
+          951,
+          952,
+          953,
+          954,
+          955,
+          956,
+          957,
+          958,
+          959,
+          960,
+          961,
+          962,
+          963,
+          964,
+          965,
+          966
+        ],
+        "workers_seen": 16,
+        "workers_with_tests": 3
+      },
+      "traced_untraced_outcomes_match": true
+    },
+    "django__django-13033": {
+      "children": [
+        {
+          "argv": [
+            "git",
+            "log",
+            "--pretty=format:%ct"
+          ],
+          "executable": "git",
+          "inherited_environment": true,
+          "kind": "exec",
+          "pid": 929,
+          "python": false,
+          "resolved_executable": "/usr/bin/git",
+          "scope": "session",
+          "shebang": null,
+          "tests": []
+        },
+        {
+          "argv": [
+            "/sbin/ldconfig",
+            "-p"
+          ],
+          "executable": "/sbin/ldconfig",
+          "inherited_environment": false,
+          "kind": "exec",
+          "pid": 931,
+          "python": false,
+          "resolved_executable": "/sbin/ldconfig",
+          "scope": "session",
+          "shebang": "#!/bin/sh",
+          "tests": []
+        }
+      ],
+      "trace_accounting": {
+        "executed_count": 4,
+        "incomplete_count": 4,
+        "incomplete_fraction": 1.0,
+        "incomplete_ids": [
+          "tests/queries/test_iterator.py::QuerySetIteratorTests::test_default_iterator_chunk_size",
+          "tests/queries/test_iterator.py::QuerySetIteratorTests::test_iterator_chunk_size",
+          "tests/queries/test_iterator.py::QuerySetIteratorTests::test_iterator_invalid_chunk_size",
+          "tests/queries/test_iterator.py::QuerySetIteratorTests::test_no_chunked_reads"
+        ],
+        "missing_record_ids": [],
+        "process_count": 1,
+        "trace_nonempty": true,
+        "worker_pids": [],
+        "workers_seen": 0,
+        "workers_with_tests": 0
+      },
+      "traced_untraced_outcomes_match": true
+    },
+    "matplotlib__matplotlib-25287": {
+      "children": [
+        {
+          "argv": [
+            "gs",
+            "--version"
+          ],
+          "executable": "gs",
+          "inherited_environment": true,
+          "kind": "exec",
+          "pid": 1055,
+          "python": false,
+          "resolved_executable": "/usr/bin/gs",
+          "scope": "session",
+          "shebang": null,
+          "tests": []
+        },
+        {
+          "argv": [
+            "git",
+            "help"
+          ],
+          "executable": "git",
+          "inherited_environment": true,
+          "kind": "exec",
+          "pid": 1058,
+          "python": false,
+          "resolved_executable": "/usr/bin/git",
+          "scope": "test",
+          "shebang": null,
+          "tests": [
+            "lib/matplotlib/tests/test_skew.py::test_set_line_coll_dash_image[png]"
+          ]
+        },
+        {
+          "argv": [
+            "git",
+            "--git-dir",
+            "/testbed/.git"
+          ],
+          "executable": "git",
+          "inherited_environment": true,
+          "kind": "exec",
+          "pid": 1059,
+          "python": false,
+          "resolved_executable": "/usr/bin/git",
+          "scope": "test",
+          "shebang": null,
+          "tests": [
+            "lib/matplotlib/tests/test_skew.py::test_set_line_coll_dash_image[png]"
+          ]
+        },
+        {
+          "argv": [
+            "git",
+            "help"
+          ],
+          "executable": "git",
+          "inherited_environment": true,
+          "kind": "exec",
+          "pid": 1060,
+          "python": false,
+          "resolved_executable": "/usr/bin/git",
+          "scope": "test",
+          "shebang": null,
+          "tests": [
+            "lib/matplotlib/tests/test_skew.py::test_set_line_coll_dash_image[png]"
+          ]
+        },
+        {
+          "argv": [
+            "git",
+            "--git-dir",
+            "/testbed/.git"
+          ],
+          "executable": "git",
+          "inherited_environment": true,
+          "kind": "exec",
+          "pid": 1061,
+          "python": false,
+          "resolved_executable": "/usr/bin/git",
+          "scope": "test",
+          "shebang": null,
+          "tests": [
+            "lib/matplotlib/tests/test_skew.py::test_set_line_coll_dash_image[png]"
+          ]
+        },
+        {
+          "argv": [
+            "git",
+            "--git-dir",
+            "/testbed/.git"
+          ],
+          "executable": "git",
+          "inherited_environment": true,
+          "kind": "exec",
+          "pid": 1070,
+          "python": false,
+          "resolved_executable": "/usr/bin/git",
+          "scope": "test",
+          "shebang": null,
+          "tests": [
+            "lib/matplotlib/tests/test_skew.py::test_set_line_coll_dash_image[png]"
+          ]
+        },
+        {
+          "argv": [
+            "git",
+            "--git-dir",
+            "/testbed/.git"
+          ],
+          "executable": "git",
+          "inherited_environment": true,
+          "kind": "exec",
+          "pid": 1071,
+          "python": false,
+          "resolved_executable": "/usr/bin/git",
+          "scope": "test",
+          "shebang": null,
+          "tests": [
+            "lib/matplotlib/tests/test_skew.py::test_set_line_coll_dash_image[png]"
+          ]
+        }
+      ],
+      "trace_accounting": {
+        "executed_count": 4,
+        "incomplete_count": 1,
+        "incomplete_fraction": 0.25,
+        "incomplete_ids": [
+          "lib/matplotlib/tests/test_skew.py::test_set_line_coll_dash_image[png]"
+        ],
+        "missing_record_ids": [],
+        "process_count": 1,
+        "trace_nonempty": true,
+        "worker_pids": [],
+        "workers_seen": 0,
+        "workers_with_tests": 0
+      },
+      "traced_untraced_outcomes_match": true
+    }
+  }
+}
