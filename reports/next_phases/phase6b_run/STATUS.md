@@ -1,7 +1,7 @@
 # Phase 6b status
 
 Start: 2026-11-14T07:28:16Z; deadline: 2026-11-14T17:28:16Z (10 hours, not reset).
-Branch: experiment/runtime-instrumentation. Stage: 4 independently verified; seal checkpoint ready, Stage 5 next.
+Branch: merge-candidate/phase6b-into-main. Stage: 5, full unit comparison running.
 Last completed step: Stage 1 harness frozen after all gates passed.
 Last recorded HEAD / frozen harness commit: 92a1e8e04d4cc788322eca3152739504dced2319.
 Current checkpoint HEAD: resolve with git log -1 -- this file.
@@ -83,3 +83,12 @@ median reduction 0.033333333333333326, stable disagreements 0, cost
 1464.8375306980233s vs 741.7207032771039s baseline. ADOPT=false. No incomplete
 tasks or unspecified cases. No r2 rerun. Seal manifest is run_manifest.sha256.
 Stage 5 merge candidate remains pending. No active BLOCKED condition.
+
+Stage 4 sealed and pushed: phase6b-run-sealed at
+df00cc6849a503cc31ace3768b7eff13aefd12af. Manifest SHA-256:
+cf7ad2d8be0fbc7db0b38774ca708b51497c8c9d9da3c6809f6a0a5fcae3833d.
+Candidate created from experiment/runtime-instrumentation without merging main.
+Baseline unit worktree: /tmp/phase6b_unit_baseline_20261114 at starting HEAD.
+Unit logs: runs/phase6b_merge_checks_20261114/{baseline,candidate}.{log,xml}.
+Baseline and candidate src/ trees are identical; the new Phase 6b code is in
+scripts/ and tools/. Full baseline comparison is pending; do not claim ready.
