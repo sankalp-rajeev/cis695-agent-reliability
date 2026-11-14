@@ -1,0 +1,25 @@
+layer: model
+role: primary
+provider: umgpt
+model_id: openai/gpt-4.1-mini
+api_base: https://api.toolkit.umgpt.umich.edu/v1
+api_key_env: UMGPT_API_KEY
+requires_tool_calling: true
+temperature: 0.0
+top_p: 1.0
+max_output_tokens: 8192
+max_completion_tokens: 8192
+model_kwargs:
+  drop_params: true
+limits:
+  max_steps: 100
+  max_input_tokens_per_task: 400000
+  max_cost_usd_per_task: 0.5
+  request_timeout_s: 600
+budget:
+  total_usd: 20.0
+pricing:
+  input_per_million: 0.4
+  cached_input_per_million: 0.1
+  output_per_million: 1.6
+  note: List-price estimate; UM billing unconfirmed

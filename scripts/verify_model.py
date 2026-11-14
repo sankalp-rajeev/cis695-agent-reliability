@@ -54,12 +54,18 @@ def main() -> int:
     parser.add_argument("--model-id", default=None, help="override the config's model_id")
     parser.add_argument("--update", action="store_true",
                         help="on success, record verified.status: ok in the config")
+    parser.add_argument("--umgpt-candidates", action="store_true",
+                        help="verify the three UM candidates, then pin both new UM configs")
     args = parser.parse_args()
 
     load_env_file(REPO_ROOT / ".env")
 
     config_path = REPO_ROOT / args.config
     cfg = yaml.safe_load(config_path.read_text())
+    if cfg.get("provider") == "umgpt":
+        from reliability.umgpt_verify import verify
+        return verify(config_path, update=args.update, candidates=args.umgpt_candidates,
+                      model_id=args.model_id, record_verified=record_verified)
     model_id = args.model_id or cfg.get("model_id")
     key_env = cfg.get("api_key_env")
 
@@ -146,6 +152,7 @@ def main() -> int:
 def record_verified(
     config_path: Path, model_id: str, *,
     served_model: str = "unreported", system_fingerprint: str = "unreported",
+    metadata: dict | None = None,
 ) -> None:
     """Rewrite only the `verified:` block, leaving the rest of the file alone.
 
@@ -167,6 +174,9 @@ def record_verified(
         f"  served_model: {served_model}\n"
         f"  system_fingerprint: {system_fingerprint}\n"
     )
+    if metadata is not None:
+        block += "".join("  " + line + "\n" for line in
+                         yaml.safe_dump(metadata, sort_keys=False).splitlines())
 
     lines = config_path.read_text().splitlines(keepends=True)
     out, i = [], 0

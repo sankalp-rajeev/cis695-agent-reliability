@@ -1,0 +1,25 @@
+layer: experiment
+experiment_id: umgpt_probe
+benchmark:
+  dataset: SWE-bench/SWE-bench_Verified
+  split: test
+  manifest: manifests/umgpt_probe.csv
+agent: configs/agent/swebench_claim.yaml
+model: configs/model/primary_umgpt.yaml
+reproduction_generator: configs/model/generator_umgpt.yaml
+verifiers:
+- configs/verifier/full.yaml
+- configs/verifier/baseline.yaml
+sampling:
+  n_tasks: 3
+  seed: 695
+  stratify_by:
+  - repo
+  - task_type
+  min_distinct_repos: 3
+execution:
+  single_pass: true
+  retries: 0
+  max_workers: 1
+  task_cost_cap_usd: 0.5
+  job_cost_cap_usd: 3.0
