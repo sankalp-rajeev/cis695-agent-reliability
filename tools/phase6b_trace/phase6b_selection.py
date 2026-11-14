@@ -82,85 +82,107 @@ def changed_targets(patch_text, base_sources):
 
 def read_trace(path):
     data = {'codes': [], 'tests': {}, 'flags': {}, 'common': set(),
-            'common_flags': set(), 'children': []}
+            'common_flags': set(), 'children': [], 'scopes': [], 'segment': 0}
     with gzip.open(path, 'rt') as stream:
         for line in stream:
             item = json.loads(line)
-            if item['version'] != 2 or item['codes_start'] != len(data['codes']):
+            if item['version'] not in (2, 3) or item['codes_start'] != len(data['codes']):
                 raise ValueError('Invalid/incomplete per-PID trace journal')
-            data.update(pid=item['pid'], parent_pid=item['parent_pid'])
+            data.update(pid=item['pid'], parent_pid=item['parent_pid'], segment=item.get('segment', 0))
             data['codes'].extend(item['codes'])
             data['tests'].update(item['tests'])
             data['flags'].update(item['flags'])
             data['common'].update(item['common'])
             data['common_flags'].update(item['common_flags'])
             data['children'].extend(item['children'])
+            for record in item.get('scopes', []):
+                if record['scope'] not in ('session', 'module', 'class', 'test'):
+                    raise ValueError('Invalid trace scope')
+                data['scopes'].append(record)
     return data
 
 
-def load_traces(directory, run, runner):
+def load_traces(directory, run, runner, *, test_window_only=False):
     directory = Path(directory)
     if list(directory.glob('*.error')):
         raise ValueError('Tracer error marker present')
     records = {}
     for path in sorted(directory.glob('*.jsonl.gz')):
         data = read_trace(path)
-        pid = data['pid']
-        if path.name != str(pid) + '.jsonl.gz' or pid in records:
+        pid, segment = data['pid'], data['segment']
+        stem = str(pid) + ('_' + str(segment) if segment else '')
+        key = (pid, segment)
+        if path.name != stem + '.jsonl.gz' or key in records:
             raise ValueError('Trace PID collision/identity mismatch')
-        records[pid] = data
+        data['complete'] = all((directory / (stem + '.' + suffix)).is_file() for suffix in ('ready', 'done'))
+        if data['complete']:
+            for suffix in ('ready', 'done'):
+                marker = json.loads((directory / (stem + '.' + suffix)).read_text())
+                if marker.get('pid') != pid:
+                    raise ValueError('Trace marker PID mismatch')
+        records[key] = data
     expected = {event['pid'] for event in run.events if event['event'] == 'start'}
-    for data in records.values():
-        expected.update(child['pid'] for child in data['children'] if child['kind'] == 'fork')
-    for pid in expected | set(records):
-        if pid not in records or not (directory / (str(pid) + '.ready')).is_file() or not (
-                directory / (str(pid) + '.done')).is_file():
+    for pid in expected:
+        if (pid, 0) not in records or not records[(pid, 0)]['complete']:
             raise ValueError('Missing trace/readiness/completion marker for PID ' + str(pid))
-        for suffix in ('ready', 'done'):
-            marker = json.loads((directory / (str(pid) + '.' + suffix)).read_text())
-            if marker.get('pid') != pid:
-                raise ValueError('Trace marker PID mismatch')
-    # Identity comes exclusively from the repaired executor's maps. No parsing,
-    # suffix heuristics or invented Django aliases may create a test identity.
     aliases = dict(run.raw_execution_map)
     aliases.update({tid: tid for tid in run.execution_id_map})
     native_codes, native_flags = {}, {}
 
-    def ancestors(pid):
-        chain, seen = [], set()
-        while pid in records:
-            if pid in seen:
-                raise ValueError('Cyclic trace process ancestry')
-            seen.add(pid)
-            chain.append(records[pid])
-            pid = records[pid]['parent_pid']
-        return chain
+    def calls(data, indices):
+        return {tuple(data['codes'][i]) for i in indices}
 
-    def add(raw_id, calls, reasons):
+    def add(raw_id, coverage, reasons):
         native = aliases.get(raw_id)
         if native is not None:
-            native_codes.setdefault(native, set()).update(calls)
+            native_codes.setdefault(native, set()).update(coverage)
             native_flags.setdefault(native, set()).update(reasons)
 
-    for pid, data in records.items():
-        chain = ancestors(pid)
-        common = {tuple(item['codes'][i]) for item in chain for i in item['common']}
+    def ancestor_chain(key):
+        chain, seen = [], set()
+        while key in records:
+            if key in seen:
+                raise ValueError('Cyclic trace process ancestry')
+            seen.add(key)
+            chain.append(records[key])
+            key = (records[key]['parent_pid'], 0)
+        return chain
+
+    def window_calls(data, raw_id=None):
+        return {tuple(data['codes'][i]) for record in data['scopes'] if record['scope'] == 'test'
+                and (raw_id is None or raw_id in record['tests']) for i in record['codes']}
+
+    # Flag absent/unfollowable Python children only in their spawn scope.
+    # Non-Python observations never create incomplete coverage flags.
+    for data in records.values():
+        for child in data['children']:
+            if child.get('python') is False:
+                continue
+            key = (child['pid'], child.get('segment', 0))
+            descendant = records.get(key)
+            if descendant is None or not descendant['complete']:
+                targets = child['tests']
+                if not targets:
+                    data['common_flags'].add('unfollowed_child_process')
+                for tid in targets:
+                    data['flags'].setdefault(tid, []).append('unfollowed_child_process')
+
+    for key, data in records.items():
+        chain = ancestor_chain(key)
+        common = set() if test_window_only else {c for item in chain for c in calls(item, item['common'])}
         common_flags = {reason for item in chain for reason in item['common_flags']}
         for raw_id, indices in data['tests'].items():
-            add(raw_id, common | {tuple(data['codes'][i]) for i in indices},
-                common_flags | set(data['flags'].get(raw_id, ())))
+            coverage = window_calls(data, raw_id) if test_window_only else calls(data, indices)
+            add(raw_id, common | coverage, common_flags | set(data['flags'].get(raw_id, ())))
         for child in data['children']:
-            if child['pid'] not in records:
-                for raw_id in child['tests']:
-                    add(raw_id, set(), {'unfollowed_child_process'})
-            elif child['tests']:
-                # Helpers spawned inside a test contribute to that parent's
-                # coverage even when the helper uses different local test IDs.
-                descendant = records[child['pid']]
-                calls = {tuple(descendant['codes'][i]) for i in descendant['common']}
-                calls.update(tuple(descendant['codes'][i]) for values in descendant['tests'].values() for i in values)
-                for raw_id in child['tests']:
-                    add(raw_id, calls, descendant['common_flags'])
+            if child.get('python') is False or not child['tests']:
+                continue
+            descendant = records.get((child['pid'], child.get('segment', 0)))
+            if descendant is None:
+                continue
+            coverage = window_calls(descendant) if test_window_only else set(map(tuple, descendant['codes']))
+            for raw_id in child['tests']:
+                add(raw_id, coverage, descendant['common_flags'])
     executed_statuses = {'passed', 'failed', 'error', 'crash', 'xfail', 'xpass', 'timeout'}
     executed = {r.test_id for r in run.execution_results if r.status.value in executed_statuses}
     missing = {tid for tid in executed if not native_codes.get(tid)}
@@ -173,15 +195,18 @@ def load_traces(directory, run, runner):
             if native in executed:
                 flags.setdefault(tid, set()).update(native_flags.get(native, ()))
     incomplete = {t for t in executed if native_flags.get(t)}
-    worker_pids = sorted(pid for pid, data in records.items() if data['parent_pid'] in records)
+    worker_pids = sorted({pid for (pid, segment), data in records.items()
+                          if (data['parent_pid'], 0) in records})
     return codes, flags, {
-        'process_count': len(records), 'worker_pids': worker_pids,
+        'process_count': len({key[0] for key in records}), 'worker_pids': worker_pids,
         'workers_seen': len(worker_pids),
-        'workers_with_tests': sum(bool(records[pid]['tests']) for pid in worker_pids),
+        'workers_with_tests': sum(bool(data['tests']) for (pid, segment), data in records.items() if pid in worker_pids),
         'executed_count': len(executed), 'incomplete_count': len(incomplete),
         'incomplete_fraction': len(incomplete) / len(executed) if executed else 0.,
         'incomplete_ids': sorted(incomplete), 'missing_record_ids': sorted(missing),
         'trace_nonempty': any(native_codes.values()),
+        'scopes_seen': sorted({r['scope'] for d in records.values() for r in d['scopes']}),
+        'child_observations': [c for d in records.values() for c in d['children']],
     }
 
 

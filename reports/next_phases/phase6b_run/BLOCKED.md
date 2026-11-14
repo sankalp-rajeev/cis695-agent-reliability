@@ -1,3 +1,9 @@
+# Resolved: A1 approved and pushed
+
+User explicitly approved A1 with the three requested statements. Commit 6d558e8
+contains only the appendix; automatic review accepted the commit and push.
+Stage 1 resumed. The historical blocker is preserved below.
+
 # Phase 6b blocked at Stage 1
 
 The required append-only Amendment A1 cannot be committed/pushed in this session:

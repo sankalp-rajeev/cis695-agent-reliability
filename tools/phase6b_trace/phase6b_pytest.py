@@ -29,14 +29,14 @@ def pytest_fixture_setup(fixturedef, request):
     targets = [item.nodeid for item in request.session.items if not prefix
                or item.nodeid == prefix or item.nodeid.startswith(prefix + '::')
                or item.nodeid.startswith(prefix + '/')]
-    with recorder.scope(targets):
+    with recorder.scope(targets, fixturedef.scope if fixturedef.scope in ('session', 'module', 'class') else 'session'):
         yield
     # Wrap actual finalizers: shared teardown often runs inside the final test's
     # protocol, so the protocol boundary alone is insufficient attribution.
     def wrap(callback):
         @functools.wraps(callback)
         def finalizer(*args, **kwargs):
-            with recorder.scope(targets):
+            with recorder.scope(targets, fixturedef.scope if fixturedef.scope in ('session', 'module', 'class') else 'session'):
                 return callback(*args, **kwargs)
         return finalizer
     fixturedef._finalizers[:] = [wrap(callback) for callback in fixturedef._finalizers]

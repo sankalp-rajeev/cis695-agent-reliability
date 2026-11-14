@@ -23,6 +23,9 @@ def _error(exc):
 
 try:
     if os.environ.get('PHASE6B_TRACE') == '1':
+        if os.environ.get('PHASE6B_OWNER'):
+            import phase6b_trace
+            phase6b_trace.install()
         import builtins
         _original_import = builtins.__import__
 

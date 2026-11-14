@@ -230,8 +230,8 @@ def selection_for(spec, run, directory, targets):
 def check_parallel_smoke(info, parallel_smoke):
     if parallel_smoke:
         require(info['workers_with_tests'] > 1, 'Parallel smoke did not observe multiple test workers')
-        require(info['incomplete_fraction'] <= .05,
-                'Parallel smoke gate: more than 5% of executed tests TRACE_INCOMPLETE')
+    require(info['incomplete_fraction'] <= .05,
+            'Smoke gate: more than 5% of executed tests TRACE_INCOMPLETE')
 
 
 def one_task(inputs, iid, folder, *, smoke=False, parallel_smoke=False):

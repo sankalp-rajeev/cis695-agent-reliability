@@ -2,7 +2,7 @@
 
 Start: 2026-11-14T07:28:16Z. Wall-clock deadline: 2026-11-14T17:28:16Z.
 Branch: experiment/runtime-instrumentation.
-Stage: 1, BLOCKED on automatic approval review of required Amendment A1.
+Stage: 1, child/scope completeness repair and gates in progress.
 Last completed step: preflight, existing-capture child table, observation-only
 metadata instrumentation, and synthetic regression gates (28 passed before and
 after observation instrumentation). Report-only smoke finished: existing parallel gate halted at 100% incomplete.
@@ -21,12 +21,17 @@ reachable with host access; default python 2.7.18, system python3 3.8.10, projec
 and SSH access works. `gh` has no auth command; draft-PR availability unresolved.
 No applicable AGENTS.md found. No label files opened. No model calls.
 
-Amendment A1 was not committed or pushed. Plan restored to its frozen content.
-See BLOCKED.md for both automatic-review rejections and the one decision needed.
-No child-rule repairs attempted; repair iterations used: 0 / 5.
+Amendment A1 approved by the user and committed/pushed alone as 6d558e8.
+Original frozen plan remains a byte-identical prefix (SHA-256
+71311b86285ab42f0402e1542e64be049ab78c11750de68fb1a0925e38ce9043).
+Child-rule implementation and explicit scope records complete; 35 synthetic
+gates passed, including new branches, exec replacement, posix_spawn, scope
+isolation and the 5% cutoff on every smoke. Repair iterations used: 1 / 5.
+All three repaired smoke gates pending.
 Evaluation not started. All 13 tasks pending in eval_set.json order.
 Stages 2, 3, 4 and 5 pending. No scientific verdict or headline metrics verified.
-Merge candidate not ready. Resume at Stage 1 only after the blocker is resolved.
+Merge candidate not ready. Next: all three repaired smokes, harness execution
+checkpoint/resume checks, then harness freeze. The A1 blocker is resolved.
 
 Protected tag object IDs verified unchanged:
 

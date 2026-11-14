@@ -344,21 +344,23 @@ def test_startup_internal_error_is_marked_without_failing_interpreter(tmp_path):
         pytest.fail('startup did not record its failure')
 
 
-def test_environment_stripping_child_is_incomplete(tmp_path):
+def test_environment_stripping_python_child_followed_and_owned(tmp_path):
+    child = tmp_path / 'child.py'
+    child.write_text('def child_marker(): pass\nchild_marker()\n')
     rec = Recorder(tmp_path, str(tmp_path))
     rec.start()
     try:
         rec.begin('raw_a')
-        proc = subprocess.run([sys.executable, '-c', 'pass'], env={'PATH': os.environ['PATH']},
+        proc = subprocess.run([sys.executable, str(child)], env={'PATH': os.environ['PATH']},
                               check=False, capture_output=True, timeout=10)
         rec.end('raw_a')
     finally:
         rec.flush()
-    assert proc.returncode == 0
-    assert 'child_did_not_inherit_environment' in rec.payload()['flags']['raw_a']
-    _codes, flags, info = load_traces(tmp_path, fake_run(['raw_a'], pid=rec.pid), 'django')
-    assert 'unfollowed_child_process' in flags['synthetic.py::0']
-    assert info['incomplete_fraction'] == 1.
+    assert proc.returncode == 0, proc.stderr
+    codes, flags, info = load_traces(tmp_path, fake_run(['raw_a'], pid=rec.pid), 'django')
+    assert 'child_marker' in {c[1] for c in codes['synthetic.py::0']}
+    assert not flags['synthetic.py::0']
+    assert info['incomplete_fraction'] == 0.
 
 
 def test_pid_marker_cannot_collide(tmp_path):
@@ -368,10 +370,141 @@ def test_pid_marker_cannot_collide(tmp_path):
         recorder.marker('ready', {'pid': recorder.pid})
 
 
-def test_five_percent_cutoff_only_applies_to_parallel_smoke():
+def test_five_percent_cutoff_applies_to_every_smoke():
     module = harness()
-    info = {'workers_with_tests': 2, 'incomplete_fraction': .25}
-    module.check_parallel_smoke(info, False)
-    with pytest.raises(ValueError, match='more than 5%'):
-        module.check_parallel_smoke(info, True)
-    module.check_parallel_smoke({'workers_with_tests': 2, 'incomplete_fraction': .05}, True)
+    for parallel in (False, True):
+        with pytest.raises(ValueError, match='more than 5%'):
+            module.check_parallel_smoke({'workers_with_tests': 2, 'incomplete_fraction': .25}, parallel)
+        module.check_parallel_smoke({'workers_with_tests': 2, 'incomplete_fraction': .05}, parallel)
+
+
+def test_nonpython_observation_never_flags(tmp_path):
+    rec = Recorder(tmp_path, str(tmp_path / 'traces'))
+    body = sample(tmp_path, 'def body(): pass\n')['body']
+    rec.start()
+    try:
+        with rec.scope(['raw_a', 'raw_b'], 'module'):
+            subprocess.run(['/bin/true'], env={}, check=True, timeout=10)
+        rec.begin('raw_a')
+        body()
+        rec.end('raw_a')
+        rec.begin('raw_b')
+        body()
+        rec.end('raw_b')
+    finally:
+        rec.flush()
+    _, flags, info = load_traces(tmp_path / 'traces', fake_run(['raw_a', 'raw_b'], pid=rec.pid), 'django')
+    assert info['incomplete_count'] == 0 and not any(flags.values())
+    assert rec.children[0]['python'] is False
+    assert rec.children[0]['scope'] == 'module'
+
+
+def test_shared_python_child_and_test_window_secondary(tmp_path):
+    child = tmp_path / 'shared.py'
+    child.write_text('def shared_marker(): pass\nshared_marker()\n')
+    body = sample(tmp_path, 'def body(): pass\n')['body']
+    rec = Recorder(tmp_path, str(tmp_path / 'traces'))
+    rec.start()
+    try:
+        with rec.scope(['raw_a', 'raw_b'], 'class'):
+            subprocess.run([sys.executable, str(child)], env={}, check=True, timeout=10)
+        for tid in ('raw_a', 'raw_b', 'raw_c'):
+            rec.begin(tid)
+            body()
+            rec.end(tid)
+    finally:
+        rec.flush()
+    run = fake_run(['raw_a', 'raw_b', 'raw_c'], pid=rec.pid)
+    codes, flags, info = load_traces(tmp_path / 'traces', run, 'django')
+    windows, _, _ = load_traces(tmp_path / 'traces', run, 'django', test_window_only=True)
+    assert info['incomplete_count'] == 0 and not any(flags.values())
+    for tid in ('synthetic.py::0', 'synthetic.py::1'):
+        assert 'shared_marker' in {c[1] for c in codes[tid]}
+        assert 'shared_marker' not in {c[1] for c in windows[tid]}
+    assert 'shared_marker' not in {c[1] for c in codes['synthetic.py::2']}
+    assert {'class', 'test'} <= set(info['scopes_seen'])
+
+
+def test_unfollowable_python_child_flags_only_spawn_scope(tmp_path):
+    body = sample(tmp_path, 'def body(): pass\n')['body']
+    rec = Recorder(tmp_path, str(tmp_path / 'traces'))
+    rec.start()
+    try:
+        with rec.scope(['raw_a', 'raw_b'], 'module'):
+            subprocess.run([sys.executable, '-S', '-c', 'pass'], env={}, check=True, timeout=10)
+        for tid in ('raw_a', 'raw_b', 'raw_c'):
+            rec.begin(tid)
+            body()
+            rec.end(tid)
+    finally:
+        rec.flush()
+    _, flags, info = load_traces(tmp_path / 'traces', fake_run(['raw_a', 'raw_b', 'raw_c'], pid=rec.pid), 'django')
+    assert info['incomplete_count'] == 2
+    assert 'unfollowed_child_process' in flags['synthetic.py::0']
+    assert 'unfollowed_child_process' in flags['synthetic.py::1']
+    assert not flags['synthetic.py::2']
+
+
+@pytest.mark.parametrize('spawn', ['posix_spawn', 'posix_spawnp'])
+def test_posix_spawn_python_child_is_followed(tmp_path, spawn):
+    if not hasattr(os, spawn):
+        pytest.skip('platform has no posix_spawn')
+    child = tmp_path / 'child.py'
+    child.write_text('def spawned_marker(): pass\nspawned_marker()\n')
+    rec = Recorder(tmp_path, str(tmp_path / 'traces'))
+    rec.start()
+    try:
+        rec.begin('raw_a')
+        pid = getattr(os, spawn)(sys.executable, [sys.executable, str(child)], {})
+        assert os.waitpid(pid, 0)[1] == 0
+        rec.end('raw_a')
+    finally:
+        rec.flush()
+    codes, flags, info = load_traces(tmp_path / 'traces', fake_run(['raw_a'], pid=rec.pid), 'django')
+    assert 'spawned_marker' in {c[1] for c in codes['synthetic.py::0']}
+    assert info['incomplete_count'] == 0 and not any(flags.values())
+
+
+def test_exec_replacement_keeps_pid_segments_and_owner(tmp_path):
+    child = tmp_path / 'child.py'
+    child.write_text('def exec_marker(): pass\nexec_marker()\n')
+    program = tmp_path / 'parent.py'
+    program.write_text("import os, sys, unittest, phase6b_trace\n"
+                       "phase6b_trace.RECORDER.begin('raw_a')\n"
+                       "os.execvpe(sys.executable, [sys.executable, os.environ['CHILD']], {})\n")
+    environment = trace_environment(tmp_path)
+    environment['CHILD'] = str(child)
+    proc = subprocess.run([sys.executable, str(program)], env=environment,
+                          capture_output=True, text=True, timeout=10, check=False)
+    assert proc.returncode == 0, proc.stderr
+    records = [read_trace(p) for p in (tmp_path / 'traces').glob('*.jsonl.gz')]
+    assert len(records) == 2 and len({r['pid'] for r in records}) == 1
+    pid = records[0]['pid']
+    codes, flags, info = load_traces(tmp_path / 'traces', fake_run(['raw_a'], pid=pid), 'django')
+    assert 'exec_marker' in {c[1] for c in codes['synthetic.py::0']}
+    assert info['incomplete_count'] == 0 and not any(flags.values())
+
+
+def test_unittest_class_scope_does_not_leak_to_other_class(tmp_path, monkeypatch):
+    monkeypatch.setenv('PHASE6B_RUNNER', 'django')
+    functions = sample(tmp_path, 'import unittest\n'
+        'class A(unittest.TestCase):\n'
+        '    @classmethod\n'
+        '    def setUpClass(cls): marker_shared()\n'
+        '    def test_a(self): pass\n'
+        '    def test_b(self): pass\n'
+        'class B(unittest.TestCase):\n'
+        '    def test_c(self): pass\n'
+        'def marker_shared(): pass\n')
+    rec = Recorder(tmp_path)
+    suite = unittest.TestSuite([unittest.defaultTestLoader.loadTestsFromTestCase(functions[c]) for c in ('A', 'B')])
+    rec.start()
+    try:
+        suite.run(unittest.TestResult())
+    finally:
+        rec.stop()
+    for tid in rec.tests:
+        if '.A.' in tid:
+            assert 'marker_shared' in names(rec, tid)
+        else:
+            assert 'marker_shared' not in names(rec, tid)
