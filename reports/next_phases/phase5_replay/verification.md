@@ -26,3 +26,7 @@ Final source hashes:
 Static validation passed: Python AST parsing and `ruff check --no-cache scripts/phase5_replay.py tests/unit/test_phase5_replay.py`. Synthetic unit checks were added but not executed. No Docker, benchmark or unit-test execution, model calls, correctness labels, oracle inputs, existing tag updates, or changes to pre-existing sealed artifacts. Phase 6b was not started.
 
 The original annotated plan tag remains `d4af4b870dd6f24b3fac61233b04c0c12b39f24a`. The new annotated Amendment A1 tag is `97969395d0992959e6c0096fc6967babf0b17fdd`.
+
+## Unit checks executed
+
+On 2026-11-13 (America/Phoenix), `python3 tests/unit/test_phase5_replay.py -v` passed all 11 pure Python unit checks. No Docker or benchmark tests were run. The replay script, computed results, and tags were unchanged. Phase 6b was not started.
