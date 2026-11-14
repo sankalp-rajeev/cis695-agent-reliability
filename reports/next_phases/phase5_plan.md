@@ -13,3 +13,13 @@ e. Ordering rule (unchanged from the roadmap): Tier 1 modules before Tier 2; wit
 f. Time to first regression is two bounds: cumulative time when its module starts (optimistic) and when it ends (conservative). Per budget record modules run, modules not reached, and the share of the V2 list not reached. State per task whether each budget binds (whole patched pass longer than the budget). A budget that does not bind is non-informative and is reported as such.
 
 g. Pre-registered reading: useful if at 120 s the rule keeps at least 90% of reference regressions AND its median time to first regression beats the 25th percentile of the random orderings, on the conservative bound. If the optimistic and conservative bounds disagree, the verdict is "inconclusive". With seven regression tasks, report each case and do not extrapolate.
+
+## Amendment A1
+
+a. Source of tier membership: `reports/v2_discovery_cleanup/comparison_final/offline.json` before_by_tier / after_by_tier. A task's tiers are accepted only if the Phase 4 frozen V2 list (the frozen selection file, verified against the protocol hash as in step 0) equals `before` or `after` for that task EXACTLY in content and order, and the tier sets then union to that list with no ID missing or extra. Record which of before/after matched, per task.
+
+b. A task that matches neither is excluded from the tier-based ordering analysis and reported by name with the reason. Never infer or reconstruct tiers for it. Its selector-replay metrics that don't need tiers (c) are still computed.
+
+c. A test's tier is the lowest tier containing it. A module's tier is the lowest tier among its selected tests. Report any module that mixes tiers.
+
+d. Rules, thresholds, seeds 0..19, budgets 30/60/120/300 s, the bounds, the cost model and the pre-registered reading are unchanged.
