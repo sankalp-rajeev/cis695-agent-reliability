@@ -1,0 +1,583 @@
+{
+  "baseline": {
+    "counts": {
+      "passed": 1347,
+      "failure": 7,
+      "error": 47,
+      "skipped": 6
+    },
+    "issues": [
+      {
+        "name": "tests.unit.test_env::test_assert_clean_interpreter_passes_under_the_test_runner",
+        "kind": "failure",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_loader::test_dataset_has_exactly_500_instances",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_required_fields_are_present",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_instance_ids_are_unique",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_every_instance_yields_a_task_with_populated_fields",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_spans_multiple_repositories",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_load_instance_returns_matching_halves",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_unknown_instance_raises",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_test_name_lists_are_normalised_to_tuples",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_no_leakage::test_real_task_json_contains_no_oracle_values",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_no_leakage::test_agent_task_and_oracle_record_are_separate_objects",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_no_leakage::test_whole_dataset_is_free_of_oracle_values",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_sample_has_requested_size",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_sample_spans_at_least_three_repositories",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_sample_covers_every_task_type",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_sample_has_no_duplicate_instances",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_rows_are_in_canonical_order",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_excluded_instances_never_appear",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_exclusion_shrinks_the_population_not_the_request",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_excluding_everything_fails_loudly",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_no_exclusion_is_the_default",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_same_seed_reproduces_identical_manifest",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_same_seed_is_stable_across_input_order",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_different_seed_gives_a_different_sample",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_rerunning_the_builder_reproduces_the_hash",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_sidecar_hash_matches_file_contents",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_manifest_is_lf_terminated_and_has_expected_columns",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_manifest_round_trips_through_csv",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_every_instance_in_the_population_classifies",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_oversized_request_fails_loudly",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_manifest_row_is_immutable",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_selection_ground_truth::test_django_16899_selects_admin_checks",
+        "kind": "failure",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_superseded_shadow::test_kernel_blocks_actual_file_access_in_classifier_process",
+        "kind": "failure",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_superseded_shadow_v2::test_v2_worker_still_cannot_open_oracle_files",
+        "kind": "failure",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_superseded_shadow_v2::test_only_one_extra_base_reuses_patch_confirmation_and_preserves_signal",
+        "kind": "failure",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_frozen_configuration_defaults_are_unchanged",
+        "kind": "failure",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_all_83_have_one_manifest_per_arm_and_original_identity",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[selection]",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[source]",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[protocol]",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[snapshot]",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[image_binding]",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_resealed_selection_cannot_bypass_protocol_bound_inputs",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_source_drift_detected_without_container",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_end_to_end_scoped_dry_run_accounts_for_both_abstentions",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_host_drift_blocks_launch_after_freeze",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_archived_v2_inputs_are_portable_without_changing_frozen_policy",
+        "kind": "failure",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_binding_inventory_has_all_83_historical_records_unchanged",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_validation_detects_image_drift_before_plan_creation",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_validation_detects_docker_daemon_drift",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_resealed_binding_still_bound_to_protocol",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_new_freeze_binds_host_images_for_all_83_without_rewriting_history[host-images]",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_image_inspection_error_blocks_preparation",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_image_binding_cannot_change_task_cohort",
+        "kind": "error",
+        "category": "other"
+      }
+    ],
+    "xml_sha256": "d1168b5da5fd84011afb22902b884cc0d42116d956db56186e4e3bfe68ae7ddb",
+    "log_sha256": "9268172fc5c57e5ac28ebe95e8be90e8ec90a578728de513c799b4ca7be9a823"
+  },
+  "candidate": {
+    "counts": {
+      "passed": 1375,
+      "error": 47,
+      "skipped": 6,
+      "failure": 6
+    },
+    "issues": [
+      {
+        "name": "tests.unit.test_loader::test_dataset_has_exactly_500_instances",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_required_fields_are_present",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_instance_ids_are_unique",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_every_instance_yields_a_task_with_populated_fields",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_spans_multiple_repositories",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_load_instance_returns_matching_halves",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_unknown_instance_raises",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_loader::test_test_name_lists_are_normalised_to_tuples",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_no_leakage::test_real_task_json_contains_no_oracle_values",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_no_leakage::test_agent_task_and_oracle_record_are_separate_objects",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_no_leakage::test_whole_dataset_is_free_of_oracle_values",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_sample_has_requested_size",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_sample_spans_at_least_three_repositories",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_sample_covers_every_task_type",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_sample_has_no_duplicate_instances",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_rows_are_in_canonical_order",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_excluded_instances_never_appear",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_exclusion_shrinks_the_population_not_the_request",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_excluding_everything_fails_loudly",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_no_exclusion_is_the_default",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_same_seed_reproduces_identical_manifest",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_same_seed_is_stable_across_input_order",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_different_seed_gives_a_different_sample",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_rerunning_the_builder_reproduces_the_hash",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_sidecar_hash_matches_file_contents",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_manifest_is_lf_terminated_and_has_expected_columns",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_manifest_round_trips_through_csv",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_every_instance_in_the_population_classifies",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_oversized_request_fails_loudly",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_sampler::test_manifest_row_is_immutable",
+        "kind": "error",
+        "category": "read-only Hugging Face cache lock"
+      },
+      {
+        "name": "tests.unit.test_selection_ground_truth::test_django_16899_selects_admin_checks",
+        "kind": "failure",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_superseded_shadow::test_kernel_blocks_actual_file_access_in_classifier_process",
+        "kind": "failure",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_superseded_shadow_v2::test_v2_worker_still_cannot_open_oracle_files",
+        "kind": "failure",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_superseded_shadow_v2::test_only_one_extra_base_reuses_patch_confirmation_and_preserves_signal",
+        "kind": "failure",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_frozen_configuration_defaults_are_unchanged",
+        "kind": "failure",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_all_83_have_one_manifest_per_arm_and_original_identity",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[selection]",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[source]",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[protocol]",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[snapshot]",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[image_binding]",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_resealed_selection_cannot_bypass_protocol_bound_inputs",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_source_drift_detected_without_container",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_end_to_end_scoped_dry_run_accounts_for_both_abstentions",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_host_drift_blocks_launch_after_freeze",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_archived_v2_inputs_are_portable_without_changing_frozen_policy",
+        "kind": "failure",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_binding_inventory_has_all_83_historical_records_unchanged",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_validation_detects_image_drift_before_plan_creation",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_validation_detects_docker_daemon_drift",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_resealed_binding_still_bound_to_protocol",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_new_freeze_binds_host_images_for_all_83_without_rewriting_history[host-images]",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_image_inspection_error_blocks_preparation",
+        "kind": "error",
+        "category": "other"
+      },
+      {
+        "name": "tests.unit.test_v2_scg_paired::test_image_binding_cannot_change_task_cohort",
+        "kind": "error",
+        "category": "other"
+      }
+    ],
+    "xml_sha256": "6b5a57a6b8e8b231f435c7ec7e8a6920c29e2f2f31a6d3c447d0c179ded668cb",
+    "log_sha256": "b11124ac6f8d42af59039b54eaecaa7a7193bb646f35f7053b5ed44341eee09a"
+  },
+  "new_issues": [],
+  "resolved_issues": [
+    {
+      "name": "tests.unit.test_env::test_assert_clean_interpreter_passes_under_the_test_runner",
+      "kind": "failure",
+      "category": "other"
+    }
+  ],
+  "no_new_issues": true,
+  "baseline_commit": "8ee6c5230b70308acaf182a1e6e2a5b13cece415",
+  "candidate_tested_commit": "9b4a607199c7d495aabca7cd6db255893bcbd65a",
+  "provided_baseline": {
+    "errors": 47,
+    "failures": 6,
+    "cache_lock_errors": 30,
+    "drift_errors": 17
+  },
+  "baseline_only_environment_artifact": "test_env::test_assert_clean_interpreter_passes_under_the_test_runner: isolated worktree paths are outside reliability.env project_root from the shared editable installation; candidate passes this test",
+  "commands": {
+    "baseline": "env -u PYTHONPATH <publication>/.venv/bin/python -m pytest tests/unit --tb=short --junitxml=<raw>/baseline.xml (cwd isolated baseline worktree)",
+    "candidate": "bash scripts/test.sh tests/unit --tb=short --junitxml=runs/phase6b_merge_checks_20261114/candidate.xml"
+  }
+}

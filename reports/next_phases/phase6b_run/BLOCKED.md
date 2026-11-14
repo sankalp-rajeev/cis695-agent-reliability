@@ -1,3 +1,9 @@
+# No active blocker: Phase 6b sealed and candidate ready
+
+A1 approval/review was resolved; all stages completed. Scientific unspecified
+cases: none. Full unit candidate has no new errors or failures. The historical
+A1 block and its resolution are preserved below.
+
 # Resolved: A1 approved and pushed
 
 User explicitly approved A1 with the three requested statements. Commit 6d558e8

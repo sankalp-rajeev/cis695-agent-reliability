@@ -1,7 +1,7 @@
 # Phase 6b status
 
 Start: 2026-11-14T07:28:16Z; deadline: 2026-11-14T17:28:16Z (10 hours, not reset).
-Branch: merge-candidate/phase6b-into-main. Stage: 5, full unit comparison running.
+Branch: merge-candidate/phase6b-into-main. Stage: 5 complete; merge candidate ready for review and final checkpoint.
 Last completed step: Stage 1 harness frozen after all gates passed.
 Last recorded HEAD / frozen harness commit: 92a1e8e04d4cc788322eca3152739504dced2319.
 Current checkpoint HEAD: resolve with git log -1 -- this file.
@@ -92,3 +92,13 @@ Baseline unit worktree: /tmp/phase6b_unit_baseline_20261114 at starting HEAD.
 Unit logs: runs/phase6b_merge_checks_20261114/{baseline,candidate}.{log,xml}.
 Baseline and candidate src/ trees are identical; the new Phase 6b code is in
 scripts/ and tools/. Full baseline comparison is pending; do not claim ready.
+
+Stage 5 complete: candidate full unit suite 1375 passed, 6 skipped, 47 errors
+(30 HF read-only locks + 17 drift), 6 failures, all pre-existing by name. No new
+errors/failures. Starting-commit isolated baseline had one additional environment
+path failure, documented in MERGE_NOTES.md; no result was excluded or fixed.
+Candidate branch pushed; main untouched. callgraph-typeprop remote tip is not
+merged. No PR: installed gh is gitsome and lacks auth status.
+Scientific seal unchanged. No active blocker; scientific unspecified cases none.
+Last tested candidate HEAD: 9b4a607199c7d495aabca7cd6db255893bcbd65a.
+Final documentation-only checkpoint HEAD: resolve git log -1 -- this file.
