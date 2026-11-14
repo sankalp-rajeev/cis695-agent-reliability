@@ -1,0 +1,245 @@
+"""Definition identity from exact patch edits and AST scope, without call inference."""
+from __future__ import annotations
+
+import ast
+import io
+import re
+import tokenize
+from collections import defaultdict
+
+MAX_SOURCE_BYTES = 2 * 1024**2
+HUNK = re.compile(r'^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@(?:.*)$')
+DEFINITIONS = (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)
+_SKIP = object()
+
+
+class MappingInputError(ValueError):
+    pass
+
+
+def source_text(payload):
+    if len(payload) > MAX_SOURCE_BYTES:
+        raise MappingInputError('source_blob_limit')
+    encoding, _ = tokenize.detect_encoding(io.BytesIO(payload).readline)
+    return payload.decode(encoding).replace('\r\n', '\n').replace('\r', '\n')
+
+
+def text_lines(text):
+    if not text:
+        return []
+    lines = text.split('\n')
+    return lines[:-1] if lines[-1] == '' else lines
+
+
+def apply_hunks(base, section):
+    """Exact old-side validation, including counts and both coordinate streams.
+
+    Returns only inspection text and edit coordinates; never writes source.
+    Patch heading text is deliberately ignored as definition evidence.
+    """
+    old = text_lines(base)
+    result, removed, added, correspondence = [], [], [], {}
+    position = 0
+    active = None
+    count = 0
+    no_newline = False
+    last_sign = None
+
+    def finish():
+        if active and (active['old_seen'] != active['old_count'] or active['new_seen'] != active['new_count']):
+            raise MappingInputError('hunk_line_count_mismatch')
+
+    for line in text_lines(section.replace('\r\n', '\n')):
+        match = HUNK.match(line)
+        if match:
+            finish()
+            old_start, old_count, new_start, new_count = match.groups()[:4]
+            old_start, new_start = int(old_start), int(new_start)
+            old_count, new_count = int(old_count or 1), int(new_count or 1)
+            index = old_start - 1 if old_count else old_start
+            if index < position or index > len(old):
+                raise MappingInputError('invalid_or_overlapping_old_hunk_coordinate')
+            for old_index in range(position, index):
+                correspondence[old_index + 1] = len(result) + 1
+                result.append(old[old_index])
+            position = index
+            expected_new = new_start - 1 if new_count else new_start
+            if len(result) != expected_new:
+                raise MappingInputError('new_hunk_coordinate_mismatch')
+            active = dict(old_count=old_count, new_count=new_count, old_seen=0, new_seen=0)
+            count += 1
+            continue
+        if active is None:
+            continue  # file headers/modes contain no ownership evidence
+        complete = active['old_seen'] == active['old_count'] and active['new_seen'] == active['new_count']
+        if line.startswith('\\ No newline at end of file'):
+            if last_sign in ('+', ' '):
+                no_newline = True
+            continue
+        if complete and line == '':
+            continue
+        if complete or not line or line[0] not in ' +-':
+            raise MappingInputError('unexpected_or_unprefixed_hunk_line')
+        sign, value = line[0], line[1:]
+        old_line = None
+        if sign in ' -':
+            if position >= len(old) or old[position] != value:
+                raise MappingInputError('old_context_or_removal_mismatch')
+            old_line = position + 1
+            position += 1
+            active['old_seen'] += 1
+            if sign == '-':
+                removed.append(dict(line=old_line, text=value))
+        if sign in ' +':
+            new_line = len(result) + 1
+            result.append(value)
+            if sign == ' ':
+                correspondence[old_line] = new_line
+            else:
+                added.append(dict(line=new_line, text=value))
+            active['new_seen'] += 1
+        last_sign = sign
+        if active['old_seen'] > active['old_count'] or active['new_seen'] > active['new_count']:
+            raise MappingInputError('hunk_line_count_overrun')
+    finish()
+    for old_index in range(position, len(old)):
+        correspondence[old_index + 1] = len(result) + 1
+        result.append(old[old_index])
+    candidate = '\n'.join(result)
+    if result and not no_newline:
+        candidate += '\n'
+    return candidate, removed, added, count
+
+
+def own_structure(node, root=True):
+    """Compare an owner's AST without treating nested definitions as its body edits."""
+    if isinstance(node, ast.Pass):
+        return _SKIP  # Removing a placeholder to add a child is not a parent-body change.
+    if isinstance(node, DEFINITIONS) and not root:
+        return _SKIP
+    if isinstance(node, ast.AST):
+        values = []
+        for field, value in ast.iter_fields(node):
+            if isinstance(value, list):
+                encoded = [own_structure(v, False) for v in value]
+                encoded = [v for v in encoded if v is not _SKIP]
+            elif isinstance(value, ast.AST):
+                encoded = own_structure(value, False)
+            else:
+                encoded = value
+            values.append((field, encoded))
+        return type(node).__name__, values
+    return node
+
+
+class Index(ast.NodeVisitor):
+    def __init__(self, tree):
+        self.stack = []
+        self.rows = []
+        self.visit(tree)
+        self.groups = defaultdict(list)
+        for row in self.rows:
+            self.groups[(row['qualname'], row['kind'])].append(row)
+
+    def definition(self, node):
+        qualname = '.'.join([*self.stack, node.name])
+        start = min([node.lineno, *(d.lineno for d in node.decorator_list)])
+        row = dict(name=node.name, qualname=qualname, kind='class' if isinstance(node, ast.ClassDef) else 'function',
+                   line=node.lineno, column=node.col_offset, start=start, end=node.end_lineno,
+                   depth=len(self.stack), structure=own_structure(node))
+        self.rows.append(row)
+        self.stack.append(node.name)
+        self.generic_visit(node)
+        self.stack.pop()
+
+    visit_ClassDef = definition
+    visit_FunctionDef = definition
+    visit_AsyncFunctionDef = definition
+
+    def owners(self, edits):
+        changed = set()
+        outside = []
+        for edit in edits:
+            if not edit['text'].strip():
+                continue
+            candidates = [r for r in self.rows if r['start'] <= edit['line'] <= r['end']]
+            if not candidates:
+                outside.append(edit)
+                continue
+            depth = max(r['depth'] for r in candidates)
+            owners = [r for r in candidates if r['depth'] == depth]
+            if len(owners) != 1:
+                raise MappingInputError('overlapping_definition_ownership')
+            changed.add((owners[0]['qualname'], owners[0]['kind']))
+        return changed, outside
+
+
+def public_definition(row):
+    return {k: v for k, v in row.items() if k != 'structure'}
+
+
+def map_file(base_path, path, base_payload, section, graph_nodes, *, added_file=False, deleted_file=False):
+    """Map directly edited definitions to unchanged graph nodes.
+
+    Unique lexical identity does not assert runtime binding/dispatch certainty.
+    Repeated definitions with the same full qualified name remain ambiguous.
+    """
+    diagnostics = []
+    try:
+        if base_payload is None and not added_file:
+            raise MappingInputError('base_source_missing')
+        base = source_text(base_payload or b'')
+        candidate, removed, added, hunk_count = apply_hunks(base, section)
+        if len(candidate.encode('utf-8')) > MAX_SOURCE_BYTES:
+            raise MappingInputError('candidate_source_blob_limit')
+        old_index = Index(ast.parse(base, filename=base_path))
+        new_index = Index(ast.parse(candidate, filename=path))
+        old_changed, old_outside = old_index.owners(removed)
+        new_changed, new_outside = new_index.owners(added)
+    except (MappingInputError, SyntaxError, UnicodeError, ValueError, RecursionError) as exc:
+        reason = str(exc) if isinstance(exc, MappingInputError) else type(exc).__name__
+        return dict(records=[dict(path=path, base_path=base_path, name=None, qualname=None,
+            record_kind='file_analysis_error', change_kind='uncertain', status='unresolved',
+            reason=reason, targets=[], base_definitions=[], candidate_definitions=[])],
+            diagnostics=[dict(reason=reason, message=str(exc)[:240])], definitions=[])
+    graph_index = defaultdict(list)
+    for node in graph_nodes:
+        if node['path'] == base_path and node['kind'] != 'module':
+            kind = 'class' if node['kind'] == 'class' else 'function'
+            graph_index[(node['qualname'], kind)].append(node)
+    records = []
+    for key in sorted(old_changed | new_changed):
+        before, after = old_index.groups.get(key, []), new_index.groups.get(key, [])
+        common = dict(path=path, base_path=base_path, name=key[0].rsplit('.', 1)[-1], qualname=key[0],
+                      definition_kind=key[1], base_definitions=[public_definition(d) for d in before],
+                      candidate_definitions=[public_definition(d) for d in after])
+        if len(before) > 1 or len(after) > 1:
+            records.append(dict(**common, record_kind='definition', change_kind='uncertain', status='ambiguous',
+                reason='duplicate_fully_qualified_definition', targets=[n['id'] for n in graph_index[key]]))
+            continue
+        if not before:
+            records.append(dict(**common, record_kind='definition', change_kind='added', status='new_definition',
+                reason='definition_introduced_by_candidate', targets=[]))
+            continue
+        if after and before[0]['structure'] == after[0]['structure']:
+            diagnostics.append(dict(qualname=key[0], reason='owned_ast_structure_unchanged'))
+            continue
+        nodes = graph_index.get(key, [])
+        exact = [n for n in nodes if n['line'] == before[0]['line'] and n['column'] == before[0]['column']]
+        if len(nodes) > 1 or len(exact) > 1:
+            status, reason, targets = 'ambiguous', 'multiple_graph_nodes_for_qualified_definition', [n['id'] for n in nodes]
+        elif len(nodes) == 1 and len(exact) == 1:
+            status, reason, targets = 'resolved', 'exact_base_path_qualified_name_kind_and_location', [exact[0]['id']]
+        else:
+            status, reason, targets = 'unresolved', 'base_definition_not_indexed_at_expected_location', []
+        records.append(dict(**common, record_kind='definition', change_kind='modified' if after else 'deleted',
+                            status=status, reason=reason, targets=targets))
+    if old_outside or new_outside:
+        diagnostics.append(dict(reason='edits_outside_named_definitions', removed=old_outside, added=new_outside))
+    if not hunk_count:
+        diagnostics.append(dict(reason='no_text_hunks'))
+    definitions = [dict(side=side, **public_definition(r), directly_edited=(r['qualname'], r['kind']) in changed)
+                   for side, index, changed in [('base', old_index, old_changed), ('candidate', new_index, new_changed)]
+                   for r in index.rows]
+    return dict(records=records, diagnostics=diagnostics, definitions=definitions,
+                directly_edited_base_keys=sorted(old_changed), directly_edited_candidate_keys=sorted(new_changed))

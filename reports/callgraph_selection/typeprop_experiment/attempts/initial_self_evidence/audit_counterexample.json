@@ -1,0 +1,118 @@
+[
+  {
+    "edge": {
+      "baseline_reason": "uncertain_or_rebound_name",
+      "baseline_status": "unresolved",
+      "baseline_targets": [],
+      "caller": "astropy/samp/tests/test_hub.py::test_SAMPHubServer_run_repeated::test_function@29:0",
+      "column": 4,
+      "expression": "hub.stop",
+      "line": 42,
+      "path": "astropy/samp/tests/test_hub.py",
+      "provenance": "local_constructor",
+      "reason": "typeprop_unique_receiver_method",
+      "receiver_fact": {
+        "name": "hub",
+        "scope": "astropy/samp/tests/test_hub.py::test_SAMPHubServer_run_repeated::test_function@29:0"
+      },
+      "receiver_types": [
+        "astropy/samp/hub.py::SAMPHubServer::class@30:0"
+      ],
+      "scope": "astropy/samp/tests/test_hub.py::test_SAMPHubServer_run_repeated::test_function@29:0",
+      "status": "resolved",
+      "targets": [
+        "astropy/samp/hub.py::SAMPHubServer.stop::method@494:4"
+      ]
+    },
+    "evidence": [
+      {
+        "context": "32:     when web profile support is enabled.\n33:     \"\"\"\n34: \n35:     hub = SAMPHubServer(web_profile=True, mode=\"multiple\", pool_size=1)\n36:     hub.start()\n37:     time.sleep(1)\n38:     hub.stop()",
+        "kind": "local_constructor",
+        "name": "hub",
+        "scope": "astropy/samp/tests/test_hub.py::test_SAMPHubServer_run_repeated::test_function@29:0"
+      }
+    ],
+    "instance_id": "astropy__astropy-14508",
+    "ordinal": 59242,
+    "receiver_classes": [
+      {
+        "bases": [],
+        "column": 0,
+        "conditional": false,
+        "decorated": false,
+        "decorators": [],
+        "id": "astropy/samp/hub.py::SAMPHubServer::class@30:0",
+        "kind": "class",
+        "line": 30,
+        "module": "astropy.samp.hub",
+        "parent": "astropy/samp/hub.py::<module>::module@1:0",
+        "path": "astropy/samp/hub.py",
+        "qualname": "SAMPHubServer"
+      }
+    ],
+    "repo": "astropy/astropy",
+    "sample_key": "006cf651252377bcf469f254061f18cb1e1eedd3e36d062e4b995a9b1e2c3492",
+    "site_context": "39:     time.sleep(1)\n40:     hub.start()\n41:     time.sleep(1)\n42:     hub.stop()",
+    "target_context": [
+      "491:         else:\n492:             return str(uuid.uuid1())\n493: \n494:     def stop(self):\n495:         \"\"\"\n496:         Stop the current SAMP Hub instance and delete the lock file.\n497:         \"\"\""
+    ]
+  },
+  {
+    "edge": {
+      "baseline_reason": "uncertain_or_rebound_name",
+      "baseline_status": "unresolved",
+      "baseline_targets": [],
+      "caller": "astropy/units/core.py::UnitBase._apply_equivalencies::method@1039:4",
+      "column": 44,
+      "expression": "unit.decompose",
+      "line": 1053,
+      "path": "astropy/units/core.py",
+      "provenance": "caller_parameter",
+      "reason": "typeprop_unique_receiver_method",
+      "receiver_fact": {
+        "name": "unit",
+        "scope": "astropy/units/core.py::UnitBase._apply_equivalencies::method@1039:4"
+      },
+      "receiver_types": [
+        "astropy/units/core.py::UnitBase::class@640:0"
+      ],
+      "scope": "astropy/units/core.py::UnitBase._apply_equivalencies::method@1039:4",
+      "status": "resolved",
+      "targets": [
+        "astropy/units/core.py::UnitBase.decompose::method@1203:4"
+      ]
+    },
+    "evidence": [
+      {
+        "context": "1104: \n1105:         # if that doesn't work, maybe we can do it with equivalencies?\n1106:         try:\n1107:             return self._apply_equivalencies(\n1108:                 self, other, self._normalize_equivalencies(equivalencies)\n1109:             )\n1110:         except UnitsError as exc:",
+        "kind": "caller_argument",
+        "name": "unit",
+        "scope": "astropy/units/core.py::UnitBase._apply_equivalencies::method@1039:4"
+      }
+    ],
+    "instance_id": "astropy__astropy-14508",
+    "ordinal": 76344,
+    "receiver_classes": [
+      {
+        "bases": [],
+        "column": 0,
+        "conditional": false,
+        "decorated": false,
+        "decorators": [],
+        "id": "astropy/units/core.py::UnitBase::class@640:0",
+        "kind": "class",
+        "line": 640,
+        "module": "astropy.units.core",
+        "parent": "astropy/units/core.py::<module>::module@1:0",
+        "path": "astropy/units/core.py",
+        "qualname": "UnitBase"
+      }
+    ],
+    "repo": "astropy/astropy",
+    "sample_key": "78f892833d360fbc53fe28a5aab9c3eb900cc1bb5a31a4af8b88552234be0e66",
+    "site_context": "1050: \n1051:         for funit, tunit, a, b in equivalencies:\n1052:             if tunit is None:\n1053:                 ratio = other.decompose() / unit.decompose()\n1054:                 try:\n1055:                     ratio_in_funit = ratio.decompose([funit])\n1056:                     return make_converter(ratio_in_funit.scale, a, 1.0)",
+    "target_context": [
+      "1200:         \"\"\"\n1201:         return self.to(other, value=value, equivalencies=equivalencies)\n1202: \n1203:     def decompose(self, bases=set()):\n1204:         \"\"\"\n1205:         Return a unit object composed of only irreducible units.\n1206: "
+    ]
+  }
+]

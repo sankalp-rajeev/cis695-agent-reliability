@@ -1,0 +1,679 @@
+[
+  {
+    "available": true,
+    "base_commit": "5a68f024987e6d16c2626a31bf653a2edddea579",
+    "base_file_sha256": "58f101d5abd29ed1a8acdbcd49c432ea7db12f0d7a5cff11f1f7ba886923f4b1",
+    "instance_id": "django__django-12209",
+    "path": "tests/basic/tests.py",
+    "snippets": [
+      {
+        "end": 35,
+        "start": 1,
+        "text": "1: import threading\n2: from datetime import datetime, timedelta\n3: from unittest import mock\n4: \n5: from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist\n6: from django.db import DEFAULT_DB_ALIAS, DatabaseError, connections, models\n7: from django.db.models.manager import BaseManager\n8: from django.db.models.query import MAX_GET_RESULTS, EmptyQuerySet, QuerySet\n9: from django.test import (\n10:     SimpleTestCase, TestCase, TransactionTestCase, skipUnlessDBFeature,\n11: )\n12: from django.utils.translation import gettext_lazy\n13: \n14: from .models import (\n15:     Article, ArticleSelectOnSave, FeaturedArticle, PrimaryKeyWithDefault,\n16:     SelfRef,\n17: )\n18: \n19: \n20: class ModelInstanceCreationTests(TestCase):\n21: \n22:     def test_object_is_not_written_to_database_until_save_was_called(self):\n23:         a = Article(\n24:             id=None,\n25:             headline='Parrot programs in Python',\n26:             pub_date=datetime(2005, 7, 28),\n27:         )\n28:         self.assertIsNone(a.id)\n29:         self.assertEqual(Article.objects.all().count(), 0)\n30: \n31:         # Save it into the database. You have to call save() explicitly.\n32:         a.save()\n33:         self.assertIsNotNone(a.id)\n34:         self.assertEqual(Article.objects.all().count(), 1)\n35: "
+      },
+      {
+        "end": 140,
+        "start": 137,
+        "text": "137:     def test_save_primary_with_default(self):\n138:         # An UPDATE attempt is skipped when a primary key has default.\n139:         with self.assertNumQueries(1):\n140:             PrimaryKeyWithDefault().save()"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "5a68f024987e6d16c2626a31bf653a2edddea579",
+    "base_file_sha256": "c15df15a6d85c9986f848c4018d6b0579147375c04d839fcb749c7c9ad0bd676",
+    "instance_id": "django__django-12209",
+    "path": "tests/basic/models.py",
+    "snippets": [
+      {
+        "end": 8,
+        "start": 1,
+        "text": "1: \"\"\"\n2: Bare-bones model\n3: \n4: This is a basic model with only two non-primary-key fields.\n5: \"\"\"\n6: import uuid\n7: \n8: from django.db import models"
+      },
+      {
+        "end": 48,
+        "start": 47,
+        "text": "47: class PrimaryKeyWithDefault(models.Model):\n48:     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4)"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "5a68f024987e6d16c2626a31bf653a2edddea579",
+    "base_file_sha256": "394d8aedf4187043f8c5fd2259be21ef65b658fb9b03965b776f96d17f8315b7",
+    "candidate_changed_definitions": [
+      {
+        "end": 882,
+        "qualname": "Model._save_table",
+        "start": 829,
+        "text": "829:     def _save_table(self, raw=False, cls=None, force_insert=False,\n830:                     force_update=False, using=None, update_fields=None):\n831:         \"\"\"\n832:         Do the heavy-lifting involved in saving. Update or insert the data\n833:         for a single table.\n834:         \"\"\"\n835:         meta = cls._meta\n836:         non_pks = [f for f in meta.local_concrete_fields if not f.primary_key]\n837: \n838:         if update_fields:\n839:             non_pks = [f for f in non_pks\n840:                        if f.name in update_fields or f.attname in update_fields]\n841: \n842:         pk_val = self._get_pk_val(meta)\n843:         if pk_val is None:\n844:             pk_val = meta.pk.get_pk_value_on_save(self)\n845:             setattr(self, meta.pk.attname, pk_val)\n846:         pk_set = pk_val is not None\n847:         if not pk_set and (force_update or update_fields):\n848:             raise ValueError(\"Cannot force an update in save() with no primary key.\")\n849:         updated = False\n850:         # If possible, try an UPDATE. If that doesn't update anything, do an INSERT.\n851:         if pk_set and not force_insert:\n852:             base_qs = cls._base_manager.using(using)\n853:             values = [(f, None, (getattr(self, f.attname) if raw else f.pre_save(self, False)))\n854:                       for f in non_pks]\n855:             forced_update = update_fields or force_update\n856:             updated = self._do_update(base_qs, using, pk_val, values, update_fields,\n857:                                       forced_update)\n858:             if force_update and not updated:\n859:                 raise DatabaseError(\"Forced update did not affect any rows.\")\n860:             if update_fields and not updated:\n861:                 raise DatabaseError(\"Save with update_fields did not affect any rows.\")\n862:         if not updated:\n863:             if meta.order_with_respect_to:\n864:                 # If this is a model with an order_with_respect_to\n865:                 # autopopulate the _order field\n866:                 field = meta.order_with_respect_to\n867:                 filter_args = field.get_filter_kwargs_for_object(self)\n868:                 self._order = cls._base_manager.using(using).filter(**filter_args).aggregate(\n869:                     _order__max=Coalesce(\n870:                         ExpressionWrapper(Max('_order') + Value(1), output_field=IntegerField()),\n871:                         Value(0),\n872:                     ),\n873:                 )['_order__max']\n874:             fields = meta.local_concrete_fields\n875:             if not pk_set:\n876:                 fields = [f for f in fields if f is not meta.auto_field]\n877: \n878:             returning_fields = meta.db_returning_fields\n879:             results = self._do_insert(cls._base_manager, using, fields, returning_fields, raw)\n880:             for result, field in zip(results, returning_fields):\n881:                 setattr(self, field.attname, result)\n882:         return updated"
+      }
+    ],
+    "candidate_file_sha256": "6c2de24f23906eee8768f2bdf69c61b232b07d2ff6d1962a5c523ef1d93c8924",
+    "candidate_view": "validated hunk reconstruction for inspection only; never indexed into a graph",
+    "instance_id": "django__django-12209",
+    "patch_section": "diff --git a/django/db/models/base.py b/django/db/models/base.py\nindex e3b14a41a0..094f82050e 100644\n--- a/django/db/models/base.py\n+++ b/django/db/models/base.py\n@@ -16,7 +16,7 @@ from django.db import (\n     connections, router, transaction,\n )\n from django.db.models import (\n-    NOT_PROVIDED, ExpressionWrapper, IntegerField, Max, Value,\n+    ExpressionWrapper, IntegerField, Max, Value,\n )\n from django.db.models.constants import LOOKUP_SEP\n from django.db.models.constraints import CheckConstraint, UniqueConstraint\n@@ -847,14 +847,6 @@ class Model(metaclass=ModelBase):\n         if not pk_set and (force_update or update_fields):\n             raise ValueError(\"Cannot force an update in save() with no primary key.\")\n         updated = False\n-        # Skip an UPDATE when adding an instance and primary key has a default.\n-        if (\n-            not force_insert and\n-            self._state.adding and\n-            self._meta.pk.default and\n-            self._meta.pk.default is not NOT_PROVIDED\n-        ):\n-            force_insert = True\n         # If possible, try an UPDATE. If that doesn't update anything, do an INSERT.\n         if pk_set and not force_insert:\n             base_qs = cls._base_manager.using(using)\n",
+    "path": "django/db/models/base.py",
+    "snippets": [
+      {
+        "end": 408,
+        "start": 404,
+        "text": "404: class Model(metaclass=ModelBase):\n405: \n406:     def __init__(self, *args, **kwargs):\n407:         # Alias some things as locals to avoid repeat global lookups\n408:         cls = self.__class__"
+      },
+      {
+        "end": 677,
+        "start": 663,
+        "text": "663:     def save(self, force_insert=False, force_update=False, using=None,\n664:              update_fields=None):\n665:         \"\"\"\n666:         Save the current instance. Override this in a subclass if you want to\n667:         control the saving process.\n668: \n669:         The 'force_insert' and 'force_update' parameters can be used to insist\n670:         that the \"save\" must be an SQL insert or update (or equivalent for\n671:         non-SQL backends), respectively. Normally, they should not be set.\n672:         \"\"\"\n673:         # Ensure that a model instance without a PK hasn't been assigned to\n674:         # a ForeignKey or OneToOneField on this model. If the field is\n675:         # nullable, allowing the save() would result in silent data loss.\n676:         for field in self._meta.concrete_fields:\n677:             # If the related field isn't cached, then an instance hasn't"
+      },
+      {
+        "end": 748,
+        "start": 746,
+        "text": "746:         self.save_base(using=using, force_insert=force_insert,\n747:                        force_update=force_update, update_fields=update_fields)\n748:     save.alters_data = True"
+      },
+      {
+        "end": 751,
+        "start": 750,
+        "text": "750:     def save_base(self, raw=False, force_insert=False,\n751:                   force_update=False, using=None, update_fields=None):"
+      },
+      {
+        "end": 786,
+        "start": 764,
+        "text": "764:         cls = origin = self.__class__\n765:         # Skip proxies, but keep the origin as the proxy model.\n766:         if cls._meta.proxy:\n767:             cls = cls._meta.concrete_model\n768:         meta = cls._meta\n769:         if not meta.auto_created:\n770:             pre_save.send(\n771:                 sender=origin, instance=self, raw=raw, using=using,\n772:                 update_fields=update_fields,\n773:             )\n774:         # A transaction isn't needed if one query is issued.\n775:         if meta.parents:\n776:             context_manager = transaction.atomic(using=using, savepoint=False)\n777:         else:\n778:             context_manager = transaction.mark_for_rollback_on_error(using=using)\n779:         with context_manager:\n780:             parent_inserted = False\n781:             if not raw:\n782:                 parent_inserted = self._save_parents(cls, using, update_fields)\n783:             updated = self._save_table(\n784:                 raw, cls, force_insert or parent_inserted,\n785:                 force_update, using, update_fields,\n786:             )"
+      },
+      {
+        "end": 870,
+        "start": 829,
+        "text": "829:     def _save_table(self, raw=False, cls=None, force_insert=False,\n830:                     force_update=False, using=None, update_fields=None):\n831:         \"\"\"\n832:         Do the heavy-lifting involved in saving. Update or insert the data\n833:         for a single table.\n834:         \"\"\"\n835:         meta = cls._meta\n836:         non_pks = [f for f in meta.local_concrete_fields if not f.primary_key]\n837: \n838:         if update_fields:\n839:             non_pks = [f for f in non_pks\n840:                        if f.name in update_fields or f.attname in update_fields]\n841: \n842:         pk_val = self._get_pk_val(meta)\n843:         if pk_val is None:\n844:             pk_val = meta.pk.get_pk_value_on_save(self)\n845:             setattr(self, meta.pk.attname, pk_val)\n846:         pk_set = pk_val is not None\n847:         if not pk_set and (force_update or update_fields):\n848:             raise ValueError(\"Cannot force an update in save() with no primary key.\")\n849:         updated = False\n850:         # Skip an UPDATE when adding an instance and primary key has a default.\n851:         if (\n852:             not force_insert and\n853:             self._state.adding and\n854:             self._meta.pk.default and\n855:             self._meta.pk.default is not NOT_PROVIDED\n856:         ):\n857:             force_insert = True\n858:         # If possible, try an UPDATE. If that doesn't update anything, do an INSERT.\n859:         if pk_set and not force_insert:\n860:             base_qs = cls._base_manager.using(using)\n861:             values = [(f, None, (getattr(self, f.attname) if raw else f.pre_save(self, False)))\n862:                       for f in non_pks]\n863:             forced_update = update_fields or force_update\n864:             updated = self._do_update(base_qs, using, pk_val, values, update_fields,\n865:                                       forced_update)\n866:             if force_update and not updated:\n867:                 raise DatabaseError(\"Forced update did not affect any rows.\")\n868:             if update_fields and not updated:\n869:                 raise DatabaseError(\"Save with update_fields did not affect any rows.\")\n870:         if not updated:"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "5a68f024987e6d16c2626a31bf653a2edddea579",
+    "base_file_sha256": "c3593d1a599bf29a3ea1a42173d53a091ee37081f54da6ddfc018f59ff28a921",
+    "instance_id": "django__django-12209",
+    "path": "django/db/models/__init__.py",
+    "snippets": [
+      {
+        "end": 40,
+        "start": 1,
+        "text": "1: from django.core.exceptions import ObjectDoesNotExist\n2: from django.db.models import signals\n3: from django.db.models.aggregates import *  # NOQA\n4: from django.db.models.aggregates import __all__ as aggregates_all\n5: from django.db.models.constraints import *  # NOQA\n6: from django.db.models.constraints import __all__ as constraints_all\n7: from django.db.models.deletion import (\n8:     CASCADE, DO_NOTHING, PROTECT, RESTRICT, SET, SET_DEFAULT, SET_NULL,\n9:     ProtectedError, RestrictedError,\n10: )\n11: from django.db.models.enums import *  # NOQA\n12: from django.db.models.enums import __all__ as enums_all\n13: from django.db.models.expressions import (\n14:     Case, Exists, Expression, ExpressionList, ExpressionWrapper, F, Func,\n15:     OuterRef, RowRange, Subquery, Value, ValueRange, When, Window, WindowFrame,\n16: )\n17: from django.db.models.fields import *  # NOQA\n18: from django.db.models.fields import __all__ as fields_all\n19: from django.db.models.fields.files import FileField, ImageField\n20: from django.db.models.fields.proxy import OrderWrt\n21: from django.db.models.indexes import *  # NOQA\n22: from django.db.models.indexes import __all__ as indexes_all\n23: from django.db.models.lookups import Lookup, Transform\n24: from django.db.models.manager import Manager\n25: from django.db.models.query import (\n26:     Prefetch, Q, QuerySet, prefetch_related_objects,\n27: )\n28: from django.db.models.query_utils import FilteredRelation\n29: \n30: # Imports that would create circular imports if sorted\n31: from django.db.models.base import DEFERRED, Model  # isort:skip\n32: from django.db.models.fields.related import (  # isort:skip\n33:     ForeignKey, ForeignObject, OneToOneField, ManyToManyField,\n34:     ManyToOneRel, ManyToManyRel, OneToOneRel,\n35: )\n36: \n37: \n38: __all__ = aggregates_all + constraints_all + enums_all + fields_all + indexes_all\n39: __all__ += [\n40:     'ObjectDoesNotExist', 'signals',"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "45814af6197cfd8f4dc72ee43b90ecde305a1d5a",
+    "base_file_sha256": "270df1e78659403a93ad737f355c3fa986d0981bec761766e0ee7211def35439",
+    "instance_id": "django__django-14140",
+    "path": "tests/queries/test_q.py",
+    "snippets": [
+      {
+        "end": 5,
+        "start": 1,
+        "text": "1: from django.db.models import F, Q\n2: from django.test import SimpleTestCase\n3: \n4: \n5: class QTests(SimpleTestCase):"
+      },
+      {
+        "end": 52,
+        "start": 38,
+        "text": "38:     def test_deconstruct(self):\n39:         q = Q(price__gt=F('discounted_price'))\n40:         path, args, kwargs = q.deconstruct()\n41:         self.assertEqual(path, 'django.db.models.Q')\n42:         self.assertEqual(args, ())\n43:         self.assertEqual(kwargs, {'price__gt': F('discounted_price')})\n44: \n45:     def test_deconstruct_negated(self):\n46:         q = ~Q(price__gt=F('discounted_price'))\n47:         path, args, kwargs = q.deconstruct()\n48:         self.assertEqual(args, ())\n49:         self.assertEqual(kwargs, {\n50:             'price__gt': F('discounted_price'),\n51:             '_negated': True,\n52:         })"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "45814af6197cfd8f4dc72ee43b90ecde305a1d5a",
+    "base_file_sha256": "ed6b468cb29ac46b10a260d37b500ea66d2a264b5e1a80d6d7adf2e6e73c4b05",
+    "instance_id": "django__django-14140",
+    "path": "django/db/models/__init__.py",
+    "snippets": [
+      {
+        "end": 52,
+        "start": 1,
+        "text": "1: from django.core.exceptions import ObjectDoesNotExist\n2: from django.db.models import signals\n3: from django.db.models.aggregates import *  # NOQA\n4: from django.db.models.aggregates import __all__ as aggregates_all\n5: from django.db.models.constraints import *  # NOQA\n6: from django.db.models.constraints import __all__ as constraints_all\n7: from django.db.models.deletion import (\n8:     CASCADE, DO_NOTHING, PROTECT, RESTRICT, SET, SET_DEFAULT, SET_NULL,\n9:     ProtectedError, RestrictedError,\n10: )\n11: from django.db.models.enums import *  # NOQA\n12: from django.db.models.enums import __all__ as enums_all\n13: from django.db.models.expressions import (\n14:     Case, Exists, Expression, ExpressionList, ExpressionWrapper, F, Func,\n15:     OrderBy, OuterRef, RowRange, Subquery, Value, ValueRange, When, Window,\n16:     WindowFrame,\n17: )\n18: from django.db.models.fields import *  # NOQA\n19: from django.db.models.fields import __all__ as fields_all\n20: from django.db.models.fields.files import FileField, ImageField\n21: from django.db.models.fields.json import JSONField\n22: from django.db.models.fields.proxy import OrderWrt\n23: from django.db.models.indexes import *  # NOQA\n24: from django.db.models.indexes import __all__ as indexes_all\n25: from django.db.models.lookups import Lookup, Transform\n26: from django.db.models.manager import Manager\n27: from django.db.models.query import Prefetch, QuerySet, prefetch_related_objects\n28: from django.db.models.query_utils import FilteredRelation, Q\n29: \n30: # Imports that would create circular imports if sorted\n31: from django.db.models.base import DEFERRED, Model  # isort:skip\n32: from django.db.models.fields.related import (  # isort:skip\n33:     ForeignKey, ForeignObject, OneToOneField, ManyToManyField,\n34:     ForeignObjectRel, ManyToOneRel, ManyToManyRel, OneToOneRel,\n35: )\n36: \n37: \n38: __all__ = aggregates_all + constraints_all + enums_all + fields_all + indexes_all\n39: __all__ += [\n40:     'ObjectDoesNotExist', 'signals',\n41:     'CASCADE', 'DO_NOTHING', 'PROTECT', 'RESTRICT', 'SET', 'SET_DEFAULT',\n42:     'SET_NULL', 'ProtectedError', 'RestrictedError',\n43:     'Case', 'Exists', 'Expression', 'ExpressionList', 'ExpressionWrapper', 'F',\n44:     'Func', 'OrderBy', 'OuterRef', 'RowRange', 'Subquery', 'Value',\n45:     'ValueRange', 'When',\n46:     'Window', 'WindowFrame',\n47:     'FileField', 'ImageField', 'JSONField', 'OrderWrt', 'Lookup', 'Transform',\n48:     'Manager', 'Prefetch', 'Q', 'QuerySet', 'prefetch_related_objects',\n49:     'DEFERRED', 'Model', 'FilteredRelation',\n50:     'ForeignKey', 'ForeignObject', 'OneToOneField', 'ManyToManyField',\n51:     'ForeignObjectRel', 'ManyToOneRel', 'ManyToManyRel', 'OneToOneRel',\n52: ]"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "45814af6197cfd8f4dc72ee43b90ecde305a1d5a",
+    "base_file_sha256": "5602d8948e69aef996f1689b5d16423d0a40a9955d2272cc66acefdbb138b78e",
+    "candidate_changed_definitions": [
+      {
+        "end": 93,
+        "qualname": "Q.deconstruct",
+        "start": 83,
+        "text": "83:     def deconstruct(self):\n84:         path = '%s.%s' % (self.__class__.__module__, self.__class__.__name__)\n85:         if path.startswith('django.db.models.query_utils'):\n86:             path = path.replace('django.db.models.query_utils', 'django.db.models')\n87:         args = tuple(self.children)\n88:         kwargs = {}\n89:         if self.connector != self.default:\n90:             kwargs = {'_connector': self.connector}\n91:         if self.negated:\n92:             kwargs['_negated'] = True\n93:         return path, args, kwargs"
+      }
+    ],
+    "candidate_file_sha256": "4644724efb2e34c67f163580f8334ce8617c0a5db3088d5b153434e388a212ec",
+    "candidate_view": "validated hunk reconstruction for inspection only; never indexed into a graph",
+    "instance_id": "django__django-14140",
+    "patch_section": "diff --git a/django/db/models/query_utils.py b/django/db/models/query_utils.py\nindex ae0f886107..81b7ee9a93 100644\n--- a/django/db/models/query_utils.py\n+++ b/django/db/models/query_utils.py\n@@ -84,14 +84,10 @@ class Q(tree.Node):\n         path = '%s.%s' % (self.__class__.__module__, self.__class__.__name__)\n         if path.startswith('django.db.models.query_utils'):\n             path = path.replace('django.db.models.query_utils', 'django.db.models')\n-        args, kwargs = (), {}\n-        if len(self.children) == 1 and not isinstance(self.children[0], Q):\n-            child = self.children[0]\n-            kwargs = {child[0]: child[1]}\n-        else:\n-            args = tuple(self.children)\n-            if self.connector != self.default:\n-                kwargs = {'_connector': self.connector}\n+        args = tuple(self.children)\n+        kwargs = {}\n+        if self.connector != self.default:\n+            kwargs = {'_connector': self.connector}\n         if self.negated:\n             kwargs['_negated'] = True\n         return path, args, kwargs\n",
+    "path": "django/db/models/query_utils.py",
+    "snippets": [
+      {
+        "end": 14,
+        "start": 12,
+        "text": "12: from django.core.exceptions import FieldError\n13: from django.db.models.constants import LOOKUP_SEP\n14: from django.utils import tree"
+      },
+      {
+        "end": 40,
+        "start": 28,
+        "text": "28: class Q(tree.Node):\n29:     \"\"\"\n30:     Encapsulate filters as objects that can then be combined logically (using\n31:     `&` and `|`).\n32:     \"\"\"\n33:     # Connection types\n34:     AND = 'AND'\n35:     OR = 'OR'\n36:     default = AND\n37:     conditional = True\n38: \n39:     def __init__(self, *args, _connector=None, _negated=False, **kwargs):\n40:         super().__init__(children=[*args, *sorted(kwargs.items())], connector=_connector, negated=_negated)"
+      },
+      {
+        "end": 71,
+        "start": 67,
+        "text": "67:     def __invert__(self):\n68:         obj = type(self)()\n69:         obj.add(self, self.AND)\n70:         obj.negate()\n71:         return obj"
+      },
+      {
+        "end": 97,
+        "start": 83,
+        "text": "83:     def deconstruct(self):\n84:         path = '%s.%s' % (self.__class__.__module__, self.__class__.__name__)\n85:         if path.startswith('django.db.models.query_utils'):\n86:             path = path.replace('django.db.models.query_utils', 'django.db.models')\n87:         args, kwargs = (), {}\n88:         if len(self.children) == 1 and not isinstance(self.children[0], Q):\n89:             child = self.children[0]\n90:             kwargs = {child[0]: child[1]}\n91:         else:\n92:             args = tuple(self.children)\n93:             if self.connector != self.default:\n94:                 kwargs = {'_connector': self.connector}\n95:         if self.negated:\n96:             kwargs['_negated'] = True\n97:         return path, args, kwargs"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "45814af6197cfd8f4dc72ee43b90ecde305a1d5a",
+    "base_file_sha256": "1ca8be0c5921e8f0a65b1c1084a46f30f0cfe40b9f0ff058dc3a593358af9cda",
+    "instance_id": "django__django-14140",
+    "path": "django/utils/tree.py",
+    "snippets": [
+      {
+        "end": 41,
+        "start": 11,
+        "text": "11: class Node:\n12:     \"\"\"\n13:     A single internal node in the tree graph. A Node should be viewed as a\n14:     connection (the root) with the children being either leaf nodes or other\n15:     Node instances.\n16:     \"\"\"\n17:     # Standard connector type. Clients usually won't use this at all and\n18:     # subclasses will usually override the value.\n19:     default = 'DEFAULT'\n20: \n21:     def __init__(self, children=None, connector=None, negated=False):\n22:         \"\"\"Construct a new Node. If no connector is given, use the default.\"\"\"\n23:         self.children = children[:] if children else []\n24:         self.connector = connector or self.default\n25:         self.negated = negated\n26: \n27:     # Required because django.db.models.query_utils.Q. Q. __init__() is\n28:     # problematic, but it is a natural Node subclass in all other respects.\n29:     @classmethod\n30:     def _new_instance(cls, children=None, connector=None, negated=False):\n31:         \"\"\"\n32:         Create a new instance of this class when new Nodes (or subclasses) are\n33:         needed in the internal code in this class. Normally, it just shadows\n34:         __init__(). However, subclasses with an __init__ signature that aren't\n35:         an extension of Node.__init__ might need to implement this method to\n36:         allow a Node to create a new instance of them (if they have any extra\n37:         setting up to do).\n38:         \"\"\"\n39:         obj = Node(children, connector, negated)\n40:         obj.__class__ = cls\n41:         return obj"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "45814af6197cfd8f4dc72ee43b90ecde305a1d5a",
+    "base_file_sha256": "ab4f59f996cb590faeef8f67b3af92b53af7edb3b345622c8809bf2082d8e35f",
+    "instance_id": "django__django-14140",
+    "path": "django/db/models/deletion.py",
+    "snippets": [
+      {
+        "end": 55,
+        "start": 47,
+        "text": "47: def SET(value):\n48:     if callable(value):\n49:         def set_on_delete(collector, field, sub_objs, using):\n50:             collector.add_field_update(field, value(), sub_objs)\n51:     else:\n52:         def set_on_delete(collector, field, sub_objs, using):\n53:             collector.add_field_update(field, value, sub_objs)\n54:     set_on_delete.deconstruct = lambda: ('django.db.models.SET', (value,), {})\n55:     return set_on_delete"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "45814af6197cfd8f4dc72ee43b90ecde305a1d5a",
+    "base_file_sha256": "85c3bfeea6acb122397537d0e423edb40f2cddff72685f149ea28a99addb23a3",
+    "instance_id": "django__django-14140",
+    "path": "django/utils/deconstruct.py",
+    "snippets": [
+      {
+        "end": 18,
+        "start": 6,
+        "text": "6: def deconstructible(*args, path=None):\n7:     \"\"\"\n8:     Class decorator that allows the decorated class to be serialized\n9:     by the migrations subsystem.\n10: \n11:     The `path` kwarg specifies the import path.\n12:     \"\"\"\n13:     def decorator(klass):\n14:         def __new__(cls, *args, **kwargs):\n15:             # We capture the arguments to make returning them trivial\n16:             obj = super(klass, cls).__new__(cls)\n17:             obj._constructor_args = (args, kwargs)\n18:             return obj"
+      },
+      {
+        "end": 55,
+        "start": 48,
+        "text": "48:         klass.__new__ = staticmethod(__new__)\n49:         klass.deconstruct = deconstruct\n50: \n51:         return klass\n52: \n53:     if not args:\n54:         return decorator\n55:     return decorator(*args)"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "84400d2e9db7c51fee4e9bb04c028f665b8e7624",
+    "base_file_sha256": "24ce14e6830f7d467b029074a60a8826c5c1caec493eca1359b5aedf40ce561d",
+    "instance_id": "django__django-14631",
+    "path": "tests/forms_tests/tests/test_forms.py",
+    "snippets": [
+      {
+        "end": 38,
+        "start": 1,
+        "text": "1: import copy\n2: import datetime\n3: import json\n4: import uuid\n5: \n6: from django.core.exceptions import NON_FIELD_ERRORS\n7: from django.core.files.uploadedfile import SimpleUploadedFile\n8: from django.core.validators import MaxValueValidator, RegexValidator\n9: from django.forms import (\n10:     BooleanField, CharField, CheckboxSelectMultiple, ChoiceField, DateField,\n11:     DateTimeField, EmailField, FileField, FileInput, FloatField, Form,\n12:     HiddenInput, ImageField, IntegerField, MultipleChoiceField,\n13:     MultipleHiddenInput, MultiValueField, NullBooleanField, PasswordInput,\n14:     RadioSelect, Select, SplitDateTimeField, SplitHiddenDateTimeWidget,\n15:     Textarea, TextInput, TimeField, ValidationError, forms,\n16: )\n17: from django.forms.renderers import DjangoTemplates, get_default_renderer\n18: from django.forms.utils import ErrorList\n19: from django.http import QueryDict\n20: from django.template import Context, Template\n21: from django.test import SimpleTestCase\n22: from django.utils.datastructures import MultiValueDict\n23: from django.utils.safestring import mark_safe\n24: \n25: \n26: class Person(Form):\n27:     first_name = CharField()\n28:     last_name = CharField()\n29:     birthday = DateField()\n30: \n31: \n32: class PersonNew(Form):\n33:     first_name = CharField(widget=TextInput(attrs={'id': 'first_name_id'}))\n34:     last_name = CharField()\n35:     birthday = DateField()\n36: \n37: \n38: class MultiValueDictLike(dict):"
+      },
+      {
+        "end": 2123,
+        "start": 2115,
+        "text": "2115:     def test_datetime_clean_initial_callable_disabled(self):\n2116:         now = datetime.datetime(2006, 10, 25, 14, 30, 45, 123456)\n2117: \n2118:         class DateTimeForm(forms.Form):\n2119:             dt = DateTimeField(initial=lambda: now, disabled=True)\n2120: \n2121:         form = DateTimeForm({})\n2122:         self.assertEqual(form.errors, {})\n2123:         self.assertEqual(form.cleaned_data, {'dt': now})"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "84400d2e9db7c51fee4e9bb04c028f665b8e7624",
+    "base_file_sha256": "4ba72438c9af517faf5524fa002f8cf01cec7d5430b8450074759a6cc37e3862",
+    "instance_id": "django__django-14631",
+    "path": "django/forms/__init__.py",
+    "snippets": [
+      {
+        "end": 11,
+        "start": 1,
+        "text": "1: \"\"\"\n2: Django validation and HTML form handling.\n3: \"\"\"\n4: \n5: from django.core.exceptions import ValidationError  # NOQA\n6: from django.forms.boundfield import *  # NOQA\n7: from django.forms.fields import *  # NOQA\n8: from django.forms.forms import *  # NOQA\n9: from django.forms.formsets import *  # NOQA\n10: from django.forms.models import *  # NOQA\n11: from django.forms.widgets import *  # NOQA"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "84400d2e9db7c51fee4e9bb04c028f665b8e7624",
+    "base_file_sha256": "8dfa68473a3d40d059260b96db3730e87cb524d477fe7518c2c5f2ee324a124f",
+    "candidate_changed_definitions": [
+      {
+        "end": 173,
+        "qualname": "BaseForm._bound_items",
+        "start": 170,
+        "text": "170:     def _bound_items(self):\n171:         \"\"\"Yield (name, bf) pairs, where bf is a BoundField object.\"\"\"\n172:         for name in self.fields:\n173:             yield name, self[name]"
+      },
+      {
+        "end": 408,
+        "qualname": "BaseForm._clean_fields",
+        "start": 394,
+        "text": "394:     def _clean_fields(self):\n395:         for name, bf in self._bound_items():\n396:             field = bf.field\n397:             value = bf.initial if field.disabled else bf.data\n398:             try:\n399:                 if isinstance(field, FileField):\n400:                     value = field.clean(value, bf.initial)\n401:                 else:\n402:                     value = field.clean(value)\n403:                 self.cleaned_data[name] = value\n404:                 if hasattr(self, 'clean_%s' % name):\n405:                     value = getattr(self, 'clean_%s' % name)()\n406:                     self.cleaned_data[name] = value\n407:             except ValidationError as e:\n408:                 self.add_error(name, e)"
+      },
+      {
+        "end": 441,
+        "qualname": "BaseForm.changed_data",
+        "start": 439,
+        "text": "439:     @cached_property\n440:     def changed_data(self):\n441:         return [name for name, bf in self._bound_items() if bf._did_change()]"
+      }
+    ],
+    "candidate_file_sha256": "864fe11a0291bd0a0101ca1ac19c4d4b86199c3d3c068601788195d1a7c20551",
+    "candidate_view": "validated hunk reconstruction for inspection only; never indexed into a graph",
+    "instance_id": "django__django-14631",
+    "patch_section": "diff --git a/django/forms/forms.py b/django/forms/forms.py\nindex d14037bfe9..9cb77abb9e 100644\n--- a/django/forms/forms.py\n+++ b/django/forms/forms.py\n@@ -167,6 +167,11 @@ class BaseForm:\n         self._bound_fields_cache[name] = bound_field\n         return bound_field\n \n+    def _bound_items(self):\n+        \"\"\"Yield (name, bf) pairs, where bf is a BoundField object.\"\"\"\n+        for name in self.fields:\n+            yield name, self[name]\n+\n     @property\n     def errors(self):\n         \"\"\"Return an ErrorDict for the data provided for the form.\"\"\"\n@@ -387,15 +392,12 @@ class BaseForm:\n         self._post_clean()\n \n     def _clean_fields(self):\n-        for name, field in self.fields.items():\n-            if field.disabled:\n-                value = self.get_initial_for_field(field, name)\n-            else:\n-                value = self._field_data_value(field, self.add_prefix(name))\n+        for name, bf in self._bound_items():\n+            field = bf.field\n+            value = bf.initial if field.disabled else bf.data\n             try:\n                 if isinstance(field, FileField):\n-                    initial = self.get_initial_for_field(field, name)\n-                    value = field.clean(value, initial)\n+                    value = field.clean(value, bf.initial)\n                 else:\n                     value = field.clean(value)\n                 self.cleaned_data[name] = value\n@@ -436,27 +438,7 @@ class BaseForm:\n \n     @cached_property\n     def changed_data(self):\n-        data = []\n-        for name, field in self.fields.items():\n-            data_value = self._field_data_value(field, self.add_prefix(name))\n-            if not field.show_hidden_initial:\n-                # Use the BoundField's initial as this is the value passed to\n-                # the widget.\n-                initial_value = self[name].initial\n-            else:\n-                initial_prefixed_name = self.add_initial_prefix(name)\n-                hidden_widget = field.hidden_widget()\n-                try:\n-                    initial_value = field.to_python(\n-                        self._widget_data_value(hidden_widget, initial_prefixed_name)\n-                    )\n-                except ValidationError:\n-                    # Always assume data has changed if validation fails.\n-                    data.append(name)\n-                    continue\n-            if field.has_changed(initial_value, data_value):\n-                data.append(name)\n-        return data\n+        return [name for name, bf in self._bound_items() if bf._did_change()]\n \n     @property\n     def media(self):\n",
+    "path": "django/forms/forms.py",
+    "snippets": [
+      {
+        "end": 90,
+        "start": 1,
+        "text": "1: \"\"\"\n2: Form classes\n3: \"\"\"\n4: \n5: import copy\n6: \n7: from django.core.exceptions import NON_FIELD_ERRORS, ValidationError\n8: from django.forms.fields import Field, FileField\n9: from django.forms.utils import ErrorDict, ErrorList\n10: from django.forms.widgets import Media, MediaDefiningClass\n11: from django.utils.datastructures import MultiValueDict\n12: from django.utils.functional import cached_property\n13: from django.utils.html import conditional_escape, html_safe\n14: from django.utils.safestring import mark_safe\n15: from django.utils.translation import gettext as _\n16: \n17: from .renderers import get_default_renderer\n18: \n19: __all__ = ('BaseForm', 'Form')\n20: \n21: \n22: class DeclarativeFieldsMetaclass(MediaDefiningClass):\n23:     \"\"\"Collect Fields declared on the base classes.\"\"\"\n24:     def __new__(mcs, name, bases, attrs):\n25:         # Collect fields from current class and remove them from attrs.\n26:         attrs['declared_fields'] = {\n27:             key: attrs.pop(key) for key, value in list(attrs.items())\n28:             if isinstance(value, Field)\n29:         }\n30: \n31:         new_class = super().__new__(mcs, name, bases, attrs)\n32: \n33:         # Walk through the MRO.\n34:         declared_fields = {}\n35:         for base in reversed(new_class.__mro__):\n36:             # Collect fields from base class.\n37:             if hasattr(base, 'declared_fields'):\n38:                 declared_fields.update(base.declared_fields)\n39: \n40:             # Field shadowing.\n41:             for attr, value in base.__dict__.items():\n42:                 if value is None and attr in declared_fields:\n43:                     declared_fields.pop(attr)\n44: \n45:         new_class.base_fields = declared_fields\n46:         new_class.declared_fields = declared_fields\n47: \n48:         return new_class\n49: \n50: \n51: @html_safe\n52: class BaseForm:\n53:     \"\"\"\n54:     The main implementation of all the Form logic. Note that this class is\n55:     different than Form. See the comments by the Form class for more info. Any\n56:     improvements to the form API should be made to this class, not to the Form\n57:     class.\n58:     \"\"\"\n59:     default_renderer = None\n60:     field_order = None\n61:     prefix = None\n62:     use_required_attribute = True\n63: \n64:     def __init__(self, data=None, files=None, auto_id='id_%s', prefix=None,\n65:                  initial=None, error_class=ErrorList, label_suffix=None,\n66:                  empty_permitted=False, field_order=None, use_required_attribute=None, renderer=None):\n67:         self.is_bound = data is not None or files is not None\n68:         self.data = MultiValueDict() if data is None else data\n69:         self.files = MultiValueDict() if files is None else files\n70:         self.auto_id = auto_id\n71:         if prefix is not None:\n72:             self.prefix = prefix\n73:         self.initial = initial or {}\n74:         self.error_class = error_class\n75:         # Translators: This is the default suffix added to form field labels\n76:         self.label_suffix = label_suffix if label_suffix is not None else _(':')\n77:         self.empty_permitted = empty_permitted\n78:         self._errors = None  # Stores the errors after clean() has been called.\n79: \n80:         # The base_fields class attribute is the *class-wide* definition of\n81:         # fields. Because a particular *instance* of the class might want to\n82:         # alter self.fields, we create self.fields here by copying base_fields.\n83:         # Instances should always modify self.fields; they should not modify\n84:         # self.base_fields.\n85:         self.fields = copy.deepcopy(self.base_fields)\n86:         self._bound_fields_cache = {}\n87:         self.order_fields(self.field_order if field_order is None else field_order)\n88: \n89:         if use_required_attribute is not None:\n90:             self.use_required_attribute = use_required_attribute"
+      },
+      {
+        "end": 175,
+        "start": 151,
+        "text": "151:         \"\"\"Return a BoundField with the given name.\"\"\"\n152:         try:\n153:             return self._bound_fields_cache[name]\n154:         except KeyError:\n155:             pass\n156:         try:\n157:             field = self.fields[name]\n158:         except KeyError:\n159:             raise KeyError(\n160:                 \"Key '%s' not found in '%s'. Choices are: %s.\" % (\n161:                     name,\n162:                     self.__class__.__name__,\n163:                     ', '.join(sorted(self.fields)),\n164:                 )\n165:             )\n166:         bound_field = field.get_bound_field(self, name)\n167:         self._bound_fields_cache[name] = bound_field\n168:         return bound_field\n169: \n170:     @property\n171:     def errors(self):\n172:         \"\"\"Return an ErrorDict for the data provided for the form.\"\"\"\n173:         if self._errors is None:\n174:             self.full_clean()\n175:         return self._errors"
+      },
+      {
+        "end": 406,
+        "start": 372,
+        "text": "372:     def full_clean(self):\n373:         \"\"\"\n374:         Clean all of self.data and populate self._errors and self.cleaned_data.\n375:         \"\"\"\n376:         self._errors = ErrorDict()\n377:         if not self.is_bound:  # Stop further processing.\n378:             return\n379:         self.cleaned_data = {}\n380:         # If the form is permitted to be empty, and none of the form data has\n381:         # changed from the initial data, short circuit any validation.\n382:         if self.empty_permitted and not self.has_changed():\n383:             return\n384: \n385:         self._clean_fields()\n386:         self._clean_form()\n387:         self._post_clean()\n388: \n389:     def _clean_fields(self):\n390:         for name, field in self.fields.items():\n391:             if field.disabled:\n392:                 value = self.get_initial_for_field(field, name)\n393:             else:\n394:                 value = self._field_data_value(field, self.add_prefix(name))\n395:             try:\n396:                 if isinstance(field, FileField):\n397:                     initial = self.get_initial_for_field(field, name)\n398:                     value = field.clean(value, initial)\n399:                 else:\n400:                     value = field.clean(value)\n401:                 self.cleaned_data[name] = value\n402:                 if hasattr(self, 'clean_%s' % name):\n403:                     value = getattr(self, 'clean_%s' % name)()\n404:                     self.cleaned_data[name] = value\n405:             except ValidationError as e:\n406:                 self.add_error(name, e)"
+      },
+      {
+        "end": 459,
+        "start": 437,
+        "text": "437:     @cached_property\n438:     def changed_data(self):\n439:         data = []\n440:         for name, field in self.fields.items():\n441:             data_value = self._field_data_value(field, self.add_prefix(name))\n442:             if not field.show_hidden_initial:\n443:                 # Use the BoundField's initial as this is the value passed to\n444:                 # the widget.\n445:                 initial_value = self[name].initial\n446:             else:\n447:                 initial_prefixed_name = self.add_initial_prefix(name)\n448:                 hidden_widget = field.hidden_widget()\n449:                 try:\n450:                     initial_value = field.to_python(\n451:                         self._widget_data_value(hidden_widget, initial_prefixed_name)\n452:                     )\n453:                 except ValidationError:\n454:                     # Always assume data has changed if validation fails.\n455:                     data.append(name)\n456:                     continue\n457:             if field.has_changed(initial_value, data_value):\n458:                 data.append(name)\n459:         return data"
+      },
+      {
+        "end": 507,
+        "start": 490,
+        "text": "490:     def get_initial_for_field(self, field, field_name):\n491:         \"\"\"\n492:         Return initial data for field on form. Use initial data from the form\n493:         or the field, in that order. Evaluate callable values.\n494:         \"\"\"\n495:         value = self.initial.get(field_name, field.initial)\n496:         if callable(value):\n497:             value = value()\n498:         return value\n499: \n500: \n501: class Form(BaseForm, metaclass=DeclarativeFieldsMetaclass):\n502:     \"A collection of Fields, plus their associated data.\"\n503:     # This is a separate class from BaseForm in order to abstract the way\n504:     # self.fields is specified. This class (Form) is the one that does the\n505:     # fancy metaclass stuff purely for the semantic sugar -- it allows one\n506:     # to define a form using declarative syntax.\n507:     # BaseForm itself has no way of designating self.fields."
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "84400d2e9db7c51fee4e9bb04c028f665b8e7624",
+    "base_file_sha256": "7f2d52bf3f0cbb0f555b89c0c88f2c2dd641519a426e14e5810903db04f18a9a",
+    "candidate_changed_definitions": [
+      {
+        "end": 152,
+        "qualname": "BoundField._did_change",
+        "start": 134,
+        "text": "134:     def _did_change(self):\n135:         if not self.form.is_bound:\n136:             return False\n137:         if self.field.disabled:\n138:             return False\n139:         data = self.data\n140:         if self.field.show_hidden_initial:\n141:             initial_prefixed_name = self.form.add_initial_prefix(self.name)\n142:             hidden_widget = self.field.hidden_widget()\n143:             try:\n144:                 initial_value = self.field.to_python(\n145:                     self.form._widget_data_value(hidden_widget, initial_prefixed_name)\n146:                 )\n147:             except ValidationError:\n148:                 return True\n149:             else:\n150:                 return self.field.has_changed(initial_value, data)\n151:         else:\n152:             return self.field.has_changed(self.initial, data)"
+      }
+    ],
+    "candidate_file_sha256": "35d87b5b041a354824f4533e9b724e811821c9de31502d1067b1af680779881a",
+    "candidate_view": "validated hunk reconstruction for inspection only; never indexed into a graph",
+    "instance_id": "django__django-14631",
+    "patch_section": "diff --git a/django/forms/boundfield.py b/django/forms/boundfield.py\nindex 88adadb37d..46156ae500 100644\n--- a/django/forms/boundfield.py\n+++ b/django/forms/boundfield.py\n@@ -1,6 +1,7 @@\n import datetime\n import re\n \n+from django.core.exceptions import ValidationError\n from django.forms.utils import flatatt, pretty_name\n from django.forms.widgets import Textarea, TextInput\n from django.utils.functional import cached_property\n@@ -130,6 +131,26 @@ class BoundField:\n             data = self.field.bound_data(self.data, data)\n         return self.field.prepare_value(data)\n \n+    def _did_change(self):\n+        if not self.form.is_bound:\n+            return False\n+        if self.field.disabled:\n+            return False\n+        data = self.data\n+        if self.field.show_hidden_initial:\n+            initial_prefixed_name = self.form.add_initial_prefix(self.name)\n+            hidden_widget = self.field.hidden_widget()\n+            try:\n+                initial_value = self.field.to_python(\n+                    self.form._widget_data_value(hidden_widget, initial_prefixed_name)\n+                )\n+            except ValidationError:\n+                return True\n+            else:\n+                return self.field.has_changed(initial_value, data)\n+        else:\n+            return self.field.has_changed(self.initial, data)\n+\n     def label_tag(self, contents=None, attrs=None, label_suffix=None):\n         \"\"\"\n         Wrap the given contents in a <label>, if the field has an ID attribute.\n",
+    "path": "django/forms/boundfield.py",
+    "snippets": [
+      {
+        "end": 30,
+        "start": 1,
+        "text": "1: import datetime\n2: import re\n3: \n4: from django.forms.utils import flatatt, pretty_name\n5: from django.forms.widgets import Textarea, TextInput\n6: from django.utils.functional import cached_property\n7: from django.utils.html import conditional_escape, format_html, html_safe\n8: from django.utils.safestring import mark_safe\n9: from django.utils.translation import gettext_lazy as _\n10: \n11: __all__ = ('BoundField',)\n12: \n13: \n14: @html_safe\n15: class BoundField:\n16:     \"A Field plus data\"\n17:     def __init__(self, form, field, name):\n18:         self.form = form\n19:         self.field = field\n20:         self.name = name\n21:         self.html_name = form.add_prefix(name)\n22:         self.html_initial_name = form.add_initial_prefix(name)\n23:         self.html_initial_id = form.add_initial_prefix(self.auto_id)\n24:         if self.field.label is None:\n25:             self.label = pretty_name(name)\n26:         else:\n27:             self.label = self.field.label\n28:         self.help_text = field.help_text or ''\n29: \n30:     def __str__(self):"
+      },
+      {
+        "end": 220,
+        "start": 212,
+        "text": "212:     @cached_property\n213:     def initial(self):\n214:         data = self.form.get_initial_for_field(self.field, self.name)\n215:         # If this is an auto-generated default date, nix the microseconds for\n216:         # standardized handling. See #22502.\n217:         if (isinstance(data, (datetime.datetime, datetime.time)) and\n218:                 not self.field.widget.supports_microseconds):\n219:             data = data.replace(microsecond=0)\n220:         return data"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "8aba863a634f40560e25055d179220f0eefabe9a",
+    "base_file_sha256": "e3fb56e1d80d8c818f6df9b4bc1bdef70a2f927e93d169a302f2cbd0dc16ddaa",
+    "instance_id": "pytest-dev__pytest-5809",
+    "path": "testing/test_pastebin.py",
+    "snippets": [
+      {
+        "end": 133,
+        "start": 90,
+        "text": "90: class TestPaste(object):\n91:     @pytest.fixture\n92:     def pastebin(self, request):\n93:         return request.config.pluginmanager.getplugin(\"pastebin\")\n94: \n95:     @pytest.fixture\n96:     def mocked_urlopen(self, monkeypatch):\n97:         \"\"\"\n98:         monkeypatch the actual urlopen calls done by the internal plugin\n99:         function that connects to bpaste service.\n100:         \"\"\"\n101:         calls = []\n102: \n103:         def mocked(url, data):\n104:             calls.append((url, data))\n105: \n106:             class DummyFile(object):\n107:                 def read(self):\n108:                     # part of html of a normal response\n109:                     return b'View <a href=\"/raw/3c0c6750bd\">raw</a>.'\n110: \n111:             return DummyFile()\n112: \n113:         if sys.version_info < (3, 0):\n114:             import urllib\n115: \n116:             monkeypatch.setattr(urllib, \"urlopen\", mocked)\n117:         else:\n118:             import urllib.request\n119: \n120:             monkeypatch.setattr(urllib.request, \"urlopen\", mocked)\n121:         return calls\n122: \n123:     def test_create_new_paste(self, pastebin, mocked_urlopen):\n124:         result = pastebin.create_new_paste(b\"full-paste-contents\")\n125:         assert result == \"https://bpaste.net/show/3c0c6750bd\"\n126:         assert len(mocked_urlopen) == 1\n127:         url, data = mocked_urlopen[0]\n128:         assert type(data) is bytes\n129:         lexer = \"python3\" if sys.version_info[0] >= 3 else \"python\"\n130:         assert url == \"https://bpaste.net\"\n131:         assert \"lexer=%s\" % lexer in data.decode()\n132:         assert \"code=full-paste-contents\" in data.decode()\n133:         assert \"expiry=1week\" in data.decode()"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "8aba863a634f40560e25055d179220f0eefabe9a",
+    "base_file_sha256": "4afcaa8277ec2d295c94ccb664f2a51c37371aa71e31636146cceb5d1746c559",
+    "candidate_changed_definitions": [
+      {
+        "end": 91,
+        "qualname": "create_new_paste",
+        "start": 65,
+        "text": "65: def create_new_paste(contents):\n66:     \"\"\"\n67:     Creates a new paste using bpaste.net service.\n68: \n69:     :contents: paste contents as utf-8 encoded bytes\n70:     :returns: url to the pasted contents\n71:     \"\"\"\n72:     import re\n73: \n74:     if sys.version_info < (3, 0):\n75:         from urllib import urlopen, urlencode\n76:     else:\n77:         from urllib.request import urlopen\n78:         from urllib.parse import urlencode\n79: \n80:     params = {\n81:         \"code\": contents,\n82:         \"lexer\": \"text\",\n83:         \"expiry\": \"1week\",\n84:     }\n85:     url = \"https://bpaste.net\"\n86:     response = urlopen(url, data=urlencode(params).encode(\"ascii\")).read()\n87:     m = re.search(r'href=\"/raw/(\\w+)\"', response.decode(\"utf-8\"))\n88:     if m:\n89:         return \"%s/show/%s\" % (url, m.group(1))\n90:     else:\n91:         return \"bad response: \" + response"
+      }
+    ],
+    "candidate_file_sha256": "fc7aa51d53eee49a4714559e847060a3e99afdca322a02aba651942db714cb49",
+    "candidate_view": "validated hunk reconstruction for inspection only; never indexed into a graph",
+    "instance_id": "pytest-dev__pytest-5809",
+    "patch_section": "diff --git a/src/_pytest/pastebin.py b/src/_pytest/pastebin.py\nindex 41576a615..79b0d9d40 100644\n--- a/src/_pytest/pastebin.py\n+++ b/src/_pytest/pastebin.py\n@@ -79,7 +79,7 @@ def create_new_paste(contents):\n \n     params = {\n         \"code\": contents,\n-        \"lexer\": \"python3\" if sys.version_info[0] >= 3 else \"python\",\n+        \"lexer\": \"text\",\n         \"expiry\": \"1week\",\n     }\n     url = \"https://bpaste.net\"\n",
+    "path": "src/_pytest/pastebin.py",
+    "snippets": [
+      {
+        "end": 91,
+        "start": 65,
+        "text": "65: def create_new_paste(contents):\n66:     \"\"\"\n67:     Creates a new paste using bpaste.net service.\n68: \n69:     :contents: paste contents as utf-8 encoded bytes\n70:     :returns: url to the pasted contents\n71:     \"\"\"\n72:     import re\n73: \n74:     if sys.version_info < (3, 0):\n75:         from urllib import urlopen, urlencode\n76:     else:\n77:         from urllib.request import urlopen\n78:         from urllib.parse import urlencode\n79: \n80:     params = {\n81:         \"code\": contents,\n82:         \"lexer\": \"python3\" if sys.version_info[0] >= 3 else \"python\",\n83:         \"expiry\": \"1week\",\n84:     }\n85:     url = \"https://bpaste.net\"\n86:     response = urlopen(url, data=urlencode(params).encode(\"ascii\")).read()\n87:     m = re.search(r'href=\"/raw/(\\w+)\"', response.decode(\"utf-8\"))\n88:     if m:\n89:         return \"%s/show/%s\" % (url, m.group(1))\n90:     else:\n91:         return \"bad response: \" + response"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "8aba863a634f40560e25055d179220f0eefabe9a",
+    "base_file_sha256": "f17afe8eb91adc9f8fe9c6a3fc92172e4277f8b91cb84cdf91e5490e1b2aad4a",
+    "instance_id": "pytest-dev__pytest-5809",
+    "path": "src/_pytest/config/__init__.py",
+    "snippets": [
+      {
+        "end": 168,
+        "start": 127,
+        "text": "127: default_plugins = essential_plugins + (\n128:     \"python\",\n129:     \"terminal\",\n130:     \"debugging\",\n131:     \"unittest\",\n132:     \"capture\",\n133:     \"skipping\",\n134:     \"tmpdir\",\n135:     \"monkeypatch\",\n136:     \"recwarn\",\n137:     \"pastebin\",\n138:     \"nose\",\n139:     \"assertion\",\n140:     \"junitxml\",\n141:     \"resultlog\",\n142:     \"doctest\",\n143:     \"cacheprovider\",\n144:     \"freeze_support\",\n145:     \"setuponly\",\n146:     \"setupplan\",\n147:     \"stepwise\",\n148:     \"warnings\",\n149:     \"logging\",\n150:     \"reports\",\n151: )\n152: \n153: builtin_plugins = set(default_plugins)\n154: builtin_plugins.add(\"pytester\")\n155: \n156: \n157: def get_config(args=None):\n158:     # subsequent calls to main will create a fresh instance\n159:     pluginmanager = PytestPluginManager()\n160:     config = Config(pluginmanager)\n161: \n162:     if args is not None:\n163:         # Handle any \"-p no:plugin\" args.\n164:         pluginmanager.consider_preparse(args)\n165: \n166:     for spec in default_plugins:\n167:         pluginmanager.import_plugin(spec)\n168:     return config"
+      },
+      {
+        "end": 333,
+        "start": 331,
+        "text": "331:     def getplugin(self, name):\n332:         # support deprecated naming because plugins (xdist e.g.) use it\n333:         return self.get_plugin(name)"
+      },
+      {
+        "end": 588,
+        "start": 540,
+        "text": "540:     def import_plugin(self, modname, consider_entry_points=False):\n541:         \"\"\"\n542:         Imports a plugin with ``modname``. If ``consider_entry_points`` is True, entry point\n543:         names are also considered to find a plugin.\n544:         \"\"\"\n545:         # most often modname refers to builtin modules, e.g. \"pytester\",\n546:         # \"terminal\" or \"capture\".  Those plugins are registered under their\n547:         # basename for historic purposes but must be imported with the\n548:         # _pytest prefix.\n549:         assert isinstance(modname, six.string_types), (\n550:             \"module name as text required, got %r\" % modname\n551:         )\n552:         modname = str(modname)\n553:         if self.is_blocked(modname) or self.get_plugin(modname) is not None:\n554:             return\n555: \n556:         importspec = \"_pytest.\" + modname if modname in builtin_plugins else modname\n557:         self.rewrite_hook.mark_rewrite(importspec)\n558: \n559:         if consider_entry_points:\n560:             loaded = self.load_setuptools_entrypoints(\"pytest11\", name=modname)\n561:             if loaded:\n562:                 return\n563: \n564:         try:\n565:             __import__(importspec)\n566:         except ImportError as e:\n567:             new_exc_message = 'Error importing plugin \"%s\": %s' % (\n568:                 modname,\n569:                 safe_str(e.args[0]),\n570:             )\n571:             new_exc = ImportError(new_exc_message)\n572:             tb = sys.exc_info()[2]\n573: \n574:             six.reraise(ImportError, new_exc, tb)\n575: \n576:         except Skipped as e:\n577:             from _pytest.warnings import _issue_warning_captured\n578: \n579:             _issue_warning_captured(\n580:                 PytestConfigWarning(\"skipped plugin %r: %s\" % (modname, e.msg)),\n581:                 self.hook,\n582:                 stacklevel=1,\n583:             )\n584:         else:\n585:             mod = sys.modules[importspec]\n586:             self.register(mod, modname)\n587: \n588: "
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "8aba863a634f40560e25055d179220f0eefabe9a",
+    "base_file_sha256": "fcd30bdf87a377b075437a7ef959eefc83f556cdc4f1b1ced9706dd5281e130e",
+    "instance_id": "pytest-dev__pytest-5809",
+    "path": "src/_pytest/fixtures.py",
+    "snippets": [
+      {
+        "end": 479,
+        "start": 460,
+        "text": "460:     def raiseerror(self, msg):\n461:         \"\"\" raise a FixtureLookupError with the given message. \"\"\"\n462:         raise self._fixturemanager.FixtureLookupError(None, self, msg)\n463: \n464:     def _fillfixtures(self):\n465:         item = self._pyfuncitem\n466:         fixturenames = getattr(item, \"fixturenames\", self.fixturenames)\n467:         for argname in fixturenames:\n468:             if argname not in item.funcargs:\n469:                 item.funcargs[argname] = self.getfixturevalue(argname)\n470: \n471:     def getfixturevalue(self, argname):\n472:         \"\"\" Dynamically run a named fixture function.\n473: \n474:         Declaring fixtures via function argument is recommended where possible.\n475:         But if you can only decide whether to use another fixture at test\n476:         setup time, you may use this function to retrieve it inside a fixture\n477:         or test function body.\n478:         \"\"\"\n479:         return self._get_active_fixturedef(argname).cached_result[0]"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "8aba863a634f40560e25055d179220f0eefabe9a",
+    "base_file_sha256": "c1744b55650782df828d1d042958e85e80bb2646fa0cf36e794198a1a972e287",
+    "instance_id": "pytest-dev__pytest-5809",
+    "path": "testing/conftest.py",
+    "snippets": [
+      {
+        "end": 55,
+        "start": 1,
+        "text": "1: # -*- coding: utf-8 -*-\n2: import sys\n3: \n4: import pytest\n5: \n6: if sys.gettrace():\n7: \n8:     @pytest.fixture(autouse=True)\n9:     def restore_tracing():\n10:         \"\"\"Restore tracing function (when run with Coverage.py).\n11: \n12:         https://bugs.python.org/issue37011\n13:         \"\"\"\n14:         orig_trace = sys.gettrace()\n15:         yield\n16:         if sys.gettrace() != orig_trace:\n17:             sys.settrace(orig_trace)\n18: \n19: \n20: @pytest.hookimpl(hookwrapper=True, tryfirst=True)\n21: def pytest_collection_modifyitems(config, items):\n22:     \"\"\"Prefer faster tests.\n23: \n24:     Use a hookwrapper to do this in the beginning, so e.g. --ff still works\n25:     correctly.\n26:     \"\"\"\n27:     fast_items = []\n28:     slow_items = []\n29:     slowest_items = []\n30:     neutral_items = []\n31: \n32:     spawn_names = {\"spawn_pytest\", \"spawn\"}\n33: \n34:     for item in items:\n35:         try:\n36:             fixtures = item.fixturenames\n37:         except AttributeError:\n38:             # doctest at least\n39:             # (https://github.com/pytest-dev/pytest/issues/5070)\n40:             neutral_items.append(item)\n41:         else:\n42:             if \"testdir\" in fixtures:\n43:                 if spawn_names.intersection(item.function.__code__.co_names):\n44:                     item.add_marker(pytest.mark.uses_pexpect)\n45:                     slowest_items.append(item)\n46:                 else:\n47:                     slow_items.append(item)\n48:                 item.add_marker(pytest.mark.slow)\n49:             else:\n50:                 marker = item.get_closest_marker(\"slow\")\n51:                 if marker:\n52:                     slowest_items.append(item)\n53:                 else:\n54:                     fast_items.append(item)\n55: "
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "f1061c012e214f16fd8790dec3c283d787e3daa8",
+    "base_file_sha256": "1acf54e88a23476e125a3f5e92092827711f4e78eecae6032b50eb0ba807c8d5",
+    "instance_id": "sphinx-doc__sphinx-10435",
+    "path": "tests/test_build_latex.py",
+    "snippets": [
+      {
+        "end": 1629,
+        "start": 1605,
+        "text": "1605: @pytest.mark.sphinx('latex', testroot='reST-code-role')\n1606: def test_latex_code_role(app):\n1607:     app.build()\n1608:     content = (app.outdir / 'python.tex').read_text()\n1609: \n1610:     common_content = (\n1611:         r'\\PYG{k}{def} '\n1612:         r'\\PYG{n+nf}{foo}'\n1613:         r'\\PYG{p}{(}'\n1614:         r'\\PYG{l+m+mi}{1} '\n1615:         r'\\PYG{o}{+} '\n1616:         r'\\PYG{l+m+mi}{2} '\n1617:         r'\\PYG{o}{+} '\n1618:         r'\\PYG{k+kc}{None} '\n1619:         r'\\PYG{o}{+} '\n1620:         r'\\PYG{l+s+s2}{\\PYGZdq{}}'\n1621:         r'\\PYG{l+s+s2}{abc}'\n1622:         r'\\PYG{l+s+s2}{\\PYGZdq{}}'\n1623:         r'\\PYG{p}{)}'\n1624:         r'\\PYG{p}{:} '\n1625:         r'\\PYG{k}{pass}')\n1626:     assert (r'Inline \\sphinxcode{\\sphinxupquote{' + '\\n' +\n1627:             common_content + '\\n}} code block') in content\n1628:     assert (r'\\begin{sphinxVerbatim}[commandchars=\\\\\\{\\}]' +\n1629:             '\\n' + common_content + '\\n' + r'\\end{sphinxVerbatim}') in content"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "f1061c012e214f16fd8790dec3c283d787e3daa8",
+    "base_file_sha256": "df8b7f030e2a629b8441a6829c090248342792084384e2ee54a2716411e71715",
+    "instance_id": "sphinx-doc__sphinx-10435",
+    "path": "tests/conftest.py",
+    "snippets": [
+      {
+        "end": 20,
+        "start": 1,
+        "text": "1: import os\n2: import shutil\n3: \n4: import docutils\n5: import pytest\n6: \n7: import sphinx\n8: from sphinx.testing import comparer\n9: from sphinx.testing.path import path\n10: \n11: pytest_plugins = 'sphinx.testing.fixtures'\n12: \n13: # Exclude 'roots' dirs for pytest test collector\n14: collect_ignore = ['roots']\n15: \n16: \n17: @pytest.fixture(scope='session')\n18: def rootdir():\n19:     return path(__file__).parent.abspath() / 'roots'\n20: "
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "f1061c012e214f16fd8790dec3c283d787e3daa8",
+    "base_file_sha256": "a81968c657c48e250dfad2c7ab92d25dd35ab7c1dffc9c44307c411cb1d7a502",
+    "instance_id": "sphinx-doc__sphinx-10435",
+    "path": "sphinx/testing/fixtures.py",
+    "snippets": [
+      {
+        "end": 99,
+        "start": 55,
+        "text": "55: \n56: \n57: @pytest.fixture\n58: def app_params(request: Any, test_params: Dict, shared_result: SharedResult,\n59:                sphinx_test_tempdir: str, rootdir: str) -> Tuple[Dict, Dict]:\n60:     \"\"\"\n61:     Parameters that are specified by 'pytest.mark.sphinx' for\n62:     sphinx.application.Sphinx initialization\n63:     \"\"\"\n64: \n65:     # ##### process pytest.mark.sphinx\n66: \n67:     pargs = {}\n68:     kwargs: Dict[str, Any] = {}\n69: \n70:     # to avoid stacking positional args\n71:     for info in reversed(list(request.node.iter_markers(\"sphinx\"))):\n72:         for i, a in enumerate(info.args):\n73:             pargs[i] = a\n74:         kwargs.update(info.kwargs)\n75: \n76:     args = [pargs[i] for i in sorted(pargs.keys())]\n77: \n78:     # ##### process pytest.mark.test_params\n79:     if test_params['shared_result']:\n80:         if 'srcdir' in kwargs:\n81:             raise pytest.Exception('You can not specify shared_result and '\n82:                                    'srcdir in same time.')\n83:         kwargs['srcdir'] = test_params['shared_result']\n84:         restore = shared_result.restore(test_params['shared_result'])\n85:         kwargs.update(restore)\n86: \n87:     # ##### prepare Application params\n88: \n89:     testroot = kwargs.pop('testroot', 'root')\n90:     kwargs['srcdir'] = srcdir = sphinx_test_tempdir / kwargs.get('srcdir', testroot)\n91: \n92:     # special support for sphinx/tests\n93:     if rootdir and not srcdir.exists():\n94:         testroot_path = rootdir / ('test-' + testroot)\n95:         testroot_path.copytree(srcdir)\n96: \n97:     return namedtuple('app_params', 'args,kwargs')(args, kwargs)  # type: ignore\n98: \n99: "
+      },
+      {
+        "end": 141,
+        "start": 104,
+        "text": "104: \n105:     :param Union[str] shared_result:\n106:        If the value is provided, app._status and app._warning objects will be\n107:        shared in the parametrized test functions and/or test functions that\n108:        have same 'shared_result' value.\n109:        **NOTE**: You can not specify both shared_result and srcdir.\n110:     \"\"\"\n111:     env = request.node.get_closest_marker('test_params')\n112:     kwargs = env.kwargs if env else {}\n113:     result = {\n114:         'shared_result': None,\n115:     }\n116:     result.update(kwargs)\n117: \n118:     if (result['shared_result'] and not isinstance(result['shared_result'], str)):\n119:         raise pytest.Exception('You can only provide a string type of value '\n120:                                'for \"shared_result\" ')\n121:     return result\n122: \n123: \n124: @pytest.fixture(scope='function')\n125: def app(test_params: Dict, app_params: Tuple[Dict, Dict], make_app: Callable,\n126:         shared_result: SharedResult) -> Generator[SphinxTestApp, None, None]:\n127:     \"\"\"\n128:     Provides the 'sphinx.application.Sphinx' object\n129:     \"\"\"\n130:     args, kwargs = app_params\n131:     app_ = make_app(*args, **kwargs)\n132:     yield app_\n133: \n134:     print('# testroot:', kwargs.get('testroot', 'root'))\n135:     print('# builder:', app_.builder.name)\n136:     print('# srcdir:', app_.srcdir)\n137:     print('# outdir:', app_.outdir)\n138:     print('# status:', '\\n' + app_._status.getvalue())\n139:     print('# warning:', '\\n' + app_._warning.getvalue())\n140: \n141:     if test_params['shared_result']:"
+      },
+      {
+        "end": 185,
+        "start": 161,
+        "text": "161: @pytest.fixture()\n162: def make_app(test_params: Dict, monkeypatch: Any) -> Generator[Callable, None, None]:\n163:     \"\"\"\n164:     Provides make_app function to initialize SphinxTestApp instance.\n165:     if you want to initialize 'app' in your test function. please use this\n166:     instead of using SphinxTestApp class directory.\n167:     \"\"\"\n168:     monkeypatch.setattr('sphinx.application.abspath', lambda x: x)\n169: \n170:     apps = []\n171:     syspath = sys.path[:]\n172: \n173:     def make(*args, **kwargs):\n174:         status, warning = StringIO(), StringIO()\n175:         kwargs.setdefault('status', status)\n176:         kwargs.setdefault('warning', warning)\n177:         app_: Any = SphinxTestApp(*args, **kwargs)\n178:         apps.append(app_)\n179:         if test_params['shared_result']:\n180:             app_ = SphinxTestAppWrapperForSkipBuilding(app_)\n181:         return app_\n182:     yield make\n183: \n184:     sys.path[:] = syspath\n185:     for app_ in reversed(apps):  # clean up applications from the new ones"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "f1061c012e214f16fd8790dec3c283d787e3daa8",
+    "base_file_sha256": "100232f2e83206a2b355b44ce6243b9259ecf7b1775d65402ae38d3ad1638aa4",
+    "instance_id": "sphinx-doc__sphinx-10435",
+    "path": "sphinx/testing/util.py",
+    "snippets": [
+      {
+        "end": 100,
+        "start": 89,
+        "text": "89: class SphinxTestApp(application.Sphinx):\n90:     \"\"\"\n91:     A subclass of :class:`Sphinx` that runs on the test root, with some\n92:     better default values for the initialization parameters.\n93:     \"\"\"\n94:     _status: StringIO = None\n95:     _warning: StringIO = None\n96: \n97:     def __init__(self, buildername: str = 'html', srcdir: path = None, builddir: path = None,\n98:                  freshenv: bool = False, confoverrides: Dict = None, status: IO = None,\n99:                  warning: IO = None, tags: List[str] = None, docutilsconf: str = None,\n100:                  parallel: int = 0) -> None:"
+      },
+      {
+        "end": 129,
+        "start": 123,
+        "text": "123: \n124:         try:\n125:             super().__init__(srcdir, confdir, outdir, doctreedir,\n126:                              buildername, confoverrides, status, warning,\n127:                              freshenv, warningiserror, tags, parallel=parallel)\n128:         except Exception:\n129:             self.cleanup()"
+      },
+      {
+        "end": 166,
+        "start": 149,
+        "text": "149: class SphinxTestAppWrapperForSkipBuilding:\n150:     \"\"\"\n151:     This class is a wrapper for SphinxTestApp to speed up the test by skipping\n152:     `app.build` process if it is already built and there is even one output\n153:     file.\n154:     \"\"\"\n155: \n156:     def __init__(self, app_: SphinxTestApp) -> None:\n157:         self.app = app_\n158: \n159:     def __getattr__(self, name: str) -> Any:\n160:         return getattr(self.app, name)\n161: \n162:     def build(self, *args: Any, **kwargs: Any) -> None:\n163:         if not self.app.outdir.listdir():  # type: ignore\n164:             # if listdir is empty, do build.\n165:             self.app.build(*args, **kwargs)\n166:             # otherwise, we can use built cache"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "f1061c012e214f16fd8790dec3c283d787e3daa8",
+    "base_file_sha256": "67d4dc5dd8b2aee40db8d7457cd510d64693780682109a5b52d4904b6c6ab767",
+    "instance_id": "sphinx-doc__sphinx-10435",
+    "path": "sphinx/application.py",
+    "snippets": [
+      {
+        "end": 255,
+        "start": 248,
+        "text": "248: \n249:         # create the project\n250:         self.project = Project(self.srcdir, self.config.source_suffix)\n251:         # create the builder\n252:         self.builder = self.create_builder(buildername)\n253:         # set up the build environment\n254:         self._init_env(freshenv)\n255:         # set up the builder"
+      },
+      {
+        "end": 329,
+        "start": 304,
+        "text": "304:     def create_builder(self, name: str) -> \"Builder\":\n305:         if name is None:\n306:             logger.info(__('No builder selected, using default: html'))\n307:             name = 'html'\n308: \n309:         return self.registry.create_builder(self, name)\n310: \n311:     def _init_builder(self) -> None:\n312:         self.builder.set_environment(self.env)\n313:         self.builder.init()\n314:         self.events.emit('builder-inited')\n315: \n316:     # ---- main \"build\" method -------------------------------------------------\n317: \n318:     def build(self, force_all: bool = False, filenames: List[str] = None) -> None:\n319:         self.phase = BuildPhase.READING\n320:         try:\n321:             if force_all:\n322:                 self.builder.compile_all_catalogs()\n323:                 self.builder.build_all()\n324:             elif filenames:\n325:                 self.builder.compile_specific_catalogs(filenames)\n326:                 self.builder.build_specific(filenames)\n327:             else:\n328:                 self.builder.compile_update_catalogs()\n329:                 self.builder.build_update()"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "f1061c012e214f16fd8790dec3c283d787e3daa8",
+    "base_file_sha256": "93ee2a1d6dd3600529fc057373ca074d87282df74c5ac92e21789eb33869b189",
+    "instance_id": "sphinx-doc__sphinx-10435",
+    "path": "sphinx/builders/__init__.py",
+    "snippets": [
+      {
+        "end": 121,
+        "start": 115,
+        "text": "115:     def create_translator(self, *args: Any) -> nodes.NodeVisitor:\n116:         \"\"\"Return an instance of translator.\n117: \n118:         This method returns an instance of ``default_translator_class`` by default.\n119:         Users can replace the translator class with ``app.set_translator()`` API.\n120:         \"\"\"\n121:         return self.app.registry.create_translator(self, *args)"
+      },
+      {
+        "end": 299,
+        "start": 280,
+        "text": "280:     def build_update(self) -> None:\n281:         \"\"\"Only rebuild what was changed or added since last build.\"\"\"\n282:         to_build = self.get_outdated_docs()\n283:         if isinstance(to_build, str):\n284:             self.build(['__all__'], to_build)\n285:         else:\n286:             to_build = list(to_build)\n287:             self.build(to_build,\n288:                        summary=__('targets for %d source files that are out of date') %\n289:                        len(to_build))\n290: \n291:     def build(self, docnames: Iterable[str], summary: str = None, method: str = 'update') -> None:  # NOQA\n292:         \"\"\"Main build method.\n293: \n294:         First updates the environment, and then calls :meth:`write`.\n295:         \"\"\"\n296:         if summary:\n297:             logger.info(bold(__('building [%s]: ') % self.name) + summary)\n298: \n299:         # while reading, collect all warnings from docutils"
+      },
+      {
+        "end": 354,
+        "start": 348,
+        "text": "348:         self.finish_tasks = SerialTasks()\n349: \n350:         # write all \"normal\" documents (or everything for some builders)\n351:         self.write(docnames, list(updated_docnames), method)\n352: \n353:         # finish (write static files etc.)\n354:         self.finish()"
+      },
+      {
+        "end": 518,
+        "start": 511,
+        "text": "511:     def write(self, build_docnames: Iterable[str], updated_docnames: Sequence[str], method: str = 'update') -> None:  # NOQA\n512:         if build_docnames is None or build_docnames == ['__all__']:\n513:             # build_all\n514:             build_docnames = self.env.found_docs\n515:         if method == 'update':\n516:             # build updated ones as well\n517:             docnames = set(build_docnames) | set(updated_docnames)\n518:         else:"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "f1061c012e214f16fd8790dec3c283d787e3daa8",
+    "base_file_sha256": "b06cd622bc1f2212b92e61515326c058ca66a19dc4ebc1ecf5c97ad003deda62",
+    "instance_id": "sphinx-doc__sphinx-10435",
+    "path": "sphinx/builders/latex/__init__.py",
+    "snippets": [
+      {
+        "end": 115,
+        "start": 105,
+        "text": "105:     epilog = __('The LaTeX files are in %(outdir)s.')\n106:     if os.name == 'posix':\n107:         epilog += __(\"\\nRun 'make' in that directory to run these through \"\n108:                      \"(pdf)latex\\n\"\n109:                      \"(use `make latexpdf' here to do that automatically).\")\n110: \n111:     supported_image_types = ['application/pdf', 'image/png', 'image/jpeg']\n112:     supported_remote_images = False\n113:     default_translator_class = LaTeXTranslator\n114: \n115:     def init(self) -> None:"
+      },
+      {
+        "end": 261,
+        "start": 252,
+        "text": "252:     def write(self, *ignored: Any) -> None:\n253:         docwriter = LaTeXWriter(self)\n254:         with warnings.catch_warnings():\n255:             warnings.filterwarnings('ignore', category=DeprecationWarning)\n256:             # DeprecationWarning: The frontend.OptionParser class will be replaced\n257:             # by a subclass of argparse.ArgumentParser in Docutils 0.21 or later.\n258:             docsettings: Any = OptionParser(\n259:                 defaults=self.env.settings,\n260:                 components=(docwriter,),\n261:                 read_config_files=True).get_default_values()"
+      },
+      {
+        "end": 302,
+        "start": 290,
+        "text": "290:                 self.update_context()\n291: \n292:             with progress_message(__(\"writing\")):\n293:                 docsettings._author = author\n294:                 docsettings._title = title\n295:                 docsettings._contentsname = doctree['contentsname']\n296:                 docsettings._docname = docname\n297:                 docsettings._docclass = theme.name\n298: \n299:                 doctree.settings = docsettings\n300:                 docwriter.theme = theme\n301:                 docwriter.write(doctree, destination)\n302: "
+      },
+      {
+        "end": 510,
+        "start": 505,
+        "text": "505: def setup(app: Sphinx) -> Dict[str, Any]:\n506:     app.setup_extension('sphinx.builders.latex.transforms')\n507: \n508:     app.add_builder(LaTeXBuilder)\n509:     app.connect('config-inited', validate_config_values, priority=800)\n510:     app.connect('config-inited', validate_latex_theme_options, priority=800)"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "f1061c012e214f16fd8790dec3c283d787e3daa8",
+    "base_file_sha256": "894b1c85b96b31d4de586dd901ad9369f583fdc7bf2444c42a21c8106d185d81",
+    "candidate_changed_definitions": [
+      {
+        "end": 1719,
+        "qualname": "LaTeXTranslator.visit_literal",
+        "start": 1695,
+        "text": "1695:     def visit_literal(self, node: Element) -> None:\n1696:         if self.in_title:\n1697:             self.body.append(r'\\sphinxstyleliteralintitle{\\sphinxupquote{')\n1698:             return\n1699:         elif 'kbd' in node['classes']:\n1700:             self.body.append(r'\\sphinxkeyboard{\\sphinxupquote{')\n1701:             return\n1702:         lang = node.get(\"language\", None)\n1703:         if 'code' not in node['classes'] or not lang:\n1704:             self.body.append(r'\\sphinxcode{\\sphinxupquote{')\n1705:             return\n1706: \n1707:         opts = self.config.highlight_options.get(lang, {})\n1708:         hlcode = self.highlighter.highlight_block(\n1709:             node.astext(), lang, opts=opts, location=node)\n1710:         # TODO: Use nowrap option once LaTeX formatter supports it\n1711:         # https://github.com/pygments/pygments/pull/1343\n1712:         hlcode = hlcode.replace(r'\\begin{Verbatim}[commandchars=\\\\\\{\\}]',\n1713:                                 r'\\sphinxcode{\\sphinxupquote{%')\n1714:         # get consistent trailer\n1715:         hlcode = hlcode.rstrip()[:-14]  # strip \\end{Verbatim}\n1716:         hlcode = hlcode.rstrip() + '%\\n'\n1717:         self.body.append(hlcode)\n1718:         self.body.append('}}')\n1719:         raise nodes.SkipNode"
+      }
+    ],
+    "candidate_file_sha256": "84974737f36799fb83be2c206a7aa7706b50d928b93e0347979483829072c200",
+    "candidate_view": "validated hunk reconstruction for inspection only; never indexed into a graph",
+    "instance_id": "sphinx-doc__sphinx-10435",
+    "patch_section": "diff --git a/sphinx/writers/latex.py b/sphinx/writers/latex.py\nindex e0c7d56f8..1c8d6563f 100644\n--- a/sphinx/writers/latex.py\n+++ b/sphinx/writers/latex.py\n@@ -1710,9 +1710,10 @@ class LaTeXTranslator(SphinxTranslator):\n         # TODO: Use nowrap option once LaTeX formatter supports it\n         # https://github.com/pygments/pygments/pull/1343\n         hlcode = hlcode.replace(r'\\begin{Verbatim}[commandchars=\\\\\\{\\}]',\n-                                r'\\sphinxcode{\\sphinxupquote{')\n+                                r'\\sphinxcode{\\sphinxupquote{%')\n         # get consistent trailer\n         hlcode = hlcode.rstrip()[:-14]  # strip \\end{Verbatim}\n+        hlcode = hlcode.rstrip() + '%\\n'\n         self.body.append(hlcode)\n         self.body.append('}}')\n         raise nodes.SkipNode\n",
+    "path": "sphinx/writers/latex.py",
+    "snippets": [
+      {
+        "end": 87,
+        "start": 66,
+        "text": "66: class LaTeXWriter(writers.Writer):\n67: \n68:     supported = ('sphinxlatex',)\n69: \n70:     settings_spec = ('LaTeX writer options', '', (\n71:         ('Document name', ['--docname'], {'default': ''}),\n72:         ('Document class', ['--docclass'], {'default': 'manual'}),\n73:         ('Author', ['--author'], {'default': ''}),\n74:     ))\n75:     settings_defaults: Dict = {}\n76: \n77:     output = None\n78: \n79:     def __init__(self, builder: \"LaTeXBuilder\") -> None:\n80:         super().__init__()\n81:         self.builder = builder\n82:         self.theme: Theme = None\n83: \n84:     def translate(self) -> None:\n85:         visitor = self.builder.create_translator(self.document, self.builder, self.theme)\n86:         self.document.walkabout(visitor)\n87:         self.output = cast(LaTeXTranslator, visitor).astext()"
+      },
+      {
+        "end": 1718,
+        "start": 1695,
+        "text": "1695:     def visit_literal(self, node: Element) -> None:\n1696:         if self.in_title:\n1697:             self.body.append(r'\\sphinxstyleliteralintitle{\\sphinxupquote{')\n1698:             return\n1699:         elif 'kbd' in node['classes']:\n1700:             self.body.append(r'\\sphinxkeyboard{\\sphinxupquote{')\n1701:             return\n1702:         lang = node.get(\"language\", None)\n1703:         if 'code' not in node['classes'] or not lang:\n1704:             self.body.append(r'\\sphinxcode{\\sphinxupquote{')\n1705:             return\n1706: \n1707:         opts = self.config.highlight_options.get(lang, {})\n1708:         hlcode = self.highlighter.highlight_block(\n1709:             node.astext(), lang, opts=opts, location=node)\n1710:         # TODO: Use nowrap option once LaTeX formatter supports it\n1711:         # https://github.com/pygments/pygments/pull/1343\n1712:         hlcode = hlcode.replace(r'\\begin{Verbatim}[commandchars=\\\\\\{\\}]',\n1713:                                 r'\\sphinxcode{\\sphinxupquote{')\n1714:         # get consistent trailer\n1715:         hlcode = hlcode.rstrip()[:-14]  # strip \\end{Verbatim}\n1716:         self.body.append(hlcode)\n1717:         self.body.append('}}')\n1718:         raise nodes.SkipNode"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "f1061c012e214f16fd8790dec3c283d787e3daa8",
+    "base_file_sha256": "48ceb29fca37b2865b56cce095c6749dd01eba344779d2bbabd60e64ade36b05",
+    "instance_id": "sphinx-doc__sphinx-10435",
+    "path": "sphinx/registry.py",
+    "snippets": [
+      {
+        "end": 160,
+        "start": 156,
+        "text": "156:     def create_builder(self, app: \"Sphinx\", name: str) -> Builder:\n157:         if name not in self.builders:\n158:             raise SphinxError(__('Builder name %s not registered') % name)\n159: \n160:         return self.builders[name](app)"
+      },
+      {
+        "end": 353,
+        "start": 327,
+        "text": "327:                     __('kwargs for add_node() must be a (visit, depart) '\n328:                        'function tuple: %r=%r') % (builder_name, handlers)\n329:                 ) from exc\n330: \n331:     def get_translator_class(self, builder: Builder) -> Type[nodes.NodeVisitor]:\n332:         return self.translators.get(builder.name,\n333:                                     builder.default_translator_class)\n334: \n335:     def create_translator(self, builder: Builder, *args: Any) -> nodes.NodeVisitor:\n336:         translator_class = self.get_translator_class(builder)\n337:         assert translator_class, \"translator not found for %s\" % builder.name\n338:         translator = translator_class(*args)\n339: \n340:         # transplant handlers for custom nodes to translator instance\n341:         handlers = self.translation_handlers.get(builder.name, None)\n342:         if handlers is None:\n343:             # retry with builder.format\n344:             handlers = self.translation_handlers.get(builder.format, {})\n345: \n346:         for name, (visit, depart) in handlers.items():\n347:             setattr(translator, 'visit_' + name, MethodType(visit, translator))\n348:             if depart:\n349:                 setattr(translator, 'depart_' + name, MethodType(depart, translator))\n350: \n351:         return translator\n352: \n353:     def add_transform(self, transform: Type[Transform]) -> None:"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "f1061c012e214f16fd8790dec3c283d787e3daa8",
+    "base_file_sha256": "97f8fd318e2bbe7a4b0fc4ec1b7efabe4292883dbd36a0ebb670bd38f625f689",
+    "instance_id": "sphinx-doc__sphinx-10435",
+    "path": "sphinx/util/docutils.py",
+    "snippets": [
+      {
+        "end": 529,
+        "start": 496,
+        "text": "496: class SphinxTranslator(nodes.NodeVisitor):\n497:     \"\"\"A base class for Sphinx translators.\n498: \n499:     This class adds a support for visitor/departure method for super node class\n500:     if visitor/departure method for node class is not found.\n501: \n502:     It also provides helper methods for Sphinx translators.\n503: \n504:     .. note:: The subclasses of this class might not work with docutils.\n505:               This class is strongly coupled with Sphinx.\n506:     \"\"\"\n507: \n508:     def __init__(self, document: nodes.document, builder: \"Builder\") -> None:\n509:         super().__init__(document)\n510:         self.builder = builder\n511:         self.config = builder.config\n512:         self.settings = document.settings\n513: \n514:     def dispatch_visit(self, node: Node) -> None:\n515:         \"\"\"\n516:         Dispatch node to appropriate visitor method.\n517:         The priority of visitor method is:\n518: \n519:         1. ``self.visit_{node_class}()``\n520:         2. ``self.visit_{super_node_class}()``\n521:         3. ``self.unknown_visit()``\n522:         \"\"\"\n523:         for node_class in node.__class__.__mro__:\n524:             method = getattr(self, 'visit_%s' % (node_class.__name__), None)\n525:             if method:\n526:                 method(node)\n527:                 break\n528:         else:\n529:             super().dispatch_visit(node)"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "f1061c012e214f16fd8790dec3c283d787e3daa8",
+    "base_file_sha256": "34b7a330e28f2f12e8dc84304424fdfc52b7e915d07bd4cfe3386f2cd681b777",
+    "instance_id": "sphinx-doc__sphinx-10435",
+    "path": "tests/roots/test-reST-code-role/index.rst",
+    "snippets": [
+      {
+        "end": 9,
+        "start": 1,
+        "text": "1: .. role:: python(code)\n2:    :language: python\n3:    :class: highlight\n4: \n5: Inline :python:`def foo(1 + 2 + None + \"abc\"): pass` code block\n6: \n7: .. code-block:: python\n8: \n9:    def foo(1 + 2 + None + \"abc\"): pass"
+      }
+    ]
+  },
+  {
+    "available": true,
+    "base_commit": "f1061c012e214f16fd8790dec3c283d787e3daa8",
+    "base_file_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "instance_id": "sphinx-doc__sphinx-10435",
+    "path": "tests/roots/test-reST-code-role/conf.py",
+    "snippets": [
+      {
+        "end": 0,
+        "start": 1,
+        "text": ""
+      }
+    ]
+  }
+]

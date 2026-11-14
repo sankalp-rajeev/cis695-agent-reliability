@@ -1,0 +1,1749 @@
+[
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "_format_float"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C01",
+    "changed_symbol": "_format_value",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "astropy/io/fits/card.py",
+    "fixability": "A",
+    "graph_status": "complete",
+    "matched_base_definitions": [
+      "Card._format_value",
+      "_format_value"
+    ],
+    "reachability": [],
+    "repository": "astropy/astropy",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "unchanged_context_or_stale_hunk_header_name",
+    "source_file_status": "parsed",
+    "task_id": "astropy__astropy-14508"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "ModelAdmin.get_inline_instances",
+      "ModelAdmin.get_inlines"
+    ],
+    "added_candidate_definitions": [
+      "ModelAdmin.get_inlines"
+    ],
+    "case_id": "C02",
+    "changed_symbol": "get_inlines",
+    "confidence": "high",
+    "current_status": "unresolved",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "django/contrib/admin/options.py",
+    "fixability": "B",
+    "graph_status": "complete",
+    "matched_base_definitions": [],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 23,
+          "test_definitions": 23,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 23,
+          "test_definitions": 23,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": true,
+        "bases": [
+          "BaseModelAdmin"
+        ],
+        "decorated": false,
+        "node_id": "django/contrib/admin/options.py::ModelAdmin::class@538:0",
+        "qualname": "ModelAdmin",
+        "role": "existing_enclosing_anchor"
+      }
+    ],
+    "repository": "django/django",
+    "resolver_reason": "symbol_absent_at_base_or_diff_context_name",
+    "root_cause_category": "candidate_only_definition_absent_from_base",
+    "source_file_status": "parsed",
+    "task_id": "django__django-11095"
+  },
+  {
+    "actual_changed_base_definitions": [
+      "DecimalValidator.__call__",
+      "EmailValidator.__call__",
+      "FileExtensionValidator.__call__",
+      "ProhibitNullCharactersValidator.__call__",
+      "RegexValidator.__call__",
+      "URLValidator.__call__"
+    ],
+    "actual_edited_definition_owners": [
+      "DecimalValidator.__call__",
+      "EmailValidator.__call__",
+      "FileExtensionValidator.__call__",
+      "ProhibitNullCharactersValidator.__call__",
+      "RegexValidator.__call__",
+      "URLValidator.__call__",
+      "validate_ipv46_address",
+      "validate_ipv4_address",
+      "validate_ipv6_address"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C03",
+    "changed_symbol": "__call__",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "django/core/validators.py",
+    "fixability": "A",
+    "graph_status": "complete",
+    "matched_base_definitions": [
+      "RegexValidator.__call__",
+      "URLValidator.__call__",
+      "EmailValidator.__call__",
+      "BaseValidator.__call__",
+      "DecimalValidator.__call__",
+      "FileExtensionValidator.__call__",
+      "ProhibitNullCharactersValidator.__call__"
+    ],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": false,
+        "node_id": "django/core/validators.py::RegexValidator.__call__::method@43:4",
+        "qualname": "RegexValidator.__call__",
+        "role": "changed_base_definition"
+      },
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": false,
+        "node_id": "django/core/validators.py::URLValidator.__call__::method@101:4",
+        "qualname": "URLValidator.__call__",
+        "role": "changed_base_definition"
+      },
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": false,
+        "node_id": "django/core/validators.py::EmailValidator.__call__::method@209:4",
+        "qualname": "EmailValidator.__call__",
+        "role": "changed_base_definition"
+      },
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": false,
+        "node_id": "django/core/validators.py::DecimalValidator.__call__::method@438:4",
+        "qualname": "DecimalValidator.__call__",
+        "role": "changed_base_definition"
+      },
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": false,
+        "node_id": "django/core/validators.py::FileExtensionValidator.__call__::method@504:4",
+        "qualname": "FileExtensionValidator.__call__",
+        "role": "changed_base_definition"
+      },
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": false,
+        "node_id": "django/core/validators.py::ProhibitNullCharactersValidator.__call__::method@551:4",
+        "qualname": "ProhibitNullCharactersValidator.__call__",
+        "role": "changed_base_definition"
+      }
+    ],
+    "repository": "django/django",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "qualified_scope_lost_by_simple_name_mapper",
+    "source_file_status": "parsed",
+    "task_id": "django__django-13212"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "DecimalValidator.__call__",
+      "EmailValidator.__call__",
+      "FileExtensionValidator.__call__",
+      "ProhibitNullCharactersValidator.__call__",
+      "RegexValidator.__call__",
+      "URLValidator.__call__",
+      "validate_ipv46_address",
+      "validate_ipv4_address",
+      "validate_ipv6_address"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C04",
+    "changed_symbol": "__eq__",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "django/core/validators.py",
+    "fixability": "A",
+    "graph_status": "complete",
+    "matched_base_definitions": [
+      "RegexValidator.__eq__",
+      "EmailValidator.__eq__",
+      "BaseValidator.__eq__",
+      "DecimalValidator.__eq__",
+      "FileExtensionValidator.__eq__",
+      "ProhibitNullCharactersValidator.__eq__"
+    ],
+    "reachability": [],
+    "repository": "django/django",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "unchanged_context_or_stale_hunk_header_name",
+    "source_file_status": "parsed",
+    "task_id": "django__django-13212"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "stackplot",
+      "stackplot.get_next_color"
+    ],
+    "added_candidate_definitions": [
+      "stackplot.get_next_color"
+    ],
+    "case_id": "C05",
+    "changed_symbol": "get_next_color",
+    "confidence": "high",
+    "current_status": "unresolved",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "lib/matplotlib/stackplot.py",
+    "fixability": "B",
+    "graph_status": "complete",
+    "matched_base_definitions": [],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": true,
+        "bases": [],
+        "decorated": false,
+        "node_id": "lib/matplotlib/stackplot.py::stackplot::function@16:0",
+        "qualname": "stackplot",
+        "role": "existing_enclosing_anchor"
+      }
+    ],
+    "repository": "matplotlib/matplotlib",
+    "resolver_reason": "symbol_absent_at_base_or_diff_context_name",
+    "root_cause_category": "candidate_only_definition_absent_from_base",
+    "source_file_status": "parsed",
+    "task_id": "matplotlib__matplotlib-24026"
+  },
+  {
+    "actual_changed_base_definitions": [
+      "AnchoredLocatorBase.__call__"
+    ],
+    "actual_edited_definition_owners": [
+      "AnchoredLocatorBase.__call__"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C06",
+    "changed_symbol": "__call__",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "lib/mpl_toolkits/axes_grid1/inset_locator.py",
+    "fixability": "A",
+    "graph_status": "complete",
+    "matched_base_definitions": [
+      "InsetPosition.__call__",
+      "AnchoredLocatorBase.__call__"
+    ],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": false,
+        "node_id": "lib/mpl_toolkits/axes_grid1/inset_locator.py::AnchoredLocatorBase.__call__::method@71:4",
+        "qualname": "AnchoredLocatorBase.__call__",
+        "role": "changed_base_definition"
+      }
+    ],
+    "repository": "matplotlib/matplotlib",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "qualified_scope_lost_by_simple_name_mapper",
+    "source_file_status": "parsed",
+    "task_id": "matplotlib__matplotlib-26291"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "_LocIndexer.__getitem__"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C07",
+    "changed_symbol": "__setitem__",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "xarray/core/dataarray.py",
+    "fixability": "A",
+    "graph_status": "complete",
+    "matched_base_definitions": [
+      "_LocIndexer.__setitem__",
+      "DataArray.__setitem__"
+    ],
+    "reachability": [],
+    "repository": "pydata/xarray",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "unchanged_context_or_stale_hunk_header_name",
+    "source_file_status": "parsed",
+    "task_id": "pydata__xarray-4695"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "DataArrayRolling.__iter__"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C08",
+    "changed_symbol": "construct",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "xarray/core/rolling.py",
+    "fixability": "A",
+    "graph_status": "complete",
+    "matched_base_definitions": [
+      "DataArrayRolling.construct",
+      "DatasetRolling.construct",
+      "Coarsen.construct"
+    ],
+    "reachability": [],
+    "repository": "pydata/xarray",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "unchanged_context_or_stale_hunk_header_name",
+    "source_file_status": "parsed",
+    "task_id": "pydata__xarray-6744"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "_is_ignored_file",
+      "expand_modules"
+    ],
+    "added_candidate_definitions": [
+      "_is_ignored_file"
+    ],
+    "case_id": "C09",
+    "changed_symbol": "_is_ignored_file",
+    "confidence": "high",
+    "current_status": "unresolved",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "pylint/lint/expand_modules.py",
+    "fixability": "B",
+    "graph_status": "partial",
+    "matched_base_definitions": [],
+    "reachability": [],
+    "repository": "pylint-dev/pylint",
+    "resolver_reason": "symbol_absent_at_base_or_diff_context_name",
+    "root_cause_category": "candidate_only_definition_absent_from_base",
+    "source_file_status": "parsed",
+    "task_id": "pylint-dev__pylint-6528"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "MultiOutputClassifier",
+      "MultiOutputClassifier.fit"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C10",
+    "changed_symbol": "__init__",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "sklearn/multioutput.py",
+    "fixability": "A",
+    "graph_status": "complete",
+    "matched_base_definitions": [
+      "MultiOutputEstimator.__init__",
+      "MultiOutputRegressor.__init__",
+      "MultiOutputClassifier.__init__",
+      "_BaseChain.__init__"
+    ],
+    "reachability": [],
+    "repository": "scikit-learn/scikit-learn",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "unchanged_context_or_stale_hunk_header_name",
+    "source_file_status": "parsed",
+    "task_id": "scikit-learn__scikit-learn-14629"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "MultiOutputClassifier",
+      "MultiOutputClassifier.fit"
+    ],
+    "added_candidate_definitions": [
+      "MultiOutputClassifier.fit"
+    ],
+    "case_id": "C11",
+    "changed_symbol": "fit",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "sklearn/multioutput.py",
+    "fixability": "B",
+    "graph_status": "complete",
+    "matched_base_definitions": [
+      "MultiOutputEstimator.fit",
+      "_BaseChain.fit",
+      "ClassifierChain.fit",
+      "RegressorChain.fit"
+    ],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 10,
+          "test_definitions": 10,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 10,
+          "test_definitions": 10,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": true,
+        "bases": [
+          "MultiOutputEstimator",
+          "ClassifierMixin"
+        ],
+        "decorated": false,
+        "node_id": "sklearn/multioutput.py::MultiOutputClassifier::class@300:0",
+        "qualname": "MultiOutputClassifier",
+        "role": "existing_enclosing_anchor"
+      }
+    ],
+    "repository": "scikit-learn/scikit-learn",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "candidate_only_definition_absent_from_base",
+    "source_file_status": "parsed",
+    "task_id": "scikit-learn__scikit-learn-14629"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "MultiOutputClassifier",
+      "MultiOutputClassifier.fit"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C12",
+    "changed_symbol": "labels",
+    "confidence": "high",
+    "current_status": "unresolved",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "sklearn/multioutput.py",
+    "fixability": "A",
+    "graph_status": "complete",
+    "matched_base_definitions": [],
+    "reachability": [],
+    "repository": "scikit-learn/scikit-learn",
+    "resolver_reason": "symbol_absent_at_base_or_diff_context_name",
+    "root_cause_category": "docstring_text_misidentified_as_definition",
+    "source_file_status": "parsed",
+    "task_id": "scikit-learn__scikit-learn-14629"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "MultiOutputClassifier",
+      "MultiOutputClassifier.fit"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C13",
+    "changed_symbol": "predict_proba",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "sklearn/multioutput.py",
+    "fixability": "A",
+    "graph_status": "complete",
+    "matched_base_definitions": [
+      "MultiOutputClassifier.predict_proba",
+      "ClassifierChain.predict_proba"
+    ],
+    "reachability": [],
+    "repository": "scikit-learn/scikit-learn",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "unchanged_context_or_stale_hunk_header_name",
+    "source_file_status": "parsed",
+    "task_id": "scikit-learn__scikit-learn-14629"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "BaseLibSVM._sparse_fit"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C14",
+    "changed_symbol": "predict",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "sklearn/svm/base.py",
+    "fixability": "A",
+    "graph_status": "complete",
+    "matched_base_definitions": [
+      "BaseLibSVM.predict",
+      "BaseSVC.predict"
+    ],
+    "reachability": [],
+    "repository": "scikit-learn/scikit-learn",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "unchanged_context_or_stale_hunk_header_name",
+    "source_file_status": "parsed",
+    "task_id": "scikit-learn__scikit-learn-14894"
+  },
+  {
+    "actual_changed_base_definitions": [
+      "UnrecognizedUnit.__eq__"
+    ],
+    "actual_edited_definition_owners": [
+      "UnrecognizedUnit.__eq__"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C15",
+    "changed_symbol": "__eq__",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "astropy/units/core.py",
+    "fixability": "A",
+    "graph_status": "complete",
+    "matched_base_definitions": [
+      "UnitBase.__eq__",
+      "UnrecognizedUnit.__eq__"
+    ],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": false,
+        "node_id": "astropy/units/core.py::UnrecognizedUnit.__eq__::method@1712:4",
+        "qualname": "UnrecognizedUnit.__eq__",
+        "role": "changed_base_definition"
+      }
+    ],
+    "repository": "astropy/astropy",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "qualified_scope_lost_by_simple_name_mapper",
+    "source_file_status": "parsed",
+    "task_id": "astropy__astropy-7606"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "UnrecognizedUnit.__eq__"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C16",
+    "changed_symbol": "__ne__",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "astropy/units/core.py",
+    "fixability": "A",
+    "graph_status": "complete",
+    "matched_base_definitions": [
+      "UnitBase.__ne__",
+      "UnrecognizedUnit.__ne__"
+    ],
+    "reachability": [],
+    "repository": "astropy/astropy",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "unchanged_context_or_stale_hunk_header_name",
+    "source_file_status": "parsed",
+    "task_id": "astropy__astropy-7606"
+  },
+  {
+    "actual_changed_base_definitions": [
+      "TemplateView.get"
+    ],
+    "actual_edited_definition_owners": [
+      "TemplateView.get",
+      "_wrap_url_kwargs_with_deprecation_warning"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C17",
+    "changed_symbol": "get",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "django/views/generic/base.py",
+    "fixability": "A",
+    "graph_status": "complete",
+    "matched_base_definitions": [
+      "TemplateView.get",
+      "RedirectView.get"
+    ],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": false,
+        "node_id": "django/views/generic/base.py::TemplateView.get::method@159:4",
+        "qualname": "TemplateView.get",
+        "role": "changed_base_definition"
+      }
+    ],
+    "repository": "django/django",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "qualified_scope_lost_by_simple_name_mapper",
+    "source_file_status": "parsed",
+    "task_id": "django__django-13297"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "Random.get_group_by_cols"
+    ],
+    "added_candidate_definitions": [
+      "Random.get_group_by_cols"
+    ],
+    "case_id": "C18",
+    "changed_symbol": "get_group_by_cols",
+    "confidence": "high",
+    "current_status": "unresolved",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "django/db/models/functions/math.py",
+    "fixability": "B",
+    "graph_status": "complete",
+    "matched_base_definitions": [],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": true,
+        "bases": [
+          "NumericOutputFieldMixin",
+          "Func"
+        ],
+        "decorated": false,
+        "node_id": "django/db/models/functions/math.py::Random::class@144:0",
+        "qualname": "Random",
+        "role": "existing_enclosing_anchor"
+      }
+    ],
+    "repository": "django/django",
+    "resolver_reason": "symbol_absent_at_base_or_diff_context_name",
+    "root_cause_category": "candidate_only_definition_absent_from_base",
+    "source_file_status": "parsed",
+    "task_id": "django__django-13569"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "BoundField._did_change"
+    ],
+    "added_candidate_definitions": [
+      "BoundField._did_change"
+    ],
+    "case_id": "C19",
+    "changed_symbol": "_did_change",
+    "confidence": "high",
+    "current_status": "unresolved",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "django/forms/boundfield.py",
+    "fixability": "B",
+    "graph_status": "partial",
+    "matched_base_definitions": [],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": true,
+        "bases": [],
+        "decorated": true,
+        "node_id": "django/forms/boundfield.py::BoundField::class@15:0",
+        "qualname": "BoundField",
+        "role": "existing_enclosing_anchor"
+      }
+    ],
+    "repository": "django/django",
+    "resolver_reason": "symbol_absent_at_base_or_diff_context_name",
+    "root_cause_category": "candidate_only_definition_absent_from_base",
+    "source_file_status": "parsed",
+    "task_id": "django__django-14631"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "BaseForm._bound_items",
+      "BaseForm._clean_fields",
+      "BaseForm.changed_data"
+    ],
+    "added_candidate_definitions": [
+      "BaseForm._bound_items"
+    ],
+    "case_id": "C20",
+    "changed_symbol": "_bound_items",
+    "confidence": "high",
+    "current_status": "unresolved",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "django/forms/forms.py",
+    "fixability": "B",
+    "graph_status": "partial",
+    "matched_base_definitions": [],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": true,
+        "bases": [],
+        "decorated": true,
+        "node_id": "django/forms/forms.py::BaseForm::class@52:0",
+        "qualname": "BaseForm",
+        "role": "existing_enclosing_anchor"
+      }
+    ],
+    "repository": "django/django",
+    "resolver_reason": "symbol_absent_at_base_or_diff_context_name",
+    "root_cause_category": "candidate_only_definition_absent_from_base",
+    "source_file_status": "parsed",
+    "task_id": "django__django-14631"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "View.http_method_not_allowed",
+      "View.http_method_not_allowed.func"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C21",
+    "changed_symbol": "options",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "django/views/generic/base.py",
+    "fixability": "A",
+    "graph_status": "partial",
+    "matched_base_definitions": [
+      "View.options",
+      "RedirectView.options"
+    ],
+    "reachability": [],
+    "repository": "django/django",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "unchanged_context_or_stale_hunk_header_name",
+    "source_file_status": "parsed",
+    "task_id": "django__django-16136"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "AbstractBaseUser._get_session_auth_hash",
+      "AbstractBaseUser.get_session_auth_fallback_hash",
+      "AbstractBaseUser.get_session_auth_hash"
+    ],
+    "added_candidate_definitions": [
+      "AbstractBaseUser._get_session_auth_hash"
+    ],
+    "case_id": "C22",
+    "changed_symbol": "_get_session_auth_hash",
+    "confidence": "high",
+    "current_status": "unresolved",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "django/contrib/auth/base_user.py",
+    "fixability": "B",
+    "graph_status": "partial",
+    "matched_base_definitions": [],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": true,
+        "bases": [
+          "models.Model"
+        ],
+        "decorated": false,
+        "node_id": "django/contrib/auth/base_user.py::AbstractBaseUser::class@56:0",
+        "qualname": "AbstractBaseUser",
+        "role": "existing_enclosing_anchor"
+      }
+    ],
+    "repository": "django/django",
+    "resolver_reason": "symbol_absent_at_base_or_diff_context_name",
+    "root_cause_category": "candidate_only_definition_absent_from_base",
+    "source_file_status": "parsed",
+    "task_id": "django__django-16631"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "AbstractBaseUser._get_session_auth_hash",
+      "AbstractBaseUser.get_session_auth_fallback_hash",
+      "AbstractBaseUser.get_session_auth_hash"
+    ],
+    "added_candidate_definitions": [
+      "AbstractBaseUser.get_session_auth_fallback_hash"
+    ],
+    "case_id": "C23",
+    "changed_symbol": "get_session_auth_fallback_hash",
+    "confidence": "high",
+    "current_status": "unresolved",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "django/contrib/auth/base_user.py",
+    "fixability": "B",
+    "graph_status": "partial",
+    "matched_base_definitions": [],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": true,
+        "bases": [
+          "models.Model"
+        ],
+        "decorated": false,
+        "node_id": "django/contrib/auth/base_user.py::AbstractBaseUser::class@56:0",
+        "qualname": "AbstractBaseUser",
+        "role": "existing_enclosing_anchor"
+      }
+    ],
+    "repository": "django/django",
+    "resolver_reason": "symbol_absent_at_base_or_diff_context_name",
+    "root_cause_category": "candidate_only_definition_absent_from_base",
+    "source_file_status": "parsed",
+    "task_id": "django__django-16631"
+  },
+  {
+    "actual_changed_base_definitions": [
+      "LogNorm.autoscale"
+    ],
+    "actual_edited_definition_owners": [
+      "LogNorm.autoscale",
+      "LogNorm.autoscale_None"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C24",
+    "changed_symbol": "autoscale",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "lib/matplotlib/colors.py",
+    "fixability": "A",
+    "graph_status": "complete",
+    "matched_base_definitions": [
+      "Normalize.autoscale",
+      "CenteredNorm.autoscale",
+      "LogNorm.autoscale"
+    ],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": false,
+        "node_id": "lib/matplotlib/colors.py::LogNorm.autoscale::method@1546:4",
+        "qualname": "LogNorm.autoscale",
+        "role": "changed_base_definition"
+      }
+    ],
+    "repository": "matplotlib/matplotlib",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "qualified_scope_lost_by_simple_name_mapper",
+    "source_file_status": "parsed",
+    "task_id": "matplotlib__matplotlib-20488"
+  },
+  {
+    "actual_changed_base_definitions": [
+      "LogNorm.autoscale_None"
+    ],
+    "actual_edited_definition_owners": [
+      "LogNorm.autoscale",
+      "LogNorm.autoscale_None"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C25",
+    "changed_symbol": "autoscale_None",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "lib/matplotlib/colors.py",
+    "fixability": "A",
+    "graph_status": "complete",
+    "matched_base_definitions": [
+      "Normalize.autoscale_None",
+      "TwoSlopeNorm.autoscale_None",
+      "CenteredNorm.autoscale_None",
+      "LogNorm.autoscale_None"
+    ],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": false,
+        "node_id": "lib/matplotlib/colors.py::LogNorm.autoscale_None::method@1550:4",
+        "qualname": "LogNorm.autoscale_None",
+        "role": "changed_base_definition"
+      }
+    ],
+    "repository": "matplotlib/matplotlib",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "qualified_scope_lost_by_simple_name_mapper",
+    "source_file_status": "parsed",
+    "task_id": "matplotlib__matplotlib-20488"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "LogCaptureFixture.clear",
+      "LogCaptureHandler.clear"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C26",
+    "changed_symbol": "handleError",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "src/_pytest/logging.py",
+    "fixability": "A",
+    "graph_status": "complete",
+    "matched_base_definitions": [
+      "LogCaptureHandler.handleError",
+      "_FileHandler.handleError",
+      "_LiveLoggingStreamHandler.handleError",
+      "_LiveLoggingNullHandler.handleError"
+    ],
+    "reachability": [],
+    "repository": "pytest-dev/pytest",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "unchanged_context_or_stale_hunk_header_name",
+    "source_file_status": "parsed",
+    "task_id": "pytest-dev__pytest-10051"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "BaseReport._from_json",
+      "BaseReport._from_json.deserialize_repr_crash",
+      "BaseReport._from_json.deserialize_repr_entry",
+      "BaseReport._from_json.deserialize_repr_traceback",
+      "BaseReport._to_json.disassembled_report",
+      "BaseReport._to_json.serialize_repr_crash",
+      "BaseReport._to_json.serialize_repr_entry",
+      "BaseReport._to_json.serialize_repr_traceback"
+    ],
+    "added_candidate_definitions": [
+      "BaseReport._from_json.deserialize_repr_crash"
+    ],
+    "case_id": "C27",
+    "changed_symbol": "deserialize_repr_crash",
+    "confidence": "high",
+    "current_status": "unresolved",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "src/_pytest/reports.py",
+    "fixability": "B",
+    "graph_status": "partial",
+    "matched_base_definitions": [],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": true,
+        "node_id": "src/_pytest/reports.py::BaseReport._from_json::method@205:4",
+        "qualname": "BaseReport._from_json",
+        "role": "existing_enclosing_anchor"
+      }
+    ],
+    "repository": "pytest-dev/pytest",
+    "resolver_reason": "symbol_absent_at_base_or_diff_context_name",
+    "root_cause_category": "candidate_only_definition_absent_from_base",
+    "source_file_status": "parsed",
+    "task_id": "pytest-dev__pytest-5787"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "BaseReport._from_json",
+      "BaseReport._from_json.deserialize_repr_crash",
+      "BaseReport._from_json.deserialize_repr_entry",
+      "BaseReport._from_json.deserialize_repr_traceback",
+      "BaseReport._to_json.disassembled_report",
+      "BaseReport._to_json.serialize_repr_crash",
+      "BaseReport._to_json.serialize_repr_entry",
+      "BaseReport._to_json.serialize_repr_traceback"
+    ],
+    "added_candidate_definitions": [
+      "BaseReport._from_json.deserialize_repr_entry"
+    ],
+    "case_id": "C28",
+    "changed_symbol": "deserialize_repr_entry",
+    "confidence": "high",
+    "current_status": "unresolved",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "src/_pytest/reports.py",
+    "fixability": "B",
+    "graph_status": "partial",
+    "matched_base_definitions": [],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": true,
+        "node_id": "src/_pytest/reports.py::BaseReport._from_json::method@205:4",
+        "qualname": "BaseReport._from_json",
+        "role": "existing_enclosing_anchor"
+      }
+    ],
+    "repository": "pytest-dev/pytest",
+    "resolver_reason": "symbol_absent_at_base_or_diff_context_name",
+    "root_cause_category": "candidate_only_definition_absent_from_base",
+    "source_file_status": "parsed",
+    "task_id": "pytest-dev__pytest-5787"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "BaseReport._from_json",
+      "BaseReport._from_json.deserialize_repr_crash",
+      "BaseReport._from_json.deserialize_repr_entry",
+      "BaseReport._from_json.deserialize_repr_traceback",
+      "BaseReport._to_json.disassembled_report",
+      "BaseReport._to_json.serialize_repr_crash",
+      "BaseReport._to_json.serialize_repr_entry",
+      "BaseReport._to_json.serialize_repr_traceback"
+    ],
+    "added_candidate_definitions": [
+      "BaseReport._from_json.deserialize_repr_traceback"
+    ],
+    "case_id": "C29",
+    "changed_symbol": "deserialize_repr_traceback",
+    "confidence": "high",
+    "current_status": "unresolved",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "src/_pytest/reports.py",
+    "fixability": "B",
+    "graph_status": "partial",
+    "matched_base_definitions": [],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": true,
+        "node_id": "src/_pytest/reports.py::BaseReport._from_json::method@205:4",
+        "qualname": "BaseReport._from_json",
+        "role": "existing_enclosing_anchor"
+      }
+    ],
+    "repository": "pytest-dev/pytest",
+    "resolver_reason": "symbol_absent_at_base_or_diff_context_name",
+    "root_cause_category": "candidate_only_definition_absent_from_base",
+    "source_file_status": "parsed",
+    "task_id": "pytest-dev__pytest-5787"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "BaseReport._from_json",
+      "BaseReport._from_json.deserialize_repr_crash",
+      "BaseReport._from_json.deserialize_repr_entry",
+      "BaseReport._from_json.deserialize_repr_traceback",
+      "BaseReport._to_json.disassembled_report",
+      "BaseReport._to_json.serialize_repr_crash",
+      "BaseReport._to_json.serialize_repr_entry",
+      "BaseReport._to_json.serialize_repr_traceback"
+    ],
+    "added_candidate_definitions": [
+      "BaseReport._to_json.serialize_repr_crash"
+    ],
+    "case_id": "C30",
+    "changed_symbol": "serialize_repr_crash",
+    "confidence": "high",
+    "current_status": "unresolved",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "src/_pytest/reports.py",
+    "fixability": "B",
+    "graph_status": "partial",
+    "matched_base_definitions": [],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": false,
+        "node_id": "src/_pytest/reports.py::BaseReport._to_json::method@154:4",
+        "qualname": "BaseReport._to_json",
+        "role": "existing_enclosing_anchor"
+      }
+    ],
+    "repository": "pytest-dev/pytest",
+    "resolver_reason": "symbol_absent_at_base_or_diff_context_name",
+    "root_cause_category": "candidate_only_definition_absent_from_base",
+    "source_file_status": "parsed",
+    "task_id": "pytest-dev__pytest-5787"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "BaseReport._from_json",
+      "BaseReport._from_json.deserialize_repr_crash",
+      "BaseReport._from_json.deserialize_repr_entry",
+      "BaseReport._from_json.deserialize_repr_traceback",
+      "BaseReport._to_json.disassembled_report",
+      "BaseReport._to_json.serialize_repr_crash",
+      "BaseReport._to_json.serialize_repr_entry",
+      "BaseReport._to_json.serialize_repr_traceback"
+    ],
+    "added_candidate_definitions": [
+      "BaseReport._to_json.serialize_repr_entry"
+    ],
+    "case_id": "C31",
+    "changed_symbol": "serialize_repr_entry",
+    "confidence": "high",
+    "current_status": "unresolved",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "src/_pytest/reports.py",
+    "fixability": "B",
+    "graph_status": "partial",
+    "matched_base_definitions": [],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": false,
+        "node_id": "src/_pytest/reports.py::BaseReport._to_json::method@154:4",
+        "qualname": "BaseReport._to_json",
+        "role": "existing_enclosing_anchor"
+      }
+    ],
+    "repository": "pytest-dev/pytest",
+    "resolver_reason": "symbol_absent_at_base_or_diff_context_name",
+    "root_cause_category": "candidate_only_definition_absent_from_base",
+    "source_file_status": "parsed",
+    "task_id": "pytest-dev__pytest-5787"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "BaseReport._from_json",
+      "BaseReport._from_json.deserialize_repr_crash",
+      "BaseReport._from_json.deserialize_repr_entry",
+      "BaseReport._from_json.deserialize_repr_traceback",
+      "BaseReport._to_json.disassembled_report",
+      "BaseReport._to_json.serialize_repr_crash",
+      "BaseReport._to_json.serialize_repr_entry",
+      "BaseReport._to_json.serialize_repr_traceback"
+    ],
+    "added_candidate_definitions": [
+      "BaseReport._to_json.serialize_repr_traceback"
+    ],
+    "case_id": "C32",
+    "changed_symbol": "serialize_repr_traceback",
+    "confidence": "high",
+    "current_status": "unresolved",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "src/_pytest/reports.py",
+    "fixability": "B",
+    "graph_status": "partial",
+    "matched_base_definitions": [],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": false,
+        "node_id": "src/_pytest/reports.py::BaseReport._to_json::method@154:4",
+        "qualname": "BaseReport._to_json",
+        "role": "existing_enclosing_anchor"
+      }
+    ],
+    "repository": "pytest-dev/pytest",
+    "resolver_reason": "symbol_absent_at_base_or_diff_context_name",
+    "root_cause_category": "candidate_only_definition_absent_from_base",
+    "source_file_status": "parsed",
+    "task_id": "pytest-dev__pytest-5787"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "TestCaseFunction.runtest",
+      "TestCaseFunction.runtest.postpone_tearDown"
+    ],
+    "added_candidate_definitions": [
+      "TestCaseFunction.runtest.postpone_tearDown"
+    ],
+    "case_id": "C33",
+    "changed_symbol": "postpone_tearDown",
+    "confidence": "high",
+    "current_status": "unresolved",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "src/_pytest/unittest.py",
+    "fixability": "B",
+    "graph_status": "complete",
+    "matched_base_definitions": [],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": false,
+        "node_id": "src/_pytest/unittest.py::TestCaseFunction.runtest::method@208:4",
+        "qualname": "TestCaseFunction.runtest",
+        "role": "existing_enclosing_anchor"
+      }
+    ],
+    "repository": "pytest-dev/pytest",
+    "resolver_reason": "symbol_absent_at_base_or_diff_context_name",
+    "root_cause_category": "candidate_only_definition_absent_from_base",
+    "source_file_status": "parsed",
+    "task_id": "pytest-dev__pytest-7236"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "LiteralInclude.run",
+      "LiteralIncludeReader.read",
+      "_get_option_indent"
+    ],
+    "added_candidate_definitions": [
+      "_get_option_indent"
+    ],
+    "case_id": "C34",
+    "changed_symbol": "_get_option_indent",
+    "confidence": "high",
+    "current_status": "unresolved",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "sphinx/directives/code.py",
+    "fixability": "B",
+    "graph_status": "complete",
+    "matched_base_definitions": [],
+    "reachability": [],
+    "repository": "sphinx-doc/sphinx",
+    "resolver_reason": "symbol_absent_at_base_or_diff_context_name",
+    "root_cause_category": "candidate_only_definition_absent_from_base",
+    "source_file_status": "parsed",
+    "task_id": "sphinx-doc__sphinx-10323"
+  },
+  {
+    "actual_changed_base_definitions": [
+      "Message.__init__"
+    ],
+    "actual_edited_definition_owners": [
+      "Message.__init__"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C35",
+    "changed_symbol": "__init__",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "sphinx/builders/gettext.py",
+    "fixability": "A",
+    "graph_status": "complete",
+    "matched_base_definitions": [
+      "Message.__init__",
+      "Catalog.__init__",
+      "MsgOrigin.__init__",
+      "GettextRenderer.__init__",
+      "LocalTimeZone.__init__"
+    ],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": false,
+        "node_id": "sphinx/builders/gettext.py::Message.__init__::method@33:4",
+        "qualname": "Message.__init__",
+        "role": "changed_base_definition"
+      }
+    ],
+    "repository": "sphinx-doc/sphinx",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "qualified_scope_lost_by_simple_name_mapper",
+    "source_file_status": "parsed",
+    "task_id": "sphinx-doc__sphinx-10466"
+  },
+  {
+    "actual_changed_base_definitions": [
+      "coth.eval"
+    ],
+    "actual_edited_definition_owners": [
+      "coth.eval"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C36",
+    "changed_symbol": "eval",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "sympy/functions/elementary/hyperbolic.py",
+    "fixability": "A",
+    "graph_status": "partial",
+    "matched_base_definitions": [
+      "sinh.eval",
+      "cosh.eval",
+      "tanh.eval",
+      "coth.eval",
+      "ReciprocalHyperbolicFunction.eval",
+      "asinh.eval",
+      "acosh.eval",
+      "atanh.eval",
+      "acoth.eval",
+      "asech.eval",
+      "acsch.eval"
+    ],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": true,
+        "node_id": "sympy/functions/elementary/hyperbolic.py::coth.eval::method@557:4",
+        "qualname": "coth.eval",
+        "role": "changed_base_definition"
+      }
+    ],
+    "repository": "sympy/sympy",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "qualified_scope_lost_by_simple_name_mapper",
+    "source_file_status": "parsed",
+    "task_id": "sympy__sympy-13480"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "Dagger.__mul__",
+      "Dagger.__rmul__"
+    ],
+    "added_candidate_definitions": [
+      "Dagger.__mul__"
+    ],
+    "case_id": "C37",
+    "changed_symbol": "__mul__",
+    "confidence": "high",
+    "current_status": "unresolved",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "sympy/physics/quantum/dagger.py",
+    "fixability": "B",
+    "graph_status": "partial",
+    "matched_base_definitions": [],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 105,
+          "test_definitions": 105,
+          "tests_outside_current_seed_union": 105
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 108,
+          "test_definitions": 108,
+          "tests_outside_current_seed_union": 108
+        },
+        "already_seed": false,
+        "bases": [
+          "adjoint"
+        ],
+        "decorated": false,
+        "node_id": "sympy/physics/quantum/dagger.py::Dagger::class@13:0",
+        "qualname": "Dagger",
+        "role": "existing_enclosing_anchor"
+      }
+    ],
+    "repository": "sympy/sympy",
+    "resolver_reason": "symbol_absent_at_base_or_diff_context_name",
+    "root_cause_category": "candidate_only_definition_absent_from_base",
+    "source_file_status": "parsed",
+    "task_id": "sympy__sympy-19783"
+  },
+  {
+    "actual_changed_base_definitions": [],
+    "actual_edited_definition_owners": [
+      "Dagger.__mul__",
+      "Dagger.__rmul__"
+    ],
+    "added_candidate_definitions": [
+      "Dagger.__rmul__"
+    ],
+    "case_id": "C38",
+    "changed_symbol": "__rmul__",
+    "confidence": "high",
+    "current_status": "unresolved",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "sympy/physics/quantum/dagger.py",
+    "fixability": "B",
+    "graph_status": "partial",
+    "matched_base_definitions": [],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 105,
+          "test_definitions": 105,
+          "tests_outside_current_seed_union": 105
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 108,
+          "test_definitions": 108,
+          "tests_outside_current_seed_union": 108
+        },
+        "already_seed": false,
+        "bases": [
+          "adjoint"
+        ],
+        "decorated": false,
+        "node_id": "sympy/physics/quantum/dagger.py::Dagger::class@13:0",
+        "qualname": "Dagger",
+        "role": "existing_enclosing_anchor"
+      }
+    ],
+    "repository": "sympy/sympy",
+    "resolver_reason": "symbol_absent_at_base_or_diff_context_name",
+    "root_cause_category": "candidate_only_definition_absent_from_base",
+    "source_file_status": "parsed",
+    "task_id": "sympy__sympy-19783"
+  },
+  {
+    "actual_changed_base_definitions": [
+      "IdentityOperator.__mul__"
+    ],
+    "actual_edited_definition_owners": [
+      "IdentityOperator.__mul__"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C39",
+    "changed_symbol": "__mul__",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "sympy/physics/quantum/operator.py",
+    "fixability": "A",
+    "graph_status": "partial",
+    "matched_base_definitions": [
+      "Operator.__mul__",
+      "IdentityOperator.__mul__"
+    ],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": false,
+        "node_id": "sympy/physics/quantum/operator.py::IdentityOperator.__mul__::method@308:4",
+        "qualname": "IdentityOperator.__mul__",
+        "role": "changed_base_definition"
+      }
+    ],
+    "repository": "sympy/sympy",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "qualified_scope_lost_by_simple_name_mapper",
+    "source_file_status": "parsed",
+    "task_id": "sympy__sympy-19783"
+  },
+  {
+    "actual_changed_base_definitions": [
+      "Rational.__new__"
+    ],
+    "actual_edited_definition_owners": [
+      "Rational.__new__"
+    ],
+    "added_candidate_definitions": [],
+    "case_id": "C40",
+    "changed_symbol": "__new__",
+    "confidence": "high",
+    "current_status": "ambiguous",
+    "directly_caused_by_graph_incompleteness": false,
+    "file": "sympy/core/numbers.py",
+    "fixability": "A",
+    "graph_status": "complete",
+    "matched_base_definitions": [
+      "Number.__new__",
+      "Float.__new__",
+      "Rational.__new__",
+      "Integer.__new__",
+      "AlgebraicNumber.__new__",
+      "RationalConstant.__new__",
+      "IntegerConstant.__new__",
+      "Infinity.__new__",
+      "NegativeInfinity.__new__",
+      "NaN.__new__",
+      "ComplexInfinity.__new__",
+      "NumberSymbol.__new__"
+    ],
+    "reachability": [
+      {
+        "PRIMARY_RESOLVED_ONLY": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "SECONDARY_RESOLVED_PLUS_AMBIGUOUS": {
+          "emittable_tests": 0,
+          "test_definitions": 0,
+          "tests_outside_current_seed_union": 0
+        },
+        "already_seed": false,
+        "bases": [],
+        "decorated": true,
+        "node_id": "sympy/core/numbers.py::Rational.__new__::method@1589:4",
+        "qualname": "Rational.__new__",
+        "role": "changed_base_definition"
+      }
+    ],
+    "repository": "sympy/sympy",
+    "resolver_reason": "multiple_same_name_definitions_in_file",
+    "root_cause_category": "qualified_scope_lost_by_simple_name_mapper",
+    "source_file_status": "parsed",
+    "task_id": "sympy__sympy-24562"
+  }
+]

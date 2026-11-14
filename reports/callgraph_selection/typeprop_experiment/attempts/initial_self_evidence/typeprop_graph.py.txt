@@ -1,0 +1,351 @@
+"""Bounded AST-only receiver evidence; baseline resolver and bindings stay intact."""
+from __future__ import annotations
+
+import ast
+import sys
+import time
+from collections import defaultdict
+from dataclasses import dataclass
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from static_graph import Graph, Indexer, expression
+from amended_graph import AmendedGraph
+
+MAX_ROUNDS = 64
+MAX_TYPES = 16
+FUNCTIONS = {"function", "method", "test_function", "test_method"}
+REFLECTION = {"exec", "eval", "locals", "globals", "setattr", "delattr"}
+
+
+def value_expr(node):
+    if isinstance(node, ast.Name):
+        return ("name", node.id)
+    if isinstance(node, ast.Call):
+        return ("constructor", expression(node.func))
+    return ("unknown", type(node).__name__)
+
+
+@dataclass(frozen=True)
+class Fact:
+    types: frozenset = frozenset()
+    unknown: bool = False
+    provenance: frozenset = frozenset()
+
+
+UNKNOWN = Fact(unknown=True)
+
+
+def merge(facts):
+    types, provenance, unknown = set(), set(), False
+    for fact in facts:
+        types.update(fact.types)
+        provenance.update(fact.provenance)
+        unknown |= fact.unknown
+    # Overflow is top, never a selected subset that could imply uniqueness.
+    if len(types) > MAX_TYPES:
+        return UNKNOWN
+    return Fact(frozenset(types), unknown, frozenset(provenance))
+
+
+class TypeIndexer(Indexer):
+    def visit(self, node):
+        self.g.type_index_visits += 1
+        if hasattr(self.g, "indexing_visits"):
+            self.g.indexing_visits += 1
+        if self.g.type_index_visits % 4096 == 0:
+            self.g.check()
+        return super().visit(node)
+
+    def definition(self, node):
+        parent = self.scope
+        super().definition(node)
+        ident = self.g.scopes[parent]["bindings"][node.name][-1][1]
+        if not isinstance(node, ast.ClassDef):
+            positional = [a.arg for a in (*node.args.posonlyargs, *node.args.args)]
+            self.g.signatures[ident] = dict(
+                positional=positional, posonly=[a.arg for a in node.args.posonlyargs],
+                kwonly=[a.arg for a in node.args.kwonlyargs],
+                unsupported=bool(node.args.defaults or any(d is not None for d in node.args.kw_defaults)
+                                 or node.args.vararg or node.args.kwarg))
+
+    visit_FunctionDef = definition
+    visit_AsyncFunctionDef = definition
+    visit_ClassDef = definition
+
+    def assignment(self, node, targets, value):
+        if (len(targets) == 1 and isinstance(targets[0], ast.Name) and value is not None
+                and not self.conditional and not self.unsupported
+                and self.g.scopes[self.scope]["kind"] in FUNCTIONS):
+            self.g.assignments[(self.scope, targets[0].id)].append(
+                dict(value=value_expr(value), line=node.lineno, column=node.col_offset,
+                     end_line=getattr(node, "end_lineno", node.lineno)))
+
+    def visit_Assign(self, node):
+        self.assignment(node, node.targets, node.value)
+        self.generic_visit(node)
+
+    def visit_AnnAssign(self, node):
+        self.assignment(node, [node.target], node.value)
+        super().visit_AnnAssign(node)
+
+    def visit_Call(self, node):
+        self.g.callee_locations.add((self.scope, node.func.lineno, node.func.col_offset))
+        self.g.call_details.append(dict(scope=self.scope, line=node.lineno, column=node.col_offset,
+            arguments=[value_expr(a) for a in node.args],
+            keywords=[(k.arg, value_expr(k.value)) for k in node.keywords],
+            starred=any(isinstance(a, ast.Starred) for a in node.args),
+            unsupported=bool(self.unsupported)))
+        if isinstance(node.func, ast.Name) and node.func.id in REFLECTION:
+            self.g.unsafe_scopes.add(self.scope)
+            if node.func.id in {"setattr", "delattr"} and len(node.args) >= 2:
+                attr = node.args[1]
+                if isinstance(attr, ast.Constant) and isinstance(attr.value, str):
+                    self.g.mutated_attributes.add(attr.value)
+        super().visit_Call(node)
+
+    def visit_Name(self, node):
+        if (isinstance(node.ctx, ast.Load) and not self.unsupported
+                and (self.scope, node.lineno, node.col_offset) not in self.g.callee_locations):
+            self.g.value_references.add((self.scope, expression(node)))
+        super().visit_Name(node)
+
+    def visit_Attribute(self, node):
+        if isinstance(node.ctx, (ast.Store, ast.Del)) and not self.unsupported:
+            self.g.mutated_attributes.add(node.attr)
+            if node.attr in {"__class__", "__dict__"}:
+                self.g.unsafe_scopes.add(self.scope)
+        elif (isinstance(node.ctx, ast.Load) and not self.unsupported
+              and (self.scope, node.lineno, node.col_offset) not in self.g.callee_locations):
+            self.g.value_references.add((self.scope, expression(node)))
+        self.generic_visit(node)
+
+
+class TypeMixin:
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.signatures = {}
+        self.assignments = defaultdict(list)
+        self.call_details = []
+        self.callee_locations = set()
+        self.value_references = set()
+        self.unsafe_scopes = set()
+        self.mutated_attributes = set()
+        self.type_index_visits = 0
+        self.facts = {}
+        self.fact_evidence = {}
+        self.type_metrics = {}
+
+    def index_tree(self, path, tree, indexer=None):
+        return super().index_tree(path, tree, TypeIndexer)
+
+    def safe_class(self, ident):
+        node = self.nodes[ident]
+        bindings = self.scopes[ident]["bindings"]
+        return (node["kind"] == "class" and not node["decorated"] and not node["conditional"]
+                and not node.get("bases") and not self.scopes[ident]["star_import"]
+                and not self.scopes[ident]["redirected"]
+                and not any(n in bindings for n in ("__new__", "__getattr__", "__getattribute__"))
+                and ident not in self.unsafe_scopes)
+
+    def constructor(self, scope, expr):
+        refs, reason = Graph.resolve(self, scope, expr)
+        refs = list(dict.fromkeys(refs))
+        if (reason or len(refs) != 1 or refs[0][0] != "node"
+                or not self.safe_class(refs[0][1])):
+            return UNKNOWN
+        return Fact(frozenset([refs[0][1]]), False, frozenset(["local_constructor"]))
+
+    def actual(self, scope, value, line, facts):
+        if scope in self.unsafe_scopes or self.scopes[scope]["star_import"]:
+            return UNKNOWN
+        if value[0] == "constructor":
+            return self.constructor(scope, value[1])
+        if value[0] != "name":
+            return UNKNOWN
+        name = value[1]
+        if name in self.scopes[scope]["redirected"]:
+            return UNKNOWN
+        key = (scope, name)
+        if key in self.local_facts:
+            # Whole-scope, single store; require assignment completion before use.
+            return self.local_facts[key] if self.assignments[key][0]["end_line"] < line else UNKNOWN
+        if key in facts:
+            return facts[key]
+        refs = self.scopes[scope]["bindings"].get(name, [])
+        if len(refs) == 1 and refs[0][0] == "receiver" and self.safe_class(refs[0][1]):
+            return Fact(frozenset([refs[0][1]]), False, frozenset(["existing_static_resolution"]))
+        return UNKNOWN
+
+    def argument_map(self, detail, edge, target):
+        signature = self.signatures[target]
+        if signature["unsupported"] or detail["starred"] or detail["unsupported"]:
+            return None
+        names = list(signature["positional"])
+        parent = self.nodes[target]["parent"]
+        if self.nodes[parent]["kind"] == "class":
+            if not self.safe_class(parent):
+                return None
+            expr = self.calls[detail["ordinal"]][3]
+            if expr[0] != "attr":
+                return None
+            refs, reason = Graph.resolve(self, detail["scope"], expr[1])
+            refs = list(dict.fromkeys(refs))
+            if reason or len(refs) != 1 or refs[0][1] != parent:
+                return None
+            if refs[0][0] == "receiver":
+                names = names[1:]
+            elif refs[0][0] != "node":
+                return None
+        if len(detail["arguments"]) > len(names):
+            return None
+        mapped = dict(zip(names, detail["arguments"]))
+        allowed = set(names + signature["kwonly"])
+        for name, value in detail["keywords"]:
+            if name is None or name not in allowed or name in mapped or name in signature["posonly"]:
+                return None
+            mapped[name] = value
+        if set(mapped) != allowed:
+            return None
+        return mapped
+
+    def infer_types(self):
+        started = time.monotonic()
+        self.local_facts = {}
+        for key, assignments in self.assignments.items():
+            scope, name = key
+            bindings = self.scopes[scope]["bindings"].get(name, [])
+            if (len(assignments) == 1 and bindings == [("unknown", "assignment_or_deletion")]
+                    and self.raw_binding_counts.get(key) == 1
+                    and name not in self.scopes[scope]["redirected"] and scope not in self.unsafe_scopes
+                    and not self.scopes[scope]["star_import"] and assignments[0]["value"][0] == "constructor"):
+                fact = self.constructor(scope, assignments[0]["value"][1])
+                if fact.types:
+                    self.local_facts[key] = fact
+                    self.fact_evidence[key] = dict(kind="local_constructor", assignment=assignments[0])
+        escaped = set()
+        for index, (scope, expr) in enumerate(sorted(self.value_references)):
+            if index % 4096 == 0:
+                self.check()
+            refs, _ = Graph.resolve(self, scope, expr)
+            escaped.update(v for k, v in refs if k == "node" and self.nodes[v]["kind"] in FUNCTIONS)
+        parameters, incoming = {}, defaultdict(list)
+        for target, signature in self.signatures.items():
+            for name in signature["positional"] + signature["kwonly"]:
+                if self.scopes[target]["bindings"].get(name) == [("unknown", "parameter")]:
+                    parameters[(target, name)] = (UNKNOWN if target in escaped or signature["unsupported"]
+                        or self.nodes[target]["decorated"] or self.nodes[target]["conditional"]
+                        or target in self.unsafe_scopes or self.scopes[target]["star_import"]
+                        or name in self.scopes[target]["redirected"] else Fact())
+        for ordinal, (detail, edge) in enumerate(zip(self.call_details, self.edges)):
+            if ordinal % 4096 == 0:
+                self.check()
+            detail["ordinal"] = ordinal
+            targets = edge["targets"]
+            if not targets:
+                refs, _ = Graph.resolve(self, detail["scope"], self.calls[ordinal][3])
+                targets = [v for k, v in refs if k == "node"]
+            for target in targets:
+                if target not in self.signatures:
+                    continue
+                mapped = (self.argument_map(detail, edge, target) if edge["status"] == "resolved"
+                          and not detail["unsupported"] else None)
+                sig = self.signatures[target]
+                for name in sig["positional"] + sig["kwonly"]:
+                    key = (target, name)
+                    if key in parameters:
+                        incoming[key].append((ordinal, mapped.get(name) if mapped is not None else None))
+        for key in parameters:
+            if not incoming[key]:
+                parameters[key] = UNKNOWN
+            self.fact_evidence[key] = dict(kind="caller_parameter", incoming=[dict(callsite=i, actual=v)
+                                                                            for i, v in incoming[key]])
+        facts = dict(parameters)
+        converged = False
+        for round_number in range(1, MAX_ROUNDS + 1):
+            self.check()
+            following = {}
+            for index, (key, initial) in enumerate(parameters.items()):
+                if index % 4096 == 0:
+                    self.check()
+                observations = [initial]
+                for ordinal, value in incoming[key]:
+                    detail = self.call_details[ordinal]
+                    fact = (self.actual(detail["scope"], value, detail["line"], facts)
+                            if value is not None else UNKNOWN)
+                    provenance = {"caller_parameter_transitive" if any(p.startswith("caller_parameter")
+                        for p in fact.provenance) else "caller_parameter"} if fact.types else set()
+                    observations.append(Fact(fact.types, fact.unknown, frozenset(provenance)))
+                following[key] = merge(observations)
+            if following == facts:
+                converged = True
+                facts = following
+                break
+            facts = following
+        if not converged:
+            # Fail closed for all parameters; direct local evidence still stands.
+            facts = {key: UNKNOWN for key in parameters}
+        self.facts = {**self.local_facts, **facts}
+        self.type_metrics = dict(rounds=round_number, converged=converged,
+            max_rounds=MAX_ROUNDS, max_types=MAX_TYPES, local_facts=len(self.local_facts),
+            parameter_facts_with_types=sum(bool(f.types) for f in facts.values()),
+            unknown_parameters=sum(f.unknown for f in facts.values()), escaped_functions=len(escaped),
+            mutated_attribute_names=len(self.mutated_attributes), inference_seconds=time.monotonic() - started)
+
+    def resolve_calls(self):
+        # Import expansion deduplicates identical unknown-store references. Retain
+        # original store multiplicity so deletion/reassignment cannot disappear.
+        self.raw_binding_counts = {(sid, name): len(refs) for sid, scope in self.scopes.items()
+                                   for name, refs in scope["bindings"].items()}
+        super().resolve_calls()
+        self.baseline_edges = list(self.edges)
+        self.infer_types()
+        result = []
+        for ordinal, (call, old) in enumerate(zip(self.calls, self.baseline_edges)):
+            if ordinal % 4096 == 0:
+                self.check()
+            scope, line, col, expr, unsupported = call
+            edge = dict(old, provenance="existing_static_resolution")
+            if (old["status"] != "resolved" and not unsupported and expr[0] == "attr"
+                    and expr[1][0] == "name" and expr[2] not in self.mutated_attributes):
+                fact = self.actual(scope, expr[1], line, self.facts)
+                if fact.types and not fact.unknown:
+                    refs, reasons = [], []
+                    for cls in sorted(fact.types):
+                        if not self.safe_class(cls):
+                            reasons.append("unsafe_receiver_class")
+                            continue
+                        members = self.scopes[cls]["bindings"].get(expr[2], [])
+                        targets = [v for k, v in members if k == "node" and self.nodes[v]["kind"] in FUNCTIONS
+                                   and self.nodes[v]["parent"] == cls]
+                        refs.extend(targets)
+                        if (len(members) != 1 or len(targets) != 1 or any(
+                            self.nodes[t]["decorated"] or self.nodes[t]["conditional"] for t in targets)):
+                            reasons.append("uncertain_or_missing_method")
+                    targets = sorted(set(refs))
+                    if targets:
+                        status = "resolved" if len(fact.types) == 1 and len(targets) == 1 and not reasons else "ambiguous"
+                        provenance = ("caller_parameter_transitive" if "caller_parameter_transitive" in fact.provenance
+                            else "caller_parameter" if "caller_parameter" in fact.provenance else "local_constructor")
+                        edge.update(status=status, targets=targets, reason="typeprop_" + (
+                            "unique_receiver_method" if status == "resolved" else "multiple_or_uncertain_receiver_methods"),
+                            provenance=provenance, receiver_types=sorted(fact.types),
+                            receiver_fact=dict(scope=scope, name=expr[1][1]),
+                            baseline_status=old["status"], baseline_reason=old["reason"],
+                            baseline_targets=old["targets"])
+            result.append(edge)
+        self.edges = result
+
+    def fact_records(self):
+        for (scope, name), fact in sorted(self.facts.items()):
+            if fact.types:
+                yield dict(scope=scope, name=name, types=sorted(fact.types), unknown=fact.unknown,
+                           provenance=sorted(fact.provenance), evidence=self.fact_evidence[(scope, name)])
+
+
+class TypeGraph(TypeMixin, Graph):
+    pass
+
+
+class TypeAmendedGraph(TypeMixin, AmendedGraph):
+    pass

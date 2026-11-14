@@ -1,0 +1,59 @@
+{
+  "audit": "one minimum-SHA256 new resolved callsite per repository/provenance stratum, after full run",
+  "baseline": "Amendment 2 overlay: 79 original + 4 amended SymPy",
+  "baseline_implementation": [
+    "static_graph.py",
+    "amended_graph.py"
+  ],
+  "baseline_manifest_sha256": "c99976e64b6be840fe19495adce7c5aa6767f980e86cfa8ca12ba99c2e04e566",
+  "benchmark_execution": false,
+  "code_sha256": {
+    "evaluate.py": "c4380ca80213a052342e19b75e81f744657d61edd0d560df4af93c6377663283",
+    "test_typeprop.py": "d76a2d43e8b83ea2fc8f1aa3d4e2a6544d5343b79fad3704c485c3624840c3b6",
+    "typeprop_graph.py": "f830624f7ccdb40625f93095c66221480a6ebbbb760e1be3307fc8c5e74e88c7"
+  },
+  "date": "2026-11-02",
+  "defaults_and_variadics": "unsupported: unknown",
+  "fixed_point": "synchronous set union + unknown; cycles without evidence stay bottom; round exhaustion fails closed",
+  "keywords": "required positional/keyword-only supported",
+  "limits": {
+    "ast_nodes": 5000000,
+    "call_sites": 2000000,
+    "definitions": 1000000,
+    "python_files": 50000,
+    "seconds": 600,
+    "source_blob_bytes": 2097152,
+    "source_bytes": 536870912
+  },
+  "max_rounds": 64,
+  "max_types": 16,
+  "oracle_inputs": false,
+  "original_worktree": "/home/rajee/projects/cis695-agent-reliability",
+  "parameter_boundary": "observed static callers, with escaped callable references rejected; not an open-world proof",
+  "population": 83,
+  "propagation_calls": "frozen baseline resolved only; uncertain calls taint parameters",
+  "selector": {
+    "budgets": [
+      25,
+      50,
+      100,
+      250,
+      500,
+      "ALL"
+    ],
+    "depths": [
+      1,
+      2,
+      3
+    ],
+    "eligibility": "frozen phase2 strata unchanged",
+    "ranking": "existing phase2 features/rank_candidates unchanged",
+    "variants": [
+      "PRIMARY_RESOLVED_ONLY",
+      "SECONDARY_RESOLVED_PLUS_AMBIGUOUS"
+    ]
+  },
+  "starting_commit": "0c0c87fda86cf0a2f7c33866020325856e7303de",
+  "tasks": 83,
+  "verified_baseline_files": 419
+}

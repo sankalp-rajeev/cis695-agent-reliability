@@ -1,0 +1,37 @@
+[
+  {
+    "attempt": "initial_self_evidence",
+    "status": "interrupted_before_full_results",
+    "reason": "Manual source audit found that baseline self receiver metadata is not evidence of exact runtime class; inherited overrides could change propagated dispatch. Remove this source; retain baseline self edges unchanged.",
+    "initial_artifacts": "attempts/initial_self_evidence",
+    "rerun": "Full corpus after new regression tests pass"
+  },
+  {
+    "attempt": "closure_boundaries",
+    "status": "interrupted_before_full_results",
+    "reason": "Adversarial synthetic checks found escaped callable references in unsupported lambda scopes and nonlocal mutation could hide unknown inputs. Add explicit boundary taint and rerun all tasks."
+  },
+  {
+    "attempt": "final_corpus_long_process",
+    "status": "exit_139_segmentation_fault",
+    "completed_tasks": 81,
+    "missing_tasks": [
+      "sympy__sympy-19783",
+      "sympy__sympy-24562"
+    ],
+    "reason": "Cause unestablished; observed shell exit 139 with segmentation fault after persisted SymPy-17318 record. No OOM attribution or completed 83rd task is inferred.",
+    "recovery": "Resume identical scientific code in fresh process; retain completed task artifacts and verify hashes. Additional operational scripts temporarily renamed so the original strict source-file-set freeze matches."
+  },
+  {
+    "attempt": "private_name_audit",
+    "status": "full_83_task_results_superseded",
+    "reason": "Manual audit sample found an incorrect new edge in pylint unused_private_member fixture: another_obj.__test() in a different class is name-mangled differently from AnotherClass.__test. Reject private non-dunder method names for new receiver resolution; preserve existing baseline behavior. Repeat full corpus.",
+    "audit_before_fix": {
+      "sample": 15,
+      "supported": 14,
+      "questionable": 0,
+      "incorrect": 1
+    },
+    "counterexample": "attempts/private_name_audit/audit_candidates.json record for pylint-dev__pylint-6903"
+  }
+]
