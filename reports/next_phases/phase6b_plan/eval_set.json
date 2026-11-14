@@ -1,0 +1,284 @@
+{
+  "chosen_repositories": [
+    "matplotlib/matplotlib",
+    "pallets/flask",
+    "pydata/xarray",
+    "pytest-dev/pytest",
+    "scikit-learn/scikit-learn",
+    "sphinx-doc/sphinx"
+  ],
+  "fixed_task_ids": [
+    "django__django-10973",
+    "django__django-12209",
+    "django__django-14140",
+    "django__django-14631",
+    "matplotlib__matplotlib-25479",
+    "pytest-dev__pytest-5809",
+    "sphinx-doc__sphinx-10435"
+  ],
+  "inputs": {
+    "frozen_task_metadata": {
+      "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/paired_frozen/tasks.json",
+      "sha256": "532df6e8eebd9afa91592ef39aa28f12d8b905fcf3987c7698e06c8ad02ac625"
+    },
+    "phase5_costs": {
+      "path": "reports/next_phases/phase5_replay/per_task_costs.csv",
+      "sha256": "86c97ee2e0c64aebd10629e58c8bce3d739a803350768f8573245c8bd9f7ca97"
+    },
+    "phase5_reference_ids": {
+      "path": "reports/next_phases/phase5_replay/results.json",
+      "sha256": "8dd782e2e005e9e767baccb438b8391e02d6daca34f601254f162a301cd1ff8a"
+    }
+  },
+  "pool_criteria": {
+    "exclude_fixed_set": true,
+    "excluded_repository": "sympy/sympy",
+    "ordering_eligible": true,
+    "patched_execution_s_max_inclusive": 180,
+    "runner": "pytest"
+  },
+  "pool_repository_sizes": {
+    "astropy/astropy": 1,
+    "matplotlib/matplotlib": 12,
+    "mwaskom/seaborn": 1,
+    "pallets/flask": 1,
+    "pydata/xarray": 4,
+    "pylint-dev/pylint": 4,
+    "pytest-dev/pytest": 6,
+    "scikit-learn/scikit-learn": 3,
+    "sphinx-doc/sphinx": 3
+  },
+  "pool_task_ids": {
+    "astropy/astropy": [
+      "astropy__astropy-14365"
+    ],
+    "matplotlib/matplotlib": [
+      "matplotlib__matplotlib-20488",
+      "matplotlib__matplotlib-20676",
+      "matplotlib__matplotlib-22719",
+      "matplotlib__matplotlib-22871",
+      "matplotlib__matplotlib-23299",
+      "matplotlib__matplotlib-23476",
+      "matplotlib__matplotlib-24026",
+      "matplotlib__matplotlib-24637",
+      "matplotlib__matplotlib-24970",
+      "matplotlib__matplotlib-25122",
+      "matplotlib__matplotlib-25287",
+      "matplotlib__matplotlib-26291"
+    ],
+    "mwaskom/seaborn": [
+      "mwaskom__seaborn-3069"
+    ],
+    "pallets/flask": [
+      "pallets__flask-5014"
+    ],
+    "pydata/xarray": [
+      "pydata__xarray-4629",
+      "pydata__xarray-4695",
+      "pydata__xarray-6599",
+      "pydata__xarray-6744"
+    ],
+    "pylint-dev/pylint": [
+      "pylint-dev__pylint-4661",
+      "pylint-dev__pylint-4970",
+      "pylint-dev__pylint-6528",
+      "pylint-dev__pylint-7277"
+    ],
+    "pytest-dev/pytest": [
+      "pytest-dev__pytest-10051",
+      "pytest-dev__pytest-5787",
+      "pytest-dev__pytest-6202",
+      "pytest-dev__pytest-7236",
+      "pytest-dev__pytest-7432",
+      "pytest-dev__pytest-7521"
+    ],
+    "scikit-learn/scikit-learn": [
+      "scikit-learn__scikit-learn-10908",
+      "scikit-learn__scikit-learn-12585",
+      "scikit-learn__scikit-learn-14141"
+    ],
+    "sphinx-doc/sphinx": [
+      "sphinx-doc__sphinx-10323",
+      "sphinx-doc__sphinx-10466",
+      "sphinx-doc__sphinx-7910"
+    ]
+  },
+  "python_version": "3.11.17",
+  "reference_id_count": 12,
+  "seed": 20261114,
+  "seeded_interpretation": "No reference regressions: recall is vacuous; count for reduction, overhead and outcome agreement",
+  "seeded_task_ids": [
+    "matplotlib__matplotlib-24637",
+    "pallets__flask-5014",
+    "pydata__xarray-6744",
+    "pytest-dev__pytest-5787",
+    "scikit-learn__scikit-learn-12585",
+    "sphinx-doc__sphinx-7910"
+  ],
+  "selection_method": "One random.Random(20261114): sample sorted repositories, then choose one sorted task per chosen repository in repository order",
+  "task_count": 13,
+  "tasks": [
+    {
+      "cohort": "fixed",
+      "instance_id": "django__django-10973",
+      "reference_count": 5,
+      "reference_ids": [
+        "tests/dbshell/test_postgresql.py::PostgreSqlDbshellCommandTestCase::test_basic",
+        "tests/dbshell/test_postgresql.py::PostgreSqlDbshellCommandTestCase::test_column",
+        "tests/dbshell/test_postgresql.py::PostgreSqlDbshellCommandTestCase::test_escape_characters",
+        "tests/dbshell/test_postgresql.py::PostgreSqlDbshellCommandTestCase::test_nopass",
+        "tests/dbshell/test_postgresql.py::PostgreSqlDbshellCommandTestCase::test_sigint_handler"
+      ],
+      "repository": "django/django",
+      "repository_pool_size": 0,
+      "runner": "django",
+      "sealed_patched_execution_s": 0.9026448340009665,
+      "v2_list_size": 13
+    },
+    {
+      "cohort": "fixed",
+      "instance_id": "django__django-12209",
+      "reference_count": 1,
+      "reference_ids": [
+        "tests/basic/tests.py::ModelInstanceCreationTests::test_save_primary_with_default"
+      ],
+      "repository": "django/django",
+      "repository_pool_size": 0,
+      "runner": "django",
+      "sealed_patched_execution_s": 64.58670095300477,
+      "v2_list_size": 3319
+    },
+    {
+      "cohort": "fixed",
+      "instance_id": "django__django-14140",
+      "reference_count": 2,
+      "reference_ids": [
+        "tests/queries/test_q.py::QTests::test_deconstruct",
+        "tests/queries/test_q.py::QTests::test_deconstruct_negated"
+      ],
+      "repository": "django/django",
+      "repository_pool_size": 0,
+      "runner": "django",
+      "sealed_patched_execution_s": 21.644600009021815,
+      "v2_list_size": 2334
+    },
+    {
+      "cohort": "fixed",
+      "instance_id": "django__django-14631",
+      "reference_count": 1,
+      "reference_ids": [
+        "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled"
+      ],
+      "repository": "django/django",
+      "repository_pool_size": 0,
+      "runner": "django",
+      "sealed_patched_execution_s": 76.74952185805887,
+      "v2_list_size": 4468
+    },
+    {
+      "cohort": "fixed",
+      "instance_id": "matplotlib__matplotlib-25479",
+      "reference_count": 1,
+      "reference_ids": [
+        "lib/matplotlib/tests/test_colors.py::test_register_cmap"
+      ],
+      "repository": "matplotlib/matplotlib",
+      "repository_pool_size": 12,
+      "runner": "pytest",
+      "sealed_patched_execution_s": 3.989349276991561,
+      "v2_list_size": 88
+    },
+    {
+      "cohort": "fixed",
+      "instance_id": "pytest-dev__pytest-5809",
+      "reference_count": 1,
+      "reference_ids": [
+        "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+      ],
+      "repository": "pytest-dev/pytest",
+      "repository_pool_size": 6,
+      "runner": "pytest",
+      "sealed_patched_execution_s": 0.3255028499988839,
+      "v2_list_size": 4
+    },
+    {
+      "cohort": "fixed",
+      "instance_id": "sphinx-doc__sphinx-10435",
+      "reference_count": 1,
+      "reference_ids": [
+        "tests/test_build_latex.py::test_latex_code_role"
+      ],
+      "repository": "sphinx-doc/sphinx",
+      "repository_pool_size": 3,
+      "runner": "pytest",
+      "sealed_patched_execution_s": 8.086835066002095,
+      "v2_list_size": 90
+    },
+    {
+      "cohort": "seeded",
+      "instance_id": "matplotlib__matplotlib-24637",
+      "reference_count": 0,
+      "reference_ids": [],
+      "repository": "matplotlib/matplotlib",
+      "repository_pool_size": 12,
+      "runner": "pytest",
+      "sealed_patched_execution_s": 2.7906296139990445,
+      "v2_list_size": 16
+    },
+    {
+      "cohort": "seeded",
+      "instance_id": "pallets__flask-5014",
+      "reference_count": 0,
+      "reference_ids": [],
+      "repository": "pallets/flask",
+      "repository_pool_size": 1,
+      "runner": "pytest",
+      "sealed_patched_execution_s": 2.478682799002854,
+      "v2_list_size": 203
+    },
+    {
+      "cohort": "seeded",
+      "instance_id": "pydata__xarray-6744",
+      "reference_count": 0,
+      "reference_ids": [],
+      "repository": "pydata/xarray",
+      "repository_pool_size": 4,
+      "runner": "pytest",
+      "sealed_patched_execution_s": 75.2740310740046,
+      "v2_list_size": 362
+    },
+    {
+      "cohort": "seeded",
+      "instance_id": "pytest-dev__pytest-5787",
+      "reference_count": 0,
+      "reference_ids": [],
+      "repository": "pytest-dev/pytest",
+      "repository_pool_size": 6,
+      "runner": "pytest",
+      "sealed_patched_execution_s": 10.288694215996657,
+      "v2_list_size": 206
+    },
+    {
+      "cohort": "seeded",
+      "instance_id": "scikit-learn__scikit-learn-12585",
+      "reference_count": 0,
+      "reference_ids": [],
+      "repository": "scikit-learn/scikit-learn",
+      "repository_pool_size": 3,
+      "runner": "pytest",
+      "sealed_patched_execution_s": 93.18768513700343,
+      "v2_list_size": 769
+    },
+    {
+      "cohort": "seeded",
+      "instance_id": "sphinx-doc__sphinx-7910",
+      "reference_count": 0,
+      "reference_ids": [],
+      "repository": "sphinx-doc/sphinx",
+      "repository_pool_size": 3,
+      "runner": "pytest",
+      "sealed_patched_execution_s": 0.44612922899250407,
+      "v2_list_size": 16
+    }
+  ]
+}
