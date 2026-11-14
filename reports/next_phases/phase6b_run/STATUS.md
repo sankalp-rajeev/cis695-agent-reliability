@@ -1,7 +1,7 @@
 # Phase 6b status
 
 Start: 2026-11-14T07:28:16Z; deadline: 2026-11-14T17:28:16Z (10 hours, not reset).
-Branch: experiment/runtime-instrumentation. Stage: 2, 6/13 complete; next batch pending.
+Branch: experiment/runtime-instrumentation. Stage: 2, 9/13 complete; next batch pending.
 Last completed step: Stage 1 harness frozen after all gates passed.
 Last recorded HEAD / frozen harness commit: 92a1e8e04d4cc788322eca3152739504dced2319.
 Current checkpoint HEAD: resolve with git log -1 -- this file.
@@ -35,9 +35,9 @@ Task completion (in frozen order):
 - COMPLETE django__django-14631
 - COMPLETE matplotlib__matplotlib-25479
 - COMPLETE pytest-dev__pytest-5809
-- PENDING sphinx-doc__sphinx-10435
-- PENDING matplotlib__matplotlib-24637
-- PENDING pallets__flask-5014
+- COMPLETE sphinx-doc__sphinx-10435
+- COMPLETE matplotlib__matplotlib-24637
+- COMPLETE pallets__flask-5014
 - PENDING pydata__xarray-6744
 - PENDING pytest-dev__pytest-5787
 - PENDING scikit-learn__scikit-learn-12585
@@ -58,3 +58,7 @@ code diff remains empty. Last observed publication HEAD: d297012fcb6a0b08127bb5f
 Batch checkpoint: 6/13 tasks complete in frozen order; all
 completed-task capture file sets and hashes revalidated. No HALT.json. Frozen
 code diff remains empty. Last observed publication HEAD: 6cc230c8c1a91faa0b3c5efab33449f6a3018c04.
+
+Batch checkpoint: 9/13 tasks complete in frozen order; all
+completed-task capture file sets and hashes revalidated. No HALT.json. Frozen
+code diff remains empty. Last observed publication HEAD: a609f40e5a4b4ec9c2fa579719fbad324c04b545.
