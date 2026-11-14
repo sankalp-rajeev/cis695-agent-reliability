@@ -1,0 +1,28 @@
+{
+  "image_id": "sha256:80919e420ca2c5ed3308b2cc90b313a76f1aca5b8b9621a76ebf8894e3472ed3",
+  "image_tag_metadata": "swebench/sweb.eval.x86_64.sphinx-doc_1776_sphinx-10435:latest",
+  "base_commit": "f1061c012e214f16fd8790dec3c283d787e3daa8",
+  "archive_sha256": "14f4bb6001c30c652150a969de8746c6dbcdb9d465a2423671ffcd29ecc33abd",
+  "container_argv": [
+    "/usr/bin/docker",
+    "run",
+    "--pull=never",
+    "-d",
+    "--cpu-shares",
+    "2048",
+    "--name",
+    "verify_phase4_fix9_pristine_audit_sphinx-doc__sphinx-10435_45f48de1",
+    "--label",
+    "experiment_id=phase4_fix9_pristine_audit",
+    "-w",
+    "/testbed",
+    "--network",
+    "none",
+    "sha256:80919e420ca2c5ed3308b2cc90b313a76f1aca5b8b9621a76ebf8894e3472ed3",
+    "sleep",
+    "infinity"
+  ],
+  "patch_applied": false,
+  "tests_executed": 0,
+  "collection_performed": false
+}

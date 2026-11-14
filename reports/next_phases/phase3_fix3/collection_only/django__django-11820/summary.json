@@ -1,0 +1,57 @@
+{
+  "instance_id": "django__django-11820",
+  "runner": "django",
+  "image_head": "bb7fc11a06a012bf0625558d95a319fa1e1d45c9",
+  "frozen_base_commit": "c2678e49759e5c4c329bff0eeca2886267005d21",
+  "image_HEAD_matches_frozen_base": false,
+  "archive_base_sources_verified": 2574,
+  "base_configs_restored": [],
+  "base_tree_only": true,
+  "collection_time_s": 46.932059480001044,
+  "native_collection_time_s": 38.181511998012866,
+  "selected_slots": 3167,
+  "INVALID_ID": 42,
+  "reasons": {
+    "no_runnable_owner": 2,
+    "property": 1,
+    "nested_helper": 8,
+    "not_found": 5,
+    "native_load_error": 26
+  },
+  "unavailable_slots": 0,
+  "expanded_slots": 21,
+  "expanded_instances": 63,
+  "native_runnable_instances": 3167,
+  "native_disagreements": 26,
+  "native_groups": 86,
+  "tests_executed": 0,
+  "test_outcomes_recorded": false,
+  "correctness_labels_read": false,
+  "task_choice": "Django and Astropy supplied by user; SymPy is first sorted frozen task ID in that repository",
+  "container_run_args": [
+    "/usr/bin/docker",
+    "run",
+    "-d",
+    "--name",
+    "verify_phase3_fix3_collect_only_django__django-11820_e9a7afad",
+    "--label",
+    "experiment_id=phase3_fix3_collect_only",
+    "-w",
+    "/testbed",
+    "--network",
+    "none",
+    "swebench/sweb.eval.x86_64.django_1776_django-11820:latest",
+    "sleep",
+    "infinity"
+  ],
+  "implementation_sha256": {
+    "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/src/reliability/verifier/collection.py": "e85e3ca693ccb8df0db34abe644642ad8192647bbae933f6693b11a15439a0e1",
+    "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/src/reliability/verifier/id_validation.py": "b501f067258c42a46d28b25fad049a96918d63c07b2796ac4bcb20063c327df2",
+    "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/scripts/phase3_fix3_smoke.py": "2d035dee4af5a554ce60362a53edd2a48e24957af41ea70ab094e4443fc9bc2f"
+  },
+  "input_sha256": {
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/paired_frozen/tasks.json": "532df6e8eebd9afa91592ef39aa28f12d8b905fcf3987c7698e06c8ad02ac625",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/paired_frozen/selections/django__django-11820/v2.json": "3b036f36aab177ca40b98284628fea539908ecb72e129e35abb575fb45d5635c"
+  },
+  "total_wall_s": 47.89926272199955
+}

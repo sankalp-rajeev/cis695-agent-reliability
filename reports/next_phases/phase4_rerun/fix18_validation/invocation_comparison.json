@@ -1,0 +1,133 @@
+{
+  "harness_command": "bin/test -C --verbose sympy/physics/quantum/tests/test_printing.py",
+  "both_commands_same_import_reporter_exception": true,
+  "cwd": "/testbed",
+  "python_executable": "/opt/miniconda3/envs/testbed/bin/python",
+  "inherited_PYTHONWARNINGS": null,
+  "inherited_PYTHONPATH": null,
+  "explicit_python_W_flags": [],
+  "inherited_env_differences": [
+    "HOSTNAME (fresh-container identifier only)"
+  ],
+  "baseline_interpreter_sys_path": [
+    "",
+    "/opt/miniconda3/envs/testbed/lib/python39.zip",
+    "/opt/miniconda3/envs/testbed/lib/python3.9",
+    "/opt/miniconda3/envs/testbed/lib/python3.9/lib-dynload",
+    "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages",
+    "/testbed"
+  ],
+  "executor_environment_mutations": {
+    "PYTHONWARNINGS": "ignore::UserWarning,ignore::SyntaxWarning",
+    "SYMPY_USE_CACHE": "no"
+  },
+  "harness_cache_effect": "-C sets SYMPY_USE_CACHE=no before importing SymPy",
+  "executor_interpreter_filters": [
+    "ignore UserWarning",
+    "ignore SyntaxWarning"
+  ],
+  "executor_python_path_setup": [
+    "insert /testbed",
+    "insert /testbed/bin; execute uploaded /tmp wrapper"
+  ],
+  "harness_python_path_setup": [
+    "bin/test entry point; bin/get_sympy.path_hack adds checkout root"
+  ],
+  "executor_native_argv": [
+    "bin/test",
+    "-C",
+    "--verbose",
+    "--no-subprocess",
+    "sympy/physics/quantum/tests/test_printing.py"
+  ],
+  "harness_native_subprocess": "default hash-randomization child enabled",
+  "harness_module_trace_in_stderr": true,
+  "executor_module_trace_in_stderr": true,
+  "python_path_measurement": "baseline python -c probe; entrypoint path adjustments established from hashed source",
+  "outcomes_decoded": false,
+  "correctness_labels_read": false,
+  "oracle_data_read": false,
+  "harness_native_environment_effects": {
+    "SYMPY_USE_CACHE": "no (from -C)",
+    "PYTHONHASHSEED": "native runner chooses a random seed for its subprocess"
+  },
+  "executor_hash_seed_effect": "no subprocess; inherited PYTHONHASHSEED remains unset",
+  "invocations": [
+    {
+      "mode": "harness",
+      "command": "bin/test -C --verbose sympy/physics/quantum/tests/test_printing.py",
+      "argv": [
+        "bin/test",
+        "-C",
+        "--verbose",
+        "sympy/physics/quantum/tests/test_printing.py"
+      ],
+      "exit_status": 1,
+      "elapsed_s": 1.976300132999313,
+      "timed_out": false,
+      "deprecation_warning": true,
+      "active_file_attribute_exception": true,
+      "raw_sha256": {
+        "stdout.raw": "042fe46719e2635d2aeea0b3170960698c9a7f72a96b9dd2967313bf7f63cb60",
+        "stderr.raw": "d472771a1ac9a72faab6d53eb573e0ed803ab196ebbe96c026030265b2fe7991"
+      },
+      "selected_names_present": 0
+    },
+    {
+      "mode": "executor",
+      "command": "python /tmp/verifier_sympy_driver.py execute sympy/physics/quantum/tests/test_printing.py sympy/physics/quantum/tests/test_printing.py::test_anticommutator sympy/physics/quantum/tests/test_printing.py::test_cg sympy/physics/quantum/tests/test_printing.py::test_commutator sympy/physics/quantum/tests/test_printing.py::test_constants sympy/physics/quantum/tests/test_printing.py::test_dagger sympy/physics/quantum/tests/test_printing.py::test_gate_failing sympy/physics/quantum/tests/test_printing.py::test_gate sympy/physics/quantum/tests/test_printing.py::test_hilbert sympy/physics/quantum/tests/test_printing.py::test_innerproduct sympy/physics/quantum/tests/test_printing.py::test_operator sympy/physics/quantum/tests/test_printing.py::test_qexpr sympy/physics/quantum/tests/test_printing.py::test_qubit sympy/physics/quantum/tests/test_printing.py::test_spin sympy/physics/quantum/tests/test_printing.py::test_state sympy/physics/quantum/tests/test_printing.py::test_tensorproduct sympy/physics/quantum/tests/test_printing.py::test_big_expr",
+      "argv": [
+        "python",
+        "/tmp/verifier_sympy_driver.py",
+        "execute",
+        "sympy/physics/quantum/tests/test_printing.py",
+        "sympy/physics/quantum/tests/test_printing.py::test_anticommutator",
+        "sympy/physics/quantum/tests/test_printing.py::test_cg",
+        "sympy/physics/quantum/tests/test_printing.py::test_commutator",
+        "sympy/physics/quantum/tests/test_printing.py::test_constants",
+        "sympy/physics/quantum/tests/test_printing.py::test_dagger",
+        "sympy/physics/quantum/tests/test_printing.py::test_gate_failing",
+        "sympy/physics/quantum/tests/test_printing.py::test_gate",
+        "sympy/physics/quantum/tests/test_printing.py::test_hilbert",
+        "sympy/physics/quantum/tests/test_printing.py::test_innerproduct",
+        "sympy/physics/quantum/tests/test_printing.py::test_operator",
+        "sympy/physics/quantum/tests/test_printing.py::test_qexpr",
+        "sympy/physics/quantum/tests/test_printing.py::test_qubit",
+        "sympy/physics/quantum/tests/test_printing.py::test_spin",
+        "sympy/physics/quantum/tests/test_printing.py::test_state",
+        "sympy/physics/quantum/tests/test_printing.py::test_tensorproduct",
+        "sympy/physics/quantum/tests/test_printing.py::test_big_expr"
+      ],
+      "exit_status": 1,
+      "elapsed_s": 1.6478330999962054,
+      "timed_out": false,
+      "deprecation_warning": true,
+      "active_file_attribute_exception": true,
+      "raw_sha256": {
+        "stdout.raw": "f3d6e732c8f59e6eeade3d8785835ecb31414ac0f4b593ad9092c8295de41b5c",
+        "stderr.raw": "cb6f1e4248f37301fd2b685568085bc90eda0e485c5f21a0a247203c5fa297a1"
+      },
+      "selected_names_present": 0
+    }
+  ],
+  "runner_source_sha256": {
+    "harness": "8535ebb946b9c2a1f3542385483cbe872f6f8c045e297d076a097ac103213487",
+    "executor": "8535ebb946b9c2a1f3542385483cbe872f6f8c045e297d076a097ac103213487"
+  },
+  "harness_native_child_python_flags": [
+    "-R",
+    "-c"
+  ],
+  "executor_python_flags": [],
+  "harness_reported_hash_environment": "on (PYTHONHASHSEED=210774727)",
+  "executor_reported_hash_environment": "off",
+  "image_id": "sha256:99b0638822c415d519f20b0b0c776978d93c84eb49ada0e072fd817b2d69325e",
+  "base_commit": "f57fe3f4b3f2cab225749e1b3b38ae1bf80b62f0",
+  "base_archive_sha256": "70f23345e2ded9dac73b1db75a982e3080a40fd917a7335a5e0dedc1056589c1",
+  "source_receipt_sha256": {
+    "harness": "34a90a9d4e2acc9caa37b6b5f7ca7998cbbe38380f8efa1a0b78d2b987f678b3",
+    "executor": "34a90a9d4e2acc9caa37b6b5f7ca7998cbbe38380f8efa1a0b78d2b987f678b3"
+  },
+  "masked_stderr_fixture_sha256": "87f28761e9f4647fe565c62ec0934830ff14bc7c92810841abc69288ea07261b",
+  "comparison_script_sha256": "3b220ba75112d95c1f3e3b875fe70ae2fdb909ff9f9391d4558e2b75a4901b73"
+}

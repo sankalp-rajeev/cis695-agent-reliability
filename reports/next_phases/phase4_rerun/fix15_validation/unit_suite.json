@@ -1,0 +1,165 @@
+{
+  "command": "env HF_DATASETS_CACHE=/tmp/fix15_hf_datasets HF_HUB_OFFLINE=1 HF_DATASETS_OFFLINE=1 bash scripts/test.sh tests/unit --junitxml=/tmp/fix15_final_unit.xml",
+  "summary": "6 failed, 1295 passed, 6 skipped, 17 errors in 37.83s",
+  "counts": {
+    "passed": 1295,
+    "failed": 6,
+    "skipped": 6,
+    "errors": 17
+  },
+  "focus_modules": {
+    "test_fix15_guards": {
+      "passed": 29,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "test_loader": {
+      "passed": 10,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "test_no_leakage": {
+      "passed": 7,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "test_sampler": {
+      "passed": 21,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "test_v2_scg_paired": {
+      "passed": 47,
+      "failed": 2,
+      "errors": 17,
+      "skipped": 0
+    }
+  },
+  "remaining_failures_and_errors": [
+    {
+      "status": "FAILED",
+      "test": "tests/unit/test_selection_ground_truth.py::test_django_16899_selects_admin_checks",
+      "reason": "Missing pre-existing tests/fixtures/base_trees/django__django-16899.patch fixture."
+    },
+    {
+      "status": "FAILED",
+      "test": "tests/unit/test_superseded_shadow.py::test_kernel_blocks_actual_file_access_in_classifier_process",
+      "reason": "Kernel 5.15 exposes Landlock ABI 1, below required ABI 4; isolated classifier fails closed."
+    },
+    {
+      "status": "FAILED",
+      "test": "tests/unit/test_superseded_shadow_v2.py::test_v2_worker_still_cannot_open_oracle_files",
+      "reason": "Kernel 5.15 exposes Landlock ABI 1, below required ABI 4; isolated classifier fails closed."
+    },
+    {
+      "status": "FAILED",
+      "test": "tests/unit/test_superseded_shadow_v2.py::test_only_one_extra_base_reuses_patch_confirmation_and_preserves_signal",
+      "reason": "Kernel 5.15 exposes Landlock ABI 1, below required ABI 4; isolated classifier fails closed."
+    },
+    {
+      "status": "FAILED",
+      "test": "tests/unit/test_v2_scg_paired.py::test_frozen_configuration_defaults_are_unchanged",
+      "reason": "Historical V2 expectation is the old four-field 300/600 configuration; current verifier has six fields and 1800/3600 budgets."
+    },
+    {
+      "status": "FAILED",
+      "test": "tests/unit/test_v2_scg_paired.py::test_archived_v2_inputs_are_portable_without_changing_frozen_policy",
+      "reason": "Historical V2 source integrity check rejects five changed verifier files before synthetic fixture preparation; original frozen hashes are preserved."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_all_83_have_one_manifest_per_arm_and_original_identity",
+      "reason": "Historical V2 source integrity check rejects five changed verifier files before synthetic fixture preparation; original frozen hashes are preserved."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_seal_catches_all_input_classes[selection]",
+      "reason": "Historical V2 source integrity check rejects five changed verifier files before synthetic fixture preparation; original frozen hashes are preserved."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_seal_catches_all_input_classes[source]",
+      "reason": "Historical V2 source integrity check rejects five changed verifier files before synthetic fixture preparation; original frozen hashes are preserved."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_seal_catches_all_input_classes[protocol]",
+      "reason": "Historical V2 source integrity check rejects five changed verifier files before synthetic fixture preparation; original frozen hashes are preserved."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_seal_catches_all_input_classes[snapshot]",
+      "reason": "Historical V2 source integrity check rejects five changed verifier files before synthetic fixture preparation; original frozen hashes are preserved."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_seal_catches_all_input_classes[image_binding]",
+      "reason": "Historical V2 source integrity check rejects five changed verifier files before synthetic fixture preparation; original frozen hashes are preserved."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_resealed_selection_cannot_bypass_protocol_bound_inputs",
+      "reason": "Historical V2 source integrity check rejects five changed verifier files before synthetic fixture preparation; original frozen hashes are preserved."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_source_drift_detected_without_container",
+      "reason": "Historical V2 source integrity check rejects five changed verifier files before synthetic fixture preparation; original frozen hashes are preserved."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_end_to_end_scoped_dry_run_accounts_for_both_abstentions",
+      "reason": "Historical V2 source integrity check rejects five changed verifier files before synthetic fixture preparation; original frozen hashes are preserved."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_host_drift_blocks_launch_after_freeze",
+      "reason": "Historical V2 source integrity check rejects five changed verifier files before synthetic fixture preparation; original frozen hashes are preserved."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_binding_inventory_has_all_83_historical_records_unchanged",
+      "reason": "Historical V2 source integrity check rejects five changed verifier files before synthetic fixture preparation; original frozen hashes are preserved."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_validation_detects_image_drift_before_plan_creation",
+      "reason": "Historical V2 source integrity check rejects five changed verifier files before synthetic fixture preparation; original frozen hashes are preserved."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_validation_detects_docker_daemon_drift",
+      "reason": "Historical V2 source integrity check rejects five changed verifier files before synthetic fixture preparation; original frozen hashes are preserved."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_resealed_binding_still_bound_to_protocol",
+      "reason": "Historical V2 source integrity check rejects five changed verifier files before synthetic fixture preparation; original frozen hashes are preserved."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_new_freeze_binds_host_images_for_all_83_without_rewriting_history[host-images]",
+      "reason": "Historical V2 source integrity check rejects five changed verifier files before synthetic fixture preparation; original frozen hashes are preserved."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_image_inspection_error_blocks_preparation",
+      "reason": "Historical V2 source integrity check rejects five changed verifier files before synthetic fixture preparation; original frozen hashes are preserved."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_image_binding_cannot_change_task_cohort",
+      "reason": "Historical V2 source integrity check rejects five changed verifier files before synthetic fixture preparation; original frozen hashes are preserved."
+    }
+  ],
+  "all_remaining_failure_and_error_identities_preexisting": true,
+  "preexisting_dataset_setup_errors_resolved": 30,
+  "raw_log_sha256": "ecc648e13644bebdbdc981e27433a4107c8ec1a9b98561e18b1e9c706dbdc61a",
+  "compressed_log_sha256": "1dfb081452b35ae4fc3f7deb61491792c17f6b7a0a2dbf84262387cb2aaff434",
+  "junit_xml_sha256": "c927b5b391a08f013e6a5e35b379e1d15f01d8bf02c3ba87e83d2c4678d85b79",
+  "landlock_known_limitation": "Kernel 5.15.0-139-generic, Landlock ABI 1; isolated classifier requires ABI >= 4 and abstains."
+}

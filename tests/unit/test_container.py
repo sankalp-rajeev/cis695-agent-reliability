@@ -21,6 +21,17 @@ from reliability.verifier.container import (
 from reliability.verifier.regression import TestStatus
 
 
+@pytest.fixture(autouse=True)
+def parsed_capture_id_receipts(monkeypatch):
+    # These tests isolate driver/capture parsing. The separate validation suite
+    # exercises the real two-layer boundary, including native subprocesses.
+    from reliability.verifier.collection import ValidationPass
+    from reliability.verifier.id_validation import IDValidation
+    monkeypatch.setattr('reliability.verifier.container.validate_in_container',
+        lambda container, tests, runner, **kwargs: ValidationPass(tuple(
+            IDValidation(t, 'runnable_test', (t,)) for t in tests)))
+
+
 class FakeContainer:
     """Stands in for a live container, recording what was asked of it."""
 
@@ -156,8 +167,8 @@ def test_the_driver_uses_nothing_newer_than_python_36():
     ("t.py::a FAILED   [ 10%]", TestStatus.FAILED),
     ("t.py::a ERROR    [ 10%]", TestStatus.ERROR),
     ("t.py::a SKIPPED (no network)  [ 10%]", TestStatus.SKIPPED),
-    ("t.py::a XFAIL  [ 10%]", TestStatus.SKIPPED),
-    ("t.py::a XPASS  [ 10%]", TestStatus.PASSED),
+    ("t.py::a XFAIL  [ 10%]", TestStatus.XFAIL),
+    ("t.py::a XPASS  [ 10%]", TestStatus.XPASS),
     ("t.py::a PASSED", TestStatus.PASSED),  # older pytest, no progress column
 ])
 def test_every_pytest_outcome_word_is_mapped(line, expected):
@@ -217,14 +228,14 @@ def test_every_requested_test_appears_in_the_result():
     assert set(result.by_id()) == set(tests)
 
 
-def test_a_timeout_marks_every_test_timed_out():
+def test_upload_timeout_marks_unstarted_tests_not_reached():
     container = FakeContainer()
     container.timeout = True
     result = ContainerTestExecutor(container).run(
         ("t.py::a", "t.py::b"), patched=True, timeout_s=1)
 
     assert result.timed_out
-    assert all(r.status is TestStatus.TIMEOUT for r in result.results)
+    assert all(r.status is TestStatus.NOT_REACHED for r in result.results)
 
 
 def test_no_tests_means_no_container_work():

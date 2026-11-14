@@ -1,0 +1,35 @@
+{
+  "plan_amendment_commit": "67b3fc3",
+  "audited_code_commit": "1858d7ea8f1883afb7359b876b1789b71fc6a3d6",
+  "implementation_commits": [
+    "06b4d1ca4c578186a1b2b5ed16aea0fee3cb6980 Fix 16: restrict health halts to identity loss and thresholded drift",
+    "b11f40ea9f2ab7286cc6903e7246d6498e62f420 Fix 16: preserve observed process crashes as test outcomes",
+    "e4a9718909a26b254b8a74080a5d835569a8ca9a Fix 16: restore stable error and crash regression scoring",
+    "1858d7ea8f1883afb7359b876b1789b71fc6a3d6 Fix 16: verify sealed receipts and exact reference exclusions"
+  ],
+  "G1_rerun_required": true,
+  "changed_existing_G1_source_pins": [
+    "scripts/phase4_stage_preflight.py",
+    "scripts/phase4_launch.py",
+    "src/reliability/verifier/container.py",
+    "src/reliability/verifier/g1_reference.py",
+    "src/reliability/verifier/regression.py",
+    "src/reliability/verifier/result_parser.py",
+    "src/reliability/verifier/run_health.py",
+    "src/reliability/verifier/validated_run.py"
+  ],
+  "plan_outside_fix16_amendment_unchanged": true,
+  "hypothesis_thresholds_B1_B2_unchanged": true,
+  "original_reference_membership_unchanged": true,
+  "lock_sha256": "3ce3f1b21b2efc73e7c4a67c67f75f667013d465c7a7b28b61445d0da6b5a0f7",
+  "attempt2_outcomes_verdicts_labels_read": false,
+  "benchmark_test_bodies_executed": 0,
+  "tags_created": false,
+  "experiment_launched": false,
+  "preserved_partial_audit": {
+    "path": "runs/phase4_fix16_g1_interrupted_zero_exit",
+    "completed_pairs": 66,
+    "reason": "Repair zero-exit crash attribution; final audit starts fresh",
+    "tests_executed": 0
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "summary": "6 failed, 1339 passed, 6 skipped, 17 errors in 41.70s",
+  "remaining_failures_and_errors": [
+    {
+      "status": "FAILED",
+      "test": "tests/unit/test_selection_ground_truth.py::test_django_16899_selects_admin_checks"
+    },
+    {
+      "status": "FAILED",
+      "test": "tests/unit/test_superseded_shadow.py::test_kernel_blocks_actual_file_access_in_classifier_process"
+    },
+    {
+      "status": "FAILED",
+      "test": "tests/unit/test_superseded_shadow_v2.py::test_v2_worker_still_cannot_open_oracle_files"
+    },
+    {
+      "status": "FAILED",
+      "test": "tests/unit/test_superseded_shadow_v2.py::test_only_one_extra_base_reuses_patch_confirmation_and_preserves_signal"
+    },
+    {
+      "status": "FAILED",
+      "test": "tests/unit/test_v2_scg_paired.py::test_frozen_configuration_defaults_are_unchanged"
+    },
+    {
+      "status": "FAILED",
+      "test": "tests/unit/test_v2_scg_paired.py::test_archived_v2_inputs_are_portable_without_changing_frozen_policy"
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_all_83_have_one_manifest_per_arm_and_original_identity"
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_seal_catches_all_input_classes[selection]"
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_seal_catches_all_input_classes[source]"
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_seal_catches_all_input_classes[protocol]"
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_seal_catches_all_input_classes[snapshot]"
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_seal_catches_all_input_classes[image_binding]"
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_resealed_selection_cannot_bypass_protocol_bound_inputs"
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_source_drift_detected_without_container"
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_end_to_end_scoped_dry_run_accounts_for_both_abstentions"
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_host_drift_blocks_launch_after_freeze"
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_binding_inventory_has_all_83_historical_records_unchanged"
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_validation_detects_image_drift_before_plan_creation"
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_validation_detects_docker_daemon_drift"
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_resealed_binding_still_bound_to_protocol"
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_new_freeze_binds_host_images_for_all_83_without_rewriting_history[host-images]"
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_image_inspection_error_blocks_preparation"
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_image_binding_cannot_change_task_cohort"
+    }
+  ],
+  "same_preexisting_failure_and_error_set": true,
+  "log_sha256": "bfc0e9672838f80f5f03f5de3c38f01eabeccfdde6b609512505fe5971555285"
+}

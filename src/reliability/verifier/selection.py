@@ -143,11 +143,13 @@ class TestRunner:
 
     name: str
     evidence: str
+    django_parallel_one: bool = False
 
     def command(self, tests: tuple[str, ...], report_path: str) -> str:
         if self.name == "django":
             labels = " ".join(shlex.quote(django_label(t)) for t in tests)
-            return f"python tests/runtests.py --verbosity=2 {labels}"
+            parallel = " --parallel 1" if self.django_parallel_one else ""
+            return f"python tests/runtests.py --verbosity=2{parallel} {labels}"
         targets = " ".join(shlex.quote(t) for t in tests)
         return (
             f"python -m pytest {targets} -p no:cacheprovider -q "
@@ -538,6 +540,9 @@ def discover_runner(tree: RepoTree) -> TestRunner:
         return TestRunner(
             "django", "found tests/runtests.py in a Django tree",
         )
+
+    if 'bin/test' in files and 'sympy/__init__.py' in files:
+        return TestRunner('sympy', 'native SymPy bin/test runner')
 
     evidence: list[str] = []
     if "pytest.ini" in files or "conftest.py" in files:

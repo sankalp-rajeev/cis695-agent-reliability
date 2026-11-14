@@ -1,0 +1,101 @@
+305:                 "elapsed_run_s": time.monotonic() - self.started,
+306:                 "captured_sha256": captured,
+307:                 "note": "Partial bytes at global stop/error; no terminal outcomes invented.",
+308:             },
+309:         )
+310: 
+311:     def task(self, task):
+312:         self.check()
+313:         iid = task["instance_id"]
+314:         folder = self.folder / "tasks" / iid
+315:         folder.mkdir(parents=True, exist_ok=False)
+316:         inputs = self.folder / "inputs" / iid
+317:         raw = (inputs / "selection.json").read_bytes()
+318:         patch = (inputs / "candidate.patch").read_bytes()
+319:         expected_raw = (inputs / "base_expected.json").read_bytes()
+320:         assert sha(raw) == task["selection_sha256"] and sha(patch) == task["patch_sha256"]
+321:         assert sha(expected_raw) == task["base_expected_sha256"]
+322:         expected = json.loads(expected_raw)
+323:         tests = tuple(json.loads(raw)["tests"])
+324:         self.progress("task_start", task=iid, phase="container_preflight", selected_ids=len(tests))
+325:         experiment = self.folder.name
+326:         assert not docker("ps", "-q", "--filter", "label=experiment_id=" + experiment)
+327: 
+328:         controller = self
+329: 
+330:         class FrozenContainer(TaskContainer):
+331:             def run_args(self):
+332:                 argv = super().run_args()
+333:                 argv.insert(2, "--pull=never")
+334:                 return argv
+335: 
+336:             def __exit__(inner, exc_type, exc_value, tb):
+337:                 if exc_type is not None:
+338:                     controller.partial(folder)
+339:                 return super().__exit__(exc_type, exc_value, tb)
+340: 
+341:         container = FrozenContainer(
+342:             iid, patch.decode(), image=task["image_id"], experiment_id=experiment
+343:         )
+344:         calls = []
+345:         initial = {}
+346:         attempts = Counter()
+347:         controller = self
+348:         try:
+349:             with container:
+350:                 self.active = container
+351:                 observed = json.loads(docker("inspect", "--format", "{{json .}}", container.name))
+352:                 host = observed["HostConfig"]
+353:                 assert (
+354:                     host["CpuShares"] == 2048
+355:                     and host["NanoCpus"] == 0
+356:                     and host["NetworkMode"] == "none"
+357:                 )
+358:                 assert observed["Image"] == task["image_id"]
+359:                 write(
+360:                     folder / "container.json",
+361:                     {
+362:                         "name": container.name,
+363:                         "image_id": observed["Image"],
+364:                         "cpu_shares": host["CpuShares"],
+365:                         "nano_cpus": host["NanoCpus"],
+366:                         "network": host["NetworkMode"],
+367:                         "argv": container.run_args(),
+368:                     },
+369:                 )
+370:                 rc, _ = container.exec_input(
+371:                     "cat > /tmp/phase4_expected.json", json.dumps(expected["sha256"])
+372:                 )
+373:                 assert rc == 0
+374:                 check = "import hashlib,json,pathlib; e=json.load(open('/tmp/phase4_expected.json')); print(json.dumps({p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() if pathlib.Path(p).is_file() else None for p in e}))"
+375:                 rc, text = container.exec("python -c " + shlex.quote(check))
+376:                 assert rc == 0, text[-1000:]
+377:                 restored = []
+378:                 for name, digest in json.loads(text).items():
+379:                     if digest != expected["sha256"][name]:
+380:                         assert name in expected["configs"], (
+381:                             "Base Python/bin/test source mismatch: " + name
+382:                         )
+383:                         rc, message = container.exec_input(
+384:                             "cat > " + shlex.quote(name), expected["configs"][name]
+385:                         )
+386:                         assert rc == 0, message[-1000:]
+387:                         restored.append(name)
+388:                 rc, text = container.exec("python -c " + shlex.quote(check))
+389:                 assert rc == 0 and json.loads(text) == expected["sha256"]
+390:                 write(
+391:                     folder / "source_check.json",
+392:                     {
+393:                         "files_verified": len(expected["sha256"]),
+394:                         "configs_restored": restored,
+395:                         "archive_sha256": task["archive_sha256"],
+396:                         "base_commit_metadata": task["base_commit"],
+397:                         "source_bytes_match_frozen_archive": True,
+398:                     },
+399:                 )
+400:                 native = ContainerTestExecutor(
+401:                     container, runner=TestRunner(**task["runner"]), evidence_dir=folder / "raw"
+402:                 )
+403: 
+404:                 class Recorder:
+405:                     def run(self, requested, *, patched, timeout_s):

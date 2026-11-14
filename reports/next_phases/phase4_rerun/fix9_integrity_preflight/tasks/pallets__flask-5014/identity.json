@@ -1,0 +1,28 @@
+{
+  "image_id": "sha256:bf8242431f5c177d67996b3c888a0f51e4bb7bd0b67009bee6c70842baca1241",
+  "image_tag_metadata": "swebench/sweb.eval.x86_64.pallets_1776_flask-5014:latest",
+  "base_commit": "7ee9ceb71e868944a46e1ff00b506772a53a4f1d",
+  "archive_sha256": "4cc98bbed4b03a91c6c47dbe581056ba77bb5f2436aa5e41c405ecf19da307a9",
+  "container_argv": [
+    "/usr/bin/docker",
+    "run",
+    "--pull=never",
+    "-d",
+    "--cpu-shares",
+    "2048",
+    "--name",
+    "verify_phase4_fix9_pristine_audit_pallets__flask-5014_e31d11ba",
+    "--label",
+    "experiment_id=phase4_fix9_pristine_audit",
+    "-w",
+    "/testbed",
+    "--network",
+    "none",
+    "sha256:bf8242431f5c177d67996b3c888a0f51e4bb7bd0b67009bee6c70842baca1241",
+    "sleep",
+    "infinity"
+  ],
+  "patch_applied": false,
+  "tests_executed": 0,
+  "collection_performed": false
+}

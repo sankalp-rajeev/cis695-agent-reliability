@@ -1,0 +1,78 @@
+import ast,difflib,hashlib,io,json,shlex,subprocess,tarfile,uuid
+from pathlib import Path
+from reliability.env import clean_env
+from reliability.verifier.collection import _NATIVE_DRIVER,_PYTEST_PLUGIN
+root=Path.cwd();run=root/'runs/phase4_v2_serial_20261107T173952Z';out=root/'reports/next_phases/phase4_rerun/attempt1_incident_receipts'
+frozen=json.loads((out/'frozen_inputs.json').read_text());task=frozen['task'];image=task['image_id'];target='lib/matplotlib/_version.py'
+name='phase4_incident_14623_'+uuid.uuid4().hex[:8];commands=[];stages=[];store={}
+def call(args,input=None,timeout=120):
+ commands.append({'argv':['docker',*args],'stdin_sha256':hashlib.sha256(input).hexdigest() if input is not None else None})
+ p=subprocess.run(['docker',*args],input=input,stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=clean_env(),timeout=timeout)
+ if p.returncode:raise RuntimeError(str(args[:3])+': '+p.stderr.decode(errors='replace')[-2000:])
+ return p.stdout
+def snapshot(stage,save=None):
+ path=Path('/tmp')/(name+'_'+stage+'.txt')
+ call(['cp',name+':/testbed/'+target,str(path)])
+ data=path.read_bytes();path.unlink()
+ stages.append({'stage':stage,'sha256':hashlib.sha256(data).hexdigest(),'bytes':len(data)})
+ if save:(out/save).write_bytes(data)
+ return data
+def execute(script,input=None,timeout=150):
+ args=['exec']+(['-i'] if input is not None else [])+['-w','/testbed',name,'bash','-lc',script]
+ return call(args,input,timeout)
+def inventory():
+ program="import hashlib,json,pathlib,subprocess; names=subprocess.check_output(['git','ls-files','-z']).decode().split('\\0'); print(json.dumps({p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in names if p.endswith('.py') and pathlib.Path(p).is_file()}))"
+ return json.loads(execute('python -c '+shlex.quote(program)))
+try:
+ call(['create','--pull=never','--name',name,'--label','experiment_id=phase4_attempt1_incident','--network','none','--cpu-shares','2048','-w','/testbed',image,'sleep','infinity'])
+ info=json.loads(call(['inspect','--format','{{json .}}',name]));assert not info['State']['Running']
+ store['container']={'name':name,'image_id':info['Image'],'entrypoint':info['Config']['Entrypoint'],'cpu_shares':info['HostConfig']['CpuShares'],'network':info['HostConfig']['NetworkMode']}
+ original=snapshot('created_not_started','image_version.txt')
+ call(['start',name]);snapshot('started_before_any_exec')
+ execute('true');snapshot('after_login_shell_only')
+ execute('python -c pass');snapshot('after_python_startup_only')
+ expected=json.loads((run/'inputs'/task['instance_id']/'base_expected.json').read_text())['sha256']
+ execute('cat > /tmp/phase4_expected.json',json.dumps(expected).encode())
+ check="import hashlib,json,pathlib; e=json.load(open('/tmp/phase4_expected.json')); print(json.dumps({p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() if pathlib.Path(p).is_file() else None for p in e}))"
+ observed=json.loads(execute('python -c '+shlex.quote(check)))
+ store['preflight_mismatches']=[{'file':p,'archive_sha256':expected[p],'image_sha256':observed[p]} for p in expected if expected[p]!=observed[p]]
+ snapshot('after_identical_read_only_source_check')
+ blob=execute('git show '+shlex.quote(task['base_commit']+':'+target))
+ (out/'git_base_blob.txt').write_bytes(blob)
+ store['git_base_blob_sha256']=hashlib.sha256(blob).hexdigest()
+ store['image_head']=execute('git rev-parse HEAD').decode().strip()
+ store['git_status_before']=execute('git status --porcelain -- '+target).decode()
+ archive_raw=execute('git archive --format=tar '+shlex.quote(task['base_commit'])+' '+target)
+ with tarfile.open(fileobj=io.BytesIO(archive_raw)) as stream:
+  archived=stream.extractfile(target).read()
+ (out/'reproduced_git_archive_version.txt').write_bytes(archived)
+ store['reproduced_git_archive_sha256']=hashlib.sha256(archived).hexdigest()
+ store['reproduced_git_archive_matches_frozen']=archived==(out/'archive_version.txt').read_bytes()
+ archive_path=Path('/home/sankalp/cg_repos/task_archives')/(task['instance_id']+'.tar')
+ with tarfile.open(archive_path) as tar:
+  module='lib/matplotlib/tests/test_afm.py'
+  source=tar.extractfile('testbed/'+module).read().decode()
+  functions=[n.name for n in ast.parse(source).body if isinstance(n,(ast.FunctionDef,ast.AsyncFunctionDef)) and n.name.startswith('test')]
+  assert functions
+  identity=module+'::'+functions[0]
+ before=inventory();snapshot('before_native_collection')
+ request={'runner':'pytest','ids':[identity],'module_timeout_s':120,'budget_s':120,'prior_elapsed_s':0}
+ for path,data in (('/tmp/verifier_collect_request.json',json.dumps(request)),('/tmp/verifier_collect_driver.py',_NATIVE_DRIVER),('/tmp/verifier_collect_plugin.py',_PYTEST_PLUGIN)):
+  execute('cat > '+path,data.encode())
+ receipt=execute('python /tmp/verifier_collect_driver.py',timeout=150)
+ (out/'native_collection.json').write_bytes(receipt)
+ parsed=json.loads(receipt);assert parsed['tests_executed']==0
+ snapshot('after_native_collection')
+ after=inventory()
+ store['native_collection']={'diagnostic_only':True,'original_controlled_selection_empty':True,'module':module,'probe_id':identity,'tests_executed':0,'groups':parsed['groups'],'status':{k:{f:v.get(f) for f in ('completed','returncode','collection_status','reason')} for k,v in parsed['ids'].items()}}
+ store['tracked_python_source_changes_during_collection']=[{'file':p,'before':before.get(p),'after':after.get(p)} for p in sorted(before.keys()|after.keys()) if before.get(p)!=after.get(p)]
+ store['tracked_python_files_hashed_before']=len(before);store['tracked_python_files_hashed_after']=len(after)
+ store['git_status_after']=execute('git status --porcelain -- '+target).decode()
+ diff=''.join(difflib.unified_diff((out/'archive_version.txt').read_text().splitlines(True),original.decode().splitlines(True),fromfile='frozen archive/lib/matplotlib/_version.py',tofile='pristine pinned image/lib/matplotlib/_version.py'))
+ (out/'archive_vs_image.diff').write_text(diff)
+ print(diff)
+finally:
+ p=subprocess.run(['docker','rm','-f',name],stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=clean_env(),timeout=30)
+ store.update(stages=stages,commands=commands,container_removed=p.returncode==0,executor_tests_run=0,controlled_run_restarted=False,completed_task_outcomes_read=False)
+ (out/'throwaway_reproduction.json').write_text(json.dumps(store,indent=2)+'\n')
+ print(json.dumps({'stages':stages,'native_collection':store.get('native_collection'),'changed_python_files':store.get('tracked_python_source_changes_during_collection'),'git_archive_reproduced':store.get('reproduced_git_archive_matches_frozen'),'container_removed':p.returncode==0},indent=2))

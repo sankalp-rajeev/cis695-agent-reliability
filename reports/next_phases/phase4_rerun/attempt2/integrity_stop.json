@@ -1,0 +1,462 @@
+{
+  "status": "ABORTED_INTEGRITY",
+  "analysis_gate": "all six original native FAIL tasks retain FAIL evidence",
+  "retained_tasks": 5,
+  "required_tasks": 6,
+  "executor_bug": true,
+  "aggregate_analysis_stopped": true,
+  "missing_task": "django__django-14631",
+  "known_witness": "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled",
+  "tree_receipts": {
+    "base": {
+      "path": "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/runs/phase4_v2_attempt2_20261107T223159Z/tasks/django__django-14631/base.json",
+      "sha256": "6e3f27a1540400315595183dea1896cf8b6ecb319815d79c7ed3268ed9c102c4",
+      "witness": {
+        "test_id": "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled",
+        "status": "collection_error",
+        "duration_s": 0.0,
+        "message": "collection_error: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled: Traceback (most recent call last):\n  File \"/tmp/verifier_django_collect.py\", line 18, in <module>\n    params = inspect.signature(runner.setup).parameters\nAttributeError: module 'runtests' has no attribute 'setup'\n",
+        "elapsed_s": 0.0
+      },
+      "validation": {
+        "selected_id": "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled",
+        "category": "runnable_test",
+        "runnable_ids": [],
+        "reason": "collection_error",
+        "owner": "tests.forms_tests.tests.test_forms.FormsTestCase",
+        "owner_is_testcase": true,
+        "decorators": [],
+        "expanded": false,
+        "stage": "native",
+        "message": "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled: Traceback (most recent call last):\n  File \"/tmp/verifier_django_collect.py\", line 18, in <module>\n    params = inspect.signature(runner.setup).parameters\nAttributeError: module 'runtests' has no attribute 'setup'\n",
+        "invalid_instances": [
+          [
+            "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled",
+            "collection_error"
+          ]
+        ],
+        "static_reason": "",
+        "native_disagrees": true,
+        "owner_instances": [],
+        "unavailable": true,
+        "failure_status": "COLLECTION_ERROR",
+        "elapsed_s": 0.0,
+        "valid": false,
+        "validation_status": "COLLECTION_ERROR",
+        "expansion_count": 0,
+        "admitted": false,
+        "admitted_instances": 0
+      },
+      "selected_status_counts": {
+        "collection_error": 4462,
+        "invalid_id": 6
+      },
+      "execution_event_count": 0,
+      "execution_identity_count": 0,
+      "raw_result_count": 0,
+      "timed_out": false,
+      "duration_s": 30.594538418998127,
+      "budget_s": 1800,
+      "native_collection_groups": 96,
+      "validation_evidence": "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/runs/phase4_v2_attempt2_20261107T223159Z/tasks/django__django-14631/raw/base_validation_3d895872561d4b7a85d4ca0faf19e86f/validation.json"
+    },
+    "patched": {
+      "path": "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/runs/phase4_v2_attempt2_20261107T223159Z/tasks/django__django-14631/patched.json",
+      "sha256": "a547b7505bef6e17235f91c54f778c2954293fb0b47bb6112bcf250e7de1fd10",
+      "witness": {
+        "test_id": "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled",
+        "status": "collection_error",
+        "duration_s": 0.0,
+        "message": "collection_error: tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled: Traceback (most recent call last):\n  File \"/tmp/verifier_django_collect.py\", line 18, in <module>\n    params = inspect.signature(runner.setup).parameters\nAttributeError: module 'runtests' has no attribute 'setup'\n",
+        "elapsed_s": 0.0
+      },
+      "validation": {
+        "selected_id": "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled",
+        "category": "runnable_test",
+        "runnable_ids": [],
+        "reason": "collection_error",
+        "owner": "tests.forms_tests.tests.test_forms.FormsTestCase",
+        "owner_is_testcase": true,
+        "decorators": [],
+        "expanded": false,
+        "stage": "native",
+        "message": "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled: Traceback (most recent call last):\n  File \"/tmp/verifier_django_collect.py\", line 18, in <module>\n    params = inspect.signature(runner.setup).parameters\nAttributeError: module 'runtests' has no attribute 'setup'\n",
+        "invalid_instances": [
+          [
+            "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled",
+            "collection_error"
+          ]
+        ],
+        "static_reason": "",
+        "native_disagrees": true,
+        "owner_instances": [],
+        "unavailable": true,
+        "failure_status": "COLLECTION_ERROR",
+        "elapsed_s": 0.0,
+        "valid": false,
+        "validation_status": "COLLECTION_ERROR",
+        "expansion_count": 0,
+        "admitted": false,
+        "admitted_instances": 0
+      },
+      "selected_status_counts": {
+        "collection_error": 4462,
+        "invalid_id": 6
+      },
+      "execution_event_count": 0,
+      "execution_identity_count": 0,
+      "raw_result_count": 0,
+      "timed_out": false,
+      "duration_s": 30.078526091005187,
+      "budget_s": 1800,
+      "native_collection_groups": 96,
+      "validation_evidence": "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/runs/phase4_v2_attempt2_20261107T223159Z/tasks/django__django-14631/raw/patched_validation_a1ae8feef52348c9af0e7f4d66397f02/validation.json"
+    }
+  },
+  "base_commit": "84400d2e9db7c51fee4e9bb04c028f665b8e7624",
+  "base_archive_sha256": "f705aef70b484877d0ead66e3c957bfc13fda0e598ae2ba82b43c13fb0b11755",
+  "base_runtests_sha256": "c637e819144aa5af27743ff372387eea7ffe8160e1ba13b379310d84f49dd0ac",
+  "base_runtests_AST_functions": [
+    {
+      "name": "get_test_modules",
+      "line": 114,
+      "arguments": "gis_enabled"
+    },
+    {
+      "name": "get_label_module",
+      "line": 146,
+      "arguments": "label"
+    },
+    {
+      "name": "get_filtered_test_modules",
+      "line": 162,
+      "arguments": "start_at, start_after, gis_enabled, test_labels=None"
+    },
+    {
+      "name": "setup_collect_tests",
+      "line": 200,
+      "arguments": "start_at, start_after, test_labels=None"
+    },
+    {
+      "name": "teardown_collect_tests",
+      "line": 262,
+      "arguments": "state"
+    },
+    {
+      "name": "get_installed",
+      "line": 268,
+      "arguments": ""
+    },
+    {
+      "name": "get_apps_to_install",
+      "line": 274,
+      "arguments": "test_modules"
+    },
+    {
+      "name": "setup_run_tests",
+      "line": 286,
+      "arguments": "verbosity, start_at, start_after, test_labels=None"
+    },
+    {
+      "name": "teardown_run_tests",
+      "line": 317,
+      "arguments": "state"
+    },
+    {
+      "name": "actual_test_processes",
+      "line": 328,
+      "arguments": "parallel"
+    },
+    {
+      "name": "django_tests",
+      "line": 353,
+      "arguments": "verbosity, interactive, failfast, keepdb, reverse, test_labels, debug_sql, parallel, tags, exclude_tags, test_name_patterns, start_at, start_after, pdb, buffer, timing, shuffle"
+    },
+    {
+      "name": "collect_test_modules",
+      "line": 390,
+      "arguments": "start_at, start_after"
+    },
+    {
+      "name": "get_subprocess_args",
+      "line": 396,
+      "arguments": "options"
+    },
+    {
+      "name": "bisect_tests",
+      "line": 418,
+      "arguments": "bisection_label, options, test_labels, start_at, start_after"
+    },
+    {
+      "name": "paired_tests",
+      "line": 467,
+      "arguments": "paired_test, options, test_labels, start_at, start_after"
+    }
+  ],
+  "collector_source": "src/reliability/verifier/collection.py:57",
+  "collector_source_sha256": "e37c760a601701085246a4a4eba0e87ca6e755d18fbc8ed3a88a31cb3c72381e",
+  "cause": "Native Django collection unconditionally accesses runner.setup; this task's Django 4.0 base exposes setup_run_tests/setup_collect_tests instead. Every runnable ID is blocked before execution on both trees.",
+  "candidate_patch_touches_runtests": false,
+  "candidate_patch_headers": [
+    "diff --git a/django/forms/boundfield.py b/django/forms/boundfield.py",
+    "diff --git a/django/forms/forms.py b/django/forms/forms.py"
+  ],
+  "original_FAIL_evidence_file": "reports/next_phases/phase3_fix2/native_FAIL_evidence.csv",
+  "original_FAIL_witness_rows": [
+    {
+      "instance_id": "django__django-14631",
+      "concrete_test_id": "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled",
+      "base": "passed",
+      "patched": "failed",
+      "outcome": "REGRESSION",
+      "base_evidence": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-14631/v2/raw/base_a114daf1e01a4319a117be9c2bb02a79/runner.raw:77",
+      "patched_evidence": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-14631/v2/raw/patched_4e2bdfd303374b1685f70e7c59adde2e/runner.raw:77"
+    }
+  ],
+  "all_six_integrity_checks": {
+    "django__django-12209": {
+      "signals": {
+        "C_invalid_excluded": "FAIL",
+        "C_invalid_missing": "FAIL",
+        "S_invalid_excluded": "FAIL",
+        "S_invalid_missing": "FAIL"
+      },
+      "original_witnesses": [
+        "tests/basic/tests.py::ModelInstanceCreationTests::test_save_primary_with_default"
+      ],
+      "stable_regression_candidates": [
+        "tests/basic/tests.py::ModelInstanceCreationTests::test_save_primary_with_default"
+      ],
+      "confirmation_summary": [
+        {
+          "candidate_id": "tests/basic/tests.py::ModelInstanceCreationTests::test_save_primary_with_default",
+          "initial_outcome": "REGRESSION",
+          "stable": true,
+          "base_PASS": 3,
+          "patched_non_PASS": 3,
+          "base_statuses": [
+            "passed",
+            "passed",
+            "passed"
+          ],
+          "patched_statuses": [
+            "failed",
+            "failed",
+            "failed"
+          ],
+          "attempts_per_tree": 3
+        }
+      ],
+      "original_FAIL_evidence_retained": true,
+      "result_path": "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/runs/phase4_v2_attempt2_20261107T223159Z/tasks/django__django-12209/result.json",
+      "result_sha256": "edc5550d7c1d3cddb449eed7c6d18fecf98ece3afaead19cda7f0960ff950939"
+    },
+    "django__django-14140": {
+      "signals": {
+        "C_invalid_excluded": "FAIL",
+        "C_invalid_missing": "FAIL",
+        "S_invalid_excluded": "FAIL",
+        "S_invalid_missing": "FAIL"
+      },
+      "original_witnesses": [
+        "tests/queries/test_q.py::QTests::test_deconstruct",
+        "tests/queries/test_q.py::QTests::test_deconstruct_negated"
+      ],
+      "stable_regression_candidates": [
+        "tests/queries/test_q.py::QTests::test_deconstruct",
+        "tests/queries/test_q.py::QTests::test_deconstruct_negated"
+      ],
+      "confirmation_summary": [
+        {
+          "candidate_id": "tests/queries/test_q.py::QTests::test_deconstruct",
+          "initial_outcome": "REGRESSION",
+          "stable": true,
+          "base_PASS": 3,
+          "patched_non_PASS": 3,
+          "base_statuses": [
+            "passed",
+            "passed",
+            "passed"
+          ],
+          "patched_statuses": [
+            "failed",
+            "failed",
+            "failed"
+          ],
+          "attempts_per_tree": 3
+        },
+        {
+          "candidate_id": "tests/queries/test_q.py::QTests::test_deconstruct_negated",
+          "initial_outcome": "REGRESSION",
+          "stable": true,
+          "base_PASS": 3,
+          "patched_non_PASS": 3,
+          "base_statuses": [
+            "passed",
+            "passed",
+            "passed"
+          ],
+          "patched_statuses": [
+            "failed",
+            "failed",
+            "failed"
+          ],
+          "attempts_per_tree": 3
+        }
+      ],
+      "original_FAIL_evidence_retained": true,
+      "result_path": "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/runs/phase4_v2_attempt2_20261107T223159Z/tasks/django__django-14140/result.json",
+      "result_sha256": "da942e8cce0a9b4ef2e7c9085bab00d86320335284aeb17f75237f409c8b612c"
+    },
+    "django__django-14631": {
+      "signals": {
+        "C_invalid_excluded": "NOT_AVAILABLE",
+        "C_invalid_missing": "NOT_AVAILABLE",
+        "S_invalid_excluded": "NOT_AVAILABLE",
+        "S_invalid_missing": "NOT_AVAILABLE"
+      },
+      "original_witnesses": [
+        "tests/forms_tests/tests/test_forms.py::FormsTestCase::test_datetime_clean_initial_callable_disabled"
+      ],
+      "stable_regression_candidates": [],
+      "confirmation_summary": [],
+      "original_FAIL_evidence_retained": false,
+      "result_path": "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/runs/phase4_v2_attempt2_20261107T223159Z/tasks/django__django-14631/result.json",
+      "result_sha256": "e8fad8a218f098f12a66b8fdeec742602098f5c601fa70b8c7ddfa929dbe22fb"
+    },
+    "matplotlib__matplotlib-25479": {
+      "signals": {
+        "C_invalid_excluded": "FAIL",
+        "C_invalid_missing": "FAIL",
+        "S_invalid_excluded": "FAIL",
+        "S_invalid_missing": "FAIL"
+      },
+      "original_witnesses": [
+        "lib/matplotlib/tests/test_colors.py::test_register_cmap"
+      ],
+      "stable_regression_candidates": [
+        "lib/matplotlib/tests/test_colors.py::test_register_cmap"
+      ],
+      "confirmation_summary": [
+        {
+          "candidate_id": "lib/matplotlib/tests/test_colors.py::test_register_cmap",
+          "initial_outcome": "REGRESSION",
+          "stable": true,
+          "base_PASS": 3,
+          "patched_non_PASS": 3,
+          "base_statuses": [
+            "passed",
+            "passed",
+            "passed"
+          ],
+          "patched_statuses": [
+            "failed",
+            "failed",
+            "failed"
+          ],
+          "attempts_per_tree": 3
+        }
+      ],
+      "original_FAIL_evidence_retained": true,
+      "result_path": "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/runs/phase4_v2_attempt2_20261107T223159Z/tasks/matplotlib__matplotlib-25479/result.json",
+      "result_sha256": "ce055e29198ef8e91bf432e87bb8b54005ec90e1730eef6459e6bc73ca125fd4"
+    },
+    "pytest-dev__pytest-5809": {
+      "signals": {
+        "C_invalid_excluded": "FAIL",
+        "C_invalid_missing": "FAIL",
+        "S_invalid_excluded": "FAIL",
+        "S_invalid_missing": "FAIL"
+      },
+      "original_witnesses": [
+        "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+      ],
+      "stable_regression_candidates": [
+        "testing/test_pastebin.py::TestPaste::test_create_new_paste"
+      ],
+      "confirmation_summary": [
+        {
+          "candidate_id": "testing/test_pastebin.py::TestPaste::test_create_new_paste",
+          "initial_outcome": "REGRESSION",
+          "stable": true,
+          "base_PASS": 3,
+          "patched_non_PASS": 3,
+          "base_statuses": [
+            "passed",
+            "passed",
+            "passed"
+          ],
+          "patched_statuses": [
+            "failed",
+            "failed",
+            "failed"
+          ],
+          "attempts_per_tree": 3
+        }
+      ],
+      "original_FAIL_evidence_retained": true,
+      "result_path": "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/runs/phase4_v2_attempt2_20261107T223159Z/tasks/pytest-dev__pytest-5809/result.json",
+      "result_sha256": "1f4020755445bb8967a1b1e58d19ed99f90b76a8e688d46000b7d929fb1c18d0"
+    },
+    "sphinx-doc__sphinx-10435": {
+      "signals": {
+        "C_invalid_excluded": "FAIL",
+        "C_invalid_missing": "FAIL",
+        "S_invalid_excluded": "FAIL",
+        "S_invalid_missing": "FAIL"
+      },
+      "original_witnesses": [
+        "tests/test_build_latex.py::test_latex_code_role"
+      ],
+      "stable_regression_candidates": [
+        "tests/test_build_latex.py::test_latex_code_role"
+      ],
+      "confirmation_summary": [
+        {
+          "candidate_id": "tests/test_build_latex.py::test_latex_code_role",
+          "initial_outcome": "REGRESSION",
+          "stable": true,
+          "base_PASS": 3,
+          "patched_non_PASS": 3,
+          "base_statuses": [
+            "passed",
+            "passed",
+            "passed"
+          ],
+          "patched_statuses": [
+            "failed",
+            "failed",
+            "failed"
+          ],
+          "attempts_per_tree": 3
+        }
+      ],
+      "original_FAIL_evidence_retained": true,
+      "result_path": "/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/runs/phase4_v2_attempt2_20261107T223159Z/tasks/sphinx-doc__sphinx-10435/result.json",
+      "result_sha256": "3bc572d99fe4b718e3a3f428e0d413376251eab84ecc00258aee5956e7ca1c95"
+    }
+  },
+  "existing_capture_manifest_verified": true,
+  "raw_capture_files_unchanged": true,
+  "aggregate_metrics_computed": false,
+  "correctness_labels_read": false,
+  "attempt1_outcomes_read": false,
+  "new_runtime_calls": 0,
+  "code_modified": false,
+  "phase4_run_sealed_tag_created": false,
+  "required_followup": "Label-free executor repair and tests, a new executor freeze tag, and a fresh controlled run from task 1; never move old tags or selectively retry this task.",
+  "pristine_source_receipt": {
+    "path": "runs/phase4_v2_attempt2_20261107T223159Z/tasks/django__django-14631/pristine_source_receipt.json",
+    "status": "VERIFIED",
+    "tests/runtests.py": {
+      "path": "tests/runtests.py",
+      "archive_sha256": "c637e819144aa5af27743ff372387eea7ffe8160e1ba13b379310d84f49dd0ac",
+      "observed_sha256": "c637e819144aa5af27743ff372387eea7ffe8160e1ba13b379310d84f49dd0ac",
+      "error": "",
+      "export_subst": false,
+      "accepted_export_subst_difference": false,
+      "accepted_pre_install_difference": false,
+      "reason": ""
+    }
+  }
+}

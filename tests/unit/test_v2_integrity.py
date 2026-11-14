@@ -133,7 +133,12 @@ def test_raw_selected_disagreement_blocks_silent_last_write_pass():
     assert any('conflict' in r for r in completeness_of(('t',),b,b)[1])
 
 
-def test_capture_retains_undecodable_bytes_and_cache_roundtrips(tmp_path):
+def test_capture_retains_undecodable_bytes_and_cache_roundtrips(tmp_path, monkeypatch):
+    from reliability.verifier.collection import ValidationPass
+    from reliability.verifier.id_validation import IDValidation
+    monkeypatch.setattr('reliability.verifier.container.validate_in_container',
+        lambda container, tests, runner, **kwargs: ValidationPass(tuple(
+            IDValidation(t, 'runnable_test', (t,)) for t in tests)))
     raw = b't.py::a PASSED\n\xff'
     events = b'{"event":"start","batch":1}\n{"event":"end","batch":1,"returncode":0}\n{"event":"complete"}\n'
     class Container:
@@ -148,7 +153,7 @@ def test_capture_retains_undecodable_bytes_and_cache_roundtrips(tmp_path):
         ('t.py::a',),patched=False,timeout_s=1)
     assert result.evidence_complete
     assert base64.b64decode(result.raw_stdout_b64) == raw
-    assert (next(tmp_path.iterdir())/'stdout.raw').read_bytes() == raw
+    assert Path(result.evidence_files['stdout.raw']).read_bytes() == raw
     restored = run_from_dict(json.loads(json.dumps(run_to_dict(result))))
     assert restored == result
     events = b'not-json\n'
@@ -187,7 +192,9 @@ def test_driver_streams_raw_bytes_before_runner_finishes(tmp_path):
         assert proc.returncode==0,stderr
         assert stdout==log.read_bytes()
         events=[json.loads(s) for s in (tmp_path/'verifier_events.jsonl').read_text().splitlines()]
-        assert events[-1]=={'event':'complete'}
+        assert events[-1]['event']=='complete'
+        assert events[-1]['budget_s']==1800
+        assert events[-1]['timed_out'] is False
         assert events[1]['returncode']==0
         assert events[1]['offset']==len(stdout)
     finally:

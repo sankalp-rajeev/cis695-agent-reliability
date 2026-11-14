@@ -1,0 +1,163 @@
+{
+  "command": "env HF_DATASETS_CACHE=/tmp/fix15_hf_datasets HF_HUB_OFFLINE=1 HF_DATASETS_OFFLINE=1 bash scripts/test.sh tests/unit --junitxml=/tmp/fix16_final_unit.xml",
+  "summary": "6 failed, 1339 passed, 6 skipped, 17 errors in 42.90s",
+  "counts": {
+    "failed": 6,
+    "errors": 17,
+    "skipped": 6,
+    "passed": 1339
+  },
+  "focus_modules": {
+    "test_fix16_executor_health": {
+      "passed": 44,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "test_loader": {
+      "passed": 10,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "test_no_leakage": {
+      "passed": 7,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "test_sampler": {
+      "passed": 21,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "test_v2_scg_paired": {
+      "passed": 47,
+      "failed": 2,
+      "errors": 17,
+      "skipped": 0
+    }
+  },
+  "remaining_failures_and_errors": [
+    {
+      "status": "FAILED",
+      "test": "tests/unit/test_selection_ground_truth.py::test_django_16899_selects_admin_checks",
+      "reason": "Missing pre-existing tests/fixtures/base_trees/django__django-16899.patch fixture."
+    },
+    {
+      "status": "FAILED",
+      "test": "tests/unit/test_superseded_shadow.py::test_kernel_blocks_actual_file_access_in_classifier_process",
+      "reason": "Kernel 5.15 exposes Landlock ABI 1, below required ABI 4; isolated classifier abstains."
+    },
+    {
+      "status": "FAILED",
+      "test": "tests/unit/test_superseded_shadow_v2.py::test_v2_worker_still_cannot_open_oracle_files",
+      "reason": "Kernel 5.15 exposes Landlock ABI 1, below required ABI 4; isolated classifier abstains."
+    },
+    {
+      "status": "FAILED",
+      "test": "tests/unit/test_superseded_shadow_v2.py::test_only_one_extra_base_reuses_patch_confirmation_and_preserves_signal",
+      "reason": "Kernel 5.15 exposes Landlock ABI 1, below required ABI 4; isolated classifier abstains."
+    },
+    {
+      "status": "FAILED",
+      "test": "tests/unit/test_v2_scg_paired.py::test_frozen_configuration_defaults_are_unchanged",
+      "reason": "Historical V2 expectation is the old four-field 300/600 configuration; current verifier has six fields and 1800/3600 budgets."
+    },
+    {
+      "status": "FAILED",
+      "test": "tests/unit/test_v2_scg_paired.py::test_archived_v2_inputs_are_portable_without_changing_frozen_policy",
+      "reason": "Historical V2 freeze rejects changed verifier source hashes before synthetic fixture preparation; historical integrity checks remain enforced."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_all_83_have_one_manifest_per_arm_and_original_identity",
+      "reason": "Historical V2 freeze rejects changed verifier source hashes before synthetic fixture preparation; historical integrity checks remain enforced."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_seal_catches_all_input_classes[selection]",
+      "reason": "Historical V2 freeze rejects changed verifier source hashes before synthetic fixture preparation; historical integrity checks remain enforced."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_seal_catches_all_input_classes[source]",
+      "reason": "Historical V2 freeze rejects changed verifier source hashes before synthetic fixture preparation; historical integrity checks remain enforced."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_seal_catches_all_input_classes[protocol]",
+      "reason": "Historical V2 freeze rejects changed verifier source hashes before synthetic fixture preparation; historical integrity checks remain enforced."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_seal_catches_all_input_classes[snapshot]",
+      "reason": "Historical V2 freeze rejects changed verifier source hashes before synthetic fixture preparation; historical integrity checks remain enforced."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_seal_catches_all_input_classes[image_binding]",
+      "reason": "Historical V2 freeze rejects changed verifier source hashes before synthetic fixture preparation; historical integrity checks remain enforced."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_resealed_selection_cannot_bypass_protocol_bound_inputs",
+      "reason": "Historical V2 freeze rejects changed verifier source hashes before synthetic fixture preparation; historical integrity checks remain enforced."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_source_drift_detected_without_container",
+      "reason": "Historical V2 freeze rejects changed verifier source hashes before synthetic fixture preparation; historical integrity checks remain enforced."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_end_to_end_scoped_dry_run_accounts_for_both_abstentions",
+      "reason": "Historical V2 freeze rejects changed verifier source hashes before synthetic fixture preparation; historical integrity checks remain enforced."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_host_drift_blocks_launch_after_freeze",
+      "reason": "Historical V2 freeze rejects changed verifier source hashes before synthetic fixture preparation; historical integrity checks remain enforced."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_binding_inventory_has_all_83_historical_records_unchanged",
+      "reason": "Historical V2 freeze rejects changed verifier source hashes before synthetic fixture preparation; historical integrity checks remain enforced."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_validation_detects_image_drift_before_plan_creation",
+      "reason": "Historical V2 freeze rejects changed verifier source hashes before synthetic fixture preparation; historical integrity checks remain enforced."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_validation_detects_docker_daemon_drift",
+      "reason": "Historical V2 freeze rejects changed verifier source hashes before synthetic fixture preparation; historical integrity checks remain enforced."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_resealed_binding_still_bound_to_protocol",
+      "reason": "Historical V2 freeze rejects changed verifier source hashes before synthetic fixture preparation; historical integrity checks remain enforced."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_new_freeze_binds_host_images_for_all_83_without_rewriting_history[host-images]",
+      "reason": "Historical V2 freeze rejects changed verifier source hashes before synthetic fixture preparation; historical integrity checks remain enforced."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_image_inspection_error_blocks_preparation",
+      "reason": "Historical V2 freeze rejects changed verifier source hashes before synthetic fixture preparation; historical integrity checks remain enforced."
+    },
+    {
+      "status": "ERROR",
+      "test": "tests/unit/test_v2_scg_paired.py::test_image_binding_cannot_change_task_cohort",
+      "reason": "Historical V2 freeze rejects changed verifier source hashes before synthetic fixture preparation; historical integrity checks remain enforced."
+    }
+  ],
+  "same_preexisting_failure_and_error_set": true,
+  "raw_log_sha256": "34eb555cf97e1477b7aa717c01afca3f1238adf0f02900d8ddab739c8bfba00c",
+  "compressed_log_sha256": "5e1566b7a41f5f81db6eb989e9411e2218ab45ef11d208c2b0db9566b22ca0cb",
+  "junit_xml_sha256": "ff42050d99a0aaa299b913f4e1cff5aad8e870eae520e5900a56da5d19ea16b0"
+}

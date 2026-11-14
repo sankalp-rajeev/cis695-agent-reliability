@@ -1,0 +1,1961 @@
+{
+  "tasks": 35,
+  "repositories": {
+    "astropy/astropy": 4,
+    "django/django": 31
+  },
+  "scope": "archive source, initial source-check metadata and result-file existence only; no outcome contents read",
+  "tasks_audited": [
+    {
+      "task": "astropy__astropy-13977",
+      "repo": "astropy/astropy",
+      "version_sources": [
+        {
+          "path": "astropy/_dev/scm_version.py",
+          "sha256": "44e9551cbd95d73ff0c480b6c01e45cb582a444b182fb7e375cd62133fe194ba",
+          "bytes": 359,
+          "initial_guard_included": true,
+          "header": [
+            "# Try to use setuptools_scm to get the current version; this is only used",
+            "# in development installations from the git repository.",
+            "import os.path as pth",
+            "",
+            "try:",
+            "    from setuptools_scm import get_version",
+            "",
+            "    version = get_version(root=pth.join(\"..\", \"..\"), relative_to=__file__)",
+            "except Exception:",
+            "    raise ImportError(\"setuptools_scm broken or not installed\")"
+          ]
+        },
+        {
+          "path": "astropy/version.py",
+          "sha256": "06178ec181388c9f14a79e030cc36d36c5954210c077a2c462fa32cbebd4d684",
+          "bytes": 984,
+          "initial_guard_included": true,
+          "header": [
+            "# NOTE: First try _dev.scm_version if it exists and setuptools_scm is installed",
+            "# This file is not included in astropy wheels/tarballs, so otherwise it will",
+            "# fall back on the generated _version module.",
+            "try:",
+            "    try:",
+            "        from ._dev.scm_version import version",
+            "    except ImportError:",
+            "        from ._version import version",
+            "except Exception:",
+            "    import warnings",
+            "",
+            "    warnings.warn("
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "pyproject.toml",
+          "hits": [
+            {
+              "line": 3,
+              "text": "            \"setuptools_scm>=6.2\","
+            },
+            {
+              "line": 10,
+              "text": "[tool.setuptools_scm]"
+            },
+            {
+              "line": 11,
+              "text": "write_to = \"astropy/_version.py\""
+            }
+          ]
+        },
+        {
+          "path": "astropy/__init__.py",
+          "hits": [
+            {
+              "line": 12,
+              "text": "from .version import version as __version__"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 934,
+        "configs_restored": [
+          "pyproject.toml"
+        ],
+        "archive_sha256": "1f6604aec29c5bb012035f5b5778602eb4a3d645a43a5bda607ba6f4e2946248",
+        "base_commit_metadata": "5250b2442501e6c671c6b380536f1edb352602d1",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false,
+      "ignored_generated_version_source": {
+        "task": "astropy__astropy-13977",
+        "repo": "astropy/astropy",
+        "version_source": "astropy/_version.py",
+        "role": "image-build-generated, ignored source",
+        "archive_sha256": null,
+        "image_start_sha256": "17b8dc1109d0a0789b95bd66ab6d56d77ef76d47755d8e6e30afcc967e87f204",
+        "initial_guard_included": false,
+        "native_source_snapshot_includes": false,
+        "post_collection_hash_recorded_in_controlled_run": false,
+        "diagnostic_collection_changed": false,
+        "completed_task_outcomes_read": false
+      },
+      "native_collection_probe_receipt": "astropy_generated/astropy__astropy-13977/receipt.json"
+    },
+    {
+      "task": "astropy__astropy-14365",
+      "repo": "astropy/astropy",
+      "version_sources": [
+        {
+          "path": "astropy/_dev/scm_version.py",
+          "sha256": "44e9551cbd95d73ff0c480b6c01e45cb582a444b182fb7e375cd62133fe194ba",
+          "bytes": 359,
+          "initial_guard_included": true,
+          "header": [
+            "# Try to use setuptools_scm to get the current version; this is only used",
+            "# in development installations from the git repository.",
+            "import os.path as pth",
+            "",
+            "try:",
+            "    from setuptools_scm import get_version",
+            "",
+            "    version = get_version(root=pth.join(\"..\", \"..\"), relative_to=__file__)",
+            "except Exception:",
+            "    raise ImportError(\"setuptools_scm broken or not installed\")"
+          ]
+        },
+        {
+          "path": "astropy/version.py",
+          "sha256": "06178ec181388c9f14a79e030cc36d36c5954210c077a2c462fa32cbebd4d684",
+          "bytes": 984,
+          "initial_guard_included": true,
+          "header": [
+            "# NOTE: First try _dev.scm_version if it exists and setuptools_scm is installed",
+            "# This file is not included in astropy wheels/tarballs, so otherwise it will",
+            "# fall back on the generated _version module.",
+            "try:",
+            "    try:",
+            "        from ._dev.scm_version import version",
+            "    except ImportError:",
+            "        from ._version import version",
+            "except Exception:",
+            "    import warnings",
+            "",
+            "    warnings.warn("
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "pyproject.toml",
+          "hits": [
+            {
+              "line": 3,
+              "text": "            \"setuptools_scm>=6.2\","
+            },
+            {
+              "line": 10,
+              "text": "[tool.setuptools_scm]"
+            },
+            {
+              "line": 11,
+              "text": "write_to = \"astropy/_version.py\""
+            }
+          ]
+        },
+        {
+          "path": "astropy/__init__.py",
+          "hits": [
+            {
+              "line": 12,
+              "text": "from .version import version as __version__"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 945,
+        "configs_restored": [
+          "pyproject.toml"
+        ],
+        "archive_sha256": "52c5b392a42c15f7a36dde4a000d39b75544e6297f2a34dfe49a5f80eeffdc60",
+        "base_commit_metadata": "7269fa3e33e8d02485a647da91a5a2a60a06af61",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false,
+      "ignored_generated_version_source": {
+        "task": "astropy__astropy-14365",
+        "repo": "astropy/astropy",
+        "version_source": "astropy/_version.py",
+        "role": "image-build-generated, ignored source",
+        "archive_sha256": null,
+        "image_start_sha256": "0135efa74dc40d38c91042007fdc816d8cc9024c2cf5825a336162bc6855ca6a",
+        "initial_guard_included": false,
+        "native_source_snapshot_includes": false,
+        "post_collection_hash_recorded_in_controlled_run": false,
+        "diagnostic_collection_changed": false,
+        "completed_task_outcomes_read": false
+      },
+      "native_collection_probe_receipt": "astropy_generated/astropy__astropy-14365/receipt.json"
+    },
+    {
+      "task": "astropy__astropy-14508",
+      "repo": "astropy/astropy",
+      "version_sources": [
+        {
+          "path": "astropy/_dev/scm_version.py",
+          "sha256": "44e9551cbd95d73ff0c480b6c01e45cb582a444b182fb7e375cd62133fe194ba",
+          "bytes": 359,
+          "initial_guard_included": true,
+          "header": [
+            "# Try to use setuptools_scm to get the current version; this is only used",
+            "# in development installations from the git repository.",
+            "import os.path as pth",
+            "",
+            "try:",
+            "    from setuptools_scm import get_version",
+            "",
+            "    version = get_version(root=pth.join(\"..\", \"..\"), relative_to=__file__)",
+            "except Exception:",
+            "    raise ImportError(\"setuptools_scm broken or not installed\")"
+          ]
+        },
+        {
+          "path": "astropy/version.py",
+          "sha256": "06178ec181388c9f14a79e030cc36d36c5954210c077a2c462fa32cbebd4d684",
+          "bytes": 984,
+          "initial_guard_included": true,
+          "header": [
+            "# NOTE: First try _dev.scm_version if it exists and setuptools_scm is installed",
+            "# This file is not included in astropy wheels/tarballs, so otherwise it will",
+            "# fall back on the generated _version module.",
+            "try:",
+            "    try:",
+            "        from ._dev.scm_version import version",
+            "    except ImportError:",
+            "        from ._version import version",
+            "except Exception:",
+            "    import warnings",
+            "",
+            "    warnings.warn("
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "pyproject.toml",
+          "hits": [
+            {
+              "line": 3,
+              "text": "            \"setuptools_scm>=6.2\","
+            },
+            {
+              "line": 10,
+              "text": "[tool.setuptools_scm]"
+            },
+            {
+              "line": 11,
+              "text": "write_to = \"astropy/_version.py\""
+            }
+          ]
+        },
+        {
+          "path": "astropy/__init__.py",
+          "hits": [
+            {
+              "line": 12,
+              "text": "from .version import version as __version__"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 944,
+        "configs_restored": [
+          "pyproject.toml"
+        ],
+        "archive_sha256": "b1aefb2d243c97a5d58dbe7e2c7a1c24cb74ea8c904f10852a6895e584d6c373",
+        "base_commit_metadata": "a3f4ae6cd24d5ecdf49f213d77b3513dd509a06c",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false,
+      "ignored_generated_version_source": {
+        "task": "astropy__astropy-14508",
+        "repo": "astropy/astropy",
+        "version_source": "astropy/_version.py",
+        "role": "image-build-generated, ignored source",
+        "archive_sha256": null,
+        "image_start_sha256": "94c07cfca1da97e8cb6640a250376a4256b3b931ac2eaaac406a17967f65a68e",
+        "initial_guard_included": false,
+        "native_source_snapshot_includes": false,
+        "post_collection_hash_recorded_in_controlled_run": false,
+        "diagnostic_collection_changed": false,
+        "completed_task_outcomes_read": false
+      },
+      "native_collection_probe_receipt": "astropy_generated/astropy__astropy-14508/receipt.json"
+    },
+    {
+      "task": "astropy__astropy-7606",
+      "repo": "astropy/astropy",
+      "version_sources": [],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "setup.py",
+          "hits": [
+            {
+              "line": 24,
+              "text": "from astropy_helpers.version_helpers import generate_version_py"
+            },
+            {
+              "line": 44,
+              "text": "# Freeze build information in version.py"
+            },
+            {
+              "line": 45,
+              "text": "generate_version_py(NAME, VERSION, RELEASE, get_debug_option(NAME),"
+            }
+          ]
+        },
+        {
+          "path": "astropy/__init__.py",
+          "hits": [
+            {
+              "line": 73,
+              "text": "    from .version import version as __version__"
+            },
+            {
+              "line": 78,
+              "text": "    from .version import githash as __githash__"
+            },
+            {
+              "line": 253,
+              "text": "        from .version import version as __version__"
+            },
+            {
+              "line": 258,
+              "text": "        from .version import githash as __githash__"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 720,
+        "configs_restored": [],
+        "archive_sha256": "16fc4feb03e118f4e9a95eaaeba3ae57cabe22a7307ef41a7b3c0f37185e5232",
+        "base_commit_metadata": "3cedd79e6c121910220f8e6df77c54a0b344ea94",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false,
+      "ignored_generated_version_source": {
+        "task": "astropy__astropy-7606",
+        "repo": "astropy/astropy",
+        "version_source": "astropy/version.py",
+        "role": "image-build-generated, ignored source",
+        "archive_sha256": null,
+        "image_start_sha256": "a009dfe815c092d642ad50d8af9f809a75b7e9b213e9642317f5e3f57ff703d9",
+        "initial_guard_included": false,
+        "native_source_snapshot_includes": false,
+        "post_collection_hash_recorded_in_controlled_run": false,
+        "diagnostic_collection_changed": false,
+        "completed_task_outcomes_read": false
+      },
+      "native_collection_probe_receipt": "astropy_generated/astropy__astropy-7606/receipt.json"
+    },
+    {
+      "task": "django__django-10973",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "ea23f4e10b4801cdd0c84116b2f2c0ac58bbe0d9aab48197d2f62d1db4c9c839",
+          "bytes": 3214,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "from distutils.version import LooseVersion",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version.",
+            "PY36 = sys.version_info >= (3, 6)"
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2536,
+        "configs_restored": [],
+        "archive_sha256": "e404015a3c65563474f8c0f8c0ca9b68adb2ba78c124484617e2ca5dc70c3caa",
+        "base_commit_metadata": "ddb293685235fd09e932805771ae97f72e817181",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-11095",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "ea23f4e10b4801cdd0c84116b2f2c0ac58bbe0d9aab48197d2f62d1db4c9c839",
+          "bytes": 3214,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "from distutils.version import LooseVersion",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version.",
+            "PY36 = sys.version_info >= (3, 6)"
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2547,
+        "configs_restored": [],
+        "archive_sha256": "82c797c818e9cfec24618214e23300f13bd7aea79b11f773e6417963ef26c67a",
+        "base_commit_metadata": "7d49ad76562e8c0597a0eb66046ab423b12888d8",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-11299",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "ea23f4e10b4801cdd0c84116b2f2c0ac58bbe0d9aab48197d2f62d1db4c9c839",
+          "bytes": 3214,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "from distutils.version import LooseVersion",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version.",
+            "PY36 = sys.version_info >= (3, 6)"
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2549,
+        "configs_restored": [],
+        "archive_sha256": "1f406b75f7eb1041c54bb1ae0bb5e3dc39d1a94ffd66f15deacb620e2f293b23",
+        "base_commit_metadata": "6866c91b638de5368c18713fa851bfe56253ea55",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-11820",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "95fe06de03a610187c3bc9a65a5deee99a048104796eaa9f9a687422f4c94ffd",
+          "bytes": 3219,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "from distutils.version import LooseVersion",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version.",
+            "PY36 = sys.version_info >= (3, 6)"
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2574,
+        "configs_restored": [],
+        "archive_sha256": "10c199c039524c63a6bacd7ae72c0b1c6e9625e6c006f948106e238e715ecdbc",
+        "base_commit_metadata": "c2678e49759e5c4c329bff0eeca2886267005d21",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-12209",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "95fe06de03a610187c3bc9a65a5deee99a048104796eaa9f9a687422f4c94ffd",
+          "bytes": 3219,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "from distutils.version import LooseVersion",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version.",
+            "PY36 = sys.version_info >= (3, 6)"
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2590,
+        "configs_restored": [],
+        "archive_sha256": "06653b4aed8604f85110d9190f8a6933cd6308b3eeaa3cab76e6b5707c47d06d",
+        "base_commit_metadata": "5a68f024987e6d16c2626a31bf653a2edddea579",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-12965",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "95fe06de03a610187c3bc9a65a5deee99a048104796eaa9f9a687422f4c94ffd",
+          "bytes": 3219,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "from distutils.version import LooseVersion",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version.",
+            "PY36 = sys.version_info >= (3, 6)"
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2620,
+        "configs_restored": [],
+        "archive_sha256": "f721ddedde9fd9bd15ec901592ca9c5d7f222162430bf153bd1e774ee8664836",
+        "base_commit_metadata": "437196da9a386bd4cc62b0ce3f2de4aba468613d",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-13023",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "95fe06de03a610187c3bc9a65a5deee99a048104796eaa9f9a687422f4c94ffd",
+          "bytes": 3219,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "from distutils.version import LooseVersion",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version.",
+            "PY36 = sys.version_info >= (3, 6)"
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2643,
+        "configs_restored": [],
+        "archive_sha256": "0b3e23fd17b2f1decc95ee743badb54e33aeb502e05f2282fc769f5ac5b486b4",
+        "base_commit_metadata": "f83b44075dafa429d59e8755aa47e15577cc49f9",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-13033",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "95fe06de03a610187c3bc9a65a5deee99a048104796eaa9f9a687422f4c94ffd",
+          "bytes": 3219,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "from distutils.version import LooseVersion",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version.",
+            "PY36 = sys.version_info >= (3, 6)"
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2644,
+        "configs_restored": [],
+        "archive_sha256": "234c251613841bdb25bdbd57b3785895b1b83368afdc30806b14677ddfbdc6b0",
+        "base_commit_metadata": "a59de6e89e8dc1f3e71c9a5a5bbceb373ea5247e",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-13158",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "95fe06de03a610187c3bc9a65a5deee99a048104796eaa9f9a687422f4c94ffd",
+          "bytes": 3219,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "from distutils.version import LooseVersion",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version.",
+            "PY36 = sys.version_info >= (3, 6)"
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2649,
+        "configs_restored": [],
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_commit_metadata": "7af8f4127397279d19ef7c7899e93018274e2f9b",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-13212",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "95fe06de03a610187c3bc9a65a5deee99a048104796eaa9f9a687422f4c94ffd",
+          "bytes": 3219,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "from distutils.version import LooseVersion",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version.",
+            "PY36 = sys.version_info >= (3, 6)"
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2670,
+        "configs_restored": [],
+        "archive_sha256": "3e249f2def29df7904f2a2f9a473809d810b17cbf84d3e015b7c481bb9350cd5",
+        "base_commit_metadata": "f4e93919e4608cfc50849a1f764fd856e0917401",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-13297",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "95fe06de03a610187c3bc9a65a5deee99a048104796eaa9f9a687422f4c94ffd",
+          "bytes": 3219,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "from distutils.version import LooseVersion",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version.",
+            "PY36 = sys.version_info >= (3, 6)"
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2675,
+        "configs_restored": [],
+        "archive_sha256": "4f499ef39fae21bfb9ce3eb9cbf2b3878158435323828e5e1a480e90aa810da4",
+        "base_commit_metadata": "8954f255bbf5f4ee997fd6de62cb50fc9b5dd697",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-13569",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "95fe06de03a610187c3bc9a65a5deee99a048104796eaa9f9a687422f4c94ffd",
+          "bytes": 3219,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "from distutils.version import LooseVersion",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version.",
+            "PY36 = sys.version_info >= (3, 6)"
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2681,
+        "configs_restored": [],
+        "archive_sha256": "4cdd836b256946adbb1dd644b70cf9ba6be0d69ddaffa6bacb6c70b96fbcef2c",
+        "base_commit_metadata": "257f8495d6c93e30ab0f52af4c488d7344bcf112",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-13786",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "95fe06de03a610187c3bc9a65a5deee99a048104796eaa9f9a687422f4c94ffd",
+          "bytes": 3219,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "from distutils.version import LooseVersion",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version.",
+            "PY36 = sys.version_info >= (3, 6)"
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2694,
+        "configs_restored": [],
+        "archive_sha256": "0a28ac27d65a544e84a282902c869dc79a9a81ff43530286bd94c9275baa2e26",
+        "base_commit_metadata": "bb64b99b78a579cb2f6178011a4cf9366e634438",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-13807",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "95fe06de03a610187c3bc9a65a5deee99a048104796eaa9f9a687422f4c94ffd",
+          "bytes": 3219,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "from distutils.version import LooseVersion",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version.",
+            "PY36 = sys.version_info >= (3, 6)"
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2694,
+        "configs_restored": [],
+        "archive_sha256": "1df71fcac3bfe08ab1daa97fabbb980d333f17b9d03647c6dac79a2249914a84",
+        "base_commit_metadata": "89fc144dedc737a79929231438f035b1d4a993c9",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-13820",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "95fe06de03a610187c3bc9a65a5deee99a048104796eaa9f9a687422f4c94ffd",
+          "bytes": 3219,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "from distutils.version import LooseVersion",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version.",
+            "PY36 = sys.version_info >= (3, 6)"
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2695,
+        "configs_restored": [],
+        "archive_sha256": "6d51cf33848f5709745d23ece414239cd8a82074f7bb349315f4f5a39d9203ed",
+        "base_commit_metadata": "98ad327864aed8df245fd19ea9d2743279e11643",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-14140",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "f7e54a9ab06713f0a3ec176673e0fde1ffe46c1651fe1dcd209b49b9aa1889e9",
+          "bytes": 3255,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "from distutils.version import LooseVersion",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version.",
+            "PY36 = sys.version_info >= (3, 6)"
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2689,
+        "configs_restored": [],
+        "archive_sha256": "861138861d1ac05775652e58978c26aea92a5c54a6aa2c14fbe8216d2ddf08ba",
+        "base_commit_metadata": "45814af6197cfd8f4dc72ee43b90ecde305a1d5a",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-14631",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "d926839f0d047ffcc4d94d0f634ed9e9d53cc7c04bfeb74423b73f0c851d829c",
+          "bytes": 3583,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "",
+            "from django.utils.regex_helper import _lazy_re_compile",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version."
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2701,
+        "configs_restored": [],
+        "archive_sha256": "f705aef70b484877d0ead66e3c957bfc13fda0e598ae2ba82b43c13fb0b11755",
+        "base_commit_metadata": "84400d2e9db7c51fee4e9bb04c028f665b8e7624",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-15037",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "18f6b92d18ab37ee6465f96e93b5a106220ce6345b3cf061be5ae3772701021c",
+          "bytes": 3532,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "",
+            "from django.utils.regex_helper import _lazy_re_compile",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version."
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2720,
+        "configs_restored": [],
+        "archive_sha256": "b0c2db0dc7c1f46d8b9ebb60d163085a0c53c44e574666c2acc5dc9911ec050d",
+        "base_commit_metadata": "dab48b7482295956973879d15bfd4d3bb0718772",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-15103",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "18f6b92d18ab37ee6465f96e93b5a106220ce6345b3cf061be5ae3772701021c",
+          "bytes": 3532,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "",
+            "from django.utils.regex_helper import _lazy_re_compile",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version."
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2726,
+        "configs_restored": [],
+        "archive_sha256": "effa38fed33a5b2fad179e9a23b6553d2b194fb2f4ffc5c8b8493d695ad4309d",
+        "base_commit_metadata": "dd528cb2cefc0db8b91a7ff0a2bc87305b976597",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-15278",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "18f6b92d18ab37ee6465f96e93b5a106220ce6345b3cf061be5ae3772701021c",
+          "bytes": 3532,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "",
+            "from django.utils.regex_helper import _lazy_re_compile",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version."
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2732,
+        "configs_restored": [],
+        "archive_sha256": "bac872228ee80da8e86cbcaf8c6126ec2c38e83b1dd0eefa12c80e714cf32db2",
+        "base_commit_metadata": "0ab58c120939093fea90822f376e1866fc714d1f",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-15375",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "18f6b92d18ab37ee6465f96e93b5a106220ce6345b3cf061be5ae3772701021c",
+          "bytes": 3532,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "",
+            "from django.utils.regex_helper import _lazy_re_compile",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version."
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2736,
+        "configs_restored": [],
+        "archive_sha256": "0b577e2cddc6e8166388fb88ffa5b787b2f72d76bde9d209c53ba30350897d71",
+        "base_commit_metadata": "beb7ddbcee03270e833b2f74927ccfc8027aa693",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-15499",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "5777dfdd20bd154a2766bf27a2f6113e72a8f1c74cf4275f06a3deca65cd3212",
+          "bytes": 3592,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "",
+            "from django.utils.regex_helper import _lazy_re_compile",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version."
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2745,
+        "configs_restored": [],
+        "archive_sha256": "24fd17768dab750beb3150b42b50d2bcc47e07f26e4bb8c7cbf2906914794680",
+        "base_commit_metadata": "d90e34c61b27fba2527834806639eebbcfab9631",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-15572",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "5777dfdd20bd154a2766bf27a2f6113e72a8f1c74cf4275f06a3deca65cd3212",
+          "bytes": 3592,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "",
+            "from django.utils.regex_helper import _lazy_re_compile",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version."
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2746,
+        "configs_restored": [],
+        "archive_sha256": "d93ff6be9297a2893a4f9e72e6634f64a1fb0c0b3fafc4f3599e1672bdc71c94",
+        "base_commit_metadata": "0b31e024873681e187b574fe1c4afe5e48aeeecf",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-15930",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "5777dfdd20bd154a2766bf27a2f6113e72a8f1c74cf4275f06a3deca65cd3212",
+          "bytes": 3592,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "",
+            "from django.utils.regex_helper import _lazy_re_compile",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version."
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2752,
+        "configs_restored": [],
+        "archive_sha256": "c982b7e555cc411aacad13b1a58b9a8f23d31c0c04289928e242d2ddff30619e",
+        "base_commit_metadata": "63884829acd207404f2a5c3cc1d6b4cd0a822b70",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-16082",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "5777dfdd20bd154a2766bf27a2f6113e72a8f1c74cf4275f06a3deca65cd3212",
+          "bytes": 3592,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "",
+            "from django.utils.regex_helper import _lazy_re_compile",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version."
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2755,
+        "configs_restored": [],
+        "archive_sha256": "90b14df00d0e368629e6f4963e7ecb55116349d91be363dfb55ff6125f26ef64",
+        "base_commit_metadata": "bf47c719719d0e190a99fa2e7f959d5bbb7caf8a",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-16136",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "5777dfdd20bd154a2766bf27a2f6113e72a8f1c74cf4275f06a3deca65cd3212",
+          "bytes": 3592,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "",
+            "from django.utils.regex_helper import _lazy_re_compile",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version."
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2755,
+        "configs_restored": [],
+        "archive_sha256": "a74a9610df885472979cacf20605f81933da748507225073a59333b5e37a9d83",
+        "base_commit_metadata": "19e6efa50b603af325e7f62058364f278596758f",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-16255",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "5777dfdd20bd154a2766bf27a2f6113e72a8f1c74cf4275f06a3deca65cd3212",
+          "bytes": 3592,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "",
+            "from django.utils.regex_helper import _lazy_re_compile",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version."
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2754,
+        "configs_restored": [],
+        "archive_sha256": "fe79ef87fe8572b08ecd1cf05a2665180bfe8ec6471a58eea3d0aff16fe2ad29",
+        "base_commit_metadata": "444b6da7cc229a58a2c476a52e45233001dc7073",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-16315",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "5777dfdd20bd154a2766bf27a2f6113e72a8f1c74cf4275f06a3deca65cd3212",
+          "bytes": 3592,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "",
+            "from django.utils.regex_helper import _lazy_re_compile",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version."
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2758,
+        "configs_restored": [],
+        "archive_sha256": "aa5b40e5ec0e028b89f1449868fa2f0d04efc3df6589d4446f5cc84067426e0d",
+        "base_commit_metadata": "7d5329852f19c6ae78c6f6f3d3e41835377bf295",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-16612",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "5777dfdd20bd154a2766bf27a2f6113e72a8f1c74cf4275f06a3deca65cd3212",
+          "bytes": 3592,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "",
+            "from django.utils.regex_helper import _lazy_re_compile",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version."
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2749,
+        "configs_restored": [],
+        "archive_sha256": "a6160c85cd8f8da72d2d191b3b0d48984d157077b7d677d31f70a8ee1da44b41",
+        "base_commit_metadata": "55bcbd8d172b689811fae17cde2f09218dd74e9c",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-16631",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "5777dfdd20bd154a2766bf27a2f6113e72a8f1c74cf4275f06a3deca65cd3212",
+          "bytes": 3592,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "",
+            "from django.utils.regex_helper import _lazy_re_compile",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version."
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2749,
+        "configs_restored": [],
+        "archive_sha256": "3f304d24d2539f01996a502ee8789cd957f5b284dd31dc4b06523a14d6fead32",
+        "base_commit_metadata": "9b224579875e30203d079cc2fee83b116d98eb78",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    },
+    {
+      "task": "django__django-16667",
+      "repo": "django/django",
+      "version_sources": [
+        {
+          "path": "django/utils/version.py",
+          "sha256": "5777dfdd20bd154a2766bf27a2f6113e72a8f1c74cf4275f06a3deca65cd3212",
+          "bytes": 3592,
+          "initial_guard_included": true,
+          "header": [
+            "import datetime",
+            "import functools",
+            "import os",
+            "import subprocess",
+            "import sys",
+            "",
+            "from django.utils.regex_helper import _lazy_re_compile",
+            "",
+            "# Private, stable API for detecting the Python version. PYXY means \"Python X.Y",
+            "# or later\". So that third-party apps can use these values, each constant",
+            "# should remain as long as the oldest supported Django version supports that",
+            "# Python version."
+          ]
+        }
+      ],
+      "archive_export_subst": [],
+      "version_mechanism_source_hits": [
+        {
+          "path": "django/__init__.py",
+          "hits": [
+            {
+              "line": 1,
+              "text": "from django.utils.version import get_version"
+            }
+          ]
+        }
+      ],
+      "initial_source_guard_metadata": {
+        "files_verified": 2749,
+        "configs_restored": [],
+        "archive_sha256": "1136733b52d49e6b83ff1d18dac4723d15ca2b849425d44d7f1255816629a9ef",
+        "base_commit_metadata": "02c356f2f3945b8075735d485c3cf48cad991011",
+        "source_bytes_match_frozen_archive": true
+      },
+      "completed_outcome_files_opened": false
+    }
+  ],
+  "unique_version_source_variants": [
+    {
+      "path": "astropy/_dev/scm_version.py",
+      "tasks": [
+        "astropy__astropy-13977",
+        "astropy__astropy-14365",
+        "astropy__astropy-14508"
+      ],
+      "receipt_file": "completed_version_sources/44e9551cbd95d73ff0c480b6c01e45cb582a444b182fb7e375cd62133fe194ba.txt",
+      "sha256": "44e9551cbd95d73ff0c480b6c01e45cb582a444b182fb7e375cd62133fe194ba",
+      "kind": "handwritten version dispatcher/calculator",
+      "static_source_write_calls": []
+    },
+    {
+      "path": "astropy/version.py",
+      "tasks": [
+        "astropy__astropy-13977",
+        "astropy__astropy-14365",
+        "astropy__astropy-14508"
+      ],
+      "receipt_file": "completed_version_sources/06178ec181388c9f14a79e030cc36d36c5954210c077a2c462fa32cbebd4d684.txt",
+      "sha256": "06178ec181388c9f14a79e030cc36d36c5954210c077a2c462fa32cbebd4d684",
+      "kind": "handwritten version dispatcher/calculator",
+      "static_source_write_calls": []
+    },
+    {
+      "path": "django/utils/version.py",
+      "tasks": [
+        "django__django-10973",
+        "django__django-11095",
+        "django__django-11299"
+      ],
+      "receipt_file": "completed_version_sources/ea23f4e10b4801cdd0c84116b2f2c0ac58bbe0d9aab48197d2f62d1db4c9c839.txt",
+      "sha256": "ea23f4e10b4801cdd0c84116b2f2c0ac58bbe0d9aab48197d2f62d1db4c9c839",
+      "kind": "handwritten Django version utility",
+      "static_source_write_calls": []
+    },
+    {
+      "path": "django/utils/version.py",
+      "tasks": [
+        "django__django-11820",
+        "django__django-12209",
+        "django__django-12965",
+        "django__django-13023",
+        "django__django-13033",
+        "django__django-13158",
+        "django__django-13212",
+        "django__django-13297",
+        "django__django-13569",
+        "django__django-13786",
+        "django__django-13807",
+        "django__django-13820"
+      ],
+      "receipt_file": "completed_version_sources/95fe06de03a610187c3bc9a65a5deee99a048104796eaa9f9a687422f4c94ffd.txt",
+      "sha256": "95fe06de03a610187c3bc9a65a5deee99a048104796eaa9f9a687422f4c94ffd",
+      "kind": "handwritten Django version utility",
+      "static_source_write_calls": []
+    },
+    {
+      "path": "django/utils/version.py",
+      "tasks": [
+        "django__django-14140"
+      ],
+      "receipt_file": "completed_version_sources/f7e54a9ab06713f0a3ec176673e0fde1ffe46c1651fe1dcd209b49b9aa1889e9.txt",
+      "sha256": "f7e54a9ab06713f0a3ec176673e0fde1ffe46c1651fe1dcd209b49b9aa1889e9",
+      "kind": "handwritten Django version utility",
+      "static_source_write_calls": []
+    },
+    {
+      "path": "django/utils/version.py",
+      "tasks": [
+        "django__django-14631"
+      ],
+      "receipt_file": "completed_version_sources/d926839f0d047ffcc4d94d0f634ed9e9d53cc7c04bfeb74423b73f0c851d829c.txt",
+      "sha256": "d926839f0d047ffcc4d94d0f634ed9e9d53cc7c04bfeb74423b73f0c851d829c",
+      "kind": "handwritten Django version utility",
+      "static_source_write_calls": []
+    },
+    {
+      "path": "django/utils/version.py",
+      "tasks": [
+        "django__django-15037",
+        "django__django-15103",
+        "django__django-15278",
+        "django__django-15375"
+      ],
+      "receipt_file": "completed_version_sources/18f6b92d18ab37ee6465f96e93b5a106220ce6345b3cf061be5ae3772701021c.txt",
+      "sha256": "18f6b92d18ab37ee6465f96e93b5a106220ce6345b3cf061be5ae3772701021c",
+      "kind": "handwritten Django version utility",
+      "static_source_write_calls": []
+    },
+    {
+      "path": "django/utils/version.py",
+      "tasks": [
+        "django__django-15499",
+        "django__django-15572",
+        "django__django-15930",
+        "django__django-16082",
+        "django__django-16136",
+        "django__django-16255",
+        "django__django-16315",
+        "django__django-16612",
+        "django__django-16631",
+        "django__django-16667"
+      ],
+      "receipt_file": "completed_version_sources/5777dfdd20bd154a2766bf27a2f6113e72a8f1c74cf4275f06a3deca65cd3212.txt",
+      "sha256": "5777dfdd20bd154a2766bf27a2f6113e72a8f1c74cf4275f06a3deca65cd3212",
+      "kind": "handwritten Django version utility",
+      "static_source_write_calls": []
+    }
+  ],
+  "generated_version_coverage_gaps": [
+    {
+      "task": "astropy__astropy-13977",
+      "repo": "astropy/astropy",
+      "version_source": "astropy/_version.py",
+      "role": "image-build-generated, ignored source",
+      "archive_sha256": null,
+      "image_start_sha256": "17b8dc1109d0a0789b95bd66ab6d56d77ef76d47755d8e6e30afcc967e87f204",
+      "initial_guard_included": false,
+      "native_source_snapshot_includes": false,
+      "post_collection_hash_recorded_in_controlled_run": false,
+      "diagnostic_collection_changed": false,
+      "completed_task_outcomes_read": false
+    },
+    {
+      "task": "astropy__astropy-14365",
+      "repo": "astropy/astropy",
+      "version_source": "astropy/_version.py",
+      "role": "image-build-generated, ignored source",
+      "archive_sha256": null,
+      "image_start_sha256": "0135efa74dc40d38c91042007fdc816d8cc9024c2cf5825a336162bc6855ca6a",
+      "initial_guard_included": false,
+      "native_source_snapshot_includes": false,
+      "post_collection_hash_recorded_in_controlled_run": false,
+      "diagnostic_collection_changed": false,
+      "completed_task_outcomes_read": false
+    },
+    {
+      "task": "astropy__astropy-14508",
+      "repo": "astropy/astropy",
+      "version_source": "astropy/_version.py",
+      "role": "image-build-generated, ignored source",
+      "archive_sha256": null,
+      "image_start_sha256": "94c07cfca1da97e8cb6640a250376a4256b3b931ac2eaaac406a17967f65a68e",
+      "initial_guard_included": false,
+      "native_source_snapshot_includes": false,
+      "post_collection_hash_recorded_in_controlled_run": false,
+      "diagnostic_collection_changed": false,
+      "completed_task_outcomes_read": false
+    },
+    {
+      "task": "astropy__astropy-7606",
+      "repo": "astropy/astropy",
+      "version_source": "astropy/version.py",
+      "role": "image-build-generated, ignored source",
+      "archive_sha256": null,
+      "image_start_sha256": "a009dfe815c092d642ad50d8af9f809a75b7e9b213e9642317f5e3f57ff703d9",
+      "initial_guard_included": false,
+      "native_source_snapshot_includes": false,
+      "post_collection_hash_recorded_in_controlled_run": false,
+      "diagnostic_collection_changed": false,
+      "completed_task_outcomes_read": false
+    }
+  ],
+  "finding": "Four Astropy image-generated version modules are outside the archive startup guard and ignored by native source snapshots. All four throwaway collection probes left them unchanged. Historical post-execution bytes are unavailable; no completed-task outcomes were read."
+}

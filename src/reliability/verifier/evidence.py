@@ -54,6 +54,9 @@ def integrity_outcome(report: IntegrityReport) -> SignalOutcome:
 def regression_outcome(report: RegressionReport) -> SignalOutcome:
     """Map the regression signal.
 
+    `REGRESSION_ERROR` maps to failure here while retaining its separate V2
+    signal and outcome details in the record.
+
     `NOT_AVAILABLE` and `BASELINE_UNRELIABLE` both map to `NOT_AVAILABLE`:
     neither is a pass, and neither is the patch's fault. Policy §4 and §5.5 both
     say these route to FLAG rather than ACCEPT, which is what falls out of
@@ -61,7 +64,7 @@ def regression_outcome(report: RegressionReport) -> SignalOutcome:
     """
     if report.signal is Signal.PASS:
         return SignalOutcome.PASS
-    if report.signal is Signal.FAIL:
+    if report.signal in (Signal.FAIL, Signal.REGRESSION_ERROR):
         return SignalOutcome.FAIL
     return SignalOutcome.NOT_AVAILABLE
 

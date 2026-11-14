@@ -131,7 +131,7 @@ def lines_present_at_base(instance_id: str, lines: tuple[str, ...]) -> set[str]:
 
     try:
         proc = subprocess.run(
-            [docker_bin(), "run", "--rm", "--network", "none", "-i",
+            [docker_bin(), "run", "--rm", "--cpu-shares", "2048", "--network", "none", "-i",
              "-w", "/testbed", "--entrypoint", "git", image_for(instance_id),
              "grep", "-F", "-I", "-f", "/dev/stdin", "--", "."],
             input="\n".join(lines) + "\n",
@@ -181,7 +181,7 @@ def lines_in_testbed_site_packages(instance_id: str, lines: tuple[str, ...]) -> 
 
     try:
         proc = subprocess.run(
-            [docker_bin(), "run", "--rm", "--network", "none", "-i",
+            [docker_bin(), "run", "--rm", "--cpu-shares", "2048", "--network", "none", "-i",
              "--entrypoint", "bash", image_for(instance_id), "-c",
              "grep -rFIsh --exclude-dir=_vendor -f /dev/stdin -- "
              + TESTBED_SITE_PACKAGES],

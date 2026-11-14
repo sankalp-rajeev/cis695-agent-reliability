@@ -1,0 +1,9 @@
+
+import json, pathlib, subprocess
+files = subprocess.check_output(["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"]).decode().split("\0")
+sources = {}
+for name in files:
+    path = pathlib.Path(name)
+    if (name.endswith(".py") or path.name in ("setup.cfg", "tox.ini", "pytest.ini", ".pytest.ini", "pyproject.toml") or name == "bin/test") and path.is_file():
+        sources[name] = path.read_text(encoding="utf-8", errors="replace")
+print(json.dumps(sources))

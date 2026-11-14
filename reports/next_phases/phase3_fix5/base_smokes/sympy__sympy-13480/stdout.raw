@@ -1,0 +1,2066 @@
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        31250078
+hash randomization: off
+
+sympy/functions/elementary/tests/test_hyperbolic.py[45] 
+test_sinh ok
+test_sinh_series ok
+test_cosh ok
+test_cosh_series ok
+test_tanh ok
+test_tanh_series ok
+test_coth ok
+test_coth_series ok
+test_csch ok
+test_csch_series ok
+test_sech ok
+test_sech_series ok
+test_asinh ok
+test_asinh_rewrite ok
+test_asinh_series ok
+test_acosh ok
+test_acosh_rewrite ok
+test_acosh_series ok
+test_asech ok
+test_asech_series ok
+test_asech_rewrite ok
+test_acsch ok
+test_acsch_infinities ok
+test_acsch_rewrite ok
+test_atanh ok
+test_atanh_rewrite ok
+test_atanh_series ok
+test_acoth ok
+test_acoth_rewrite ok
+test_acoth_series ok
+test_inverses ok
+test_leading_term ok
+test_complex ok
+test_complex_2899 ok
+test_simplifications ok
+test_issue_4136 ok
+test_sinh_rewrite ok
+test_cosh_rewrite ok
+test_tanh_rewrite ok
+test_coth_rewrite ok
+test_csch_rewrite ok
+test_sech_rewrite ok
+test_derivs ok
+test_sinh_expansion ok
+test_cosh_expansion ok                                                      [OK]
+
+
+================== tests finished: 45 passed, in 9.87 seconds ==================
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        5488767
+hash randomization: off
+
+sympy/core/tests/test_function.py[59] 
+test_f_expand_complex ok
+test_bug1 ok
+test_general_function ok
+test_general_function_nullary ok
+test_derivative_subs_bug ok
+test_derivative_subs_self_bug ok
+test_derivative_linearity ok
+test_derivative_evaluate ok
+test_diff_symbols ok
+test_Function ok
+test_nargs ok
+test_Lambda ok
+test_IdentityFunction ok
+test_Lambda_symbols ok
+test_Lambda_arguments ok
+test_Lambda_equality ok
+test_Subs ok
+test_Subs2 f
+test_expand_function ok
+test_function_comparable ok
+test_function_comparable_infinities f
+test_deriv1 ok
+test_deriv2 ok
+test_func_deriv ok
+test_suppressed_evaluation ok
+test_function_evalf ok
+test_extensibility_eval ok
+test_function_non_commutative ok
+test_function_complex ok
+test_function__eval_nseries ok
+test_doit ok
+test_evalf_default ok
+test_issue_5399 ok
+test_derivative_numerically ok
+test_fdiff_argument_index_error ok
+test_deriv_wrt_function ok
+test_diff_wrt_value ok
+test_diff_wrt ok
+test_diff_wrt_func_subs ok
+test_diff_wrt_not_allowed ok
+test_klein_gordon_lagrangian ok
+test_sho_lagrangian ok
+test_straight_line ok
+test_sort_variable ok
+test_unhandled ok
+test_issue_4711 ok
+test_nfloat ok
+test_issue_7068 ok
+test_issue_7231 ok
+test_issue_7687 ok
+test_issue_7688 ok
+test_mexpand ok
+test_issue_8469 ok
+test_should_evalf ok
+test_Derivative_as_finite_difference ok
+test_issue_11159 ok
+test_issue_12005 ok
+test_undefined_function_eq ok
+test_function_assumptions ok                                                [OK]
+
+
+________________________________ slowest tests _________________________________
+test_function__eval_nseries - Took 48.321 seconds
+======= tests finished: 57 passed, 2 expected to fail, in 55.76 seconds ========
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        71283943
+hash randomization: off
+
+sympy/core/tests/test_subs.py[57] 
+test_subs ok
+test_subs_Matrix ok
+test_subs_AccumBounds ok
+test_trigonometric ok
+test_powers ok
+test_logexppow ok
+test_bug ok
+test_subbug1 ok
+test_subbug2 ok
+test_dict_set ok
+test_dict_ambigous ok
+test_deriv_sub_bug3 ok
+test_equality_subs1 ok
+test_equality_subs2 ok
+test_issue_3742 ok
+test_subs_dict1 ok
+test_mul ok
+test_subs_simple ok
+test_subs_constants ok
+test_subs_commutative ok
+test_subs_noncommutative ok
+test_subs_basic_funcs ok
+test_subs_wild ok
+test_subs_mixed ok
+test_division ok
+test_add ok
+test_subs_issue_4009 ok
+test_functions_subs ok
+test_derivative_subs ok
+test_derivative_subs2 ok
+test_derivative_subs3 ok
+test_issue_5284 ok
+test_subs_iter ok
+test_subs_dict ok
+test_no_arith_subs_on_floats ok
+test_issue_5651 ok
+test_issue_6075 ok
+test_issue_6079 ok
+test_issue_4680 ok
+test_issue_6158 ok
+test_Function_subs ok
+test_simultaneous_subs ok
+test_issue_6419_6421 ok
+test_issue_6559 ok
+test_issue_5261 ok
+test_issue_6923 ok
+test_2arg_hack ok
+test_mul2 f
+test_noncommutative_subs ok
+test_issue_2877 ok
+test_issue_5910 ok
+test_issue_5217 ok
+test_issue_10829 ok
+test_pow_eval_subs_no_cache ok
+test_RootOf_issue_10092 ok
+test_issue_8886 /testbed/sympy/physics/vector/printing.py:150: SyntaxWarning: "is not" with a literal. Did you mean "!="?
+  if len(base_split) is not 1:
+ok
+test_issue_12657 ok                                                         [OK]
+
+
+======== tests finished: 56 passed, 1 expected to fail, in 1.73 seconds ========
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        69240172
+hash randomization: off
+
+sympy/functions/elementary/tests/test_interface.py[3] 
+test_function_series1 ok
+test_function_series2 ok
+test_function_series3 ok                                                    [OK]
+
+
+================== tests finished: 3 passed, in 4.25 seconds ===================
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        83076135
+hash randomization: off
+
+sympy/matrices/tests/test_commonmatrix.py[81] 
+test__MinimalMatrix ok
+test_vec ok
+test_tolist ok
+test_row_col_del ok
+test_get_diag_blocks1 ok
+test_get_diag_blocks2 ok
+test_shape ok
+test_reshape ok
+test_row_col ok
+test_row_join ok
+test_col_join ok
+test_row_insert ok
+test_col_insert ok
+test_extract ok
+test_hstack ok
+test_vstack ok
+test_atoms ok
+test_free_symbols ok
+test_has ok
+test_is_anti_symmetric ok
+test_diagonal_symmetrical ok
+test_is_hermitian ok
+test_is_Identity ok
+test_is_symbolic ok
+test_is_upper ok
+test_is_lower ok
+test_is_square ok
+test_is_symmetric ok
+test_is_hessenberg ok
+test_is_zero ok
+test_values ok
+test_applyfunc ok
+test_adjoint ok
+test_as_real_imag ok
+test_conjugate ok
+test_doit ok
+test_evalf ok
+test_expand ok
+test_refine E
+test_replace ok
+test_replace_map ok
+test_simplify ok
+test_subs ok
+test_trace ok
+test_xreplace ok
+test_permute ok
+test_abs ok
+test_add ok
+test_multiplication ok
+test_power ok
+test_neg ok
+test_sub ok
+test_div ok
+test_det ok
+test_adjugate ok
+test_cofactor_and_minors ok
+test_charpoly ok
+test_row_op ok
+test_col_op ok
+test_is_echelon ok
+test_echelon_form ok
+test_rref ok
+test_eye ok
+test_ones ok
+test_zeros ok
+test_diag ok
+test_jordan_block ok
+test_columnspace ok
+test_rowspace ok
+test_nullspace ok
+test_eigenvals ok
+test_eigenvects ok
+test_left_eigenvects ok
+test_diagonalize ok
+test_is_diagonalizable ok
+test_jordan_form ok
+test_singular_values ok
+test_diff ok
+test_integrate ok
+test_jacobian2 ok
+test_limit ok                                                             [FAIL]
+
+
+________________________________________________________________________________
+____________ sympy/matrices/tests/test_commonmatrix.py:test_refine _____________
+  File "/testbed/sympy/matrices/tests/test_commonmatrix.py", line 482, in test_refine
+    m1 = m0.refine(Q.real(x) & Q.real(y))
+  File "/testbed/sympy/matrices/common.py", line 1751, in refine
+    return self.applyfunc(lambda x: refine(x, assumptions))
+  File "/testbed/sympy/matrices/common.py", line 1547, in applyfunc
+    return self._eval_applyfunc(f)
+  File "/testbed/sympy/matrices/common.py", line 1487, in _eval_applyfunc
+    out = self._new(self.rows, self.cols, [f(x) for x in self])
+  File "/testbed/sympy/matrices/common.py", line 1487, in <listcomp>
+    out = self._new(self.rows, self.cols, [f(x) for x in self])
+  File "/testbed/sympy/matrices/common.py", line 1751, in <lambda>
+    return self.applyfunc(lambda x: refine(x, assumptions))
+  File "/testbed/sympy/assumptions/refine.py", line 28, in refine
+    args = [refine(arg, assumptions) for arg in expr.args]
+  File "/testbed/sympy/assumptions/refine.py", line 28, in <listcomp>
+    args = [refine(arg, assumptions) for arg in expr.args]
+  File "/testbed/sympy/assumptions/refine.py", line 39, in refine
+    new_expr = handler(expr, assumptions)
+  File "/testbed/sympy/assumptions/refine.py", line 67, in refine_abs
+    if ask(Q.real(arg), assumptions) and \
+  File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+    from sympy.assumptions.satask import satask
+  File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+    from sympy.assumptions.sathandlers import fact_registry
+  File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+    from collections import MutableMapping, defaultdict
+  File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+    warnings.warn("Using or importing the ABCs from 'collections' instead "
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+
+=========== tests finished: 80 passed, 1 exceptions, in 9.66 seconds ===========
+DO *NOT* COMMIT!
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        82321207
+hash randomization: off
+
+sympy/matrices/tests/test_matrices.py[157] 
+test_args ok
+test_division ok
+test_sum ok
+test_abs ok
+test_addition ok
+test_fancy_index_matrix ok
+test_multiplication ok
+test_power ok
+test_creation ok
+test_tolist ok
+test_as_mutable ok
+test_determinant ok
+test_det_LU_decomposition ok
+test_slicing ok
+test_submatrix_assignment ok
+test_extract ok
+test_reshape ok
+test_applyfunc ok
+test_expand ok
+test_refine E
+test_random ok
+test_LUdecomp ok
+test_LUsolve ok
+test_QRsolve ok
+test_inverse ok
+test_matrix_inverse_mod ok
+test_util ok
+test_jacobian_hessian ok
+test_QR ok
+test_QR_non_square ok
+test_nullspace ok
+test_columnspace ok
+test_wronskian ok
+test_eigen ok
+test_subs ok
+test_xreplace ok
+test_simplify ok
+test_transpose ok
+test_conjugate ok
+test_conj_dirac ok
+test_trace ok
+test_shape ok
+test_col_row_op ok
+test_zip_row_op ok
+test_issue_3950 ok
+test_issue_3981 ok
+test_evalf ok
+test_is_symbolic ok
+test_is_upper ok
+test_is_lower ok
+test_is_nilpotent ok
+test_zeros_ones_fill ok
+test_empty_zeros ok
+test_issue_3749 ok
+test_inv_iszerofunc ok
+test_jacobian_metrics ok
+test_jacobian2 ok
+test_issue_4564 ok
+test_nonvectorJacobian ok
+test_vec ok
+test_vech ok
+test_vech_errors ok
+test_diag ok
+test_get_diag_blocks1 ok
+test_get_diag_blocks2 ok
+test_inv_block ok
+test_creation_args ok
+test_diagonal_symmetrical ok
+test_diagonalization ok
+test_eigen_vects f
+test_jordan_form ok
+test_jordan_form_complex_issue_9274 ok
+test_issue_10220 ok
+test_Matrix_berkowitz_charpoly ok
+test_exp ok
+test_has ok
+test_LUdecomposition_Simple_iszerofunc ok
+test_LUdecomposition_iszerofunc ok
+test_find_reasonable_pivot_naive_finds_guaranteed_nonzero1 ok
+test_find_reasonable_pivot_naive_finds_guaranteed_nonzero2 ok
+test_find_reasonable_pivot_naive_simplifies ok
+test_errors ok
+test_len ok
+test_integrate ok
+test_limit ok
+test_diff ok
+test_getattr ok
+test_hessenberg ok
+test_cholesky ok
+test_LDLdecomposition ok
+test_cholesky_solve ok
+test_LDLsolve ok
+test_lower_triangular_solve ok
+test_upper_triangular_solve ok
+test_diagonal_solve ok
+test_matrix_norm ok
+test_condition_number ok
+test_equality ok
+test_col_join ok
+test_row_insert ok
+test_col_insert ok
+test_normalized ok
+test_print_nonzero ok
+test_zeros_eye ok
+test_is_zero ok
+test_rotation_matrices ok
+test_DeferredVector ok
+test_DeferredVector_not_iterable ok
+test_DeferredVector_Matrix ok
+test_GramSchmidt ok
+test_casoratian ok
+test_zero_dimension_multiply ok
+test_slice_issue_2884 ok
+test_slice_issue_3401 ok
+test_copyin ok
+test_invertible_check ok
+test_issue_3959 f
+test_issue_5964 ok
+test_issue_7604 ok
+test_is_Identity ok
+test_dot ok
+test_dual ok
+test_anti_symmetric ok
+test_normalize_sort_diogonalization ok
+test_issue_5321 ok
+test_issue_5320 ok
+test_issue_11944 ok
+test_cross ok
+test_hash ok
+test_issue_3979 f
+test_adjoint ok
+test_simplify_immutable ok
+test_rank ok
+test_issue_11434 ok
+test_rank_regression_from_so ok
+test_replace ok
+test_replace_map ok
+test_atoms ok
+test_pinv Slow w
+test_pinv_solve ok
+test_pinv_rank_deficient f
+test_gauss_jordan_solve ok
+test_issue_7201 ok
+test_free_symbols ok
+test_from_ndarray NumPy must be available to test creating matrices from ndarrays 
+s
+test_hermitian ok
+test_doit ok
+test_issue_9457_9467_9876 ok
+test_issue_9422 ok
+test_issue_10770 ok
+test_issue_10658 ok
+test_opportunistic_simplification ok
+test_partial_pivoting ok
+test_iszero_substitution ok
+test_issue_11238 Slow w
+test_as_real_imag ok
+test_deprecated ok                                                        [FAIL]
+
+
+________________________________________________________________________________
+______________ sympy/matrices/tests/test_matrices.py:test_refine _______________
+  File "/testbed/sympy/matrices/tests/test_matrices.py", line 559, in test_refine
+    m1 = m0.refine(Q.real(x) & Q.real(y))
+  File "/testbed/sympy/matrices/common.py", line 1751, in refine
+    return self.applyfunc(lambda x: refine(x, assumptions))
+  File "/testbed/sympy/matrices/common.py", line 1547, in applyfunc
+    return self._eval_applyfunc(f)
+  File "/testbed/sympy/matrices/common.py", line 1487, in _eval_applyfunc
+    out = self._new(self.rows, self.cols, [f(x) for x in self])
+  File "/testbed/sympy/matrices/common.py", line 1487, in <listcomp>
+    out = self._new(self.rows, self.cols, [f(x) for x in self])
+  File "/testbed/sympy/matrices/common.py", line 1751, in <lambda>
+    return self.applyfunc(lambda x: refine(x, assumptions))
+  File "/testbed/sympy/assumptions/refine.py", line 28, in refine
+    args = [refine(arg, assumptions) for arg in expr.args]
+  File "/testbed/sympy/assumptions/refine.py", line 28, in <listcomp>
+    args = [refine(arg, assumptions) for arg in expr.args]
+  File "/testbed/sympy/assumptions/refine.py", line 39, in refine
+    new_expr = handler(expr, assumptions)
+  File "/testbed/sympy/assumptions/refine.py", line 67, in refine_abs
+    if ask(Q.real(arg), assumptions) and \
+  File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+    from sympy.assumptions.satask import satask
+  File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+    from sympy.assumptions.sathandlers import fact_registry
+  File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+    from collections import MutableMapping, defaultdict
+  File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+    warnings.warn("Using or importing the ABCs from 'collections' instead "
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+
+ tests finished: 149 passed, 3 skipped, 4 expected to fail, 1 exceptions, 
+in 39.32 seconds 
+DO *NOT* COMMIT!
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        17376200
+hash randomization: off
+
+sympy/matrices/tests/test_sparse.py[11] 
+test_sparse_matrix ok
+test_transpose ok
+test_trace ok
+test_CL_RL ok
+test_add ok
+test_errors ok
+test_len ok
+test_sparse_zeros_sparse_eye ok
+test_copyin ok
+test_sparse_solve ok
+test_hermitian ok                                                           [OK]
+
+
+================== tests finished: 11 passed, in 0.76 seconds ==================
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        81855002
+hash randomization: off
+
+sympy/physics/quantum/tests/test_printing.py[0] Traceback (most recent call last):
+  File "/testbed/sympy/utilities/runtests.py", line 1155, in test_file
+    exec_(code, gl)
+  File "/testbed/sympy/physics/quantum/tests/test_printing.py", line 11, in <module>
+    from sympy.physics.quantum.gate import CGate, CNotGate, IdentityGate, UGate, XGate
+  File "/testbed/sympy/physics/quantum/gate.py", line 33, in <module>
+    from sympy.physics.quantum.matrixcache import matrix_cache
+  File "/testbed/sympy/physics/quantum/matrixcache.py", line 96, in <module>
+    matrix_cache.cache_matrix('T', Matrix([[1, 0], [0, exp(I*pi/4)]]))
+  File "/testbed/sympy/core/function.py", line 439, in __new__
+    result = super(Function, cls).__new__(cls, *args, **options)
+  File "/testbed/sympy/core/function.py", line 250, in __new__
+    evaluated = cls.eval(*args)
+  File "/testbed/sympy/functions/elementary/exponential.py", line 251, in eval
+    if ask(Q.integer(2*coeff)):
+  File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+    from sympy.assumptions.satask import satask
+  File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+    from sympy.assumptions.sathandlers import fact_registry
+  File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+    from collections import MutableMapping, defaultdict
+  File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+    warnings.warn("Using or importing the ABCs from 'collections' instead "
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/verifier_sympy_driver.py", line 84, in <module>
+    runpy.run_path("bin/test", run_name="__main__")
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "bin/test", line 107, in <module>
+    ok = sympy.test(*args, verbose=options.verbose, kw=options.kw,
+  File "/testbed/sympy/utilities/runtests.py", line 487, in test
+    val = not bool(_test(*paths, **kwargs))
+  File "/testbed/sympy/utilities/runtests.py", line 574, in _test
+    return int(not t.test(sort=sort, timeout=timeout, slow=slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1087, in test
+    self.test_file(f, sort, timeout, slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1162, in test_file
+    reporter.test_exception(sys.exc_info())
+  File "/testbed/sympy/utilities/runtests.py", line 2298, in test_exception
+    self._exceptions.append((self._active_file, self._active_f, exc_info))
+AttributeError: 'PyTestReporter' object has no attribute '_active_file'
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        98455246
+hash randomization: off
+
+sympy/physics/quantum/tests/test_printing.py[0] Traceback (most recent call last):
+  File "/testbed/sympy/utilities/runtests.py", line 1155, in test_file
+    exec_(code, gl)
+  File "/testbed/sympy/physics/quantum/tests/test_printing.py", line 11, in <module>
+    from sympy.physics.quantum.gate import CGate, CNotGate, IdentityGate, UGate, XGate
+  File "/testbed/sympy/physics/quantum/gate.py", line 33, in <module>
+    from sympy.physics.quantum.matrixcache import matrix_cache
+  File "/testbed/sympy/physics/quantum/matrixcache.py", line 96, in <module>
+    matrix_cache.cache_matrix('T', Matrix([[1, 0], [0, exp(I*pi/4)]]))
+  File "/testbed/sympy/core/function.py", line 439, in __new__
+    result = super(Function, cls).__new__(cls, *args, **options)
+  File "/testbed/sympy/core/function.py", line 250, in __new__
+    evaluated = cls.eval(*args)
+  File "/testbed/sympy/functions/elementary/exponential.py", line 251, in eval
+    if ask(Q.integer(2*coeff)):
+  File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+    from sympy.assumptions.satask import satask
+  File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+    from sympy.assumptions.sathandlers import fact_registry
+  File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+    from collections import MutableMapping, defaultdict
+  File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+    warnings.warn("Using or importing the ABCs from 'collections' instead "
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/verifier_sympy_driver.py", line 84, in <module>
+    runpy.run_path("bin/test", run_name="__main__")
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "bin/test", line 107, in <module>
+    ok = sympy.test(*args, verbose=options.verbose, kw=options.kw,
+  File "/testbed/sympy/utilities/runtests.py", line 487, in test
+    val = not bool(_test(*paths, **kwargs))
+  File "/testbed/sympy/utilities/runtests.py", line 574, in _test
+    return int(not t.test(sort=sort, timeout=timeout, slow=slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1087, in test
+    self.test_file(f, sort, timeout, slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1162, in test_file
+    reporter.test_exception(sys.exc_info())
+  File "/testbed/sympy/utilities/runtests.py", line 2298, in test_exception
+    self._exceptions.append((self._active_file, self._active_f, exc_info))
+AttributeError: 'PyTestReporter' object has no attribute '_active_file'
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        77888863
+hash randomization: off
+
+sympy/physics/quantum/tests/test_printing.py[0] Traceback (most recent call last):
+  File "/testbed/sympy/utilities/runtests.py", line 1155, in test_file
+    exec_(code, gl)
+  File "/testbed/sympy/physics/quantum/tests/test_printing.py", line 11, in <module>
+    from sympy.physics.quantum.gate import CGate, CNotGate, IdentityGate, UGate, XGate
+  File "/testbed/sympy/physics/quantum/gate.py", line 33, in <module>
+    from sympy.physics.quantum.matrixcache import matrix_cache
+  File "/testbed/sympy/physics/quantum/matrixcache.py", line 96, in <module>
+    matrix_cache.cache_matrix('T', Matrix([[1, 0], [0, exp(I*pi/4)]]))
+  File "/testbed/sympy/core/function.py", line 439, in __new__
+    result = super(Function, cls).__new__(cls, *args, **options)
+  File "/testbed/sympy/core/function.py", line 250, in __new__
+    evaluated = cls.eval(*args)
+  File "/testbed/sympy/functions/elementary/exponential.py", line 251, in eval
+    if ask(Q.integer(2*coeff)):
+  File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+    from sympy.assumptions.satask import satask
+  File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+    from sympy.assumptions.sathandlers import fact_registry
+  File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+    from collections import MutableMapping, defaultdict
+  File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+    warnings.warn("Using or importing the ABCs from 'collections' instead "
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/verifier_sympy_driver.py", line 84, in <module>
+    runpy.run_path("bin/test", run_name="__main__")
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "bin/test", line 107, in <module>
+    ok = sympy.test(*args, verbose=options.verbose, kw=options.kw,
+  File "/testbed/sympy/utilities/runtests.py", line 487, in test
+    val = not bool(_test(*paths, **kwargs))
+  File "/testbed/sympy/utilities/runtests.py", line 574, in _test
+    return int(not t.test(sort=sort, timeout=timeout, slow=slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1087, in test
+    self.test_file(f, sort, timeout, slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1162, in test_file
+    reporter.test_exception(sys.exc_info())
+  File "/testbed/sympy/utilities/runtests.py", line 2298, in test_exception
+    self._exceptions.append((self._active_file, self._active_f, exc_info))
+AttributeError: 'PyTestReporter' object has no attribute '_active_file'
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        16610056
+hash randomization: off
+
+sympy/physics/quantum/tests/test_printing.py[0] Traceback (most recent call last):
+  File "/testbed/sympy/utilities/runtests.py", line 1155, in test_file
+    exec_(code, gl)
+  File "/testbed/sympy/physics/quantum/tests/test_printing.py", line 11, in <module>
+    from sympy.physics.quantum.gate import CGate, CNotGate, IdentityGate, UGate, XGate
+  File "/testbed/sympy/physics/quantum/gate.py", line 33, in <module>
+    from sympy.physics.quantum.matrixcache import matrix_cache
+  File "/testbed/sympy/physics/quantum/matrixcache.py", line 96, in <module>
+    matrix_cache.cache_matrix('T', Matrix([[1, 0], [0, exp(I*pi/4)]]))
+  File "/testbed/sympy/core/function.py", line 439, in __new__
+    result = super(Function, cls).__new__(cls, *args, **options)
+  File "/testbed/sympy/core/function.py", line 250, in __new__
+    evaluated = cls.eval(*args)
+  File "/testbed/sympy/functions/elementary/exponential.py", line 251, in eval
+    if ask(Q.integer(2*coeff)):
+  File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+    from sympy.assumptions.satask import satask
+  File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+    from sympy.assumptions.sathandlers import fact_registry
+  File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+    from collections import MutableMapping, defaultdict
+  File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+    warnings.warn("Using or importing the ABCs from 'collections' instead "
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/verifier_sympy_driver.py", line 84, in <module>
+    runpy.run_path("bin/test", run_name="__main__")
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "bin/test", line 107, in <module>
+    ok = sympy.test(*args, verbose=options.verbose, kw=options.kw,
+  File "/testbed/sympy/utilities/runtests.py", line 487, in test
+    val = not bool(_test(*paths, **kwargs))
+  File "/testbed/sympy/utilities/runtests.py", line 574, in _test
+    return int(not t.test(sort=sort, timeout=timeout, slow=slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1087, in test
+    self.test_file(f, sort, timeout, slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1162, in test_file
+    reporter.test_exception(sys.exc_info())
+  File "/testbed/sympy/utilities/runtests.py", line 2298, in test_exception
+    self._exceptions.append((self._active_file, self._active_f, exc_info))
+AttributeError: 'PyTestReporter' object has no attribute '_active_file'
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        62769820
+hash randomization: off
+
+sympy/physics/quantum/tests/test_printing.py[0] Traceback (most recent call last):
+  File "/testbed/sympy/utilities/runtests.py", line 1155, in test_file
+    exec_(code, gl)
+  File "/testbed/sympy/physics/quantum/tests/test_printing.py", line 11, in <module>
+    from sympy.physics.quantum.gate import CGate, CNotGate, IdentityGate, UGate, XGate
+  File "/testbed/sympy/physics/quantum/gate.py", line 33, in <module>
+    from sympy.physics.quantum.matrixcache import matrix_cache
+  File "/testbed/sympy/physics/quantum/matrixcache.py", line 96, in <module>
+    matrix_cache.cache_matrix('T', Matrix([[1, 0], [0, exp(I*pi/4)]]))
+  File "/testbed/sympy/core/function.py", line 439, in __new__
+    result = super(Function, cls).__new__(cls, *args, **options)
+  File "/testbed/sympy/core/function.py", line 250, in __new__
+    evaluated = cls.eval(*args)
+  File "/testbed/sympy/functions/elementary/exponential.py", line 251, in eval
+    if ask(Q.integer(2*coeff)):
+  File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+    from sympy.assumptions.satask import satask
+  File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+    from sympy.assumptions.sathandlers import fact_registry
+  File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+    from collections import MutableMapping, defaultdict
+  File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+    warnings.warn("Using or importing the ABCs from 'collections' instead "
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/verifier_sympy_driver.py", line 84, in <module>
+    runpy.run_path("bin/test", run_name="__main__")
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "bin/test", line 107, in <module>
+    ok = sympy.test(*args, verbose=options.verbose, kw=options.kw,
+  File "/testbed/sympy/utilities/runtests.py", line 487, in test
+    val = not bool(_test(*paths, **kwargs))
+  File "/testbed/sympy/utilities/runtests.py", line 574, in _test
+    return int(not t.test(sort=sort, timeout=timeout, slow=slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1087, in test
+    self.test_file(f, sort, timeout, slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1162, in test_file
+    reporter.test_exception(sys.exc_info())
+  File "/testbed/sympy/utilities/runtests.py", line 2298, in test_exception
+    self._exceptions.append((self._active_file, self._active_f, exc_info))
+AttributeError: 'PyTestReporter' object has no attribute '_active_file'
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        5108977
+hash randomization: off
+
+sympy/physics/quantum/tests/test_printing.py[0] Traceback (most recent call last):
+  File "/testbed/sympy/utilities/runtests.py", line 1155, in test_file
+    exec_(code, gl)
+  File "/testbed/sympy/physics/quantum/tests/test_printing.py", line 11, in <module>
+    from sympy.physics.quantum.gate import CGate, CNotGate, IdentityGate, UGate, XGate
+  File "/testbed/sympy/physics/quantum/gate.py", line 33, in <module>
+    from sympy.physics.quantum.matrixcache import matrix_cache
+  File "/testbed/sympy/physics/quantum/matrixcache.py", line 96, in <module>
+    matrix_cache.cache_matrix('T', Matrix([[1, 0], [0, exp(I*pi/4)]]))
+  File "/testbed/sympy/core/function.py", line 439, in __new__
+    result = super(Function, cls).__new__(cls, *args, **options)
+  File "/testbed/sympy/core/function.py", line 250, in __new__
+    evaluated = cls.eval(*args)
+  File "/testbed/sympy/functions/elementary/exponential.py", line 251, in eval
+    if ask(Q.integer(2*coeff)):
+  File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+    from sympy.assumptions.satask import satask
+  File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+    from sympy.assumptions.sathandlers import fact_registry
+  File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+    from collections import MutableMapping, defaultdict
+  File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+    warnings.warn("Using or importing the ABCs from 'collections' instead "
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/verifier_sympy_driver.py", line 84, in <module>
+    runpy.run_path("bin/test", run_name="__main__")
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "bin/test", line 107, in <module>
+    ok = sympy.test(*args, verbose=options.verbose, kw=options.kw,
+  File "/testbed/sympy/utilities/runtests.py", line 487, in test
+    val = not bool(_test(*paths, **kwargs))
+  File "/testbed/sympy/utilities/runtests.py", line 574, in _test
+    return int(not t.test(sort=sort, timeout=timeout, slow=slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1087, in test
+    self.test_file(f, sort, timeout, slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1162, in test_file
+    reporter.test_exception(sys.exc_info())
+  File "/testbed/sympy/utilities/runtests.py", line 2298, in test_exception
+    self._exceptions.append((self._active_file, self._active_f, exc_info))
+AttributeError: 'PyTestReporter' object has no attribute '_active_file'
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        99691821
+hash randomization: off
+
+sympy/physics/quantum/tests/test_printing.py[0] Traceback (most recent call last):
+  File "/testbed/sympy/utilities/runtests.py", line 1155, in test_file
+    exec_(code, gl)
+  File "/testbed/sympy/physics/quantum/tests/test_printing.py", line 11, in <module>
+    from sympy.physics.quantum.gate import CGate, CNotGate, IdentityGate, UGate, XGate
+  File "/testbed/sympy/physics/quantum/gate.py", line 33, in <module>
+    from sympy.physics.quantum.matrixcache import matrix_cache
+  File "/testbed/sympy/physics/quantum/matrixcache.py", line 96, in <module>
+    matrix_cache.cache_matrix('T', Matrix([[1, 0], [0, exp(I*pi/4)]]))
+  File "/testbed/sympy/core/function.py", line 439, in __new__
+    result = super(Function, cls).__new__(cls, *args, **options)
+  File "/testbed/sympy/core/function.py", line 250, in __new__
+    evaluated = cls.eval(*args)
+  File "/testbed/sympy/functions/elementary/exponential.py", line 251, in eval
+    if ask(Q.integer(2*coeff)):
+  File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+    from sympy.assumptions.satask import satask
+  File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+    from sympy.assumptions.sathandlers import fact_registry
+  File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+    from collections import MutableMapping, defaultdict
+  File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+    warnings.warn("Using or importing the ABCs from 'collections' instead "
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/verifier_sympy_driver.py", line 84, in <module>
+    runpy.run_path("bin/test", run_name="__main__")
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "bin/test", line 107, in <module>
+    ok = sympy.test(*args, verbose=options.verbose, kw=options.kw,
+  File "/testbed/sympy/utilities/runtests.py", line 487, in test
+    val = not bool(_test(*paths, **kwargs))
+  File "/testbed/sympy/utilities/runtests.py", line 574, in _test
+    return int(not t.test(sort=sort, timeout=timeout, slow=slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1087, in test
+    self.test_file(f, sort, timeout, slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1162, in test_file
+    reporter.test_exception(sys.exc_info())
+  File "/testbed/sympy/utilities/runtests.py", line 2298, in test_exception
+    self._exceptions.append((self._active_file, self._active_f, exc_info))
+AttributeError: 'PyTestReporter' object has no attribute '_active_file'
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        67229907
+hash randomization: off
+
+sympy/physics/quantum/tests/test_printing.py[0] Traceback (most recent call last):
+  File "/testbed/sympy/utilities/runtests.py", line 1155, in test_file
+    exec_(code, gl)
+  File "/testbed/sympy/physics/quantum/tests/test_printing.py", line 11, in <module>
+    from sympy.physics.quantum.gate import CGate, CNotGate, IdentityGate, UGate, XGate
+  File "/testbed/sympy/physics/quantum/gate.py", line 33, in <module>
+    from sympy.physics.quantum.matrixcache import matrix_cache
+  File "/testbed/sympy/physics/quantum/matrixcache.py", line 96, in <module>
+    matrix_cache.cache_matrix('T', Matrix([[1, 0], [0, exp(I*pi/4)]]))
+  File "/testbed/sympy/core/function.py", line 439, in __new__
+    result = super(Function, cls).__new__(cls, *args, **options)
+  File "/testbed/sympy/core/function.py", line 250, in __new__
+    evaluated = cls.eval(*args)
+  File "/testbed/sympy/functions/elementary/exponential.py", line 251, in eval
+    if ask(Q.integer(2*coeff)):
+  File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+    from sympy.assumptions.satask import satask
+  File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+    from sympy.assumptions.sathandlers import fact_registry
+  File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+    from collections import MutableMapping, defaultdict
+  File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+    warnings.warn("Using or importing the ABCs from 'collections' instead "
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/verifier_sympy_driver.py", line 84, in <module>
+    runpy.run_path("bin/test", run_name="__main__")
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "bin/test", line 107, in <module>
+    ok = sympy.test(*args, verbose=options.verbose, kw=options.kw,
+  File "/testbed/sympy/utilities/runtests.py", line 487, in test
+    val = not bool(_test(*paths, **kwargs))
+  File "/testbed/sympy/utilities/runtests.py", line 574, in _test
+    return int(not t.test(sort=sort, timeout=timeout, slow=slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1087, in test
+    self.test_file(f, sort, timeout, slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1162, in test_file
+    reporter.test_exception(sys.exc_info())
+  File "/testbed/sympy/utilities/runtests.py", line 2298, in test_exception
+    self._exceptions.append((self._active_file, self._active_f, exc_info))
+AttributeError: 'PyTestReporter' object has no attribute '_active_file'
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        36854348
+hash randomization: off
+
+sympy/physics/quantum/tests/test_printing.py[0] Traceback (most recent call last):
+  File "/testbed/sympy/utilities/runtests.py", line 1155, in test_file
+    exec_(code, gl)
+  File "/testbed/sympy/physics/quantum/tests/test_printing.py", line 11, in <module>
+    from sympy.physics.quantum.gate import CGate, CNotGate, IdentityGate, UGate, XGate
+  File "/testbed/sympy/physics/quantum/gate.py", line 33, in <module>
+    from sympy.physics.quantum.matrixcache import matrix_cache
+  File "/testbed/sympy/physics/quantum/matrixcache.py", line 96, in <module>
+    matrix_cache.cache_matrix('T', Matrix([[1, 0], [0, exp(I*pi/4)]]))
+  File "/testbed/sympy/core/function.py", line 439, in __new__
+    result = super(Function, cls).__new__(cls, *args, **options)
+  File "/testbed/sympy/core/function.py", line 250, in __new__
+    evaluated = cls.eval(*args)
+  File "/testbed/sympy/functions/elementary/exponential.py", line 251, in eval
+    if ask(Q.integer(2*coeff)):
+  File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+    from sympy.assumptions.satask import satask
+  File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+    from sympy.assumptions.sathandlers import fact_registry
+  File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+    from collections import MutableMapping, defaultdict
+  File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+    warnings.warn("Using or importing the ABCs from 'collections' instead "
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/verifier_sympy_driver.py", line 84, in <module>
+    runpy.run_path("bin/test", run_name="__main__")
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "bin/test", line 107, in <module>
+    ok = sympy.test(*args, verbose=options.verbose, kw=options.kw,
+  File "/testbed/sympy/utilities/runtests.py", line 487, in test
+    val = not bool(_test(*paths, **kwargs))
+  File "/testbed/sympy/utilities/runtests.py", line 574, in _test
+    return int(not t.test(sort=sort, timeout=timeout, slow=slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1087, in test
+    self.test_file(f, sort, timeout, slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1162, in test_file
+    reporter.test_exception(sys.exc_info())
+  File "/testbed/sympy/utilities/runtests.py", line 2298, in test_exception
+    self._exceptions.append((self._active_file, self._active_f, exc_info))
+AttributeError: 'PyTestReporter' object has no attribute '_active_file'
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        79726240
+hash randomization: off
+
+sympy/physics/quantum/tests/test_printing.py[0] Traceback (most recent call last):
+  File "/testbed/sympy/utilities/runtests.py", line 1155, in test_file
+    exec_(code, gl)
+  File "/testbed/sympy/physics/quantum/tests/test_printing.py", line 11, in <module>
+    from sympy.physics.quantum.gate import CGate, CNotGate, IdentityGate, UGate, XGate
+  File "/testbed/sympy/physics/quantum/gate.py", line 33, in <module>
+    from sympy.physics.quantum.matrixcache import matrix_cache
+  File "/testbed/sympy/physics/quantum/matrixcache.py", line 96, in <module>
+    matrix_cache.cache_matrix('T', Matrix([[1, 0], [0, exp(I*pi/4)]]))
+  File "/testbed/sympy/core/function.py", line 439, in __new__
+    result = super(Function, cls).__new__(cls, *args, **options)
+  File "/testbed/sympy/core/function.py", line 250, in __new__
+    evaluated = cls.eval(*args)
+  File "/testbed/sympy/functions/elementary/exponential.py", line 251, in eval
+    if ask(Q.integer(2*coeff)):
+  File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+    from sympy.assumptions.satask import satask
+  File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+    from sympy.assumptions.sathandlers import fact_registry
+  File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+    from collections import MutableMapping, defaultdict
+  File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+    warnings.warn("Using or importing the ABCs from 'collections' instead "
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/verifier_sympy_driver.py", line 84, in <module>
+    runpy.run_path("bin/test", run_name="__main__")
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "bin/test", line 107, in <module>
+    ok = sympy.test(*args, verbose=options.verbose, kw=options.kw,
+  File "/testbed/sympy/utilities/runtests.py", line 487, in test
+    val = not bool(_test(*paths, **kwargs))
+  File "/testbed/sympy/utilities/runtests.py", line 574, in _test
+    return int(not t.test(sort=sort, timeout=timeout, slow=slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1087, in test
+    self.test_file(f, sort, timeout, slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1162, in test_file
+    reporter.test_exception(sys.exc_info())
+  File "/testbed/sympy/utilities/runtests.py", line 2298, in test_exception
+    self._exceptions.append((self._active_file, self._active_f, exc_info))
+AttributeError: 'PyTestReporter' object has no attribute '_active_file'
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        415219
+hash randomization: off
+
+sympy/physics/quantum/tests/test_printing.py[0] Traceback (most recent call last):
+  File "/testbed/sympy/utilities/runtests.py", line 1155, in test_file
+    exec_(code, gl)
+  File "/testbed/sympy/physics/quantum/tests/test_printing.py", line 11, in <module>
+    from sympy.physics.quantum.gate import CGate, CNotGate, IdentityGate, UGate, XGate
+  File "/testbed/sympy/physics/quantum/gate.py", line 33, in <module>
+    from sympy.physics.quantum.matrixcache import matrix_cache
+  File "/testbed/sympy/physics/quantum/matrixcache.py", line 96, in <module>
+    matrix_cache.cache_matrix('T', Matrix([[1, 0], [0, exp(I*pi/4)]]))
+  File "/testbed/sympy/core/function.py", line 439, in __new__
+    result = super(Function, cls).__new__(cls, *args, **options)
+  File "/testbed/sympy/core/function.py", line 250, in __new__
+    evaluated = cls.eval(*args)
+  File "/testbed/sympy/functions/elementary/exponential.py", line 251, in eval
+    if ask(Q.integer(2*coeff)):
+  File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+    from sympy.assumptions.satask import satask
+  File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+    from sympy.assumptions.sathandlers import fact_registry
+  File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+    from collections import MutableMapping, defaultdict
+  File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+    warnings.warn("Using or importing the ABCs from 'collections' instead "
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/verifier_sympy_driver.py", line 84, in <module>
+    runpy.run_path("bin/test", run_name="__main__")
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "bin/test", line 107, in <module>
+    ok = sympy.test(*args, verbose=options.verbose, kw=options.kw,
+  File "/testbed/sympy/utilities/runtests.py", line 487, in test
+    val = not bool(_test(*paths, **kwargs))
+  File "/testbed/sympy/utilities/runtests.py", line 574, in _test
+    return int(not t.test(sort=sort, timeout=timeout, slow=slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1087, in test
+    self.test_file(f, sort, timeout, slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1162, in test_file
+    reporter.test_exception(sys.exc_info())
+  File "/testbed/sympy/utilities/runtests.py", line 2298, in test_exception
+    self._exceptions.append((self._active_file, self._active_f, exc_info))
+AttributeError: 'PyTestReporter' object has no attribute '_active_file'
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        42268643
+hash randomization: off
+
+sympy/physics/quantum/tests/test_printing.py[0] Traceback (most recent call last):
+  File "/testbed/sympy/utilities/runtests.py", line 1155, in test_file
+    exec_(code, gl)
+  File "/testbed/sympy/physics/quantum/tests/test_printing.py", line 11, in <module>
+    from sympy.physics.quantum.gate import CGate, CNotGate, IdentityGate, UGate, XGate
+  File "/testbed/sympy/physics/quantum/gate.py", line 33, in <module>
+    from sympy.physics.quantum.matrixcache import matrix_cache
+  File "/testbed/sympy/physics/quantum/matrixcache.py", line 96, in <module>
+    matrix_cache.cache_matrix('T', Matrix([[1, 0], [0, exp(I*pi/4)]]))
+  File "/testbed/sympy/core/function.py", line 439, in __new__
+    result = super(Function, cls).__new__(cls, *args, **options)
+  File "/testbed/sympy/core/function.py", line 250, in __new__
+    evaluated = cls.eval(*args)
+  File "/testbed/sympy/functions/elementary/exponential.py", line 251, in eval
+    if ask(Q.integer(2*coeff)):
+  File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+    from sympy.assumptions.satask import satask
+  File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+    from sympy.assumptions.sathandlers import fact_registry
+  File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+    from collections import MutableMapping, defaultdict
+  File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+    warnings.warn("Using or importing the ABCs from 'collections' instead "
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/verifier_sympy_driver.py", line 84, in <module>
+    runpy.run_path("bin/test", run_name="__main__")
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "bin/test", line 107, in <module>
+    ok = sympy.test(*args, verbose=options.verbose, kw=options.kw,
+  File "/testbed/sympy/utilities/runtests.py", line 487, in test
+    val = not bool(_test(*paths, **kwargs))
+  File "/testbed/sympy/utilities/runtests.py", line 574, in _test
+    return int(not t.test(sort=sort, timeout=timeout, slow=slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1087, in test
+    self.test_file(f, sort, timeout, slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1162, in test_file
+    reporter.test_exception(sys.exc_info())
+  File "/testbed/sympy/utilities/runtests.py", line 2298, in test_exception
+    self._exceptions.append((self._active_file, self._active_f, exc_info))
+AttributeError: 'PyTestReporter' object has no attribute '_active_file'
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        92272909
+hash randomization: off
+
+sympy/physics/quantum/tests/test_printing.py[0] Traceback (most recent call last):
+  File "/testbed/sympy/utilities/runtests.py", line 1155, in test_file
+    exec_(code, gl)
+  File "/testbed/sympy/physics/quantum/tests/test_printing.py", line 11, in <module>
+    from sympy.physics.quantum.gate import CGate, CNotGate, IdentityGate, UGate, XGate
+  File "/testbed/sympy/physics/quantum/gate.py", line 33, in <module>
+    from sympy.physics.quantum.matrixcache import matrix_cache
+  File "/testbed/sympy/physics/quantum/matrixcache.py", line 96, in <module>
+    matrix_cache.cache_matrix('T', Matrix([[1, 0], [0, exp(I*pi/4)]]))
+  File "/testbed/sympy/core/function.py", line 439, in __new__
+    result = super(Function, cls).__new__(cls, *args, **options)
+  File "/testbed/sympy/core/function.py", line 250, in __new__
+    evaluated = cls.eval(*args)
+  File "/testbed/sympy/functions/elementary/exponential.py", line 251, in eval
+    if ask(Q.integer(2*coeff)):
+  File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+    from sympy.assumptions.satask import satask
+  File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+    from sympy.assumptions.sathandlers import fact_registry
+  File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+    from collections import MutableMapping, defaultdict
+  File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+    warnings.warn("Using or importing the ABCs from 'collections' instead "
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/verifier_sympy_driver.py", line 84, in <module>
+    runpy.run_path("bin/test", run_name="__main__")
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "bin/test", line 107, in <module>
+    ok = sympy.test(*args, verbose=options.verbose, kw=options.kw,
+  File "/testbed/sympy/utilities/runtests.py", line 487, in test
+    val = not bool(_test(*paths, **kwargs))
+  File "/testbed/sympy/utilities/runtests.py", line 574, in _test
+    return int(not t.test(sort=sort, timeout=timeout, slow=slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1087, in test
+    self.test_file(f, sort, timeout, slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1162, in test_file
+    reporter.test_exception(sys.exc_info())
+  File "/testbed/sympy/utilities/runtests.py", line 2298, in test_exception
+    self._exceptions.append((self._active_file, self._active_f, exc_info))
+AttributeError: 'PyTestReporter' object has no attribute '_active_file'
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        59875152
+hash randomization: off
+
+sympy/physics/quantum/tests/test_printing.py[0] Traceback (most recent call last):
+  File "/testbed/sympy/utilities/runtests.py", line 1155, in test_file
+    exec_(code, gl)
+  File "/testbed/sympy/physics/quantum/tests/test_printing.py", line 11, in <module>
+    from sympy.physics.quantum.gate import CGate, CNotGate, IdentityGate, UGate, XGate
+  File "/testbed/sympy/physics/quantum/gate.py", line 33, in <module>
+    from sympy.physics.quantum.matrixcache import matrix_cache
+  File "/testbed/sympy/physics/quantum/matrixcache.py", line 96, in <module>
+    matrix_cache.cache_matrix('T', Matrix([[1, 0], [0, exp(I*pi/4)]]))
+  File "/testbed/sympy/core/function.py", line 439, in __new__
+    result = super(Function, cls).__new__(cls, *args, **options)
+  File "/testbed/sympy/core/function.py", line 250, in __new__
+    evaluated = cls.eval(*args)
+  File "/testbed/sympy/functions/elementary/exponential.py", line 251, in eval
+    if ask(Q.integer(2*coeff)):
+  File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+    from sympy.assumptions.satask import satask
+  File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+    from sympy.assumptions.sathandlers import fact_registry
+  File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+    from collections import MutableMapping, defaultdict
+  File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+    warnings.warn("Using or importing the ABCs from 'collections' instead "
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/verifier_sympy_driver.py", line 84, in <module>
+    runpy.run_path("bin/test", run_name="__main__")
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "bin/test", line 107, in <module>
+    ok = sympy.test(*args, verbose=options.verbose, kw=options.kw,
+  File "/testbed/sympy/utilities/runtests.py", line 487, in test
+    val = not bool(_test(*paths, **kwargs))
+  File "/testbed/sympy/utilities/runtests.py", line 574, in _test
+    return int(not t.test(sort=sort, timeout=timeout, slow=slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1087, in test
+    self.test_file(f, sort, timeout, slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1162, in test_file
+    reporter.test_exception(sys.exc_info())
+  File "/testbed/sympy/utilities/runtests.py", line 2298, in test_exception
+    self._exceptions.append((self._active_file, self._active_f, exc_info))
+AttributeError: 'PyTestReporter' object has no attribute '_active_file'
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        46627387
+hash randomization: off
+
+sympy/physics/quantum/tests/test_printing.py[0] Traceback (most recent call last):
+  File "/testbed/sympy/utilities/runtests.py", line 1155, in test_file
+    exec_(code, gl)
+  File "/testbed/sympy/physics/quantum/tests/test_printing.py", line 11, in <module>
+    from sympy.physics.quantum.gate import CGate, CNotGate, IdentityGate, UGate, XGate
+  File "/testbed/sympy/physics/quantum/gate.py", line 33, in <module>
+    from sympy.physics.quantum.matrixcache import matrix_cache
+  File "/testbed/sympy/physics/quantum/matrixcache.py", line 96, in <module>
+    matrix_cache.cache_matrix('T', Matrix([[1, 0], [0, exp(I*pi/4)]]))
+  File "/testbed/sympy/core/function.py", line 439, in __new__
+    result = super(Function, cls).__new__(cls, *args, **options)
+  File "/testbed/sympy/core/function.py", line 250, in __new__
+    evaluated = cls.eval(*args)
+  File "/testbed/sympy/functions/elementary/exponential.py", line 251, in eval
+    if ask(Q.integer(2*coeff)):
+  File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+    from sympy.assumptions.satask import satask
+  File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+    from sympy.assumptions.sathandlers import fact_registry
+  File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+    from collections import MutableMapping, defaultdict
+  File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+    warnings.warn("Using or importing the ABCs from 'collections' instead "
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/verifier_sympy_driver.py", line 84, in <module>
+    runpy.run_path("bin/test", run_name="__main__")
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "bin/test", line 107, in <module>
+    ok = sympy.test(*args, verbose=options.verbose, kw=options.kw,
+  File "/testbed/sympy/utilities/runtests.py", line 487, in test
+    val = not bool(_test(*paths, **kwargs))
+  File "/testbed/sympy/utilities/runtests.py", line 574, in _test
+    return int(not t.test(sort=sort, timeout=timeout, slow=slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1087, in test
+    self.test_file(f, sort, timeout, slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1162, in test_file
+    reporter.test_exception(sys.exc_info())
+  File "/testbed/sympy/utilities/runtests.py", line 2298, in test_exception
+    self._exceptions.append((self._active_file, self._active_f, exc_info))
+AttributeError: 'PyTestReporter' object has no attribute '_active_file'
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        59564357
+hash randomization: off
+
+sympy/physics/quantum/tests/test_printing.py[0] Traceback (most recent call last):
+  File "/testbed/sympy/utilities/runtests.py", line 1155, in test_file
+    exec_(code, gl)
+  File "/testbed/sympy/physics/quantum/tests/test_printing.py", line 11, in <module>
+    from sympy.physics.quantum.gate import CGate, CNotGate, IdentityGate, UGate, XGate
+  File "/testbed/sympy/physics/quantum/gate.py", line 33, in <module>
+    from sympy.physics.quantum.matrixcache import matrix_cache
+  File "/testbed/sympy/physics/quantum/matrixcache.py", line 96, in <module>
+    matrix_cache.cache_matrix('T', Matrix([[1, 0], [0, exp(I*pi/4)]]))
+  File "/testbed/sympy/core/function.py", line 439, in __new__
+    result = super(Function, cls).__new__(cls, *args, **options)
+  File "/testbed/sympy/core/function.py", line 250, in __new__
+    evaluated = cls.eval(*args)
+  File "/testbed/sympy/functions/elementary/exponential.py", line 251, in eval
+    if ask(Q.integer(2*coeff)):
+  File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+    from sympy.assumptions.satask import satask
+  File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+    from sympy.assumptions.sathandlers import fact_registry
+  File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+    from collections import MutableMapping, defaultdict
+  File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+    warnings.warn("Using or importing the ABCs from 'collections' instead "
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/verifier_sympy_driver.py", line 84, in <module>
+    runpy.run_path("bin/test", run_name="__main__")
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "bin/test", line 107, in <module>
+    ok = sympy.test(*args, verbose=options.verbose, kw=options.kw,
+  File "/testbed/sympy/utilities/runtests.py", line 487, in test
+    val = not bool(_test(*paths, **kwargs))
+  File "/testbed/sympy/utilities/runtests.py", line 574, in _test
+    return int(not t.test(sort=sort, timeout=timeout, slow=slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1087, in test
+    self.test_file(f, sort, timeout, slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1162, in test_file
+    reporter.test_exception(sys.exc_info())
+  File "/testbed/sympy/utilities/runtests.py", line 2298, in test_exception
+    self._exceptions.append((self._active_file, self._active_f, exc_info))
+AttributeError: 'PyTestReporter' object has no attribute '_active_file'
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        44780410
+hash randomization: off
+
+sympy/physics/quantum/tests/test_printing.py[0] Traceback (most recent call last):
+  File "/testbed/sympy/utilities/runtests.py", line 1155, in test_file
+    exec_(code, gl)
+  File "/testbed/sympy/physics/quantum/tests/test_printing.py", line 11, in <module>
+    from sympy.physics.quantum.gate import CGate, CNotGate, IdentityGate, UGate, XGate
+  File "/testbed/sympy/physics/quantum/gate.py", line 33, in <module>
+    from sympy.physics.quantum.matrixcache import matrix_cache
+  File "/testbed/sympy/physics/quantum/matrixcache.py", line 96, in <module>
+    matrix_cache.cache_matrix('T', Matrix([[1, 0], [0, exp(I*pi/4)]]))
+  File "/testbed/sympy/core/function.py", line 439, in __new__
+    result = super(Function, cls).__new__(cls, *args, **options)
+  File "/testbed/sympy/core/function.py", line 250, in __new__
+    evaluated = cls.eval(*args)
+  File "/testbed/sympy/functions/elementary/exponential.py", line 251, in eval
+    if ask(Q.integer(2*coeff)):
+  File "/testbed/sympy/assumptions/ask.py", line 1247, in ask
+    from sympy.assumptions.satask import satask
+  File "/testbed/sympy/assumptions/satask.py", line 9, in <module>
+    from sympy.assumptions.sathandlers import fact_registry
+  File "/testbed/sympy/assumptions/sathandlers.py", line 3, in <module>
+    from collections import MutableMapping, defaultdict
+  File "<frozen importlib._bootstrap>", line 1055, in _handle_fromlist
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/collections/__init__.py", line 62, in __getattr__
+    warnings.warn("Using or importing the ABCs from 'collections' instead "
+DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/verifier_sympy_driver.py", line 84, in <module>
+    runpy.run_path("bin/test", run_name="__main__")
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 288, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 97, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/opt/miniconda3/envs/testbed/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "bin/test", line 107, in <module>
+    ok = sympy.test(*args, verbose=options.verbose, kw=options.kw,
+  File "/testbed/sympy/utilities/runtests.py", line 487, in test
+    val = not bool(_test(*paths, **kwargs))
+  File "/testbed/sympy/utilities/runtests.py", line 574, in _test
+    return int(not t.test(sort=sort, timeout=timeout, slow=slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1087, in test
+    self.test_file(f, sort, timeout, slow,
+  File "/testbed/sympy/utilities/runtests.py", line 1162, in test_file
+    reporter.test_exception(sys.exc_info())
+  File "/testbed/sympy/utilities/runtests.py", line 2298, in test_exception
+    self._exceptions.append((self._active_file, self._active_f, exc_info))
+AttributeError: 'PyTestReporter' object has no attribute '_active_file'
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        76988527
+hash randomization: off
+
+sympy/physics/units/tests/test_prefixes.py[4] 
+test_prefix_operations ok
+test_prefix_unit ok
+test_bases ok
+test_repr ok                                                                [OK]
+
+
+================== tests finished: 4 passed, in 0.37 seconds ===================
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        3989277
+hash randomization: off
+
+sympy/polys/tests/test_polyclasses.py[19] 
+test_DMP___init__ ok
+test_DMP___eq__ ok
+test_DMP___bool__ ok
+test_DMP_to_dict ok
+test_DMP_properties ok
+test_DMP_arithmetics ok
+test_DMP_functionality ok
+test_DMP_exclude ok
+test_DMF__init__ ok
+test_DMF__bool__ ok
+test_DMF_properties ok
+test_DMF_arithmetics ok
+test_ANP___init__ ok
+test_ANP___eq__ ok
+test_ANP___bool__ ok
+test_ANP_properties ok
+test_ANP_arithmetics ok
+test_ANP_unify ok
+test___hash__ ok                                                            [OK]
+
+
+================== tests finished: 19 passed, in 0.05 seconds ==================
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        72610934
+hash randomization: off
+
+sympy/polys/tests/test_polytools.py[140] 
+test_Poly_from_dict ok
+test_Poly_from_list ok
+test_Poly_from_poly ok
+test_Poly_from_expr ok
+test_Poly__new__ ok
+test_Poly__args ok
+test_Poly__gens ok
+test_Poly_zero ok
+test_Poly_one ok
+test_Poly__unify /testbed/sympy/polys/agca/modules.py:351: SyntaxWarning: "is" with a literal. Did you mean "=="?
+  elif elem is 0:
+ok
+test_Poly_free_symbols ok
+test_PurePoly_free_symbols ok
+test_Poly__eq__ ok
+test_PurePoly__eq__ ok
+test_PurePoly_Poly ok
+test_Poly_get_domain ok
+test_Poly_set_domain ok
+test_Poly_get_modulus ok
+test_Poly_set_modulus ok
+test_Poly_add_ground ok
+test_Poly_sub_ground ok
+test_Poly_mul_ground ok
+test_Poly_quo_ground ok
+test_Poly_exquo_ground ok
+test_Poly_abs ok
+test_Poly_neg ok
+test_Poly_add ok
+test_Poly_sub ok
+test_Poly_mul ok
+test_Poly_sqr ok
+test_Poly_pow ok
+test_Poly_divmod ok
+test_Poly_eq_ne ok
+test_Poly_nonzero ok
+test_Poly_properties ok
+test_Poly_is_irreducible ok
+test_Poly_subs ok
+test_Poly_replace ok
+test_Poly_reorder ok
+test_Poly_ltrim ok
+test_Poly_has_only_gens ok
+test_Poly_to_ring ok
+test_Poly_to_field ok
+test_Poly_to_exact ok
+test_Poly_retract ok
+test_Poly_slice ok
+test_Poly_coeffs ok
+test_Poly_monoms ok
+test_Poly_terms ok
+test_Poly_all_coeffs ok
+test_Poly_all_monoms ok
+test_Poly_all_terms ok
+test_Poly_termwise ok
+test_Poly_length ok
+test_Poly_as_dict ok
+test_Poly_as_expr ok
+test_Poly_lift ok
+test_Poly_deflate ok
+test_Poly_inject ok
+test_Poly_eject ok
+test_Poly_exclude ok
+test_Poly__gen_to_level ok
+test_Poly_degree ok
+test_Poly_degree_list ok
+test_Poly_total_degree ok
+test_Poly_homogenize ok
+test_Poly_homogeneous_order ok
+test_Poly_LC ok
+test_Poly_TC ok
+test_Poly_EC ok
+test_Poly_coeff ok
+test_Poly_nth ok
+test_Poly_LM ok
+test_Poly_LM_custom_order ok
+test_Poly_EM ok
+test_Poly_LT ok
+test_Poly_ET ok
+test_Poly_max_norm ok
+test_Poly_l1_norm ok
+test_Poly_clear_denoms ok
+test_Poly_rat_clear_denoms ok
+test_Poly_integrate ok
+test_Poly_diff ok
+test_issue_9585 ok
+test_Poly_eval ok
+test_Poly___call__ ok
+test_parallel_poly_from_expr ok
+test_pdiv ok
+test_div ok
+test_gcdex ok
+test_revert ok
+test_subresultants ok
+test_resultant ok
+test_discriminant ok
+test_dispersion ok
+test_gcd_list ok
+test_lcm_list ok
+test_gcd ok
+test_gcd_numbers_vs_polys ok
+test_terms_gcd ok
+test_trunc ok
+test_monic ok
+test_content ok
+test_primitive ok
+test_compose ok
+test_shift ok
+test_transform ok
+test_sturm ok
+test_gff ok
+test_norm ok
+test_sqf_norm ok
+test_sqf ok
+test_factor ok
+test_factor_large ok
+test_factor_noeval f
+test_intervals ok
+test_refine_root ok
+test_count_roots ok
+test_Poly_root ok
+test_real_roots ok
+test_all_roots ok
+test_nroots ok
+test_ground_roots ok
+test_nth_power_roots_poly ok
+test_torational_factor_list ok
+test_cancel ok
+test_reduced ok
+test_groebner ok
+test_fglm ok
+test_is_zero_dimensional ok
+test_GroebnerBasis ok
+test_poly ok
+test_keep_coeff ok
+test_poly_matching_consistency f
+test_issue_5786 f
+test_noncommutative ok
+test_to_rational_coeffs ok
+test_factor_terms ok
+test_issue_11198 ok
+test_Poly_precision ok                                                      [OK]
+
+
+======= tests finished: 137 passed, 3 expected to fail, in 7.92 seconds ========
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        93752335
+hash randomization: off
+
+sympy/printing/tests/test_lambdarepr.py[8] 
+test_basic ok
+test_matrix ok
+test_piecewise ok
+test_sum__1 ok
+test_sum__2 ok
+test_multiple_sums ok
+test_settings ok
+test_printmethod ok                                                         [OK]
+
+
+================== tests finished: 8 passed, in 0.08 seconds ===================
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        27397503
+hash randomization: off
+
+sympy/printing/tests/test_repr.py[31] 
+test_printmethod ok
+test_Add ok
+test_Function ok
+test_Geometry ok
+test_Singletons ok
+test_Integer ok
+test_list ok
+test_Matrix ok
+test_empty_Matrix ok
+test_Rational ok
+test_Float ok
+test_Symbol ok
+test_Symbol_two_assumptions ok
+test_Symbol_no_special_commutative_treatment ok
+test_Wild ok
+test_Dummy ok
+test_Dummy_assumption ok
+test_Dummy_from_Symbol ok
+test_tuple ok
+test_WildFunction ok
+test_settins ok
+test_Mul ok
+test_AlgebraicNumber ok
+test_PolyRing ok
+test_FracField ok
+test_PolyElement ok
+test_FracElement ok
+test_FractionField ok
+test_PolynomialRingBase ok
+test_DMP ok
+test_BooleanAtom ok                                                         [OK]
+
+
+================== tests finished: 31 passed, in 0.05 seconds ==================
+/testbed/sympy/core/basic.py:3: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Mapping, defaultdict
+/testbed/sympy/core/containers.py:271: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  class OrderedSet(collections.MutableSet):
+/testbed/sympy/plotting/plot.py:28: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.10 it will stop working
+  from collections import Callable
+============================= test process starts ==============================
+executable:         /opt/miniconda3/envs/testbed/bin/python  (3.9.20-final-0) [CPython]
+architecture:       64-bit
+cache:              no
+ground types:       python 
+numpy:              None
+random seed:        23128521
+hash randomization: off
+
+sympy/series/tests/test_limits.py[58] 
+test_basic1 ok
+test_basic2 ok
+test_basic3 ok
+test_basic4 ok
+test_basic5 ok
+test_issue_3885 ok
+test_issue_10382 ok
+test_Limit ok
+test_floor ok
+test_floor_requires_robust_assumptions ok
+test_ceiling ok
+test_ceiling_requires_robust_assumptions ok
+test_atan ok
+test_abs ok
+test_heuristic ok
+test_issue_3871 ok
+test_exponential ok
+test_exponential2 f
+test_doit ok
+test_AccumBounds ok
+test_doit2 f
+test_issue_3792 ok
+test_issue_4090 ok
+test_issue_4547 ok
+test_issue_5164 ok
+test_issue_5183 

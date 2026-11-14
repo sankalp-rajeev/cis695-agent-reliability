@@ -1,0 +1,29 @@
+test,kind,reason
+tests.unit.test_selection_ground_truth::test_django_16899_selects_admin_checks,failure,FileNotFoundError: [Errno 2] No such file or directory: '/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/tests/fixtures/base_trees/django__django-16899.patch'
+tests.unit.test_superseded_shadow::test_kernel_blocks_actual_file_access_in_classifier_process,failure,Landlock ABI >=4 is unavailable; isolated classifier abstains before probe_results or prediction.
+tests.unit.test_superseded_shadow_v2::test_v2_worker_still_cannot_open_oracle_files,failure,Landlock ABI >=4 is unavailable; isolated classifier abstains before probe_results or prediction.
+tests.unit.test_superseded_shadow_v2::test_only_one_extra_base_reuses_patch_confirmation_and_preserves_signal,failure,Landlock ABI >=4 is unavailable; isolated classifier abstains before probe_results or prediction.
+tests.unit.test_v2_scg_paired::test_frozen_configuration_defaults_are_unchanged,failure,"AssertionError: assert {'per_pass_ti...r': None, ...} == {'baseline_ca..._flaky': True}
+  
+  Omitting 4 identical items, use -vv to show
+  Left contains 1 more item:
+  {'skip_compatible': True}
+  Use -v to get more diff"
+tests.unit.test_v2_scg_paired::test_all_83_have_one_manifest_per_arm_and_original_identity,error,"failed on setup with ""ValueError: frozen V2 source/evidence drift"""
+tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[selection],error,"failed on setup with ""ValueError: frozen V2 source/evidence drift"""
+tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[source],error,"failed on setup with ""ValueError: frozen V2 source/evidence drift"""
+tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[protocol],error,"failed on setup with ""ValueError: frozen V2 source/evidence drift"""
+tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[snapshot],error,"failed on setup with ""ValueError: frozen V2 source/evidence drift"""
+tests.unit.test_v2_scg_paired::test_seal_catches_all_input_classes[image_binding],error,"failed on setup with ""ValueError: frozen V2 source/evidence drift"""
+tests.unit.test_v2_scg_paired::test_resealed_selection_cannot_bypass_protocol_bound_inputs,error,"failed on setup with ""ValueError: frozen V2 source/evidence drift"""
+tests.unit.test_v2_scg_paired::test_source_drift_detected_without_container,error,"failed on setup with ""ValueError: frozen V2 source/evidence drift"""
+tests.unit.test_v2_scg_paired::test_end_to_end_scoped_dry_run_accounts_for_both_abstentions,error,"failed on setup with ""ValueError: frozen V2 source/evidence drift"""
+tests.unit.test_v2_scg_paired::test_host_drift_blocks_launch_after_freeze,error,"failed on setup with ""ValueError: frozen V2 source/evidence drift"""
+tests.unit.test_v2_scg_paired::test_archived_v2_inputs_are_portable_without_changing_frozen_policy,failure,ValueError: frozen V2 source/evidence drift
+tests.unit.test_v2_scg_paired::test_binding_inventory_has_all_83_historical_records_unchanged,error,"failed on setup with ""ValueError: frozen V2 source/evidence drift"""
+tests.unit.test_v2_scg_paired::test_validation_detects_image_drift_before_plan_creation,error,"failed on setup with ""ValueError: frozen V2 source/evidence drift"""
+tests.unit.test_v2_scg_paired::test_validation_detects_docker_daemon_drift,error,"failed on setup with ""ValueError: frozen V2 source/evidence drift"""
+tests.unit.test_v2_scg_paired::test_resealed_binding_still_bound_to_protocol,error,"failed on setup with ""ValueError: frozen V2 source/evidence drift"""
+tests.unit.test_v2_scg_paired::test_new_freeze_binds_host_images_for_all_83_without_rewriting_history[host-images],error,"failed on setup with ""ValueError: frozen V2 source/evidence drift"""
+tests.unit.test_v2_scg_paired::test_image_inspection_error_blocks_preparation,error,"failed on setup with ""ValueError: frozen V2 source/evidence drift"""
+tests.unit.test_v2_scg_paired::test_image_binding_cannot_change_task_cohort,error,"failed on setup with ""ValueError: frozen V2 source/evidence drift"""

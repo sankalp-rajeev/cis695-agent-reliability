@@ -1,0 +1,42 @@
+{
+  "Docker_calls": 0,
+  "PASS_to_ERROR_tasks": [
+    "django__django-10973"
+  ],
+  "PASS_to_ERROR_transitions": 5,
+  "benchmark_runs": 0,
+  "changed_verdict_counts": {
+    "C": 1,
+    "S": 2
+  },
+  "changed_verdict_tasks": {
+    "C": [
+      "django__django-10973"
+    ],
+    "S": [
+      "django__django-10973",
+      "mwaskom__seaborn-3069"
+    ]
+  },
+  "labels_read": false,
+  "legacy": false,
+  "native_FAIL_retained": 6,
+  "policies": {
+    "C": {
+      "FAIL": 6,
+      "INCOMPLETE": 30,
+      "NOT_AVAILABLE": 10,
+      "PASS": 36,
+      "REGRESSION_ERROR": 1
+    },
+    "S": {
+      "FAIL": 6,
+      "INCOMPLETE": 51,
+      "NOT_AVAILABLE": 10,
+      "PASS": 15,
+      "REGRESSION_ERROR": 1
+    }
+  },
+  "scope": "offline stored-capture rescore; no benchmark execution",
+  "verified_capture_files": 676
+}

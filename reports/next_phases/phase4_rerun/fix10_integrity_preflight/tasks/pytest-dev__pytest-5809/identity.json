@@ -1,0 +1,28 @@
+{
+  "image_id": "sha256:f60a775b879d5b770d9969b17dcfd45e717410059234e727e02236080b2e47c1",
+  "image_tag_metadata": "swebench/sweb.eval.x86_64.pytest-dev_1776_pytest-5809:latest",
+  "base_commit": "8aba863a634f40560e25055d179220f0eefabe9a",
+  "archive_sha256": "8690468c8668fa44be1553d6e5742dbcbd63deaf7453f22ce2e84fa360b27d3c",
+  "container_argv": [
+    "/usr/bin/docker",
+    "run",
+    "--pull=never",
+    "-d",
+    "--cpu-shares",
+    "2048",
+    "--name",
+    "verify_phase4_fix10_pristine_audit_pytest-dev__pytest-5809_6ca20ec6",
+    "--label",
+    "experiment_id=phase4_fix10_pristine_audit",
+    "-w",
+    "/testbed",
+    "--network",
+    "none",
+    "sha256:f60a775b879d5b770d9969b17dcfd45e717410059234e727e02236080b2e47c1",
+    "sleep",
+    "infinity"
+  ],
+  "patch_applied": false,
+  "tests_executed": 0,
+  "collection_performed": false
+}

@@ -1,0 +1,27 @@
+{
+  "command": [
+    "/usr/bin/python3",
+    "-B",
+    "/tmp/cis695-phase1-followup-wa648hp3/phase1_known_failures.py",
+    "--witnesses",
+    "/home/sankalp/projects/cis695-callgraph-typeprop/reports/callgraph_selection/typeprop_experiment/regression_validation/witnesses.csv",
+    "--results",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results",
+    "--local-evidence-manifest",
+    "/home/sankalp/projects/cis695-artifacts/local_evidence_manifest_20261106.sha256",
+    "--frozen",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/paired_frozen",
+    "--execution-source",
+    "/home/sankalp/projects/cis695-v2-scg-paired-review-b030e50",
+    "--output",
+    "/tmp/cis695-phase1-followup-wa648hp3/verified_phase1"
+  ],
+  "exit_code": 0,
+  "analyzer_sha256": "7d6879a07bd8ec60d0d202113069c65190f1c3a0b6155a8fd4b83f3df6894ba8",
+  "scope": "Stored captures and hash-pinned execution provenance/scoring source only; no source archives, Docker, benchmark imports, or subprocesses in analyzer.",
+  "reproduction": "Choose a fresh output directory; analyzer refuses to overwrite an existing directory.",
+  "categories_added_after_phase1_inspection": [
+    "E_SKIPPED",
+    "F_ALREADY_DETECTED"
+  ]
+}

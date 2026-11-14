@@ -1,0 +1,50 @@
+{
+  "label": "Secondary stage-aware cost sensitivity; no concurrency selected",
+  "models": {
+    "django": {
+      "task": "django__django-13297",
+      "selected_ids": 8152,
+      "selected_modules": 271,
+      "fixed_pass_s": 12.983580429092399,
+      "setup_s": 3.2236077419947833,
+      "collection_s": 92.29669875800028,
+      "execution_s": 206.3155208389071,
+      "capped": false,
+      "six_confirmation_module_median_proxy_s": 83.42062174553575,
+      "six_confirmation_module_p95_proxy_s": 89.89318203661242
+    },
+    "pytest": {
+      "task": "astropy__astropy-13977",
+      "selected_ids": 3080,
+      "selected_modules": 93,
+      "fixed_pass_s": 31.467330055995262,
+      "setup_s": 2.3171894539991627,
+      "collection_s": 102.9209509500215,
+      "execution_s": 207.55811894798535,
+      "capped": false,
+      "six_confirmation_module_median_proxy_s": 202.3461199440644,
+      "six_confirmation_module_p95_proxy_s": 227.29700506207882
+    },
+    "sympy": {
+      "task": "sympy__sympy-13480",
+      "selected_ids": 781,
+      "selected_modules": 16,
+      "fixed_pass_s": 26.332282375951763,
+      "setup_s": 1.36015373202099,
+      "collection_s": 7.376979506007046,
+      "execution_s": 1117.4121999420313,
+      "capped": false,
+      "six_confirmation_module_median_proxy_s": 164.49104960968543,
+      "six_confirmation_module_p95_proxy_s": 408.9792664978013
+    }
+  },
+  "containers_wall_s": {
+    "1": 17508.037064287986,
+    "2": 8758.294649409261,
+    "4": 4395.178737521318
+  },
+  "method": "Measured fixed pass overhead per task + native collection scaled by module count + execution scaled by original selected-ID count; each pass capped at 1800 s; setup charged twice.",
+  "confirmation_note": "Module-sized median/p95 proxies, not isolated-confirmation measurements or confidence bounds. Actual cost depends on future paired failures; each candidate requires six isolated passes. Six 1800-second budgets total 10800 seconds, excluding cleanup.",
+  "correctness_labels_read": false,
+  "concurrency_chosen": null
+}

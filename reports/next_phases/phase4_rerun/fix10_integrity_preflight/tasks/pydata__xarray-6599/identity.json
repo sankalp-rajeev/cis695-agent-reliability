@@ -1,0 +1,28 @@
+{
+  "image_id": "sha256:0a831641c7ae90ccec15f9d1a925fa68b42cb5b616fe9bf3fcbf98ce3fdf77bc",
+  "image_tag_metadata": "swebench/sweb.eval.x86_64.pydata_1776_xarray-6599:latest",
+  "base_commit": "6bb2b855498b5c68d7cca8cceb710365d58e6048",
+  "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+  "container_argv": [
+    "/usr/bin/docker",
+    "run",
+    "--pull=never",
+    "-d",
+    "--cpu-shares",
+    "2048",
+    "--name",
+    "verify_phase4_fix10_pristine_audit_pydata__xarray-6599_41d5a164",
+    "--label",
+    "experiment_id=phase4_fix10_pristine_audit",
+    "-w",
+    "/testbed",
+    "--network",
+    "none",
+    "sha256:0a831641c7ae90ccec15f9d1a925fa68b42cb5b616fe9bf3fcbf98ce3fdf77bc",
+    "sleep",
+    "infinity"
+  ],
+  "patch_applied": false,
+  "tests_executed": 0,
+  "collection_performed": false
+}

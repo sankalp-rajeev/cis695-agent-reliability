@@ -1,0 +1,597 @@
+{
+  "all_not_run_requests_per_tree": 25,
+  "archives": {
+    "django__django-13297": {
+      "path": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar",
+      "sha256": "4f499ef39fae21bfb9ce3eb9cbf2b3878158435323828e5e1a480e90aa810da4"
+    },
+    "pylint-dev__pylint-6528": {
+      "path": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-6528.tar",
+      "sha256": "ca2fab439b584b5b1e770fe335e2f3a7376fd13a43262c38a8969801e6f8a99c"
+    },
+    "pylint-dev__pylint-7277": {
+      "path": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-7277.tar",
+      "sha256": "baac4682f2541d8489225f5e3049f46e605e14fb89a70290d447e50c1ed46aa2"
+    }
+  },
+  "benchmark_tests_executed": 0,
+  "collateral_real_test_requests_per_tree": 24,
+  "containers_started": 0,
+  "cpu": {
+    "daemon_count_is_not_pylint_helper_count": true,
+    "daemon_ncpu": 16,
+    "docker_run_sets_cpus": false,
+    "inference_from_guard_and_skips": "_cpu_count() < 2 if this base hook governed collection; exact integer not measured",
+    "launch_source": "/home/sankalp/projects/cis695-v2-scg-paired-review-b030e50/src/reliability/verifier/container.py",
+    "launch_source_lines": [
+      102,
+      107
+    ],
+    "pylint_cpu_count_recorded": false,
+    "stored_cpu_field_search": [
+      {
+        "line": 13,
+        "match": "\"NCPU\": 16",
+        "path": "reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/pilot_20261105T183041_929325Z/docker_and_launch_checks.json"
+      },
+      {
+        "line": 12,
+        "match": "cpu.cfs_quota_us",
+        "path": "reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/paired_frozen/v2/issues/pylint-dev__pylint-6903.txt"
+      },
+      {
+        "line": 16,
+        "match": "cpu.shares",
+        "path": "reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/paired_frozen/v2/issues/pylint-dev__pylint-6903.txt"
+      }
+    ],
+    "subclass_source": "/home/sankalp/projects/cis695-v2-scg-paired-review-b030e50/scripts/v2_evaluation.py",
+    "subclass_source_lines": [
+      206,
+      211
+    ]
+  },
+  "django_batch3": [
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 522,
+      "kind": "test function",
+      "label": "generic_views.test_base.GetContextDataTest.test_object_at_custom_name_in_context_data",
+      "patched_status": "NOT_RUN",
+      "position": 1,
+      "selected_id": "tests/generic_views/test_base.py::GetContextDataTest::test_object_at_custom_name_in_context_data",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/generic_views/test_base.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 529,
+      "kind": "test function",
+      "label": "generic_views.test_base.GetContextDataTest.test_object_in_get_context_data",
+      "patched_status": "NOT_RUN",
+      "position": 2,
+      "selected_id": "tests/generic_views/test_base.py::GetContextDataTest::test_object_in_get_context_data",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/generic_views/test_base.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 539,
+      "kind": "test function",
+      "label": "generic_views.test_base.UseMultipleObjectMixinTest.test_use_queryset_from_view",
+      "patched_status": "NOT_RUN",
+      "position": 3,
+      "selected_id": "tests/generic_views/test_base.py::UseMultipleObjectMixinTest::test_use_queryset_from_view",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/generic_views/test_base.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 546,
+      "kind": "test function",
+      "label": "generic_views.test_base.UseMultipleObjectMixinTest.test_overwrite_queryset",
+      "patched_status": "NOT_RUN",
+      "position": 4,
+      "selected_id": "tests/generic_views/test_base.py::UseMultipleObjectMixinTest::test_overwrite_queryset",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/generic_views/test_base.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 558,
+      "kind": "test function",
+      "label": "generic_views.test_base.SingleObjectTemplateResponseMixinTest.test_template_mixin_without_template",
+      "patched_status": "NOT_RUN",
+      "position": 5,
+      "selected_id": "tests/generic_views/test_base.py::SingleObjectTemplateResponseMixinTest::test_template_mixin_without_template",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/generic_views/test_base.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 576,
+      "kind": "test function",
+      "label": "generic_views.test_base.DeprecationTests.test_template_params",
+      "patched_status": "NOT_RUN",
+      "position": 6,
+      "selected_id": "tests/generic_views/test_base.py::DeprecationTests::test_template_params",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/generic_views/test_base.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 584,
+      "kind": "test function",
+      "label": "generic_views.test_base.DeprecationTests.test_extra_template_params",
+      "patched_status": "NOT_RUN",
+      "position": 7,
+      "selected_id": "tests/generic_views/test_base.py::DeprecationTests::test_extra_template_params",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/generic_views/test_base.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 593,
+      "kind": "test function",
+      "label": "generic_views.test_base.DeprecationTests.test_template_params_warning",
+      "patched_status": "NOT_RUN",
+      "position": 8,
+      "selected_id": "tests/generic_views/test_base.py::DeprecationTests::test_template_params_warning",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/generic_views/test_base.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": 123,
+      "definition_line": 124,
+      "kind": "property",
+      "label": "django.test.runner.RemoteTestResult.test_index",
+      "patched_status": "NOT_RUN",
+      "position": 9,
+      "selected_id": "django/test/runner.py::RemoteTestResult::test_index",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/django/test/runner.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 10,
+      "kind": "test function",
+      "label": "admin_autodiscover.tests.AdminAutoDiscoverTests.test_double_call_autodiscover",
+      "patched_status": "NOT_RUN",
+      "position": 10,
+      "selected_id": "tests/admin_autodiscover/tests.py::AdminAutoDiscoverTests::test_double_call_autodiscover",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/admin_autodiscover/tests.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 28,
+      "kind": "test function",
+      "label": "admin_changelist.test_date_hierarchy.DateHierarchyTests.test_bounded_params",
+      "patched_status": "NOT_RUN",
+      "position": 11,
+      "selected_id": "tests/admin_changelist/test_date_hierarchy.py::DateHierarchyTests::test_bounded_params",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/admin_changelist/test_date_hierarchy.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 41,
+      "kind": "test function",
+      "label": "admin_changelist.test_date_hierarchy.DateHierarchyTests.test_bounded_params_with_time_zone",
+      "patched_status": "NOT_RUN",
+      "position": 12,
+      "selected_id": "tests/admin_changelist/test_date_hierarchy.py::DateHierarchyTests::test_bounded_params_with_time_zone",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/admin_changelist/test_date_hierarchy.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 49,
+      "kind": "test function",
+      "label": "admin_changelist.test_date_hierarchy.DateHierarchyTests.test_bounded_params_with_dst_time_zone",
+      "patched_status": "NOT_RUN",
+      "position": 13,
+      "selected_id": "tests/admin_changelist/test_date_hierarchy.py::DateHierarchyTests::test_bounded_params_with_dst_time_zone",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/admin_changelist/test_date_hierarchy.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 67,
+      "kind": "test function",
+      "label": "admin_changelist.test_date_hierarchy.DateHierarchyTests.test_invalid_params",
+      "patched_status": "NOT_RUN",
+      "position": 14,
+      "selected_id": "tests/admin_changelist/test_date_hierarchy.py::DateHierarchyTests::test_invalid_params",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/admin_changelist/test_date_hierarchy.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 70,
+      "kind": "test function",
+      "label": "admin_changelist.tests.ChangeListTests.test_specified_ordering_by_f_expression",
+      "patched_status": "NOT_RUN",
+      "position": 15,
+      "selected_id": "tests/admin_changelist/tests.py::ChangeListTests::test_specified_ordering_by_f_expression",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/admin_changelist/tests.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 85,
+      "kind": "test function",
+      "label": "admin_changelist.tests.ChangeListTests.test_specified_ordering_by_f_expression_without_asc_desc",
+      "patched_status": "NOT_RUN",
+      "position": 16,
+      "selected_id": "tests/admin_changelist/tests.py::ChangeListTests::test_specified_ordering_by_f_expression_without_asc_desc",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/admin_changelist/tests.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 96,
+      "kind": "test function",
+      "label": "admin_changelist.tests.ChangeListTests.test_select_related_preserved",
+      "patched_status": "NOT_RUN",
+      "position": 17,
+      "selected_id": "tests/admin_changelist/tests.py::ChangeListTests::test_select_related_preserved",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/admin_changelist/tests.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 107,
+      "kind": "test function",
+      "label": "admin_changelist.tests.ChangeListTests.test_select_related_as_tuple",
+      "patched_status": "NOT_RUN",
+      "position": 18,
+      "selected_id": "tests/admin_changelist/tests.py::ChangeListTests::test_select_related_as_tuple",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/admin_changelist/tests.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 114,
+      "kind": "test function",
+      "label": "admin_changelist.tests.ChangeListTests.test_select_related_as_empty_tuple",
+      "patched_status": "NOT_RUN",
+      "position": 19,
+      "selected_id": "tests/admin_changelist/tests.py::ChangeListTests::test_select_related_as_empty_tuple",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/admin_changelist/tests.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 122,
+      "kind": "test function",
+      "label": "admin_changelist.tests.ChangeListTests.test_get_select_related_custom_method",
+      "patched_status": "NOT_RUN",
+      "position": 20,
+      "selected_id": "tests/admin_changelist/tests.py::ChangeListTests::test_get_select_related_custom_method",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/admin_changelist/tests.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 135,
+      "kind": "test function",
+      "label": "admin_changelist.tests.ChangeListTests.test_result_list_empty_changelist_value",
+      "patched_status": "NOT_RUN",
+      "position": 21,
+      "selected_id": "tests/admin_changelist/tests.py::ChangeListTests::test_result_list_empty_changelist_value",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/admin_changelist/tests.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 153,
+      "kind": "test function",
+      "label": "admin_changelist.tests.ChangeListTests.test_result_list_set_empty_value_display_on_admin_site",
+      "patched_status": "NOT_RUN",
+      "position": 22,
+      "selected_id": "tests/admin_changelist/tests.py::ChangeListTests::test_result_list_set_empty_value_display_on_admin_site",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/admin_changelist/tests.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 172,
+      "kind": "test function",
+      "label": "admin_changelist.tests.ChangeListTests.test_result_list_set_empty_value_display_in_model_admin",
+      "patched_status": "NOT_RUN",
+      "position": 23,
+      "selected_id": "tests/admin_changelist/tests.py::ChangeListTests::test_result_list_set_empty_value_display_in_model_admin",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/admin_changelist/tests.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 194,
+      "kind": "test function",
+      "label": "admin_changelist.tests.ChangeListTests.test_result_list_html",
+      "patched_status": "NOT_RUN",
+      "position": 24,
+      "selected_id": "tests/admin_changelist/tests.py::ChangeListTests::test_result_list_html",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/admin_changelist/tests.py"
+    },
+    {
+      "base_status": "NOT_RUN",
+      "decorator_line": null,
+      "definition_line": 213,
+      "kind": "test function",
+      "label": "admin_changelist.tests.ChangeListTests.test_result_list_editable_html",
+      "patched_status": "NOT_RUN",
+      "position": 25,
+      "selected_id": "tests/admin_changelist/tests.py::ChangeListTests::test_result_list_editable_html",
+      "source": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/admin_changelist/tests.py"
+    }
+  ],
+  "django_tree_evidence": [
+    {
+      "byte_offsets": [
+        4731,
+        5654
+      ],
+      "event_lines": [
+        5,
+        6
+      ],
+      "events_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/base_b801df1e75a04136a31773e481cc700e/events.jsonl",
+      "not_run": 25,
+      "requested": 25,
+      "returncode": 1,
+      "runner_lines": [
+        84,
+        99
+      ],
+      "runner_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/base_b801df1e75a04136a31773e481cc700e/runner.raw",
+      "split": false,
+      "tree": "base"
+    },
+    {
+      "byte_offsets": [
+        4731,
+        5654
+      ],
+      "event_lines": [
+        5,
+        6
+      ],
+      "events_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/patched_b55fb9e09e194de3ae5bacaeac3bba5e/events.jsonl",
+      "not_run": 25,
+      "requested": 25,
+      "returncode": 1,
+      "runner_lines": [
+        84,
+        99
+      ],
+      "runner_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/patched_b55fb9e09e194de3ae5bacaeac3bba5e/runner.raw",
+      "split": false,
+      "tree": "patched"
+    }
+  ],
+  "input_sha256": {
+    "/home/sankalp/cg_repos/task_archives/django__django-13297.tar": "4f499ef39fae21bfb9ce3eb9cbf2b3878158435323828e5e1a480e90aa810da4",
+    "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-6528.tar": "ca2fab439b584b5b1e770fe335e2f3a7376fd13a43262c38a8969801e6f8a99c",
+    "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-7277.tar": "baac4682f2541d8489225f5e3049f46e605e14fb89a70290d447e50c1ed46aa2",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_discovery_cleanup/ubuntu_readonly_preflight_20261105T171113_732025Z/docker_health.json": "753975d32d7918e593b4ce4ce665db9c5cc549d32f42c343da18138e4be47d7e",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/run_provenance.json": "1af66e4c035dcd5c0f2baaa5e3a6173ea89dedb03f27a81807ff4c1ece08f7c8",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/base_b801df1e75a04136a31773e481cc700e/events.jsonl": "0e142565af9bc6698fe50698295273bd3193a404a307f06d375d9f704e1aee05",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/base_b801df1e75a04136a31773e481cc700e/runner.raw": "834ce7717516584ae7fd2a1a5f47b9911af450826321fb2b6dca597d2d21bec5",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/base_b801df1e75a04136a31773e481cc700e/stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/base_b801df1e75a04136a31773e481cc700e/stdout.raw": "834ce7717516584ae7fd2a1a5f47b9911af450826321fb2b6dca597d2d21bec5",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/patched_b55fb9e09e194de3ae5bacaeac3bba5e/events.jsonl": "5c5c43fe8cf8284ab01a96e345f78607b0aec8e67e157dc701ecab8e070fd104",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/patched_b55fb9e09e194de3ae5bacaeac3bba5e/runner.raw": "ac3f5e8f7f9375a11b01f8d7c95a79a84cec830fd8a82f0cdce70332c465d3cd",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/patched_b55fb9e09e194de3ae5bacaeac3bba5e/stderr.raw": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/raw/patched_b55fb9e09e194de3ae5bacaeac3bba5e/stdout.raw": "ac3f5e8f7f9375a11b01f8d7c95a79a84cec830fd8a82f0cdce70332c465d3cd",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/django__django-13297/v2/result.json": "50bf8d451a146875f0bf748b5dc937ddd35b8bea8bdb536b5b59a47bb90f3a75",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/runner.raw": "0612a6cf6c6dfef6c22aa2fb80dd652a993d9e696c6d285bb3fa0367b187356a",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/runner.raw": "8ea233d5ce4e641c25b0ce95bc42f09016e29d0b6bf71a81764f695150a45b54",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/result.json": "e742e2a4e828bf51909509eb690b49613e25b35af26feefbfdd7a5c6d6269958",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/raw/base_9ebb49b558484cc2bf502c0c45e06ebf/runner.raw": "76ae790d87e6f9492b9e06ebbaa50591e4755d23844c80fa1a85145f0bd7681b",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/raw/patched_9304e52de7e748c2817a9d6f61192cd8/runner.raw": "eebe545a70052ee9b1981d120c6b180233379b21e92c94a59891d6ccdade97ed",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/result.json": "2fe54fa09f160bba5ab0ceafabaf652f0746b476dc49fe23738b1b1ffc489009",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/paired_frozen/selections/django__django-13297/v2.json": "d14f8d119e80c23014b88c466b88032cb2a5b11536b5be647ca424ee19d302a1",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/paired_frozen/tasks.json": "532df6e8eebd9afa91592ef39aa28f12d8b905fcf3987c7698e06c8ad02ac625",
+    "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/pilot_20261105T183041_929325Z/docker_and_launch_checks.json": "91560b786073331b96c501c0d3674b75a3903a8847f1c6affcc2c5da16150fc7",
+    "/home/sankalp/projects/cis695-v2-scg-paired-review-b030e50/scripts/v2_evaluation.py": "9a7805ae922dfafd744fd28d216520cea135b4826d4764ca7f863e1fd8654e16",
+    "/home/sankalp/projects/cis695-v2-scg-paired-review-b030e50/src/reliability/verifier/container.py": "c46228fdfeb8e9c6d9c9fca8b99593de65f0d00bec9c4b2b8d928083df0ab0bd"
+  },
+  "members": {
+    "django__django-13297:django/test/runner.py": {
+      "matches_frozen_source_file_hash": true,
+      "reference": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/django/test/runner.py",
+      "sha256": "857710c1d9ed3f31e926a7033077265e03125e5cf3ede4ecdd0b35603d37c712"
+    },
+    "django__django-13297:tests/admin_autodiscover/tests.py": {
+      "matches_frozen_source_file_hash": true,
+      "reference": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/admin_autodiscover/tests.py",
+      "sha256": "001f37c1e0b6a582dbea6bdc1706125d9503b0e2988352ee2525b083585cf4d8"
+    },
+    "django__django-13297:tests/admin_changelist/test_date_hierarchy.py": {
+      "matches_frozen_source_file_hash": true,
+      "reference": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/admin_changelist/test_date_hierarchy.py",
+      "sha256": "97cf2a313d5f4171e1449e8713defd3b0c659a916914ccec96cde586d7e11346"
+    },
+    "django__django-13297:tests/admin_changelist/tests.py": {
+      "matches_frozen_source_file_hash": true,
+      "reference": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/admin_changelist/tests.py",
+      "sha256": "f59e89e64086a4dba24bf03765e5ba5cc17c1371d769c6ccfec7b972fafa1940"
+    },
+    "django__django-13297:tests/generic_views/test_base.py": {
+      "matches_frozen_source_file_hash": true,
+      "reference": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar!testbed/tests/generic_views/test_base.py",
+      "sha256": "7bd02228541cbd7eaa1c4c0583b6b53425788dcae590f2b2fb20d376171323d2"
+    },
+    "pylint-dev__pylint-6528:pylint/lint/run.py": {
+      "matches_frozen_source_file_hash": false,
+      "reference": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-6528.tar!testbed/pylint/lint/run.py",
+      "sha256": "b16a305c08b7f7443bcde0539d1b49b50fdc1733a1386a4eab4e30d3621c717d"
+    },
+    "pylint-dev__pylint-6528:tests/conftest.py": {
+      "matches_frozen_source_file_hash": false,
+      "reference": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-6528.tar!testbed/tests/conftest.py",
+      "sha256": "be17e866674f3f54ca821a42c08b0d9def7d49c150b0ee3a2b8899f401b6e7c8"
+    },
+    "pylint-dev__pylint-6528:tests/lint/unittest_lint.py": {
+      "matches_frozen_source_file_hash": true,
+      "reference": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-6528.tar!testbed/tests/lint/unittest_lint.py",
+      "sha256": "6cf338d97209b68f382e2850076f9e4fc43d84681aae3ec5602b5bc66b0728ec"
+    },
+    "pylint-dev__pylint-6528:tests/test_self.py": {
+      "matches_frozen_source_file_hash": true,
+      "reference": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-6528.tar!testbed/tests/test_self.py",
+      "sha256": "483c4f9217f2e01b73c6857bebfb64e1cbeb5a9252b880401afd6feb25c41c5a"
+    },
+    "pylint-dev__pylint-7277:pylint/lint/run.py": {
+      "matches_frozen_source_file_hash": false,
+      "reference": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-7277.tar!testbed/pylint/lint/run.py",
+      "sha256": "cdcc1f77db6a29b77d20bae501c86a90d3a37ebe8081833d3e1fee7bc8d5e561"
+    },
+    "pylint-dev__pylint-7277:tests/conftest.py": {
+      "matches_frozen_source_file_hash": false,
+      "reference": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-7277.tar!testbed/tests/conftest.py",
+      "sha256": "dd828617e86d50ba296c7cbcba751785d24ad167b6ace234d4bda3d3f9f1e093"
+    },
+    "pylint-dev__pylint-7277:tests/test_self.py": {
+      "matches_frozen_source_file_hash": true,
+      "reference": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-7277.tar!testbed/tests/test_self.py",
+      "sha256": "0977b3ec86ae4c1fdfa63160f65d876c8a6ecf80fed1e27087ed3b5b7fa675a1"
+    }
+  },
+  "scope": "POST-HOC ANALYSIS ONLY",
+  "skip_conditions": [
+    {
+      "capture_refs": [
+        {
+          "line": 405,
+          "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/runner.raw",
+          "tree": "base"
+        },
+        {
+          "line": 405,
+          "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/runner.raw",
+          "tree": "patched"
+        }
+      ],
+      "condition": "_cpu_count() < 2",
+      "condition_line": 122,
+      "decorator_line": 774,
+      "decorator_source": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-6528.tar!testbed/tests/lint/unittest_lint.py",
+      "full_reason_from_base_source": "Need 2 or more cores for test to be meaningful",
+      "hook_source": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-6528.tar!testbed/tests/conftest.py",
+      "mechanism": "needs_two_cores marker; pytest_collection_modifyitems adds pytest.mark.skip",
+      "reason_line": 124,
+      "task": "pylint-dev__pylint-6528",
+      "task_completeness": "COMPLETE",
+      "task_verdict": "PASS",
+      "test": "tests/lint/unittest_lint.py::test_custom_should_analyze_file"
+    },
+    {
+      "capture_refs": [
+        {
+          "line": 406,
+          "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/runner.raw",
+          "tree": "base"
+        },
+        {
+          "line": 406,
+          "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/runner.raw",
+          "tree": "patched"
+        }
+      ],
+      "condition": "_cpu_count() < 2",
+      "condition_line": 122,
+      "decorator_line": 803,
+      "decorator_source": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-6528.tar!testbed/tests/lint/unittest_lint.py",
+      "full_reason_from_base_source": "Need 2 or more cores for test to be meaningful",
+      "hook_source": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-6528.tar!testbed/tests/conftest.py",
+      "mechanism": "needs_two_cores marker; pytest_collection_modifyitems adds pytest.mark.skip",
+      "reason_line": 124,
+      "task": "pylint-dev__pylint-6528",
+      "task_completeness": "COMPLETE",
+      "task_verdict": "PASS",
+      "test": "tests/lint/unittest_lint.py::test_multiprocessing[1]"
+    },
+    {
+      "capture_refs": [
+        {
+          "line": 407,
+          "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/runner.raw",
+          "tree": "base"
+        },
+        {
+          "line": 407,
+          "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/runner.raw",
+          "tree": "patched"
+        }
+      ],
+      "condition": "_cpu_count() < 2",
+      "condition_line": 122,
+      "decorator_line": 803,
+      "decorator_source": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-6528.tar!testbed/tests/lint/unittest_lint.py",
+      "full_reason_from_base_source": "Need 2 or more cores for test to be meaningful",
+      "hook_source": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-6528.tar!testbed/tests/conftest.py",
+      "mechanism": "needs_two_cores marker; pytest_collection_modifyitems adds pytest.mark.skip",
+      "reason_line": 124,
+      "task": "pylint-dev__pylint-6528",
+      "task_completeness": "COMPLETE",
+      "task_verdict": "PASS",
+      "test": "tests/lint/unittest_lint.py::test_multiprocessing[2]"
+    },
+    {
+      "capture_refs": [
+        {
+          "line": 630,
+          "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/base_0094bb3ec4b74350b1a4364b077f828d/runner.raw",
+          "tree": "base"
+        },
+        {
+          "line": 630,
+          "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-6528/v2/raw/patched_693a33c2a7974637b456c70927243978/runner.raw",
+          "tree": "patched"
+        }
+      ],
+      "condition": "_cpu_count() < 2",
+      "condition_line": 122,
+      "decorator_line": 1050,
+      "decorator_source": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-6528.tar!testbed/tests/test_self.py",
+      "full_reason_from_base_source": "Need 2 or more cores for test to be meaningful",
+      "hook_source": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-6528.tar!testbed/tests/conftest.py",
+      "mechanism": "needs_two_cores marker; pytest_collection_modifyitems adds pytest.mark.skip",
+      "reason_line": 124,
+      "task": "pylint-dev__pylint-6528",
+      "task_completeness": "COMPLETE",
+      "task_verdict": "PASS",
+      "test": "tests/test_self.py::TestRunTC::test_jobs_score"
+    },
+    {
+      "capture_refs": [
+        {
+          "line": 85,
+          "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/raw/base_9ebb49b558484cc2bf502c0c45e06ebf/runner.raw",
+          "tree": "base"
+        },
+        {
+          "line": 85,
+          "path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/pylint-dev__pylint-7277/v2/raw/patched_9304e52de7e748c2817a9d6f61192cd8/runner.raw",
+          "tree": "patched"
+        }
+      ],
+      "condition": "_cpu_count() < 2",
+      "condition_line": 120,
+      "decorator_line": 909,
+      "decorator_source": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-7277.tar!testbed/tests/test_self.py",
+      "full_reason_from_base_source": "Need 2 or more cores for test to be meaningful",
+      "hook_source": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-7277.tar!testbed/tests/conftest.py",
+      "mechanism": "needs_two_cores marker; pytest_collection_modifyitems adds pytest.mark.skip",
+      "reason_line": 122,
+      "task": "pylint-dev__pylint-7277",
+      "task_completeness": "COMPLETE",
+      "task_verdict": "PASS",
+      "test": "tests/test_self.py::TestRunTC::test_jobs_score"
+    }
+  ]
+}

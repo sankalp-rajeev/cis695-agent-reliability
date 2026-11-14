@@ -1,0 +1,404 @@
+{
+  "container": {
+    "name": "phase4_incident_14623_6060d7e2",
+    "image_id": "sha256:30368e1c136e8eded62e7229d134a132cabb4bb47b5a2c56e1d1e0dc5e9752b3",
+    "entrypoint": null,
+    "cpu_shares": 2048,
+    "network": "none"
+  },
+  "preflight_mismatches": [
+    {
+      "file": "lib/matplotlib/_version.py",
+      "archive_sha256": "a14e1304d76c35270dfc9f0051b507a81929417c7b79d9f503a6eee3d0e3af3a",
+      "image_sha256": "3c7d6f3bcdfd71943afa63cd95a1cb24c8d35d11b7babcbffb36f69c73176269"
+    }
+  ],
+  "git_base_blob_sha256": "3c7d6f3bcdfd71943afa63cd95a1cb24c8d35d11b7babcbffb36f69c73176269",
+  "image_head": "ef37fbadf44f99a1fce661b003c32de454fd5e1a",
+  "git_status_before": "",
+  "reproduced_git_archive_sha256": "a14e1304d76c35270dfc9f0051b507a81929417c7b79d9f503a6eee3d0e3af3a",
+  "reproduced_git_archive_matches_frozen": true,
+  "native_collection": {
+    "diagnostic_only": true,
+    "original_controlled_selection_empty": true,
+    "module": "lib/matplotlib/tests/test_afm.py",
+    "probe_id": "lib/matplotlib/tests/test_afm.py::test_nonascii_str",
+    "tests_executed": 0,
+    "groups": [
+      {
+        "module": "lib/matplotlib/tests/test_afm.py",
+        "duration_s": 3.8352174289902905,
+        "returncode": 0,
+        "command": [
+          "/opt/miniconda3/envs/testbed/bin/python",
+          "-m",
+          "pytest",
+          "--collect-only",
+          "-q",
+          "-p",
+          "no:cacheprovider",
+          "-p",
+          "verifier_collect_plugin",
+          "--",
+          "lib/matplotlib/tests/test_afm.py"
+        ]
+      }
+    ],
+    "status": {
+      "lib/matplotlib/tests/test_afm.py::test_nonascii_str": {
+        "completed": true,
+        "returncode": 0,
+        "collection_status": "COMPLETE",
+        "reason": ""
+      }
+    }
+  },
+  "tracked_python_source_changes_during_collection": [],
+  "tracked_python_files_hashed_before": 860,
+  "tracked_python_files_hashed_after": 860,
+  "git_status_after": "",
+  "stages": [
+    {
+      "stage": "created_not_started",
+      "sha256": "3c7d6f3bcdfd71943afa63cd95a1cb24c8d35d11b7babcbffb36f69c73176269",
+      "bytes": 15781
+    },
+    {
+      "stage": "started_before_any_exec",
+      "sha256": "3c7d6f3bcdfd71943afa63cd95a1cb24c8d35d11b7babcbffb36f69c73176269",
+      "bytes": 15781
+    },
+    {
+      "stage": "after_login_shell_only",
+      "sha256": "3c7d6f3bcdfd71943afa63cd95a1cb24c8d35d11b7babcbffb36f69c73176269",
+      "bytes": 15781
+    },
+    {
+      "stage": "after_python_startup_only",
+      "sha256": "3c7d6f3bcdfd71943afa63cd95a1cb24c8d35d11b7babcbffb36f69c73176269",
+      "bytes": 15781
+    },
+    {
+      "stage": "after_identical_read_only_source_check",
+      "sha256": "3c7d6f3bcdfd71943afa63cd95a1cb24c8d35d11b7babcbffb36f69c73176269",
+      "bytes": 15781
+    },
+    {
+      "stage": "before_native_collection",
+      "sha256": "3c7d6f3bcdfd71943afa63cd95a1cb24c8d35d11b7babcbffb36f69c73176269",
+      "bytes": 15781
+    },
+    {
+      "stage": "after_native_collection",
+      "sha256": "3c7d6f3bcdfd71943afa63cd95a1cb24c8d35d11b7babcbffb36f69c73176269",
+      "bytes": 15781
+    }
+  ],
+  "commands": [
+    {
+      "argv": [
+        "docker",
+        "create",
+        "--pull=never",
+        "--name",
+        "phase4_incident_14623_6060d7e2",
+        "--label",
+        "experiment_id=phase4_attempt1_incident",
+        "--network",
+        "none",
+        "--cpu-shares",
+        "2048",
+        "-w",
+        "/testbed",
+        "sha256:30368e1c136e8eded62e7229d134a132cabb4bb47b5a2c56e1d1e0dc5e9752b3",
+        "sleep",
+        "infinity"
+      ],
+      "stdin_sha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .}}",
+        "phase4_incident_14623_6060d7e2"
+      ],
+      "stdin_sha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "cp",
+        "phase4_incident_14623_6060d7e2:/testbed/lib/matplotlib/_version.py",
+        "/tmp/phase4_incident_14623_6060d7e2_created_not_started.txt"
+      ],
+      "stdin_sha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "start",
+        "phase4_incident_14623_6060d7e2"
+      ],
+      "stdin_sha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "cp",
+        "phase4_incident_14623_6060d7e2:/testbed/lib/matplotlib/_version.py",
+        "/tmp/phase4_incident_14623_6060d7e2_started_before_any_exec.txt"
+      ],
+      "stdin_sha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "exec",
+        "-w",
+        "/testbed",
+        "phase4_incident_14623_6060d7e2",
+        "bash",
+        "-lc",
+        "true"
+      ],
+      "stdin_sha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "cp",
+        "phase4_incident_14623_6060d7e2:/testbed/lib/matplotlib/_version.py",
+        "/tmp/phase4_incident_14623_6060d7e2_after_login_shell_only.txt"
+      ],
+      "stdin_sha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "exec",
+        "-w",
+        "/testbed",
+        "phase4_incident_14623_6060d7e2",
+        "bash",
+        "-lc",
+        "python -c pass"
+      ],
+      "stdin_sha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "cp",
+        "phase4_incident_14623_6060d7e2:/testbed/lib/matplotlib/_version.py",
+        "/tmp/phase4_incident_14623_6060d7e2_after_python_startup_only.txt"
+      ],
+      "stdin_sha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "exec",
+        "-i",
+        "-w",
+        "/testbed",
+        "phase4_incident_14623_6060d7e2",
+        "bash",
+        "-lc",
+        "cat > /tmp/phase4_expected.json"
+      ],
+      "stdin_sha256": "002c0ed34d4d160b0f0388f1e25638027eb97ad42da9698f497ad9c11d61b1f8"
+    },
+    {
+      "argv": [
+        "docker",
+        "exec",
+        "-w",
+        "/testbed",
+        "phase4_incident_14623_6060d7e2",
+        "bash",
+        "-lc",
+        "python -c 'import hashlib,json,pathlib; e=json.load(open('\"'\"'/tmp/phase4_expected.json'\"'\"')); print(json.dumps({p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() if pathlib.Path(p).is_file() else None for p in e}))'"
+      ],
+      "stdin_sha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "cp",
+        "phase4_incident_14623_6060d7e2:/testbed/lib/matplotlib/_version.py",
+        "/tmp/phase4_incident_14623_6060d7e2_after_identical_read_only_source_check.txt"
+      ],
+      "stdin_sha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "exec",
+        "-w",
+        "/testbed",
+        "phase4_incident_14623_6060d7e2",
+        "bash",
+        "-lc",
+        "git show d65c9ca20ddf81ef91199e6d819f9d3506ef477c:lib/matplotlib/_version.py"
+      ],
+      "stdin_sha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "exec",
+        "-w",
+        "/testbed",
+        "phase4_incident_14623_6060d7e2",
+        "bash",
+        "-lc",
+        "git rev-parse HEAD"
+      ],
+      "stdin_sha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "exec",
+        "-w",
+        "/testbed",
+        "phase4_incident_14623_6060d7e2",
+        "bash",
+        "-lc",
+        "git status --porcelain -- lib/matplotlib/_version.py"
+      ],
+      "stdin_sha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "exec",
+        "-w",
+        "/testbed",
+        "phase4_incident_14623_6060d7e2",
+        "bash",
+        "-lc",
+        "git archive --format=tar d65c9ca20ddf81ef91199e6d819f9d3506ef477c lib/matplotlib/_version.py"
+      ],
+      "stdin_sha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "exec",
+        "-w",
+        "/testbed",
+        "phase4_incident_14623_6060d7e2",
+        "bash",
+        "-lc",
+        "python -c 'import hashlib,json,pathlib,subprocess; names=subprocess.check_output(['\"'\"'git'\"'\"','\"'\"'ls-files'\"'\"','\"'\"'-z'\"'\"']).decode().split('\"'\"'\\0'\"'\"'); print(json.dumps({p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in names if p.endswith('\"'\"'.py'\"'\"') and pathlib.Path(p).is_file()}))'"
+      ],
+      "stdin_sha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "cp",
+        "phase4_incident_14623_6060d7e2:/testbed/lib/matplotlib/_version.py",
+        "/tmp/phase4_incident_14623_6060d7e2_before_native_collection.txt"
+      ],
+      "stdin_sha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "exec",
+        "-i",
+        "-w",
+        "/testbed",
+        "phase4_incident_14623_6060d7e2",
+        "bash",
+        "-lc",
+        "cat > /tmp/verifier_collect_request.json"
+      ],
+      "stdin_sha256": "21d413874e627e345b30edbe6be533ffa8287a70e3a34baeacdd62aed6676cee"
+    },
+    {
+      "argv": [
+        "docker",
+        "exec",
+        "-i",
+        "-w",
+        "/testbed",
+        "phase4_incident_14623_6060d7e2",
+        "bash",
+        "-lc",
+        "cat > /tmp/verifier_collect_driver.py"
+      ],
+      "stdin_sha256": "52a8040e4aef53688a99a32fe023ff47c2d10c07344f539efa9df950817c79e0"
+    },
+    {
+      "argv": [
+        "docker",
+        "exec",
+        "-i",
+        "-w",
+        "/testbed",
+        "phase4_incident_14623_6060d7e2",
+        "bash",
+        "-lc",
+        "cat > /tmp/verifier_collect_plugin.py"
+      ],
+      "stdin_sha256": "6a44b06e306b6b7ab61e8b19d794fc0b0842208a2e65abc56783cc0f8e2a0bc2"
+    },
+    {
+      "argv": [
+        "docker",
+        "exec",
+        "-w",
+        "/testbed",
+        "phase4_incident_14623_6060d7e2",
+        "bash",
+        "-lc",
+        "python /tmp/verifier_collect_driver.py"
+      ],
+      "stdin_sha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "cp",
+        "phase4_incident_14623_6060d7e2:/testbed/lib/matplotlib/_version.py",
+        "/tmp/phase4_incident_14623_6060d7e2_after_native_collection.txt"
+      ],
+      "stdin_sha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "exec",
+        "-w",
+        "/testbed",
+        "phase4_incident_14623_6060d7e2",
+        "bash",
+        "-lc",
+        "python -c 'import hashlib,json,pathlib,subprocess; names=subprocess.check_output(['\"'\"'git'\"'\"','\"'\"'ls-files'\"'\"','\"'\"'-z'\"'\"']).decode().split('\"'\"'\\0'\"'\"'); print(json.dumps({p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in names if p.endswith('\"'\"'.py'\"'\"') and pathlib.Path(p).is_file()}))'"
+      ],
+      "stdin_sha256": null
+    },
+    {
+      "argv": [
+        "docker",
+        "exec",
+        "-w",
+        "/testbed",
+        "phase4_incident_14623_6060d7e2",
+        "bash",
+        "-lc",
+        "git status --porcelain -- lib/matplotlib/_version.py"
+      ],
+      "stdin_sha256": null
+    }
+  ],
+  "container_removed": true,
+  "executor_tests_run": 0,
+  "controlled_run_restarted": false,
+  "completed_task_outcomes_read": false
+}

@@ -1,0 +1,101 @@
+{
+  "sympy__sympy-13480/sympy/external/tests/test_sage.py": {
+    "source_sha256": "9ff894da9b2f6ad94fe07c83d323c6127e221c0c1dc12c67ad3b1519e9335aff",
+    "source_lines": [
+      {
+        "line": 20,
+        "text": "import sys"
+      },
+      {
+        "line": 21,
+        "text": ""
+      },
+      {
+        "line": 22,
+        "text": "from sympy.external import import_module"
+      },
+      {
+        "line": 23,
+        "text": ""
+      },
+      {
+        "line": 24,
+        "text": "sage = import_module('sage.all', __import__kwargs={'fromlist': ['all']})"
+      },
+      {
+        "line": 25,
+        "text": "if not sage:"
+      },
+      {
+        "line": 26,
+        "text": "    #bin/test will not execute any tests now"
+      },
+      {
+        "line": 27,
+        "text": "    disabled = True"
+      },
+      {
+        "line": 28,
+        "text": ""
+      },
+      {
+        "line": 29,
+        "text": "if sys.version_info[0] == 3:"
+      },
+      {
+        "line": 30,
+        "text": "    # Sage does not support Python 3 currently"
+      },
+      {
+        "line": 31,
+        "text": "    disabled = True"
+      }
+    ]
+  },
+  "sympy__sympy-13480/sympy/utilities/runtests.py": {
+    "source_sha256": "45f0f1836fbfe3303f8e3df6fbb518409e32678034a1a18bd446e909f3e48e19",
+    "source_lines": [
+      {
+        "line": 1166,
+        "text": "            random.seed(self._seed)"
+      },
+      {
+        "line": 1167,
+        "text": "            disabled = gl.get(\"disabled\", False)"
+      },
+      {
+        "line": 1168,
+        "text": "            if not disabled:"
+      },
+      {
+        "line": 1169,
+        "text": "                # we need to filter only those functions that begin with 'test_'"
+      },
+      {
+        "line": 1170,
+        "text": "                # We have to be careful about decorated functions. As long as"
+      }
+    ]
+  },
+  "astropy__astropy-7606/astropy/time/tests/test_comparisons.py": {
+    "source_sha256": "0fb1e6448296fac01b85a8e99e674d8e4adfdb1f0c558fe23a94fb6180424541",
+    "source_lines": [],
+    "selected_methods": [
+      {
+        "name": "test_miscompares",
+        "line": 18,
+        "generator": false
+      },
+      {
+        "name": "test_time",
+        "line": 36,
+        "generator": false
+      },
+      {
+        "name": "test_timedelta",
+        "line": 65,
+        "generator": false
+      }
+    ]
+  }
+}

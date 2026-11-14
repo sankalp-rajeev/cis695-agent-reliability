@@ -1,0 +1,36 @@
+{
+  "task": "astropy__astropy-13977",
+  "tree": "patched",
+  "status": "INTERRUPTED_AFTER_UNLISTED_G1_FAILURE",
+  "collector_status": "INTERRUPTED",
+  "stages": [
+    {
+      "stage": "pristine_source",
+      "status": "VERIFIED",
+      "input_count": 1,
+      "output_count": 1
+    },
+    {
+      "stage": "patch_application",
+      "status": "COMPLETED_BEFORE_NATIVE_COLLECTION",
+      "input_count": 1,
+      "output_count": 1
+    },
+    {
+      "stage": "native_collection",
+      "status": "INTERRUPTED",
+      "input_count": 3080,
+      "output_count": 0
+    },
+    {
+      "stage": "runner_startup",
+      "status": "NOT_REACHED",
+      "input_count": 0,
+      "output_count": 0
+    }
+  ],
+  "G2": "NOT_EVALUATED_NO_TEST_EXECUTION",
+  "G3": "NOT_EVALUATED_INTERRUPTED",
+  "tests_executed": 0,
+  "reason": "Root interrupted audit per user stop rule after the completed base-tree receipt showed an unlisted G1 failure. No native collection result is asserted for this tree."
+}

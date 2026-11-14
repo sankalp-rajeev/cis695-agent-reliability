@@ -1,0 +1,40 @@
+{
+  "Docker_calls": 0,
+  "all_169_call_parsers_match_phase2": true,
+  "all_initial_pair_completeness_matches_phase2": true,
+  "benchmark_runs": 0,
+  "binary_from_NOT_AVAILABLE": [
+    "astropy__astropy-14365",
+    "matplotlib__matplotlib-25287"
+  ],
+  "native_FAIL_retained": [
+    "django__django-12209",
+    "django__django-14140",
+    "django__django-14631",
+    "matplotlib__matplotlib-25479",
+    "pytest-dev__pytest-5809",
+    "sphinx-doc__sphinx-10435"
+  ],
+  "native_rescore_signal_counts": {
+    "FAIL": 6,
+    "INCOMPLETE": 31,
+    "NOT_AVAILABLE": 10,
+    "PASS": 36
+  },
+  "native_verdict_files_modified": false,
+  "new_regression_candidates_without_stored_confirmation": [],
+  "policy": "historical skip-compatible; XFAIL/XPASS policy separation remains Fix 2",
+  "recovered_INCOMPLETE": [
+    "django__django-11095",
+    "django__django-13569",
+    "django__django-13807",
+    "django__django-13820",
+    "django__django-15278",
+    "django__django-15375",
+    "matplotlib__matplotlib-20488",
+    "matplotlib__matplotlib-20676",
+    "mwaskom__seaborn-3069"
+  ],
+  "scope": "OFFLINE NATIVE FIX 1 RESCORE ONLY",
+  "verified_V2_capture_files": 676
+}

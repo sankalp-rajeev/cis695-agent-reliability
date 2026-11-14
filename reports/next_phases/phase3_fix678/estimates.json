@@ -1,0 +1,56 @@
+{
+  "tasks": 83,
+  "trees": 2,
+  "selected_ids_per_tree": 57682,
+  "budget_s": 1800,
+  "containers": {
+    "1": {
+      "estimated_wall_s": 14695.935720187874,
+      "ideal_division_s": 14695.935720187876
+    },
+    "2": {
+      "estimated_wall_s": 7347.993360056967,
+      "ideal_division_s": 7347.967860093938
+    },
+    "4": {
+      "estimated_wall_s": 3676.1689679439446,
+      "ideal_division_s": 3673.983930046969
+    }
+  },
+  "runner_probes": {
+    "django": {
+      "instance_id": "django__django-13297",
+      "selected_original_slots": 8152,
+      "pass_wall_s": 311.5958000259998,
+      "probe_total_wall_s": 314.81940776799456,
+      "timed_out": false
+    },
+    "pytest": {
+      "instance_id": "astropy__astropy-13977",
+      "selected_original_slots": 3080,
+      "pass_wall_s": 341.9463999540021,
+      "probe_total_wall_s": 344.2635894080013,
+      "timed_out": false
+    },
+    "sympy": {
+      "instance_id": "sympy__sympy-13480",
+      "selected_original_slots": 781,
+      "pass_wall_s": 1151.12146182399,
+      "probe_total_wall_s": 1152.481615556011,
+      "timed_out": false
+    }
+  },
+  "censored": false,
+  "assumptions": [
+    "Base time stands in for patched time; no outcomes compared to labels.",
+    "Measured setup plus selected-ID-proportional pass time, capped at 1800 s.",
+    "Two trees share a task scheduling job; setup charged twice conservatively.",
+    "2/4-container estimates assume no contention, no concurrency is chosen.",
+    "Confirmation cost is additional and unknown: six isolated passes per candidate.",
+    "Largest-task cap hits are censored cost observations, not completed-run rates."
+  ],
+  "confirmation_additional_serial_upper_s_per_candidate": 10800,
+  "all_166_pass_caps_serial_s": 298800,
+  "correctness_labels_read": false,
+  "concurrency_chosen": null
+}

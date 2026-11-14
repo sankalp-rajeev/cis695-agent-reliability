@@ -1,0 +1,44 @@
+{
+  "task": "matplotlib__matplotlib-14623",
+  "original_result_path": "/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/full_83_20261105T231219_643682Z/results/tasks/matplotlib__matplotlib-14623/v2/result.json",
+  "original_result_sha256": "e2bd0e16c0795be4f307e1013da32410cb7552551491d9f1083b8292bf7604ee",
+  "historical_harness_revision": "b030e508d849926b9a2260c70e1091adebfee993",
+  "original_v2_selected_count": 0,
+  "original_v2_execution_status": "ZERO_SELECTION",
+  "original_v2_call_count": 0,
+  "original_checked_source_paths": {
+    "lib/matplotlib/axes/_base.py": "9f8ca1257f101700d3d65ae9679e623685ebe6a3fd8492b5d98f3f374ad6a8a9"
+  },
+  "incident_file_in_checked_paths": false,
+  "historical_code": {
+    "scripts/v2_scg_paired.py": {
+      "sha256": "b7af23dbca10b024df40b851fdba075a504092c9a869353ac009871b18692448",
+      "functions": [
+        {
+          "function": "execute_arm",
+          "start_line": 349,
+          "end_line": 375,
+          "source": "def execute_arm(task, selection, frozen, folder):\n    \"\"\"One shared executor boundary. The SCG IDs never enter V2 discovery.\"\"\"\n    stored = json.loads((frozen / task[\"selections\"][selection[\"arm\"]]).read_text())\n    require(selection[\"tests\"] == stored[\"tests\"], \"execution IDs differ from frozen selection\")\n    require(images.daemon_id() == task[\"docker_daemon_id\"], \"Docker daemon binding drift before arm\")\n    images.verify_current(task, task[\"image_binding\"])\n    if selection[\"tests\"] is None or not task[\"v2_reproduced\"] or task[\"source_fidelity_status\"] != \"FROZEN_UNION\":\n        row = empty_row(task, selection)\n        row[\"reason\"] = selection[\"selection_status\"] if selection[\"tests\"] is None else \"UNAVAILABLE_SHARED_SOURCE_OR_V2_REPRODUCTION\"\n        folder.mkdir(parents=True, exist_ok=False)\n        write_json(folder / \"result.json\", row)\n        return row\n    if not selection[\"tests\"]:\n        # Preserve native empty-selection verdict without starting any container.\n        report = run_regression(task[\"instance_id\"], Selection(tests=()), None, RegressionConfig())\n        row = empty_row(task, selection)\n        row.update(execution_status=\"ZERO_SELECTION\", signal=report.signal.value,\n                   completeness=report.completeness, reason=\"Frozen selection is empty\")\n        folder.mkdir(parents=True, exist_ok=False)\n        write_json(folder / \"result.json\", row)\n        return row\n    adapted = dict(task, test_manifest=task[\"selections\"][selection[\"arm\"]],\n                   selected=len(selection[\"tests\"]), image_id=task[\"image_binding\"][\"host_image_id\"])\n    started = time.monotonic()\n    row = v2.execute_one(adapted, frozen, folder)\n    row.setdefault(\"wall_s\", time.monotonic() - started)\n    return row"
+        }
+      ]
+    },
+    "scripts/v2_evaluation.py": {
+      "sha256": "9a7805ae922dfafd744fd28d216520cea135b4826d4764ca7f863e1fd8654e16",
+      "functions": [
+        {
+          "function": "preflight",
+          "start_line": 227,
+          "end_line": 241,
+          "source": "def preflight(container, task):\n    expected = task[\"base_source_sha256\"]\n    code = (\"import hashlib,json,pathlib,subprocess,sys; \"\n            \"paths=\" + repr(list(expected)) + \"; \"\n            \"print(json.dumps({'head':subprocess.check_output(['git','rev-parse','HEAD']).decode().strip(),\"\n            \"'python':sys.version,'source_sha256':{p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() \"\n            \"if pathlib.Path(p).is_file() else None for p in paths}}))\")\n    rc, raw = container.exec(shlex.join([\"python\", \"-c\", code]), timeout_s=120)\n    assert rc == 0, raw[-1000:]\n    observed = json.loads(raw)\n    if observed[\"source_sha256\"] != expected:\n        raise EnvironmentMismatch(\"image selected/changed source differs from base archive\")\n    observed[\"head_matches_dataset_base\"] = observed[\"head\"] == task[\"base_commit\"]\n    observed[\"image_id\"] = task[\"image_id\"]\n    return observed"
+        },
+        {
+          "function": "execute_one",
+          "start_line": 256,
+          "end_line": 312,
+          "source": "def execute_one(task, frozen, folder):\n    iid = task[\"instance_id\"]\n    tests = tuple(json.loads((frozen / task[\"test_manifest\"]).read_text())[\"tests\"])\n    row = {\"instance_id\": iid, \"patch_sha256\": task[\"patch_sha256\"], \"signal\": None,\n           \"completeness\": None, \"execution_status\": \"UNAVAILABLE_ENVIRONMENT\", \"selected\": task[\"selected\"],\n           \"selected_tests\": list(tests)}\n    folder.mkdir(parents=True, exist_ok=False)\n    if task[\"image_id\"] is None:\n        row[\"reason\"] = \"No local image was available at freeze; no substitution or pull\"\n        write_json(folder / \"result.json\", row)\n        return row\n    patch = (frozen / task[\"patch_path\"]).read_bytes()\n    assert sha(patch) == task[\"patch_sha256\"]\n    container = LocalOnlyContainer(iid, patch.decode(), image=task[\"image_id\"],\n                                   experiment_id=\"v2_83_frozen\")\n    started = time.monotonic()\n    try:\n        inspect = subprocess.run([_docker_bin(), \"image\", \"inspect\", task[\"image_id\"], \"--format\", \"{{.Id}}\"],\n                                 capture_output=True, text=True, check=False)\n        if inspect.returncode or inspect.stdout.strip() != task[\"image_id\"]:\n            row[\"reason\"] = \"Frozen local image is no longer available\"\n            return row\n        container.start()\n        observed = preflight(container, task)\n        write_json(folder / \"environment.json\", observed)\n        executor = MeasuredExecutor(ContainerTestExecutor(\n            container, runner=TestRunner(**task[\"runner\"]), evidence_dir=folder / \"raw\"))\n        report = run_regression(iid, Selection(tests=tests), executor, RegressionConfig())\n        initial_calls = len(executor.calls)\n        native = report.signal\n        shadow = shadow_from_report(report, (frozen / task[\"issue_path\"]).read_text(), patch.decode(),\n                                    ContainerRepoTree(container), executor)\n        assert report.signal is native, \"shadow altered native V2 signal\"\n        assert not (report.signal.value == \"PASS\" and report.completeness != \"COMPLETE\")\n        for call in executor.calls:\n            for name, path in call[\"run\"][\"evidence_files\"].items():\n                assert sha(Path(path).read_bytes()) == call[\"run\"][\"evidence_sha256\"][name]\n        row.update(execution_status=\"EXECUTED\", signal=report.signal.value,\n                   original_signal=report.original_signal.value, completeness=report.completeness,\n                   incompleteness=list(report.incompleteness), regressions=list(report.regressions),\n                   summary=report.summary, outcomes={t: o.value for t, o in report.outcomes.items()},\n                   initial_calls=initial_calls, calls=executor.calls, shadow=shadow,\n                   regression_wall_s=report.duration_s, resources=resource_snapshot(container))\n    except EnvironmentMismatch as exc:\n        row.update(execution_status=\"ENVIRONMENT_MISMATCH\", reason=str(exc))\n    except Exception as exc:  # noqa: BLE001 -- preserve errors for every fixed-cohort task\n        row.update(execution_status=\"EXECUTION_ERROR\", error_type=type(exc).__name__, reason=str(exc))\n    finally:\n        try:\n            container.stop()\n        except OSError as exc:\n            row[\"cleanup_error\"] = str(exc)\n        row[\"wall_s\"] = time.monotonic() - started\n        row[\"evidence_bytes\"] = sum(p.stat().st_size for p in folder.rglob(\"*\") if p.is_file())\n        if not (folder / \"result.json\").exists():\n            write_json(folder / \"result.json\", row)\n    return row"
+        }
+      ]
+    }
+  },
+  "completed_35_outcome_files_read": false
+}

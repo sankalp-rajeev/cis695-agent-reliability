@@ -1,0 +1,28 @@
+{
+  "image_id": "sha256:ce7f364920d9b00f5c5a2a04a7bace60ab81870047bfcb62896875eb38c72023",
+  "image_tag_metadata": "swebench/sweb.eval.x86_64.sympy_1776_sympy-19783:latest",
+  "base_commit": "586a43201d0357e92e8c93548d69a9f42bf548f4",
+  "archive_sha256": "b5463b4f43e379ad1eca071f4a77a8b5e952618ef3f8dc1b3d413be10a41cfd3",
+  "container_argv": [
+    "/usr/bin/docker",
+    "run",
+    "--pull=never",
+    "-d",
+    "--cpu-shares",
+    "2048",
+    "--name",
+    "verify_phase4_fix10_pristine_audit_sympy__sympy-19783_4a2dba9e",
+    "--label",
+    "experiment_id=phase4_fix10_pristine_audit",
+    "-w",
+    "/testbed",
+    "--network",
+    "none",
+    "sha256:ce7f364920d9b00f5c5a2a04a7bace60ab81870047bfcb62896875eb38c72023",
+    "sleep",
+    "infinity"
+  ],
+  "patch_applied": false,
+  "tests_executed": 0,
+  "collection_performed": false
+}
