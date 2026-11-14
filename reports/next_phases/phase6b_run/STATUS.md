@@ -1,7 +1,7 @@
 # Phase 6b status
 
 Start: 2026-11-14T07:28:16Z; deadline: 2026-11-14T17:28:16Z (10 hours, not reset).
-Branch: experiment/runtime-instrumentation. Stage: 2 complete; Stage 3 mechanical analysis next.
+Branch: experiment/runtime-instrumentation. Stage: 3 mechanical report complete; independent verification pending.
 Last completed step: Stage 1 harness frozen after all gates passed.
 Last recorded HEAD / frozen harness commit: 92a1e8e04d4cc788322eca3152739504dced2319.
 Current checkpoint HEAD: resolve with git log -1 -- this file.
@@ -70,3 +70,7 @@ code diff remains empty. Last observed publication HEAD: 1f4ec92a16b0e53045db1f5
 Batch checkpoint: 13/13 tasks complete in frozen order; all
 completed-task capture file sets and hashes revalidated. No HALT.json. Frozen
 code diff remains empty. Last observed publication HEAD: 54e8227fda438136ade33329264e2b914bea8aeb.
+
+Mechanical report generated at reports/next_phases/phase6b_results/. No new
+tests or evaluation reinterpretation. Results are NOT sealed or independently
+verified yet; Stage 4 must succeed before claiming the headline numbers.
