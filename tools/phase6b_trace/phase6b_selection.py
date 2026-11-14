@@ -120,6 +120,8 @@ def load_traces(directory, run, runner, *, test_window_only=False):
                 marker = json.loads((directory / (stem + '.' + suffix)).read_text())
                 if marker.get('pid') != pid:
                     raise ValueError('Trace marker PID mismatch')
+                if suffix == 'done' and marker.get('state') != 'final':
+                    data['complete'] = False
         records[key] = data
     expected = {event['pid'] for event in run.events if event['event'] == 'start'}
     for pid in expected:

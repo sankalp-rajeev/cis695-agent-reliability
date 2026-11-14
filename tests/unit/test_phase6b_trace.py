@@ -536,3 +536,23 @@ def test_python_shebang_child_is_traced(tmp_path):
     assert 'shebang_marker' in {c[1] for c in codes['synthetic.py::0']}
     assert info['incomplete_count'] == 0 and not any(flags.values())
     assert rec.children[-1]['python'] is True
+
+
+def test_child_checkpoint_without_final_marker_is_incomplete(tmp_path):
+    child = tmp_path / 'killed.py'
+    child.write_text('import os, signal, phase6b_trace\n'
+                     'def child_marker(): pass\nchild_marker()\n'
+                     'phase6b_trace.RECORDER.checkpoint()\n'
+                     'os.kill(os.getpid(), signal.SIGKILL)\n')
+    rec = Recorder(tmp_path, str(tmp_path / 'traces'))
+    rec.start()
+    try:
+        rec.begin('raw_a')
+        proc = subprocess.run([sys.executable, str(child)], env={}, check=False, timeout=10)
+        rec.end('raw_a')
+    finally:
+        rec.flush()
+    assert proc.returncode < 0
+    _, flags, info = load_traces(tmp_path / 'traces', fake_run(['raw_a'], pid=rec.pid), 'django')
+    assert 'unfollowed_child_process' in flags['synthetic.py::0']
+    assert info['incomplete_fraction'] == 1.

@@ -43,3 +43,7 @@ All observed exec children in these smokes were non-Python. The two environment-
 - django__django-12965: old TRACE_INCOMPLETE = 16/16 (100.00%); traced/untraced outcomes match = True; workers with tests = 3.
 
 The unmodified smoke gate stopped at parallel Django because the old flags exceeded 5%. No threshold was changed, no repair was attempted, and no evaluation metrics were published. The draft gates enforce 5% only on parallel Django; the authorized repair must extend it to every smoke.
+
+## Repaired smoke gates
+
+Final captures: `runs/phase6b_smoke_final_20261114`. All three have 0% TRACE_INCOMPLETE; traced/untraced outcomes match and repeated selections are identical. Parallel Django has three test-running workers. Independent raw-journal recomputation matches all three primary/exploratory selections and trace accounting. Matplotlib’s previously flagged Git-spawning test is now complete; it did not spawn Python.

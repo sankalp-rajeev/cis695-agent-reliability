@@ -2,7 +2,7 @@
 
 Start: 2026-11-14T07:28:16Z. Wall-clock deadline: 2026-11-14T17:28:16Z.
 Branch: experiment/runtime-instrumentation.
-Stage: 1, child/scope completeness repair and gates in progress.
+Stage: 1 complete; preparing annotated harness freeze.
 Last completed step: preflight, existing-capture child table, observation-only
 metadata instrumentation, and synthetic regression gates (28 passed before and
 after observation instrumentation). Report-only smoke finished: existing parallel gate halted at 100% incomplete.
@@ -42,3 +42,9 @@ Protected tag object IDs verified unchanged:
 - phase5-plan-frozen: d4af4b870dd6f24b3fac61233b04c0c12b39f24a
 - phase5-plan-amendment-a1: 97969395d0992959e6c0096fc6967babf0b17fdd
 - phase6b-plan-frozen: 2388a0aeceacae1b395f40c38caae3f52262c89f
+
+Final Stage 1 result: 38 synthetic checks passed. All three final smokes passed
+with 0% incomplete traces, identical repeated primary/exploratory selections,
+matching outcomes and three test-running parallel workers. Independent smoke
+selection/accounting recomputation matches. See harness_gates.json. Code for
+mechanical reporting and independent verification is prepared before evaluation.

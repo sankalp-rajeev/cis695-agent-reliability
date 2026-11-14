@@ -1,0 +1,538 @@
+{
+  "synthetic_passed": 38,
+  "repair_iterations_used": 1,
+  "final_smoke_path": "runs/phase6b_smoke_final_20261114",
+  "smoke_gates_sha256": "b31bbdcfd7e14f20b4653d4ca3f528028cb3db54e2b3f3ef0da078d109993577",
+  "smoke_gates": {
+    "smoke_only": true,
+    "gates": [
+      {
+        "task": "matplotlib__matplotlib-25287",
+        "v2_count": 2,
+        "outcomes_match": true,
+        "trace_nonempty": true,
+        "selection_repeat_identical": true,
+        "trace_accounting": {
+          "process_count": 1,
+          "worker_pids": [],
+          "workers_seen": 0,
+          "workers_with_tests": 0,
+          "executed_count": 4,
+          "incomplete_count": 0,
+          "incomplete_fraction": 0.0,
+          "incomplete_ids": [],
+          "missing_record_ids": [],
+          "trace_nonempty": true,
+          "scopes_seen": [
+            "session",
+            "test"
+          ],
+          "child_observations": [
+            {
+              "argv": [
+                "gs",
+                "--version"
+              ],
+              "executable": "gs",
+              "inherited_environment": true,
+              "kind": "exec",
+              "pid": 1059,
+              "python": false,
+              "resolved_executable": "/usr/bin/gs",
+              "scope": "session",
+              "shebang": null,
+              "tests": []
+            },
+            {
+              "argv": [
+                "git",
+                "help"
+              ],
+              "executable": "git",
+              "inherited_environment": true,
+              "kind": "exec",
+              "pid": 1062,
+              "python": false,
+              "resolved_executable": "/usr/bin/git",
+              "scope": "test",
+              "shebang": null,
+              "tests": [
+                "lib/matplotlib/tests/test_skew.py::test_set_line_coll_dash_image[png]"
+              ]
+            },
+            {
+              "argv": [
+                "git",
+                "--git-dir",
+                "/testbed/.git"
+              ],
+              "executable": "git",
+              "inherited_environment": true,
+              "kind": "exec",
+              "pid": 1063,
+              "python": false,
+              "resolved_executable": "/usr/bin/git",
+              "scope": "test",
+              "shebang": null,
+              "tests": [
+                "lib/matplotlib/tests/test_skew.py::test_set_line_coll_dash_image[png]"
+              ]
+            },
+            {
+              "argv": [
+                "git",
+                "help"
+              ],
+              "executable": "git",
+              "inherited_environment": true,
+              "kind": "exec",
+              "pid": 1064,
+              "python": false,
+              "resolved_executable": "/usr/bin/git",
+              "scope": "test",
+              "shebang": null,
+              "tests": [
+                "lib/matplotlib/tests/test_skew.py::test_set_line_coll_dash_image[png]"
+              ]
+            },
+            {
+              "argv": [
+                "git",
+                "--git-dir",
+                "/testbed/.git"
+              ],
+              "executable": "git",
+              "inherited_environment": true,
+              "kind": "exec",
+              "pid": 1065,
+              "python": false,
+              "resolved_executable": "/usr/bin/git",
+              "scope": "test",
+              "shebang": null,
+              "tests": [
+                "lib/matplotlib/tests/test_skew.py::test_set_line_coll_dash_image[png]"
+              ]
+            },
+            {
+              "argv": [
+                "git",
+                "--git-dir",
+                "/testbed/.git"
+              ],
+              "executable": "git",
+              "inherited_environment": true,
+              "kind": "exec",
+              "pid": 1074,
+              "python": false,
+              "resolved_executable": "/usr/bin/git",
+              "scope": "test",
+              "shebang": null,
+              "tests": [
+                "lib/matplotlib/tests/test_skew.py::test_set_line_coll_dash_image[png]"
+              ]
+            },
+            {
+              "argv": [
+                "git",
+                "--git-dir",
+                "/testbed/.git"
+              ],
+              "executable": "git",
+              "inherited_environment": true,
+              "kind": "exec",
+              "pid": 1075,
+              "python": false,
+              "resolved_executable": "/usr/bin/git",
+              "scope": "test",
+              "shebang": null,
+              "tests": [
+                "lib/matplotlib/tests/test_skew.py::test_set_line_coll_dash_image[png]"
+              ]
+            }
+          ]
+        },
+        "selection": {
+          "file": [
+            "lib/matplotlib/tests/test_skew.py::test_set_line_coll_dash_image",
+            "lib/matplotlib/tests/test_skew.py::test_skew_rectangle"
+          ],
+          "function": [
+            "lib/matplotlib/tests/test_skew.py::test_set_line_coll_dash_image",
+            "lib/matplotlib/tests/test_skew.py::test_skew_rectangle"
+          ],
+          "retained_reasons": {},
+          "trace_incomplete": [],
+          "without_usable_trace": [],
+          "absent_from_base": [],
+          "mapping_errors": [],
+          "secondary_test_window_exploratory": {
+            "file": [
+              "lib/matplotlib/tests/test_skew.py::test_set_line_coll_dash_image",
+              "lib/matplotlib/tests/test_skew.py::test_skew_rectangle"
+            ],
+            "function": [
+              "lib/matplotlib/tests/test_skew.py::test_set_line_coll_dash_image",
+              "lib/matplotlib/tests/test_skew.py::test_skew_rectangle"
+            ],
+            "retained_reasons": {},
+            "trace_incomplete": [],
+            "without_usable_trace": [],
+            "absent_from_base": [],
+            "mapping_errors": []
+          }
+        },
+        "time_ratio_information_only": 3.8244317295623986,
+        "smoke_only": true,
+        "used_in_experiment_numbers": false
+      },
+      {
+        "task": "django__django-13033",
+        "v2_count": 4,
+        "outcomes_match": true,
+        "trace_nonempty": true,
+        "selection_repeat_identical": true,
+        "trace_accounting": {
+          "process_count": 1,
+          "worker_pids": [],
+          "workers_seen": 0,
+          "workers_with_tests": 0,
+          "executed_count": 4,
+          "incomplete_count": 0,
+          "incomplete_fraction": 0.0,
+          "incomplete_ids": [],
+          "missing_record_ids": [],
+          "trace_nonempty": true,
+          "scopes_seen": [
+            "class",
+            "session",
+            "test"
+          ],
+          "child_observations": [
+            {
+              "argv": [
+                "git",
+                "log",
+                "--pretty=format:%ct"
+              ],
+              "executable": "git",
+              "inherited_environment": true,
+              "kind": "exec",
+              "pid": 927,
+              "python": false,
+              "resolved_executable": "/bin/sh",
+              "scope": "session",
+              "shebang": null,
+              "tests": []
+            },
+            {
+              "argv": [
+                "/sbin/ldconfig",
+                "-p"
+              ],
+              "executable": "/sbin/ldconfig",
+              "inherited_environment": false,
+              "kind": "exec",
+              "pid": 929,
+              "python": false,
+              "resolved_executable": "/sbin/ldconfig",
+              "scope": "session",
+              "shebang": "#!/bin/sh",
+              "tests": []
+            }
+          ]
+        },
+        "selection": {
+          "file": [
+            "tests/queries/test_iterator.py::QuerySetIteratorTests::test_iterator_invalid_chunk_size",
+            "tests/queries/test_iterator.py::QuerySetIteratorTests::test_default_iterator_chunk_size",
+            "tests/queries/test_iterator.py::QuerySetIteratorTests::test_iterator_chunk_size",
+            "tests/queries/test_iterator.py::QuerySetIteratorTests::test_no_chunked_reads"
+          ],
+          "function": [
+            "tests/queries/test_iterator.py::QuerySetIteratorTests::test_iterator_invalid_chunk_size",
+            "tests/queries/test_iterator.py::QuerySetIteratorTests::test_default_iterator_chunk_size",
+            "tests/queries/test_iterator.py::QuerySetIteratorTests::test_iterator_chunk_size",
+            "tests/queries/test_iterator.py::QuerySetIteratorTests::test_no_chunked_reads"
+          ],
+          "retained_reasons": {},
+          "trace_incomplete": [],
+          "without_usable_trace": [],
+          "absent_from_base": [],
+          "mapping_errors": [],
+          "secondary_test_window_exploratory": {
+            "file": [
+              "tests/queries/test_iterator.py::QuerySetIteratorTests::test_default_iterator_chunk_size",
+              "tests/queries/test_iterator.py::QuerySetIteratorTests::test_iterator_chunk_size",
+              "tests/queries/test_iterator.py::QuerySetIteratorTests::test_no_chunked_reads"
+            ],
+            "function": [],
+            "retained_reasons": {},
+            "trace_incomplete": [],
+            "without_usable_trace": [],
+            "absent_from_base": [],
+            "mapping_errors": []
+          }
+        },
+        "time_ratio_information_only": 3.3661697173269878,
+        "smoke_only": true,
+        "used_in_experiment_numbers": false
+      },
+      {
+        "task": "django__django-12965",
+        "v2_count": 17,
+        "outcomes_match": true,
+        "trace_nonempty": true,
+        "selection_repeat_identical": true,
+        "trace_accounting": {
+          "process_count": 17,
+          "worker_pids": [
+            951,
+            952,
+            953,
+            954,
+            955,
+            956,
+            957,
+            958,
+            959,
+            960,
+            961,
+            962,
+            963,
+            964,
+            965,
+            966
+          ],
+          "workers_seen": 16,
+          "workers_with_tests": 3,
+          "executed_count": 16,
+          "incomplete_count": 0,
+          "incomplete_fraction": 0.0,
+          "incomplete_ids": [],
+          "missing_record_ids": [],
+          "trace_nonempty": true,
+          "scopes_seen": [
+            "class",
+            "session",
+            "test"
+          ],
+          "child_observations": [
+            {
+              "argv": [
+                "git",
+                "log",
+                "--pretty=format:%ct"
+              ],
+              "executable": "git",
+              "inherited_environment": true,
+              "kind": "exec",
+              "pid": 948,
+              "python": false,
+              "resolved_executable": "/bin/sh",
+              "scope": "session",
+              "shebang": null,
+              "tests": []
+            },
+            {
+              "argv": [
+                "/sbin/ldconfig",
+                "-p"
+              ],
+              "executable": "/sbin/ldconfig",
+              "inherited_environment": false,
+              "kind": "exec",
+              "pid": 950,
+              "python": false,
+              "resolved_executable": "/sbin/ldconfig",
+              "scope": "session",
+              "shebang": "#!/bin/sh",
+              "tests": []
+            },
+            {
+              "kind": "fork",
+              "pid": 951,
+              "python": true,
+              "scope": "session",
+              "tests": []
+            },
+            {
+              "kind": "fork",
+              "pid": 952,
+              "python": true,
+              "scope": "session",
+              "tests": []
+            },
+            {
+              "kind": "fork",
+              "pid": 953,
+              "python": true,
+              "scope": "session",
+              "tests": []
+            },
+            {
+              "kind": "fork",
+              "pid": 954,
+              "python": true,
+              "scope": "session",
+              "tests": []
+            },
+            {
+              "kind": "fork",
+              "pid": 955,
+              "python": true,
+              "scope": "session",
+              "tests": []
+            },
+            {
+              "kind": "fork",
+              "pid": 956,
+              "python": true,
+              "scope": "session",
+              "tests": []
+            },
+            {
+              "kind": "fork",
+              "pid": 957,
+              "python": true,
+              "scope": "session",
+              "tests": []
+            },
+            {
+              "kind": "fork",
+              "pid": 958,
+              "python": true,
+              "scope": "session",
+              "tests": []
+            },
+            {
+              "kind": "fork",
+              "pid": 959,
+              "python": true,
+              "scope": "session",
+              "tests": []
+            },
+            {
+              "kind": "fork",
+              "pid": 960,
+              "python": true,
+              "scope": "session",
+              "tests": []
+            },
+            {
+              "kind": "fork",
+              "pid": 961,
+              "python": true,
+              "scope": "session",
+              "tests": []
+            },
+            {
+              "kind": "fork",
+              "pid": 962,
+              "python": true,
+              "scope": "session",
+              "tests": []
+            },
+            {
+              "kind": "fork",
+              "pid": 963,
+              "python": true,
+              "scope": "session",
+              "tests": []
+            },
+            {
+              "kind": "fork",
+              "pid": 964,
+              "python": true,
+              "scope": "session",
+              "tests": []
+            },
+            {
+              "kind": "fork",
+              "pid": 965,
+              "python": true,
+              "scope": "session",
+              "tests": []
+            },
+            {
+              "kind": "fork",
+              "pid": 966,
+              "python": true,
+              "scope": "session",
+              "tests": []
+            }
+          ]
+        },
+        "selection": {
+          "file": [
+            "tests/model_regress/tests.py::ModelTests::test_model_init_too_many_args",
+            "tests/model_regress/tests.py::ModelTests::test_related_gte_lookup",
+            "tests/model_regress/tests.py::ModelTests::test_related_lte_lookup",
+            "tests/model_regress/tests.py::ModelTests::test_sql_insert_compiler_return_id_attribute",
+            "tests/model_regress/tests.py::ModelTests::test_empty_choice",
+            "tests/model_regress/tests.py::ModelTests::test_long_textfield",
+            "tests/model_regress/tests.py::ModelTests::test_long_unicode_textfield",
+            "tests/model_regress/tests.py::ModelTests::test_date_lookup",
+            "tests/model_regress/tests.py::ModelTests::test_date_filter_null",
+            "tests/model_regress/tests.py::ModelTests::test_get_next_prev_by_field",
+            "tests/model_regress/tests.py::ModelTests::test_get_next_prev_by_field_unsaved",
+            "tests/model_regress/tests.py::ModelTests::test_primary_key_foreign_key_types",
+            "tests/model_regress/tests.py::ModelTests::test_timezones",
+            "tests/model_regress/tests.py::ModelTests::test_chained_fks",
+            "tests/model_regress/tests.py::ModelTests::test_metaclass_can_access_attribute_dict",
+            "tests/model_regress/tests.py::ModelValidationTest::test_pk_validation",
+            "tests/model_regress/tests.py::EvaluateMethodTest::test_model_with_evaluate_method"
+          ],
+          "function": [
+            "tests/model_regress/tests.py::ModelTests::test_timezones"
+          ],
+          "retained_reasons": {
+            "tests/model_regress/tests.py::ModelTests::test_timezones": [
+              "NO_USABLE_TRACE"
+            ]
+          },
+          "trace_incomplete": [],
+          "without_usable_trace": [
+            "tests/model_regress/tests.py::ModelTests::test_timezones"
+          ],
+          "absent_from_base": [],
+          "mapping_errors": [],
+          "secondary_test_window_exploratory": {
+            "file": [
+              "tests/model_regress/tests.py::ModelTests::test_sql_insert_compiler_return_id_attribute",
+              "tests/model_regress/tests.py::ModelTests::test_empty_choice",
+              "tests/model_regress/tests.py::ModelTests::test_long_textfield",
+              "tests/model_regress/tests.py::ModelTests::test_long_unicode_textfield",
+              "tests/model_regress/tests.py::ModelTests::test_date_lookup",
+              "tests/model_regress/tests.py::ModelTests::test_date_filter_null",
+              "tests/model_regress/tests.py::ModelTests::test_get_next_prev_by_field",
+              "tests/model_regress/tests.py::ModelTests::test_primary_key_foreign_key_types",
+              "tests/model_regress/tests.py::ModelTests::test_timezones",
+              "tests/model_regress/tests.py::ModelTests::test_chained_fks",
+              "tests/model_regress/tests.py::ModelValidationTest::test_pk_validation",
+              "tests/model_regress/tests.py::EvaluateMethodTest::test_model_with_evaluate_method"
+            ],
+            "function": [
+              "tests/model_regress/tests.py::ModelTests::test_timezones"
+            ],
+            "retained_reasons": {
+              "tests/model_regress/tests.py::ModelTests::test_timezones": [
+                "NO_USABLE_TRACE"
+              ]
+            },
+            "trace_incomplete": [],
+            "without_usable_trace": [
+              "tests/model_regress/tests.py::ModelTests::test_timezones"
+            ],
+            "absent_from_base": [],
+            "mapping_errors": []
+          }
+        },
+        "time_ratio_information_only": 2.278913592510104,
+        "smoke_only": true,
+        "used_in_experiment_numbers": false
+      }
+    ]
+  },
+  "independent_smoke_selection_accounting": "all three match",
+  "python_36_syntax": "tracer/startup/pytest adapter parse successfully"
+}
