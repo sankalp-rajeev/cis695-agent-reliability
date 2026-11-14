@@ -1,7 +1,7 @@
 # Phase 6b status
 
 Start: 2026-11-14T07:28:16Z; deadline: 2026-11-14T17:28:16Z (10 hours, not reset).
-Branch: experiment/runtime-instrumentation. Stage: 2, first evaluation batch running (tasks 1–3).
+Branch: experiment/runtime-instrumentation. Stage: 2, 3/13 complete; next batch pending.
 Last completed step: Stage 1 harness frozen after all gates passed.
 Last recorded HEAD / frozen harness commit: 92a1e8e04d4cc788322eca3152739504dced2319.
 Current checkpoint HEAD: resolve with git log -1 -- this file.
@@ -29,9 +29,9 @@ used: 1/5. Historical A1 blocker is resolved. No labels or model APIs accessed.
 
 Task completion (in frozen order):
 
-- PENDING django__django-10973
-- PENDING django__django-12209
-- PENDING django__django-14140
+- COMPLETE django__django-10973
+- COMPLETE django__django-12209
+- COMPLETE django__django-14140
 - PENDING django__django-14631
 - PENDING matplotlib__matplotlib-25479
 - PENDING pytest-dev__pytest-5809
@@ -50,3 +50,7 @@ Pre-execution worktree guard caught an untracked raw-output symlink. Added
 /runs to local Git info/exclude, verified clean detached state, then launched
 task 1. No capture or evaluation task existed at the guard refusal. Frozen
 code remains unchanged; this was worktree configuration, not a harness repair.
+
+Batch checkpoint: 3/13 tasks complete in frozen order; all
+completed-task capture file sets and hashes revalidated. No HALT.json. Frozen
+code diff remains empty. Last observed publication HEAD: d297012fcb6a0b08127bb5f88d603a3b0b72c00f.
