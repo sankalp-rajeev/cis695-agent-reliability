@@ -1,50 +1,47 @@
 # Phase 6b status
 
-Start: 2026-11-14T07:28:16Z. Wall-clock deadline: 2026-11-14T17:28:16Z.
-Branch: experiment/runtime-instrumentation.
-Stage: 1 complete; preparing annotated harness freeze.
-Last completed step: preflight, existing-capture child table, observation-only
-metadata instrumentation, and synthetic regression gates (28 passed before and
-after observation instrumentation). Report-only smoke finished: existing parallel gate halted at 100% incomplete.
-Old-rule diagnostic fractions: Matplotlib 1/4, Django-13033 4/4, parallel
-Django-12965 16/16. Outcomes match in each smoke; 3 parallel workers ran tests.
-These are diagnostics only. Raw captures, summary and manifest are preserved.
-Starting HEAD: 8ee6c5230b70308acaf182a1e6e2a5b13cece415.
-Draft checkpoint HEAD: da0d971.
-Current checkpoint HEAD: this commit (resolve with git log -1 -- this file).
-Existing protected tags: phase4-run-sealed, phase5-plan-frozen,
-phase5-plan-amendment-a1, phase6b-plan-frozen. No tags created or changed.
+Start: 2026-11-14T07:28:16Z; deadline: 2026-11-14T17:28:16Z (10 hours, not reset).
+Branch: experiment/runtime-instrumentation. Stage: 2, evaluation ready to start.
+Last completed step: Stage 1 harness frozen after all gates passed.
+Last recorded HEAD / frozen harness commit: 92a1e8e04d4cc788322eca3152739504dced2319.
+Current checkpoint HEAD: resolve with git log -1 -- this file.
+New annotated tag: phase6b-harness-frozen (tag object 984d35800a0d5580c7c9e76c0e04379b3af14913).
+A1 appendix alone committed/pushed at 6d558e8 before all evaluation captures.
+Existing protected tags unchanged. No run seal yet.
 
-Preflight: supplied draft files preserved; 276 GiB available; Docker 26.1.3
-reachable with host access; default python 2.7.18, system python3 3.8.10, project
-.venv Python 3.11.17; uv 0.12.23; git 2.25.1. Remote branch matched starting HEAD
-and SSH access works. `gh` has no auth command; draft-PR availability unresolved.
-No applicable AGENTS.md found. No label files opened. No model calls.
+Frozen code tree hashes:
+- scripts: 4509be0b8fd0e45c317507f046ca79ea4bfa2e8b
+- src: 2a71093f90987ca77f7c442c33d0ca89bb58bd88
+- tools/phase6b_trace: 97c6a277391f5a27f18c4fc6f3dd57a6773c97e2
 
-Amendment A1 approved by the user and committed/pushed alone as 6d558e8.
-Original frozen plan remains a byte-identical prefix (SHA-256
-71311b86285ab42f0402e1542e64be049ab78c11750de68fb1a0925e38ce9043).
-Child-rule implementation and explicit scope records complete; 35 synthetic
-gates passed, including new branches, exec replacement, posix_spawn, scope
-isolation and the 5% cutoff on every smoke. Repair iterations used: 1 / 5.
-Repair-1 captures show 0% incomplete on all three smokes and 3 parallel
-workers with tests; final smoke completion pending. Harness now also enforces
-eval_set order, detached frozen execution, per-task hash checkpoints, disk and
-original deadline checks. 37 synthetic checks pass. Final harness smoke pending.
-Evaluation not started. All 13 tasks pending in eval_set.json order.
-Stages 2, 3, 4 and 5 pending. No scientific verdict or headline metrics verified.
-Merge candidate not ready. Next: all three repaired smokes, harness execution
-checkpoint/resume checks, then harness freeze. The A1 blocker is resolved.
+SHA-256 of canonical git ls-tree -r listing for scripts/ and src/: 96034f0e93bdbd5209a03219afb6fbcf67727c52d6e712e9a16ff89dd8b9d141.
 
-Protected tag object IDs verified unchanged:
+No code in scripts/ or src/ may change during Stage 2. Tracer code is also
+frozen. Detached worktree: /tmp/phase6b_frozen_20261114. Its ignored runs/
+symlink points to the publication workspace runs/ for raw capture persistence.
+Evaluation output: runs/phase6b_eval_20261114.
 
-- phase4-run-sealed: ba55b83560fa6c4cc1f2fe220c09387a648473b0
-- phase5-plan-frozen: d4af4b870dd6f24b3fac61233b04c0c12b39f24a
-- phase5-plan-amendment-a1: 97969395d0992959e6c0096fc6967babf0b17fdd
-- phase6b-plan-frozen: 2388a0aeceacae1b395f40c38caae3f52262c89f
+Stage 0 passed: 276 GiB free; Docker 26.1.3 available; project Python 3.11.17;
+SSH push works. Stage 1: 38 synthetic checks, all three final smoke gates pass,
+0% incomplete each, 3 parallel workers with tests, repeated selections identical,
+outcomes match, independent smoke selection/accounting matches. Repair budget
+used: 1/5. Historical A1 blocker is resolved. No labels or model APIs accessed.
 
-Final Stage 1 result: 38 synthetic checks passed. All three final smokes passed
-with 0% incomplete traces, identical repeated primary/exploratory selections,
-matching outcomes and three test-running parallel workers. Independent smoke
-selection/accounting recomputation matches. See harness_gates.json. Code for
-mechanical reporting and independent verification is prepared before evaluation.
+Task completion (in frozen order):
+
+- PENDING django__django-10973
+- PENDING django__django-12209
+- PENDING django__django-14140
+- PENDING django__django-14631
+- PENDING matplotlib__matplotlib-25479
+- PENDING pytest-dev__pytest-5809
+- PENDING sphinx-doc__sphinx-10435
+- PENDING matplotlib__matplotlib-24637
+- PENDING pallets__flask-5014
+- PENDING pydata__xarray-6744
+- PENDING pytest-dev__pytest-5787
+- PENDING scikit-learn__scikit-learn-12585
+- PENDING sphinx-doc__sphinx-7910
+
+Stages 3–5 pending. No scientific verdict or headline numbers verified.
+Merge candidate not ready. Checkpoint status after each three completed tasks.
