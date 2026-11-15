@@ -1,0 +1,10 @@
+Commands executed successfully:
+python3 reports/next_phases/phase7_signal_audit/record_inventory.py
+python3 reports/next_phases/phase7_signal_audit/verify_preflight.py
+
+Observed output:
+Frozen tasks: 83; missing records: 83; hard-stop threshold: >17.
+Independent preflight verification: PASS; 83/83 missing; four allowed run roots absent.
+Audit Stages 1-6: NOT_RUN. No audit counts or seal verified.
+
+Scope: independent verification of the missing-input blocker only; not Stage 6.
