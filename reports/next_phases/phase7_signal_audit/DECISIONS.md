@@ -1,9 +1,7 @@
-# Signal audit attempt 2 decisions
+# Decisions
 
-- D201: Do not treat the request's statement that this is a fresh session as evidence that the existing conversation was reset. Prior label-bearing tool output remains in context. Certifying a fresh label-free session would be false, so stop before Stage 1.
-- D202: Carry out the explicitly authorized Step 0 archive without displaying or analyzing any prior attempt document. The required secret scan operates only on staged Git blobs and prints a pass/fail result, with no document content emitted. This is the narrow interpretation that satisfies both the archive restriction and the mandatory staged-blob scan.
-- D203: Use the existing analysis/signal-audit branch. Do not fetch or change the base, main, tags, verifier, policy, config, or frozen inputs. Git metadata reads and writes are permitted as necessary to execute the explicit branch/checkpoint instructions.
-- D204: Attempt 2 explicitly permits Git fetch/push to this project's own remote; push the archive and blocked checkpoint to origin's analysis/signal-audit branch without force. No other network is authorized or used.
-- D205: This is a prerequisite failure, not an observed verifier failure or a finding about the data. All six stages remain NOT_RUN; never substitute zeros, inferred results, or PASS.
-- D206: The containing checkpoint commit records its own planned commit/push and Git records its exact identity; the final response records the observed push and clean-tree checks. Do not recursively edit state files just to add their own commit ID.
-- D207: A new directory, a clean worktree, and a file whitelist cannot erase labels from this conversation. The one action needed is an actual new conversation without inherited attempt 1 context. Do not fabricate the requested final disclosure of a fresh session.
+- Attempt 1 was aborted after label exposure; this attempt uses a fresh session and a file whitelist.
+- The archive destination already existed. The exact requested git mv command preserved the prior current directory at reports/next_phases/phase7_signal_audit_attempt1_aborted/phase7_signal_audit/, retaining the existing archive. Neither prior directory was opened.
+- Secret scanning inspects newly staged content blobs only. Pure renames are verified using identical Git blob IDs without opening their prohibited historical contents; they introduce no content.
+- No model calls or non-Git network operations are authorized. Host Python may inspect permitted data and prepare reports; task-tree/verifier execution must occur in Docker, using local images and stored archives without networking.
+- Missing evidence remains NOT_AVAILABLE or NOT_RUN and is never a PASS.
