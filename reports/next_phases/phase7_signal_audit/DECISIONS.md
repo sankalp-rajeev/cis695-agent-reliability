@@ -111,3 +111,12 @@
 
 - Post-hoc, never used for any decision: 6 of 7 original false accepts survive default auditing
 - Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.
+
+## Stage 6 hard stop (2026-11-16T19:36:56.004386+00:00)
+
+- Independent verify_all.py imports only the standard library and unchanged V1 modules, never the analysis producers. It reconstructs the combining rule separately and is intended to compare every Stage 1-5 CSV/count artifact.
+- The first run compared four CSV tables, then failed at v1_raw_observations.json. Raw V1 reruns used a list for allowed_paths instead of the original tuple; the representation is embedded in the out-of-scope finding detail. This is an audit-runner mistake, documented in stage6_mismatch_evidence.json, not evidence that V1 decisions differed. No claim is made that this is the only possible mismatch in later evidence.
+- Apply the user's hard stop literally even though a concrete parameter-type explanation exists: do not fix the independent runner, rerun verification, or create signal-audit-sealed without a new decision. Keep all Stage 1-5 outputs and the label-free tag unchanged.
+- One decision needed: authorize changing only verify_all.py to use the original tuple argument, then resume a full Stage 6 verification.
+- stage6_git_checks.json independently records zero protected-path changes and verifies fifty-five immutable label-free output files against tagged Git blobs. execution_environment.json records a separate local Docker image identity inspection.
+- No final scientific results are asserted as fully verified. V3/V4/recompute/post-hoc independent comparisons were not reached. All input absences and incomplete checks retain their reasons; no NOT_RUN is counted as PASS.
