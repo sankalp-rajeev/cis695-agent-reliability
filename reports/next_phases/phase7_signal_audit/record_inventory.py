@@ -22,26 +22,39 @@ def main():
             reader = csv.DictReader(f)
             key = next(k for k in ("instance_id", "task_id", "id") if k in reader.fieldnames)
             members[run] = {row[key] for row in reader}
-    # This preflight deliberately stops before any record can be opened.
-    # A restored run directory requires another, full record-selection pass.
-    assert all(not (ROOT / "runs" / run).exists() for run in RUNS)
-    reason = "All four directory-rule run roots are absent; no record can exist at an allowed location."
-    with (OUT / "missing_records.csv").open("w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=[
-            "task", "manifest_runs", "status", "reason", "absent_run_roots"
-        ])
-        writer.writeheader()
-        for task in ids:
-            membership = [r for r in RUNS if task in members[r]]
-            assert any(r in membership for r in ("main_50_a", "main_50_b"))
-            writer.writerow({
-                "task": task,
-                "manifest_runs": ";".join(membership),
-                "status": "NOT_AVAILABLE",
-                "reason": reason,
-                "absent_run_roots": ";".join("runs/" + r for r in RUNS),
-            })
-    print("Frozen tasks: 83; missing records: 83; hard-stop threshold: >17.")
+    rows = []
+    for task in ids:
+        membership = [r for r in RUNS if task in members[r]]
+        assert any(r in membership for r in ("main_50_a", "main_50_b"))
+        directories = [ROOT / "runs" / r / "tasks" / task for r in RUNS]
+        present = [p for p in directories if p.is_dir()]
+        rerun = [p for p in present if p.parts[-3] in RUNS[:2]]
+        originals = [p for p in present if p.parts[-3] in RUNS[2:]]
+        assert len(rerun) <= 1 and len(originals) <= 1
+        selected = (rerun or originals or [None])[0]
+        record = selected / "verification_record.full.json" if selected else None
+        available = record is not None and record.is_file()
+        if selected:
+            assert selected.parts[-3] in membership
+        rows.append({
+            "task": task,
+            "manifest_runs": ";".join(membership),
+            "record_path": str(record.relative_to(ROOT)) if record else "",
+            "status": "AVAILABLE" if available else "NOT_AVAILABLE",
+            "reason": "Directory-rule selected record exists; no outcome inferred."
+                if available else "Directory-rule selected record is missing; no fallback after selecting a directory.",
+        })
+    fields = ["task", "manifest_runs", "record_path", "status", "reason"]
+    for name, selected_rows in (
+        ("record_inventory.csv", rows),
+        ("missing_records.csv", [r for r in rows if r["status"] == "NOT_AVAILABLE"]),
+    ):
+        with (OUT / name).open("w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=fields, lineterminator="\n")
+            writer.writeheader()
+            writer.writerows(selected_rows)
+    missing = sum(r["status"] == "NOT_AVAILABLE" for r in rows)
+    print(f"Frozen tasks: {len(ids)}; available records: {len(ids)-missing}; missing records: {missing}; hard-stop threshold: >17.")
 
 
 if __name__ == "__main__":

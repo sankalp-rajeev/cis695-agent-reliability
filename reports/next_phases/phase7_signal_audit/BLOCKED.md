@@ -1,20 +1,19 @@
-# HARD STOP: required stored records unavailable
+# HARD STOP: Stage 1 control input outside whitelist
 
-Stage reached: Step 0 completed; pre-Stage-1 input availability check blocked.
+Updated: 2026-11-16T19:07:59.058528+00:00. Stage reached: successful resumed preflight and Stage 1 preparation.
 
-Exact state: the frozen task list has 83 distinct IDs, all represented in the two main manifest ID sets. None of the four directory-rule run roots exists in this workspace:
+The previous missing-record blocker is cleared: all 83 required records are present. record_inventory.csv contains the directory-rule selection for each task; missing_records.csv has zero data rows. The separate verify_preflight.py independently verified every inventory row from raw permitted IDs and directory existence. This is not Stage 6.
 
-- runs/main_2_rerun_mpl/
-- runs/main_3_rerun_infra/
-- runs/main_50_a/
-- runs/main_50_b/
+The Stage 1 passing control requires a real candidate patch. Under the conservative reading documented in DECISIONS.md, use the actual frozen candidate for astropy__astropy-13977, rather than substituting an invented source edit. Its exact path is:
 
-Consequently all 83 required verification records are missing. This triggers the explicit hard stop: more than 17 of the 83 records missing. missing_records.csv lists every affected task and its reason. record_inventory.py and the separate standard-library-only verify_preflight.py reproduce and independently verify this blocker from approved raw IDs and filesystem entries.
+reports/v2_discovery_cleanup/frozen_83/patches/astropy__astropy-13977.patch
 
-One decision needed: make the original stored run trees available at the four permitted locations, preserving their contents, before restarting the audit. No other run or analysis output has been substituted.
+The file exists, and tasks.json records its SHA-256, but it is outside the exact pre-Stage-5 whitelist. Referencing it in an approved metadata file does not grant access. Its contents have not been opened. The corresponding stored source archive is available and matches its frozen SHA-256; stage1_preparation.json records that check.
 
-Stages 1-6 are NOT_RUN. V1 caught/total, V3 effects, V4 classes, ACCEPT/FLAG/REJECT counts, and surviving false accepts are NOT_AVAILABLE. No audit seal or tag has been created.
+Applicable hard stop: "Any file outside the whitelist being needed before Stage 5. If so, stop and say which file and why; do not open it."
 
-Attempt 1 was aborted after label exposure; this attempt used a fresh session and a file whitelist. No prior attempt file contents or task-label sources were opened in this session.
+One decision needed: permit read-only access to that exact frozen candidate patch for the V1 passing control. No frozen content needs modification.
 
-The Step 0 checkpoint c00779d was pushed successfully. This blocker and its evidence are to be explicitly staged, secret-scanned, committed, and pushed on analysis/signal-audit; final publication is verified from Git after that operation.
+Stages 1-6 execution are NOT_RUN. No audit counts, scientific findings, label analysis, Stage 6 verification, or seals are claimed. No later stage was started.
+
+Attempt 1 was aborted after label exposure; this attempt used a fresh session and a file whitelist. Prior attempt contents and task-label sources remain unopened.

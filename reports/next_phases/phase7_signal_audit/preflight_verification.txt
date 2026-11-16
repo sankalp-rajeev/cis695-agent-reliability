@@ -3,8 +3,9 @@ python3 reports/next_phases/phase7_signal_audit/record_inventory.py
 python3 reports/next_phases/phase7_signal_audit/verify_preflight.py
 
 Observed output:
-Frozen tasks: 83; missing records: 83; hard-stop threshold: >17.
-Independent preflight verification: PASS; 83/83 missing; four allowed run roots absent.
-Audit Stages 1-6: NOT_RUN. No audit counts or seal verified.
+Frozen tasks: 83; available records: 83; missing records: 0; hard-stop threshold: >17.
+Independent preflight verification: PASS; 83/83 available; 0 missing.
+Scope: record availability and selection only; not Stage 6.
 
-Scope: independent verification of the missing-input blocker only; not Stage 6.
+Stage 1 preparation: source archive SHA-256 matches frozen metadata. Candidate patch contents remain unopened because the exact path is outside the input whitelist.
+Audit Stages 1-6 execution: NOT_RUN.
