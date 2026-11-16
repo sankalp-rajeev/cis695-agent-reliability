@@ -1,0 +1,64 @@
+{
+  "all_tasks": {
+    "check_totals": {
+      "build": {
+        "FAIL": 1,
+        "NOT_AVAILABLE": 99
+      },
+      "import": {
+        "FAIL": 2,
+        "NOT_AVAILABLE": 11,
+        "PASS": 87
+      },
+      "lint": {
+        "FAIL": 1,
+        "NOT_AVAILABLE": 80,
+        "PASS": 19
+      },
+      "syntax": {
+        "NOT_AVAILABLE": 11,
+        "PASS": 89
+      },
+      "typecheck": {
+        "NOT_AVAILABLE": 93,
+        "PASS": 7
+      }
+    },
+    "decision_effect_tasks": [],
+    "static_fail_accepts": [
+      "matplotlib__matplotlib-23299",
+      "pallets__flask-5014"
+    ],
+    "tasks": 100
+  },
+  "frozen83": {
+    "check_totals": {
+      "build": {
+        "FAIL": 1,
+        "NOT_AVAILABLE": 82
+      },
+      "import": {
+        "FAIL": 2,
+        "PASS": 81
+      },
+      "lint": {
+        "FAIL": 1,
+        "NOT_AVAILABLE": 63,
+        "PASS": 19
+      },
+      "syntax": {
+        "PASS": 83
+      },
+      "typecheck": {
+        "NOT_AVAILABLE": 76,
+        "PASS": 7
+      }
+    },
+    "decision_effect_tasks": [],
+    "static_fail_accepts": [
+      "matplotlib__matplotlib-23299",
+      "pallets__flask-5014"
+    ],
+    "tasks": 83
+  }
+}

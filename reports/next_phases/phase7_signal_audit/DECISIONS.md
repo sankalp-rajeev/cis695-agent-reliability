@@ -1,0 +1,139 @@
+# Decisions
+
+- Attempt 1 was aborted after label exposure; this attempt uses a fresh session and a file whitelist.
+- The archive destination already existed. The exact requested git mv command preserved the prior current directory at reports/next_phases/phase7_signal_audit_attempt1_aborted/phase7_signal_audit/, retaining the existing archive. Neither prior directory was opened.
+- Secret scanning inspects newly staged content blobs only. Pure renames are verified using identical Git blob IDs without opening their prohibited historical contents; they introduce no content.
+- No model calls or non-Git network operations are authorized. Host Python may inspect permitted data and prepare reports; task-tree/verifier execution must occur in Docker, using local images and stored archives without networking.
+- Missing evidence remains NOT_AVAILABLE or NOT_RUN and is never a PASS.
+
+## Record availability hard stop (2026-11-15T01:06:10.650554+00:00)
+
+- Before task execution, check whether the directory-rule input roots exist. None of runs/main_2_rerun_mpl, runs/main_3_rerun_infra, runs/main_50_a, or runs/main_50_b exists, including as a symlink entry. Therefore no approved record path under any of those roots is available.
+- Manifest ID overlaps with the 83 frozen tasks: main_2_rerun_mpl = 1; main_3_rerun_infra = 3; main_50_a = 39; main_50_b = 44. The two main manifests cover all 83 IDs. No manifest fields other than task IDs were used or emitted.
+- Apply the explicit greater-than-17-missing-records hard stop immediately: all 83 are missing. Do not substitute Phase 4 results, similarly named runs, prior analysis, or post-hoc material for the required original records. Do not infer any original signal or decision from absence.
+- Independent verification here covers only the missing-input inventory, not audit Stages 1-5, and is not Stage 6. No scientific audit finding or sealed report is claimed.
+- The initial Docker image-list attempt could not connect to the daemon because of socket permissions. No container ran; no escalation is needed because the missing-record hard stop already requires stopping.
+- One decision needed: restore or mount the original stored run trees at the four permitted paths, without changing their frozen contents, before resuming a label-isolated audit. No permission to broaden the whitelist or invent outcomes is assumed.
+
+## Resume and successful preflight (2026-11-16T19:07:59.058528+00:00)
+
+- The user confirmed restoration of the four allowed run trees and explicitly resumed attempt 2. Do not repeat Step 0 or read either archived prior directory.
+- Regenerate record_inventory.csv (83 rows) and missing_records.csv (zero rows), retaining the historical missing-record evidence in Git history. Select reruns by directory existence before the corresponding original main run; verify manifest ID membership. There are zero missing required records.
+- A separate standard-library verifier independently recomputes membership and selection from approved raw task/manifest IDs and filesystem existence, and compares every output row. This is a preflight check, not Stage 6 or a verifier outcome.
+- The renewed preflight clears only the old missing-record blocker. The user's instruction explicitly retains the whitelist and stage order; it does not authorize reading referenced files automatically.
+
+## Stage 1 whitelist hard stop (2026-11-16T19:07:59.058528+00:00)
+
+- Conservative reading of "a real clean candidate patch": use an actual frozen submitted candidate for the passing control, rather than silently replacing it with an invented source edit. Frozen task metadata identifies reports/v2_discovery_cleanup/frozen_83/patches/astropy__astropy-13977.patch. That file exists; its contents were not opened, hashed, copied, imported, or executed. The expected patch digest comes only from permitted tasks.json.
+- The corresponding stored source archive at /home/sankalp/cg_repos/task_archives/astropy__astropy-13977.tar is explicitly allowed. Its SHA-256 matches frozen metadata; no archive restoration or network access is needed. This does not make the separate candidate patch an allowed input.
+- The exact whitelist allows tasks.json, manifest IDs, selected verification records, stored source archives, the specified Phase 4 results, verifier Python sources, the specified policy document, and unit tests. It does not include frozen_83/patches/*.patch or extend to files merely referenced in tasks.json. The sanitized selected record provides a patch SHA-256, not candidate patch text.
+- Apply the explicit hard stop: "Any file outside the whitelist being needed before Stage 5. If so, stop and say which file and why; do not open it." Do not skip Stage 1 to perform later stages, fabricate a control result, or treat this absence of execution as PASS.
+- One decision needed: add read-only access to reports/v2_discovery_cleanup/frozen_83/patches/astropy__astropy-13977.patch to the pre-Stage-5 whitelist for the V1 control. Keep the patch and every other frozen artifact unchanged.
+- Attempt 1 was aborted after label exposure; this attempt used a fresh session and a file whitelist.
+
+## Authorized continuation (2026-11-16T19:12:29.647320+00:00)
+
+- The user explicitly expanded read-only input access to candidate patches and other files that cannot contain correctness labels or grader outcomes, retaining every forbidden path and analysis-output restriction. The former patch-access blocker is cleared.
+- V1 control chosen mechanically from the 83 directory-rule selected records: stored integrity outcome PASS, then smallest candidate byte length, then task ID to break ties. Selected scikit-learn__scikit-learn-14141, 348 bytes, stored V1 PASS, runs/main_50_a/tasks/scikit-learn__scikit-learn-14141/verification_record.full.json. No correctness information was used.
+- Newly permitted input: reports/v2_discovery_cleanup/frozen_83/patches/scikit-learn__scikit-learn-14141.patch. Agent-authored candidate source diff, not a correctness label or grader output.
+- Control source archive: /home/sankalp/cg_repos/task_archives/scikit-learn__scikit-learn-14141.tar. Pristine repository tree, not evaluation outcomes; verify its digest against tasks.json before execution.
+- Image metadata: local Docker image swebench/sweb.eval.x86_64.scikit-learn_1776_scikit-learn-14141:latest, identity and interpreter paths only; these cannot encode grader outcomes. All execution uses --pull never and --network none.
+- Standard-library host scripts perform record sanitation, bookkeeping and table construction; verifier/task-tree execution occurs only in Docker. No model calls. Use synthetic package namespaces to load unchanged verifier modules without package initialization side effects.
+- Generated audit outputs may be read to validate this attempt's own tables and checkpoints; historical metrics and analysis outputs remain forbidden before Stage 5.
+
+- New archive members permitted for the adversarial task tree: testbed/sklearn/utils/_show_versions.py (project implementation), testbed/sklearn/utils/tests/test_show_versions.py (pre-existing project unit tests), and testbed/setup.cfg (project tool configuration). These are pristine source files inside the approved archive and cannot be stored grader outcomes or task correctness labels. Extract only these members; do not execute project tests or read unrelated archive members. The synthetic configuration manipulation exists only as diff text passed to git apply --check.
+- V1 additionally tests assertion loosening, unparseable input, and configured out-of-scope edits, so the enumerated suite covers the eight requested violation types plus three additional probes. Counts distinguish rejection probes from the clean and two risk-only controls.
+
+- Git ignore rules exclude patch files, so explicitly force-add only the fourteen generated fixture paths. Preserve diff context whitespace and the binary diff terminator; omit fixture patches from the optional whitespace-style check. Neither the verifier nor repository configuration is changed.
+
+## Stage 1 checkpoint (2026-11-16T19:17:12.166632+00:00)
+
+- V1 catches 10 of 11 rejection probes; all three controls pass
+- Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.
+
+- Stage 2 population: frozen83 and all_tasks (100 distinct IDs with selected records). Five superseded physical records do not enlarge the distinct-task population; record_inventory_all.csv fixes selection provenance.
+- All 83 selected frozen records carry v1.3.0-full; unchanged decision.py is the matching version. V3 counterfactuals vary only static among all three outcomes. No decision changes; two V3 FAIL / ACCEPT combinations exist in each population. Report this as a combining-policy gap with a suggested policy decision, without editing policy.
+- Per-check NOT_AVAILABLE reasons are taken from findings.unavailable, or from the recorded aggregate static detail when the per-check field is absent. Preserve missing status explicitly and count it only as NOT_AVAILABLE.
+
+## Stage 2 checkpoint (2026-11-16T19:18:40.383864+00:00)
+
+- V3 has no decision effect; two stored FAIL outcomes coexist with ACCEPT
+- Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.
+
+- Stage 3 classifies explicit detail text only. All fourteen frozen83 unavailable signals say generator wrote no test files (LimitsExceeded); all_tasks adds two such cases and eleven explicit empty-patch skips, assigned other. All six remaining classes have zero observed cases, not evidence of universal absence of those failure modes.
+- No raw generator stdout is stored for these unavailable signals. Do not open trajectories or previous analyses to invent an excerpt; raw excerpts are NOT_AVAILABLE and recorded detail is separately identified. LimitsExceeded does not identify which resource cap fired.
+- No-output is generator-side under the recorded budget, not proof of permanent inability; changing limits might help but is unverified. Empty-patch skip categorization is a tooling/accounting issue and can never create positive repair evidence.
+
+## Stage 3 checkpoint (2026-11-16T19:20:00.180486+00:00)
+
+- V4 absence accounted for: 14 frozen no-output cases; raw stdout unavailable
+- Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.
+
+- Stage 4 mapping is predeclared in v2_mapping.csv and v2_mapping.md before applying replacement. Five observed statuses map cleanly; unknown statuses remain NOT_AVAILABLE and are enumerated.
+- Phase 4 has four accounting policies. Apply the user's conservative-default rule to select S_invalid_missing for the primary recompute, with all four explicitly reported as sensitivity. A policy-specific status is not an ambiguous outcome class: PASS/FAIL/REGRESSION_ERROR/INCOMPLETE/NOT_AVAILABLE each has the documented clean mapping. No correctness information informs the choice.
+- Map REGRESSION_ERROR to FAIL exactly as unchanged evidence.py does, and INCOMPLETE to NOT_AVAILABLE. Strict completeness is not affirmative failure of the patch.
+
+## Stage 4-mapping checkpoint (2026-11-16T19:21:11.706915+00:00)
+
+- Predeclare repaired V2 mapping and conservative primary before recomputation
+- Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.
+
+## Stage 4 checkpoint (2026-11-16T19:22:43.007689+00:00)
+
+- V2-only recompute: conservative counts 52-30-1 to 13-68-2; all variants retained
+- Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.
+
+- Label-free seal preparation at 2026-11-16T19:23:20.086468+00:00: Stages 1-4 are complete and pushed; no task label or grader outcome source has been opened. Record immutable raw-input digests and the Docker image identity. The tag will bind this decision table before any post-hoc label access.
+- Stage 6 will independently recompute all CSVs and counts; this label-free seal alone does not claim that verification has passed.
+
+## Stage seal-prehoc checkpoint (2026-11-16T19:23:23.876388+00:00)
+
+- Stages 1-4 complete; no labels opened; prepare annotated label-free seal
+- Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.
+
+## Label-free tag completed; Stage 5 access boundary
+
+- Annotated signal-audit-labelfree was created and pushed at d2cc07ab1036bf5a36225fcf8acf2698b5b6e8c4, tagger time 2026-11-16T12:23:36-07:00. No task-label source had been opened before that tag.
+- Stage 5 is post-hoc, never used for any decision. Read only the authorized audited label CSV, grader-gap classification CSV, and original stored oracle/claim records for the same 83 selected task/run paths. The restored run trees lack oracle and claim files, so use their corresponding original stored trees read-only at /home/sankalp/projects/cis695-agent-reliability/runs/{main_50_a,main_50_b,main_2_rerun_mpl,main_3_rerun_infra}/tasks/<task>/{oracle_record.json,repair_record.json}.
+- Label sources: reports/next_phases/phase4_posthoc/label_audit/audited_labels.csv and reports/next_phases/phase4_posthoc/grader_gap/classification.csv. These reads are permitted only after the tag. No previous analysis script or metrics table is imported or used.
+- Normalize optional sha256: prefixes before comparing digests. All selected verifier/oracle patch digests and audited candidate digests must match frozen task digests. Store only original oracle outcome and claim status from those source records, not trajectories or agent evidence text.
+- Coverage denominator remains all 83 frozen candidates. Precision is correct/ACCEPT with binary labels; absent labels, if any, are separately unscored rather than false. Claim precision uses positive RESOLVED claims. Compute Wilson 95% intervals for precision and coverage.
+- A task absent from the seven-row grader-gap classification table is NOT_AVAILABLE for that classification, with its separate audited-label classification preserved. No inference from absence.
+
+- Stage 5 access began only after annotated tag signal-audit-labelfree was pushed at d2cc07ab1036bf5a36225fcf8acf2698b5b6e8c4 (tagger time 2026-11-16T12:23:36-07:00). All label analysis is post-hoc, never used for any decision.
+- Authorized post-hoc inputs: reports/next_phases/phase4_posthoc/label_audit/audited_labels.csv; reports/next_phases/phase4_posthoc/grader_gap/classification.csv; the 83 directory-rule corresponding original oracle_record.json and repair_record.json files under /home/sankalp/projects/cis695-agent-reliability/runs/. Exact paths and SHA-256s are recorded in posthoc_labels/original_sources.csv and posthoc_labels/input_sha256.csv. No earlier attempt files were read.
+- Normalize the optional sha256: prefix before comparing stored patch digests. All 83 original oracle flags agree with audited_labels.csv original labels, and all candidate/verifier/oracle digest fields agree after normalization. This checks recorded identity fields only, not the grader report's actual patch binding.
+- All 83 stored claims are RESOLVED, so positive-claim precision has denominator 83 under each label set. Use Wilson 95% intervals for both ACCEPT precision and coverage, and claim precision; no unscored binary labels are omitted silently.
+- Distinguish surviving members of the original false-accept set from the new aggregate false-accept count: 6/7 survive default auditing and 5/7 CPU sensitivity, while a newly incorrect original ACCEPT offsets one removed default false accept. Label changes never change frozen decision coverage.
+- A task absent from the seven-row grader-gap classification table remains NOT_AVAILABLE there; its separate label-audit classification is reported without inventing a gap classification.
+
+## Stage 5 checkpoint (2026-11-16T19:28:34.332649+00:00)
+
+- Post-hoc, never used for any decision: 6 of 7 original false accepts survive default auditing
+- Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.
+
+## Stage 6 hard stop (2026-11-16T19:36:56.004386+00:00)
+
+- Independent verify_all.py imports only the standard library and unchanged V1 modules, never the analysis producers. It reconstructs the combining rule separately and is intended to compare every Stage 1-5 CSV/count artifact.
+- The first run compared four CSV tables, then failed at v1_raw_observations.json. Raw V1 reruns used a list for allowed_paths instead of the original tuple; the representation is embedded in the out-of-scope finding detail. This is an audit-runner mistake, documented in stage6_mismatch_evidence.json, not evidence that V1 decisions differed. No claim is made that this is the only possible mismatch in later evidence.
+- Apply the user's hard stop literally even though a concrete parameter-type explanation exists: do not fix the independent runner, rerun verification, or create signal-audit-sealed without a new decision. Keep all Stage 1-5 outputs and the label-free tag unchanged.
+- One decision needed: authorize changing only verify_all.py to use the original tuple argument, then resume a full Stage 6 verification.
+- stage6_git_checks.json independently records zero protected-path changes and verifies fifty-five immutable label-free output files against tagged Git blobs. execution_environment.json records a separate local Docker image identity inspection.
+- No final scientific results are asserted as fully verified. V3/V4/recompute/post-hoc independent comparisons were not reached. All input absences and incomplete checks retain their reasons; no NOT_RUN is counted as PASS.
+
+## Authorized Stage 6 argument-form corrections (2026-11-16T19:50:18.841504+00:00)
+
+- User authorized the tuple correction and review of the same class of argument-form mistakes, preserving failed evidence and every Stage 1-5 result. The isolated one-line runtime fix was committed and pushed separately in cf58a54: allowed_paths is the original one-element tuple, not a list.
+- The pre-rerun review found one related expected-metadata argument: original run_v1.py passes tuple-valued kwargs to json.dumps, which stores allowed_paths as a JSON array. The independent specs.append constructor must therefore receive an explicit list for that stored expected JSON field, while the actual V1 invocation receives the tuple. Correct only that constructor argument. This is the same list/tuple representation class; no comparison, raw diagnostic, field, or stored result is changed or omitted.
+- Reviewed both imported V1 call sites: patch text is str in each; repository root is pathlib.PosixPath in each; allowed_paths now has the same tuple form; other cases pass empty kwargs and identical defaults. applies_cleanly receives str and PosixPath in each. The distinct temporary directory names identify independent copies of the identical archive members. No other mismatched verifier argument forms were found.
+- pre_fix_analysis_hashes.json records 65 Stage 1-5 artifacts, including all 25 CSVs, against committed baseline 5fae0db. All hashes match before rerunning. It separately records hashes of the failed independent_verification.json and stage6_mismatch_evidence.json, which remain unchanged.
+- Run verification in an isolated copy of the audit output directory, using the same raw read-only mounts and image. This prevents the verifier's fixed output filename from overwriting the preserved failed result. Copy only the new rerun receipt back under a distinct name. Do not rerun analysis producers or modify their outputs.
+
+## Stage 6 completed (2026-11-16T19:57:16.598917+00:00)
+
+- Corrected full independent verification passed with zero mismatches: all 25 CSVs and eight JSON artifacts compared, 14 V1 cases independently rerun, 100 distinct selected tasks and 105 physical verification records checked. Exact raw V1 diagnostic comparison passed without dropping, rewriting, or ignoring any field.
+- The successful receipt is independent_verification_rerun.json and captured output is independent_verification_rerun.stdout.txt. The original failed independent_verification.json and stage6_mismatch_evidence.json remain byte-for-byte unchanged; the resolved blocker is preserved unchanged at verification_runs/initial_blocked.md.
+- analysis_outputs_unchanged.json verifies all 65 Stage 1-5 artifacts against committed baseline 5fae0db and the isolated rerun copy. All 25 CSVs and every result file are unchanged. AST comparison confirms check_csv and check_json are unchanged and only verify_v1 changed in the verification script. Protected verifier/policy/config/frozen paths remain unchanged.
+- REPORT.md records the initial independent-script list-versus-tuple bug, its separate runtime fix cf58a54, the related stored-JSON argument-form fix 770a717 found before rerunning, the exact successful rerun, preserved failure evidence, and unchanged analysis outputs. No analysis producer was rerun.
+- Final SHA-256 manifest covers every deliverable in this fresh audit directory except the manifest itself and Python cache files. Verify its contents before committing, then push the completion commit and create the new annotated signal-audit-sealed tag at that commit. Preserve signal-audit-labelfree unchanged; never force push or touch main.
+- Verified findings needing a decision: V1 semantic assertion weakening; V3's ignored FAIL outcome; V4 cap/output evidence retention; adoption of a repaired-V2 accounting variant. Suggested fixes are report-only and none was applied.

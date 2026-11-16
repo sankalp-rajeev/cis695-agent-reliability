@@ -1,0 +1,5 @@
+{
+  "source": "phase4-plan-frozen:reports/next_phases/phase4_plan.md",
+  "blob_sha256": "a74874c1aa3d6a5afbb7936e5b8c8f4f89312f8285a4e494782b27d23df64c9d",
+  "policy_excerpt": "**Verdict policies reported:**\n\n- **Policy C (skip-compatible):** the rule in force when the roadmap was written; SKIPPED counts toward completeness.\n- **Policy S (skip-strict, primary for claims about PASS):** SKIPPED and NOT_REACHED selected tests are missing evidence. XFAIL is evidence. `INVALID_ID` is excluded from the denominator and reported.\n- FAIL is never demoted under either policy.\n- Report Policy C and Policy S yes/no counts both with `INVALID_ID` excluded from completeness (the policy above) and with `INVALID_ID` treated as missing evidence. List every task whose verdict differs between these two accounting rules. `COLLECTION_ERROR` and `RUNNER_UNAVAILABLE` remain missing evidence in all four reports.\n"
+}
