@@ -22,3 +22,6 @@
 - 2026-11-16: Add an optional agent_task input to run_task and supply load_agent_task's column projection; this keeps the agent behavior unchanged while avoiding construction of withheld benchmark fields.
 - 2026-11-16: Remove the probe import of run_pilot; importing that general helper loads oracle modules which are unnecessary and excluded here.
 - 2026-11-16: Use the already installed publication-worktree Python environment with local LiteLLM pricing; avoid modifying the old main-study clone or fetching a mutable pricing table.
+- 2026-11-16: Verified gpt-4.1-mini, gpt-4.1 and gpt-4o-mini in that order with real well-formed bash tool_calls; retain full sanitized usage, fingerprints and rate-limit headers in verification.json; total $0.00031875.
+- 2026-11-16: Keep the same three tasks on gpt-4.1-mini regardless of other candidate availability; gpt-4.1 and gpt-4o-mini are verification-only and later repriced projections.
+- 2026-11-16: The same three tasks are not all present in either stored main_50 run; extract only authorized numeric fields for all 50 in each run and label the comparison as whole-set means.

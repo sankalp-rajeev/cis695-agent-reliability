@@ -1,7 +1,7 @@
 # UM cost probe status
 
-Done: clean branch feature/umgpt-routing confirmed; origin/main is an ancestor; key entry present (value never displayed); 38 frozen files match origin/main. Existing ledger copied from /home/sankalp/projects/cis695-v2-scg-ubuntu-publication/runs/umgpt_spend_ledger.json into runs/umgpt_spend_ledger.json.
+Done: all preflight checks; ledger preserved; 69 focused tests pass; 38 frozen files match origin/main; implementation committed as 9534b19. All three models verified with real bash tool calls in requested order, costing $0.00031875 total.
 
-Running: prepare filtering telemetry and direct v1.4 V4 route; verify the three models in order.
+Running: final readiness checks before three gpt-4.1-mini repair → direct v1.4 V4 task chains.
 
-Next: mocked tests, commit implementation, three gpt-4.1-mini tasks, numeric-only DeepSeek comparison, independent spend audit, report, commit and push feature/umgpt-routing. No correctness grading.
+Next: tasks, numeric-only DeepSeek whole-set comparison (the same three are absent from each stored 50-task run), independent spend audit, report, commit and push feature/umgpt-routing.
