@@ -80,6 +80,19 @@ def main():
         ),
         "decision_counts": dict(Counter(r["v1_4"] for r in expected_delta)),
     }
+    comparison_path = OUT / "test_comparison.csv"
+    if comparison_path.is_file():
+        comparison = table("test_comparison.csv")
+        baseline = {
+            r["test"]: r["status"] for r in json.loads((OUT / "baseline_tests.json").read_text())
+        }
+        assert len(comparison) == len({r["test"] for r in comparison})
+        assert all(r["baseline"] == baseline.get(r["test"], "new") for r in comparison)
+        assert {r["test"] for r in comparison if r["baseline"] != "new"} == set(baseline)
+        assert all(r["final"] == r["baseline"] for r in comparison if r["baseline"] != "new")
+        assert all(r["final"] == "passed" for r in comparison if r["baseline"] == "new")
+        result["baseline_names_verified"] = len(baseline)
+        result["new_tests_passed"] = sum(r["baseline"] == "new" for r in comparison)
     (OUT / "independent_verification.json").write_text(json.dumps(result, indent=2) + "\n")
     print(json.dumps(result))
 

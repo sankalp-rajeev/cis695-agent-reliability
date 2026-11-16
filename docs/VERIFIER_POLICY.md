@@ -236,3 +236,60 @@ Inside a half, stop after ten tasks — before the other forty start — if any 
 3. **Is the single flake re-run sufficient**, given that flakiness enters the false-rejection rate directly? A best-of-three would be more robust and roughly doubles the cost of the failure path only.
 
 4. **Should `NEWLY_PASSING` feed the accept decision at all?** It is currently recorded but unused. A pre-existing test that starts passing after the patch is weak evidence of repair, and admitting it would blur the boundary with V4's issue-derived signal — but discarding it may waste real information.
+
+---
+
+## 10. Policy v1.4.0 (2026-11-16)
+
+Policy `v1.4.0-full` is an explicit opt-in. Select it with
+`scripts/verify_patch_v1_4.py <task_dir> --config full-v1.4` and
+`configs/verifier/full_v1_4.yaml`. Existing entry points, policy versions,
+configuration files and V2 execution remain unchanged. Evidence and proof are in
+`reports/policy_v1_4/`.
+
+**V1 — pre-existing test weakening.** Parse the complete old and patched Python
+test files with AST. Reject as `test_weakened`, in the same integrity class as
+test deletion, when an existing scope loses an assertion, an assertion is
+replaced by constant true (including `True`, `1`, `not False`) or an equality
+tautology (`x == x`), a test body becomes `pass`, or a skip/xfail marker or
+decorator is added to an existing test. Adding tests or assertions does not
+reject. Existing assertion-helper removal checks remain supported. The complete
+base file and patch reconstruction must be available: non-Python, unparseable,
+or unavailable files retain an attributed AST-analysis record and block ACCEPT
+with `v1_analysis_incomplete`, without a guessed integrity violation.
+
+**V3 — absolute failure gate and evidence.** A patched-tree syntax or import FAIL
+blocks ACCEPT and yields FLAG with `v3_absolute_failure`. An independently
+justified REJECT remains REJECT. Build, lint and typecheck remain evidence only.
+Each check retains its command, exit code, last 4,096 bytes of stdout and stderr,
+tool version and version-probe evidence. Unavailable checks retain explicit null
+results and reasons. Lint and typecheck always retain the base-commit result and
+new findings, computed as exact diagnostic-line multiset differences. A failed
+patched import also runs the identical command on the base tree; a base failure
+does not remove the FLAG gate.
+
+**V4 — fixed generator budget and evidence.** Only `generator_max_steps` changes,
+from 40 to 80. Retries remain 0; cost remains $1, generator wall time 1,200 seconds,
+and maximum generated test files 3. All other generator, screening, execution and
+model limits remain unchanged. A separate v1.4 cache preserves older freezes.
+Every V4 record adds the fired-limit subtype (`steps`, `cost`, `time`, `tokens`,
+`other`, or null when none fired), steps used, cost, elapsed generation seconds,
+total input and output tokens, configured caps and the last 4,096 bytes of
+sanitized generator output. Unavailable measurements are null with a reason,
+never fabricated zeros. If both step and cost caps are reached, steps takes
+precedence. Elapsed generation includes setup, readout and cleanup.
+
+**Reporting accounting.** `reliability.reporting.accounting.report_accounting`
+defaults to Policy S with INVALID_ID excluded from the denominator and reported
+separately, as pre-registered in the Phase 4 plan. Policy C and the variants that
+count INVALID_ID as missing remain explicitly labeled sensitivities. SKIPPED
+and NOT_REACHED are missing under S; XFAIL is evidence; failures are never
+demoted. This helper does not change V2 execution or its stored signals.
+
+The offline golden proof exactly reproduces all 100 stored v1.3.0 decision
+entries, including reasons and versions. Reusing their stored signal outcomes
+under v1.4.0 changes no decision (54 ACCEPT, 34 FLAG, 12 REJECT). The sealed V1
+suite catches 11/11 violation probes and passes 3/3 controls. All 45 new unit
+tests pass; every existing test retains its baseline status. The independent
+standard-library checker confirms the golden and delta tables. No model call,
+label access or live generator run is part of this validation.

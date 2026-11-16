@@ -11,3 +11,14 @@ Golden: 100/100 exact stored decision entries, including versions and reasons.
 Stored-signal v1.4 delta: 0/100. Independent standard-library proof: PASS.
 New unit tests: 45 passed. Full-suite comparison rerun is in progress.
 Baseline: 1375 passed, 6 failed, 47 errors, 6 skipped; preserve failures by name.
+
+Final validation: 1420 passed, 6 failed, 47 errors, 6 skipped. Every baseline test
+has the identical status; all 45 additions pass. No new failures. Golden, delta,
+and independent proof pass. New source and scripts pass targeted Ruff checks.
+The final report and append-only policy section are ready for the freeze commit.
+
+FROZEN: policy-v1.4.0-frozen identifies the final report/proof commit on
+feature/policy-v1.4. All required offline gates are satisfied relative to the
+recorded baseline; no blocking condition occurred. Final canonical guarded run:
+1420 passed, 6 failed, 47 errors, 6 skipped; 0 baseline status changes.
+164 original source/config/test files, the sealed audit, and main are preserved.
