@@ -1,0 +1,50 @@
+{
+  "changed_labels": {
+    "CPU_2048": 5,
+    "audited_default": 3
+  },
+  "claim_statuses": {
+    "RESOLVED": 83
+  },
+  "label_counts": {
+    "CPU_2048": {
+      "correct": 72,
+      "incorrect": 11
+    },
+    "audited_default": {
+      "correct": 70,
+      "incorrect": 13
+    },
+    "original": {
+      "correct": 69,
+      "incorrect": 14
+    }
+  },
+  "original_false_accepts": [
+    "django__django-13212",
+    "django__django-13297",
+    "django__django-16667",
+    "matplotlib__matplotlib-23299",
+    "matplotlib__matplotlib-23476",
+    "pylint-dev__pylint-4661",
+    "pylint-dev__pylint-7277"
+  ],
+  "original_false_accepts_surviving": {
+    "CPU_2048": [
+      "django__django-13212",
+      "django__django-16667",
+      "matplotlib__matplotlib-23299",
+      "matplotlib__matplotlib-23476",
+      "pylint-dev__pylint-4661"
+    ],
+    "audited_default": [
+      "django__django-13212",
+      "django__django-16667",
+      "matplotlib__matplotlib-23299",
+      "matplotlib__matplotlib-23476",
+      "pylint-dev__pylint-4661",
+      "pylint-dev__pylint-7277"
+    ]
+  },
+  "tasks": 83
+}

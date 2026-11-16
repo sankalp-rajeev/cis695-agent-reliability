@@ -90,3 +90,24 @@
 
 - Stages 1-4 complete; no labels opened; prepare annotated label-free seal
 - Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.
+
+## Label-free tag completed; Stage 5 access boundary
+
+- Annotated signal-audit-labelfree was created and pushed at d2cc07ab1036bf5a36225fcf8acf2698b5b6e8c4, tagger time 2026-11-16T12:23:36-07:00. No task-label source had been opened before that tag.
+- Stage 5 is post-hoc, never used for any decision. Read only the authorized audited label CSV, grader-gap classification CSV, and original stored oracle/claim records for the same 83 selected task/run paths. The restored run trees lack oracle and claim files, so use their corresponding original stored trees read-only at /home/sankalp/projects/cis695-agent-reliability/runs/{main_50_a,main_50_b,main_2_rerun_mpl,main_3_rerun_infra}/tasks/<task>/{oracle_record.json,repair_record.json}.
+- Label sources: reports/next_phases/phase4_posthoc/label_audit/audited_labels.csv and reports/next_phases/phase4_posthoc/grader_gap/classification.csv. These reads are permitted only after the tag. No previous analysis script or metrics table is imported or used.
+- Normalize optional sha256: prefixes before comparing digests. All selected verifier/oracle patch digests and audited candidate digests must match frozen task digests. Store only original oracle outcome and claim status from those source records, not trajectories or agent evidence text.
+- Coverage denominator remains all 83 frozen candidates. Precision is correct/ACCEPT with binary labels; absent labels, if any, are separately unscored rather than false. Claim precision uses positive RESOLVED claims. Compute Wilson 95% intervals for precision and coverage.
+- A task absent from the seven-row grader-gap classification table is NOT_AVAILABLE for that classification, with its separate audited-label classification preserved. No inference from absence.
+
+- Stage 5 access began only after annotated tag signal-audit-labelfree was pushed at d2cc07ab1036bf5a36225fcf8acf2698b5b6e8c4 (tagger time 2026-11-16T12:23:36-07:00). All label analysis is post-hoc, never used for any decision.
+- Authorized post-hoc inputs: reports/next_phases/phase4_posthoc/label_audit/audited_labels.csv; reports/next_phases/phase4_posthoc/grader_gap/classification.csv; the 83 directory-rule corresponding original oracle_record.json and repair_record.json files under /home/sankalp/projects/cis695-agent-reliability/runs/. Exact paths and SHA-256s are recorded in posthoc_labels/original_sources.csv and posthoc_labels/input_sha256.csv. No earlier attempt files were read.
+- Normalize the optional sha256: prefix before comparing stored patch digests. All 83 original oracle flags agree with audited_labels.csv original labels, and all candidate/verifier/oracle digest fields agree after normalization. This checks recorded identity fields only, not the grader report's actual patch binding.
+- All 83 stored claims are RESOLVED, so positive-claim precision has denominator 83 under each label set. Use Wilson 95% intervals for both ACCEPT precision and coverage, and claim precision; no unscored binary labels are omitted silently.
+- Distinguish surviving members of the original false-accept set from the new aggregate false-accept count: 6/7 survive default auditing and 5/7 CPU sensitivity, while a newly incorrect original ACCEPT offsets one removed default false accept. Label changes never change frozen decision coverage.
+- A task absent from the seven-row grader-gap classification table remains NOT_AVAILABLE there; its separate label-audit classification is reported without inventing a gap classification.
+
+## Stage 5 checkpoint (2026-11-16T19:28:34.332649+00:00)
+
+- Post-hoc, never used for any decision: 6 of 7 original false accepts survive default auditing
+- Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.
