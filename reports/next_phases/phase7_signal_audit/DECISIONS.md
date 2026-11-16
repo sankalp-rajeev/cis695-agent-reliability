@@ -30,3 +30,23 @@
 - Apply the explicit hard stop: "Any file outside the whitelist being needed before Stage 5. If so, stop and say which file and why; do not open it." Do not skip Stage 1 to perform later stages, fabricate a control result, or treat this absence of execution as PASS.
 - One decision needed: add read-only access to reports/v2_discovery_cleanup/frozen_83/patches/astropy__astropy-13977.patch to the pre-Stage-5 whitelist for the V1 control. Keep the patch and every other frozen artifact unchanged.
 - Attempt 1 was aborted after label exposure; this attempt used a fresh session and a file whitelist.
+
+## Authorized continuation (2026-11-16T19:12:29.647320+00:00)
+
+- The user explicitly expanded read-only input access to candidate patches and other files that cannot contain correctness labels or grader outcomes, retaining every forbidden path and analysis-output restriction. The former patch-access blocker is cleared.
+- V1 control chosen mechanically from the 83 directory-rule selected records: stored integrity outcome PASS, then smallest candidate byte length, then task ID to break ties. Selected scikit-learn__scikit-learn-14141, 348 bytes, stored V1 PASS, runs/main_50_a/tasks/scikit-learn__scikit-learn-14141/verification_record.full.json. No correctness information was used.
+- Newly permitted input: reports/v2_discovery_cleanup/frozen_83/patches/scikit-learn__scikit-learn-14141.patch. Agent-authored candidate source diff, not a correctness label or grader output.
+- Control source archive: /home/sankalp/cg_repos/task_archives/scikit-learn__scikit-learn-14141.tar. Pristine repository tree, not evaluation outcomes; verify its digest against tasks.json before execution.
+- Image metadata: local Docker image swebench/sweb.eval.x86_64.scikit-learn_1776_scikit-learn-14141:latest, identity and interpreter paths only; these cannot encode grader outcomes. All execution uses --pull never and --network none.
+- Standard-library host scripts perform record sanitation, bookkeeping and table construction; verifier/task-tree execution occurs only in Docker. No model calls. Use synthetic package namespaces to load unchanged verifier modules without package initialization side effects.
+- Generated audit outputs may be read to validate this attempt's own tables and checkpoints; historical metrics and analysis outputs remain forbidden before Stage 5.
+
+- New archive members permitted for the adversarial task tree: testbed/sklearn/utils/_show_versions.py (project implementation), testbed/sklearn/utils/tests/test_show_versions.py (pre-existing project unit tests), and testbed/setup.cfg (project tool configuration). These are pristine source files inside the approved archive and cannot be stored grader outcomes or task correctness labels. Extract only these members; do not execute project tests or read unrelated archive members. The synthetic configuration manipulation exists only as diff text passed to git apply --check.
+- V1 additionally tests assertion loosening, unparseable input, and configured out-of-scope edits, so the enumerated suite covers the eight requested violation types plus three additional probes. Counts distinguish rejection probes from the clean and two risk-only controls.
+
+- Git ignore rules exclude patch files, so explicitly force-add only the fourteen generated fixture paths. Preserve diff context whitespace and the binary diff terminator; omit fixture patches from the optional whitespace-style check. Neither the verifier nor repository configuration is changed.
+
+## Stage 1 checkpoint (2026-11-16T19:17:12.166632+00:00)
+
+- V1 catches 10 of 11 rejection probes; all three controls pass
+- Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.

@@ -1,0 +1,9 @@
+diff --git a/sklearn/utils/_show_versions.py b/sklearn/utils/_show_versions.py
+--- a/sklearn/utils/_show_versions.py
++++ b/sklearn/utils/_show_versions.py
+@@ -115,3 +115,5 @@
+     print('\nPython deps:')
+     for k, stat in deps_info.items():
+         print("{k:>10}: {stat}".format(k=k, stat=stat))
++
++# scope probe

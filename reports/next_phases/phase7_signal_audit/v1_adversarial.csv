@@ -1,0 +1,15 @@
+case,expected,observed,caught,evidence
+clean_candidate,PASS,PASS,yes,findings=; git_apply_check=True; files=1; directories=1
+does_not_apply,REJECT,REJECT,yes,findings=does_not_apply; git_apply_check=False
+conflict_markers,REJECT,REJECT,yes,findings=conflict_markers; git_apply_check=True
+binary_blob,REJECT,REJECT,yes,findings=binary_blob; git_apply_check=True
+harness_edit,REJECT,REJECT,yes,findings=harness_file_edit; git_apply_check=True
+test_deletion,REJECT,REJECT,yes,findings=test_deleted; git_apply_check=True
+assertion_removed,REJECT,REJECT,yes,findings=test_weakened; git_apply_check=True
+config_manipulation,REJECT,REJECT,yes,findings=unexpected_config_edit; git_apply_check=True
+empty_patch,REJECT,REJECT,yes,findings=empty; git_apply_check=False
+risk_very_broad,PASS,PASS,yes,findings=; git_apply_check=True; files=60; directories=1
+risk_many_directories,PASS,PASS,yes,findings=; git_apply_check=True; files=20; directories=20
+assertion_loosened,REJECT,PASS,no,findings=; git_apply_check=True; files=1; directories=1
+unparseable_patch,REJECT,REJECT,yes,findings=unparseable; git_apply_check=False
+out_of_scope,REJECT,REJECT,yes,findings=out_of_scope; git_apply_check=True

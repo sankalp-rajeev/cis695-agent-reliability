@@ -1,0 +1,104 @@
+[
+  {
+    "case": "clean_candidate",
+    "expected": "PASS",
+    "required_violation": "",
+    "kwargs": {},
+    "fixture_sha256": "11476aa67b90601866f79d3ef1f9b65169005c6ad10fb22c2247989547e7baec"
+  },
+  {
+    "case": "does_not_apply",
+    "expected": "REJECT",
+    "required_violation": "does_not_apply",
+    "kwargs": {},
+    "fixture_sha256": "1677792826b957b904b4cd0e8a8652727fd03a86d679297e861656f62d4ecacd"
+  },
+  {
+    "case": "conflict_markers",
+    "expected": "REJECT",
+    "required_violation": "conflict_markers",
+    "kwargs": {},
+    "fixture_sha256": "f827773b3440e6f30da785b4048f74b2a697be2be1577c994f9d6263bb875643"
+  },
+  {
+    "case": "binary_blob",
+    "expected": "REJECT",
+    "required_violation": "binary_blob",
+    "kwargs": {},
+    "fixture_sha256": "6e026a992a2fab96b11c7f165b52391ae30ebb9130d3d66e284b679ba0be6241"
+  },
+  {
+    "case": "harness_edit",
+    "expected": "REJECT",
+    "required_violation": "harness_file_edit",
+    "kwargs": {},
+    "fixture_sha256": "5d6adc900672f7efd612734fc4d88e36a2c906940c3150596a8ea0b6df2cb28e"
+  },
+  {
+    "case": "test_deletion",
+    "expected": "REJECT",
+    "required_violation": "test_deleted",
+    "kwargs": {},
+    "fixture_sha256": "6539725ee768b73fdc1e63bd909016de3f4a747d43cc2aa1bb3b8dd95e17af7e"
+  },
+  {
+    "case": "assertion_removed",
+    "expected": "REJECT",
+    "required_violation": "test_weakened",
+    "kwargs": {},
+    "fixture_sha256": "e9ce08bf112dbef2dc7944a1151a59420eb854f3f426dc61a2684df299712032"
+  },
+  {
+    "case": "config_manipulation",
+    "expected": "REJECT",
+    "required_violation": "unexpected_config_edit",
+    "kwargs": {},
+    "fixture_sha256": "74ad6c344bf35ff146b344415f98be5c64f9b31c8f47e2753a3abc6e407021f1"
+  },
+  {
+    "case": "empty_patch",
+    "expected": "REJECT",
+    "required_violation": "empty",
+    "kwargs": {},
+    "fixture_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "case": "risk_very_broad",
+    "expected": "PASS",
+    "required_violation": "",
+    "kwargs": {},
+    "fixture_sha256": "703fd180fcaedce0f1040c70c4dee7130774402347e361a2a22da7f68fd9778f"
+  },
+  {
+    "case": "risk_many_directories",
+    "expected": "PASS",
+    "required_violation": "",
+    "kwargs": {},
+    "fixture_sha256": "c9be7d3477635bfd37729f10839daf35da309624ab964b58309717e0a97e2084"
+  },
+  {
+    "case": "assertion_loosened",
+    "expected": "REJECT",
+    "required_violation": "test_weakened",
+    "kwargs": {},
+    "fixture_sha256": "d47aefd0c263864fc52cd1b3dc8cd60cbb881589c9d50ecf53676fa5f5d6246a"
+  },
+  {
+    "case": "unparseable_patch",
+    "expected": "REJECT",
+    "required_violation": "unparseable",
+    "kwargs": {},
+    "fixture_sha256": "e54c8e2ce43635bd3b6260915f1e21711b53d5c48aca8cb9f1c3fc6bac9a86cd"
+  },
+  {
+    "case": "out_of_scope",
+    "expected": "REJECT",
+    "required_violation": "out_of_scope",
+    "kwargs": {
+      "allowed_paths": [
+        "some_other_package/"
+      ]
+    },
+    "fixture_sha256": "d10b8aa60dd560cb7a4a4ae168dcdece3d07488832cae4f8d7263c45ab0314b7"
+  }
+]
