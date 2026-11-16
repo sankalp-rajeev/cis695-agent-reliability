@@ -25,3 +25,7 @@
 - 2026-11-16: Verified gpt-4.1-mini, gpt-4.1 and gpt-4o-mini in that order with real well-formed bash tool_calls; retain full sanitized usage, fingerprints and rate-limit headers in verification.json; total $0.00031875.
 - 2026-11-16: Keep the same three tasks on gpt-4.1-mini regardless of other candidate availability; gpt-4.1 and gpt-4o-mini are verification-only and later repriced projections.
 - 2026-11-16: The same three tasks are not all present in either stored main_50 run; extract only authorized numeric fields for all 50 in each run and label the comparison as whole-set means.
+- 2026-11-16: First task startup failed on PathDistribution._normalized_name before any paid task call; archive its metadata/logs/zero-spend record under runs/umgpt_probe/precall_bootstrap_20261116 and restart with inherited PYTHONPATH/PYTHONHOME removed. This is environment recovery, not a paid trajectory retry.
+- 2026-11-16: Add the repository's existing clean-interpreter assertion and import-state provenance before task execution; the shell inherits ROS packages incompatible with the installed Python environment.
+- 2026-11-16: Old V4 records put generator n_steps and cost_usd under reproduction.findings.generation; extract those numeric fields and keep unavailable cached-token counts/repair steps explicitly null.
+- 2026-11-16: Create a dedicated ignored .venv using uv sync --offline --frozen --no-install-project; this removes the sibling environment editable-source path without changing the lockfile or verifier implementation. Use this environment for task execution.

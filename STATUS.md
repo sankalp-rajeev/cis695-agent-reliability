@@ -1,7 +1,7 @@
 # UM cost probe status
 
-Done: all preflight checks; ledger preserved; 69 focused tests pass; 38 frozen files match origin/main; implementation committed as 9534b19. All three models verified with real bash tool calls in requested order, costing $0.00031875 total.
+Done: preflight, 69 focused tests, 38 unchanged frozen files, all three real model verifications ($0.00031875), numeric-only old-run extraction.
 
-Running: final readiness checks before three gpt-4.1-mini repair → direct v1.4 V4 task chains.
+Running: repair launcher environment cleanup; first startup stopped before any task API calls because inherited Python import paths mixed incompatible packages. Preserved under runs/umgpt_probe/precall_bootstrap_20261116.
 
-Next: tasks, numeric-only DeepSeek whole-set comparison (the same three are absent from each stored 50-task run), independent spend audit, report, commit and push feature/umgpt-routing.
+Next: launch same three gpt-4.1-mini tasks with PYTHONPATH/PYTHONHOME cleared, then audit/report/commit/push. No paid task has been retried.

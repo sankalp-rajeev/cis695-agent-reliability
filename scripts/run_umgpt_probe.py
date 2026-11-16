@@ -24,6 +24,7 @@ from reliability.agent.records import RepairRecord, RunRole, Termination
 from reliability.agent.runner import AgentLimits, MiniSweAgentBackend, run_task
 from reliability.benchmark.loader import load_agent_task
 from reliability.benchmark.manifest import load_manifest
+from reliability.env import assert_clean_interpreter, interpreter_environment
 from reliability.provenance import git_commit, git_dirty, utc_now
 from reliability.umgpt import ACTIVE, Runtime, safe_object
 from reliability.umgpt_spend import SpendLedger
@@ -120,6 +121,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--resume", action="store_true")
     args = parser.parse_args()
+    assert_clean_interpreter()
     load_env_file(ROOT / ".env")
     if git_dirty(ROOT):
         raise SystemExit("Commit all changes before the paid probe")
@@ -160,6 +162,7 @@ def main():
         if args.resume:
             raise SystemExit("No probe exists to resume")
         meta = {**identity, **provenance, "timestamp_utc": utc_now(), "git_dirty": False,
+                "interpreter": interpreter_environment(),
                 "max_workers": 1, "manifest_hash": manifest.content_hash,
                 "task_cost_cap_usd": experiment["execution"]["task_cost_cap_usd"],
                 "job_cost_cap_usd": 3.0, "billing": "list-price estimate; UM unconfirmed"}

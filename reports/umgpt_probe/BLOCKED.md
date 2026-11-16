@@ -1,5 +1,3 @@
-# Previous authentication blocker resolved
-
-On 2026-11-16 all three requested candidates passed real tool-call verification using the new key in the ignored .env. No authentication failure or filter event occurred. Historical failed verification is preserved in verification_20261114.json and in the persistent ledger.
-
-The separate pinned-source verify_task blocker is bypassed by the authorized direct v1.4 reproduction runner; no frozen verifier code is changed.
+Stopped at django__django-14373: INFRASTRUCTURE_ERROR.
+Sanitized reason: {'termination': 'INFRASTRUCTURE_ERROR', 'classification': 'infrastructure', 'response_body': "'PathDistribution' object has no attribute '_normalized_name'"}
+No further paid calls were made after this stop.

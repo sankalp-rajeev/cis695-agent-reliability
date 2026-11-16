@@ -38,10 +38,11 @@ def extract():
                 findings = verification.get('reproduction', {}).get('findings', {})
                 evidence = findings.get('generation_evidence', {})
                 # Older V4 records place generator counters directly in findings.
-                values = {**numeric_keys(findings, ('n_steps', 'cost_usd')),
+                generation = findings.get('generation', {})
+                values = {**numeric_keys(generation, ('n_steps', 'cost_usd')),
                           **numeric_keys(evidence, V4_KEYS)}
                 if values['cost_usd'] is None:
-                    values['cost_usd'] = numeric_keys(findings, ('cost_usd',))['cost_usd']
+                    values['cost_usd'] = numeric_keys(generation, ('cost_usd',))['cost_usd']
                 v4.append({'source': str(vp), **values})
             row['v4_numeric'] = v4
             row['source'] = str(path)
