@@ -35,7 +35,7 @@ def route(tmp_path, monkeypatch):
     ACTIVE.reset(token)
 
 
-def install_transport(monkeypatch, statuses=(200,), body=None):
+def install_transport(monkeypatch, statuses=(200,), body=None, success_update=None):
     captured = []
 
     def handle(request):
@@ -53,6 +53,8 @@ def install_transport(monkeypatch, statuses=(200,), body=None):
             "usage": {"prompt_tokens": 100, "completion_tokens": 10,
                       "total_tokens": 110, "prompt_tokens_details": {"cached_tokens": 50}},
         }
+        if status == 200 and success_update:
+            success_update(data)
         return httpx.Response(status, json=data, request=request,
                               headers={"x-ratelimit-remaining-requests": "7"})
 
@@ -254,9 +256,9 @@ def test_candidate_list_price_and_litellm_cost_on_custom_base(route, monkeypatch
 
 
 @pytest.mark.parametrize("statuses,exit_code,chosen,requests", [
-    ((404, 200, 200), 0, "openai/gpt-4.1", 3),
+    ((200, 200, 200), 0, "openai/gpt-4.1-mini", 3),
     ((401, 200, 200), 2, None, 1),
-    ((404, 404, 404), 1, None, 3),
+    ((404, 404, 404), 2, None, 1),
 ])
 def test_verification_writes_only_after_success(route, monkeypatch, tmp_path,
                                                statuses, exit_code, chosen, requests):
@@ -285,3 +287,153 @@ def test_verification_writes_only_after_success(route, monkeypatch, tmp_path,
             assert cfg["verified"]["rate_limit_headers"] == {"x-ratelimit-remaining-requests": "7"}
         else:
             assert "verified" not in cfg
+
+
+@pytest.mark.parametrize('finish,detected,filtered,stop', [
+    ('tool_calls', True, False, False),
+    ('tool_calls', True, True, True),
+    ('content_filter', False, False, True),
+])
+def test_filtering_recorded_and_hard_stop(route, monkeypatch, finish, detected, filtered, stop):
+    path, runtime = route
+    def update(data):
+        data['choices'][0].update(finish_reason=finish, content_filter_results={
+            'protected_material_code': {'detected': detected, 'filtered': filtered}})
+    captured = install_transport(monkeypatch, success_update=update)
+    cfg = yaml.safe_load(path.read_text())
+    model = UMModel(umgpt_config=path, model_name=cfg['model_id'])
+    if stop:
+        with pytest.raises(UMInfrastructureError):
+            model.query([])
+        with pytest.raises(UMInfrastructureError):
+            model.query([])
+        assert len(captured) == 1
+        assert runtime.halt['termination'] == 'CONTENT_FILTER'
+        assert runtime.halt['step'] == 1
+    else:
+        model.query([])
+    call = runtime.calls[0]
+    assert call['finish_reason'] == finish
+    assert call['protected_material_code_detected'] is detected
+    assert call['protected_material_code_filtered'] is filtered
+    assert runtime.ledger.snapshot()['calls'][0]['state'] == 'settled'
+    assert call['id'] == runtime.ledger.snapshot()['calls'][0]['id']
+
+
+def test_any_filter_category_stops(route, monkeypatch):
+    path, runtime = route
+    captured = install_transport(monkeypatch, success_update=lambda data:
+        data.update(prompt_filter_results=[{'content_filter_results': {
+            'unknown_future_category': {'filtered': True}}}]))
+    cfg = yaml.safe_load(path.read_text())
+    with pytest.raises(UMInfrastructureError):
+        UMModel(umgpt_config=path, model_name=cfg['model_id']).query([])
+    assert len(captured) == 1 and runtime.calls[0]['any_filtered']
+
+
+def test_single_call_ceiling_precedes_http(route, monkeypatch):
+    path, runtime = route
+    captured = install_transport(monkeypatch)
+    cfg = yaml.safe_load(path.read_text())
+    with pytest.raises(BudgetCap, match='single-call'):
+        UMModel(umgpt_config=path, model_name=cfg['model_id']).query([
+            {'role': 'user', 'content': 'a' * 800000}])
+    assert not captured
+    assert not runtime.ledger.snapshot()['calls']
+
+
+def test_probe_three_repair_then_direct_v14_runs(route, monkeypatch, tmp_path):
+    import sys
+    from types import SimpleNamespace
+
+    from scripts import run_umgpt_probe as probe
+
+    from reliability.benchmark.loader import AgentTask
+    from reliability.benchmark.manifest import Manifest, ManifestEntry
+    from reliability.verifier.run_v1_4 import default_reproduction_setup
+
+    path, _ = route
+    captured = install_transport(monkeypatch)
+    root = tmp_path / 'probe'
+    root.mkdir()
+    (root / '.env').write_text('')
+    files = ['configs/experiments/umgpt_probe.yaml', 'configs/model/primary_umgpt.yaml',
+             'configs/model/generator_umgpt.yaml', 'configs/agent/mini_swe_agent.yaml',
+             'configs/agent/v4_generator_umgpt.yaml']
+    for relative in files:
+        dest = root / relative
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes((ROOT / relative).read_bytes())
+    for role in ('primary', 'generator'):
+        dest = root / f'configs/model/{role}_umgpt.yaml'
+        cfg = yaml.safe_load(dest.read_text())
+        cfg['verified'] = {'status': 'ok', 'model_id': cfg['model_id'],
+                           'served_model': 'served-unit', 'system_fingerprint': 'fp-unit',
+                           'checked': '2026-11-16'}
+        dest.write_text(yaml.safe_dump(cfg))
+    manifest_path = root / 'manifest.csv'
+    manifest_path.write_text('unit fixture')
+    manifest = Manifest(manifest_path, 'sha256:unit', tuple(
+        ManifestEntry(i, 'unit/repo', 'unit', 'abc') for i in probe.IDS))
+    monkeypatch.setattr(probe, 'ROOT', root)
+    monkeypatch.setattr(probe, 'load_manifest', lambda _: manifest)
+    monkeypatch.setattr(probe, 'git_dirty', lambda _: False)
+    monkeypatch.setattr(probe, 'git_commit', lambda _: 'unit-commit')
+    monkeypatch.setattr(probe, 'config_identity', lambda _: {})
+    monkeypatch.setattr(probe, 'ensure_docker', lambda: None)
+    setup = default_reproduction_setup()
+    monkeypatch.setattr(probe, 'default_reproduction_setup', lambda: setup)
+    monkeypatch.setattr(probe, 'load_agent_task', lambda i: AgentTask(i, 'unit/repo', 'abc', 'issue'))
+    monkeypatch.setattr(sys, 'argv', ['run_umgpt_probe.py'])
+    order = []
+    def query(stage):
+        runtime = ACTIVE.get()
+        assert runtime.stage == stage
+        cfg = yaml.safe_load(path.read_text())
+        UMModel(umgpt_config=path, model_name=cfg['model_id']).query([])
+    def repair(entry, backend, run_root, **kwargs):
+        assert kwargs['agent_task'].instance_id == entry.instance_id
+        assert kwargs['limits'].max_cost_usd == .6
+        order.append((entry.instance_id, 'agent'))
+        assert ACTIVE.get().task_cap == .6
+        query('agent')
+        patch = run_root / 'tasks' / entry.instance_id / 'patch.diff'
+        patch.parent.mkdir(parents=True, exist_ok=True)
+        patch.write_text('unit patch')
+        return SimpleNamespace(termination=SimpleNamespace(value='completed'), duration_s=1.,
+            patch=SimpleNamespace(path=str(patch.relative_to(run_root)), size_bytes=10))
+    def reproduction(instance_id, patch_text, setup, **kwargs):
+        order.append((instance_id, 'V4'))
+        assert setup.budget.generator_max_steps == 80
+        assert .74 < setup.budget.generator_max_cost_usd < .75
+        assert ACTIVE.get().task_cap == .75
+        assert kwargs['use_container'] and kwargs['generator'].setup.model.model_id == 'openai/gpt-4.1-mini'
+        query('V4')
+        return SimpleNamespace(findings={'generation_evidence': {'steps_used': 1,
+            'fired_limit_subtype': None, 'token_usage_status': 'reported'}})
+    monkeypatch.setattr(probe, 'run_task', repair)
+    monkeypatch.setattr(probe, 'run_reproduction', reproduction)
+    assert probe.main() == 0
+    assert order == [(i, stage) for i in probe.IDS for stage in ('agent', 'V4')]
+    assert len(captured) == 6
+    rows = json.loads((root / 'runs/umgpt_probe/summary.json').read_text())
+    assert all(r['V2'] == 'not run in probe' and r['oracle'] == 'not run in probe' for r in rows)
+    assert all(r['repair']['input_tokens'] == 100 and r['V4']['input_tokens'] == 100 for r in rows)
+
+
+def test_run_task_agent_projection_avoids_withheld_fields(tmp_path, monkeypatch):
+    from types import SimpleNamespace
+
+    from reliability.agent import runner
+    from reliability.agent.records import RunRole, Termination
+    from reliability.benchmark.loader import AgentTask
+    from reliability.benchmark.manifest import ManifestEntry
+    def forbidden(*args):
+        raise AssertionError('withheld loader must not be called')
+    monkeypatch.setattr(runner, 'load_instance', forbidden)
+    backend = SimpleNamespace(scaffold='unit', version='1', model_id='unit',
+        run=lambda *a: runner.AgentOutcome('', b'', Termination.COMPLETED))
+    record = runner.run_task(ManifestEntry('unit', 'unit/repo', 'unit', 'abc'), backend,
+        tmp_path, experiment_id='unit', run_role=RunRole.SMOKE, manifest_hash='unit',
+        agent_task=AgentTask('unit', 'unit/repo', 'abc', 'issue'))
+    assert record.instance_id == 'unit'

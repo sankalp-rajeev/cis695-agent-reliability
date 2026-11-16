@@ -62,7 +62,7 @@ def verify(path, *, update, candidates, model_id, record_verified):
         results.append(result)
         results_path.write_text(json.dumps(results, indent=2) + "\n")
         print(json.dumps({k: v for k, v in result.items() if k != "calls"}, indent=2))
-        if runtime.halt and runtime.halt["termination"] in ("AUTH_ERROR", "BUDGET_CAP"):
+        if runtime.halt and runtime.halt["termination"] != "RATE_LIMITED":
             return 2
     if chosen is None:
         return 1
@@ -84,4 +84,4 @@ def verify(path, *, update, candidates, model_id, record_verified):
                                           "input_tokens", "cached_input_tokens", "output_tokens")},
                                       "cost_usd": result["cost_usd"],
                                       "litellm_cost_usd": result["litellm_cost_usd"]})
-    return 0
+    return 0 if all(r["passed"] for r in results) else 1

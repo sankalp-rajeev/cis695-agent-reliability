@@ -77,6 +77,35 @@ class Runtime:
     halt: dict | None = None
 
 
+def filter_metadata(payload):
+    """Read Azure metadata recursively, including categories unknown to LiteLLM."""
+    detected, protected_filtered, any_filtered = False, False, False
+    reasons = []
+
+    def visit(value):
+        nonlocal detected, protected_filtered, any_filtered
+        if isinstance(value, dict):
+            if "finish_reason" in value:
+                reasons.append(value["finish_reason"])
+            any_filtered |= value.get("filtered") is True
+            protected = value.get("protected_material_code") or {}
+            if isinstance(protected, dict):
+                detected |= protected.get("detected") is True
+                protected_filtered |= protected.get("filtered") is True
+            for child in value.values():
+                visit(child)
+        elif isinstance(value, list):
+            for child in value:
+                visit(child)
+
+    visit(payload)
+    return {"finish_reason": reasons[0] if reasons else None,
+            "finish_reasons": reasons,
+            "protected_material_code_detected": detected,
+            "protected_material_code_filtered": protected_filtered,
+            "any_filtered": any_filtered}
+
+
 ACTIVE: ContextVar[Runtime | None] = ContextVar("umgpt_runtime", default=None)
 
 
@@ -136,6 +165,8 @@ class UMModel(LitellmModel):
         runtime = ACTIVE.get()
         if runtime is None:
             raise BudgetCap("UM calls require an active persistent spend ledger")
+        if runtime.halt:
+            raise UMInfrastructureError(runtime.halt)
         cfg = self.route
         key = os.environ.get(cfg["api_key_env"])
         if not key:
@@ -150,6 +181,8 @@ class UMModel(LitellmModel):
         bound = (input_bound * prices["input_per_million"]
                  + output_limit * prices["output_per_million"]) / 1_000_000
         try:
+            if bound > .30:
+                raise BudgetCap("single-call conservative estimate exceeds $0.30")
             call_id = runtime.ledger.reserve(bound, task=runtime.task, task_cap=runtime.task_cap,
                                               stage=runtime.stage, model_id=cfg["model_id"])
         except BudgetCap as exc:
@@ -165,6 +198,10 @@ class UMModel(LitellmModel):
                                     response_body=sanitize(response.text)[:8000],
                                     rate_limit_headers={k: sanitize(v) for k, v in
                                         response.headers.items() if k.lower().startswith("x-ratelimit-")})
+            try:
+                transport_result["filtering"] = filter_metadata(response.json())
+            except (ValueError, TypeError):
+                pass
 
         try:
             with quiet_transport():  # noqa: SIM117 - silence client construction and teardown
@@ -189,6 +226,11 @@ class UMModel(LitellmModel):
                           served_model=None, system_fingerprint=None,
                           api_base_host=urlparse(cfg["api_base"]).hostname,
                           rate_limit_headers=transport_result.get("rate_limit_headers", {}))
+            record.update(transport_result.get("filtering", filter_metadata({})),
+                          id=call_id, stage=runtime.stage,
+                          step=1 + sum(c.get("stage") == runtime.stage for c in runtime.calls))
+            if record["any_filtered"] or "content_filter" in record["finish_reasons"]:
+                record["termination"] = "CONTENT_FILTER"
             runtime.calls.append(record)
             # Definite client rejections have no generation. Ambiguous transport
             # failures keep their reservation, so a restart cannot spend it twice.
@@ -202,6 +244,9 @@ class UMModel(LitellmModel):
         try:
             with quiet_transport():
                 call = safe_object(usage_cost(response, cfg))
+            call.update(transport_result.get("filtering") or filter_metadata(response.model_dump()),
+                        id=call_id, stage=runtime.stage,
+                        step=1 + sum(c.get("stage") == runtime.stage for c in runtime.calls))
             call["rate_limit_headers"] = transport_result.get("rate_limit_headers", {})
             runtime.calls.append(call)
             runtime.ledger.settle(call_id, call["cost_usd"], **{
@@ -211,6 +256,13 @@ class UMModel(LitellmModel):
             runtime.halt = {"termination": "BUDGET_CAP", "classification": "infrastructure",
                             "response_body": str(exc), "status_code": None}
             raise
+        if call["any_filtered"] or "content_filter" in call["finish_reasons"]:
+            runtime.halt = {"termination": "CONTENT_FILTER", "classification": "infrastructure",
+                            "status_code": transport_result.get("status_code"),
+                            "response_body": "Azure filtered model output; paid calls stopped",
+                            "stage": runtime.stage, "step": call["step"], **{
+                                k: call[k] for k in filter_metadata({})}}
+            raise UMInfrastructureError(runtime.halt)
         # Return a sanitized response, so model output cannot echo a credential.
         if key in json.dumps(response.model_dump()):
             clean = litellm.ModelResponse(**safe_object(response.model_dump()))

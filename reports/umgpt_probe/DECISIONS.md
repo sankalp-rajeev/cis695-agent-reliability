@@ -13,3 +13,12 @@
 - 2026-11-14: No `pilot_15` trajectories were found under the accessible home directory (including project runs and archives). Do not substitute main-study token counts or invented pilot tokens. Report the requested historical comparison as unavailable and include the exact arithmetic/prices for later restoration.
 - 2026-11-14: The initial failed live request's rate-limit headers were not persisted. Record that absence transparently; do not spend another call to recover them. Extend the mocked error-path tests so future attempts retain only permitted rate-limit headers on errors as well as successes.
 - 2026-11-14: Record the failed pre-commit verification's base HEAD separately from the final tested implementation HEAD. Commit the report after the implementation so its recorded source commit is resolvable; the final branch tip is the report commit. No successful live result is attributed to uncommitted code.
+
+- 2026-11-16: Resume on the existing clean feature/umgpt-routing branch; origin/main is an ancestor and every listed frozen file matches it.
+- 2026-11-16: Copy the existing ledger from /home/sankalp/projects/cis695-v2-scg-ubuntu-publication/runs/umgpt_spend_ledger.json to runs/umgpt_spend_ledger.json; preserve prior authentication rejection and account history.
+- 2026-11-16: Raise combined task cap from $0.50 to $0.75 with repair up to $0.60 and V4 using the remainder; a triggered cap truncates the natural cost being measured. Keep $20 account, $3 job including verification, and $0.30 single-call ceilings.
+- 2026-11-16: Call reproduction_v1_4.run_reproduction directly with an 80-step generator; verify_task has the separately tracked pinned-source blocker and V1–V3 and oracle are outside this probe.
+- 2026-11-16: Capture filtering metadata from the raw Azure response as well as the parsed response; any content_filter finish or filtered=true stops all further paid calls, while protected-material detection alone is recorded.
+- 2026-11-16: Add an optional agent_task input to run_task and supply load_agent_task's column projection; this keeps the agent behavior unchanged while avoiding construction of withheld benchmark fields.
+- 2026-11-16: Remove the probe import of run_pilot; importing that general helper loads oracle modules which are unnecessary and excluded here.
+- 2026-11-16: Use the already installed publication-worktree Python environment with local LiteLLM pricing; avoid modifying the old main-study clone or fetching a mutable pricing table.
