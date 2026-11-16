@@ -59,3 +59,12 @@
 
 - V3 has no decision effect; two stored FAIL outcomes coexist with ACCEPT
 - Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.
+
+- Stage 3 classifies explicit detail text only. All fourteen frozen83 unavailable signals say generator wrote no test files (LimitsExceeded); all_tasks adds two such cases and eleven explicit empty-patch skips, assigned other. All six remaining classes have zero observed cases, not evidence of universal absence of those failure modes.
+- No raw generator stdout is stored for these unavailable signals. Do not open trajectories or previous analyses to invent an excerpt; raw excerpts are NOT_AVAILABLE and recorded detail is separately identified. LimitsExceeded does not identify which resource cap fired.
+- No-output is generator-side under the recorded budget, not proof of permanent inability; changing limits might help but is unverified. Empty-patch skip categorization is a tooling/accounting issue and can never create positive repair evidence.
+
+## Stage 3 checkpoint (2026-11-16T19:20:00.180486+00:00)
+
+- V4 absence accounted for: 14 frozen no-output cases; raw stdout unavailable
+- Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.

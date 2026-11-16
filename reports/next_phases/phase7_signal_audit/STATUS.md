@@ -1,8 +1,8 @@
 # Signal audit status
 
-Updated: 2026-11-16T19:18:40.383864+00:00
+Updated: 2026-11-16T19:20:00.180486+00:00
 
-Stage 2: V3 has no decision effect; two stored FAIL outcomes coexist with ACCEPT
+Stage 3: V4 absence accounted for: 14 frozen no-output cases; raw stdout unavailable
 
 Branch: analysis/signal-audit.
 No task correctness label or grader outcome source has been opened; input whitelist remains in effect.
