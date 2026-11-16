@@ -1,8 +1,8 @@
 # Signal audit status
 
-Updated: 2026-11-16T19:17:12.166632+00:00
+Updated: 2026-11-16T19:18:40.383864+00:00
 
-Stage 1: V1 catches 10 of 11 rejection probes; all three controls pass
+Stage 2: V3 has no decision effect; two stored FAIL outcomes coexist with ACCEPT
 
 Branch: analysis/signal-audit.
 No task correctness label or grader outcome source has been opened; input whitelist remains in effect.

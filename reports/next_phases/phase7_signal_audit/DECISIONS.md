@@ -50,3 +50,12 @@
 
 - V1 catches 10 of 11 rejection probes; all three controls pass
 - Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.
+
+- Stage 2 population: frozen83 and all_tasks (100 distinct IDs with selected records). Five superseded physical records do not enlarge the distinct-task population; record_inventory_all.csv fixes selection provenance.
+- All 83 selected frozen records carry v1.3.0-full; unchanged decision.py is the matching version. V3 counterfactuals vary only static among all three outcomes. No decision changes; two V3 FAIL / ACCEPT combinations exist in each population. Report this as a combining-policy gap with a suggested policy decision, without editing policy.
+- Per-check NOT_AVAILABLE reasons are taken from findings.unavailable, or from the recorded aggregate static detail when the per-check field is absent. Preserve missing status explicitly and count it only as NOT_AVAILABLE.
+
+## Stage 2 checkpoint (2026-11-16T19:18:40.383864+00:00)
+
+- V3 has no decision effect; two stored FAIL outcomes coexist with ACCEPT
+- Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.
