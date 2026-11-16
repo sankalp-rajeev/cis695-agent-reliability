@@ -194,7 +194,7 @@ def verify_v1(frozen, records):
             assert fixture.read_bytes() == candidate.read_bytes()
         if case == 'assertion_loosened':
             assert '+    assert True\n' in text and "-    assert 'python' in sys_info\n" in text
-        kwargs = {'allowed_paths': ['some_other_package/']} if case == 'out_of_scope' else {}
+        kwargs = {'allowed_paths': ('some_other_package/',)} if case == 'out_of_scope' else {}
         report = v1.check_integrity(text, base, **kwargs)
         findings = [dict(violation=f.violation.value, path=f.path, detail=f.detail) for f in report.findings]
         applies, detail = v1.applies_cleanly(text, base)
