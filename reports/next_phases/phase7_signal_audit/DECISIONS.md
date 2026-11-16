@@ -68,3 +68,12 @@
 
 - V4 absence accounted for: 14 frozen no-output cases; raw stdout unavailable
 - Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.
+
+- Stage 4 mapping is predeclared in v2_mapping.csv and v2_mapping.md before applying replacement. Five observed statuses map cleanly; unknown statuses remain NOT_AVAILABLE and are enumerated.
+- Phase 4 has four accounting policies. Apply the user's conservative-default rule to select S_invalid_missing for the primary recompute, with all four explicitly reported as sensitivity. A policy-specific status is not an ambiguous outcome class: PASS/FAIL/REGRESSION_ERROR/INCOMPLETE/NOT_AVAILABLE each has the documented clean mapping. No correctness information informs the choice.
+- Map REGRESSION_ERROR to FAIL exactly as unchanged evidence.py does, and INCOMPLETE to NOT_AVAILABLE. Strict completeness is not affirmative failure of the patch.
+
+## Stage 4-mapping checkpoint (2026-11-16T19:21:11.706915+00:00)
+
+- Predeclare repaired V2 mapping and conservative primary before recomputation
+- Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.

@@ -1,0 +1,7 @@
+phase4_status,regression_outcome,reason
+PASS,PASS,Completed affirmative Phase 4 regression evidence.
+FAIL,FAIL,Recorded regression failure.
+REGRESSION_ERROR,FAIL,Unchanged evidence.py maps REGRESSION_ERROR to FAIL.
+INCOMPLETE,NOT_AVAILABLE,"Incomplete execution is absence, never PASS or an inferred patch failure."
+NOT_AVAILABLE,NOT_AVAILABLE,No usable regression evidence.
+UNMAPPED,NOT_AVAILABLE,Unknown or missing status; enumerate task and continue without a PASS.

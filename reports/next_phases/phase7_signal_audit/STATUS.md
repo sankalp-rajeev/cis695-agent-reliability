@@ -1,8 +1,8 @@
 # Signal audit status
 
-Updated: 2026-11-16T19:20:00.180486+00:00
+Updated: 2026-11-16T19:21:11.706915+00:00
 
-Stage 3: V4 absence accounted for: 14 frozen no-output cases; raw stdout unavailable
+Stage 4-mapping: Predeclare repaired V2 mapping and conservative primary before recomputation
 
 Branch: analysis/signal-audit.
 No task correctness label or grader outcome source has been opened; input whitelist remains in effect.
