@@ -1,8 +1,8 @@
 # Signal audit status
 
-Updated: 2026-11-16T19:22:43.007689+00:00
+Updated: 2026-11-16T19:23:23.876388+00:00
 
-Stage 4: V2-only recompute: conservative counts 52-30-1 to 13-68-2; all variants retained
+Stage seal-prehoc: Stages 1-4 complete; no labels opened; prepare annotated label-free seal
 
 Branch: analysis/signal-audit.
 No task correctness label or grader outcome source has been opened; input whitelist remains in effect.

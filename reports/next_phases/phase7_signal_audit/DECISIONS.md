@@ -82,3 +82,11 @@
 
 - V2-only recompute: conservative counts 52-30-1 to 13-68-2; all variants retained
 - Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.
+
+- Label-free seal preparation at 2026-11-16T19:23:20.086468+00:00: Stages 1-4 are complete and pushed; no task label or grader outcome source has been opened. Record immutable raw-input digests and the Docker image identity. The tag will bind this decision table before any post-hoc label access.
+- Stage 6 will independently recompute all CSVs and counts; this label-free seal alone does not claim that verification has passed.
+
+## Stage seal-prehoc checkpoint (2026-11-16T19:23:23.876388+00:00)
+
+- Stages 1-4 complete; no labels opened; prepare annotated label-free seal
+- Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.
