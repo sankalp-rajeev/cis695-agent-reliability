@@ -1,8 +1,8 @@
 # Signal audit status
 
-Updated: 2026-11-16T19:21:11.706915+00:00
+Updated: 2026-11-16T19:22:43.007689+00:00
 
-Stage 4-mapping: Predeclare repaired V2 mapping and conservative primary before recomputation
+Stage 4: V2-only recompute: conservative counts 52-30-1 to 13-68-2; all variants retained
 
 Branch: analysis/signal-audit.
 No task correctness label or grader outcome source has been opened; input whitelist remains in effect.

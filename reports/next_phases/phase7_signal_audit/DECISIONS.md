@@ -77,3 +77,8 @@
 
 - Predeclare repaired V2 mapping and conservative primary before recomputation
 - Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.
+
+## Stage 4 checkpoint (2026-11-16T19:22:43.007689+00:00)
+
+- V2-only recompute: conservative counts 52-30-1 to 13-68-2; all variants retained
+- Explicit staging and staged-blob secret scan precede this checkpoint commit; push is restricted to the project origin on analysis/signal-audit.
