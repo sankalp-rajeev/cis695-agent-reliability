@@ -205,7 +205,7 @@ def verify_v1(frozen, records):
         rows.append(dict(case=case, expected=expected, observed=report.decision.value, caught='yes' if caught else 'no', evidence=evidence))
         raw.append(dict(case=case, observed=report.decision.value, findings=findings,
                         risk=report.risk.as_vector(), apply_check=applies, apply_detail=detail))
-        specs.append(dict(case=case, expected=expected, required_violation=required, kwargs=kwargs,
+        specs.append(dict(case=case, expected=expected, required_violation=required, kwargs={'allowed_paths': ['some_other_package/']} if case == 'out_of_scope' else {},
                           fixture_sha256=digest(fixture)))
     check_csv('v1_adversarial.csv', rows, ['case','expected','observed','caught','evidence'])
     check_json('v1_raw_observations.json', raw)
