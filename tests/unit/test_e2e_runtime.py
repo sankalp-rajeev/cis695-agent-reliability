@@ -9,7 +9,7 @@ import pytest
 from reliability.agent.freeze import freeze_patch
 from reliability import e2e_runner
 from reliability.umgpt_spend import BudgetCap
-from reliability.provider_spend import AuthStop
+from reliability.provider_spend import AuthStop, ProviderLedger
 from reliability.verifier.decision import Decision, SignalOutcome
 from reliability.verifier.guarded_v2 import ReplayMismatch
 from reliability.verifier.policy_v1_4 import EvidenceV14, FullPolicyV14
@@ -241,3 +241,94 @@ def test_sigterm_writes_completion_without_losing_frozen_patch(tmp_path, monkeyp
     assert completion['not_completed_tasks'] == ['demo__repo-1']
     assert (output / 'seal.json').exists()
     assert e2e_runner.frozen_patch(output / 'tasks/demo__repo-1') is not None
+
+
+def test_raised_cap_resumes_stopped_task_without_regenerating_patches(tmp_path, monkeypatch, task):
+    monkeypatch.setattr(e2e_runner, 'ROOT', tmp_path)
+    output, agents, verifications = tmp_path / 'runs/raised_cap', [], []
+    path = tmp_path / 'ledger.json'
+    ids = ['demo__repo-1', 'demo__repo-2']
+    initial = {'skip_v4': False, 'ledger_file': str(path), 'deepseek_cap_usd': .6,
+               'um_cap_usd': 20, 'um_job_cap_usd': 20}
+    def agent(iid, directory):
+        agents.append(iid)
+        freeze_patch(directory / 'patch.diff', PATCH)
+    def attempt(cap):
+        ledger = ProviderLedger(path, provider='deepseek', job=str(output),
+                                total_usd=cap, job_usd=cap)
+        def verification(iid, directory):
+            verifications.append(iid)
+            try:
+                with ledger.stage(iid, 'V4', .4):
+                    call = ledger.reserve(.4, task=iid, task_cap=.4, stage='V4', model_id='mock')
+                    ledger.settle(call, .4)
+            except BudgetCap as exc:
+                return verify(directory, task, v4_failure=exc)[0]
+            return verify(directory, task)[0]
+        return e2e_runner.run_batch(ids, output, dict(initial, deepseek_cap_usd=cap),
+                                    agent, verification, ledgers=(ledger,))
+    assert attempt(.6) == 'STOPPED_BUDGET'
+    assert json.loads((output / 'completion.json').read_text())['completed_tasks'] == ids[:1]
+    assert attempt(1.0) == 'COMPLETE'
+    assert agents == ids
+    assert verifications == [ids[0], ids[1], ids[1]]
+    assert json.loads((output / 'header.json').read_text()) == initial
+    attempts = json.loads((output / 'attempt.json').read_text())['attempts']
+    assert [row['caps'] for row in attempts] == [
+        {key: initial[key] for key in e2e_runner.CAP_FIELDS},
+        {'deepseek_cap_usd': 1.0, 'um_cap_usd': 20, 'um_job_cap_usd': 20}]
+    assert [row['spent_at_start'][0]['spent_usd'] for row in attempts] == [0, .4]
+    assert len(json.loads(path.read_text())['calls']) == 2
+
+
+@pytest.mark.parametrize('field', ['ledger_file', 'git_head', 'manifest_sha256', 'skip_v4',
+                                  'primary_config_sha256', 'registry_sha256'])
+def test_resume_refuses_changed_non_cap_header(tmp_path, monkeypatch, task, field):
+    monkeypatch.setattr(e2e_runner, 'ROOT', tmp_path)
+    output = tmp_path / 'runs/strict_header'
+    header = {'skip_v4': False, 'ledger_file': '/same/ledger', 'git_head': 'original',
+              'manifest_sha256': 'original', 'primary_config_sha256': 'original',
+              'registry_sha256': {'original': 'hash'}, 'deepseek_cap_usd': 4}
+    def agent(iid, directory):
+        freeze_patch(directory / 'patch.diff', PATCH)
+    def interrupted(iid, directory):
+        raise KeyboardInterrupt
+    assert e2e_runner.run_batch([task.instance_id], output, header, agent, interrupted) == 'STOPPED_INTERRUPT'
+    changed = dict(header, deepseek_cap_usd=8)
+    changed[field] = True if field == 'skip_v4' else 'different'
+    with pytest.raises(ValueError, match='non-cap header'):
+        e2e_runner.run_batch([task.instance_id], output, changed, agent, interrupted)
+    assert len(json.loads((output / 'attempt.json').read_text())['attempts']) == 1
+
+
+@pytest.mark.parametrize('provider,field', [('deepseek', 'deepseek_cap_usd'),
+    ('umgpt', 'um_cap_usd'), ('umgpt', 'um_job_cap_usd')])
+def test_lowered_cap_below_spend_stops_before_any_new_paid_call(tmp_path, monkeypatch, task, provider, field):
+    monkeypatch.setattr(e2e_runner, 'ROOT', tmp_path)
+    output, path, calls = tmp_path / 'runs/lowered_cap', tmp_path / 'ledger.json', []
+    header = {'skip_v4': False, 'ledger_file': str(path), 'deepseek_cap_usd': 1,
+              'um_cap_usd': 1, 'um_job_cap_usd': 1}
+    first = ProviderLedger(path, provider=provider, job=str(output), total_usd=1, job_usd=1)
+    def agent(iid, directory):
+        calls.append('agent')
+        freeze_patch(directory / 'patch.diff', PATCH)
+    def paid_then_interrupted(iid, directory):
+        call = first.reserve(.7, task=iid, task_cap=1, stage='agent', model_id='mock')
+        first.settle(call, .7)
+        calls.append('paid')
+        raise KeyboardInterrupt
+    assert e2e_runner.run_batch([task.instance_id], output, header, agent,
+        paid_then_interrupted, ledgers=(first,)) == 'STOPPED_INTERRUPT'
+    lowered = dict(header, **{field: .5})
+    second = ProviderLedger(path, provider=provider, job=str(output),
+        total_usd=.5 if field != 'um_job_cap_usd' else 1,
+        job_usd=.5 if field != 'um_cap_usd' else 1)
+    assert e2e_runner.run_batch([task.instance_id], output, lowered, agent,
+        paid_then_interrupted, ledgers=(second,)) == 'STOPPED_BUDGET'
+    assert calls == ['agent', 'paid']
+    assert len(json.loads(path.read_text())['calls']) == 1
+    completion = json.loads((output / 'completion.json').read_text())
+    assert completion['completed_tasks'] == [] and completion['not_completed_tasks'] == [task.instance_id]
+    attempt = json.loads((output / 'attempt.json').read_text())['attempts'][-1]
+    assert attempt['caps'] == {key: lowered[key] for key in e2e_runner.CAP_FIELDS}
+    assert attempt['spent_at_start'][0]['spent_usd'] == .7

@@ -1,6 +1,6 @@
 import pytest
 
-from reliability.provider_spend import ProviderLedger
+from reliability.provider_spend import ProviderLedger, seed_provider_ledger
 from reliability.umgpt_spend import BudgetCap, SpendLedger
 
 
@@ -64,3 +64,42 @@ def test_resume_cannot_reset_a_partially_spent_stage_ceiling(tmp_path):
     with pytest.raises(BudgetCap, match='already-used per-task ceiling'):
         with first.stage('same_task', 'V4', 1):
             pytest.fail('a fresh full V4 must fail before starting, rather than stop partway')
+
+
+def test_seeded_legacy_bytes_count_against_um_account_cap(tmp_path):
+    import hashlib
+    source, destination = tmp_path / 'probe.json', tmp_path / 'runs/provider.json'
+    old = SpendLedger(source, job='probe', total_usd=20, job_usd=3)
+    call = old.reserve(.66, task='probe', task_cap=1, stage='agent', model_id='mock')
+    old.settle(call, .66)
+    raw = source.read_bytes()
+    result = seed_provider_ledger(source, destination)
+    assert source.read_bytes() == destination.read_bytes() == raw
+    assert result['sha256'] == hashlib.sha256(raw).hexdigest()
+    assert result['accounts'] == [{'provider': 'umgpt', 'account': 'default', 'spent_usd': .66}]
+    new = ledger(destination, provider='umgpt', job='new_arm', cap=1)
+    with pytest.raises(BudgetCap):
+        new.reserve(.35, task='new', task_cap=1, stage='agent', model_id='mock')
+    assert len(new.snapshot()['calls']) == 1
+
+
+def test_seed_refuses_nonempty_destination_without_changing_it(tmp_path):
+    source, destination = tmp_path / 'probe.json', tmp_path / 'provider.json'
+    source.write_bytes(b'{"version":1,"calls":[]}\n')
+    destination.write_bytes(b'preexisting ledger bytes')
+    with pytest.raises(ValueError, match='non-empty'):
+        seed_provider_ledger(source, destination)
+    assert destination.read_bytes() == b'preexisting ledger bytes'
+
+
+def test_seed_accepts_empty_destination_and_rejects_invalid_source(tmp_path):
+    source, destination = tmp_path / 'probe.json', tmp_path / 'provider.json'
+    destination.touch()
+    source.write_text('{"version":2,"calls":[]}')
+    with pytest.raises(ValueError, match='Invalid spend ledger'):
+        seed_provider_ledger(source, destination)
+    assert destination.read_bytes() == b''
+    raw = b'{"version": 1, "calls": []}\n\n'
+    source.write_bytes(raw)
+    seed_provider_ledger(source, destination)
+    assert destination.read_bytes() == raw

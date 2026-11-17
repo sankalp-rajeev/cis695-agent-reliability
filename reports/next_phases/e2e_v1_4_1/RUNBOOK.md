@@ -2,6 +2,17 @@
 
 Run from `/home/sankalp/projects/wt-e2e` with this worktree's `.venv`. The 83-task registry, manifests, wheel, archives and local images are prepared. Model configs must be verified; provide their named API-key environment variables. No model call was made during implementation. The commands below describe future runs, not authorization to launch them in this session.
 
+Before the first paid run, seed the shared ledger from the probe's existing **$0.66 UM spend**:
+
+```bash
+env -u PYTHONPATH PYTHONPATH=src .venv/bin/python scripts/seed_provider_ledger.py \
+  --from /home/sankalp/projects/wt-umgpt-probe/runs/umgpt_spend_ledger.json
+```
+
+The destination defaults to `/home/sankalp/projects/wt-e2e/runs/provider_spend_ledger.json`. The command makes a byte copy, verifies its SHA-256, prints per-provider/account spent totals, and refuses to overwrite a non-empty ledger. Legacy entries count against the UM/default-account cap. Run this once; retain the same ledger for every pilot, arm and resume. Do not seed again over a ledger that has recorded paid work.
+
+Set `--deepseek-cap-usd` from the funded balance minus a **$0.50 margin**, rounding down conservatively. As of 17 November 2026 the funded balance is $4.78 and the chosen cap is **$4.00**. Once the account is topped up, raise this value by resuming the same output folder.
+
 Three-task pilot (repair agent and V4 enabled):
 
 ```bash
@@ -21,12 +32,16 @@ env -u PYTHONPATH HF_HOME=/home/sankalp/projects/wt-e2e/runs/hf_home HF_DATASETS
   --task-specs configs/e2e/task_specs_83.json \
   --primary-config configs/model/primary_umgpt.yaml --generator-config configs/model/generator.yaml \
   --ledger-file runs/provider_spend_ledger.json --deepseek-cap-usd 4.00 \
-  --um-cap-usd 20.00 --um-job-cap-usd 3.00 --output runs/e2e_v1_4_1_um_audited
+  --um-cap-usd 20.00 --um-job-cap-usd 20.00 --output runs/e2e_v1_4_1_um_audited
 ```
 
-For the DeepSeek repair arm, change only `--primary-config` to `configs/model/primary.yaml` and use a separate output folder. Both arms must keep the same ledger file: changing output folders does not reset the shared DeepSeek cap. The fixed caps can stop a run before all 83 tasks complete. Every stop records completed/not-completed IDs in `completion.json`; grading is a separate step after the run is sealed.
+The **UM account cap protects the key** across runs and includes the probe's $0.66 spend. The $20 job cap allows the audited arm to use the remaining account allowance; the probe's $3 job cap is unsuitable for 83 tasks.
 
-Resume by repeating the identical command and output folder. A complete frozen repair patch is never regenerated; unfinished verification moves into the task's `attempts/`. Previously paid work remains charged. A fresh V4 stage cannot silently reset a spent per-task ceiling; it stops before new paid work if its full ceiling cannot fit.
+For the DeepSeek repair arm, change only `--primary-config` to `configs/model/primary.yaml` and use a separate output folder. Both arms must keep the same ledger file: changing output folders does not reset the shared DeepSeek cap. Caps can stop a run before all 83 tasks complete. Every stop records completed/not-completed IDs in `completion.json`; grading is a separate step after the run is sealed.
+
+Resume by repeating the command with the same output folder and ledger file. Only `--deepseek-cap-usd`, `--um-cap-usd` and `--um-job-cap-usd` may change; all other header fields remain strict, including HEAD and model/config/registry identities. Caps may increase or decrease. For example, after a top-up, repeat the original command with a newly calculated `--deepseek-cap-usd`. The header retains the first attempt's caps; `attempt.json` records each attempt's caps and provider/account totals at its start, including conservative unresolved request reservations. A cap below existing spend stops with `STOPPED_BUDGET` before any new paid call. Previously paid work remains charged.
+
+A complete frozen repair patch is never regenerated; unfinished verification moves into the task's `attempts/`. A fresh V4 stage cannot silently reset a spent per-task ceiling; it stops before new paid work if its full ceiling cannot fit.
 
 For new instances, supply the task-prep job's validated registries with `--task-specs file1.json file2.json`; no cohort name is special. Missing task specs become per-task `NO_TASK_SPEC` V2/V3 absences. The shared schema is in `docs/TASK_SPEC_SCHEMA.md`. Do not rebuild the already frozen registry before an audited run at this tag.
 

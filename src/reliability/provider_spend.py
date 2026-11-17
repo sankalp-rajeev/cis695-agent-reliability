@@ -7,10 +7,61 @@ UM/default-account calls; both repair arms can share a single ledger file.
 from __future__ import annotations
 
 import math
+import fcntl
+import hashlib
+import json
+import os
+import tempfile
 import uuid
 from contextlib import contextmanager
+from pathlib import Path
 
 from reliability.umgpt_spend import BudgetCap, SpendLedger
+
+
+def account_totals(data):
+    """Recorded costs by account, including conservative unresolved reservations."""
+    if data.get('version') != 1 or not isinstance(data.get('calls'), list):
+        raise ValueError('Invalid spend ledger; manual reconciliation required')
+    totals = {}
+    for call in data['calls']:
+        cost = float(call['cost_usd'])
+        if not math.isfinite(cost) or cost < 0:
+            raise ValueError('Invalid ledger cost')
+        key = (call.get('provider', 'umgpt'), call.get('account', 'default'))
+        totals[key] = totals.get(key, 0.0) + cost
+    return [{'provider': provider, 'account': account, 'spent_usd': spent}
+            for (provider, account), spent in sorted(totals.items())]
+
+
+def seed_provider_ledger(source, destination):
+    """Seed once from legacy bytes under the destination ledger's normal lock."""
+    source, destination = Path(source).resolve(), Path(destination).resolve()
+    if source == destination:
+        raise ValueError('Source and destination ledger must differ')
+    raw = source.read_bytes()
+    totals = account_totals(json.loads(raw))
+    expected = hashlib.sha256(raw).hexdigest()
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with destination.with_suffix('.lock').open('a') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        if destination.exists() and destination.stat().st_size:
+            raise ValueError('Refusing to overwrite a non-empty ledger')
+        temporary = None
+        try:
+            with tempfile.NamedTemporaryFile(dir=destination.parent, delete=False) as stream:
+                temporary = Path(stream.name)
+                stream.write(raw)
+            if hashlib.sha256(temporary.read_bytes()).hexdigest() != expected:
+                raise ValueError('Ledger copy SHA-256 mismatch')
+            os.replace(temporary, destination)
+            if hashlib.sha256(destination.read_bytes()).hexdigest() != expected:
+                raise ValueError('Ledger copy SHA-256 mismatch')
+        finally:
+            if temporary is not None:
+                temporary.unlink(missing_ok=True)
+    return {'source': str(source), 'destination': str(destination), 'sha256': expected,
+            'accounts': totals}
 
 
 class AuthStop(BudgetCap):
@@ -45,6 +96,10 @@ class ProviderLedger(SpendLedger):
             raise BudgetCap(self.provider + ' account ledger budget would be exceeded')
         if self._total(data, job=self.job) + amount > self.job_usd + 1e-12:
             raise BudgetCap(self.provider + ' run budget would be exceeded')
+
+    def check_current_budget(self, data):
+        """Stop an attempt below existing commitments before any paid work."""
+        self._budget_check(data, 0.0)
 
     @contextmanager
     def stage(self, task, stage, maximum_usd):

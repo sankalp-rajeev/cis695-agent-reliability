@@ -9,6 +9,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from reliability.agent.freeze import FrozenPatch, freeze_patch, is_frozen, read_patch
+from reliability.provider_spend import account_totals
 from reliability.umgpt_spend import BudgetCap
 from reliability.verifier.decision import SignalOutcome
 from reliability.verifier.record import SignalKind
@@ -111,7 +112,14 @@ def systemic(flags):
     return (len(flags) >= 3 and all(flags[-3:])) or (len(flags) >= 10 and sum(flags) / len(flags) >= .2)
 
 
-def run_batch(instance_ids, output, header, agent_stage, verify_stage):
+CAP_FIELDS = ('deepseek_cap_usd', 'um_cap_usd', 'um_job_cap_usd')
+
+
+def resume_identity(header):
+    return {key: value for key, value in header.items() if key not in CAP_FIELDS}
+
+
+def run_batch(instance_ids, output, header, agent_stage, verify_stage, *, ledgers=()):
     """All stop paths persist completion; a complete patch is never regenerated."""
     output = Path(output).resolve()
     if not output.is_relative_to((ROOT / 'runs').resolve()):
@@ -120,15 +128,17 @@ def run_batch(instance_ids, output, header, agent_stage, verify_stage):
     header_path = output / 'header.json'
     resumed = header_path.exists()
     if resumed:
-        if json.loads(header_path.read_text()) != header:
-            raise ValueError('Resume requires identical HEAD, manifest, configs, registries and caps')
+        if resume_identity(json.loads(header_path.read_text())) != resume_identity(header):
+            raise ValueError('Resume requires identical non-cap header fields, including ledger file')
     else:
         if any(output.iterdir()):
             raise ValueError('New run output must be empty')
         write(header_path, header)
     attempts_path = output / 'attempt.json'
     attempts = json.loads(attempts_path.read_text()) if attempts_path.exists() else {'attempts': []}
-    attempt = {'index': len(attempts['attempts']) + 1, 'resumed': resumed, 'started_utc': now(), 'tasks': []}
+    attempt = {'index': len(attempts['attempts']) + 1, 'resumed': resumed, 'started_utc': now(),
+               'caps': {key: header[key] for key in CAP_FIELDS if key in header},
+               'spent_at_start': [], 'tasks': []}
     attempts['attempts'].append(attempt)
     write(attempts_path, attempts)
     completed, flags, current = [], [], None
@@ -137,6 +147,19 @@ def run_batch(instance_ids, output, header, agent_stage, verify_stage):
         raise KeyboardInterrupt
     previous_termination = signal.signal(signal.SIGTERM, terminate)
     try:
+        snapshots = {}
+        for ledger in ledgers:
+            if ledger.path not in snapshots:
+                snapshots[ledger.path] = ledger.snapshot()
+        attempt['spent_at_start'] = [dict(row, ledger_file=str(path))
+            for path, data in snapshots.items() for row in account_totals(data)]
+        for ledger in ledgers:
+            if not any(row['ledger_file'] == str(ledger.path) and row['provider'] == ledger.provider
+                       and row['account'] == ledger.account for row in attempt['spent_at_start']):
+                attempt['spent_at_start'].append({'ledger_file': str(ledger.path),
+                    'provider': ledger.provider, 'account': ledger.account, 'spent_usd': 0.0})
+        write(attempts_path, attempts)
+        budget_checked = False
         for iid in instance_ids:
             current = iid
             directory = output / 'tasks' / iid
@@ -150,6 +173,10 @@ def run_batch(instance_ids, output, header, agent_stage, verify_stage):
                     status = 'STOPPED_SYSTEMIC'
                     break
                 continue
+            if not budget_checked:
+                for ledger in ledgers:
+                    ledger.check_current_budget(snapshots[ledger.path])
+                budget_checked = True
             ensure_patch(iid, directory, agent_stage)
             archived = restart_verification(directory)
             attempt['tasks'].append({'instance_id': iid, 'previous_verification': archived,

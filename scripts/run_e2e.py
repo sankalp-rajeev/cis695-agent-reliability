@@ -191,9 +191,10 @@ def main(argv=None):
                           ledger(generator), directory / 'verification/v4', output.name,
                           load_agent_task(instance_id).problem_statement)
         return verify_task(directory, instance_id=iid, task_spec=tasks.get(iid), experiment_id=output.name,
-            skip_v4=args.skip_v4, provenance=header, v4_runner=v4, reproduction_setup=setup)
+            skip_v4=args.skip_v4, provenance=json.loads((output / 'header.json').read_text()),
+            v4_runner=v4, reproduction_setup=setup)
 
-    status = run_batch(ids, output, header, agent_stage, verify_stage)
+    status = run_batch(ids, output, header, agent_stage, verify_stage, ledgers=tuple(ledgers.values()))
     print(json.dumps({'status': status, 'output': str(output)}))
     return 0 if status == 'COMPLETE' else 2
 
