@@ -10,6 +10,7 @@ import json
 import re
 import subprocess
 import tarfile
+from collections import Counter
 from pathlib import Path
 
 WHEEL_SHA256 = "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
@@ -161,7 +162,7 @@ def verify_registries(paths):
     return tasks, verified
 
 
-def verify_parity(path, tasks):
+def verify_parity(path, tasks, frozen_preflight):
     parity = read(path)
     require(
         parity["passed"] is True and parity["authority"] == "phase4_launch.validate_inputs",
@@ -172,7 +173,18 @@ def verify_parity(path, tasks):
         iid = row["instance_id"]
         require(iid in tasks, "missing golden task")
         require(all(row["checks"].values()), "reported golden mismatch")
+        frozen_receipt = frozen_preflight / "tasks" / iid / "source_receipt.json.gz"
+        manifest = read(frozen_preflight / "manifest.json")
+        relative = str(frozen_receipt.relative_to(frozen_preflight))
+        require(
+            digest(frozen_receipt) == manifest["receipt_sha256"][relative],
+            iid + " frozen receipt hash",
+        )
         for task in tasks[iid]:
+            require(
+                read(task["integrity_preflight"]["receipt_path"]) == read(frozen_receipt),
+                iid + " golden full source receipt",
+            )
             observed = {
                 "archive_sha256": task["archive"]["sha256"],
                 "image_id": task["image"]["id"],
@@ -204,9 +216,16 @@ def verify_cohorts(directory, tasks=None):
             not set(ids) & {r["instance_id"] for r in value["excluded"]},
             "included/excluded overlap",
         )
-        require(sum(value["repo_counts"].values()) == len(ids), "repo counts")
+        expected_counts = dict(
+            Counter(i.split("__")[0] + "/" + i.split("__")[1].rsplit("-", 1)[0] for i in ids)
+        )
+        require(value["repo_counts"] == expected_counts, "repo counts")
         require(set(value["pilot_instances"]) <= set(ids), "pilot membership")
         sets[name] = set(ids)
+    require(
+        len(sets["verified500"]) + len(cohorts["verified500"]["excluded"]) == 500,
+        "population/exclusions",
+    )
     require(len(sets["main100"]) == 93 and len(sets["verified200"]) == 200, "cohort sizes")
     require(sets["main100"] < sets["verified200"] <= sets["verified500"], "non-nested cohorts")
     with (directory.parents[2] / "manifests/pilot.csv").open(newline="") as stream:
@@ -235,10 +254,15 @@ def main():
         "--parity", type=Path, default=Path("reports/next_phases/task_prep/parity.json")
     )
     parser.add_argument("--cohort-dir", type=Path, default=Path("configs/e2e/cohorts"))
+    parser.add_argument(
+        "--frozen-preflight",
+        type=Path,
+        default=Path("reports/next_phases/phase4_rerun/fix10_integrity_preflight"),
+    )
     args = parser.parse_args()
     try:
         tasks, count = verify_registries(args.registries)
-        verify_parity(args.parity, tasks)
+        verify_parity(args.parity, tasks, args.frozen_preflight)
         verify_cohorts(args.cohort_dir, tasks)
     except (ValueError, KeyError, TypeError, OSError, subprocess.SubprocessError) as exc:
         print("FAIL: " + str(exc))
