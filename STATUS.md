@@ -1,7 +1,9 @@
 # UM cost probe status
 
-Done: preflight, 69 focused tests, 38 unchanged frozen files, all three real model verifications ($0.00031875), numeric-only old-run extraction.
+Done: all three model verifications and all three authorized task attempts on gpt-4.1-mini. Total estimated spend $0.65728395 including $0.00031875 verification; no cost cap fired and no filtering event occurred in 265 new calls. django-14373 cost $0.05068680; scikit-learn-12973 cost $0.26790480 (V4 RepeatedFormatError); django-16899 cost $0.33837360 (100-step repair limit, no patch, V4 empty-patch skip).
 
-Running: repair launcher environment cleanup; first startup stopped before any task API calls because inherited Python import paths mixed incompatible packages. Preserved under runs/umgpt_probe/precall_bootstrap_20261116.
+Done: cost-only report and measured/repriced 10/83-task projections; numeric-only DeepSeek whole-set comparison; 75 focused tests; independent ledger/report reconciliation; all 38 frozen files match origin/main. No correctness grading, V1–V3, or oracle run.
 
-Next: launch same three gpt-4.1-mini tasks with PYTHONPATH/PYTHONHOME cleared, then audit/report/commit/push. No paid task has been retried.
+Running: none; paid work and report validation are finished.
+
+Next: review reports/umgpt_probe/REPORT.md to choose a rerun model; observed skips/errors limit the 83-task budget estimate. No further paid calls planned. Publication branch: feature/umgpt-routing.
