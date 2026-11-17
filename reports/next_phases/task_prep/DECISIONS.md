@@ -27,3 +27,7 @@
 - Export a separate strict registry for frozen E2E v1.4.1, because that consumer rejects the three preparation-only task fields; retain them losslessly in a hash-bound sidecar.
 - Copy only the pinned wheel and nine exact per-task projections into wt-e2e/runs/task_prep_inputs, because the frozen validator must re-resolve every recorded projection hash without defaulting to the 83-row projection.
 - Preserve accepted eligibility/cohort/projection artifacts and add a 92-task execution order, because the user now excludes Sphinx 10614 from the main run and requires the comparable frozen 83 to finish first.
+- Validate using wt-e2e's own venv and frozen load_registries with bytecode writes disabled, because the immutable consumer is the integration authority and its checkout must remain clean.
+- Reconstruct the original source registry from the export and sidecar, because dropping preparation fields must not discard provenance; all original metadata and all ten stable-copy hashes verify.
+- Keep the original 83 order before sorted additions, because a budget stop must preserve the comparable Phase 4 cohort first.
+- Exclude the provenance sidecar from the independent checker's registry arguments, because it is hash-bound metadata rather than task_spec_registry/1; all nine actual registries pass.

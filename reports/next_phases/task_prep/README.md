@@ -36,3 +36,14 @@ registry schema/identity, archive bytes and pax commit, receipt hashes/content,
 local image IDs, golden expectations and cohort nesting/pilot rules. No candidate
 patch, selected test list, model call or benchmark test execution is involved in
 preparation. Existing source-integrity and pre-install authorities are unchanged.
+
+The frozen E2E v1.4.1 consumer uses its own `configs/e2e/task_specs_83.json`
+plus this branch's `configs/e2e/task_specs_add9_e2e_v141.json` (cohort
+`main92_additions`). `scripts/export_frozen_registry.py` builds this strict
+adapter, copying only the pinned wheel and nine exact projections to the allowed
+ignored `wt-e2e/runs/task_prep_inputs/` folder. Its hash-bound `.provenance.json`
+sidecar retains the three preparation-only task fields. Existing export files
+are never replaced. `cohorts/main92_run_order.txt` places the frozen 83 first,
+then sorted additions. `frozen_runner_load.json` proves the frozen consumer loaded
+all 92 using its own venv while the checkout stayed clean. When independently
+checking multiple registries, exclude `.provenance.json` from the arguments.

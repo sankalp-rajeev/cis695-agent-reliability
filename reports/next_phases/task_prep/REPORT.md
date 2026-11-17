@@ -1,6 +1,26 @@
-**Verdict: Golden PASS; independent check PASS; no new unit failure/error IDs. Main-study readiness is 92/93, with one eligible Sphinx task failing closed.**
+**Verdict: Frozen E2E runner integration PASS; main run cohort is 92. Golden and independent verification pass, with zero new unit failure/error IDs. Sphinx 10614 remains excluded, failing closed.**
 
-`scripts/prepare_tasks.py` and `reliability.task_prep` now prepare patch-independent Verified tasks. The authoritative merged registry is `configs/e2e/task_specs_main100.json` (83 frozen + nine prepared). The final additions registry is `configs/e2e/task_specs_main100_rest10_final.json`. The original requested filename and every intermediate registry remain intact; use the final/merged files for execution. `sphinx-doc__sphinx-10614` has no registry entry because its source preflight fails. No push or tag was made.
+`scripts/prepare_tasks.py` and `reliability.task_prep` prepare patch-independent Verified tasks. The frozen runner consumes its own `configs/e2e/task_specs_83.json` together with `configs/e2e/task_specs_add9_e2e_v141.json` from this branch. The earlier merged and additions registries remain preparation provenance. Accepted eligibility manifests and projections are retained; the execution cohort excludes Sphinx 10614 and is defined by `configs/e2e/cohorts/main92_run_order.txt`. No push or tag was made.
+
+## Runner integration
+
+`scripts/export_frozen_registry.py` exports the nine additions to cohort `main92_additions` using exactly the schema read with `git show e2e-v1.4.1-frozen:<path>` after `git fetch --tags origin`. The annotated tag resolves to `c5b352c83c6bd7e9afdcb465bf966535543192fc`; its schema documentation and `REGISTRY_SCHEMA` source hashes are pinned in the exporter. Exporter implementation: `215327a`.
+
+The export supplies absolute `pre_install.wheel_path` and `pre_install.dataset_projection_path` values. Only the pinned wheel and the nine exact projections were copied to `/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/`; every copy was hash-verified. All resolved specs, archive paths/hashes and receipt paths/hashes are unchanged. The three preparation-only fields moved into `task_specs_add9_e2e_v141.provenance.json`, keyed by instance ID under `tasks`, with the exported registry SHA-256. Reconstructing the original registry from the export and sidecar succeeds exactly (`export_integrity.json`), including all original task metadata.
+
+| File | SHA-256 |
+|---|---|
+| `/home/sankalp/projects/wt-e2e/configs/e2e/task_specs_83.json` | `9e55c5a82501753f19f5f83cdcab69afe178a9800aaa848918867a5a8af1d5fb` |
+| `configs/e2e/task_specs_add9_e2e_v141.json` | `bee27f256d507da44b8fe9583b5dddd2023700e728690cce34c3434475e39e2d` |
+| `configs/e2e/task_specs_add9_e2e_v141.provenance.json` | `33a81ff380012ba354d769ffd9e7fe4f186cbcb51c861aa66cbf16fb450d0ee2` |
+| `configs/e2e/cohorts/main92_run_order.txt` | `9f0164f539539699acea3208f2af1a8ae6bfd31e3390f4aa7a9be5e6a93769ca` |
+| `reports/next_phases/task_prep/frozen_runner_load.json` | `1c63f013644d2d6de60ad7ff06b3b495920d76c2ffa8464d26ebee1c10f72dae` |
+
+The frozen consumer's own `reliability.verifier.task_specs.load_registries` was run from `/home/sankalp/projects/wt-e2e` with that worktree's `.venv/bin/python`, `PYTHONPATH=src` and bytecode writes disabled. It loaded the two registries above and returned **92 tasks with no error**, re-resolving all pre-install specs. `frozen_runner_load.json` records both registry hashes, validator hash, interpreter, commit and clean-checkout proof. No frozen runner file, existing frozen input, `source_integrity` or `pre_install` was edited.
+
+`main92_run_order.txt` contains the 83 IDs from the tag's `configs/e2e/tasks_83.txt` in exactly that order, followed by the nine additions in sorted order. All 92 IDs are unique; requests and Sphinx 10614 are absent. The comparable 83 therefore precede every addition under a budget stop.
+
+The full unit suite was run once more with the same prescribed command and offline HF environment: `6 failed, 1484 passed, 7 skipped, 17 errors in 60.24s (0:01:00)`. ID comparison against the local `7fefe1d` reference finds **zero new failed/error IDs** and **no reference failures now passing** (`unit_comparison_runner_integration.json`). The independent checker also passes all nine registries, **208 retained entries**, plus golden and cohort checks; output is in `independent_check_runner_integration.txt`. Its registry list excludes the provenance sidecar, which is not a task registry. Ruff passes for the export implementation.
 
 ## Golden
 
@@ -138,7 +158,7 @@ env -u PYTHONPATH PYTHONPATH=src .venv/bin/python -m pytest -p no:cacheprovider 
 
 Every run set `HF_HOME=/home/sankalp/projects/wt-task-prep/runs/hf_home`, `HF_DATASETS_OFFLINE=1`, and `HF_HUB_OFFLINE=1`. Only Verified dataset/hub entries were copied; allocated cache size is **15 MB** (15499264 bytes). No shared-cache lock was needed.
 
-Final result: `6 failed, 1484 passed, 7 skipped, 17 errors in 60.72s (0:01:00)`. Compared **test IDs**, not counts, with `/home/sankalp/projects/unit_baseline_7fefe1d/failing_ids.txt`: **zero new failing/error IDs**; all 23 reference failure/error IDs recur. **Reference failures now passing: none**, so there are no improvements requiring attribution. `unit_comparison.json` lists both complete ID maps. All 13 new tests pass in a focused run; Ruff passes for every new/modified source file. The three kernel isolation failures remain in the reference set.
+Original preparation run result: `6 failed, 1484 passed, 7 skipped, 17 errors in 60.72s (0:01:00)`. Compared **test IDs**, not counts, with `/home/sankalp/projects/unit_baseline_7fefe1d/failing_ids.txt`: **zero new failing/error IDs**; all 23 reference failure/error IDs recur. **Reference failures now passing: none**, so there are no improvements requiring attribution. `unit_comparison.json` lists both complete ID maps. All 13 new tests pass in a focused run; Ruff passes for every new/modified source file. The three kernel isolation failures remain in the reference set.
 
 No existing test, reference, `source_integrity.py`, `pre_install.py`, or frozen input was changed. The preparation and cohort-selection code consumes no candidate patch or prohibited dataset columns. The golden authority validates frozen candidate-artifact hashes as part of its established input check. Dataset rows are four-column Arrow IPC projections before decoding; only the original Arrow cache file is hashed opaquely as the existing frozen provenance requires.
 

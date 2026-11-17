@@ -1,0 +1,564 @@
+{
+  "built_by_commit": "215327aeac485715e239a3da7466dddf9f5a2f56",
+  "cohort": "main92_additions",
+  "schema": "task_spec_registry/1",
+  "tasks": [
+    {
+      "archive": {
+        "path": "/home/sankalp/cg_repos/task_archives/astropy__astropy-13398.tar",
+        "pax_comment": "6500928dc0e57be8f06d1162eacc3ba5e2eff692",
+        "sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0"
+      },
+      "base_commit": "6500928dc0e57be8f06d1162eacc3ba5e2eff692",
+      "image": {
+        "id": "sha256:b0cc2d0d0b35da88c91934467a68aabdc725a7cda238fad2b52696bfc1598d2b",
+        "tag": "swebench/sweb.eval.x86_64.astropy_1776_astropy-13398:latest"
+      },
+      "instance_id": "astropy__astropy-13398",
+      "integrity_preflight": {
+        "receipt_path": "/home/sankalp/projects/wt-task-prep/configs/e2e/task_specs_main100_rest10_final_evidence/astropy__astropy-13398/source_receipt.json",
+        "receipt_sha256": "e96403a72a622b20f98aedac98244d0ce1e0d9b53e7513a8f56a992bee92982c",
+        "status": "VERIFIED"
+      },
+      "origin": "prepared",
+      "pre_install": {
+        "dataset_projection_path": "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_c6c1159a8d9ff74b0c844a45caf989b0aaca6a0f59f9bcc7f1fc6ad52b8c01dd.json",
+        "dataset_projection_sha256": "c6c1159a8d9ff74b0c844a45caf989b0aaca6a0f59f9bcc7f1fc6ad52b8c01dd",
+        "spec": {
+          "commands": [
+            "sed -i 's/requires = \\[\"setuptools\",/requires = \\[\"setuptools==68.0.0\",/' pyproject.toml"
+          ],
+          "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+          "constants_path": "swebench/harness/constants/python.py",
+          "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+          "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+          "dataset_projection_sha256": "c6c1159a8d9ff74b0c844a45caf989b0aaca6a0f59f9bcc7f1fc6ad52b8c01dd",
+          "dataset_row": {
+            "base_commit": "6500928dc0e57be8f06d1162eacc3ba5e2eff692",
+            "instance_id": "astropy__astropy-13398",
+            "repo": "astropy/astropy",
+            "version": "5.0"
+          },
+          "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+          "project_swebench_version": "5.0.2",
+          "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+          "spec_key": [
+            "astropy/astropy",
+            "5.0",
+            "pre_install"
+          ],
+          "swebench_version": "4.0.4",
+          "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+          "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl"
+        },
+        "wheel_path": "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/swebench-4.0.4-py3-none-any.whl",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+      },
+      "repo": "astropy/astropy",
+      "runner": {
+        "django_parallel_one": null,
+        "evidence": "pytest.ini or conftest.py; [tool:pytest] in setup.cfg; pytest referenced in tox.ini",
+        "name": "pytest"
+      },
+      "version": "5.0"
+    },
+    {
+      "archive": {
+        "path": "/home/sankalp/cg_repos/task_archives/django__django-12663.tar",
+        "pax_comment": "fa5e7e46d875d4143510944f19d79df7b1739bab",
+        "sha256": "843c52be9dca2aebdfe6be96afbf65230fdea5aee09e5b4329442eef63846e49"
+      },
+      "base_commit": "fa5e7e46d875d4143510944f19d79df7b1739bab",
+      "image": {
+        "id": "sha256:8c000d1960ebd4f84ef9218cde860a7fd5450841793edb119e32b9154228e995",
+        "tag": "swebench/sweb.eval.x86_64.django_1776_django-12663:latest"
+      },
+      "instance_id": "django__django-12663",
+      "integrity_preflight": {
+        "receipt_path": "/home/sankalp/projects/wt-task-prep/configs/e2e/task_specs_main100_rest10_final_evidence/django__django-12663/source_receipt.json",
+        "receipt_sha256": "48e2ae59519da0f77cf3325f6684c7b080d293c7bd7339b48440fbbaa9931326",
+        "status": "VERIFIED"
+      },
+      "origin": "prepared",
+      "pre_install": {
+        "dataset_projection_path": "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_867864d0bf377189d05747f3701e93d5e1e44e6c91e18b23262fe8b9238d01d6.json",
+        "dataset_projection_sha256": "867864d0bf377189d05747f3701e93d5e1e44e6c91e18b23262fe8b9238d01d6",
+        "spec": {
+          "commands": [],
+          "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+          "constants_path": "swebench/harness/constants/python.py",
+          "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+          "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+          "dataset_projection_sha256": "867864d0bf377189d05747f3701e93d5e1e44e6c91e18b23262fe8b9238d01d6",
+          "dataset_row": {
+            "base_commit": "fa5e7e46d875d4143510944f19d79df7b1739bab",
+            "instance_id": "django__django-12663",
+            "repo": "django/django",
+            "version": "3.1"
+          },
+          "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+          "project_swebench_version": "5.0.2",
+          "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+          "spec_key": [
+            "django/django",
+            "3.1",
+            "pre_install"
+          ],
+          "swebench_version": "4.0.4",
+          "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+          "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl"
+        },
+        "wheel_path": "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/swebench-4.0.4-py3-none-any.whl",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+      },
+      "repo": "django/django",
+      "runner": {
+        "django_parallel_one": false,
+        "evidence": "found tests/runtests.py in a Django tree",
+        "name": "django"
+      },
+      "version": "3.1"
+    },
+    {
+      "archive": {
+        "path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-21568.tar",
+        "pax_comment": "f0632c0fc7339f68e992ed63ae4cfac76cd41aad",
+        "sha256": "263ae050620426c92518e8a35f541bfab3de5ad89730d92ee13bfdc286fab2f0"
+      },
+      "base_commit": "f0632c0fc7339f68e992ed63ae4cfac76cd41aad",
+      "image": {
+        "id": "sha256:b7a98953467c941eda3c1fc4e1904d1dbce1a53d84ae622d629426e55ff2c42d",
+        "tag": "swebench/sweb.eval.x86_64.matplotlib_1776_matplotlib-21568:latest"
+      },
+      "instance_id": "matplotlib__matplotlib-21568",
+      "integrity_preflight": {
+        "receipt_path": "/home/sankalp/projects/wt-task-prep/configs/e2e/task_specs_main100_rest10_final_evidence/matplotlib__matplotlib-21568/source_receipt.json",
+        "receipt_sha256": "94d6d672b9442558e9c7099219ddf4952a9f4c7792fab5745ca88a822cc6adc5",
+        "status": "VERIFIED"
+      },
+      "origin": "prepared",
+      "pre_install": {
+        "dataset_projection_path": "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_0c68521d09808e9076d0a35712d1e08e8f2ecebb637cedbf06996214fb017cbb.json",
+        "dataset_projection_sha256": "0c68521d09808e9076d0a35712d1e08e8f2ecebb637cedbf06996214fb017cbb",
+        "spec": {
+          "commands": [
+            "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg libfreetype6-dev pkg-config texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super",
+            "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+            "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+            "QHULL_BUILD_DIR=\"/testbed/build\"",
+            "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+            "mkdir -p \"$QHULL_BUILD_DIR\"",
+            "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+          ],
+          "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+          "constants_path": "swebench/harness/constants/python.py",
+          "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+          "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+          "dataset_projection_sha256": "0c68521d09808e9076d0a35712d1e08e8f2ecebb637cedbf06996214fb017cbb",
+          "dataset_row": {
+            "base_commit": "f0632c0fc7339f68e992ed63ae4cfac76cd41aad",
+            "instance_id": "matplotlib__matplotlib-21568",
+            "repo": "matplotlib/matplotlib",
+            "version": "3.4"
+          },
+          "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+          "project_swebench_version": "5.0.2",
+          "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+          "spec_key": [
+            "matplotlib/matplotlib",
+            "3.4",
+            "pre_install"
+          ],
+          "swebench_version": "4.0.4",
+          "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+          "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl"
+        },
+        "wheel_path": "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/swebench-4.0.4-py3-none-any.whl",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+      },
+      "repo": "matplotlib/matplotlib",
+      "runner": {
+        "django_parallel_one": null,
+        "evidence": "pytest.ini or conftest.py; pytest referenced in tox.ini",
+        "name": "pytest"
+      },
+      "version": "3.4"
+    },
+    {
+      "archive": {
+        "path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-22865.tar",
+        "pax_comment": "c6c7ec1978c22ae2c704555a873d0ec6e1e2eaa8",
+        "sha256": "4ac8ec3bb0550a8597fb0187dc66f7e28bfcedf6952fdc293d82cedfe6d11ea2"
+      },
+      "base_commit": "c6c7ec1978c22ae2c704555a873d0ec6e1e2eaa8",
+      "image": {
+        "id": "sha256:c360512331dd3a9bb6053a0601eb348c7c56d6f65e793127864cba8da5ed6083",
+        "tag": "swebench/sweb.eval.x86_64.matplotlib_1776_matplotlib-22865:latest"
+      },
+      "instance_id": "matplotlib__matplotlib-22865",
+      "integrity_preflight": {
+        "receipt_path": "/home/sankalp/projects/wt-task-prep/configs/e2e/task_specs_main100_rest10_final_evidence/matplotlib__matplotlib-22865/source_receipt.json",
+        "receipt_sha256": "d517bead7b507a69bb875fdff44d3ef91596a784c8771d6f23857e5f8d2f88d1",
+        "status": "VERIFIED"
+      },
+      "origin": "prepared",
+      "pre_install": {
+        "dataset_projection_path": "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_5c9fb59c1986bf2582ea6072e0e18fc2e4814f9146c032f2d97f5cd858945b9d.json",
+        "dataset_projection_sha256": "5c9fb59c1986bf2582ea6072e0e18fc2e4814f9146c032f2d97f5cd858945b9d",
+        "spec": {
+          "commands": [
+            "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super dvipng",
+            "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+            "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+            "QHULL_BUILD_DIR=\"/testbed/build\"",
+            "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+            "mkdir -p \"$QHULL_BUILD_DIR\"",
+            "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+          ],
+          "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+          "constants_path": "swebench/harness/constants/python.py",
+          "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+          "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+          "dataset_projection_sha256": "5c9fb59c1986bf2582ea6072e0e18fc2e4814f9146c032f2d97f5cd858945b9d",
+          "dataset_row": {
+            "base_commit": "c6c7ec1978c22ae2c704555a873d0ec6e1e2eaa8",
+            "instance_id": "matplotlib__matplotlib-22865",
+            "repo": "matplotlib/matplotlib",
+            "version": "3.5"
+          },
+          "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+          "project_swebench_version": "5.0.2",
+          "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+          "spec_key": [
+            "matplotlib/matplotlib",
+            "3.5",
+            "pre_install"
+          ],
+          "swebench_version": "4.0.4",
+          "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+          "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl"
+        },
+        "wheel_path": "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/swebench-4.0.4-py3-none-any.whl",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+      },
+      "repo": "matplotlib/matplotlib",
+      "runner": {
+        "django_parallel_one": null,
+        "evidence": "pytest.ini or conftest.py; pytest referenced in tox.ini",
+        "name": "pytest"
+      },
+      "version": "3.5"
+    },
+    {
+      "archive": {
+        "path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-24627.expanded.tar",
+        "pax_comment": "9d22ab09d52d279b125d8770967569de070913b2",
+        "sha256": "ceee9feac540334b48c46933ca30a026307ee2808de09dc31fc8a49b0d27cf84"
+      },
+      "base_commit": "9d22ab09d52d279b125d8770967569de070913b2",
+      "image": {
+        "id": "sha256:576160b02ee53603932571b414a794ec36922b530b7350346e0b888b839029ad",
+        "tag": "swebench/sweb.eval.x86_64.matplotlib_1776_matplotlib-24627:latest"
+      },
+      "instance_id": "matplotlib__matplotlib-24627",
+      "integrity_preflight": {
+        "receipt_path": "/home/sankalp/projects/wt-task-prep/configs/e2e/task_specs_main100_rest10_final_evidence/matplotlib__matplotlib-24627/source_receipt.json",
+        "receipt_sha256": "cc3242713ac3531ac9f07ed541d4392f64768490d3513bcdef622ea3c15436a5",
+        "status": "VERIFIED"
+      },
+      "origin": "prepared",
+      "pre_install": {
+        "dataset_projection_path": "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_bdcdadb592af9a0500173e51802bb9a591c092733ef40c2a3f5d57ed56efdcdd.json",
+        "dataset_projection_sha256": "bdcdadb592af9a0500173e51802bb9a591c092733ef40c2a3f5d57ed56efdcdd",
+        "spec": {
+          "commands": [
+            "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super dvipng",
+            "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+            "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+            "QHULL_BUILD_DIR=\"/testbed/build\"",
+            "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+            "mkdir -p \"$QHULL_BUILD_DIR\"",
+            "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+          ],
+          "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+          "constants_path": "swebench/harness/constants/python.py",
+          "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+          "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+          "dataset_projection_sha256": "bdcdadb592af9a0500173e51802bb9a591c092733ef40c2a3f5d57ed56efdcdd",
+          "dataset_row": {
+            "base_commit": "9d22ab09d52d279b125d8770967569de070913b2",
+            "instance_id": "matplotlib__matplotlib-24627",
+            "repo": "matplotlib/matplotlib",
+            "version": "3.6"
+          },
+          "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+          "project_swebench_version": "5.0.2",
+          "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+          "spec_key": [
+            "matplotlib/matplotlib",
+            "3.6",
+            "pre_install"
+          ],
+          "swebench_version": "4.0.4",
+          "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+          "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl"
+        },
+        "wheel_path": "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/swebench-4.0.4-py3-none-any.whl",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+      },
+      "repo": "matplotlib/matplotlib",
+      "runner": {
+        "django_parallel_one": null,
+        "evidence": "pytest.ini or conftest.py; pytest referenced in tox.ini",
+        "name": "pytest"
+      },
+      "version": "3.6"
+    },
+    {
+      "archive": {
+        "path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-25332.expanded.tar",
+        "pax_comment": "66ba515e671638971bd11a34cff12c107a437e0b",
+        "sha256": "b4288aad81a69955f4e90d3a9dfb5a31599b33997e48b8893021ff5f1f799365"
+      },
+      "base_commit": "66ba515e671638971bd11a34cff12c107a437e0b",
+      "image": {
+        "id": "sha256:00d42a208a1bf1eed6ce2b3c82dfa8522ff5653df697a02f3433a99fdf181198",
+        "tag": "swebench/sweb.eval.x86_64.matplotlib_1776_matplotlib-25332:latest"
+      },
+      "instance_id": "matplotlib__matplotlib-25332",
+      "integrity_preflight": {
+        "receipt_path": "/home/sankalp/projects/wt-task-prep/configs/e2e/task_specs_main100_rest10_final_evidence/matplotlib__matplotlib-25332/source_receipt.json",
+        "receipt_sha256": "5b8b4ea18a625bfcebbbadce54b9e12e38e8c7a91063cde4deea494c4ab2f782",
+        "status": "VERIFIED"
+      },
+      "origin": "prepared",
+      "pre_install": {
+        "dataset_projection_path": "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_24e549c05630180c6a2986e5e8519612144b6d069e1df8f1a751cafb808c49a5.json",
+        "dataset_projection_sha256": "24e549c05630180c6a2986e5e8519612144b6d069e1df8f1a751cafb808c49a5",
+        "spec": {
+          "commands": [
+            "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super dvipng",
+            "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+            "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+            "QHULL_BUILD_DIR=\"/testbed/build\"",
+            "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+            "mkdir -p \"$QHULL_BUILD_DIR\"",
+            "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+          ],
+          "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+          "constants_path": "swebench/harness/constants/python.py",
+          "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+          "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+          "dataset_projection_sha256": "24e549c05630180c6a2986e5e8519612144b6d069e1df8f1a751cafb808c49a5",
+          "dataset_row": {
+            "base_commit": "66ba515e671638971bd11a34cff12c107a437e0b",
+            "instance_id": "matplotlib__matplotlib-25332",
+            "repo": "matplotlib/matplotlib",
+            "version": "3.7"
+          },
+          "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+          "project_swebench_version": "5.0.2",
+          "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+          "spec_key": [
+            "matplotlib/matplotlib",
+            "3.7",
+            "pre_install"
+          ],
+          "swebench_version": "4.0.4",
+          "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+          "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl"
+        },
+        "wheel_path": "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/swebench-4.0.4-py3-none-any.whl",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+      },
+      "repo": "matplotlib/matplotlib",
+      "runner": {
+        "django_parallel_one": null,
+        "evidence": "pytest.ini or conftest.py; pytest referenced in tox.ini",
+        "name": "pytest"
+      },
+      "version": "3.7"
+    },
+    {
+      "archive": {
+        "path": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-4551.tar",
+        "pax_comment": "99589b08de8c5a2c6cc61e13a37420a868c80599",
+        "sha256": "8a03aefce8e1e751ce1203aba3a0c51ed6a5c8dd85731f7208bbb2ee6bc56083"
+      },
+      "base_commit": "99589b08de8c5a2c6cc61e13a37420a868c80599",
+      "image": {
+        "id": "sha256:da002762f29d4a55bbd7b2874ff0187525e0cf23b0c1705411a5d54c25702ed5",
+        "tag": "swebench/sweb.eval.x86_64.pylint-dev_1776_pylint-4551:latest"
+      },
+      "instance_id": "pylint-dev__pylint-4551",
+      "integrity_preflight": {
+        "receipt_path": "/home/sankalp/projects/wt-task-prep/configs/e2e/task_specs_main100_rest10_final_evidence/pylint-dev__pylint-4551/source_receipt.json",
+        "receipt_sha256": "86e04433deb1ecf49d61c6e2bd90bbe3de8a3fe490ab79fc240f635d3ef6a48b",
+        "status": "VERIFIED"
+      },
+      "origin": "prepared",
+      "pre_install": {
+        "dataset_projection_path": "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_d2da95303416e97cd95d948a5db09d175e0762dcc7620297003756669556e01d.json",
+        "dataset_projection_sha256": "d2da95303416e97cd95d948a5db09d175e0762dcc7620297003756669556e01d",
+        "spec": {
+          "commands": [],
+          "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+          "constants_path": "swebench/harness/constants/python.py",
+          "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+          "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+          "dataset_projection_sha256": "d2da95303416e97cd95d948a5db09d175e0762dcc7620297003756669556e01d",
+          "dataset_row": {
+            "base_commit": "99589b08de8c5a2c6cc61e13a37420a868c80599",
+            "instance_id": "pylint-dev__pylint-4551",
+            "repo": "pylint-dev/pylint",
+            "version": "2.9"
+          },
+          "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+          "project_swebench_version": "5.0.2",
+          "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+          "spec_key": [
+            "pylint-dev/pylint",
+            "2.9",
+            "pre_install"
+          ],
+          "swebench_version": "4.0.4",
+          "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+          "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl"
+        },
+        "wheel_path": "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/swebench-4.0.4-py3-none-any.whl",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+      },
+      "repo": "pylint-dev/pylint",
+      "runner": {
+        "django_parallel_one": null,
+        "evidence": "[tool:pytest] in setup.cfg; pytest referenced in tox.ini",
+        "name": "pytest"
+      },
+      "version": "2.9"
+    },
+    {
+      "archive": {
+        "path": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-8898.tar",
+        "pax_comment": "1f8c4d9eb185c16a2c1d881c054f015e1c2eb334",
+        "sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10"
+      },
+      "base_commit": "1f8c4d9eb185c16a2c1d881c054f015e1c2eb334",
+      "image": {
+        "id": "sha256:b0c71d27e9c3a21187e17af515954bebafed91d0911de5585385b34ab90588f2",
+        "tag": "swebench/sweb.eval.x86_64.pylint-dev_1776_pylint-8898:latest"
+      },
+      "instance_id": "pylint-dev__pylint-8898",
+      "integrity_preflight": {
+        "receipt_path": "/home/sankalp/projects/wt-task-prep/configs/e2e/task_specs_main100_rest10_final_evidence/pylint-dev__pylint-8898/source_receipt.json",
+        "receipt_sha256": "28bcd4a21cf0c1b43a98d8074a5294d904e28178eb32797a5240cf9dbddd5845",
+        "status": "VERIFIED"
+      },
+      "origin": "prepared",
+      "pre_install": {
+        "dataset_projection_path": "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_94485c5551ffc359a6b040a0878a8720bbc64df38a3119913a33ac7573b01dcc.json",
+        "dataset_projection_sha256": "94485c5551ffc359a6b040a0878a8720bbc64df38a3119913a33ac7573b01dcc",
+        "spec": {
+          "commands": [],
+          "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+          "constants_path": "swebench/harness/constants/python.py",
+          "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+          "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+          "dataset_projection_sha256": "94485c5551ffc359a6b040a0878a8720bbc64df38a3119913a33ac7573b01dcc",
+          "dataset_row": {
+            "base_commit": "1f8c4d9eb185c16a2c1d881c054f015e1c2eb334",
+            "instance_id": "pylint-dev__pylint-8898",
+            "repo": "pylint-dev/pylint",
+            "version": "3.0"
+          },
+          "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+          "project_swebench_version": "5.0.2",
+          "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+          "spec_key": [
+            "pylint-dev/pylint",
+            "3.0",
+            "pre_install"
+          ],
+          "swebench_version": "4.0.4",
+          "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+          "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl"
+        },
+        "wheel_path": "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/swebench-4.0.4-py3-none-any.whl",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+      },
+      "repo": "pylint-dev/pylint",
+      "runner": {
+        "django_parallel_one": null,
+        "evidence": "[tool.pytest] in pyproject.toml; pytest referenced in tox.ini",
+        "name": "pytest"
+      },
+      "version": "3.0"
+    },
+    {
+      "archive": {
+        "path": "/home/sankalp/cg_repos/task_archives/sphinx-doc__sphinx-7748.tar",
+        "pax_comment": "9988d5ce267bf0df4791770b469431b1fb00dcdd",
+        "sha256": "cf6751a9712196314142a518196bb9d99c1a1419b507340e5b05b68ebc131bb2"
+      },
+      "base_commit": "9988d5ce267bf0df4791770b469431b1fb00dcdd",
+      "image": {
+        "id": "sha256:ab98bd08a7db24b56014e39dea546fbc6a6c2e53e2c48802c037e26597ac0853",
+        "tag": "swebench/sweb.eval.x86_64.sphinx-doc_1776_sphinx-7748:latest"
+      },
+      "instance_id": "sphinx-doc__sphinx-7748",
+      "integrity_preflight": {
+        "receipt_path": "/home/sankalp/projects/wt-task-prep/configs/e2e/task_specs_main100_rest10_final_evidence/sphinx-doc__sphinx-7748/source_receipt.json",
+        "receipt_sha256": "17bd9252da8a258fa310bf43899f7d652c805198d957b030c9da79552a41b19b",
+        "status": "VERIFIED"
+      },
+      "origin": "prepared",
+      "pre_install": {
+        "dataset_projection_path": "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_1a1cfb96770973895c2325ab117c072ae66fa7d108076e506a8a5aa6a1b3c8c3.json",
+        "dataset_projection_sha256": "1a1cfb96770973895c2325ab117c072ae66fa7d108076e506a8a5aa6a1b3c8c3",
+        "spec": {
+          "commands": [
+            "sed -i 's/pytest/pytest -rA/' tox.ini",
+            "sed -i 's/Jinja2>=2.3/Jinja2<3.0/' setup.py",
+            "sed -i 's/sphinxcontrib-applehelp/sphinxcontrib-applehelp<=1.0.7/' setup.py",
+            "sed -i 's/sphinxcontrib-devhelp/sphinxcontrib-devhelp<=1.0.5/' setup.py",
+            "sed -i 's/sphinxcontrib-qthelp/sphinxcontrib-qthelp<=1.0.6/' setup.py",
+            "sed -i 's/alabaster>=0.7,<0.8/alabaster>=0.7,<0.7.12/' setup.py",
+            "sed -i \"s/'packaging',/'packaging', 'markupsafe<=2.0.1',/\" setup.py",
+            "sed -i 's/sphinxcontrib-htmlhelp/sphinxcontrib-htmlhelp<=2.0.4/' setup.py",
+            "sed -i 's/sphinxcontrib-serializinghtml/sphinxcontrib-serializinghtml<=1.1.9/' setup.py"
+          ],
+          "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+          "constants_path": "swebench/harness/constants/python.py",
+          "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+          "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+          "dataset_projection_sha256": "1a1cfb96770973895c2325ab117c072ae66fa7d108076e506a8a5aa6a1b3c8c3",
+          "dataset_row": {
+            "base_commit": "9988d5ce267bf0df4791770b469431b1fb00dcdd",
+            "instance_id": "sphinx-doc__sphinx-7748",
+            "repo": "sphinx-doc/sphinx",
+            "version": "3.1"
+          },
+          "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+          "project_swebench_version": "5.0.2",
+          "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+          "spec_key": [
+            "sphinx-doc/sphinx",
+            "3.1",
+            "pre_install"
+          ],
+          "swebench_version": "4.0.4",
+          "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+          "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl"
+        },
+        "wheel_path": "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/swebench-4.0.4-py3-none-any.whl",
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+      },
+      "repo": "sphinx-doc/sphinx",
+      "runner": {
+        "django_parallel_one": null,
+        "evidence": "[tool:pytest] in setup.cfg; pytest referenced in tox.ini",
+        "name": "pytest"
+      },
+      "version": "3.1"
+    }
+  ]
+}

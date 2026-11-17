@@ -1,0 +1,234 @@
+{
+  "frozen_commit": "c5b352c83c6bd7e9afdcb465bf966535543192fc",
+  "frozen_input_sha256": {
+    "configs/e2e/task_specs_83.json": "9e55c5a82501753f19f5f83cdcab69afe178a9800aaa848918867a5a8af1d5fb",
+    "configs/e2e/tasks_83.txt": "09555d42c7c712ecd11cee691093eede7e28b29d95e866be2dfacffb1c25e9b9",
+    "docs/TASK_SPEC_SCHEMA.md": "adc57f77912799eddd1dcf0f3832abd93601c57763f05e837461e7fee49c596e",
+    "src/reliability/verifier/task_specs.py": "f20461bc970ae7a3bf09802802e3b4c6ae496f4132cb129e0732eb642c4dbbf5"
+  },
+  "frozen_tag": "e2e-v1.4.1-frozen",
+  "registry_path": "/home/sankalp/projects/wt-task-prep/configs/e2e/task_specs_add9_e2e_v141.json",
+  "registry_sha256": "bee27f256d507da44b8fe9583b5dddd2023700e728690cce34c3434475e39e2d",
+  "source_registry_metadata": {
+    "built_by_commit": "750af1f0c98dffe32055c04879ae0ca557c88d0e",
+    "cohort": "main100_rest10_final",
+    "schema": "task_spec_registry/1"
+  },
+  "source_registry_path": "/home/sankalp/projects/wt-task-prep/configs/e2e/task_specs_main100_rest10_final.json",
+  "source_registry_sha256": "df1bd415a2bafd72d2c27de2149cbd632dbbfd9cca591a9bdb1b9d41d784a248",
+  "source_task_order": [
+    "astropy__astropy-13398",
+    "django__django-12663",
+    "matplotlib__matplotlib-21568",
+    "matplotlib__matplotlib-22865",
+    "matplotlib__matplotlib-24627",
+    "matplotlib__matplotlib-25332",
+    "pylint-dev__pylint-4551",
+    "pylint-dev__pylint-8898",
+    "sphinx-doc__sphinx-7748"
+  ],
+  "stable_input_sha256": {
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_0c68521d09808e9076d0a35712d1e08e8f2ecebb637cedbf06996214fb017cbb.json": "0c68521d09808e9076d0a35712d1e08e8f2ecebb637cedbf06996214fb017cbb",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_1a1cfb96770973895c2325ab117c072ae66fa7d108076e506a8a5aa6a1b3c8c3.json": "1a1cfb96770973895c2325ab117c072ae66fa7d108076e506a8a5aa6a1b3c8c3",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_24e549c05630180c6a2986e5e8519612144b6d069e1df8f1a751cafb808c49a5.json": "24e549c05630180c6a2986e5e8519612144b6d069e1df8f1a751cafb808c49a5",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_5c9fb59c1986bf2582ea6072e0e18fc2e4814f9146c032f2d97f5cd858945b9d.json": "5c9fb59c1986bf2582ea6072e0e18fc2e4814f9146c032f2d97f5cd858945b9d",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_867864d0bf377189d05747f3701e93d5e1e44e6c91e18b23262fe8b9238d01d6.json": "867864d0bf377189d05747f3701e93d5e1e44e6c91e18b23262fe8b9238d01d6",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_94485c5551ffc359a6b040a0878a8720bbc64df38a3119913a33ac7573b01dcc.json": "94485c5551ffc359a6b040a0878a8720bbc64df38a3119913a33ac7573b01dcc",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_bdcdadb592af9a0500173e51802bb9a591c092733ef40c2a3f5d57ed56efdcdd.json": "bdcdadb592af9a0500173e51802bb9a591c092733ef40c2a3f5d57ed56efdcdd",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_c6c1159a8d9ff74b0c844a45caf989b0aaca6a0f59f9bcc7f1fc6ad52b8c01dd.json": "c6c1159a8d9ff74b0c844a45caf989b0aaca6a0f59f9bcc7f1fc6ad52b8c01dd",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_d2da95303416e97cd95d948a5db09d175e0762dcc7620297003756669556e01d.json": "d2da95303416e97cd95d948a5db09d175e0762dcc7620297003756669556e01d",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/swebench-4.0.4-py3-none-any.whl": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+  },
+  "tasks": {
+    "astropy__astropy-13398": {
+      "dataset_projection_row": {
+        "base_commit": "6500928dc0e57be8f06d1162eacc3ba5e2eff692",
+        "instance_id": "astropy__astropy-13398",
+        "repo": "astropy/astropy",
+        "version": "5.0"
+      },
+      "preflight_identity": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_commit": "6500928dc0e57be8f06d1162eacc3ba5e2eff692",
+        "image_id": "sha256:b0cc2d0d0b35da88c91934467a68aabdc725a7cda238fad2b52696bfc1598d2b"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; [tool:pytest] in setup.cfg; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "django__django-12663": {
+      "dataset_projection_row": {
+        "base_commit": "fa5e7e46d875d4143510944f19d79df7b1739bab",
+        "instance_id": "django__django-12663",
+        "repo": "django/django",
+        "version": "3.1"
+      },
+      "preflight_identity": {
+        "archive_sha256": "843c52be9dca2aebdfe6be96afbf65230fdea5aee09e5b4329442eef63846e49",
+        "base_commit": "fa5e7e46d875d4143510944f19d79df7b1739bab",
+        "image_id": "sha256:8c000d1960ebd4f84ef9218cde860a7fd5450841793edb119e32b9154228e995"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "matplotlib__matplotlib-21568": {
+      "dataset_projection_row": {
+        "base_commit": "f0632c0fc7339f68e992ed63ae4cfac76cd41aad",
+        "instance_id": "matplotlib__matplotlib-21568",
+        "repo": "matplotlib/matplotlib",
+        "version": "3.4"
+      },
+      "preflight_identity": {
+        "archive_sha256": "263ae050620426c92518e8a35f541bfab3de5ad89730d92ee13bfdc286fab2f0",
+        "base_commit": "f0632c0fc7339f68e992ed63ae4cfac76cd41aad",
+        "image_id": "sha256:b7a98953467c941eda3c1fc4e1904d1dbce1a53d84ae622d629426e55ff2c42d"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "matplotlib__matplotlib-22865": {
+      "dataset_projection_row": {
+        "base_commit": "c6c7ec1978c22ae2c704555a873d0ec6e1e2eaa8",
+        "instance_id": "matplotlib__matplotlib-22865",
+        "repo": "matplotlib/matplotlib",
+        "version": "3.5"
+      },
+      "preflight_identity": {
+        "archive_sha256": "4ac8ec3bb0550a8597fb0187dc66f7e28bfcedf6952fdc293d82cedfe6d11ea2",
+        "base_commit": "c6c7ec1978c22ae2c704555a873d0ec6e1e2eaa8",
+        "image_id": "sha256:c360512331dd3a9bb6053a0601eb348c7c56d6f65e793127864cba8da5ed6083"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "matplotlib__matplotlib-24627": {
+      "dataset_projection_row": {
+        "base_commit": "9d22ab09d52d279b125d8770967569de070913b2",
+        "instance_id": "matplotlib__matplotlib-24627",
+        "repo": "matplotlib/matplotlib",
+        "version": "3.6"
+      },
+      "preflight_identity": {
+        "archive_sha256": "ceee9feac540334b48c46933ca30a026307ee2808de09dc31fc8a49b0d27cf84",
+        "base_commit": "9d22ab09d52d279b125d8770967569de070913b2",
+        "image_id": "sha256:576160b02ee53603932571b414a794ec36922b530b7350346e0b888b839029ad"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "matplotlib__matplotlib-25332": {
+      "dataset_projection_row": {
+        "base_commit": "66ba515e671638971bd11a34cff12c107a437e0b",
+        "instance_id": "matplotlib__matplotlib-25332",
+        "repo": "matplotlib/matplotlib",
+        "version": "3.7"
+      },
+      "preflight_identity": {
+        "archive_sha256": "b4288aad81a69955f4e90d3a9dfb5a31599b33997e48b8893021ff5f1f799365",
+        "base_commit": "66ba515e671638971bd11a34cff12c107a437e0b",
+        "image_id": "sha256:00d42a208a1bf1eed6ce2b3c82dfa8522ff5653df697a02f3433a99fdf181198"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "pylint-dev__pylint-4551": {
+      "dataset_projection_row": {
+        "base_commit": "99589b08de8c5a2c6cc61e13a37420a868c80599",
+        "instance_id": "pylint-dev__pylint-4551",
+        "repo": "pylint-dev/pylint",
+        "version": "2.9"
+      },
+      "preflight_identity": {
+        "archive_sha256": "8a03aefce8e1e751ce1203aba3a0c51ed6a5c8dd85731f7208bbb2ee6bc56083",
+        "base_commit": "99589b08de8c5a2c6cc61e13a37420a868c80599",
+        "image_id": "sha256:da002762f29d4a55bbd7b2874ff0187525e0cf23b0c1705411a5d54c25702ed5"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "[tool:pytest] in setup.cfg; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "pylint-dev__pylint-8898": {
+      "dataset_projection_row": {
+        "base_commit": "1f8c4d9eb185c16a2c1d881c054f015e1c2eb334",
+        "instance_id": "pylint-dev__pylint-8898",
+        "repo": "pylint-dev/pylint",
+        "version": "3.0"
+      },
+      "preflight_identity": {
+        "archive_sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10",
+        "base_commit": "1f8c4d9eb185c16a2c1d881c054f015e1c2eb334",
+        "image_id": "sha256:b0c71d27e9c3a21187e17af515954bebafed91d0911de5585385b34ab90588f2"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "[tool.pytest] in pyproject.toml; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "sphinx-doc__sphinx-7748": {
+      "dataset_projection_row": {
+        "base_commit": "9988d5ce267bf0df4791770b469431b1fb00dcdd",
+        "instance_id": "sphinx-doc__sphinx-7748",
+        "repo": "sphinx-doc/sphinx",
+        "version": "3.1"
+      },
+      "preflight_identity": {
+        "archive_sha256": "cf6751a9712196314142a518196bb9d99c1a1419b507340e5b05b68ebc131bb2",
+        "base_commit": "9988d5ce267bf0df4791770b469431b1fb00dcdd",
+        "image_id": "sha256:ab98bd08a7db24b56014e39dea546fbc6a6c2e53e2c48802c037e26597ac0853"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "[tool:pytest] in setup.cfg; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    }
+  }
+}
