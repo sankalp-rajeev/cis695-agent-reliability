@@ -13,7 +13,7 @@
 | A6 | PROVISIONAL PASS | Approved offline cache resolves all 30 sandbox errors; no failed/error ID beyond the reference. New tests: 44/44 pass. Final suite and merge rerun pending. |
 | A7 | Initial PASS; final checkpoint rerun pending | Standard-library-only checker rehashes registry/frozen sources, compares A1 recorded arrays and raw A2 outcomes, and checks live receipts and policies. |
 
-The shared schema is documented in docs/TASK_SPEC_SCHEMA.md. The generated registry SHA-256 is 076d929f1ba9917abdd367cb06a97bfa33b2a804e0d5082b43da342776fb06c2. Its two optional artifact-path fields rebuild PreInstallSpec without renaming or removing shared fields. The registry contains no patch, selection, outcome, or correctness data.
+The shared schema is documented in docs/TASK_SPEC_SCHEMA.md. The generated registry SHA-256 is 9e55c5a82501753f19f5f83cdcab69afe178a9800aaa848918867a5a8af1d5fb. Its two optional artifact-path fields rebuild PreInstallSpec without renaming or removing shared fields. The registry contains no patch, selection, outcome, or correctness data.
 
 All 31 approved Django sources were hash-verified before argv-only whitelist projection; the exact file/hash list is in DECISIONS.md. All 75 freeze-manifest hashes match, including the expressly approved byte-only golden CSV check. approved_input_access.json and approved_input_preflight.out retain the evidence. No frozen verifier file was modified.
 
