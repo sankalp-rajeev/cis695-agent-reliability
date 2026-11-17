@@ -33,17 +33,22 @@ from reliability.benchmark.leakage import (
     probes_from_oracle,
     without_base_lines,
 )
+from reliability.env import assert_clean_interpreter
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 
 def main() -> int:
+    assert_clean_interpreter()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--runs", default="runs",
                         help="root to scan (default: runs/)")
     parser.add_argument("--no-content", action="store_true",
                         help="skip dataset-backed content checks; still exits 1, "
                              "because a partial audit is not a pass")
+    parser.add_argument("--image-results", type=pathlib.Path,
+                        default=REPO_ROOT / "reports/next_phases/leakage_gaps/images",
+                        help="completed per-image audit results for the extended rules")
     args = parser.parse_args()
 
     runs_root = (REPO_ROOT / args.runs).resolve()
@@ -61,9 +66,17 @@ def main() -> int:
               "nothing has not passed — check the runs root.")
         return 1
 
-    probes, content_ok = ({}, False) if args.no_content else load_probes(task_dirs)
-
-    result = audit(task_dirs, probes)
+    if args.no_content:
+        probes, contexts, content_ok = {}, {}, False
+    else:
+        from reliability.benchmark.leakage_study import extended_inputs
+        try:
+            probes, contexts = extended_inputs(task_dirs, args.image_results)
+            content_ok = True
+        except Exception as exc:
+            print("FAIL: extended audit inputs incomplete:", type(exc).__name__)
+            return 1
+    result = audit(task_dirs, probes, contexts=contexts)
 
     print(f"scanned: {result.scanned_files} files across "
           f"{result.scanned_tasks} tasks")
@@ -71,7 +84,9 @@ def main() -> int:
           f"tasks against real oracle values")
 
     for finding in result.findings:
-        print(f"  {finding}")
+        # Legacy details can include command excerpts. Never print oracle data.
+        print(f"  [{finding.severity.value}] {finding.kind} "
+              f"{finding.path}:{finding.line_no or 0} rule={finding.rule}")
 
     if result.review:
         print(f"\n{len(result.review)} finding(s) need review. These are not "

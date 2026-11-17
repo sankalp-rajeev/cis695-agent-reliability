@@ -25,6 +25,7 @@ def git(args, data=None):
 
 def version_from_text(text):
     patterns = [r'(?m)^Version:\s*([^\s]+)',
+                r'''["']version["']\s*:\s*["']([^"']+)''',
                 r'''(?m)^\s*__version__\s*=\s*['"]([^'"]+)''',
                 r'''(?m)^\s*version\s*=\s*['"]([^'"]+)''']
     for pattern in patterns:
@@ -38,7 +39,7 @@ def version_from_text(text):
 
 
 def package_version(directory, package):
-    for name in ['__version__.py', '_version.py', 'version.py', '__init__.py']:
+    for name in ['__version__.py', '_version.py', 'version.py', '__init__.py', 'release.py', '__pkginfo__.py']:
         try:
             with open(os.path.join(directory, name), errors='replace') as stream:
                 value = version_from_text(stream.read())
@@ -173,6 +174,40 @@ def inspect_packages(request):
     return result
 
 
+def supplement(request):
+    """Small read-only follow-up: version metadata and future tree deltas."""
+    base = request['base_commit']
+    version = request.get('base_version')
+    origin = 'pinned-archive-source'
+    description = None
+    if not version:
+        try:
+            description = git(['describe', '--tags', '--always', base]).decode().strip()
+            match = re.match(r'v?(\d+(?:\.\d+)+(?:[a-zA-Z]+\d*)?)(?:-(\d+)-g[0-9a-f]+)?$', description)
+            if match:
+                version = match.group(1) + ('+git.' + match.group(2) if match.group(2) else '')
+                origin = 'base-ancestor-tag-description'
+        except subprocess.CalledProcessError:
+            pass
+    copies = []
+    for copy in request.get('copies', []):
+        row = dict(copy)
+        row['version'] = package_version(copy['path'], request['package'])
+        row['base_version'] = version
+        row['different_from_base'] = row['version'] != version if row['version'] and version else None
+        copies.append(row)
+    details = []
+    for oid in request.get('future_commit_hashes', []):
+        raw = git(['diff-tree', '-r', '--no-commit-id', '--name-only', '-z', base, oid])
+        paths = [p.decode() for p in raw.split(b'\0') if p]
+        details.append(dict(commit=oid, changed_file_count=len(paths),
+            changed_source_file_count=sum(p.endswith(('.py', '.pyx', '.c', '.h')) for p in paths),
+            changed_path_sha256=sorted(sha(p) for p in paths)))
+    return dict(base_version=version, base_version_origin=origin,
+                base_tag_description_sha256=sha(description) if description else None,
+                copies=copies, future_commit_details=details)
+
+
 def inspect_git(request):
     base = request['base_commit']
     stamp = int(git(['show', '-s', '--format=%ct', base]).strip())
@@ -223,8 +258,26 @@ def inspect_git(request):
     future = {oid for oid, ts in stamps.items() if ts > stamp} | descendants
     gold = []
     import base64
-    for value in request.get('post_images_b64', []):
-        oid = git(['hash-object', '--stdin'], base64.b64decode(value)).decode().strip()
+    post_images = [base64.b64decode(value) for value in request.get('post_images_b64', [])]
+    for file in request.get('post_image_hunks', []):
+        original = [] if file['added'] else io.StringIO(git(['show', base + ':' + file['path']]).decode()).readlines()
+        result, position = [], 0
+        for hunk in file['hunks']:
+            start = max(0, hunk['start'] - 1)
+            result.extend(original[position:start]); position = start
+            for kind, value in hunk['lines']:
+                if kind in (' ', '-'):
+                    if position >= len(original) or original[position] != value:
+                        raise RuntimeError('post-image-context-mismatch')
+                    if kind == ' ':
+                        result.append(original[position])
+                    position += 1
+                elif kind == '+':
+                    result.append(value)
+        result.extend(original[position:])
+        post_images.append(''.join(result).encode())
+    for value in post_images:
+        oid = git(['hash-object', '--stdin'], value).decode().strip()
         present = subprocess.call(['git', '-C', '/testbed', 'cat-file', '-e', oid + '^{blob}'],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) == 0
         gold.append(dict(blob=oid, present=present))
@@ -265,6 +318,9 @@ def base_probes(request):
 
 def main():
     request = json.load(sys.stdin)
+    if '--supplement' in sys.argv:
+        print(json.dumps(supplement(request), sort_keys=True))
+        return
     result = dict(instance_id=request['instance_id'], checks={})
     for name, function in [('packages', inspect_packages), ('git', inspect_git), ('base_probes', base_probes)]:
         try:

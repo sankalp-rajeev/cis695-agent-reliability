@@ -35,14 +35,15 @@ def symbols_at_base(archive, symbols):
     """Search all regular archive files once, never extract or print their text."""
     import tarfile
     found = set()
-    expressions = {s: re.compile(rb'(?<![A-Za-z0-9_])' + re.escape(s.encode())
-                               + rb'(?![A-Za-z0-9_])') for s in symbols}
+    encoded = {s.encode(): s for s in symbols}
+    members = set(archive.members.values())
     with tarfile.open(archive.spec.archive_path) as tar:
         for member in tar:
-            if member.isfile() and member.name in archive.members.values():
+            if member.isfile() and member.name in members:
                 raw = tar.extractfile(member).read()
-                found.update(s for s, pattern in expressions.items() if pattern.search(raw))
-                if len(found) == len(expressions):
+                tokens = set(re.findall(rb'\btest[A-Za-z0-9_]+\b', raw))
+                found.update(encoded[t] for t in tokens & encoded.keys())
+                if len(found) == len(encoded):
                     break
     return frozenset(found)
 
@@ -79,11 +80,11 @@ def command_rules(command, context):
     rules = set()
     for verb, args in _stages(command):
         if verb.startswith('pip') or verb.startswith('easy_install') or verb == 'conda':
-            if verb.startswith('easy_install') and _repo_target(args, context.package):
+            if verb.startswith('easy_install'):
                 rules.add('fetch-easy-install')
             if 'download' in args and verb.startswith('pip'):
                 rules.add('fetch-pip-download')
-            if 'install' in args and _repo_target(args, context.package):
+            if 'install' in args and (verb == 'conda' or _repo_target(args, context.package)):
                 rules.add('fetch-' + ('conda' if verb == 'conda' else 'pip-install'))
         if verb in {'curl', 'wget'} and any(re.search(
             r'(?:https?://)?(?:[^/]+\.)?(?:pypi\.org|pypi\.python\.org|pythonhosted\.org|github\.com|githubusercontent\.com)(?:/|$)', a)
@@ -111,13 +112,14 @@ def command_rules(command, context):
             for ref in opts:
                 if ref == '--':
                     break
-                if ref.startswith('-') or ref in {'HEAD', context.base_commit}:
+                ref_part = ref.split(':', 1)[0]
+                if ref.startswith('-') or ref_part in {'HEAD', context.base_commit}:
                     continue
                 # A filename/path is not a ref. HEAD~1 and base..branch are refs.
                 if ('/' in ref and not ref.startswith(('refs/', 'origin/'))
                     or '..' not in ref and re.search(r'\.[a-zA-Z]{1,5}$', ref)):
                     continue
-                if ref[:4] and len(ref) >= 7 and context.base_commit.startswith(ref):
+                if ref_part[:4] and len(ref_part) >= 7 and context.base_commit.startswith(ref_part):
                     continue
                 rules.add('history-git-' + op)
                 break
@@ -139,6 +141,11 @@ def _success(rule, output, context):
         versions = re.findall(r'(?:Successfully installed|Installed)[^\n]*?\b' + normalized + r'[-= ]+(\d[^\s,]*)', output, re.I)
         if context.base_version and any(v != context.base_version for v in versions):
             return 'fetch-installed-different-version'
+        if rule == 'fetch-conda' and context.base_version and re.search(
+            r'Executing transaction:\s*done', output, re.I):
+            versions = re.findall(r'\b' + normalized + r'\s+[^\n]*?(\d+\.\d+[^\s,]*)', output)
+            if any(v != context.base_version for v in versions):
+                return 'fetch-installed-different-version'
     return None
 
 
@@ -192,20 +199,28 @@ def definition_events(task_dir, symbols):
         path = task_dir / name
         if not path.is_file():
             continue
-        definitions = {}
+        definitions, pending = {}, {}
         for n, raw in enumerate(path.read_text(errors='replace').splitlines(), 1):
             try:
                 msg = json.loads(raw)
             except ValueError:
                 continue
-            if not isinstance(msg, dict) or msg.get('role') != 'assistant':
+            if not isinstance(msg, dict):
                 continue
-            for _, command in _bash_calls(msg):
+            if msg.get('role') == 'tool':
+                writes = pending.pop(str(msg.get('tool_call_id') or ''), [])
+                code, _ = _observation(str(msg.get('content') or ''))
+                if code == 0:
+                    for symbol, start in writes:
+                        definitions.setdefault(symbol, start)
+            if msg.get('role') != 'assistant':
+                continue
+            for call_id, command in _bash_calls(msg):
                 if not re.search(r'(?:\b(?:write_text|write_bytes|write|writelines|apply_patch|sed|perl)\b|>|\btee\b)', command):
                     continue
                 for symbol in symbols:
                     if re.search(r'\b(?:async\s+)?def\s+' + re.escape(symbol) + r'\s*\(', command):
-                        definitions.setdefault(symbol, n)
+                        pending.setdefault(call_id, []).append((symbol, n))
         events[str(path)] = definitions
     return events
 

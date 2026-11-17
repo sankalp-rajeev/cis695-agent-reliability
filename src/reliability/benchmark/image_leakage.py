@@ -4,6 +4,7 @@ from __future__ import annotations
 import base64
 import csv
 import hashlib
+import io
 import json
 import re
 import subprocess
@@ -24,12 +25,16 @@ def archive_for(task, pins=None):
     pins = json.loads(PIN_FILE.read_text())['archives'] if pins is None else pins
     pin = next((p for p in pins if p['instance_id'] == task.instance_id), None)
     path = ARCHIVES / (task.instance_id + '.tar')
+    origin = 'audit-initial-inventory'
+    if not path.is_file():
+        path = ROOT/'runs/leakage_gaps/source_archives'/(task.instance_id + '.tar')
+        origin = 'image-pinned-base-git-archive'
     if pin is None:
         # Freeze a new digest for the 17 tasks omitted by the previous preparation.
         # Its origin is explicit in the report, rather than claiming an old pin.
         pin = dict(instance_id=task.instance_id, base_commit=task.base_commit,
                    path=str(path), sha256=hashlib.file_digest(path.open('rb'), 'sha256').hexdigest(),
-                   pin_origin='audit-initial-inventory')
+                   pin_origin=origin)
     else:
         pin = dict(pin, pin_origin='historical-archive-references')
     if pin['base_commit'] != task.base_commit:
@@ -40,8 +45,11 @@ def archive_for(task, pins=None):
 
 def base_version(archive, import_name):
     candidates = [import_name + '/' + name for name in
-                  ('__version__.py', '_version.py', 'version.py', '__init__.py')]
+                  ('__version__.py', '_version.py', 'version.py', '__init__.py',
+                   'release.py', '__pkginfo__.py')]
     candidates += ['lib/' + p for p in candidates] + ['src/' + p for p in candidates]
+    candidates += ['src/_pytest/_version.py', 'src/_pytest/__init__.py',
+                   '_pytest/_version.py', '_pytest/__init__.py'] if import_name == 'pytest' else []
     sources = archive.read_many(candidates + ['setup.py', 'setup.cfg'])
     for name in candidates:
         value = version_from_text(sources.get(name, b'').decode(errors='replace'))
@@ -55,6 +63,9 @@ def base_version(archive, import_name):
             parts[key] = match.group(1)
     if len(parts) == 3:
         return '.'.join(parts.values())
+    match = re.search(r'(?m)^version\s*=\s*([^\s\'"]+)', sources.get('setup.cfg', b'').decode(errors='replace'))
+    if match and not match.group(1).startswith(('attr:', 'file:')):
+        return match.group(1)
     return version_from_text(text)
 
 
@@ -66,7 +77,7 @@ def post_images(archive, patch):
         if file.is_removed_file:
             continue
         path = file.path
-        original = archive.read_many([path]).get(path, b'').decode().splitlines(keepends=True)
+        original = io.StringIO(archive.read_many([path]).get(path, b'').decode()).readlines()
         result, position = [], 0
         for hunk in file:
             start = max(0, hunk.source_start - 1)
@@ -100,14 +111,23 @@ def prepare_requests(manifest, directory):
         version = base_version(archive, import_name)
         try:
             post = post_images(archive, oracle.patch)
-        except ValueError as exc:
-            raise ValueError(task.instance_id + ': ' + str(exc)) from None
+            hunks = []
+        except ValueError:
+            # Export substitutions/preparation can change archive text. In that
+            # case hash post-images reconstructed from git show BASE:path in
+            # the image; do not weaken context validation or write any files.
+            from unidiff import PatchSet
+            post = []
+            hunks = [dict(path=f.path, added=f.is_added_file,
+                hunks=[dict(start=h.source_start, lines=[(line.line_type, line.value)
+                    for line in h]) for h in f]) for f in PatchSet(oracle.patch)
+                if not f.is_removed_file]
         request = dict(instance_id=task.instance_id, base_commit=task.base_commit,
             package=task.repo.split('/')[-1], import_name=import_name,
             base_version=version, masked_paths=list(MASKED_TMPFS_PATHS),
             patch_lines=list(probes.patch_lines),
             all_lines=list(probes.patch_lines + probes.test_patch_lines),
-            post_images_b64=post, archive=pin)
+            post_images_b64=post, post_image_hunks=hunks, archive=pin)
         path = directory / (task.instance_id + '.json')
         path.write_text(json.dumps(request))
         requests.append(dict(instance_id=task.instance_id, base_version=version, archive=pin))
@@ -124,6 +144,16 @@ def docker_command(image, probe_path):
 
 def public_image_result(raw, request, image):
     # Commit timestamps are hashes and integers, kept for trajectory correlation.
+    if raw.get('checks', {}).get('git', {}).get('status') == 'complete':
+        result = raw['checks']['git']['result']
+        result['commit_timestamps'] = {h: t for h, t in result['commit_timestamps'].items()
+                                      if h in result['future_commit_hashes']}
+    for name, check in raw.get('checks', {}).items():
+        exposed = (name == 'git' and check.get('result', {}).get('future_object_count', 0) > 0
+                   or name == 'packages' and any(c.get('different_from_base') for c in check.get('result', {}).get('copies', [])))
+        check['severity'] = 'exposed-copy' if exposed else 'review'
+        check['rule'] = {'git': 'image-git-object-inventory', 'packages': 'image-package-inventory',
+                         'base_probes': 'legacy-base-probe-subtraction'}[name]
     return dict(raw, instance_id=request['instance_id'], image=image, base_commit=request['base_commit'],
                 base_version=request['base_version'], archive=request['archive'])
 
