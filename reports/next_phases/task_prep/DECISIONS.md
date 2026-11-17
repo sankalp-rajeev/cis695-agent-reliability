@@ -22,3 +22,5 @@
 - Resolve each new task's pre_install projection separately, because an unsupported task/version must create its own failure row without blocking other tasks.
 - Authoritative merged main registry includes 92 VERIFIED entries (83 frozen + nine prepared), while the main manifest keeps all 93 eligible IDs; eligibility and readiness are separate, and the remaining Sphinx failure is reported rather than silently dropped.
 - Final registries are rebuilt from committed implementation 750af1f, because built_by_commit should identify the code that produced their evidence.
+- Keep all 93 eligible IDs in the main cohort even though only 92 are ready, because a source-integrity failure must not redefine eligibility or study membership.
+- Report 200 as disk-uncertain and 492 as over capacity under current estimates, because exact OCI layer unions were rate-limited and neither estimate alone authorizes pulls.
