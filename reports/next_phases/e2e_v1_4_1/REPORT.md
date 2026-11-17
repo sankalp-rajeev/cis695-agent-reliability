@@ -7,9 +7,27 @@
 | A3 decision replay | PASS | 14 ACCEPT / 67 FLAG / 2 REJECT, equal to Phase 7 S_invalid_excluded; zero differences and zero unattributed differences; [A3.json](A3.json), [decisions_83.csv](decisions_83.csv). |
 | A4 live Docker | PASS, 3/3 | Fresh VERIFIED pristine receipts, identical selected/concrete native G1 identity sets, identical per-test outcomes/signals under all four policies; --skip-v4 stamped on every record; [A4.json](A4.json). |
 | A4b registry interface | PASS | Hand-prepared existing task in another cohort/origin yields the same operational TaskSpec/BaseSourceSpec; wrong hash, duplicate ID and missing field refused; [A4b.json](A4b.json). |
-| A5 fault injection | PASS | 48 new mocked/unit checks cover attributed absences, continued V3/V4, systemic stops, integrity abort, budget/auth stops, resume, shared account caps, and interrupt sealing; [A5.json](A5.json). |
-| A6 unit/preservation | PASS by test ID | Zero new failed/error IDs versus the supplied machine reference; every new test passes; both frozen manifests match (75 entries); [unit_comparison.postmerge.json](unit_comparison.postmerge.json). |
+| A5 fault injection | PASS | All 61 e2e mocked/unit checks pass, including 13 added for resumable caps, strict non-cap headers, attempt audit trails and ledger seeding; [A5.json](A5.json). |
+| A6 unit/preservation | PASS by test ID | Zero new failed/error IDs versus the supplied machine reference; every new test passes; both frozen manifests match (75 entries); [unit_comparison.review.json](unit_comparison.review.json). |
 | A7 independent check | PASS | Standard-library-only script independently rehashes the registry/frozen inputs and compares raw policy outcomes and live receipts; [A7.json](A7.json). A1 uses recorded selector output, explicitly disclosed below. |
+
+## Review fixes (17 November 2026)
+
+The first unpublished local `e2e-v1.4.1-frozen` tag (object `abd2d70`, commit `272717e27f87eb72cc4c4704a1274bc986ad8fc3`) was withdrawn at the user's request before this review. Reviewed implementation HEAD is **`8789c9ffb9df7146677d22d203663f567b9ee7a1`**; the final release HEAD is the recreated annotated `e2e-v1.4.1-frozen^{commit}`, adding only this report and check evidence to that implementation commit. The final commit ID is also returned with delivery. Nothing is pushed.
+
+Resume now permits changes to only `deepseek_cap_usd`, `um_cap_usd` and `um_job_cap_usd`. Every other header field, including the ledger path, remains strict. The original header keeps its first-attempt caps and remains the task-provenance authority. Each attempt records its caps and provider/account costs at start in `attempt.json`; unresolved request reservations count conservatively. A lowered cap below existing account/job commitments stops with `STOPPED_BUDGET` before any new paid call. A raised cap resumes the stopped task and retains complete frozen repair patches. Paid work and per-task ceilings never reset.
+
+`scripts/seed_provider_ledger.py --from <probe ledger>` makes a SHA-256-verified byte copy to the shared ledger, refuses a non-empty destination and prints per-account totals. A mocked legacy $0.66 UM seed is charged against the new account cap. The runbook places this one-time step before the first paid pilot, uses audited UM account/job caps of $20/$20, and explains DeepSeek's funded-balance margin and cap increases on resume. No real provider ledger was seeded during review.
+
+The exact full-suite command below was repeated: **1566 passed, 7 skipped, 6 failed, 17 errors in 67.53 seconds**. Comparison by ID finds **zero new failed/error IDs**, identical failed/error statuses to the first release, no reference failures now passing, and no `SANDBOX_ONLY` failures. All **61 old and new e2e tests pass** in the focused run (4.59 seconds). Logs: `runs/e2e_v1_4_1_checks/pytest.review.out` and `pytest.e2e.review.out`; [ID comparison](unit_comparison.review.json).
+
+A1–A4 were **not rerun**: verifier code, verifier configs and task registries remain byte-identical. This command produces **empty output**, saved in [verifier_diff.review.stat](verifier_diff.review.stat), and is checked again against the final release HEAD:
+
+```bash
+git diff --stat 272717e27f87eb72cc4c4704a1274bc986ad8fc3 HEAD -- src/reliability/verifier/ configs/verifier/ configs/e2e/
+```
+
+The independent checker was rerun successfully with `env -u PYTHONPATH PYTHONPATH=src .venv/bin/python scripts/verify_e2e_v1_4_1.py`; its output remains exactly the seven PASS lines reproduced below, also saved in [independent_verification.review.out](independent_verification.review.out). Registry SHA, all 75 frozen hashes, raw A2 outcomes and A4 receipts are unchanged. A read-only full seal recheck again verified all **1,799 files / 3,488,110,239 bytes**; [seal_check.review.json](seal_check.review.json). No model calls, labels, pushes, or sealed-folder writes occurred.
 
 ## Frozen implementation and inputs
 
@@ -59,7 +77,7 @@ The approved cache copy contains only Verified's dataset and matching Hub entry:
 env -u PYTHONPATH HF_HOME=/home/sankalp/projects/wt-e2e/runs/hf_home HF_DATASETS_OFFLINE=1 HF_HUB_OFFLINE=1 PYTHONPATH=src .venv/bin/python -m pytest -p no:cacheprovider -rfE
 ```
 
-The post-merge result is **1553 passed, 7 skipped, 6 failed, 17 errors**. Acceptance is based on IDs: **zero** failed/error IDs beyond `/home/sankalp/projects/unit_baseline_7fefe1d/failing_ids.txt`; the failed/error IDs and statuses are identical before and after the merge. All 30 sandbox cache errors are resolved; `SANDBOX_ONLY` is empty. **No reference failure now passes**, so there is no repaired-reference-failure list to explain. All 48 new tests pass. Full logs remain in `runs/e2e_v1_4_1_checks/`.
+The first post-merge result was **1553 passed, 7 skipped, 6 failed, 17 errors**; the review run above adds 13 passing tests. Acceptance is based on IDs: **zero** failed/error IDs beyond `/home/sankalp/projects/unit_baseline_7fefe1d/failing_ids.txt`; the failed/error IDs and statuses are identical before and after the merge and review. All 30 sandbox cache errors are resolved; `SANDBOX_ONLY` is empty. **No reference failure now passes**, so there is no repaired-reference-failure list to explain. All 61 e2e tests pass. Full logs remain in `runs/e2e_v1_4_1_checks/`.
 
 ## Independent checker output
 
@@ -82,4 +100,4 @@ PASS independent checker; standard library only; no model calls
 - Paid work is not refunded or given a new per-task ceiling on resume. A budget stop can leave tasks unfinished; the shared account cap persists across output folders and arms.
 - Source-scope note: a source-location search opened Phase 7 stage5 code/recompute notes and V1 probe code outside the narrow decision-table/recompute-input allowance. No referenced label/oracle files or correctness fields were opened; acceptance computations use the permitted frozen data, policy snapshots and decision table.
 
-The only intended release tag is the new annotated local `e2e-v1.4.1-frozen`, at the final documentation commit after all checks. Publication is left to the user: **no branch or tag push is made**. [RUNBOOK.md](RUNBOOK.md) gives exact pilot/audited/check commands.
+The release tag is the recreated annotated local `e2e-v1.4.1-frozen`, at the final documentation commit after all checks. Publication is left to the user: **no branch or tag push is made**. [RUNBOOK.md](RUNBOOK.md) gives exact pilot/audited/check commands.

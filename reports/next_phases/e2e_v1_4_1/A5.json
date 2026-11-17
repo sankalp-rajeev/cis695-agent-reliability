@@ -1,6 +1,6 @@
 {
   "A5": "PASS",
-  "focused_new_tests": 48,
+  "focused_new_tests": 61,
   "cases": [
     "V2 health halt => attributed absence, FLAG, V3/V4 continue",
     "REPLAY_MISMATCH absence",
@@ -16,6 +16,13 @@
     "shared DeepSeek cap across repair arms",
     "per-call DeepSeek usage and 402/balance errors",
     "SIGTERM preserves completion and patch",
-    "dynamic G1 hygiene selection subsets require unchanged native absence proof"
-  ]
+    "dynamic G1 hygiene selection subsets require unchanged native absence proof",
+    "raised account cap resumes stopped task without regenerating frozen patches",
+    "changed non-cap headers including ledger path are refused",
+    "lowered DeepSeek/UM account or UM job cap stops before new paid calls",
+    "attempt caps and provider/account starting costs are recorded",
+    "seeded legacy UM costs count against account cap; nonempty destination refused; SHA-256 byte equality"
+  ],
+  "review_added_tests": 13,
+  "review_test_output": "runs/e2e_v1_4_1_checks/pytest.e2e.review.out"
 }
