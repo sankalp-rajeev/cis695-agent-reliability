@@ -20,6 +20,35 @@ DEFAULT_WHEEL = ROOT / 'runs/phase4_fix10_provenance/swebench-4.0.4-py3-none-any
 DEFAULT_PROJECTION = ROOT / 'reports/next_phases/phase4_rerun/fix10_provenance/dataset_projection.json'
 
 
+class RegistryProjection(JSONProjection):
+    """Refuse unknown metadata keys before decoding their values."""
+
+    def skip(self):
+        raise ValueError('Unsupported registry field')
+
+    def scalar(self):
+        self.whitespace()
+        if self.text[self.position] in '[{':
+            raise ValueError('Unexpected container in registry scalar field')
+        return super().scalar()
+
+
+RESOLVED_SPEC_SCHEMA = {key: True for key in (
+    'swebench_version', 'project_swebench_version', 'wheel_url', 'pypi_url', 'wheel_sha256',
+    'constants_path', 'constants_sha256', 'constants_mapping', 'dataset_arrow_sha256',
+    'dataset_snapshot', 'dataset_projection_sha256')}
+RESOLVED_SPEC_SCHEMA.update(commands={'*': True}, spec_key={'*': True},
+    dataset_row={key: True for key in ('instance_id', 'repo', 'version', 'base_commit')})
+REGISTRY_SCHEMA = {'schema': True, 'cohort': True, 'built_by_commit': True, 'tasks': {'*': {
+    **{key: True for key in ('instance_id', 'repo', 'version', 'base_commit', 'origin')},
+    'image': {'tag': True, 'id': True},
+    'archive': {'path': True, 'sha256': True, 'pax_comment': True},
+    'pre_install': {'wheel_sha256': True, 'dataset_projection_sha256': True,
+                    'wheel_path': True, 'dataset_projection_path': True, 'spec': RESOLVED_SPEC_SCHEMA},
+    'integrity_preflight': {'status': True, 'receipt_path': True, 'receipt_sha256': True},
+    'runner': {'name': True, 'evidence': True, 'django_parallel_one': True}}}}
+
+
 def sha(path):
     result = hashlib.sha256()
     with Path(path).open('rb') as stream:
@@ -134,7 +163,7 @@ def load_registries(paths):
     for path in paths:
         path = Path(path).resolve()
         raw = path.read_bytes()
-        registry = json.loads(raw)
+        registry = RegistryProjection(raw.decode()).project(REGISTRY_SCHEMA)
         fields(registry, ('schema', 'cohort', 'built_by_commit', 'tasks'))
         if registry['schema'] != 'task_spec_registry/1' or not isinstance(registry['cohort'], str) or not registry['cohort']:
             raise ValueError('Unsupported task registry schema/cohort')

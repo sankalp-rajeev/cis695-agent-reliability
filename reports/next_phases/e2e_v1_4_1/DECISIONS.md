@@ -54,3 +54,10 @@
 - Keep DeepSeek on its native LiteLLM route with a ledger subclass; derive prices from the pinned local cost map unless explicitly configured, and stamp numeric rates in the header and each call.
 - Preserve native mini-SWE command/submission handling by attaching its environment to a preverified immutable container; constructors cannot pull or start an additional image.
 - Choose A4 by smallest nonempty executed selection per effective runner: django-13033, sympy-17318, matplotlib-25287; all three immutable images are already local and no frozen Django task requests parallel one.
+- A V4 budget stop leaves the task incomplete and archives its decision/verification/stop receipt on resume; a completed frozen repair patch is retained.
+- A resumed paid stage cannot reset an already-used per-task ceiling; full V4 escrow must fit before any new paid work starts.
+- Preserve frozen patch bytes including line endings, and recheck the patch before writing the decision; provenance must bind the bytes actually verified.
+- Handle SIGTERM through the same completion/seal path as interruption; local job cancellation must preserve completed and unfinished task lists.
+- Distinguish a preflight NOT_RUN V4 budget stop from a PARTIAL stop after paid usage; per-call ledger entries remain authoritative.
+- Re-run the three no-model live checks on the final runtime checkpoint after resume/input validation fixes; V2 selection, accounting, guards and decision semantics are unchanged.
+- A7 independently checks recorded selection arrays because reimplementing the multi-tier selector is not feasible in its minimal checker; this limitation is explicit in its output.

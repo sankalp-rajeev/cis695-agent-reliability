@@ -9,6 +9,7 @@ import pytest
 from reliability.agent.freeze import freeze_patch
 from reliability import e2e_runner
 from reliability.umgpt_spend import BudgetCap
+from reliability.provider_spend import AuthStop
 from reliability.verifier.decision import Decision, SignalOutcome
 from reliability.verifier.guarded_v2 import ReplayMismatch
 from reliability.verifier.policy_v1_4 import EvidenceV14, FullPolicyV14
@@ -85,6 +86,20 @@ def test_no_task_spec_gives_both_absences(tmp_path):
     assert record.regression.outcome is record.static.outcome is SignalOutcome.NOT_AVAILABLE
 
 
+def test_verification_preserves_frozen_patch_line_endings(tmp_path, task, monkeypatch):
+    from reliability.verifier import run_v1_4_1 as runtime
+    raw = PATCH.replace('\n', '\r\n').encode()
+    frozen = freeze_patch(tmp_path / 'patch.diff', raw)
+    seen, original = [], runtime.integrity_signal
+    def integrity(text, tree):
+        seen.append(text.encode())
+        return original(text, tree)
+    monkeypatch.setattr(runtime, 'integrity_signal', integrity)
+    record, _ = verify(tmp_path, task)
+    assert seen == [raw]
+    assert record.patch_sha256 == frozen.sha256
+
+
 def test_version_subclass_changes_only_version():
     evidence = EvidenceV14(integrity=SignalOutcome.PASS, regression=SignalOutcome.NOT_AVAILABLE,
         static=SignalOutcome.PASS, reproduction=SignalOutcome.PASS)
@@ -110,6 +125,16 @@ def test_v4_budget_stop_writes_not_run_record_before_stopping(tmp_path, task):
     assert (tmp_path / 'verification_record.full-v1.4.1.json').exists()
 
 
+def test_paid_v4_stop_does_not_claim_generation_never_started(tmp_path, task):
+    freeze_patch(tmp_path / 'patch.diff', PATCH)
+    error = BudgetCap('provider balance stopped after paid calls')
+    error.paid_calls = 1
+    with pytest.raises(TaskBudgetStop) as stopped:
+        verify(tmp_path, task, v4_failure=error)
+    assert stopped.value.record.v4_run_status == 'PARTIAL'
+    assert stopped.value.record.decision.decision is Decision.FLAG
+
+
 def test_skip_v4_is_refused_in_audited_mode():
     with pytest.raises(ValueError, match='refused in audited'):
         e2e_runner.validate_mode('audited', 'unused', Path('/tmp/patches'), True)
@@ -120,7 +145,7 @@ def batch(tmp_path, monkeypatch, task, *, count=4, failure=None, stop_agent=Fals
     ids = ['demo__repo-' + str(i) for i in range(count)]
     def agent(iid, directory):
         if stop_agent:
-            raise BudgetCap('UM cap')
+            raise stop_agent if isinstance(stop_agent, BaseException) else BudgetCap('UM cap')
         freeze_patch(directory / 'patch.diff', PATCH)
     def verification(iid, directory):
         return verify(directory, task, failure=failure)[0]
@@ -152,9 +177,10 @@ def test_integrity_abort_writes_completion_and_receipt(tmp_path, monkeypatch, ta
     assert (tmp_path / 'runs/batch/integrity_abort.json').exists()
 
 
-def test_um_budget_stop_ends_batch_cleanly(tmp_path, monkeypatch, task):
-    status, completion = batch(tmp_path, monkeypatch, task, stop_agent=True)
-    assert status == 'STOPPED_BUDGET'
+@pytest.mark.parametrize('error,expected', [(BudgetCap('UM cap'), 'STOPPED_BUDGET'), (AuthStop('UM auth'), 'STOPPED_AUTH')])
+def test_um_budget_stop_ends_batch_cleanly(tmp_path, monkeypatch, task, error, expected):
+    status, completion = batch(tmp_path, monkeypatch, task, stop_agent=error)
+    assert status == expected
     assert completion['completed_tasks'] == []
     assert len(completion['not_completed_tasks']) == 4
 
@@ -178,3 +204,40 @@ def test_resume_reuses_frozen_patch_and_archives_partial_verification(tmp_path, 
     assert (output / 'tasks/demo__repo-1/attempts/verification_0001/verification/partial.json').exists()
     attempts = json.loads((output / 'attempt.json').read_text())['attempts']
     assert len(attempts) == 2 and attempts[1]['resumed']
+
+
+def test_v4_budget_stop_keeps_task_incomplete_and_resume_archives_record(tmp_path, monkeypatch, task):
+    monkeypatch.setattr(e2e_runner, 'ROOT', tmp_path)
+    output, calls = tmp_path / 'runs/resume_budget', []
+    def agent(iid, directory):
+        calls.append('agent')
+        freeze_patch(directory / 'patch.diff', PATCH)
+    def stopped(iid, directory):
+        return verify(directory, task, v4_failure=BudgetCap('not enough for full V4'))[0]
+    header, ids = {'skip_v4': False}, ['demo__repo-1']
+    assert e2e_runner.run_batch(ids, output, header, agent, stopped) == 'STOPPED_BUDGET'
+    completion = json.loads((output / 'completion.json').read_text())
+    assert completion['completed_tasks'] == [] and completion['not_completed_tasks'] == ids
+    def complete(iid, directory):
+        return verify(directory, task)[0]
+    assert e2e_runner.run_batch(ids, output, header, agent, complete) == 'COMPLETE'
+    assert calls == ['agent']
+    archived = output / 'tasks/demo__repo-1/attempts/verification_0001'
+    assert (archived / 'verification_record.full-v1.4.1.json').exists()
+    assert not json.loads((archived / 'task_completion.json').read_text())['complete']
+
+
+def test_sigterm_writes_completion_without_losing_frozen_patch(tmp_path, monkeypatch):
+    import signal
+    monkeypatch.setattr(e2e_runner, 'ROOT', tmp_path)
+    output = tmp_path / 'runs/terminated'
+    def agent(iid, directory):
+        freeze_patch(directory / 'patch.diff', PATCH)
+    def terminate(iid, directory):
+        signal.raise_signal(signal.SIGTERM)
+    status = e2e_runner.run_batch(['demo__repo-1'], output, {'skip_v4': False}, agent, terminate)
+    assert status == 'STOPPED_INTERRUPT'
+    completion = json.loads((output / 'completion.json').read_text())
+    assert completion['not_completed_tasks'] == ['demo__repo-1']
+    assert (output / 'seal.json').exists()
+    assert e2e_runner.frozen_patch(output / 'tasks/demo__repo-1') is not None

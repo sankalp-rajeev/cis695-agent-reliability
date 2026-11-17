@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 from contextlib import contextmanager
 from pathlib import Path
@@ -19,16 +20,24 @@ from reliability.umgpt import ACTIVE, Runtime
 from reliability.umgpt_spend import BudgetCap
 
 
+class ProviderStageError(RuntimeError):
+    """A non-budget provider failure belongs to this task's stage."""
+
+
 def prices(config):
     if 'pricing' in config:
-        return {key: float(config['pricing'][key]) for key in
-                ('input_per_million', 'cached_input_per_million', 'output_per_million')}
-    entry = litellm.model_cost.get(config['model_id'])
-    if not entry:
-        raise ValueError('Model needs explicit per-call pricing in its config')
-    return {'input_per_million': float(entry['input_cost_per_token']) * 1_000_000,
+        result = {key: float(config['pricing'][key]) for key in
+                  ('input_per_million', 'cached_input_per_million', 'output_per_million')}
+    else:
+        entry = litellm.model_cost.get(config['model_id'])
+        if not entry:
+            raise ValueError('Model needs explicit per-call pricing in its config')
+        result = {'input_per_million': float(entry['input_cost_per_token']) * 1_000_000,
             'cached_input_per_million': float(entry.get('cache_read_input_token_cost', entry['input_cost_per_token'])) * 1_000_000,
             'output_per_million': float(entry['output_cost_per_token']) * 1_000_000}
+    if not all(math.isfinite(v) and v >= 0 for v in result.values()) or result['cached_input_per_million'] > result['input_per_million']:
+        raise ValueError('Invalid per-call pricing')
+    return result
 
 
 @contextmanager
@@ -41,7 +50,14 @@ def paid_stage(config, ledger, task, stage, cap):
             if runtime.halt:
                 if runtime.halt['termination'] == 'AUTH_ERROR':
                     raise AuthStop('AUTH_ERROR')
-                raise BudgetCap(runtime.halt['termination'])
+                if runtime.halt['termination'] == 'BUDGET_CAP':
+                    raise BudgetCap('BUDGET_CAP')
+                raise ProviderStageError(runtime.halt['termination'])
+        except BudgetCap as exc:
+            exc.paid_calls = sum(c.get('state') == 'reserved' or c.get('input_tokens') is not None
+                for c in ledger.account_calls(ledger.snapshot())
+                if c['job'] == ledger.job and c['task'] == task and c['stage'] == stage)
+            raise
         finally:
             ACTIVE.reset(token)
 
@@ -60,7 +76,7 @@ def model_options(path):
 
 
 class DeepSeekLedgerModel(LitellmModel):
-    abort_exceptions = [*LitellmModel.abort_exceptions, BudgetCap, AuthStop]
+    abort_exceptions = [*LitellmModel.abort_exceptions, BudgetCap, AuthStop, ProviderStageError]
 
     def __init__(self, provider_config, **kwargs):
         self.route = yaml.safe_load(Path(provider_config).read_text())
@@ -99,6 +115,8 @@ class DeepSeekLedgerModel(LitellmModel):
                 raise AuthStop('DeepSeek authentication stopped') from None
             if budget:
                 raise BudgetCap('DeepSeek balance exhausted') from None
+            if code is not None and 400 <= code < 500:
+                raise ProviderStageError('DeepSeek request rejected: ' + str(code)) from None
             raise BudgetCap('Ambiguous DeepSeek request; reservation retained') from None
         usage = response.model_dump().get('usage') or {}
         incoming, outgoing = usage.get('prompt_tokens'), usage.get('completion_tokens')

@@ -80,6 +80,12 @@ def frozen_inputs(root, ids):
             raise ValueError('Frozen patch has a forbidden input path')
         if row:
             require_hash(path, row['patch_sha256'])
+        elif (path.parent / 'frozen_patch.json').is_file():
+            proof = JSONProjection((path.parent / 'frozen_patch.json').read_text()).project({'sha256': True})
+            require_hash(path, proof['sha256'].removeprefix('sha256:'))
+        elif (path.parent / 'repair_record.json').is_file():
+            proof = JSONProjection((path.parent / 'repair_record.json').read_text()).project({'patch': {'sha256': True}})
+            require_hash(path, proof['patch']['sha256'].removeprefix('sha256:'))
         result[iid] = {'path': str(path), 'sha256': sha(path)}
     return result
 

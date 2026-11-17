@@ -4,7 +4,7 @@ import pytest
 import yaml
 from minisweagent.models.litellm_model import LitellmModel
 
-from reliability.paid_models import DeepSeekLedgerModel, paid_stage
+from reliability.paid_models import DeepSeekLedgerModel, ProviderStageError, paid_stage, prices
 from reliability.provider_spend import ProviderLedger
 from reliability.umgpt_spend import BudgetCap
 
@@ -56,3 +56,21 @@ def test_deepseek_without_active_ledger_cannot_make_a_call(configured, monkeypat
     monkeypatch.setattr(LitellmModel, '_query', lambda *a, **k: pytest.fail('unguarded call'))
     with pytest.raises(BudgetCap, match='active account ledger'):
         model._query([])
+
+
+def test_non_budget_provider_rejection_is_a_stage_failure(configured, monkeypatch):
+    config, model, ledger = configured
+    error = RuntimeError('invalid request')
+    error.status_code = 400
+    def query(*args, **kwargs):
+        raise error
+    monkeypatch.setattr(LitellmModel, '_query', query)
+    with pytest.raises(ProviderStageError):
+        with paid_stage(config, ledger, 'demo__repo-1', 'V4', 1):
+            model._query([])
+    assert ledger.snapshot()['calls'][0]['cost_usd'] == 0
+
+
+def test_invalid_pricing_is_refused_before_a_paid_request():
+    with pytest.raises(ValueError, match='Invalid per-call pricing'):
+        prices({'pricing': {'input_per_million': 1, 'cached_input_per_million': -1, 'output_per_million': 2}})

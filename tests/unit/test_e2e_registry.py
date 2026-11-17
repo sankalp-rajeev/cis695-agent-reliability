@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from reliability.verifier.task_specs import load_registries, validate_task
+from reliability.verifier.task_specs import REGISTRY_SCHEMA, RegistryProjection, load_registries, validate_task
 
 
 @pytest.fixture
@@ -45,3 +45,15 @@ def test_patch_dependent_fields_are_refused(task):
     task['selection'] = ['x']
     with pytest.raises(ValueError, match='Missing or unsupported'):
         validate_task(task)
+
+
+def test_unknown_registry_values_are_never_decoded():
+    parser = RegistryProjection('{"schema":"task_spec_registry/1","unexpected":{"outcome":"SECRET_VALUE"}}')
+    decoder = parser.decoder
+    class GuardedDecoder:
+        def raw_decode(self, text, position):
+            assert not text[position:].startswith(('{', '[', '"outcome"', '"SECRET_VALUE"'))
+            return decoder.raw_decode(text, position)
+    parser.decoder = GuardedDecoder()
+    with pytest.raises(ValueError, match='Unsupported registry field'):
+        parser.project(REGISTRY_SCHEMA)

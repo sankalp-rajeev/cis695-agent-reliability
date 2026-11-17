@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import signal
 import subprocess
 from datetime import UTC, datetime
 from pathlib import Path
@@ -78,7 +79,8 @@ def ensure_patch(instance_id, task_dir, agent_stage):
 def restart_verification(task_dir):
     folder = task_dir / 'verification'
     record = task_dir / 'verification_record.full-v1.4.1.json'
-    if not folder.exists() and not record.exists():
+    provider_stop = task_dir / 'provider_stop.json'
+    if not folder.exists() and not record.exists() and not provider_stop.exists():
         return None
     attempts = task_dir / 'attempts'
     attempts.mkdir(exist_ok=True)
@@ -91,6 +93,11 @@ def restart_verification(task_dir):
         folder.rename(destination / 'verification')
     if record.exists():
         record.rename(destination / record.name)
+    completion = task_dir / 'task_completion.json'
+    if completion.exists():
+        completion.rename(destination / completion.name)
+    if provider_stop.exists():
+        provider_stop.rename(destination / provider_stop.name)
     return str(destination.relative_to(task_dir))
 
 
@@ -126,6 +133,9 @@ def run_batch(instance_ids, output, header, agent_stage, verify_stage):
     write(attempts_path, attempts)
     completed, flags, current = [], [], None
     status, error = 'COMPLETE', None
+    def terminate(*args):
+        raise KeyboardInterrupt
+    previous_termination = signal.signal(signal.SIGTERM, terminate)
     try:
         for iid in instance_ids:
             current = iid
@@ -150,12 +160,12 @@ def run_batch(instance_ids, output, header, agent_stage, verify_stage):
                 record = verify_stage(iid, directory)
             except TaskBudgetStop as exc:
                 record, stop = exc.record, exc
-            write(done, {'complete': True, 'completed_utc': now(), 'skip_v4': header['skip_v4'],
+            write(done, {'complete': stop is None, 'completed_utc': now(), 'skip_v4': header['skip_v4'],
                          'patch_sha256': record.patch_sha256, 'infrastructure': infrastructure(record)})
-            completed.append(iid)
-            flags.append(infrastructure(record))
             if stop:
                 raise stop
+            completed.append(iid)
+            flags.append(infrastructure(record))
             if systemic(flags):
                 status = 'STOPPED_SYSTEMIC'
                 break
@@ -172,7 +182,8 @@ def run_batch(instance_ids, output, header, agent_stage, verify_stage):
     except Exception as exc:
         status, error = 'ABORTED_RUNNER', type(exc).__name__ + ': ' + str(exc)
     finally:
-        attempt.update(status=status, finished_utc=now())
+        signal.signal(signal.SIGTERM, previous_termination)
+        attempt.update(status=status, error=error, finished_utc=now())
         write(attempts_path, attempts)
         write(output / 'completion.json', {'status': status, 'completed_tasks': completed,
               'not_completed_tasks': [iid for iid in instance_ids if iid not in completed],

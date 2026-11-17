@@ -56,3 +56,11 @@ def test_legacy_um_ledger_entries_count_toward_account_cap(tmp_path):
     with pytest.raises(BudgetCap):
         with new.stage('x', 'V4', 1):
             pytest.fail('legacy spend must not reset on a new run')
+
+
+def test_resume_cannot_reset_a_partially_spent_stage_ceiling(tmp_path):
+    first = ledger(tmp_path / 'shared.json')
+    paid(first, cost=.1)
+    with pytest.raises(BudgetCap, match='already-used per-task ceiling'):
+        with first.stage('same_task', 'V4', 1):
+            pytest.fail('a fresh full V4 must fail before starting, rather than stop partway')

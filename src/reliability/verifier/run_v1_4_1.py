@@ -10,6 +10,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from reliability.umgpt_spend import BudgetCap
+from reliability.agent.freeze import FrozenPatch, FrozenPatchError, read_patch, verify as verify_frozen_patch
 from reliability.verifier.archive_tree import ArchiveTree
 from reliability.verifier.container import ContainerRepoTree, ContainerTestExecutor
 from reliability.verifier.evidence import has_high_severity_risk, has_prohibited_manipulation, integrity_outcome
@@ -127,7 +128,7 @@ def run_v2(task, patch_path, selection, folder, *, experiment, drift, stamps):
         error.g1_category = blocked[0]
         raise error
     receipt_path = folder / 'pristine_source_receipt.json'
-    with FrozenContainer(task.instance_id, patch_path.read_text(), image=task.image_id,
+    with FrozenContainer(task.instance_id, patch_path.read_bytes().decode('utf-8'), image=task.image_id,
         experiment_id=experiment, source_spec=task.source, source_receipt_path=receipt_path) as container:
         if container.source_integrity.get('status') != 'VERIFIED':
             raise ValueError('A fresh VERIFIED pristine receipt is required')
@@ -156,7 +157,11 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
     folder = task_dir / 'verification'
     folder.mkdir(parents=True, exist_ok=True)
     patch_path = task_dir / 'patch.diff'
-    patch_text = patch_path.read_text()
+    frozen = FrozenPatch(patch_path, 'sha256:' + sha(patch_path), patch_path.stat().st_size)
+    try:
+        patch_text = read_patch(frozen).decode('utf-8')
+    except FrozenPatchError as exc:
+        raise SourceIntegrityError({'mismatches': [{'path': 'patch.diff', 'reason': str(exc)}]}) from exc
     setup = reproduction_setup or default_reproduction_setup()
     started = time.monotonic()
     signals, selection, integrity = {}, None, None
@@ -212,7 +217,7 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
             raise
         except Exception as exc:
             signals[SignalKind.STATIC] = absence(SignalKind.STATIC, 'EXECUTOR_EXCEPTION:' + type(exc).__name__, infrastructure=True)
-    budget_stop, stop_termination = False, 'BUDGET_CAP'
+    budget_stop, stop_termination, paid_before_stop = False, 'BUDGET_CAP', 0
     if skip_v4:
         signals[SignalKind.REPRODUCTION] = absence(SignalKind.REPRODUCTION, 'SKIP_V4_FOR_CHECK')
     elif v4_runner is None:
@@ -225,13 +230,18 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
         except BudgetCap as exc:
             budget_stop = True
             stop_termination = getattr(exc, 'termination', 'BUDGET_CAP')
+            paid_before_stop = getattr(exc, 'paid_calls', 0)
             signals[SignalKind.REPRODUCTION] = absence(SignalKind.REPRODUCTION,
                 'AUTH_STOP' if stop_termination == 'AUTH_ERROR' else 'BUDGET_STOP', infrastructure=True)
         except Exception as exc:
             signals[SignalKind.REPRODUCTION] = absence(SignalKind.REPRODUCTION, 'V4_EXCEPTION:' + type(exc).__name__, infrastructure=True)
     policy = FullPolicyV141()
+    try:
+        verify_frozen_patch(frozen)
+    except FrozenPatchError as exc:
+        raise SourceIntegrityError({'mismatches': [{'path': 'patch.diff', 'reason': str(exc)}]}) from exc
     result = VerificationRecordV141(instance_id=instance_id, experiment_id=experiment_id,
-        verifier_config='full-v1.4.1', patch_sha256='sha256:' + sha(patch_path),
+        verifier_config='full-v1.4.1', patch_sha256=frozen.sha256,
         integrity=signals[SignalKind.INTEGRITY], regression=signals[SignalKind.REGRESSION],
         static=signals[SignalKind.STATIC], reproduction=signals[SignalKind.REPRODUCTION],
         decision=DecisionEntry.from_record(policy.decide(evidence_from_signals(signals))),
@@ -241,7 +251,8 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
         image_id=task_spec.image_id if task_spec else None,
         archive_sha256=task_spec.source.archive_sha256 if task_spec else None,
         reproduction_generator=setup.identity(),
-        provenance=provenance or {}, v4_run_status='NOT_RUN' if skip_v4 or budget_stop or v4_runner is None else 'RAN', **stamps)
+        provenance=provenance or {}, v4_run_status=('PARTIAL' if budget_stop and paid_before_stop else
+            'NOT_RUN' if skip_v4 or budget_stop or v4_runner is None else 'RAN'), **stamps)
     result.write(task_dir / 'verification_record.full-v1.4.1.json')
     if budget_stop:
         raise TaskBudgetStop(result, stop_termination)

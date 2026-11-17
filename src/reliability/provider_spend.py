@@ -55,6 +55,10 @@ class ProviderLedger(SpendLedger):
             if any(c['state'] == 'reserved' for c in self.account_calls(data)) or any(
                 self.owns(h) and h['state'] == 'active' for h in data.get('stage_escrows', [])):
                 raise BudgetCap('Unsettled paid stage/request; reconcile before resuming')
+            spent = sum(c['cost_usd'] for c in self.account_calls(data)
+                        if c['job'] == self.job and c['task'] == task and c['stage'] == stage)
+            if spent > 1e-12:
+                raise BudgetCap('A full fresh stage would reset its already-used per-task ceiling')
             self._budget_check(data, maximum_usd)
             token = uuid.uuid4().hex
             data.setdefault('stage_escrows', []).append({'id': token, 'provider': self.provider,
