@@ -6,3 +6,5 @@
 - 2026-11-16: Do not substitute sealed attempt-4 Django commands for the D1 source; D1 explicitly requires the fix13 projection used by frozen_django_command_choice.
 - 2026-11-16: Stop implementation at the input-access preflight; 31 required Django sources are outside the allowlist and the required frozen-artifact hash for golden.csv has an expressly forbidden path name.
 - 2026-11-16: Report blocked checks as incomplete and create no frozen tag; neither an input-access audit nor an unchanged existing unit suite demonstrates A1–A7 acceptance.
+- 2026-11-16: Record cache-lock errors as A6 failures under the requested test-id rule; do not hide environmental errors or change the required suite command.
+- 2026-11-16: Do not retry the push after the second automatic rejection; the reviewer explicitly requires direct user authorization for the external destination and does not accept the attachment instruction as trusted authorization.

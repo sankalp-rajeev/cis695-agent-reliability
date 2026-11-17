@@ -12,7 +12,7 @@ The required input-access preflight found two conflicts with the request's read 
 | A4 live Docker checks | NOT RUN | No containers started; `--skip-v4` was not used. |
 | A4b registry interface | NOT RUN | Registry and schema not built. |
 | A5 fault injection | NOT RUN | New runner not built. |
-| A6 unit suite / preservation | IN PROGRESS | Three new access-preflight tests; full-suite comparison pending. 74 permitted artifact hashes match, zero mismatches, one hash blocked. |
+| A6 unit suite / preservation | FAIL | All three new tests pass; both full suites have the same 30 new error IDs from the read-only dataset-cache lock. 74 permitted artifact hashes match, zero mismatches, one hash blocked. |
 | A7 independent acceptance verifier | NOT RUN | The standard-library input-access preflight below is a diagnostic, not the A7 acceptance verifier. |
 
 ## Required sources and the read boundary
@@ -65,7 +65,17 @@ blocked_frozen_artifacts=["reports/policy_v1_4/golden.csv"]
 
 ## Unit comparison and final branch integration
 
-Pending: exact command and test-id comparison against `/home/sankalp/projects/unit_baseline_7fefe1d/failing_ids.txt`, followed by the requested latest routing-branch merge and unit rerun. Full output is being retained under `runs/e2e_v1_4_1_checks/`.
+Both full-suite invocations use the requested command, this worktree root, and its own environment:
+
+```bash
+env -u PYTHONPATH PYTHONPATH=src .venv/bin/python -m pytest -p no:cacheprovider -rfE
+```
+
+Both invocations completed with 6 failures, 1478 passes, 7 skips and 47 errors (166.70 s before the merge, 160.39 s after it). Comparing IDs against `/home/sankalp/projects/unit_baseline_7fefe1d/failing_ids.txt` identifies the same 30 new error IDs in the loader, no-leakage, and sampler fixtures. Each reports `OSError: [Errno 30] Read-only file system` while creating the dataset-cache lock under `/home/sankalp/.cache/huggingface/datasets/`. These are not new production-code failures, but they fail A6's strict no-new-failed-or-error-ID rule. Every reference failed/error ID remains; **no reference failure now passes**. The three new tests pass separately (`3 passed in 0.17s`) and introduce no failed/error IDs in either full suite. Exact ID inventories and comparisons are retained in [unit_comparison.before_merge.json](unit_comparison.before_merge.json) and [unit_comparison.after_merge.json](unit_comparison.after_merge.json).
+
+`git fetch origin feature/umgpt-routing` succeeded; `git merge --no-edit origin/feature/umgpt-routing` reported `Already up to date.` The fetched branch points to `983c3f403948949fb159eeb5448e42391b5cad65`, already an ancestor of this checkpoint. The required post-merge suite finished with exactly the same failed/error IDs. Full output is retained under `runs/e2e_v1_4_1_checks/`. A final access-preflight run after the suites again found 74 matching permitted hashes, zero mismatches and the same blocked inputs.
+
+The checkpoint was committed locally as `6519c37`. Automatic approval review rejected `git push -u origin feature/e2e-v1.4.1` twice. The second review explicitly said that disclosing repository contents to the external GitHub destination needs directly provided trusted user authorization, and did not accept the requested push in the supplied attachment as that authorization. No workaround or alternative destination was attempted; nothing was pushed. Direct approval is needed to push the diagnostic, tests, and reports to `git@github.com:sankalp-rajeev/cis695-agent-reliability.git`, branch `feature/e2e-v1.4.1`.
 
 ## Known limitations
 

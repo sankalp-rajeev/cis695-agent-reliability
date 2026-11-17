@@ -4,7 +4,9 @@ STOPPED_INPUT_ACCESS (2026-11-16): D1's exact Django projection requires 31 file
 
 Implemented: independent standard-library access preflight and three focused tests. No pipeline or registry changes, model calls, rerun, image pulls/builds, or correctness-input reads. The preflight verifies 74 permitted frozen-artifact hashes with zero mismatches; one hash remains blocked by the path rule. No freeze tag will be created.
 
-Housekeeping in progress: compare the exact unit suite with the supplied reference, merge the fetched latest origin/feature/umgpt-routing, rerun the suite, commit and push this blocked checkpoint. Full implementation and A1–A7 acceptance remain incomplete.
+Housekeeping complete: fetched and merged latest origin/feature/umgpt-routing (already up to date at 983c3f4), then reran the exact unit suite. Before and after: 6 failed, 1478 passed, 7 skipped, 47 errors, with identical failed/error IDs. Compared with the supplied reference: 30 new ERROR IDs, all from a read-only Hugging Face dataset-cache lock; no reference failure now passes. All three new tests pass. A6 FAILS its strict ID rule; full implementation and A1–A7 acceptance remain incomplete.
+
+Publication: the checkpoint is committed locally on feature/e2e-v1.4.1. Automatic approval review rejected the requested push twice, requiring direct user authorization for git@github.com:sankalp-rajeev/cis695-agent-reliability.git and this payload/branch; the attachment instruction was not accepted as trusted authorization. No push or freeze tag was made.
 
 Environment: this worktree's own environment passed `UV_CACHE_DIR=/tmp/e2e-v1-4-1-uv-cache uv sync --offline --frozen --no-install-project` (155 packages). The temporary cache avoids writing outside the authorized workspace.
 

@@ -21,3 +21,9 @@ env -u PYTHONPATH PYTHONPATH=src .venv/bin/python -m pytest -p no:cacheprovider 
 ```
 
 Resume implementation only after the access exception described in REPORT.md is explicitly authorized. Do not move any existing tag or launch a paid rerun.
+
+Publication is separately blocked by automatic approval review. After direct approval for this repository, payload, and branch, the requested publication command is:
+
+```bash
+git push -u origin feature/e2e-v1.4.1
+```
