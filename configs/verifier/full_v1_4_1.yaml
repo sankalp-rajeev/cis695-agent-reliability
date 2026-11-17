@@ -1,0 +1,134 @@
+# Verifier layer. Operates on the frozen patch and the repository alone.
+#
+# The policy version string is recorded in every decision (Phase 7.1). Changing
+# any value here requires bumping policy_version, otherwise two runs carrying the
+# same version string could reflect different rules.
+layer: verifier
+policy_version: v1.4.1-full
+
+# Phase 4: patch integrity. These are disqualifying, not advisory.
+integrity:
+  must_apply_to_base: true
+  reject_conflict_markers: true
+  reject_binary_blobs: true
+  reject_harness_file_edits: true
+  reject_test_deletion_or_weakening: true
+  reject_unexpected_config_edits: true
+
+# Phase 5: regression tests. Selection is derived from the patch and repo only.
+# It must not consult PASS_TO_PASS; overlap with PASS_TO_PASS is computed after
+# the fact as analysis (Phase 5.3) and never fed back into selection.
+regression:
+  selection_policy: docs/VERIFIER_POLICY.md
+  consult_pass_to_pass: false
+
+  # Tiers per VERIFIER_POLICY.md §3.3, capped at Tier 2 (§8 open question 1
+  # decided). Tier 0 whole-suite stays a flag so enabling the ablation later
+  # needs no code change. Flipping either value requires a policy_version bump.
+  enable_tier0: false
+  max_tier: 2
+  exclude_agent_authored_tests: true   # §5.3
+
+  # §3.1. Seeded random sample across the whole tree; best-scoring layout wins
+  # with no hit-rate floor, and every layout's score is recorded.
+  convention_sample_size: 200
+  convention_seed: 695
+
+  # §3.4
+  per_pass_timeout_s: 1800
+  per_instance_timeout_s: 10800
+
+  # §3.2 — only pass-to-fail transitions are regressions; baseline cached per
+  # instance, since the base commit is fixed.
+  baseline_pass: true
+  baseline_cache_dir: null
+  primary_accounting: S_invalid_excluded
+  guards: [G1, G2, G3, G4, G5, G6]
+  inline_g1: true
+
+  rerun_flaky: true                     # §4.1
+
+  # §4. A crashed, timed-out, or unexecuted test is never scored as a pass.
+  outcomes: [PASS, REGRESSION, PRE_EXISTING_FAIL, NEWLY_PASSING, FLAKY, ERROR, TIMEOUT, NOT_RUN]
+  signals: [PASS, FAIL, NOT_AVAILABLE, BASELINE_UNRELIABLE]
+
+# Phase 6: static and build checks. Missing tooling is NOT_AVAILABLE, not PASS.
+static:
+  checks: [syntax, import, lint, typecheck, build]
+  unavailable_is_pass: false
+  absolute_accept_gate: [syntax, import]
+
+  # Syntax, import and build are properties of the patched tree alone. Lint and
+  # typecheck are compared against the base commit, so pre-existing violations
+  # are not attributed to the patch — the same reasoning as the §3.2 baseline.
+  absolute_checks: [syntax, import, build]
+  relative_checks: [lint, typecheck]
+  compare_baseline: true
+  timeout_s: 120
+  scope_to_patch: true
+
+# V4: issue-derived reproduction tests. The generator sees the issue text and
+# the base-commit tree only, with --network none. Tests are read out, hashed and
+# frozen on the host before any patch is applied, kept only if every screening
+# run fails with AssertionError on the base commit, and run against the patched
+# tree from the frozen bytes, written over whatever the patch left at that path.
+#
+# The budget is fixed. It is not adapted per instance, and there is no retry
+# when no test survives the screen: that instance records NOT_AVAILABLE
+# (nothing_to_check). Changing any value requires a policy_version bump.
+reproduction:
+  generator_model: configs/model/generator.yaml
+  generator_prompt: configs/agent/v4_generator.yaml
+  cache_dir: runs/<experiment_id>/_reproduction_cache
+  budget:
+    max_tests: 3               # files the generator may write; extra files ignored
+    retries: 0                 # one generation attempt per instance, always
+    generator_max_steps: 80
+    generator_max_cost_usd: 1.00
+    generator_timeout_s: 1200
+    per_command_timeout_s: 60
+    screen_runs: 2             # base commit; all must be AssertionError to keep
+    patched_runs: 2            # only a repeated pass or AssertionError counts;
+                               # flaky, error and timeout drop the test (v1.2.1)
+  # v1.2.2: an AssertionError is recognised by the exit code of a fixed runner
+  # (src/reliability/verifier/reproduction_freeze.py: RUNNER_SOURCE), never by
+  # parsing output. The runner's hash is recorded with every result.
+    per_run_timeout_s: 120
+    max_test_bytes: 65536
+
+# Phase 7: the combining rule. Implemented in verifier/decision.py, which
+# imports no signal module; adapters live in verifier/evidence.py.
+decision:
+  policy: full-v1.4.1
+
+  # Technical design §12, with one named exception (v1.3.0, §5.6): a
+  # regression failure does not reject when reproduction (V4) passes for the
+  # same patch — the two oracle-blind signals disagree, and that disagreement
+  # routes to FLAG ("signals disagree: regression FAIL, reproduction PASS"),
+  # not REJECT. Every other reject condition is unaffected and still
+  # dominates. A regression FAIL with reproduction FAIL or NOT_AVAILABLE still
+  # REJECTs exactly as before.
+  reject_if: [patch_does_not_apply, integrity_failed, regression_failed_without_v4_pass, prohibited_manipulation]
+  accept_if: [integrity_pass, regression_pass, reproduction_pass, no_high_severity_risk, no_v3_absolute_failure, complete_v1_analysis]
+  otherwise: FLAG
+
+  # ACCEPT needs a reproduction PASS. A reproduction FAIL is an unmet ACCEPT
+  # condition (FLAG), not a REJECT: a generated test is weaker evidence than
+  # the repository's own. NOT_AVAILABLE is never treated as a pass.
+  require_reproduction: true
+  reproduction_implemented: true
+
+  # Raising a flag downgrades ACCEPT to FLAG; it never rejects (Phase 4.2).
+  high_severity_risk_features: [deletes_files, broad_excepts_added]
+
+# Phase 4.2: recorded as features for analysis; these do not auto-fail a patch.
+risk_features:
+  - files_changed
+  - loc_added
+  - loc_removed
+  - source_to_test_ratio
+  - unrelated_dirs_touched
+  - broad_except_introduced
+  - public_api_surface_changed
+
+# v1.4: syntax/import FAIL blocks ACCEPT; other V3 checks are evidence only.

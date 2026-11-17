@@ -75,9 +75,14 @@ class Projection:
         self.pos += 1
         if char == '[':
             result = []
+            index = 0
             self.whitespace()
             while self.text[self.pos] != ']':
-                result.append(self.project(schema['*']))
+                if index < schema.get('@limit', float('inf')):
+                    result.append(self.project(schema['*']))
+                else:
+                    self.skip()
+                index += 1
                 self.whitespace()
                 if self.text[self.pos] == ',':
                     self.pos += 1
@@ -110,7 +115,7 @@ def digest(raw):
     return hashlib.sha256(raw).hexdigest()
 
 
-def audit_frozen_files(root=ROOT):
+def audit_frozen_files(root=ROOT, *, approved_exceptions=False):
     """Rehash permitted frozen artifacts; report forbidden names without opening."""
     manifest = root / 'reports/policy_v1_4/artifact_manifest.sha256'
     entries = []
@@ -125,7 +130,8 @@ def audit_frozen_files(root=ROOT):
     for origin, name, checksum in entries:
         row = {'manifest': origin, 'path': name, 'expected_sha256': checksum}
         path = root / name
-        if any(word in name.casefold() for word in FORBIDDEN_NAMES):
+        exception = approved_exceptions and name == 'reports/policy_v1_4/golden.csv'
+        if any(word in name.casefold() for word in FORBIDDEN_NAMES) and not exception:
             row.update(status='BLOCKED_FORBIDDEN_NAME', opened=False)
         elif Path(name).is_absolute() or '..' in Path(name).parts:
             raise ValueError('Unsafe frozen artifact path: ' + name)
@@ -138,7 +144,7 @@ def audit_frozen_files(root=ROOT):
     return result
 
 
-def audit(frozen=FROZEN, reference=None):
+def audit(frozen=FROZEN, reference=None, *, approved_exceptions=False):
     """Resolve the exact Django sources in the existing function, without I/O there."""
     reference = reference or ROOT / 'reports/next_phases/phase4_rerun/fix13_reference'
     inputs = {}
@@ -152,6 +158,8 @@ def audit(frozen=FROZEN, reference=None):
             tasks = Projection(raw.decode()).project({'*': {
                 'instance_id': True, 'runner': {'name': True}}})
     raw = (reference / 'manifest.json').read_bytes()
+    if approved_exceptions and digest(raw) != '5464690f7a64d1bdeeea88f257f8bdedc70a98d7d758a4a298f34e7a6933b792':
+        raise ValueError('Approved Fix 13 manifest hash mismatch')
     inputs[str(reference / 'manifest.json')] = digest(raw)
     manifest = Projection(raw.decode()).project({'input_sha256': True})
     rows = []
@@ -167,22 +175,43 @@ def audit(frozen=FROZEN, reference=None):
         # Do not resolve symlinks or stat/open these paths. The declared paths
         # themselves already fall outside the user-authorized input roots.
         inside = path.is_absolute() and path.is_relative_to(frozen)
-        rows.append({'instance_id': iid, 'path': str(path), 'sha256': checksum,
-                     'inside_paired_frozen': inside, 'source_opened': False})
-    blocked = [row for row in rows if not row['inside_paired_frozen']]
+        row = {'instance_id': iid, 'path': str(path), 'sha256': checksum,
+               'inside_paired_frozen': inside, 'source_opened': False}
+        if approved_exceptions:
+            # Hash bytes first, then whitelist the exact first-two-call argv projection.
+            if digest(path.read_bytes()) != checksum:
+                raise ValueError('Django source SHA-256 mismatch: ' + str(path))
+            calls = Projection(path.read_text()).project({'calls': {'@limit': 2, '*': {
+                'run': {'events': {'*': {'argv': True}}}}}})['calls']
+            commands = [event['argv'] for call in calls for event in call['run'].get('events', []) if 'argv' in event]
+            choices = set()
+            for argv in commands:
+                if argv[:3] != ['python', 'tests/runtests.py', '--verbosity=2']:
+                    raise ValueError('Unexpected Django command')
+                parallel = [token for token in argv if token.startswith('--parallel')]
+                enabled = '--parallel' in argv and argv[argv.index('--parallel')+1:argv.index('--parallel')+2] == ['1']
+                if parallel and (parallel != ['--parallel'] or not enabled):
+                    raise ValueError('Unsupported Django parallel choice')
+                choices.add(enabled)
+            if len(choices) != 1:
+                raise ValueError('Inconsistent Django command choice')
+            row.update(source_opened=True, sha256_verified=True, parallel_one=choices.pop())
+        rows.append(row)
+    blocked = [row for row in rows if not row['inside_paired_frozen'] and not approved_exceptions]
     return {'check': 'D1_INPUT_ACCESS', 'status': 'BLOCKED_INPUT_ACCESS' if blocked else 'READY',
             'frozen_tasks': len(tasks), 'django_tasks': len(rows),
             'blocked_sources': blocked, 'input_sha256': inputs,
-            'command_projection_sources_opened': 0, 'model_calls': 0,
+            'django_sources': rows, 'command_projection_sources_opened': sum(r['source_opened'] for r in rows), 'model_calls': 0,
             'acceptance_checks_run': []}
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--approved-exceptions', action='store_true')
     args = parser.parse_args()
-    report = audit()
-    report['frozen_artifacts'] = audit_frozen_files()
+    report = audit(approved_exceptions=args.approved_exceptions)
+    report['frozen_artifacts'] = audit_frozen_files(approved_exceptions=args.approved_exceptions)
     blocked_files = [r for r in report['frozen_artifacts'] if r['status'] == 'BLOCKED_FORBIDDEN_NAME']
     mismatches = [r for r in report['frozen_artifacts'] if r['status'] == 'MISMATCH']
     if blocked_files or mismatches:
@@ -194,7 +223,7 @@ def main():
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps({key: value for key, value in report.items()
-                      if key not in ('blocked_sources', 'frozen_artifacts')}, indent=2))
+                      if key not in ('blocked_sources', 'frozen_artifacts', 'django_sources')}, indent=2))
     print('blocked_source_count=' + str(len(report['blocked_sources'])))
     print('frozen_artifact_matches=' + str(sum(r['status'] == 'MATCH' for r in report['frozen_artifacts'])))
     print('frozen_artifact_mismatches=' + str(len(mismatches)))
