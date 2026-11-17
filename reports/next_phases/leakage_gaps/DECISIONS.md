@@ -40,3 +40,30 @@
   severity violations. The report's confirmed categories remain separate from
   the question of whether a model actually used an answer. No correctness labels
   or grader outputs were consulted.
+
+## Interpretive follow-up
+
+- Preserve every raw finding, severity and image receipt byte for byte. A new
+  `tiers/inventory_manifest.json` pins them; the old report text is preserved
+  verbatim under the raw-rule inventory heading and in `tiers/raw_rule_inventory.md`.
+- T4 requires eligible tool-output-first content or an absent hidden test name.
+  T3 is model-first evidence and cannot distinguish memory from solving. Own
+  writes and later tool echoes do not turn a model-produced fix into T4.
+- Accept the user's reviewed setup-commit facts for the existing 100-image
+  inventory. Setup commits alone do not demonstrate answer access.
+- Count content occurrences in verified pinned base archives. Require 25
+  non-whitespace characters and fewer than three base occurrences; keep the
+  hidden-name rule separate. Also distinguish raw JSON escaping from content
+  actually present in decoded messages.
+- Per-run CSV rows include explicitly unobserved missing role trajectories.
+  Unique-task role totals cover 93 non-requests tasks and use the maximum over
+  runs. T3/T4 task lists use the maximum over both roles; requests are excluded.
+  The 83 comparable tasks come from the historical archive pin inventory.
+- Reinspect stored cache command results; never execute those agent commands.
+  Separate returned source, filenames, member listings, metadata and empty
+  listings. A cache access alone does not establish T4 without answer content.
+- The initial parent-directory guidance search was broader than permitted and
+  returned no paths or contents. No blinded run payload was opened; all later
+  access is restricted to explicit allowed paths.
+- The reusable arm audit has no model or Docker calls. Only synthetic folders
+  are used for its validation in this session. No push is authorized.

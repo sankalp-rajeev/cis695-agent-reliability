@@ -39,3 +39,13 @@ The standard-library independent verifier passes. Cache size remains 15,484,578
 bytes. Existing tests, reference files, stored runs and `wt-e2e` are unchanged.
 Only the proposed fresh single-commit agent repository remains a user decision;
 it is documented and not implemented. Commits are local; no push is authorized.
+
+Interpretive follow-up (2026-11-17): adding a separate T0–T4 layer without
+rewriting any original finding or image receipt. It distinguishes tool-first
+answer content from model-produced fixes, applies the length/base-occurrence
+guard, and treats accepted setup history as harmless. The rerun CLI is exercised
+only on invented temporary folders. Full-suite comparison is in progress.
+
+Scope incident: the first guidance-file search in this follow-up included the
+parent projects directory. It returned no paths or contents. Subsequent searches
+use explicit allowed paths; no blinded run payload has been opened or audited.

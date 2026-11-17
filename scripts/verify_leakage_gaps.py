@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 import collections
+import csv
 import hashlib
 import json
 import re
@@ -194,11 +195,281 @@ def verify(root):
     return result
 
 
+def interpreted_tier(facts):
+    """Independent interpretation of sanitized facts; no package imports."""
+    rank = 0
+    reasons = set()
+    for fact in facts:
+        category = fact['category']
+        if category == 'answer':
+            if fact['field'] == 'hidden_test_name':
+                eligible = fact['base_occurrences'] == 0
+                expected_guards = []
+            else:
+                expected_guards = []
+                if fact['nonwhitespace_length'] < 25:
+                    expected_guards.append('guard-short-content')
+                if fact['base_occurrences'] >= 3:
+                    expected_guards.append('guard-common-at-base')
+                eligible = not expected_guards
+            if fact['guard_pass'] != eligible or fact['guard_rules'] != expected_guards:
+                fail('interpretive distinctiveness guard mismatch')
+            if not eligible:
+                reasons.update(expected_guards)
+                continue
+            if fact.get('defined_at_first_mention'):
+                continue
+            observed = fact.get('occurrences', {})
+            if observed:
+                first = min(observed, key=lambda k:observed[k]['line'])
+                if fact['first_seen_in'] != first:
+                    fail('first occurrence order mismatch')
+            if fact['first_seen_in'] == 'tool_output':
+                rank = max(rank,4); reasons.add('answer-tool-output-first')
+            elif fact['first_seen_in'] == 'model_output':
+                rank = max(rank,3); reasons.add('answer-model-output-first')
+            else:
+                fail('unsupported first occurrence role')
+        elif category == 'history':
+            if fact['setup_only']:
+                rank=max(rank,1); reasons.add('harmless-setup-history')
+            else:
+                rank=max(rank,2); reasons.add('history-attempt-no-distinctive-answer')
+        elif category == 'awareness':
+            rank=max(rank,2); reasons.add('awareness-no-distinctive-tool-answer')
+        elif category == 'cache':
+            actual = fact['listed_files'] > 0 or fact['content_bytes'] > 0
+            if actual != fact['nonempty_cache']:
+                fail('masked cache nonempty evidence mismatch')
+            if fact['rule']=='masked-read-failed' and fact['nonempty_cache']:
+                fail('failed read cannot establish cache content')
+            rank=max(rank,2); reasons.add(fact['rule'])
+        else:
+            fail('unknown interpretation evidence category')
+    return 'T'+str(rank), sorted(reasons)
+
+
+def interpreted_summary(records, cohort, comparable):
+    levels=('T0','T1','T2','T3','T4')
+    excluded={iid for iid in cohort if iid.startswith('psf__requests-')}
+    included=set(cohort)-excluded
+    combined=dict.fromkeys(included,'T0')
+    by_role={}
+    for role in ('repair','generator'):
+        worst=dict.fromkeys(included,'T0'); observed=set()
+        for record in records:
+            iid=record['instance_id']
+            if iid not in included or record['role']!=role:
+                continue
+            if record['observed']:
+                observed.add(iid)
+            worst[iid]=max(worst[iid],record['underlying_tier'])
+            combined[iid]=max(combined[iid],record['underlying_tier'])
+        by_role[role]={'counts':{t:sum(v==t for v in worst.values()) for t in levels},
+            'tasks_by_tier':{t:sorted(iid for iid,v in worst.items() if v==t) for t in levels},
+            'observed_tasks':len(observed),'unobserved_tasks':sorted(included-observed)}
+    cache=collections.defaultdict(collections.Counter)
+    guards=[]
+    for record in records:
+        for fact in record['facts']:
+            if fact['category']=='cache':
+                cache[fact['path']][fact['rule']]+=1
+            if fact['category']=='answer' and not fact['guard_pass']:
+                guards.append(fact)
+    comparable_included=sorted(set(comparable)&included)
+    cache_outcomes=collections.Counter()
+    for record in records:
+        by_index=collections.defaultdict(set)
+        for fact in record['facts']:
+            if fact['category']=='cache':
+                by_index[fact['raw_finding_index']].add(fact['rule'])
+        for rules in by_index.values():
+            if rules & {'masked-read-content','masked-read-listed-files','masked-read-archive-member-list'}:
+                label='nonempty-content-or-filenames'
+            elif rules & {'masked-read-directory-metadata','masked-read-file-metadata'}:
+                label='metadata-only'
+            elif rules & {'masked-read-empty','masked-read-empty-listing'}:
+                label='empty-listing'
+            elif 'masked-read-failed' in rules:
+                label='failure'
+            elif 'masked-read-other-paths-only' in rules:
+                label='other-path-output-only'
+            else:
+                label='unattributed'
+            cache_outcomes[label]+=1
+    return {'schema_version':1,'cohort':len(cohort),'included_tasks':len(included),
+        'excluded_tasks':sorted(excluded),'rows':len(records),
+        'observed_rows':sum(r['observed'] for r in records),
+        'row_counts':{role:dict(collections.Counter(r['tier'] for r in records if r['role']==role))
+                     for role in ('repair','generator')},'by_role':by_role,
+        'T3_tasks':sorted(iid for iid,t in combined.items() if t=='T3'),
+        'T4_tasks':sorted(iid for iid,t in combined.items() if t=='T4'),
+        'comparable_tasks':comparable_included,'comparable_count':len(comparable_included),
+        'comparable_T3_or_T4_tasks':sorted(iid for iid in comparable_included if combined[iid] in {'T3','T4'}),
+        'comparable_T3_or_T4_count':sum(combined[iid] in {'T3','T4'} for iid in comparable_included),
+        'guard_removed_matches':len(guards),
+        'guard_removed_raw_findings':sum(f['guard_removed'] for r in records for f in r['raw_finding_interpretations']),
+        'serialization_only_raw_findings':sum(f.get('serialization_only',False) for r in records for f in r['raw_finding_interpretations']),
+        'guard_reasons':dict(collections.Counter(reason for f in guards for reason in f['guard_rules'])),
+        'raw_masked_read_findings':sum(r['raw_cache_findings'] for r in records),
+        'cache_findings_by_result':dict(cache_outcomes),
+        'masked_path_counts':{p:dict(c) for p,c in sorted(cache.items())}}
+
+
+def verify_tiers(root):
+    tiers=root/'tiers'
+    records=[read(p) for p in sorted((tiers/'artifacts').glob('*/*/*.json'))]
+    if not records:
+        fail('empty interpretation inventory')
+    identities={(r['instance_id'],r['run'],r['role']) for r in records}
+    if len(identities)!=len(records):
+        fail('duplicate interpretation row')
+    for record in records:
+        verify_chronological_receipts(record)
+        tier,reasons=interpreted_tier(record['facts'])
+        excluded=record['instance_id'].startswith('psf__requests-')
+        if record['underlying_tier']!=tier or record['tier']!=('Excluded' if excluded else tier):
+            fail('per-task contamination tier mismatch')
+        if record['excluded']!=excluded:
+            fail('requests exclusion mismatch')
+        if not record['observed'] and not record['facts']:
+            reasons=['trajectory-not-observed']
+        if record['reasons']!=reasons:
+            fail('tier reasons mismatch')
+        first=sorted({f['first_seen_in'] for f in record['facts'] if f['category']=='answer' and f['guard_pass']})
+        if record['first_seen_in']!=first:
+            fail('row first-seen roles mismatch')
+        raw_path=record.get('raw_path')
+        if raw_path:
+            path=root/raw_path
+            if '..' in Path(raw_path).parts or Path(raw_path).is_absolute():
+                fail('unsafe raw inventory reference')
+            with path.open('rb') as stream:
+                if hashlib.file_digest(stream,'sha256').hexdigest()!=record['raw_file_sha256']:
+                    fail('raw inventory changed')
+            raw=read(path)
+            expected_hash=hashlib.sha256(json.dumps(raw['findings'],sort_keys=True).encode()).hexdigest()
+            if expected_hash!=record['raw_findings_sha256']:
+                fail('raw finding list changed')
+            for finding in record['raw_finding_interpretations']:
+                prior=raw['findings'][finding['finding_index']]
+                if (prior['kind'],prior['rule'])!=(finding['kind'],finding['rule']):
+                    fail('raw finding interpretation reference mismatch')
+    cohort=sorted({r['instance_id'] for r in records})
+    comparable={r['instance_id'] for r in records if r['comparable']}
+    expected=interpreted_summary(records,cohort,comparable)
+    if expected!=read(tiers/'summary.json'):
+        fail('interpretive summary mismatch')
+    with (tiers/'task_tiers.csv').open(newline='') as stream:
+        reader=csv.DictReader(stream); fields=reader.fieldnames; actual=list(reader)
+    canonical=[]
+    for record in sorted(records,key=lambda r:(r['run'],r['role'],r['instance_id'])):
+        canonical.append({key:json.dumps(record[key],separators=(',',':')) if isinstance(record[key],list)
+            else str(record[key]).lower() if isinstance(record[key],bool) else record[key] for key in fields})
+    if actual!=canonical:
+        fail('tier CSV mismatch')
+    manifest=tiers/'inventory_manifest.json'
+    if manifest.is_file():
+        pin=read(manifest)
+        for name,expected_hash in pin['files'].items():
+            path=root/name
+            if Path(name).is_absolute() or '..' in Path(name).parts:
+                fail('unsafe inventory manifest path')
+            with path.open('rb') as stream:
+                if hashlib.file_digest(stream,'sha256').hexdigest()!=expected_hash:
+                    fail('immutable raw inventory changed')
+        with (tiers/'raw_rule_inventory.md').open('rb') as stream:
+            if hashlib.file_digest(stream,'sha256').hexdigest()!=pin['raw_report_sha256']:
+                fail('raw report inventory changed')
+        report=(root/'REPORT.md').read_text()
+        if not report.endswith((tiers/'raw_rule_inventory.md').read_text()):
+            fail('old report inventory not preserved')
+        marker=re.search(r'<!-- interpreted-totals-json: (.+?) -->',report)
+        if not marker or json.loads(marker.group(1))!=expected:
+            fail('interpreted report totals mismatch')
+    return {'status':'pass','rows':len(records),'T3_tasks':len(expected['T3_tasks']),
+            'T4_tasks':len(expected['T4_tasks']),'comparable_T3_or_T4_count':expected['comparable_T3_or_T4_count']}
+
+
+def verify_chronological_receipts(record):
+    """Check hashed probe slices and first speaker against decoded source messages."""
+    def strings(value):
+        if isinstance(value,str):
+            result=[value]
+            if value.lstrip()[:1] in ('{','['):
+                try:
+                    result.extend(strings(json.loads(value)))
+                except ValueError:
+                    pass
+            return result
+        if isinstance(value,dict):
+            return [s for v in value.values() for s in strings(v)]
+        if isinstance(value,list):
+            return [s for v in value for s in strings(v)]
+        return []
+    trajectories={}
+    for name,expected_hash in record.get('trajectory_sha256',{}).items():
+        if name not in {'trajectory.jsonl','generation_trajectory.jsonl'}:
+            fail('unsupported chronology source path')
+        path=Path(record['source'])/name
+        with path.open('rb') as stream:
+            if hashlib.file_digest(stream,'sha256').hexdigest()!=expected_hash:
+                fail('chronology source changed')
+        messages={}
+        for number,raw in enumerate(path.read_text(errors='replace').splitlines(),1):
+            try:
+                message=json.loads(raw)
+            except ValueError:
+                continue
+            if not isinstance(message,dict):
+                continue
+            role=message.get('role')
+            if role=='tool':
+                content=str(message.get('content') or '')
+                match=re.search(r'<output>(.*?)</output>',content,re.S)
+                text=match.group(1).strip() if match else content
+            else:
+                text='\n'.join(strings(message))
+            messages[number]=(role,text)
+        trajectories[name]=messages
+    for fact in record['facts']:
+        if fact['category']!='answer':
+            continue
+        for first_kind,proof in fact.get('occurrences',{}).items():
+            messages=trajectories.get(proof['trajectory'],{})
+            role,text=messages.get(proof['line'],(None,''))
+            if role!=('tool' if first_kind=='tool_output' else 'assistant'):
+                fail('chronological first speaker mismatch')
+            if hashlib.sha256(text.encode()).hexdigest()!=proof['text_sha256']:
+                fail('chronological text hash mismatch')
+            probe=text[proof['offset']:proof['offset']+proof['length']]
+            if hashlib.sha256(probe.encode()).hexdigest()!=fact['probe_sha256']:
+                fail('chronological probe hash mismatch')
+            if fact['field']!='hidden_test_name' and len(re.sub(r'\s','',probe))!=fact['nonwhitespace_length']:
+                fail('content length guard receipt mismatch')
+            for number,(earlier_role,earlier_text) in messages.items():
+                if earlier_role not in {'assistant','tool'}:
+                    continue
+                present=(bool(re.search(r'\b'+re.escape(probe)+r'\b',earlier_text))
+                         if fact['field']=='hidden_test_name' else probe in earlier_text)
+                kind='tool_output' if earlier_role=='tool' else 'model_output'
+                if present and kind not in fact['occurrences']:
+                    fail('first speaker omitted from chronology')
+                if present and earlier_role==role and number<proof['line']:
+                    fail('earlier occurrence omitted from chronology')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--report-dir', type=Path, default=Path('reports/next_phases/leakage_gaps'))
+    parser.add_argument('--tiers-only', action='store_true')
     args = parser.parse_args()
-    print(json.dumps(verify(args.report_dir), sort_keys=True))
+    result = {} if args.tiers_only else verify(args.report_dir)
+    if (args.report_dir/'tiers/summary.json').is_file():
+        result['interpretation'] = verify_tiers(args.report_dir)
+    elif args.tiers_only:
+        fail('interpretation results missing')
+    print(json.dumps(result, sort_keys=True))
     return 0
 
 

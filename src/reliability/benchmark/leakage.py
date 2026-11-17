@@ -512,7 +512,7 @@ def _message_strings(value: object) -> list[str]:
     return []
 
 
-def agent_authored_lines(task_dir: Path, probes: OracleProbes) -> frozenset[str]:
+def agent_authored_lines(task_dir: Path, probes: OracleProbes, *, trajectory_names=TRAJECTORY_FILES) -> frozenset[str]:
     """Added oracle lines whose first appearance, in the whole trajectory, is the model's own message.
 
     The walk is file order from the first message to the last. It is not
@@ -522,7 +522,7 @@ def agent_authored_lines(task_dir: Path, probes: OracleProbes) -> frozenset[str]
     message contains before any user or tool message does is suppressed, so a
     later `git diff` of a fix the model wrote itself is not read as a leak.
     """
-    path = next((task_dir / name for name in TRAJECTORY_FILES
+    path = next((task_dir / name for name in trajectory_names
                  if (task_dir / name).exists()), None)
     if path is None:
         return frozenset()
@@ -1095,12 +1095,14 @@ def scan_newer_copies(path: Path, text: str, instance_id: str) -> list[Finding]:
 
 
 def audit_task(
-    task_dir: Path, probes: OracleProbes | None = None, *, context=None
+    task_dir: Path, probes: OracleProbes | None = None, *, context=None, trajectory_names=None
 ) -> tuple[list[Finding], int]:
     """Audit one task directory. Returns its findings and how many files it read."""
     findings: list[Finding] = []
     files = scan_files(task_dir)
-    authored = agent_authored_lines(task_dir, probes) if probes is not None else frozenset()
+    if trajectory_names is not None:
+        files=[p for p in files if p.name not in TRAJECTORY_FILES or p.name in trajectory_names]
+    authored = agent_authored_lines(task_dir, probes, trajectory_names=trajectory_names or TRAJECTORY_FILES) if probes is not None else frozenset()
 
     for path in files:
         try:
