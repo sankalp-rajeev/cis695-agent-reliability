@@ -24,3 +24,6 @@
 - Final registries are rebuilt from committed implementation 750af1f, because built_by_commit should identify the code that produced their evidence.
 - Keep all 93 eligible IDs in the main cohort even though only 92 are ready, because a source-integrity failure must not redefine eligibility or study membership.
 - Report 200 as disk-uncertain and 492 as over capacity under current estimates, because exact OCI layer unions were rate-limited and neither estimate alone authorizes pulls.
+- Export a separate strict registry for frozen E2E v1.4.1, because that consumer rejects the three preparation-only task fields; retain them losslessly in a hash-bound sidecar.
+- Copy only the pinned wheel and nine exact per-task projections into wt-e2e/runs/task_prep_inputs, because the frozen validator must re-resolve every recorded projection hash without defaulting to the 83-row projection.
+- Preserve accepted eligibility/cohort/projection artifacts and add a 92-task execution order, because the user now excludes Sphinx 10614 from the main run and requires the comparable frozen 83 to finish first.
