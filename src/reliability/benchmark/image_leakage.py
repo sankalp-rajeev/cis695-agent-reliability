@@ -1,0 +1,137 @@
+"""Audit-only image request preparation and safe result serialization."""
+from __future__ import annotations
+
+import base64
+import csv
+import hashlib
+import json
+import re
+import subprocess
+from pathlib import Path
+
+from reliability.agent.isolation import MASKED_TMPFS_PATHS, docker_bin
+from reliability.benchmark.image_probe import version_from_text
+from reliability.benchmark.leakage import import_name_for_instance, probes_from_oracle
+from reliability.benchmark.leakage_rules import digest
+from reliability.verifier.source_integrity import BaseSourceSpec, SourceArchive
+
+ROOT = Path(__file__).resolve().parents[3]
+PIN_FILE = ROOT / 'reports/v2_scg_paired/ubuntu_progress_20261105/archive_references.json'
+ARCHIVES = Path('/home/sankalp/cg_repos/task_archives')
+
+
+def archive_for(task, pins=None):
+    pins = json.loads(PIN_FILE.read_text())['archives'] if pins is None else pins
+    pin = next((p for p in pins if p['instance_id'] == task.instance_id), None)
+    path = ARCHIVES / (task.instance_id + '.tar')
+    if pin is None:
+        # Freeze a new digest for the 17 tasks omitted by the previous preparation.
+        # Its origin is explicit in the report, rather than claiming an old pin.
+        pin = dict(instance_id=task.instance_id, base_commit=task.base_commit,
+                   path=str(path), sha256=hashlib.file_digest(path.open('rb'), 'sha256').hexdigest(),
+                   pin_origin='audit-initial-inventory')
+    else:
+        pin = dict(pin, pin_origin='historical-archive-references')
+    if pin['base_commit'] != task.base_commit:
+        raise ValueError('archive base identity mismatch')
+    spec = BaseSourceSpec(task.base_commit, path, pin['sha256'])
+    return SourceArchive(spec), pin
+
+
+def base_version(archive, import_name):
+    candidates = [import_name + '/' + name for name in
+                  ('__version__.py', '_version.py', 'version.py', '__init__.py')]
+    candidates += ['lib/' + p for p in candidates] + ['src/' + p for p in candidates]
+    sources = archive.read_many(candidates + ['setup.py', 'setup.cfg'])
+    for name in candidates:
+        value = version_from_text(sources.get(name, b'').decode(errors='replace'))
+        if value:
+            return value
+    text = sources.get('setup.py', b'').decode(errors='replace')
+    parts = {}
+    for key in ['MAJOR', 'MINOR', 'MICRO']:
+        match = re.search(r'(?m)^' + key + r'\s*=\s*(\d+)', text)
+        if match:
+            parts[key] = match.group(1)
+    if len(parts) == 3:
+        return '.'.join(parts.values())
+    return version_from_text(text)
+
+
+def post_images(archive, patch):
+    """Reconstruct post-images in memory; never apply the gold patch to disk."""
+    from unidiff import PatchSet
+    outputs = []
+    for file in PatchSet(patch):
+        if file.is_removed_file:
+            continue
+        path = file.path
+        original = archive.read_many([path]).get(path, b'').decode().splitlines(keepends=True)
+        result, position = [], 0
+        for hunk in file:
+            start = max(0, hunk.source_start - 1)
+            result.extend(original[position:start]); position = start
+            for line in hunk:
+                if line.is_context or line.is_removed:
+                    if position >= len(original) or original[position] != line.value:
+                        raise ValueError('gold post-image context mismatch: path_sha256=' +
+                            digest(path) + ', source_line=' + str(position + 1))
+                    if line.is_context:
+                        result.append(original[position])
+                    position += 1
+                elif line.is_added:
+                    result.append(line.value)
+        result.extend(original[position:])
+        outputs.append(base64.b64encode(''.join(result).encode()).decode())
+    return outputs
+
+
+def prepare_requests(manifest, directory):
+    from reliability.benchmark.loader import load_instance, load_verified
+    dataset = load_verified()
+    requests = []
+    for row in csv.DictReader(Path(manifest).open()):
+        task, oracle = load_instance(row['instance_id'], dataset)
+        if task.base_commit != row['base_commit']:
+            raise ValueError('cohort base mismatch')
+        archive, pin = archive_for(task)
+        probes = probes_from_oracle(oracle, task.problem_statement)
+        import_name = import_name_for_instance(task.instance_id)
+        version = base_version(archive, import_name)
+        try:
+            post = post_images(archive, oracle.patch)
+        except ValueError as exc:
+            raise ValueError(task.instance_id + ': ' + str(exc)) from None
+        request = dict(instance_id=task.instance_id, base_commit=task.base_commit,
+            package=task.repo.split('/')[-1], import_name=import_name,
+            base_version=version, masked_paths=list(MASKED_TMPFS_PATHS),
+            patch_lines=list(probes.patch_lines),
+            all_lines=list(probes.patch_lines + probes.test_patch_lines),
+            post_images_b64=post, archive=pin)
+        path = directory / (task.instance_id + '.json')
+        path.write_text(json.dumps(request))
+        requests.append(dict(instance_id=task.instance_id, base_version=version, archive=pin))
+    return requests
+
+
+def docker_command(image, probe_path):
+    """Only new, anonymous, short-lived containers; no daemon container queries."""
+    return [docker_bin(), 'run', '--rm', '--network', 'none', '--read-only',
+            '--pull', 'never', '--cpu-shares', '256', '-i',
+            '--mount', 'type=bind,src=' + str(probe_path.resolve()) + ',dst=/audit_probe.py,readonly',
+            '--entrypoint', '/opt/miniconda3/bin/python', image, '/audit_probe.py']
+
+
+def public_image_result(raw, request, image):
+    # Commit timestamps are hashes and integers, kept for trajectory correlation.
+    return dict(raw, instance_id=request['instance_id'], image=image, base_commit=request['base_commit'],
+                base_version=request['base_version'], archive=request['archive'])
+
+
+def run_image(image, request, *, runner=subprocess.run):
+    process = runner(docker_command(image, Path(__file__).with_name('image_probe.py')),
+        input=json.dumps(request), capture_output=True, text=True, timeout=900, check=False)
+    if process.returncode:
+        return dict(instance_id=request['instance_id'], image=image, status='incomplete',
+                    rule='docker-probe-failed', returncode=process.returncode)
+    return public_image_result(json.loads(process.stdout), request, image)

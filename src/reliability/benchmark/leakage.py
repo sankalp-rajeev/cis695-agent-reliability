@@ -154,6 +154,8 @@ class Finding:
     path: str
     detail: str
     line_no: int | None = None
+    rule: str = "legacy"
+    evidence: dict = field(default_factory=dict)
 
     def __str__(self) -> str:
         where = f":{self.line_no}" if self.line_no else ""
@@ -169,11 +171,12 @@ class OracleProbes:
     test_patch_lines: tuple[str, ...] = ()
     fail_to_pass: tuple[str, ...] = ()
     hints_lines: tuple[str, ...] = ()
+    pass_to_pass: tuple[str, ...] = ()
 
     @property
     def is_empty(self) -> bool:
         return not (self.patch_lines or self.test_patch_lines
-                    or self.fail_to_pass or self.hints_lines)
+                    or self.fail_to_pass or self.pass_to_pass or self.hints_lines)
 
 
 def _not_in_problem_statement(
@@ -278,6 +281,7 @@ def probes_from_oracle(record, problem_statement: str = "") -> OracleProbes:
         fail_to_pass=tuple(record.fail_to_pass),
         hints_lines=_not_in_problem_statement(
             distinctive_lines(record.hints_text, limit=10), problem_statement),
+        pass_to_pass=tuple(getattr(record, "pass_to_pass", ())),
     )
 
 
@@ -296,6 +300,7 @@ def without_base_lines(probes: OracleProbes, present: set[str]) -> OracleProbes:
             line for line in probes.test_patch_lines if line not in present),
         fail_to_pass=probes.fail_to_pass,
         hints_lines=probes.hints_lines,
+        pass_to_pass=probes.pass_to_pass,
     )
 
 
@@ -578,7 +583,7 @@ def scan_content(
                     severity=severity,
                     kind=f"{label}-content",
                     path=str(path),
-                    detail=f"oracle {label} line present: {probe[:60]!r}",
+                    detail=f"oracle {label} line present (content withheld)",
                 ))
                 break  # one hit per field is enough; the rest is noise
 
@@ -594,7 +599,7 @@ def scan_content(
                 severity=Severity.REVIEW,
                 kind="fail-to-pass-name",
                 path=str(path),
-                detail=(f"FAIL_TO_PASS test {symbol!r} named in an in-scope "
+                detail=("FAIL_TO_PASS test symbol named in an in-scope "
                         "artifact; confirm it exists at the base commit"),
             ))
     return findings
@@ -603,6 +608,7 @@ def scan_content(
 def _test_symbol(node_id: str) -> str:
     """The test function name out of a pytest node id or a unittest path."""
     tail = node_id.split("::")[-1].split("[")[0].strip()
+    tail = tail.split("(", 1)[0].strip().rsplit(".", 1)[-1]
     return tail if tail.startswith("test") and len(tail) > 4 else ""
 
 
@@ -1089,7 +1095,7 @@ def scan_newer_copies(path: Path, text: str, instance_id: str) -> list[Finding]:
 
 
 def audit_task(
-    task_dir: Path, probes: OracleProbes | None = None
+    task_dir: Path, probes: OracleProbes | None = None, *, context=None
 ) -> tuple[list[Finding], int]:
     """Audit one task directory. Returns its findings and how many files it read."""
     findings: list[Finding] = []
@@ -1109,14 +1115,22 @@ def audit_task(
         findings.extend(scan_field_names(path, text))
         if path.name in TRAJECTORY_FILES:
             findings.extend(scan_newer_copies(path, text, task_dir.name))
+            if context is not None:
+                from reliability.benchmark.leakage_rules import scan_commands
+                findings.extend(scan_commands(path, text, probes, context))
         if probes is not None and not probes.is_empty:
-            findings.extend(scan_content(path, text, probes, authored))
+            content = scan_content(path, text, probes, authored)
+            if context is not None:
+                from reliability.benchmark.leakage_rules import classify_test_names
+                content = classify_test_names(path, text, probes, context, content)
+            findings.extend(content)
 
     return findings, len(files)
 
 
 def audit(
-    task_dirs: list[Path], probes_by_instance: dict[str, OracleProbes] | None = None
+    task_dirs: list[Path], probes_by_instance: dict[str, OracleProbes] | None = None,
+    *, contexts: dict | None = None,
 ) -> AuditResult:
     """Audit every task directory given.
 
@@ -1130,7 +1144,7 @@ def audit(
 
     for task_dir in task_dirs:
         probes = probes_by_instance.get(task_dir.name)
-        findings, n_files = audit_task(task_dir, probes)
+        findings, n_files = audit_task(task_dir, probes, context=(contexts or {}).get(task_dir.name))
 
         result.findings.extend(findings)
         result.scanned_files += n_files
