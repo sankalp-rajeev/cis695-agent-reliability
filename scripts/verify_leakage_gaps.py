@@ -44,6 +44,43 @@ def finding_key(f):
     return f['path'], f['kind'], f['line_no'], f['severity']
 
 
+def definition_evidence(path, symbol_hash):
+    """Independently decode commands and require a successful ordered write."""
+    first, definitions, pending = None, [], {}
+    for number, raw in enumerate(path.read_text().splitlines(), 1):
+        try:
+            message = json.loads(raw)
+        except ValueError:
+            continue
+        if not isinstance(message, dict):
+            continue
+        if any(hashlib.sha256(token.encode()).hexdigest() == symbol_hash
+               for token in re.findall(r'\btest[A-Za-z0-9_]+\b', raw)):
+            first = number if first is None else first
+        if message.get('role') == 'assistant':
+            for index, call in enumerate(message.get('tool_calls') or []):
+                function = call.get('function') or {}
+                if function.get('name') != 'bash':
+                    continue
+                args = function.get('arguments') or {}
+                if isinstance(args, str):
+                    try:
+                        args = json.loads(args)
+                    except ValueError:
+                        continue
+                command = args.get('command', '') if isinstance(args, dict) else ''
+                if not re.search(r'(?:>|\b(?:write_text|write_bytes|write|writelines|apply_patch|sed|perl|tee)\b)', command):
+                    continue
+                symbols = re.findall(r'\b(?:async\s+)?def\s+(test[A-Za-z0-9_]+)\s*\(', command)
+                if any(hashlib.sha256(s.encode()).hexdigest() == symbol_hash for s in symbols):
+                    pending[str(call.get('id') or f'call-{index}')] = number
+        elif message.get('role') == 'tool':
+            definition = pending.pop(str(message.get('tool_call_id') or ''), None)
+            if definition is not None and re.search(r'<returncode>\s*0\s*</returncode>', str(message.get('content') or '')):
+                definitions.append(definition)
+    return first, min(definitions) if definitions else None
+
+
 def verify(root):
     tasks = [read(p) for p in sorted((root/'tasks').glob('*/*/*.json'))]
     if not tasks:
@@ -87,15 +124,8 @@ def verify(root):
                     fail('agent-definition downgrade unexpectedly at base')
                 # Find a definition of this hashed symbol in a file-write call
                 # before the first output containing the symbol. No gold names.
-                trajectory = Path(new['path'])
-                definitions, appearances = [], []
-                for n, raw in enumerate(trajectory.read_text().splitlines(), 1):
-                    for token in re.findall(r'\btest[A-Za-z0-9_]+\b', raw):
-                        if hashlib.sha256(token.encode()).hexdigest() == symbol_hash:
-                            appearances.append(n)
-                            if '"role": "assistant"' in raw and re.search(r'(?:>|write_text|apply_patch)', raw) and 'def ' + token in raw:
-                                definitions.append(n)
-                if not definitions or min(definitions) > min(appearances):
+                first, definition = definition_evidence(Path(new['path']), symbol_hash)
+                if first is None or definition is None or definition > first:
                     fail('ordered-definition downgrade disproved')
             else:
                 fail('unsupported downgrade rule')
@@ -128,6 +158,18 @@ def verify(root):
         unresolved_copy_versions=sum(c.get('different_from_base') is None for _, c in copies))
     if image_recount != image_summary:
         fail('image totals mismatch')
+    subtraction = root/'legacy_subtraction_comparison.json'
+    if subtraction.is_file():
+        proof = read(subtraction)
+        by_id = {row['instance_id']:row for row in proof['tasks']}
+        if proof['checked'] != len(images) or proof['mismatches'] or len(by_id) != len(images):
+            fail('legacy subtraction coverage mismatch')
+        for image in images:
+            row = by_id[image['instance_id']]
+            hashes = sorted(set(image['checks']['base_probes']['result']))
+            observed = hashlib.sha256(json.dumps(hashes).encode()).hexdigest()
+            if not row['equal'] or row['baseline_sha256'] != observed or row['extended_sha256'] != observed:
+                fail('legacy subtraction proof mismatch')
     report = (root/'REPORT.md').read_text()
     marker = re.search(r'<!-- totals-json: (.+?) -->', report)
     if not marker or json.loads(marker.group(1)) != dict(trajectory=expected, images=image_summary):

@@ -12,6 +12,7 @@ from pathlib import Path
 
 from reliability.benchmark.image_leakage import (
     ROOT,
+    prepare_gold_requests,
     prepare_requests,
     public_image_result,
     run_image,
@@ -29,12 +30,20 @@ def main():
     parser.add_argument('--prepare', action='store_true')
     parser.add_argument('--collect', action='store_true')
     parser.add_argument('--prepare-supplements', action='store_true')
+    parser.add_argument('--prepare-gold-base-only', action='store_true')
     parser.add_argument('--inventory', type=Path, help='docker image ls JSON-lines output')
     args = parser.parse_args()
     requests_dir = args.private/'image_requests'
     responses = args.private/'image_responses'
     for path in (requests_dir, responses, args.output/'images'):
         path.mkdir(parents=True, exist_ok=True)
+    if args.prepare_gold_base_only:
+        destination = args.private/'gold_base_requests'
+        destination.mkdir(parents=True, exist_ok=True)
+        (args.private/'gold_base_responses').mkdir(parents=True, exist_ok=True)
+        prepare_gold_requests(args.manifest, destination)
+        print('Prepared exact Git-base blob checks')
+        return 0
     if args.prepare_supplements:
         destination = args.private/'supplement_requests'
         (args.private/'supplement_responses').mkdir(parents=True, exist_ok=True)
@@ -74,6 +83,10 @@ def main():
                 result = dict(instance_id=iid, image=images[tag], status='incomplete', rule='probe-output-missing')
             else:
                 raw = json.loads(output.read_text())
+                gold_base = args.private/'gold_base_responses'/(iid+'.json')
+                if gold_base.is_file() and gold_base.stat().st_size:
+                    raw['checks']['git']['result']['gold_post_image_blobs'] = json.loads(gold_base.read_text())
+                    raw['checks']['git']['result']['post_image_authority'] = 'git-show-pinned-base-exact-hunks'
                 supplement = args.private/'supplement_responses'/(iid+'.json')
                 if supplement.is_file() and supplement.stat().st_size:
                     extra = json.loads(supplement.read_text())

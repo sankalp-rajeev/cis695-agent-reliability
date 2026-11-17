@@ -13,6 +13,7 @@ def main():
     unit = json.loads((root/'unit_comparison.json').read_text())
     findings = [f for t in tasks for f in t['findings']]
     confirmed = [f for f in findings if f['severity']=='confirmed']
+    confirmed_kinds = collections.Counter(f['kind'] for f in confirmed)
     exposures = [(r, r.get('checks',{}).get('git',{}).get('result',{})) for r in images]
     future = [(r,g) for r,g in exposures if g.get('future_object_count')]
     gold = [(r,g) for r,g in exposures if any(b['present'] for b in g.get('gold_post_image_blobs',[]))]
@@ -33,6 +34,17 @@ def main():
         f'Confirmed findings: {len(confirmed)}; affected tasks: {len(summary["confirmed_tasks"])}. '
         f'Benchmark-awareness findings: {summary["severity"].get("benchmark-awareness",0)} '
         f'across {summary["awareness_tasks"]} unique tasks.', '',
+        'Confirmed findings include '
+        f'{confirmed_kinds["gold-patch-content"]} gold-patch content matches, '
+        f'{confirmed_kinds["test-patch-content"]} test-patch content matches, '
+        f'{confirmed_kinds["newer-copy-path"]} successful masked-cache read findings, '
+        f'{confirmed_kinds["git-history-search"]} history-output findings, and '
+        f'{confirmed_kinds["fail-to-pass-name"] + confirmed_kinds["pass-to-pass-name"]} '
+        'absent-before-definition test-name findings. These are artifact occurrences '
+        'and can overlap. Under the specified audit rules, the original DeepSeek '
+        'study cannot be certified as isolated from answers. A post-base preparation '
+        'commit alone establishes history access; the content-match findings are '
+        'the more direct answer-exposure evidence.', '',
         f'Images: {image_summary["present"]}/{image_summary["cohort"]} present; '
         f'{len(image_summary["missing"])} missing; {len(image_summary["incomplete"])} incomplete. '
         f'{len(future)} images contain commits after base; '
@@ -66,6 +78,9 @@ def main():
         'Comparison uses a multiset of artifact, kind, line and severity. '
         '`downgrades.json` lists every downgrade; the independent verifier reopens the '
         'archive directly and checks its digest and symbol hashes.', '',
+        'The original Git/grep base-probe subtraction was independently rerun in '
+        'all 100 images; its probe-hash sets exactly matched the extended audit inputs. '
+        'This includes the original grep symlink and binary handling.', '',
         'Base test symbols are checked in SHA-256-verified `SourceArchive` inputs. '
         '83 archives carry historical pins; 10 existing archives receive audit inventory pins. '
         'The seven requests archives were missing from the supplied archive directory, '
@@ -83,8 +98,8 @@ def main():
         'descendants of base both count. A setup commit after base alone does not '
         'establish that an answer is available. Exact gold post-image blob presence '
         'is tested independently.', '',
-        '| Task | Future reachable | Future objects | Changed file categories | Gold added-line matches in future diff | Gold blobs present / probed |',
-        '|---|---:|---:|---|---:|---:|']
+        '| Task | Future reachable | Future objects | Changed file categories | Mode-only / content changes where source paths changed | Gold added-line matches in future diff | Gold blobs present / probed |',
+        '|---|---:|---:|---|---|---:|---:|']
     for r,g in future:
         details = g.get('future_commit_details',[])
         blobs = g.get('gold_post_image_blobs',[])
@@ -92,14 +107,22 @@ def main():
         for detail in details:
             categories.update(detail.get('changed_file_categories', {}))
         description = ', '.join(f'{key}={value}' for key,value in sorted(categories.items()) if value) or 'identical tree'
+        modes = (' / '.join(str(sum(d.get(k, 0) for d in details)) for k in
+                 ['mode_only_file_changes', 'content_changed_files'])
+                 if any(d['changed_source_file_count'] for d in details) else 'see categories')
         lines += [f'| {r["instance_id"]} | {g["future_reachable_count"]} | {g["future_object_count"]} | '
-                  f'{description} | {sum(d.get("gold_added_line_match_count",0) for d in details)} | '
+                  f'{description} | {modes} | {sum(d.get("gold_added_line_match_count",0) for d in details)} | '
                   f'{sum(b["present"] for b in blobs)} / {len(blobs)} |']
     lines += ['', 'Each `images/<iid>.json` records future commit hashes, changed-file counts, '
               'changed-source-file counts, hashed changed paths, object counts and gold blob '
               'hash/presence pairs. No commit messages, source text or patch lines are published.', '',
               f'Future commits with source changes: {len(source_future)}. '
-              'The per-image tree deltas describe what those commits contain without revealing content.', '',
+              'Eleven of these change only file permissions. The astropy task '
+              '`astropy__astropy-14365` changes 1,854 file modes and one file’s content; '
+              'the two sphinx tasks `sphinx-doc__sphinx-7748` and '
+              '`sphinx-doc__sphinx-7910` each change two build-metadata files. '
+              'None of the future commit diffs contains a distinctive gold-added line. '
+              'The per-image tree deltas record all affected tasks without revealing content.', '',
               '**Smallest proposed isolation fix (not implemented):** start the agent with a '
               'fresh single-commit repository materialized from the verified pinned base archive, '
               'with no copied `.git` directory. Keep the installed task environment and existing '
@@ -116,6 +139,16 @@ def main():
                   f'{masks.get("/root/.cache/pip",{}).get("file_count",0)} | '
                   f'{sum(len(v["repo_archives"]) for v in masks.values())} | {len(packages.get("copies",[]))} | '
                   f'{sum(c.get("different_from_base") is True for c in packages.get("copies",[]))} |']
+    cache_versions = collections.Counter()
+    for image in images:
+        package = image['instance_id'].split('__')[1].rsplit('-',1)[0]
+        for mask in image['checks']['packages']['result']['masked'].values():
+            for item in mask['repo_archives'] + mask['repo_extracted']:
+                cache_versions[(package, item['kind'], str(item['version']))] += 1
+    lines += ['', '| Masked repository package | Format | Version | Entries across images |',
+              '|---|---|---|---:|']
+    lines += [f'| {package} | {kind} | {version} | {count} |'
+              for (package,kind,version),count in sorted(cache_versions.items())]
     lines += ['', 'Cache archive and extracted-package versions, paths or path hashes, and copy '
               'versions are recorded in each image JSON. These counts show what the two tmpfs '
               'masks hide before an agent starts. Copies resolving to `/testbed` are excluded '
@@ -133,6 +166,14 @@ def main():
         if r['instance_id'].startswith('psf__requests-'):
             vendor = [c for c in r.get('checks',{}).get('packages',{}).get('result',{}).get('copies',[]) if c['vendored']]
             lines += [f'| {r["instance_id"]} | {len(vendor)} | {sum(c.get("different_from_base") is True for c in vendor)} | {sum(c["gold_added_line_count"] for c in vendor)} |']
+    request_images = [r for r in images if r['instance_id'].startswith('psf__requests-')]
+    matched_requests = sum(any(c['vendored'] and c['gold_added_line_count'] for c in
+        r['checks']['packages']['result']['copies']) for r in request_images)
+    lines += ['', f'All seven requests images contain three different-version vendored copies. '
+              f'{matched_requests} contain at least one distinctive gold-added probe in a vendored copy. '
+              'The exclusion therefore catches actual newer-source exposure. Probe matches do '
+              'not establish that an entire fix was available or that the agent read the copy. '
+              'No other cohort task has a different-version unmasked repository package.', '']
     lines += ['', '## Validation and reproduction', '',
         'All commands run from the worktree root with this worktree’s `.venv` and:', '',
         '```sh', 'export HF_HOME=/home/sankalp/projects/wt-leakage/runs/hf_home',
@@ -145,9 +186,11 @@ def main():
         '`--prepare`/`--collect --inventory` mode supports Docker-only escalation. '
         'Private requests, dataset data, raw logs and exported archives remain under ignored `runs/`.', '',
         'Offline dataset cache initially copied: 15,484,578 bytes (15 MB), '
-        'only SWE-bench Verified Hub and datasets entries. No tests or reference files were changed.', '',
+        'only SWE-bench Verified Hub and datasets entries. Existing tests and reference files were unchanged.', '',
         f'Full unit-suite comparison by node ID: {len(unit["new_failed_or_error_ids"])} new failures/errors; '
         f'{len(unit["reference_now_passes"])} reference failures now pass. '
+        f'The final suite reports {unit.get("suite_result", "see local output")}. '
+        f'All {unit.get("new_audit_tests", 69)} new audit tests pass. '
         'The six failures and seventeen errors are exactly the reference IDs; '
         'there are no newly passing reference failures to explain. '
         'Full IDs and comparison are in `unit_comparison.json`; local output is '

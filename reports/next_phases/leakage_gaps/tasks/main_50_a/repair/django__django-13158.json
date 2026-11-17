@@ -1,0 +1,692 @@
+{
+  "archive": {
+    "base_commit": "7af8f4127397279d19ef7c7899e93018274e2f9b",
+    "instance_id": "django__django-13158",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-13158.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61"
+  },
+  "findings": [
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-ambiguous",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-ambiguous",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {
+        "command_sha256": "f2cd2c76b82ef6e995d849f627546581456e4753eac0e1020c957866c3a11eda"
+      },
+      "kind": "git-history-search",
+      "line_no": 33,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 33,
+        "command_sha256": "f2cd2c76b82ef6e995d849f627546581456e4753eac0e1020c957866c3a11eda",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 34,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "5d8b5d28e2fbdbba0eae2c7487b5fcfb4fd493b834e4259863d9e20e2890e12a"
+      },
+      "kind": "git-history-search",
+      "line_no": 35,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "2a37c91d12cf33711af00816f719e71f8f553e7eb2fe835c132ab18dc24df7fb"
+      },
+      "kind": "fetch-fixed-version",
+      "line_no": 45,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "fetch-pip-download",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "d07f2221112abc9d9679c856be1bc1a31b79e9bc048c6334fe6895389a2b092d"
+      },
+      "kind": "git-history-search",
+      "line_no": 47,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "history-git-reflog",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-reflog",
+        "command_line": 47,
+        "command_sha256": "d07f2221112abc9d9679c856be1bc1a31b79e9bc048c6334fe6895389a2b092d",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 48,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "fc5ba86dbac5515c9eb03df547bb304a3c0f6add3503bae3b02ae4077f034fc1"
+      },
+      "kind": "git-history-search",
+      "line_no": 49,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "history-git-fsck",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "91f6958e8b309ed295307e0bb300da7f91b9024e22a87f16433e2a0d8748391f"
+      },
+      "kind": "git-history-search",
+      "line_no": 57,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "91f6958e8b309ed295307e0bb300da7f91b9024e22a87f16433e2a0d8748391f"
+      },
+      "kind": "git-history-search",
+      "line_no": 57,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 57,
+        "command_sha256": "91f6958e8b309ed295307e0bb300da7f91b9024e22a87f16433e2a0d8748391f",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 58,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-show",
+        "command_line": 57,
+        "command_sha256": "91f6958e8b309ed295307e0bb300da7f91b9024e22a87f16433e2a0d8748391f",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 58,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "f6438cc35492cdae403f42ad5a35e65f698d03cb633d5a66692d8ffe0affaeb5"
+      },
+      "kind": "git-history-search",
+      "line_no": 105,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "history-git-diff",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-diff",
+        "command_line": 105,
+        "command_sha256": "f6438cc35492cdae403f42ad5a35e65f698d03cb633d5a66692d8ffe0affaeb5",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 106,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "87a51d6d348eddf76b2091126f40b2d83822d098fd8e034e6bdd8dc7bd363444"
+      },
+      "kind": "git-history-search",
+      "line_no": 127,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "history-git-diff",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": false,
+        "definition_line": null,
+        "first_appearance_line": 53,
+        "symbol_sha256": "996489232e98138fd3969f4e6b3eeeef951839b935d5f1646a9e122701251dff"
+      },
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-absent-before-definition",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "f02021919f41444114c6680736a77850deb47c844735d391797d962e83531eb0"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "ae59e68e056418c676b58de8b2c4cc203bf2a0c1edfbf5a79ffef0a6f36dbf2c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "121a82146b9c9c152fdc82cac3568fd1c8b0137b0d3c172bfd32867364af4100"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "de7a71d73d49f830a7229f43b5a4db0642b205f559ef56ff702795b054ab9918"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "dcfe3df3a48f84cb70d2c1f89a4613be19e2ca36539db78abdc0e6230d948564"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "92d49e5d19735f457c6e0604f225b5253c0ac93d934d6325b47beda6f6702030"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "37025ee2244e4871468286d50df704bc98988c160a5f8d00204b695783d96bbf"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "59db8555ed0e04447452abed02bc534c1131eec5b6532dd30c7018092a8ead14"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "f0041769923af3dad8be6e9c8b123cae453c2049b39fc76a7df942ccbe6e0c9f"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6acb519a74a1a838309ef37d0c48e801ea4da629b5f00bf35b2e380c25b653af"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "d70424e6e1f0203df141bc40296c0f912cedc878bafa666aea283f68405b7e34"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "00dca2e02b7fee34a3adec27204b158a591dbe3ac2a68c11885f074b82c4920c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "a5c6a254d8c23e1780f4738669c9af49167a5337622c13c63616c05776b4548c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "13dff75b1b09b213f40cecec27ff065b97d4512a3ac738f47f8239175b864d24"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "120030627ea8465d79699e645ba3d5ca1d507fd337701b1080b9c82cca1e37fe"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "8d81066da80004e38446f161cbd5ee88f3d99c40777191b4414701be423f9d1b"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "ea5ff242c1a042d3ae7ed34bc463d7a7b084ea8a4e833eedaf83d72aafb38252"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "4ae8d584525e295a1362b39cb67a9f333b0f60f285f6c854a84f5a874a4888ce"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "94d68bb2254c3051774c66212e45a05a0ace54dadac146e082cad613380e3261"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "ac03824207cc83eff5cca974a12df9d6f2d26aef6c9551b9ccd9c795366933ce"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "9f5f597c56575fa5205e441f5f0248b3c3b08f64df78eec0eab78b15a3ca49fb"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "3a0375b2371bc0342fbe5b45db0ceec2c215f88bda2b6efa2793eb5e490cf04f"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "4bf0fb4cf1a1b2e5b117013c11fa44f495ca6225bd873eb3faebc670a114e6fa"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "84cf6e7380d6d1e839722b321ca4e77a5e940a13c3cd702aa7e44d5682c5dbf0"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "da8eb96153b67ee052c6f827d85c6a09c11d986cf2f9dfb7258c548d155b47da"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "489737551507a76aa3fd4ffd0adec20fa5d5bdb002232760d10578c0aff1d0de"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "aae78d8c3917b74c80fd3ee09dd5e2fb700e519ea38b179c4ebc2192a3b1b87c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 18,
+        "symbol_sha256": "9e72aac0b8ce3ce0b212909aa3950f1fcd61e682dce924ee3b98d2317298f0a6"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6a66fa48b34922c89159e829d392bc4b3ddc3da0b3283ee7ccb412c479fc5c40"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 829,
+        "symbol_sha256": "a5c6a254d8c23e1780f4738669c9af49167a5337622c13c63616c05776b4548c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 829,
+        "symbol_sha256": "a5c6a254d8c23e1780f4738669c9af49167a5337622c13c63616c05776b4548c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "additions": 46,
+    "downgrades": [],
+    "legacy_count": 4,
+    "preserved": 4,
+    "violations": []
+  },
+  "instance_id": "django__django-13158",
+  "legacy_findings": [
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-ambiguous",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-ambiguous",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    }
+  ],
+  "role": "repair",
+  "run": "main_50_a",
+  "scanned_files": 7,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/django__django-13158"
+}

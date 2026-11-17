@@ -1,0 +1,89 @@
+{
+  "archive": {
+    "base_commit": "cab2d93076d0cca7c53fac885f927dde3e2a5fec",
+    "instance_id": "sphinx-doc__sphinx-10466",
+    "path": "/home/sankalp/cg_repos/task_archives/sphinx-doc__sphinx-10466.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "311723ac277e0aa438a7b32ef9b644ce737def09175a38e1424ff894cbeb388a"
+  },
+  "base_commit": "cab2d93076d0cca7c53fac885f927dde3e2a5fec",
+  "base_version": "5.0.0b1",
+  "base_version_origin": "pinned-archive-source",
+  "checks": {
+    "base_probes": {
+      "result": [],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1653214944,
+        "commit_count": 19239,
+        "commit_timestamps": {
+          "1ff66827e738dd799e32a8dffdad83a493d88de3": 1786592708
+        },
+        "future_commit_details": [
+          {
+            "changed_file_categories": {
+              "build_metadata": 1,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 1,
+            "changed_path_sha256": [
+              "ef2cef9f88b4fe09ca3082140e67f5ad34fb65fb6e228f119d3812261ae51449"
+            ],
+            "changed_source_file_count": 0,
+            "commit": "1ff66827e738dd799e32a8dffdad83a493d88de3",
+            "gold_added_line_match_count": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "1ff66827e738dd799e32a8dffdad83a493d88de3"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "0d7d0ac11d868028a9539e06c708e79b7bc0fdcc",
+            "present": false
+          }
+        ],
+        "object_count": 144631,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 19239
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [],
+        "errors": 3,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 19504,
+            "repo_archives": [],
+            "repo_extracted": []
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 249,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "review",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:f15976cde5dec10d8ce602441d432d9858067e15828ee21bf684c24b482fd376",
+  "instance_id": "sphinx-doc__sphinx-10466"
+}

@@ -1,0 +1,93 @@
+{
+  "archive": {
+    "base_commit": "a41edc7bf5302f2ea327943c0c48c532b12009bc",
+    "instance_id": "pydata__xarray-4629",
+    "path": "/home/sankalp/cg_repos/task_archives/pydata__xarray-4629.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b"
+  },
+  "base_commit": "a41edc7bf5302f2ea327943c0c48c532b12009bc",
+  "base_version": "999",
+  "base_version_origin": "pinned-archive-source",
+  "checks": {
+    "base_probes": {
+      "result": [],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1606813590,
+        "commit_count": 3401,
+        "commit_timestamps": {
+          "84ed8bedc5192f3a9cda97cc8edfbc6b80ff80be": 1786595987
+        },
+        "future_commit_details": [
+          {
+            "changed_file_categories": {
+              "build_metadata": 0,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 0,
+            "changed_path_sha256": [],
+            "changed_source_file_count": 0,
+            "commit": "84ed8bedc5192f3a9cda97cc8edfbc6b80ff80be",
+            "gold_added_line_match_count": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "84ed8bedc5192f3a9cda97cc8edfbc6b80ff80be"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "dff00804f8f2650d7489e2c4b1884285423bb146",
+            "present": false
+          }
+        ],
+        "object_count": 25550,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 3401
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [],
+        "errors": 20,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 94352,
+            "repo_archives": [],
+            "repo_extracted": [
+              {
+                "kind": "conda-extracted",
+                "path_sha256": "ef57340790072d683bc9376a22c242794d17d95c5f452803f71000ae6d4712a4",
+                "version": "2025.4.0"
+              }
+            ]
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 89,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "review",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:6ef760ecc8a78780f669f3e24a32e11a5ad5adaec505fce12cc15d27648657d0",
+  "instance_id": "pydata__xarray-4629"
+}

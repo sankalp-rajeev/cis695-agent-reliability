@@ -334,3 +334,22 @@ def test_duplicate_parameterized_legacy_names_remain_counted(tmp_path, context):
     probes=OracleProbes('synthetic', fail_to_pass=('test_invented_parameter[a]','test_invented_parameter[b]'))
     findings, _ = audit_task(task, probes, context=context)
     assert len([f for f in findings if f.kind=='fail-to-pass-name']) == 2
+
+
+def test_branch_slashes_and_verified_source_paths(context):
+    context.base_paths = frozenset({'pkg/invented.py', 'pkg'})
+    assert command_rules('git show feature/invented', context) == ['history-git-show']
+    assert command_rules('git diff pkg/invented.py', context) == []
+    assert command_rules('git diff pkg', context) == []
+
+
+def test_independent_definition_check_requires_decoded_successful_write(tmp_path):
+    import runpy
+    verifier = runpy.run_path(str(Path(__file__).resolve().parents[2]/'scripts/verify_leakage_gaps.py'))
+    path = tmp_path/'trajectory.jsonl'
+    command = "cat > own.py <<EOF\ndef test_invented_decoded(): pass\nEOF"
+    symbol_hash = hashlib.sha256(b'test_invented_decoded').hexdigest()
+    path.write_text(conversation(command, 'test_invented_decoded', 0))
+    assert verifier['definition_evidence'](path, symbol_hash) == (1,1)
+    path.write_text(conversation(command, 'failed', 1))
+    assert verifier['definition_evidence'](path, symbol_hash) == (1,None)

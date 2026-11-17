@@ -295,21 +295,26 @@ def inspect_git(request):
         if oid not in descendants:
             descendants.add(oid); todo.extend(children.get(oid, []))
     future = {oid for oid, ts in stamps.items() if ts > stamp} | descendants
-    gold = []
+    gold = gold_blob_inventory(request)
+    return dict(base_timestamp=stamp, object_count=objects, commit_count=len(stamps),
+        reachable_commit_count=len(reachable), future_reachable_count=len(future & set(reachable)),
+        future_object_count=len(future), future_commit_hashes=sorted(future),
+        gold_post_image_blobs=gold, commit_timestamps=stamps)
+
+
+def gold_blob_inventory(request):
     import base64
     post_images = [base64.b64decode(value) for value in request.get('post_images_b64', [])]
     for file in request.get('post_image_hunks', []):
-        original = [] if file['added'] else io.StringIO(git(['show', base + ':' + file['path']]).decode()).readlines()
+        original = [] if file['added'] else io.StringIO(git(['show', request['base_commit'] + ':' + file['path']]).decode()).readlines()
         post_images.append(apply_hunks(original, file['hunks']))
+    gold = []
     for value in post_images:
         oid = git(['hash-object', '--stdin'], value).decode().strip()
         present = subprocess.call(['git', '-C', '/testbed', 'cat-file', '-e', oid + '^{blob}'],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) == 0
         gold.append(dict(blob=oid, present=present))
-    return dict(base_timestamp=stamp, object_count=objects, commit_count=len(stamps),
-        reachable_commit_count=len(reachable), future_reachable_count=len(future & set(reachable)),
-        future_object_count=len(future), future_commit_hashes=sorted(future),
-        gold_post_image_blobs=gold, commit_timestamps=stamps)
+    return gold
 
 
 def apply_hunks(original, hunks):
@@ -376,6 +381,9 @@ def base_probes(request):
 
 def main():
     request = json.load(sys.stdin)
+    if '--gold-base-only' in sys.argv:
+        print(json.dumps(gold_blob_inventory(request)))
+        return
     if '--legacy-base-only' in sys.argv:
         probes = request.get('all_lines', [])
         process = subprocess.run(['git', '-C', '/testbed', 'grep', '-F', '-I', '-f', '/dev/stdin', '--', '.'],

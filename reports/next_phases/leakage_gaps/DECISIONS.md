@@ -18,8 +18,10 @@
   `git archive` at the manifest base commit into ignored `runs/`. All are verified
   with `SourceArchive`; the latter two groups are never represented as old pins.
 - Post-image reconstruction accepts exact context and unique exact hunk offsets
-  only. A missing final newline is preserved. If archive preparation changed a
-  source, reconstruct in memory from read-only `git show BASE:path` in the image.
+  only. A missing final newline is preserved. Always reconstruct from read-only
+  `git show BASE:path`, since archive export transforms can change bytes outside
+  a patch hunk. An independent exact-Git-base check of all 120 blobs in all 100
+  images matched the initial hash inventory and found zero present blobs.
 - Enumerate all Git objects and all refs. Count both newer timestamps and base
   descendants; separately compare future commit trees and exact gold blobs.
   An image exposure is not evidence that a stored agent read it.
@@ -28,3 +30,13 @@
   evidence. Record explicit rule-3 downgrades if any occur.
 - No cache/theme directory is a package copy merely because its basename matches.
   Require source files, then report version metadata and match counts.
+- Git refs containing slashes must not be mistaken for paths. Exclude verified
+  base source paths/directories and explicit HEAD/base file selections; retain
+  searches of other refs, including revision:path expressions. Synthetic tests
+  cover this distinction. Version-success checks use image metadata as a fallback
+  when source versions are dynamic; the stored install attempt was rechecked and
+  its findings were unchanged.
+- Final golden: 912 preserved legacy occurrences, zero downgrades, zero losses or
+  severity violations. The report's confirmed categories remain separate from
+  the question of whether a model actually used an answer. No correctness labels
+  or grader outputs were consulted.

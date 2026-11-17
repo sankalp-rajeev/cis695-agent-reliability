@@ -86,8 +86,10 @@ def build_context(task, oracle, archive, pin, image, task_dir=None):
     probes = probes_from_oracle(oracle, task.problem_statement)
     symbols = {_test_symbol(n) for n in probes.fail_to_pass + probes.pass_to_pass} - {''}
     context = AuditContext(task.base_commit, task.repo.split('/')[-1],
-                           base_version(archive, task.repo.split('/')[-1].replace('-', '_')),
+                           image.get('base_version') or base_version(archive, task.repo.split('/')[-1].replace('-', '_')),
                            archive=pin, base_symbols=symbols_at_base(archive, symbols))
+    context.base_paths = frozenset(archive.members) | frozenset(
+        str(parent) for name in archive.members for parent in Path(name).parents)
     git = image.get('checks', {}).get('git', {})
     if git.get('status') == 'complete':
         result = git['result']
@@ -115,7 +117,7 @@ def run_study(output, *, run_roots=None, image_root=None):
             image_path = image_root/(iid+'.json')
             image = json.loads(image_path.read_text()) if image_path.is_file() else {}
             probes, context, symbols = build_context(task, oracle, archive, pin, image)
-            context.base_version = base_version(archive, import_name_for_instance(iid))
+            context.base_version = image.get('base_version') or base_version(archive, import_name_for_instance(iid))
             reduction = image.get('checks', {}).get('base_probes', {})
             if reduction.get('status') != 'complete':
                 raise ValueError('legacy base subtraction missing: ' + iid)
@@ -196,3 +198,28 @@ def extended_inputs(task_dirs, image_root):
                 context.definitions.update(definition_events(directory, symbols))
         contexts[iid] = context
     return probes_by_id, contexts
+
+
+def check_fetch_versions(output):
+    """Verify image-version fallback does not change stored install findings."""
+    from reliability.benchmark.leakage import TRAJECTORY_FILES
+    from reliability.benchmark.leakage_rules import scan_commands
+    checked, changed = 0, []
+    for path in sorted((output/'tasks').glob('*/*/*.json')):
+        row = json.loads(path.read_text())
+        if not any(f['rule'] in {'fetch-pip-install', 'fetch-conda', 'fetch-easy-install'} for f in row['findings']):
+            continue
+        image = json.loads((output/'images'/(row['instance_id']+'.json')).read_text())
+        package = row['instance_id'].split('__')[1].rsplit('-', 1)[0]
+        context = AuditContext(image['base_commit'], package, image.get('base_version'))
+        for name in TRAJECTORY_FILES:
+            trajectory = Path(row['source'])/name
+            if not trajectory.is_file():
+                continue
+            current = [safe_finding(f) for f in scan_commands(trajectory,
+                trajectory.read_text(errors='replace'), None, context) if f.kind == 'fetch-fixed-version']
+            previous = [f for f in row['findings'] if f['kind']=='fetch-fixed-version' and f['path']==str(trajectory)]
+            if current != previous:
+                changed.append(dict(instance_id=row['instance_id'], run=row['run'], role=row['role']))
+            checked += 1
+    return dict(install_trajectories_rechecked=checked, changes=changed)

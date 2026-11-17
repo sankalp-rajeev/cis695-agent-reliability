@@ -1,0 +1,644 @@
+{
+  "archive": {
+    "base_commit": "6500928dc0e57be8f06d1162eacc3ba5e2eff692",
+    "instance_id": "astropy__astropy-13398",
+    "path": "/home/sankalp/cg_repos/task_archives/astropy__astropy-13398.tar",
+    "pin_origin": "audit-initial-inventory",
+    "sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 47,
+        "symbol_sha256": "bd67ab90f3b5b957a3cadc334a06df76f53a6cf7916982cefc1b1c2d922808ab"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/repair_record.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 159,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 161,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 201,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {
+        "command_sha256": "e7515088c414b6d2e14779f592d13383051f68218490700d54bea7542c26f520"
+      },
+      "kind": "git-history-search",
+      "line_no": 19,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "2bf19f8b00d0671a29d064a35f9be63d2b1d8cfdbb380a015d23a0a0536d2f90"
+      },
+      "kind": "fetch-fixed-version",
+      "line_no": 27,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "fetch-pip-download",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "de218366cf0461f1fea9d25f2695ecfc75c5e09dbd11f371483537852824b59b"
+      },
+      "kind": "git-history-search",
+      "line_no": 43,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "history-git-fsck",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "738bfed156d9272e4b8d71bfa1dad3a644de7e485153b8556247bacc3670333d"
+      },
+      "kind": "git-history-search",
+      "line_no": 45,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "738bfed156d9272e4b8d71bfa1dad3a644de7e485153b8556247bacc3670333d"
+      },
+      "kind": "git-history-search",
+      "line_no": 45,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "history-git-rev-list",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 45,
+        "command_sha256": "738bfed156d9272e4b8d71bfa1dad3a644de7e485153b8556247bacc3670333d",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 46,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-rev-list",
+        "command_line": 45,
+        "command_sha256": "738bfed156d9272e4b8d71bfa1dad3a644de7e485153b8556247bacc3670333d",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 46,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "fc217b51db96dc01e5dab9e4295e1b2561971401e32835d5a6f5b0f37ad920c0"
+      },
+      "kind": "git-history-search",
+      "line_no": 47,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 47,
+        "command_sha256": "fc217b51db96dc01e5dab9e4295e1b2561971401e32835d5a6f5b0f37ad920c0",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 48,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "eadc5e082b4368cd2bb2ae18a5afb0345e44254a41770b8751f5f41eaef31f51"
+      },
+      "kind": "fetch-fixed-version",
+      "line_no": 105,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "fetch-curl",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "e9c27a92e9b0da946b5b8a6c8d1699e1ab2ce0b3f905fbe6443fac040268711a"
+      },
+      "kind": "fetch-fixed-version",
+      "line_no": 107,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "fetch-curl",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 178,
+        "symbol_sha256": "b8c4b06fa2c1f8879f9fbbd9084f3db24e39cc63e80ba9dbf4414845eb3917b9"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 178,
+        "symbol_sha256": "df49145ace9f4d2ad7e5411ab8b0d46d720d51bfb25a0686a956331f41085b0e"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 178,
+        "symbol_sha256": "006a5a45055cdf01edb70f74a47961064334f11e89ceeb0b12efa30bd92c5b75"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 160,
+        "symbol_sha256": "6c3497f703efa4ff4e8d176a4ba62ed8da4476d4c4abbb1c307aaf2972e5ee1c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 160,
+        "symbol_sha256": "6c3497f703efa4ff4e8d176a4ba62ed8da4476d4c4abbb1c307aaf2972e5ee1c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 160,
+        "symbol_sha256": "6c3497f703efa4ff4e8d176a4ba62ed8da4476d4c4abbb1c307aaf2972e5ee1c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 160,
+        "symbol_sha256": "6c3497f703efa4ff4e8d176a4ba62ed8da4476d4c4abbb1c307aaf2972e5ee1c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 160,
+        "symbol_sha256": "6c3497f703efa4ff4e8d176a4ba62ed8da4476d4c4abbb1c307aaf2972e5ee1c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 158,
+        "symbol_sha256": "e322dffd24901271f4bc02c8d1e76ce93ef9a2ceadc8721f4d3b95f65b9d2c9a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 158,
+        "symbol_sha256": "e322dffd24901271f4bc02c8d1e76ce93ef9a2ceadc8721f4d3b95f65b9d2c9a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 158,
+        "symbol_sha256": "e322dffd24901271f4bc02c8d1e76ce93ef9a2ceadc8721f4d3b95f65b9d2c9a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 158,
+        "symbol_sha256": "e322dffd24901271f4bc02c8d1e76ce93ef9a2ceadc8721f4d3b95f65b9d2c9a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 158,
+        "symbol_sha256": "e322dffd24901271f4bc02c8d1e76ce93ef9a2ceadc8721f4d3b95f65b9d2c9a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 160,
+        "symbol_sha256": "70ad222500bfb441c5f73ac3cfe3242247be0bb04b1a23ed9658549f87b5159a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 160,
+        "symbol_sha256": "70ad222500bfb441c5f73ac3cfe3242247be0bb04b1a23ed9658549f87b5159a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 160,
+        "symbol_sha256": "70ad222500bfb441c5f73ac3cfe3242247be0bb04b1a23ed9658549f87b5159a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 160,
+        "symbol_sha256": "70ad222500bfb441c5f73ac3cfe3242247be0bb04b1a23ed9658549f87b5159a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 160,
+        "symbol_sha256": "70ad222500bfb441c5f73ac3cfe3242247be0bb04b1a23ed9658549f87b5159a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 178,
+        "symbol_sha256": "274b5ccc8007b9847fb7f1b990938bb66389600172d106599c65fd10789f960d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 178,
+        "symbol_sha256": "274b5ccc8007b9847fb7f1b990938bb66389600172d106599c65fd10789f960d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 178,
+        "symbol_sha256": "274b5ccc8007b9847fb7f1b990938bb66389600172d106599c65fd10789f960d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 178,
+        "symbol_sha256": "274b5ccc8007b9847fb7f1b990938bb66389600172d106599c65fd10789f960d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 178,
+        "symbol_sha256": "274b5ccc8007b9847fb7f1b990938bb66389600172d106599c65fd10789f960d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 178,
+        "symbol_sha256": "0dbfe3edcef4213839104b09ce5e10a06ebd048340923e818cd6e37248757b87"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 178,
+        "symbol_sha256": "0dbfe3edcef4213839104b09ce5e10a06ebd048340923e818cd6e37248757b87"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 178,
+        "symbol_sha256": "0dbfe3edcef4213839104b09ce5e10a06ebd048340923e818cd6e37248757b87"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 178,
+        "symbol_sha256": "0dbfe3edcef4213839104b09ce5e10a06ebd048340923e818cd6e37248757b87"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 178,
+        "symbol_sha256": "0dbfe3edcef4213839104b09ce5e10a06ebd048340923e818cd6e37248757b87"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 2,
+        "symbol_sha256": "bd67ab90f3b5b957a3cadc334a06df76f53a6cf7916982cefc1b1c2d922808ab"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "additions": 41,
+    "downgrades": [],
+    "legacy_count": 5,
+    "preserved": 5,
+    "violations": []
+  },
+  "instance_id": "astropy__astropy-13398",
+  "legacy_findings": [
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 159,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 161,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 201,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    }
+  ],
+  "role": "repair",
+  "run": "main_50_b",
+  "scanned_files": 7,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/astropy__astropy-13398"
+}

@@ -1,0 +1,1095 @@
+{
+  "archive": {
+    "base_commit": "bfc4a566423e036fbdc9fb02765fd893e4860c85",
+    "instance_id": "scikit-learn__scikit-learn-12585",
+    "path": "/home/sankalp/cg_repos/task_archives/scikit-learn__scikit-learn-12585.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": false,
+        "definition_line": null,
+        "first_appearance_line": 42,
+        "symbol_sha256": "812e0cbe668cc5be26837b1d9b19a5f7da9d3b3211ceac503dbb865c27471d77"
+      },
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/repair_record.json",
+      "rule": "test-name-absent-before-definition",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "9a257d2051af150332fd0801ab41eda8cd198b1f219ba9531bd31d62864faad8"
+      },
+      "kind": "git-history-search",
+      "line_no": 25,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 25,
+        "command_sha256": "9a257d2051af150332fd0801ab41eda8cd198b1f219ba9531bd31d62864faad8",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 26,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "361c9d954a39d197bba382ef1fc2ade77aad593dab37e555e4c611c3b623dae8"
+      },
+      "kind": "git-history-search",
+      "line_no": 27,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "c6e582c538c27f2d0b2e997a07ba1679ad9321fa6f783444299a15019c67aa83"
+      },
+      "kind": "git-history-search",
+      "line_no": 29,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "549e187c85eaf74a0cab2caeca27b3d11f05c2f5473f8f14cfad9fad888029ba"
+      },
+      "kind": "git-history-search",
+      "line_no": 31,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "history-git-rev-list",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "8cbfa50035ed72a2bf21988fd9a1745f7af358c974e0489de4f500726862c446"
+      },
+      "kind": "git-history-search",
+      "line_no": 33,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "5cb40da7c2afc708db4b3a954bef242796c9e86dffffcf553b1e6ae1533aa0bf"
+      },
+      "kind": "git-history-search",
+      "line_no": 35,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-show",
+        "command_line": 35,
+        "command_sha256": "5cb40da7c2afc708db4b3a954bef242796c9e86dffffcf553b1e6ae1533aa0bf",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 36,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "d97f767fab2c8ff0fd6793393fff5b3fdb2a79e8c71752d7edd205e11d2fdc10"
+      },
+      "kind": "git-history-search",
+      "line_no": 37,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-show",
+        "command_line": 37,
+        "command_sha256": "d97f767fab2c8ff0fd6793393fff5b3fdb2a79e8c71752d7edd205e11d2fdc10",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 38,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "a38910d84adc9189153d2df3e75c02e70998895adf5e5095303ed6827f69e6a1"
+      },
+      "kind": "git-history-search",
+      "line_no": 39,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-show",
+        "command_line": 39,
+        "command_sha256": "a38910d84adc9189153d2df3e75c02e70998895adf5e5095303ed6827f69e6a1",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 40,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "dba4fbac9625adafc60f8fb2f29b4ee3366eab8111b418a362a7f05b6049b2d1"
+      },
+      "kind": "git-history-search",
+      "line_no": 47,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "history-git-fsck",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": false,
+        "definition_line": null,
+        "first_appearance_line": 17,
+        "symbol_sha256": "812e0cbe668cc5be26837b1d9b19a5f7da9d3b3211ceac503dbb865c27471d77"
+      },
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "test-name-absent-before-definition",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "f6a03be42e2799c471056d836028c61ca79b872e1a476900707d5a59186f4bd0"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "a9f91ec74e6a87044c6f1c9fb22eb9527ebab3d0840a8ff359364ee933d76ab3"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "9246c8f367abbc58d4e8f646a658e08734200beefbf471e0208e207acc2cf791"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "be468c47102e235bf8a27dd4ffe81f80cef0b2f62ddc05a0dcb9beb878703380"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "40c251317bb8c665695cb74defa83533a181d6a860ab671b0c2692974d732b95"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "08815a2631d429e7115be9c1eda2513314fbe6d0ed667507ed971bb43d11201d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "7a6f74221cd54f2697677be58f1140d22897ea200abaf5504444d0a83d6faa7e"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "9c02dd5524a5585746ff970192b4862fdd957dd024449f8e79135be3f3e91f39"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "1b1da1f9fb8474f695218e45af66680f2bca34a533a920d487590787f8793c15"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "aa36dcaa28a78f188b4e747a894c6a135533dd96e9a66804dcee2113128f3aef"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "32f40f94a4d91725bfe55d3a265d6bf411e5909b77de08fc32d59726676c54f3"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "51e8ef34eda47249aca968518a5b6cc9fda328a754f7134a8d20fe2bb4acdd51"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "cfa4bc6c1c1c7472b9aec6c9f15f821ede9c17159eb35e4bec3cdbe89d5b1d43"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "44342360e999dc32a434ce92133d0bd5c5c1d6871b69842b2eb5567da836d1c8"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 10,
+        "symbol_sha256": "ed252f5422e17a52815f1de846e239e838d0e11936a94cb3c9217469640088fa"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 10,
+        "symbol_sha256": "d459864c0368032ed682e97956cda58a18028b4b081447cca36eceb257f19bbe"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 10,
+        "symbol_sha256": "3cd04b233e4a2b3416df5ece0954d8a08dd4887ab720363aded6f4a75cc7aed2"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 10,
+        "symbol_sha256": "b01847c20022cfc44672a60502e5532fdb9841b8a5f89b3a38ecb01701d6358d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 255,
+        "symbol_sha256": "f6a03be42e2799c471056d836028c61ca79b872e1a476900707d5a59186f4bd0"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 256,
+        "symbol_sha256": "a9f91ec74e6a87044c6f1c9fb22eb9527ebab3d0840a8ff359364ee933d76ab3"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 257,
+        "symbol_sha256": "9246c8f367abbc58d4e8f646a658e08734200beefbf471e0208e207acc2cf791"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 258,
+        "symbol_sha256": "be468c47102e235bf8a27dd4ffe81f80cef0b2f62ddc05a0dcb9beb878703380"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 259,
+        "symbol_sha256": "40c251317bb8c665695cb74defa83533a181d6a860ab671b0c2692974d732b95"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 260,
+        "symbol_sha256": "08815a2631d429e7115be9c1eda2513314fbe6d0ed667507ed971bb43d11201d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 261,
+        "symbol_sha256": "7a6f74221cd54f2697677be58f1140d22897ea200abaf5504444d0a83d6faa7e"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 262,
+        "symbol_sha256": "9c02dd5524a5585746ff970192b4862fdd957dd024449f8e79135be3f3e91f39"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 263,
+        "symbol_sha256": "1b1da1f9fb8474f695218e45af66680f2bca34a533a920d487590787f8793c15"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 264,
+        "symbol_sha256": "aa36dcaa28a78f188b4e747a894c6a135533dd96e9a66804dcee2113128f3aef"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 265,
+        "symbol_sha256": "32f40f94a4d91725bfe55d3a265d6bf411e5909b77de08fc32d59726676c54f3"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 266,
+        "symbol_sha256": "51e8ef34eda47249aca968518a5b6cc9fda328a754f7134a8d20fe2bb4acdd51"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 267,
+        "symbol_sha256": "cfa4bc6c1c1c7472b9aec6c9f15f821ede9c17159eb35e4bec3cdbe89d5b1d43"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 268,
+        "symbol_sha256": "44342360e999dc32a434ce92133d0bd5c5c1d6871b69842b2eb5567da836d1c8"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 269,
+        "symbol_sha256": "ed252f5422e17a52815f1de846e239e838d0e11936a94cb3c9217469640088fa"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 270,
+        "symbol_sha256": "d459864c0368032ed682e97956cda58a18028b4b081447cca36eceb257f19bbe"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 271,
+        "symbol_sha256": "3cd04b233e4a2b3416df5ece0954d8a08dd4887ab720363aded6f4a75cc7aed2"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 272,
+        "symbol_sha256": "b01847c20022cfc44672a60502e5532fdb9841b8a5f89b3a38ecb01701d6358d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 273,
+        "symbol_sha256": "a94702cbf7903bf5ca13520b6c859a43f847b5d89775e8fb95d80a22d6d392e5"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 274,
+        "symbol_sha256": "0a8554bc9edb865ae15902a4663ee711f992f67243a1d62d7dccfac840e28e6b"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 275,
+        "symbol_sha256": "5bf119bf2483f10cf358c6b8021f7124459f8a808e5b9bfd32099b6f008f292b"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 276,
+        "symbol_sha256": "cc532c1f7ac9237f2574514ed6d0527eb4e035ef305f8b3a257d8d74c4e5d194"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 255,
+        "symbol_sha256": "f6a03be42e2799c471056d836028c61ca79b872e1a476900707d5a59186f4bd0"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 256,
+        "symbol_sha256": "a9f91ec74e6a87044c6f1c9fb22eb9527ebab3d0840a8ff359364ee933d76ab3"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 257,
+        "symbol_sha256": "9246c8f367abbc58d4e8f646a658e08734200beefbf471e0208e207acc2cf791"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 258,
+        "symbol_sha256": "be468c47102e235bf8a27dd4ffe81f80cef0b2f62ddc05a0dcb9beb878703380"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 259,
+        "symbol_sha256": "40c251317bb8c665695cb74defa83533a181d6a860ab671b0c2692974d732b95"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 260,
+        "symbol_sha256": "08815a2631d429e7115be9c1eda2513314fbe6d0ed667507ed971bb43d11201d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 261,
+        "symbol_sha256": "7a6f74221cd54f2697677be58f1140d22897ea200abaf5504444d0a83d6faa7e"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 262,
+        "symbol_sha256": "9c02dd5524a5585746ff970192b4862fdd957dd024449f8e79135be3f3e91f39"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 263,
+        "symbol_sha256": "1b1da1f9fb8474f695218e45af66680f2bca34a533a920d487590787f8793c15"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 264,
+        "symbol_sha256": "aa36dcaa28a78f188b4e747a894c6a135533dd96e9a66804dcee2113128f3aef"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 265,
+        "symbol_sha256": "32f40f94a4d91725bfe55d3a265d6bf411e5909b77de08fc32d59726676c54f3"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 266,
+        "symbol_sha256": "51e8ef34eda47249aca968518a5b6cc9fda328a754f7134a8d20fe2bb4acdd51"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 267,
+        "symbol_sha256": "cfa4bc6c1c1c7472b9aec6c9f15f821ede9c17159eb35e4bec3cdbe89d5b1d43"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 268,
+        "symbol_sha256": "44342360e999dc32a434ce92133d0bd5c5c1d6871b69842b2eb5567da836d1c8"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 269,
+        "symbol_sha256": "ed252f5422e17a52815f1de846e239e838d0e11936a94cb3c9217469640088fa"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 270,
+        "symbol_sha256": "d459864c0368032ed682e97956cda58a18028b4b081447cca36eceb257f19bbe"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 271,
+        "symbol_sha256": "3cd04b233e4a2b3416df5ece0954d8a08dd4887ab720363aded6f4a75cc7aed2"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 272,
+        "symbol_sha256": "b01847c20022cfc44672a60502e5532fdb9841b8a5f89b3a38ecb01701d6358d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 273,
+        "symbol_sha256": "a94702cbf7903bf5ca13520b6c859a43f847b5d89775e8fb95d80a22d6d392e5"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 274,
+        "symbol_sha256": "0a8554bc9edb865ae15902a4663ee711f992f67243a1d62d7dccfac840e28e6b"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 275,
+        "symbol_sha256": "5bf119bf2483f10cf358c6b8021f7124459f8a808e5b9bfd32099b6f008f292b"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "ec2e16264e38fe1e86220aed7488d8f69b8fe45ed8169c22ec8c108a273014ba",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 276,
+        "symbol_sha256": "cc532c1f7ac9237f2574514ed6d0527eb4e035ef305f8b3a257d8d74c4e5d194"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {},
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/repair_record.json",
+      "rule": "legacy-review-retained",
+      "severity": "review"
+    },
+    {
+      "evidence": {},
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "legacy-review-retained",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "additions": 77,
+    "downgrades": [],
+    "legacy_count": 2,
+    "preserved": 2,
+    "violations": []
+  },
+  "instance_id": "scikit-learn__scikit-learn-12585",
+  "legacy_findings": [
+    {
+      "evidence": {},
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/repair_record.json",
+      "rule": "legacy",
+      "severity": "review"
+    },
+    {
+      "evidence": {},
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "review"
+    }
+  ],
+  "role": "repair",
+  "run": "main_50_a",
+  "scanned_files": 7,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/scikit-learn__scikit-learn-12585"
+}

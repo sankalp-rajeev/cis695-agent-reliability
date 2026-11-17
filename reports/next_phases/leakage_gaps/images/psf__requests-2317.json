@@ -1,0 +1,273 @@
+{
+  "archive": {
+    "base_commit": "091991be0da19de9108dbe5e3752917fea3d7fdc",
+    "instance_id": "psf__requests-2317",
+    "path": "/home/sankalp/projects/wt-leakage/runs/leakage_gaps/source_archives/psf__requests-2317.tar",
+    "pin_origin": "image-pinned-base-git-archive",
+    "sha256": "947c8827aa29ba19ffb383b671058e351f179a070ccd023f2a745853dbad6dd5"
+  },
+  "base_commit": "091991be0da19de9108dbe5e3752917fea3d7fdc",
+  "base_version": "2.4.3",
+  "base_version_origin": "pinned-archive-source",
+  "checks": {
+    "base_probes": {
+      "result": [
+        "9c943d856225c18d7cf2ee78a557f94daa9da3fddbd4f6498caa745ef7b1cf69"
+      ],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1414369966,
+        "commit_count": 3689,
+        "commit_timestamps": {
+          "ac2af6596a097252c97353aa2ec771591053b08b": 1786778704
+        },
+        "future_commit_details": [
+          {
+            "base_is_ancestor": true,
+            "change_status_counts": {
+              "M": 125
+            },
+            "changed_file_categories": {
+              "build_metadata": 3,
+              "other_files": 42,
+              "other_source": 80,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 125,
+            "changed_path_sha256": [
+              "030f38c1fcdd22a3ece49936556a0a4fc84948a5e6327b2b051763cca9b202bf",
+              "0a27a7e002028adb5a55ccbe5a8159663d0b0d278accc8a4f9bdfeed80554a2b",
+              "0cd8b7556efe4fd660a30839b4975e9fcbcbf3af679fe6d55365d0310d4a8eb0",
+              "0ee295c29def16f570f86378eff8ba37315e464d415e731d5d8ea2e67ce16f68",
+              "12333f2cce714161f8bceb582fdec2ad6a1649cd9616b116b254c2c4034a08a9",
+              "132ef99b9ead29d6e2096b6a9282eabf8eb587b39e45217310808230feaea5a4",
+              "14748f5ca3b9c22d6e8c05e64e399a390d6fcd9d8f754e761bf87cae8c4a06e3",
+              "16c0990c6f9aa3a29e2ac908e08391f0d1f9a7bdc94bbe87c0979e3ca58f78e5",
+              "16f2217c56547285ab7efd43b46cea3fe9e1a1515c715553d288100e7bb5d6f8",
+              "172e358a1b94dfba0a892b8f1d93220e075d41e509e72525372a391638e3e477",
+              "1b6b249899f3fc83af9aede2fea674671eafedf4eef8ec769d49f8d0a8f35569",
+              "2536c3931bae9166bea66ea15aaae9424d32fbd3241c2f8248fc5bcb7626a226",
+              "2555dbeea26426424d5ef70e18cf587747b7f378a364c8dbf3fa31d804093ce9",
+              "27c8cbc80995bf9a378cb016bd178b17455dfd8d14ac6e71361a66a83691e548",
+              "2c9c11d26b09b8afde329980309d967121543a456e4592c76886a20b5cf56c90",
+              "2df2e827f95677ee41bbd81d13460a894759b8abd878bc3432700107e0309661",
+              "2fa85e7518cda848ff797ee2c9ef1536e7aecc3883fa044d61b7dbb996391d63",
+              "33902c79ad7aaf60cd0d9bb9ec5bfc47c5fb90a9a2b9ca85e1351f2ffd2d22d1",
+              "348cd449b0a462b67f7831a180723b596c60a3a6fd473fd06a6a3a48c25a1bdd",
+              "350694e2d87a9f141186b2cec046db2da676d1ceccd99829d99c15ca68a0b9a4",
+              "351f43b492f348fcaec9c80c57ca15fcd864b3f1d295fc5294b6542ca16533ce",
+              "38db8f1d955192a4387157e812430e9591189f3a61baa5b885a35f261d14e128",
+              "3ad3ee27adeec190ba56ee51b89a8cff69d5f700fae48fecfa4cd90ee84b62c4",
+              "41834190ac30f6580b42c4246f466a0ff2f046dd90759a810dbfd6b653907fae",
+              "41d5a52589e0480be9c099d2bba7a8135b8b0d71bcbb8df3582a8df1c2295003",
+              "442d285300cab47ff294d9083e910fd4a32b08bdcd4b467e687f2582b7da3643",
+              "451f1c88a8a757a4c2fe630a83ac37e6850d1f74d2bba43286a97c7dd9b5e62b",
+              "45baa1c34b30021f742352908bfcb487a68d0996a2af1cd490535492bb2e5e27",
+              "490e3808e13126e458b69db19af4e6a408066311395c112cb8b3ef37445cd255",
+              "4d7285be402ad9f20903f84252de0fd194918513cfa8a22a224bd8e35a583b9f",
+              "4d7c51b1efe9043e44439a949dfd92e5827321b34082903477fd04876edb7552",
+              "4e28079e8f9a4e208ee815c55aa8f1d87ca0698da61f044486ca60de48e7a525",
+              "4f71a3b831d3624028c8171a31e1d1741cc8208adeb8448362eb281e0f594e69",
+              "514a29a5461c832e908d655cc6d5db0bcce1de7107bd489ecfbcccaba08cc69a",
+              "5456ed6b968c5a3c3bcd88583aeaa3c1c994436bcef997aa4becc58256a93400",
+              "555d741c4ae7c4ef0646e4e399d5bc6526eb055afbdcd750ed68587b610b1e05",
+              "5b4cd08c7ed3d5941df5808eacb261706f0b6f98c8e84007312295795f90bf0b",
+              "6021374147052d43bb5245bbc5091e51000bd98bb80bd85b4c7d98fd5ffcb441",
+              "6036a69232be793dd87c45e923e730b7314378a337fe363a59f2d5fcccbc2f60",
+              "633feaee006d302c2988a1f73e39e76a55ec077b595d8c0a093f72d75fb1799c",
+              "66ce464a83616f799b368cbfb7a379044228c991c6864c837315371c5f22aa7f",
+              "69e8a090ca8bebddcd5a14a381b9ec484f461b6d7f199c2345cbd635a7e9aba8",
+              "6a4b48c30048aa101f3d4af345bdde6d71c53a54fdcae6d4468e90beb745cb7e",
+              "6ab09cc077cc66390d2d56f20c7f0ab08a30310ec888de7e41ba2c3ef053658f",
+              "6bba083f45c98e202361951f4451b01056a8cc21965ea6cd37b75a53def33e40",
+              "6f37d30893c0cab68317a3d1b900bc35be348e6b62c051bb41b3f1a57018cfb3",
+              "70392e4a1a0c29e7d47a6f11476ebb4be5596ec42a2c12c52b6dbd061f174400",
+              "732a19bd2bdbdf1c2c9daf9e063b64398514a3e1e7f7fca4c527deca409f0574",
+              "7489ac41b068b3a6a9bedfe792de675a9e8b8232a0873409b35ec3bb418d5f9d",
+              "76ed074a9305c04054cdebb9e9aad2d818052b07091de1f20cad0bbac34ffb52",
+              "7b3ed02bc73dc06b7db906cf97aa91dec2b2eb21f2d92bc5caa761df5bbc168f",
+              "7b5fe2dbb256985fcaac4eb52eb3399b3a75cb546bf47c470bcb486b7424b623",
+              "7ba3d465a29fbb64a09d8feabf0b8c35f4174c276cc8069ded3a9d068bcb6372",
+              "7de2c310b2f9d1343db70ad983678b8ca051c7cf424ee63bf2f587b8dc146795",
+              "7fe500b6089d98834f56d6c09d90a54f47e1821604a90c2edb46d03127146409",
+              "8476ad8e4ca0bdf453a13abb4a923d14d542af21904370ab4a89d52b08ea0df4",
+              "856b00d1d246a010eb7016d49153349303431db951a3bce5c497d2071f468588",
+              "85933aa74a2d66c3e4dcdf7a9ad8397f5a7971080d34ef1108296a7c6b69e7e3",
+              "86a247aea59298ee01558ec2c5904735c1cc58adc8bac9d78fad3a55b42e5f30",
+              "8d068e8797e88947c320f79e856c3e16a72b730124a8f9d7031e2c4680dfa534",
+              "8da234746d1e17f831b3ad93a9b911777c30e350a31f8922cfc8ecff687e8fd6",
+              "8fa06fdf45eb4c571ea74aff119bf273121bc03f535075dac18601fc12b1e3bd",
+              "94a8f1a43fc8336dadc6f82eb3d2544ef641621c57e826b27dfdd28e9eb3e78d",
+              "9a774d69effda6b10d26cbd1fa5f34ca2f6c8fe473d2a68e5b9137b97887c909",
+              "9e44e9b76260fa128ef49b47e2c03626963f8e43047ceb37b6c97d43609aba3f",
+              "9e4f5d1d0fa4fcbf267deb8462ca442fe02b48e23bba6d9cabe47cbfae85d04a",
+              "9f6c314e1b37cd4d9e9ca4b51f6befb7b5f99f712e4b772ac340324e01ad1aee",
+              "9ffe3ecff50765c5cd4460ae2b16af7f203f05ba33accd2216e69e3768ed4548",
+              "a706c4ef3377880d0585bbb577ea988cc4f05f2058f0e559c210accc053d0934",
+              "a756de2dba128f5728e14cd5577e01a8d39e5725b812853de0f7c7b92ed4dc1b",
+              "a7e60f01458248780abd0ec0a32c80cd85e38c84eab15aef5ecf0eff9512cf68",
+              "aa3e3a567419c02d2848e31534246aa54c30d6d35e3813c589580f9162578d8a",
+              "ad68d09e528043778b5bdbbaecfc4da83035686af4c0a664af532e68986e79d7",
+              "ae3cb03d2f351775a8c27e2510127bc571c75085efd557ee7b71e69ad96b0f12",
+              "aef41c20c14ef66445d73ffc65f54183965436b2e26f394cebc9772dba5fbaee",
+              "af6c0138274d78baa4312188d566d64a46e4312c2829644041a1df2b45386cc4",
+              "b1a2ce4aab9a0d0c62cfeec2e31fed08f741f78212f0bc40b53d1ae97fef0563",
+              "b1dd4f00af12c425bf33a8c62a550a26f6c8e7aa63f7e8f045f84f0e49131b3b",
+              "b4b6ac4e508ec3e142b8b8a3cf33b9ab925e3bdd03dbbe859384760746b1ac76",
+              "b599ff1f5ed9a5663fe4f6d0d12a40a947493698ec229611d06825ea03316dda",
+              "b7fe12398abcd549da14e1587f58382c34740bdf590f8c79c127c4f9981b7585",
+              "b9b876ee97562030cf4d98148bc13b3c6d1729a32ee716a70d272c174658f06b",
+              "bac65e90017a979fe2b0a761a4b17c018b70d4b8e347ce5a88a642292d6fa359",
+              "bc37d034bad564583790a46f19d807abfe519c5671395fd494d8cce506c42947",
+              "bc3f84d2f514be3e6388b01a8c9fdbaec962d11613e8d427223ec59e6814d734",
+              "bd21d56208abe286514650685bf64f1d1375e4617526f8a2f996d38e1eee1811",
+              "bd872fdc8a0bf86ee66a70ff30d495397b323a492700e9c6d74d577515854a05",
+              "c3eb500e727a7ac9e94a56d493ad34e577452151c644956cacde93a7b815c5d4",
+              "c49b4d941a8b366dccafea4554310ca30b175b057e29cdc9132abb7e639b08ae",
+              "c60003053e85095790493eb504b9b1709d8392dde94eb7499d8667740a5a2bcf",
+              "c693279643b8cd5d248172d9c22cb7cf4ed163a3c98c8a3f69c2717edd3eacb7",
+              "c6d41308bc3130ca44af6cec51794162f6cabc80d54b9f4cfddbf0cd60ea7cee",
+              "c6e1278ad4af89e843cc97d813dd891b9c89496a13fc135bec55c1b32f4990f3",
+              "c80d84057edadb04b5615f7169c55f88ccda358d7c20af966afb20c0d0d1056a",
+              "cd0dec19d2fc15e9ff9b9c44c0bec561504237d7691cf8aa072a81821ed07ace",
+              "cdec797dddf8fc387304501d6bd4f318e1e9067c6fae012dfa8b69fd85fd3248",
+              "ce8f38c19afbbb1a9095731aedcfeb39e22ddfb97cf9042f9d2727918844b4e5",
+              "d09746b8b4e10ffe2e810b72b7c773be4c8c0dcab2128d9784c7469fbb72212b",
+              "d147de53fba8cc3f7f6ea50a0525b464bba53405ebef6d92201c8ea5cc6e5e0b",
+              "d733b853d114ea9edff0adbd8168ea7b145eb93739e7d931537e9068f1205242",
+              "dc0d576a382ca87f148bc75daef3a54e48425085e217bffc6f41398641c6e7c6",
+              "dcc3397828d1b0042afe09730bb2a976493fe4e79a4dadb9f831537e33c57112",
+              "dd1d258e31cb61a7b304dd865869467dc40a6ef622f6e2e5764ab484482e1421",
+              "dfb14fbb9e7d095209ec4cfd621069437bf9c442ff9de9d4ce889781bd0fefcf",
+              "e0cd4a6aa5959835e9a9c317941b0fef6dbefa3b9d67c9a975e6f785e5dfd610",
+              "e2de3cbc57ab9b097fca7d7c444c094ba3c1d4ee92b36d972d0d9d49669436cc",
+              "e5ea7919c1283cb1f094a9ccb96ce72ac9d35262f5974d69c4d3d75f97767289",
+              "e64d9c4eaac01a201c1632a0fc3bd1878929955344dba9bb8c29ef2c1137b9c0",
+              "e9494a2ccb97b7cda94bffae7f6c00a7c73f4d84c52c51a861a6888397e2a76e",
+              "eaa98822469c381266b86681c9328ec8105e7745955e522d59d36babd2fc7559",
+              "eb54136305e7b566c146100e76fb1495a0637ca9549af5bffdfc24625e0c5a77",
+              "eced23cf23b339d5a7dcd2246cb8fb515b1fa640975b585950c75ae19ba55feb",
+              "ed97998c263643b4083e1895f4b9801dd08ee514d9e90c5bfefea80d78cc5886",
+              "ee9d3af632c9fa3a3f43129e152dc29184afa43c38a778e9d3e35639421c8372",
+              "ef79bb882ef23ebcf525d52e7c017de24e8f9d1811d6fac020d7bf1baf56fe66",
+              "ef7d101282b80a7eda8a24fdc7828711311fc7869e6612194987a52830fe8f73",
+              "f131fe49192d62f76956ec2fdce8928baaa3cd8cbc070e4d5ac1981642bdadc9",
+              "f16467892ea65ddff261822b24e2e3613dceb1f74795c3d5fa5e12de5888b5c5",
+              "f2de8c207d19954d198687ed0709ded87988f1469fabd7943cf01ed0fb69449e",
+              "f8845ce31422d804a4e68e0cc7dd45b81f825d9c9a9494f9ceb18e6f70cabfd8",
+              "f8c1d54224d9da5a56282b7514e889ffb40eb2dda10a9f6b5d531eeedfb5d43f",
+              "f930f1376fc835f7b484ef713bc243827023f2117064a625e9d07743e8734d63",
+              "f950e593294355e8661f575b603e568b7714484b8bfc31ba7257d42e294a8ae2",
+              "fa602a8a75dc9dcc92261bac5f533c2a85e34fcceaff63b3a3a81d9acde2fc52",
+              "fb198604f871e76035e670d433077b49e22a724499d0ce11652e305f49355c2b"
+            ],
+            "changed_source_file_count": 80,
+            "commit": "ac2af6596a097252c97353aa2ec771591053b08b",
+            "content_changed_files": 0,
+            "gold_added_line_match_count": 0,
+            "mode_only_file_changes": 125
+          }
+        ],
+        "future_commit_hashes": [
+          "ac2af6596a097252c97353aa2ec771591053b08b"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "dfce7cf953250d965982b14113705f0291be7411",
+            "present": false
+          }
+        ],
+        "object_count": 14457,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 3690
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [
+          {
+            "base_version": "2.4.3",
+            "different_from_base": true,
+            "gold_added_line_count": 0,
+            "path": "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pip/_vendor/requests",
+            "source_files": 18,
+            "vendored": true,
+            "version": "2.32.3"
+          },
+          {
+            "base_version": "2.4.3",
+            "different_from_base": false,
+            "gold_added_line_count": 1,
+            "path": "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/requests",
+            "source_files": 79,
+            "vendored": false,
+            "version": "2.4.3"
+          },
+          {
+            "base_version": "2.4.3",
+            "different_from_base": true,
+            "gold_added_line_count": 0,
+            "path": "/opt/miniconda3/lib/python3.11/site-packages/pip/_vendor/requests",
+            "source_files": 18,
+            "vendored": true,
+            "version": "2.31.0"
+          },
+          {
+            "base_version": "2.4.3",
+            "different_from_base": true,
+            "gold_added_line_count": 0,
+            "path": "/opt/miniconda3/lib/python3.11/site-packages/requests",
+            "source_files": 18,
+            "vendored": false,
+            "version": "2.31.0"
+          },
+          {
+            "base_version": "2.4.3",
+            "different_from_base": true,
+            "gold_added_line_count": 0,
+            "path": "/usr/lib/python3/dist-packages/pip/_vendor/requests",
+            "source_files": 18,
+            "vendored": true,
+            "version": "2.27.1"
+          }
+        ],
+        "errors": 3,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 20143,
+            "repo_archives": [],
+            "repo_extracted": [
+              {
+                "kind": "conda-extracted",
+                "path_sha256": "7a397a2ac9af8f3fca7f55801a811e01a726851e70ededa026fe4b00efb6fb6b",
+                "version": "2.31.0"
+              }
+            ]
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 3,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:3c49e39da2143fc51599f096a7c959ea5f3c9fd97d22899d977ac92d6dc360b6",
+  "instance_id": "psf__requests-2317"
+}

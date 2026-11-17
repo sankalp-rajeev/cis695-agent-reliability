@@ -1,0 +1,99 @@
+{
+  "archive": {
+    "base_commit": "ac2b7599d212af7d04649959ce6926c63c3133fa",
+    "instance_id": "sphinx-doc__sphinx-10614",
+    "path": "/home/sankalp/cg_repos/task_archives/sphinx-doc__sphinx-10614.tar",
+    "pin_origin": "audit-initial-inventory",
+    "sha256": "628b90e228e06148fa46adca0d9f4160be938baae09b19062d35555487e10125"
+  },
+  "base_commit": "ac2b7599d212af7d04649959ce6926c63c3133fa",
+  "base_version": "7.2.0",
+  "base_version_origin": "pinned-archive-source",
+  "checks": {
+    "base_probes": {
+      "result": [
+        "075a88da534ae76e3385a197670d1885d112c9e3a5b08a235efaf151e00e80e8",
+        "88280377c507fb8ba1f7ebaafd02fbef0091b6bb4b85a867dba2649305c84c3e",
+        "8a7e7b5dfd6db1efdb521243e43dbe40b3bc6f2f1d66ffda16da5d6e57c4913f",
+        "b59756fadec31f52baaf555d3ffda9da065e3d9cae750b11709767fde2039671",
+        "bdda8bf65fde7ffb51888725e8017618482ac4e69da73011bd7ad39d1565e969",
+        "d0d363fdeddb27128a9dd83533ac35265255087825f34098fce6e0ec01c46c7d",
+        "d10a91d5f0707f26f5192d37eb2df1d710f28688be7ea9568ef0bf3cd250c8c6",
+        "dd2ae9e93118205bc1be63f8a1e3de7a6180f851e5366af85579bbddd9fc9369",
+        "e2f62bbdfda42cf052d496255ea8451a97baddee50a5e07b471742ac9898f504"
+      ],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1691443230,
+        "commit_count": 20228,
+        "commit_timestamps": {
+          "df2f7c873f01d28107f2f84a055d06a9fc66c50e": 1786592744
+        },
+        "future_commit_details": [
+          {
+            "changed_file_categories": {
+              "build_metadata": 1,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 1,
+            "changed_path_sha256": [
+              "ef2cef9f88b4fe09ca3082140e67f5ad34fb65fb6e228f119d3812261ae51449"
+            ],
+            "changed_source_file_count": 0,
+            "commit": "df2f7c873f01d28107f2f84a055d06a9fc66c50e",
+            "gold_added_line_match_count": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "df2f7c873f01d28107f2f84a055d06a9fc66c50e"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "ca9acf3c5b16ccce127e9aa782ceaed8d754f736",
+            "present": false
+          }
+        ],
+        "object_count": 156613,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 20228
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [],
+        "errors": 3,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 19504,
+            "repo_archives": [],
+            "repo_extracted": []
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 255,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "review",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:5361dd37c78009c7ef61fc8b567bf45f6d3788efd4c11d72dede354ae5195b75",
+  "instance_id": "sphinx-doc__sphinx-10614"
+}

@@ -1,0 +1,132 @@
+{
+  "archive": {
+    "base_commit": "8aba863a634f40560e25055d179220f0eefabe9a",
+    "instance_id": "pytest-dev__pytest-5809",
+    "path": "/home/sankalp/cg_repos/task_archives/pytest-dev__pytest-5809.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "8690468c8668fa44be1553d6e5742dbcbd63deaf7453f22ce2e84fa360b27d3c"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "command_sha256": "5e55a6409fbfc709cad851d3f0a8a4040e5e6e3063fa9a0de12e2d7418296dbe"
+      },
+      "kind": "git-history-search",
+      "line_no": 7,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pytest-dev__pytest-5809/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "6a26a2e4b6c8e25e1e5fcf8ed65d0c771503ce75a26f791449ab4117ef46fbb0"
+      },
+      "kind": "git-history-search",
+      "line_no": 11,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pytest-dev__pytest-5809/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 11,
+        "command_sha256": "6a26a2e4b6c8e25e1e5fcf8ed65d0c771503ce75a26f791449ab4117ef46fbb0",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 12,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pytest-dev__pytest-5809/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "5e588580e29bb02edb9c069c08e718ff77c18cf1172750f1646a8ec09e18f02f"
+      },
+      "kind": "git-history-search",
+      "line_no": 29,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pytest-dev__pytest-5809/generation_trajectory.jsonl",
+      "rule": "history-git-fsck",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "8690468c8668fa44be1553d6e5742dbcbd63deaf7453f22ce2e84fa360b27d3c",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 6,
+        "symbol_sha256": "293fe257a18ca4684589630382e4c802c0dfc50e76ab4672885b0d3d8c5169b3"
+      },
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pytest-dev__pytest-5809/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "8690468c8668fa44be1553d6e5742dbcbd63deaf7453f22ce2e84fa360b27d3c",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "346040d81ac0d5a63ca24cfe6940a7096e35700418b8fe9464fc00caf33e7544"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pytest-dev__pytest-5809/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "8690468c8668fa44be1553d6e5742dbcbd63deaf7453f22ce2e84fa360b27d3c",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "4a486003a88d10431eaadd35790205ad4fbdb4a96ef05aeac8cc9d03bcd42617"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pytest-dev__pytest-5809/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "8690468c8668fa44be1553d6e5742dbcbd63deaf7453f22ce2e84fa360b27d3c",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "2214a6e5569b1df220194232aff2e58d71b8bc0aef55b191bfc1d1225001756d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pytest-dev__pytest-5809/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "additions": 7,
+    "downgrades": [],
+    "legacy_count": 1,
+    "preserved": 1,
+    "violations": []
+  },
+  "instance_id": "pytest-dev__pytest-5809",
+  "legacy_findings": [
+    {
+      "evidence": {},
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pytest-dev__pytest-5809/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "review"
+    }
+  ],
+  "role": "generator",
+  "run": "main_50_a",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pytest-dev__pytest-5809"
+}

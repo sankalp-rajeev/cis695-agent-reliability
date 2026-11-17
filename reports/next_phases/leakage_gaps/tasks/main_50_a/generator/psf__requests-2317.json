@@ -1,0 +1,75 @@
+{
+  "archive": {
+    "base_commit": "091991be0da19de9108dbe5e3752917fea3d7fdc",
+    "instance_id": "psf__requests-2317",
+    "path": "/home/sankalp/projects/wt-leakage/runs/leakage_gaps/source_archives/psf__requests-2317.tar",
+    "pin_origin": "image-pinned-base-git-archive",
+    "sha256": "947c8827aa29ba19ffb383b671058e351f179a070ccd023f2a745853dbad6dd5"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "command_sha256": "84d1ffc9b2ab4cfd1e7741c350bc5caa6bdd7ede41e4c94c95b58a2e8b1f83d0"
+      },
+      "kind": "git-history-search",
+      "line_no": 20,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/psf__requests-2317/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 20,
+        "command_sha256": "84d1ffc9b2ab4cfd1e7741c350bc5caa6bdd7ede41e4c94c95b58a2e8b1f83d0",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 22,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/psf__requests-2317/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "947c8827aa29ba19ffb383b671058e351f179a070ccd023f2a745853dbad6dd5",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 25,
+        "symbol_sha256": "3850ba498af6c0a3c3c6b2b1f5165300d40159c1d2e4dda2c8f1c7c3d83b42ee"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/psf__requests-2317/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "947c8827aa29ba19ffb383b671058e351f179a070ccd023f2a745853dbad6dd5",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 4,
+        "symbol_sha256": "6ead8689c474722cedb189d32d65b2eb0ff3a329970b675d744778f1154ae4cc"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/psf__requests-2317/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "additions": 4,
+    "downgrades": [],
+    "legacy_count": 0,
+    "preserved": 0,
+    "violations": []
+  },
+  "instance_id": "psf__requests-2317",
+  "legacy_findings": [],
+  "role": "generator",
+  "run": "main_50_a",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/psf__requests-2317"
+}

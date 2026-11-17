@@ -86,6 +86,24 @@ def post_images(archive, patch):
     return outputs
 
 
+def gold_hunks(patch):
+    from unidiff import PatchSet
+    return [dict(path=f.path, added=f.is_added_file,
+        hunks=[dict(start=h.source_start, lines=[(line.line_type, line.value)
+            for line in h]) for h in f]) for f in PatchSet(patch) if not f.is_removed_file]
+
+
+def prepare_gold_requests(manifest, directory):
+    """Exact Git-base recheck, independent of archive export transformations."""
+    from reliability.benchmark.loader import load_instance, load_verified
+    dataset = load_verified()
+    for row in csv.DictReader(Path(manifest).open()):
+        task, oracle = load_instance(row['instance_id'], dataset)
+        request = dict(instance_id=task.instance_id, base_commit=task.base_commit,
+                       post_image_hunks=gold_hunks(oracle.patch))
+        (directory/(task.instance_id+'.json')).write_text(json.dumps(request))
+
+
 def prepare_requests(manifest, directory):
     from reliability.benchmark.loader import load_instance, load_verified
     dataset = load_verified()
@@ -98,19 +116,9 @@ def prepare_requests(manifest, directory):
         probes = probes_from_oracle(oracle, task.problem_statement)
         import_name = import_name_for_instance(task.instance_id)
         version = base_version(archive, import_name)
-        try:
-            post = post_images(archive, oracle.patch)
-            hunks = []
-        except ValueError:
-            # Export substitutions/preparation can change archive text. In that
-            # case hash post-images reconstructed from git show BASE:path in
-            # the image; do not weaken context validation or write any files.
-            from unidiff import PatchSet
-            post = []
-            hunks = [dict(path=f.path, added=f.is_added_file,
-                hunks=[dict(start=h.source_start, lines=[(line.line_type, line.value)
-                    for line in h]) for h in f]) for f in PatchSet(oracle.patch)
-                if not f.is_removed_file]
+        # Archive exports can transform bytes outside a patch hunk. Always
+        # derive exact gold post-images from git show BASE:path in the image.
+        post, hunks = [], gold_hunks(oracle.patch)
         request = dict(instance_id=task.instance_id, base_commit=task.base_commit,
             package=task.repo.split('/')[-1], import_name=import_name,
             base_version=version, masked_paths=list(MASKED_TMPFS_PATHS),

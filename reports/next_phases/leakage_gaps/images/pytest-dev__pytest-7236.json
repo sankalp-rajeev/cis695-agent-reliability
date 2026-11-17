@@ -1,0 +1,89 @@
+{
+  "archive": {
+    "base_commit": "c98bc4cd3d687fe9b392d8eecd905627191d4f06",
+    "instance_id": "pytest-dev__pytest-7236",
+    "path": "/home/sankalp/cg_repos/task_archives/pytest-dev__pytest-7236.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "c71daad03ecd5aea44e5c6773cd1028c5e258ce73fe41ff7a4ce2660776e9f65"
+  },
+  "base_commit": "c98bc4cd3d687fe9b392d8eecd905627191d4f06",
+  "base_version": "unknown",
+  "base_version_origin": "pinned-archive-source",
+  "checks": {
+    "base_probes": {
+      "result": [
+        "78a0720f62e243ec1fa47181b9ae4ad683d6646aebd46b601422d134a4968f4a"
+      ],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1590007866,
+        "commit_count": 12365,
+        "commit_timestamps": {
+          "f7dfda149bb2de17b9eeeff39c0c642a5386d1f4": 1786590797
+        },
+        "future_commit_details": [
+          {
+            "changed_file_categories": {
+              "build_metadata": 0,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 0,
+            "changed_path_sha256": [],
+            "changed_source_file_count": 0,
+            "commit": "f7dfda149bb2de17b9eeeff39c0c642a5386d1f4",
+            "gold_added_line_match_count": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "f7dfda149bb2de17b9eeeff39c0c642a5386d1f4"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "0d9133f6023d4178d6c6d451779b888b263dae3d",
+            "present": false
+          }
+        ],
+        "object_count": 77688,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 12365
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [],
+        "errors": 3,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 19504,
+            "repo_archives": [],
+            "repo_extracted": []
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 79,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "review",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:c1f5ff162a4837fdcaf7017fffbe91b583e063e8d8f1af1455c78e0e2fcf55f5",
+  "instance_id": "pytest-dev__pytest-7236"
+}

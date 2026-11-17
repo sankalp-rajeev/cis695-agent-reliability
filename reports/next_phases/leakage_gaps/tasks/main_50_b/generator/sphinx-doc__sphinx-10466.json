@@ -1,0 +1,174 @@
+{
+  "archive": {
+    "base_commit": "cab2d93076d0cca7c53fac885f927dde3e2a5fec",
+    "instance_id": "sphinx-doc__sphinx-10466",
+    "path": "/home/sankalp/cg_repos/task_archives/sphinx-doc__sphinx-10466.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "311723ac277e0aa438a7b32ef9b644ce737def09175a38e1424ff894cbeb388a"
+  },
+  "findings": [
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 50,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/sphinx-doc__sphinx-10466/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "356f4fc6913a497f5b30bd101056138b1e6e0397cd0c34aa949fe064bfcdc421"
+      },
+      "kind": "git-history-search",
+      "line_no": 21,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/sphinx-doc__sphinx-10466/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "ae586d5bc230dfe64d50b7e0fdee92b77083a6ac053814efc290949a678a45b3"
+      },
+      "kind": "git-history-search",
+      "line_no": 21,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/sphinx-doc__sphinx-10466/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 21,
+        "command_sha256": "356f4fc6913a497f5b30bd101056138b1e6e0397cd0c34aa949fe064bfcdc421",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 22,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/sphinx-doc__sphinx-10466/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "1aa219c004c294d8cc6209d92cb4f268257100815e40016649bdf3e013b99562"
+      },
+      "kind": "git-history-search",
+      "line_no": 24,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/sphinx-doc__sphinx-10466/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "136cfc2b95c8e5006dd6f8c1baa37f6bd34f9ad015b51fda87f7acaa1254a5e4"
+      },
+      "kind": "git-history-search",
+      "line_no": 26,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/sphinx-doc__sphinx-10466/generation_trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-show",
+        "command_line": 26,
+        "command_sha256": "136cfc2b95c8e5006dd6f8c1baa37f6bd34f9ad015b51fda87f7acaa1254a5e4",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 27,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/sphinx-doc__sphinx-10466/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "e10de3c381a2325a9c8f139e7397cd7dfad478c5d2e9a64a658ec9d08b9b2e3a"
+      },
+      "kind": "git-history-search",
+      "line_no": 28,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/sphinx-doc__sphinx-10466/generation_trajectory.jsonl",
+      "rule": "history-git-fsck",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "30c02926a139553e45337cf746ae5cd59dc21aa93c72524243c0ae1b82180f45"
+      },
+      "kind": "git-history-search",
+      "line_no": 28,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/sphinx-doc__sphinx-10466/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "67c2571cd72a2c3a675013013ffb1547808b7c32f9519d82bb4c7379b87f6d6d"
+      },
+      "kind": "fetch-fixed-version",
+      "line_no": 48,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/sphinx-doc__sphinx-10466/generation_trajectory.jsonl",
+      "rule": "fetch-pip-download",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "755ab4b1bdf2d15f3d44139cb73d39a84991c9794e6ff5546e1a42bfdafd0a30"
+      },
+      "kind": "git-history-search",
+      "line_no": 54,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/sphinx-doc__sphinx-10466/generation_trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-show",
+        "command_line": 54,
+        "command_sha256": "755ab4b1bdf2d15f3d44139cb73d39a84991c9794e6ff5546e1a42bfdafd0a30",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 55,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/sphinx-doc__sphinx-10466/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "311723ac277e0aa438a7b32ef9b644ce737def09175a38e1424ff894cbeb388a",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 6,
+        "symbol_sha256": "afdaefe1cc1a86665361fe8d0540137cf10311c80262c3a4856a5cd0eaf04650"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/sphinx-doc__sphinx-10466/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "additions": 12,
+    "downgrades": [],
+    "legacy_count": 1,
+    "preserved": 1,
+    "violations": []
+  },
+  "instance_id": "sphinx-doc__sphinx-10466",
+  "legacy_findings": [
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 50,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/sphinx-doc__sphinx-10466/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    }
+  ],
+  "role": "generator",
+  "run": "main_50_b",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/sphinx-doc__sphinx-10466"
+}

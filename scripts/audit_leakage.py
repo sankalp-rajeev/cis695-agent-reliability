@@ -114,8 +114,9 @@ def main() -> int:
     )
 
     if result.confirmed:
-        print(f"\nFAIL: {len(result.confirmed)} confirmed leak(s). "
-              "This invalidates every result from the affected runs.")
+        print(f"\nFAIL: {len(result.confirmed)} confirmed finding(s). "
+              "Inspect each rule to distinguish answer content, successful "
+              "cache access, and post-base history exposure.")
         return 1
     if incomplete:
         print(f"\nFAIL: audit incomplete — content checks ran for "

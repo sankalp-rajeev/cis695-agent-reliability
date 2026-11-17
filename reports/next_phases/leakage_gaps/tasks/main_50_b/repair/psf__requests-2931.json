@@ -1,0 +1,2749 @@
+{
+  "archive": {
+    "base_commit": "5f7a3a74aab1625c2bb65f643197ee885e3da576",
+    "instance_id": "psf__requests-2931",
+    "path": "/home/sankalp/projects/wt-leakage/runs/leakage_gaps/source_archives/psf__requests-2931.tar",
+    "pin_origin": "image-pinned-base-git-archive",
+    "sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4"
+  },
+  "findings": [
+    {
+      "evidence": {},
+      "kind": "gold-patch-content",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/patch.diff",
+      "rule": "legacy",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {},
+      "kind": "gold-patch-content",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/repair_record.json",
+      "rule": "legacy",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 44,
+        "symbol_sha256": "7d8c7aa1fc7e1bd008f1d41ac49baf095b47e7d0309f393b451944675fe3bad1"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/repair_record.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 44,
+        "symbol_sha256": "86f49634751303969daa66ca1dc915d41c4b66a3baeb132d809b4ee075ce4d06"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/repair_record.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {},
+      "kind": "gold-patch-content",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/submission_raw.txt",
+      "rule": "legacy",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-path",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {
+        "command_sha256": "d789d67640965aca2062166fe741debf084631eafcbee70076725a3ba99be581"
+      },
+      "kind": "git-history-search",
+      "line_no": 12,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "history-git-diff",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "4bfe988630891b0de0f6dc1b0fc6a8deeda51becb11f0ecfc8c630864c2bd9e8"
+      },
+      "kind": "git-history-search",
+      "line_no": 12,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 12,
+        "command_sha256": "4bfe988630891b0de0f6dc1b0fc6a8deeda51becb11f0ecfc8c630864c2bd9e8",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 14,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "998031f130f8b85820ff1a755e613fb8c05e0ed96065fa9bcb6a54986f5274a5"
+      },
+      "kind": "git-history-search",
+      "line_no": 18,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "68c87203ba5de400d5b9b7c7d2fd21450ec018f41763363257a72bc8fdcd7a65"
+      },
+      "kind": "git-history-search",
+      "line_no": 18,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "4bd8309ea6332a4833438b96de21ba94341d2432458bf8f737288f74ce2b7c58"
+      },
+      "kind": "fetch-fixed-version",
+      "line_no": 27,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "fetch-pip-download",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "d97804367d9d2407430a72e98874b671556b1510b820cdb429fff5a1e997e148"
+      },
+      "kind": "git-history-search",
+      "line_no": 74,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "history-git-reflog",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "62877b408959aa9b322a9abd698d513c94fe0a38ea50e11bac9760f4bfa4c431"
+      },
+      "kind": "git-history-search",
+      "line_no": 74,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-reflog",
+        "command_line": 74,
+        "command_sha256": "d97804367d9d2407430a72e98874b671556b1510b820cdb429fff5a1e997e148",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 75,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "559a5f0ed7fedcbb7a52690a67eef54b2eacec3db8cf5b499220cd1cce2d8dcd"
+      },
+      "kind": "git-history-search",
+      "line_no": 77,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "1c450846d15d579ea4507a27047c9f12f209e77b64d2555755bdfaeed2bbb963"
+      },
+      "kind": "git-history-search",
+      "line_no": 77,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "2b69d8d7b9cc8ccc1b6f015f12d4dbb7cb8188937b22fde720d6e4c9360106ae"
+      },
+      "kind": "git-history-search",
+      "line_no": 80,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "history-git-fsck",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "0a3a2a461ea5939e3491f69623465eca7fcc20f4689ae82206d81ed4512b8ad4"
+      },
+      "kind": "git-history-search",
+      "line_no": 80,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "history-git-rev-list",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "gold-patch-content",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": false,
+        "definition_line": null,
+        "first_appearance_line": 44,
+        "symbol_sha256": "fb276ad1b2023a5dec9e67aa3b0abd982469b4e1f726ce8463aa86a5cc64c9f1"
+      },
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "test-name-absent-before-definition",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 69,
+        "symbol_sha256": "9561a48972f41c3798845afefbd5c647c93a5e60a67d1786617729114b672e40"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 31,
+        "symbol_sha256": "7d8c7aa1fc7e1bd008f1d41ac49baf095b47e7d0309f393b451944675fe3bad1"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 31,
+        "symbol_sha256": "06a2995bfe9957f9a7838ae1010e2405c761fa23920e89a3de6c1eca26d93cc2"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 31,
+        "symbol_sha256": "f7005fbdee76c938f4b0d9df154023f0213804a8e46303c80072ad8375247f42"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 19,
+        "symbol_sha256": "86f49634751303969daa66ca1dc915d41c4b66a3baeb132d809b4ee075ce4d06"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 70,
+        "symbol_sha256": "91e4b36074bcca725d18432d8fbf37bed53be89baab44e8c82f34042cd34ab66"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 66,
+        "symbol_sha256": "6ead8689c474722cedb189d32d65b2eb0ff3a329970b675d744778f1154ae4cc"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 255,
+        "symbol_sha256": "6a9a58b64f423f0a81e7e9594177498cacfc8649ca9853ad40da32373e00cc03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 256,
+        "symbol_sha256": "7c96e4b15294fa69037fd970cdf5de7992643b87d9e728860a7f53f4ffee81af"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 257,
+        "symbol_sha256": "9561a48972f41c3798845afefbd5c647c93a5e60a67d1786617729114b672e40"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 260,
+        "symbol_sha256": "7d8c7aa1fc7e1bd008f1d41ac49baf095b47e7d0309f393b451944675fe3bad1"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 261,
+        "symbol_sha256": "06a2995bfe9957f9a7838ae1010e2405c761fa23920e89a3de6c1eca26d93cc2"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 262,
+        "symbol_sha256": "f7005fbdee76c938f4b0d9df154023f0213804a8e46303c80072ad8375247f42"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 263,
+        "symbol_sha256": "86f49634751303969daa66ca1dc915d41c4b66a3baeb132d809b4ee075ce4d06"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 285,
+        "symbol_sha256": "8a92de546f3e009a585ec96c737b97bc58e0fdea51ca2494a05d8e49b5a2343b"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 286,
+        "symbol_sha256": "c81ff2707b8d0149d08de19ab20dc065d439c9c34982cdbf657add2bffe3b62a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 287,
+        "symbol_sha256": "90a9fea5bd213b40a80090995d7be5f92ab19dfe78c92e047d8af4fa85d40f28"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 317,
+        "symbol_sha256": "be4792a751a9646fa24d91ec6ccb251eb98b4a63524778c853b6d6de96999733"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 318,
+        "symbol_sha256": "211b7570b1fb7e0b0c2149889394287e1861139a5becfc3d5d2a44975780ba03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 319,
+        "symbol_sha256": "68bb9bca62f2bbc83256c2509203df2a3f7620af658c337ffb6264506a480c48"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 320,
+        "symbol_sha256": "ed26fbb05f970e9eb832bb43d4dac67cf4400f9e806cbf5a5e1f77ed90d5e190"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 321,
+        "symbol_sha256": "a2f99fcb45e430ddc9e7e8189ecfc9f77d99f291618289be7504322c0be44286"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 322,
+        "symbol_sha256": "a823f6f575229233395959874c889da5e4f71140ed1f1cb8afbc63676cf896ea"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 323,
+        "symbol_sha256": "cb044852862f4ffa162a31cecb3bdb4f0d8ad8ba8bcc42fd143f05c48e3bbf11"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 325,
+        "symbol_sha256": "f1ec00282d371eac368001be2cbfe31f5ad1c0852807bd0e649b51449174ef3d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 326,
+        "symbol_sha256": "3850ba498af6c0a3c3c6b2b1f5165300d40159c1d2e4dda2c8f1c7c3d83b42ee"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 328,
+        "symbol_sha256": "4714ee51dfd9cccb37395f899d620bc3da64062bb8f0ce02bcf81b2d7568872c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 329,
+        "symbol_sha256": "f4b330a81e846e7fd7ac036760abe93c1b8b1abea8884e130ff8431baff8354d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 330,
+        "symbol_sha256": "09c65e2862397d2656fee9a1e9f81644c52de9fd038bb4f4b7d0746d443e21ed"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 331,
+        "symbol_sha256": "d0d528097ff4fe98a10cf2dab915570f93d2633859ae98a7a2a5ea07f2a497e9"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 332,
+        "symbol_sha256": "1116e27d89a63303367ea960bb94aac511f381cb970274d502eff892d575e810"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 334,
+        "symbol_sha256": "5ae4f2f1146113724751947ca1295a1fa1b0c202c7ddf39346f4c29fdccddc0c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 338,
+        "symbol_sha256": "ac109845e11bc5b61d45671be10de925acbf23f58e862adaff168849564ef518"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 341,
+        "symbol_sha256": "7b5ff0b82b0b4325ec25e67cb86d9d50fae9794f56c5186478809dfffa5dbdf5"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 347,
+        "symbol_sha256": "69bd19378ec9020e1128569a2721bcd7718862ee93d2a486cfc2797c7b5e5a9c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 352,
+        "symbol_sha256": "be21fd720bb60b1f423f75c8736f421eb830f1c621608782d9353ec2dfd2d4a1"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 361,
+        "symbol_sha256": "40744108658caf74e023278a46ee603318eb3d0a32f9f2668f2707307f060a2f"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 360,
+        "symbol_sha256": "de610a2aa4f49d02a1b2a18e7f71d6c5caff6b1f05b1848f8403487859b4af87"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 359,
+        "symbol_sha256": "7be38e7b949b558ec48465bc55ee386a684c28101bea5cb81364c812968b50a8"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 364,
+        "symbol_sha256": "93436fec654f31bceb7beedad4301c7c872308cece51ef805f036d1e3cfdd4c9"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 362,
+        "symbol_sha256": "d6c6d1c446e2df8bde7a430cb4c188e96e3e9d880b80b0b1a10924ebc5e3bc99"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 363,
+        "symbol_sha256": "8d4bcc778d08fdd95172a098cd0be38cf06124ac0953dc5a456f06123c0d0cd6"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 373,
+        "symbol_sha256": "68afab60637b2268a5b36bc5182038b9f861eb455a64bdf2c249c91d503b6a55"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 383,
+        "symbol_sha256": "14d41dcc40bc243cde2b6f4a4f076a5a4098184388c0385f12c008ec16fd9be5"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 372,
+        "symbol_sha256": "b14cc0483db494d030d15830879bc7bbcc08a46769efc23fa16f49dd74595773"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 368,
+        "symbol_sha256": "c1bd48c0a7484d0c3729c62e4d3d112304d5a12e99be789bd3cca993195236ae"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 378,
+        "symbol_sha256": "08ee07fd075f9f7df94572826eac1ce27ecb141c780ee4147658afccf58233e1"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 371,
+        "symbol_sha256": "44a97275436d0c2921092cfbf7b46b09e105c985a49c15e500847125546f8f8a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 374,
+        "symbol_sha256": "6b8f48272e59242a753182c00cf0cf4babc693eb37e12f2e0b78bda326651ffe"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 370,
+        "symbol_sha256": "c1b647d49dfc78e602689e97eb82878196efef2c39a6b8c897796c4041c1085a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 377,
+        "symbol_sha256": "9d7b5fd407dca13b0570421d5aff81edb897aebc5a43d707742c01c3c9fcb32c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 366,
+        "symbol_sha256": "937e52cc1faa4eb77485747b99c4511c0e0c6f7cb0dba64bb1167f2df0a313d9"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 367,
+        "symbol_sha256": "bd25af77136fdcd3de66dd856257e4c02075cafe30fd6d633a4463e90742fede"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 369,
+        "symbol_sha256": "aa55fb865fac70451d6ca817645b6bdf927379aed02e5f5391bfdd960399bb54"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 380,
+        "symbol_sha256": "1a5a73a3d9bedfde54fa5de2fee99aabd22c06402c11368c4ca53d5a371bb682"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 365,
+        "symbol_sha256": "15f69e22c4b637c957f591c337f388a207eb687a7dfe88f122fa3164060ba221"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 381,
+        "symbol_sha256": "9e044f031db973cb103bccb95bd95cdb485c5027d729cf950fb2f344f6ad0bf2"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 382,
+        "symbol_sha256": "17ea1debcce2be217eda5a97025c361677ab3538a86c01c6f0d9c2619e59b7bd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 379,
+        "symbol_sha256": "4a7ff6d89712360a02b51535097334f3d877be0e19d247124fa0f1d576f58a2f"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 375,
+        "symbol_sha256": "ebc3abf10662d574769e698266c60918f271ce0107dcbf49572a744ed606c94f"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 376,
+        "symbol_sha256": "c6c8e173b37eee949afea4c79c4effb7a8753e0ac8b1b757c824e2a36378c587"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 396,
+        "symbol_sha256": "43cfaedc51ad3313d65894fe762392ee5e69593779959f822e938d3cde0734ca"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 395,
+        "symbol_sha256": "bbf3796d36f363793a83ea258a5931b5cf32d2cd18c9f70f4406dd57944a0913"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 328,
+        "symbol_sha256": "4714ee51dfd9cccb37395f899d620bc3da64062bb8f0ce02bcf81b2d7568872c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 387,
+        "symbol_sha256": "55f185e1cd5780d4ab414b1d26d536eaff3dcf89a6a8f7bc93c709bbe9304b0b"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 386,
+        "symbol_sha256": "c774a6a20d31b949c1f7a748ca80fcf89c9699626523ca40d0dd03094a1bc9b8"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 390,
+        "symbol_sha256": "47cf7d2cb9a1ac7f2ca484544f016f9f348428fea26bdac09d26ba6a08570137"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 389,
+        "symbol_sha256": "c08fc44890bcf2727f5b305874d58a7b30fe2c17062c43e22387dfef08e331d3"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 391,
+        "symbol_sha256": "d02fd567fe263cb5a89a210281546b3acc32e92100123e3cbe535f8f505188af"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 392,
+        "symbol_sha256": "f9f1eab7488abb190cac58515db637368afc7897a3894ac40d97ee5ebe4276ca"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 393,
+        "symbol_sha256": "6c2a36950ee9c49ff0cdd6b2b52f61dea1fe8200e895f0d4fb8d80071cf25b26"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 394,
+        "symbol_sha256": "f5a6799c36667ccdec4a780d33db35f73f306d81b2d5a3f74da240e2f98f62c0"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 399,
+        "symbol_sha256": "f6116d828761f59a5b14537268901d4ca08a95febd9b622d6f1e85f4e61dc7d9"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 398,
+        "symbol_sha256": "a23822906fc2ef64a6695bc94d06c00a6b1802d7c929d578dfd20cb560bfae11"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 388,
+        "symbol_sha256": "3f1aa601b56e2927fc4406bbc0937740e795b005687a6ddb0fe5e859e3753c69"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 385,
+        "symbol_sha256": "f56d0ed7bd3754993753f1702b7196f0c50412283d631e99c0ec116598e7f23a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 384,
+        "symbol_sha256": "87a13964a333f7ef5ed7b73252d2ba65e290e8e86534dca5ef6c84b6cc0ce4f4"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 401,
+        "symbol_sha256": "f390e220a2ee59121f567de4da8db5bbfecac614b98dce194963ae674e3ebabf"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 402,
+        "symbol_sha256": "4d6fa2e6ca26cdca81fe2c32c54b22013766d07b7d41c807af9b1e32b1302a8f"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 403,
+        "symbol_sha256": "ad94f98b7710b57f816dc032b8c549ceb8c61a53e449bfe1bd45ef92ccbaf8d9"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 400,
+        "symbol_sha256": "2c6aa669cf69303c7160f157f4607f5121d4b52c11e7c5301d520ed286698337"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 405,
+        "symbol_sha256": "6bdce974a14ce0e1b0b07e2207a1372b7ddcce329c7c9128d77b038371485c0e"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 404,
+        "symbol_sha256": "d6b52fac0724ff9356c75e4ee79a3f573be8cabce134137c1b5816b227ada4d2"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 410,
+        "symbol_sha256": "c6827afb36c9ccb28138bb82cf51e05d7534ed24c8c961567abf834a21a6f5c9"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 411,
+        "symbol_sha256": "49dfb51706a3e05e14aa4d7f3df7554d253f9ebb7e05beff08e7bbeb63f6685a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 414,
+        "symbol_sha256": "91e4b36074bcca725d18432d8fbf37bed53be89baab44e8c82f34042cd34ab66"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 415,
+        "symbol_sha256": "86f87e4d8d2da770251b6b6a8d4532d4905a96acfd95f8604d9b4861e24eaa96"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 416,
+        "symbol_sha256": "1b07880459627840debfa715eb5309fa2a6b32e94055255813afb96fa0cd168a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 417,
+        "symbol_sha256": "47ba755b942219ce704f23652369b91ecac334c593c1e50b380250e5ade8e773"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 418,
+        "symbol_sha256": "6ead8689c474722cedb189d32d65b2eb0ff3a329970b675d744778f1154ae4cc"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 421,
+        "symbol_sha256": "a7e0fd524fb8e045ce99edd67ee3f5f0d37fb8c44576986746b611135c160868"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 255,
+        "symbol_sha256": "6a9a58b64f423f0a81e7e9594177498cacfc8649ca9853ad40da32373e00cc03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 256,
+        "symbol_sha256": "7c96e4b15294fa69037fd970cdf5de7992643b87d9e728860a7f53f4ffee81af"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 257,
+        "symbol_sha256": "9561a48972f41c3798845afefbd5c647c93a5e60a67d1786617729114b672e40"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 260,
+        "symbol_sha256": "7d8c7aa1fc7e1bd008f1d41ac49baf095b47e7d0309f393b451944675fe3bad1"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 261,
+        "symbol_sha256": "06a2995bfe9957f9a7838ae1010e2405c761fa23920e89a3de6c1eca26d93cc2"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 262,
+        "symbol_sha256": "f7005fbdee76c938f4b0d9df154023f0213804a8e46303c80072ad8375247f42"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 263,
+        "symbol_sha256": "86f49634751303969daa66ca1dc915d41c4b66a3baeb132d809b4ee075ce4d06"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 285,
+        "symbol_sha256": "8a92de546f3e009a585ec96c737b97bc58e0fdea51ca2494a05d8e49b5a2343b"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 286,
+        "symbol_sha256": "c81ff2707b8d0149d08de19ab20dc065d439c9c34982cdbf657add2bffe3b62a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 287,
+        "symbol_sha256": "90a9fea5bd213b40a80090995d7be5f92ab19dfe78c92e047d8af4fa85d40f28"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 317,
+        "symbol_sha256": "be4792a751a9646fa24d91ec6ccb251eb98b4a63524778c853b6d6de96999733"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 318,
+        "symbol_sha256": "211b7570b1fb7e0b0c2149889394287e1861139a5becfc3d5d2a44975780ba03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 319,
+        "symbol_sha256": "68bb9bca62f2bbc83256c2509203df2a3f7620af658c337ffb6264506a480c48"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 320,
+        "symbol_sha256": "ed26fbb05f970e9eb832bb43d4dac67cf4400f9e806cbf5a5e1f77ed90d5e190"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 321,
+        "symbol_sha256": "a2f99fcb45e430ddc9e7e8189ecfc9f77d99f291618289be7504322c0be44286"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 322,
+        "symbol_sha256": "a823f6f575229233395959874c889da5e4f71140ed1f1cb8afbc63676cf896ea"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 323,
+        "symbol_sha256": "cb044852862f4ffa162a31cecb3bdb4f0d8ad8ba8bcc42fd143f05c48e3bbf11"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 325,
+        "symbol_sha256": "f1ec00282d371eac368001be2cbfe31f5ad1c0852807bd0e649b51449174ef3d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 326,
+        "symbol_sha256": "3850ba498af6c0a3c3c6b2b1f5165300d40159c1d2e4dda2c8f1c7c3d83b42ee"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 328,
+        "symbol_sha256": "4714ee51dfd9cccb37395f899d620bc3da64062bb8f0ce02bcf81b2d7568872c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 329,
+        "symbol_sha256": "f4b330a81e846e7fd7ac036760abe93c1b8b1abea8884e130ff8431baff8354d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 330,
+        "symbol_sha256": "09c65e2862397d2656fee9a1e9f81644c52de9fd038bb4f4b7d0746d443e21ed"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 331,
+        "symbol_sha256": "d0d528097ff4fe98a10cf2dab915570f93d2633859ae98a7a2a5ea07f2a497e9"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 332,
+        "symbol_sha256": "1116e27d89a63303367ea960bb94aac511f381cb970274d502eff892d575e810"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 334,
+        "symbol_sha256": "5ae4f2f1146113724751947ca1295a1fa1b0c202c7ddf39346f4c29fdccddc0c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 338,
+        "symbol_sha256": "ac109845e11bc5b61d45671be10de925acbf23f58e862adaff168849564ef518"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 341,
+        "symbol_sha256": "7b5ff0b82b0b4325ec25e67cb86d9d50fae9794f56c5186478809dfffa5dbdf5"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 347,
+        "symbol_sha256": "69bd19378ec9020e1128569a2721bcd7718862ee93d2a486cfc2797c7b5e5a9c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 352,
+        "symbol_sha256": "be21fd720bb60b1f423f75c8736f421eb830f1c621608782d9353ec2dfd2d4a1"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 361,
+        "symbol_sha256": "40744108658caf74e023278a46ee603318eb3d0a32f9f2668f2707307f060a2f"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 360,
+        "symbol_sha256": "de610a2aa4f49d02a1b2a18e7f71d6c5caff6b1f05b1848f8403487859b4af87"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 359,
+        "symbol_sha256": "7be38e7b949b558ec48465bc55ee386a684c28101bea5cb81364c812968b50a8"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 364,
+        "symbol_sha256": "93436fec654f31bceb7beedad4301c7c872308cece51ef805f036d1e3cfdd4c9"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 362,
+        "symbol_sha256": "d6c6d1c446e2df8bde7a430cb4c188e96e3e9d880b80b0b1a10924ebc5e3bc99"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 363,
+        "symbol_sha256": "8d4bcc778d08fdd95172a098cd0be38cf06124ac0953dc5a456f06123c0d0cd6"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 373,
+        "symbol_sha256": "68afab60637b2268a5b36bc5182038b9f861eb455a64bdf2c249c91d503b6a55"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 383,
+        "symbol_sha256": "14d41dcc40bc243cde2b6f4a4f076a5a4098184388c0385f12c008ec16fd9be5"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 372,
+        "symbol_sha256": "b14cc0483db494d030d15830879bc7bbcc08a46769efc23fa16f49dd74595773"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 368,
+        "symbol_sha256": "c1bd48c0a7484d0c3729c62e4d3d112304d5a12e99be789bd3cca993195236ae"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 378,
+        "symbol_sha256": "08ee07fd075f9f7df94572826eac1ce27ecb141c780ee4147658afccf58233e1"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 371,
+        "symbol_sha256": "44a97275436d0c2921092cfbf7b46b09e105c985a49c15e500847125546f8f8a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 374,
+        "symbol_sha256": "6b8f48272e59242a753182c00cf0cf4babc693eb37e12f2e0b78bda326651ffe"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 370,
+        "symbol_sha256": "c1b647d49dfc78e602689e97eb82878196efef2c39a6b8c897796c4041c1085a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 377,
+        "symbol_sha256": "9d7b5fd407dca13b0570421d5aff81edb897aebc5a43d707742c01c3c9fcb32c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 366,
+        "symbol_sha256": "937e52cc1faa4eb77485747b99c4511c0e0c6f7cb0dba64bb1167f2df0a313d9"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 367,
+        "symbol_sha256": "bd25af77136fdcd3de66dd856257e4c02075cafe30fd6d633a4463e90742fede"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 369,
+        "symbol_sha256": "aa55fb865fac70451d6ca817645b6bdf927379aed02e5f5391bfdd960399bb54"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 380,
+        "symbol_sha256": "1a5a73a3d9bedfde54fa5de2fee99aabd22c06402c11368c4ca53d5a371bb682"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 365,
+        "symbol_sha256": "15f69e22c4b637c957f591c337f388a207eb687a7dfe88f122fa3164060ba221"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 381,
+        "symbol_sha256": "9e044f031db973cb103bccb95bd95cdb485c5027d729cf950fb2f344f6ad0bf2"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 382,
+        "symbol_sha256": "17ea1debcce2be217eda5a97025c361677ab3538a86c01c6f0d9c2619e59b7bd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 379,
+        "symbol_sha256": "4a7ff6d89712360a02b51535097334f3d877be0e19d247124fa0f1d576f58a2f"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 375,
+        "symbol_sha256": "ebc3abf10662d574769e698266c60918f271ce0107dcbf49572a744ed606c94f"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 376,
+        "symbol_sha256": "c6c8e173b37eee949afea4c79c4effb7a8753e0ac8b1b757c824e2a36378c587"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 396,
+        "symbol_sha256": "43cfaedc51ad3313d65894fe762392ee5e69593779959f822e938d3cde0734ca"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 395,
+        "symbol_sha256": "bbf3796d36f363793a83ea258a5931b5cf32d2cd18c9f70f4406dd57944a0913"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 328,
+        "symbol_sha256": "4714ee51dfd9cccb37395f899d620bc3da64062bb8f0ce02bcf81b2d7568872c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 387,
+        "symbol_sha256": "55f185e1cd5780d4ab414b1d26d536eaff3dcf89a6a8f7bc93c709bbe9304b0b"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 386,
+        "symbol_sha256": "c774a6a20d31b949c1f7a748ca80fcf89c9699626523ca40d0dd03094a1bc9b8"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 390,
+        "symbol_sha256": "47cf7d2cb9a1ac7f2ca484544f016f9f348428fea26bdac09d26ba6a08570137"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 389,
+        "symbol_sha256": "c08fc44890bcf2727f5b305874d58a7b30fe2c17062c43e22387dfef08e331d3"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 391,
+        "symbol_sha256": "d02fd567fe263cb5a89a210281546b3acc32e92100123e3cbe535f8f505188af"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 392,
+        "symbol_sha256": "f9f1eab7488abb190cac58515db637368afc7897a3894ac40d97ee5ebe4276ca"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 393,
+        "symbol_sha256": "6c2a36950ee9c49ff0cdd6b2b52f61dea1fe8200e895f0d4fb8d80071cf25b26"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 394,
+        "symbol_sha256": "f5a6799c36667ccdec4a780d33db35f73f306d81b2d5a3f74da240e2f98f62c0"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 399,
+        "symbol_sha256": "f6116d828761f59a5b14537268901d4ca08a95febd9b622d6f1e85f4e61dc7d9"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 398,
+        "symbol_sha256": "a23822906fc2ef64a6695bc94d06c00a6b1802d7c929d578dfd20cb560bfae11"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 388,
+        "symbol_sha256": "3f1aa601b56e2927fc4406bbc0937740e795b005687a6ddb0fe5e859e3753c69"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 385,
+        "symbol_sha256": "f56d0ed7bd3754993753f1702b7196f0c50412283d631e99c0ec116598e7f23a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 384,
+        "symbol_sha256": "87a13964a333f7ef5ed7b73252d2ba65e290e8e86534dca5ef6c84b6cc0ce4f4"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 401,
+        "symbol_sha256": "f390e220a2ee59121f567de4da8db5bbfecac614b98dce194963ae674e3ebabf"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 402,
+        "symbol_sha256": "4d6fa2e6ca26cdca81fe2c32c54b22013766d07b7d41c807af9b1e32b1302a8f"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 403,
+        "symbol_sha256": "ad94f98b7710b57f816dc032b8c549ceb8c61a53e449bfe1bd45ef92ccbaf8d9"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 400,
+        "symbol_sha256": "2c6aa669cf69303c7160f157f4607f5121d4b52c11e7c5301d520ed286698337"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 405,
+        "symbol_sha256": "6bdce974a14ce0e1b0b07e2207a1372b7ddcce329c7c9128d77b038371485c0e"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 404,
+        "symbol_sha256": "d6b52fac0724ff9356c75e4ee79a3f573be8cabce134137c1b5816b227ada4d2"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 410,
+        "symbol_sha256": "c6827afb36c9ccb28138bb82cf51e05d7534ed24c8c961567abf834a21a6f5c9"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 411,
+        "symbol_sha256": "49dfb51706a3e05e14aa4d7f3df7554d253f9ebb7e05beff08e7bbeb63f6685a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 414,
+        "symbol_sha256": "91e4b36074bcca725d18432d8fbf37bed53be89baab44e8c82f34042cd34ab66"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 415,
+        "symbol_sha256": "86f87e4d8d2da770251b6b6a8d4532d4905a96acfd95f8604d9b4861e24eaa96"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 416,
+        "symbol_sha256": "1b07880459627840debfa715eb5309fa2a6b32e94055255813afb96fa0cd168a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 417,
+        "symbol_sha256": "47ba755b942219ce704f23652369b91ecac334c593c1e50b380250e5ade8e773"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 418,
+        "symbol_sha256": "6ead8689c474722cedb189d32d65b2eb0ff3a329970b675d744778f1154ae4cc"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c6a6e839cb8eab4d2629a04e3df24ea15e9edbc7445c19ef7cafe1c1bb3b3ed4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 421,
+        "symbol_sha256": "a7e0fd524fb8e045ce99edd67ee3f5f0d37fb8c44576986746b611135c160868"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {},
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "legacy-review-retained",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "additions": 191,
+    "downgrades": [],
+    "legacy_count": 6,
+    "preserved": 6,
+    "violations": []
+  },
+  "instance_id": "psf__requests-2931",
+  "legacy_findings": [
+    {
+      "evidence": {},
+      "kind": "gold-patch-content",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/patch.diff",
+      "rule": "legacy",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {},
+      "kind": "gold-patch-content",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/repair_record.json",
+      "rule": "legacy",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {},
+      "kind": "gold-patch-content",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/submission_raw.txt",
+      "rule": "legacy",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-path",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "gold-patch-content",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {},
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "review"
+    }
+  ],
+  "role": "repair",
+  "run": "main_50_b",
+  "scanned_files": 7,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-2931"
+}

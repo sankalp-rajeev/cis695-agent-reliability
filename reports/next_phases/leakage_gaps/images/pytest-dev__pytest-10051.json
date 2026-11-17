@@ -1,0 +1,94 @@
+{
+  "archive": {
+    "base_commit": "aa55975c7d3f6c9f6d7f68accc41bb7cadf0eb9a",
+    "instance_id": "pytest-dev__pytest-10051",
+    "path": "/home/sankalp/cg_repos/task_archives/pytest-dev__pytest-10051.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806"
+  },
+  "base_commit": "aa55975c7d3f6c9f6d7f68accc41bb7cadf0eb9a",
+  "base_version": "unknown",
+  "base_version_origin": "pinned-archive-source",
+  "checks": {
+    "base_probes": {
+      "result": [
+        "30c0238e7e4359dd1a95d7a7923ee2a065d36c82fbca5957b9457c6154068861",
+        "73e7e47bdeaf36dd87df03339f18a8e5027bfebe820a6ed4ff9b132c7f276c37",
+        "991008c574a99be2046204fc5b64b6bf8a2ef8cf8cf743a646b934de89975141",
+        "9ed6406ad5ac2d4ec959af513ba8845c80f4f5a3c3e0631a6b62df4976b0108d",
+        "a05ff9412eff219ee989445f3809a1ee9fb0bfb924e7ce3d4143ed07ee7a50b9",
+        "dc3dcdbb41c7d6e3aa244355d68feef152e3c3e1191309d988b44c26930a7ee7"
+      ],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1656031659,
+        "commit_count": 14530,
+        "commit_timestamps": {
+          "5789e62ba04434cc44ba1f7902ea1cb12752b096": 1786580887
+        },
+        "future_commit_details": [
+          {
+            "changed_file_categories": {
+              "build_metadata": 0,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 0,
+            "changed_path_sha256": [],
+            "changed_source_file_count": 0,
+            "commit": "5789e62ba04434cc44ba1f7902ea1cb12752b096",
+            "gold_added_line_match_count": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "5789e62ba04434cc44ba1f7902ea1cb12752b096"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "2eb69fdbfb44fae088b81f6a468b5c49ae704cf1",
+            "present": false
+          }
+        ],
+        "object_count": 91499,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 14530
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [],
+        "errors": 3,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 19504,
+            "repo_archives": [],
+            "repo_extracted": []
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 77,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "review",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:47249870b662ac39235d6cc8231cac31ee17fe1524ec594fe957fd205e9f33a3",
+  "instance_id": "pytest-dev__pytest-10051"
+}

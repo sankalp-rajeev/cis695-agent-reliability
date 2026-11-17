@@ -1,0 +1,89 @@
+{
+  "archive": {
+    "base_commit": "bb64b99b78a579cb2f6178011a4cf9366e634438",
+    "instance_id": "django__django-13786",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-13786.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "0a28ac27d65a544e84a282902c869dc79a9a81ff43530286bd94c9275baa2e26"
+  },
+  "base_commit": "bb64b99b78a579cb2f6178011a4cf9366e634438",
+  "base_version": "3.2.0",
+  "base_version_origin": "pinned-archive-source",
+  "checks": {
+    "base_probes": {
+      "result": [
+        "d3c6f3c52a85f7af2e41a23917fe7b3e43b4607facff3280dcc50df27242e2da"
+      ],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1608195441,
+        "commit_count": 29059,
+        "commit_timestamps": {
+          "63de5bb0a690444fa64fb6dca5feb84c37f123df": 1786583934
+        },
+        "future_commit_details": [
+          {
+            "changed_file_categories": {
+              "build_metadata": 0,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 0,
+            "changed_path_sha256": [],
+            "changed_source_file_count": 0,
+            "commit": "63de5bb0a690444fa64fb6dca5feb84c37f123df",
+            "gold_added_line_match_count": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "63de5bb0a690444fa64fb6dca5feb84c37f123df"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "7e8becb1009557cb6f8ba649ebac3ea6f814566e",
+            "present": false
+          }
+        ],
+        "object_count": 353277,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 29059
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [],
+        "errors": 3,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 17775,
+            "repo_archives": [],
+            "repo_extracted": []
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 89,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "review",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:b0647556424fdd8811cf5bb493f58c24b6a5223ca0f80c4faab7c9f7fc586db9",
+  "instance_id": "django__django-13786"
+}

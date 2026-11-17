@@ -1,0 +1,89 @@
+{
+  "archive": {
+    "base_commit": "a7b7260bf06c20d408215d95ce20a1a01c12e5b1",
+    "instance_id": "matplotlib__matplotlib-22871",
+    "path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-22871.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "426e96186d0e97a30d656eb820e224fcab29dc8f6bf8c0fbeabeff3734939a45"
+  },
+  "base_commit": "a7b7260bf06c20d408215d95ce20a1a01c12e5b1",
+  "base_version": "3.5.0+git.2071",
+  "base_version_origin": "base-ancestor-tag-description",
+  "checks": {
+    "base_probes": {
+      "result": [
+        "7a61f079b1aa33815e95e9770cd1493e5b5d7ce3afbca92c2f1dfb3399d2fefe"
+      ],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1650533467,
+        "commit_count": 42754,
+        "commit_timestamps": {
+          "4b5267d675f5fbaa08b8824d81753e149a2e7c05": 1786597530
+        },
+        "future_commit_details": [
+          {
+            "changed_file_categories": {
+              "build_metadata": 0,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 0,
+            "changed_path_sha256": [],
+            "changed_source_file_count": 0,
+            "commit": "4b5267d675f5fbaa08b8824d81753e149a2e7c05",
+            "gold_added_line_match_count": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "4b5267d675f5fbaa08b8824d81753e149a2e7c05"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "c43e566242add99cb6538f8408860486bdebf2bd",
+            "present": false
+          }
+        ],
+        "object_count": 279615,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 42754
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [],
+        "errors": 24,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 74729,
+            "repo_archives": [],
+            "repo_extracted": []
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 111,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "review",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:f65f6e248b99e1a6c2316f49450dabd7c1af9cfaccc2e4bfd6d3498fdde7a5cd",
+  "instance_id": "matplotlib__matplotlib-22871"
+}

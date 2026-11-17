@@ -1,0 +1,87 @@
+{
+  "archive": {
+    "base_commit": "c6753448b5c34f95e250105d76709fe4d349ca1f",
+    "instance_id": "sympy__sympy-14711",
+    "path": "/home/sankalp/cg_repos/task_archives/sympy__sympy-14711.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "2dc2195d9b655e79fb14b02beb6cb7fdc9876fc840977e7ad70bb7841ad1b36d"
+  },
+  "base_commit": "c6753448b5c34f95e250105d76709fe4d349ca1f",
+  "base_version": "1.1.2.dev",
+  "base_version_origin": "pinned-archive-source",
+  "checks": {
+    "base_probes": {
+      "result": [],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1525981881,
+        "commit_count": 31960,
+        "commit_timestamps": {
+          "a0bbae0b2e7de1110db52bdc844d0e15fe1458fb": 1786593449
+        },
+        "future_commit_details": [
+          {
+            "changed_file_categories": {
+              "build_metadata": 0,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 0,
+            "changed_path_sha256": [],
+            "changed_source_file_count": 0,
+            "commit": "a0bbae0b2e7de1110db52bdc844d0e15fe1458fb",
+            "gold_added_line_match_count": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "a0bbae0b2e7de1110db52bdc844d0e15fe1458fb"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "884911921829e52e6cdb0c9686f746baac85bae1",
+            "present": false
+          }
+        ],
+        "object_count": 223944,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 31960
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [],
+        "errors": 3,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 19916,
+            "repo_archives": [],
+            "repo_extracted": []
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 9,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "review",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:bba8a91b93b45d122124ca49f4a9aea5efec3cf1877997b46f33433e1a9e5fd5",
+  "instance_id": "sympy__sympy-14711"
+}

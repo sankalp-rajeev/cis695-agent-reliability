@@ -1,0 +1,66 @@
+{
+  "archive": {
+    "base_commit": "dd528cb2cefc0db8b91a7ff0a2bc87305b976597",
+    "instance_id": "django__django-15103",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-15103.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "effa38fed33a5b2fad179e9a23b6553d2b194fb2f4ffc5c8b8493d695ad4309d"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "archive_sha256": "effa38fed33a5b2fad179e9a23b6553d2b194fb2f4ffc5c8b8493d695ad4309d",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 10,
+        "symbol_sha256": "8dbbe4f95419b87c219b3975880e36d9957ddbd8938bd728f585bdaa1dc0f579"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/django__django-15103/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "effa38fed33a5b2fad179e9a23b6553d2b194fb2f4ffc5c8b8493d695ad4309d",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 7,
+        "symbol_sha256": "fabe5d6e44546eb4fb4ebdf2ca0aaf5b0756f2f7b8daf990225f927a2342561c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/django__django-15103/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "effa38fed33a5b2fad179e9a23b6553d2b194fb2f4ffc5c8b8493d695ad4309d",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 10,
+        "symbol_sha256": "5f19672be9d649e18192724ade1b37b4f0b8b013696d4b3fd55abd20eb666b62"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/django__django-15103/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "additions": 3,
+    "downgrades": [],
+    "legacy_count": 0,
+    "preserved": 0,
+    "violations": []
+  },
+  "instance_id": "django__django-15103",
+  "legacy_findings": [],
+  "role": "generator",
+  "run": "main_50_a",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/django__django-15103"
+}

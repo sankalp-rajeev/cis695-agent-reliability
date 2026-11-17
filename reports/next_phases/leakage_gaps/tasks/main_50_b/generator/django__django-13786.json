@@ -1,0 +1,38 @@
+{
+  "archive": {
+    "base_commit": "bb64b99b78a579cb2f6178011a4cf9366e634438",
+    "instance_id": "django__django-13786",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-13786.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "0a28ac27d65a544e84a282902c869dc79a9a81ff43530286bd94c9275baa2e26"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "archive_sha256": "0a28ac27d65a544e84a282902c869dc79a9a81ff43530286bd94c9275baa2e26",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 13,
+        "symbol_sha256": "756e773c914c6652d33d09c4f9530fd897aac7bb65d6a9284ade53b3a4f71b3e"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/django__django-13786/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "additions": 1,
+    "downgrades": [],
+    "legacy_count": 0,
+    "preserved": 0,
+    "violations": []
+  },
+  "instance_id": "django__django-13786",
+  "legacy_findings": [],
+  "role": "generator",
+  "run": "main_50_b",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/django__django-13786"
+}

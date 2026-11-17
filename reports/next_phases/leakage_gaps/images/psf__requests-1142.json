@@ -1,0 +1,141 @@
+{
+  "archive": {
+    "base_commit": "22623bd8c265b78b161542663ee980738441c307",
+    "instance_id": "psf__requests-1142",
+    "path": "/home/sankalp/projects/wt-leakage/runs/leakage_gaps/source_archives/psf__requests-1142.tar",
+    "pin_origin": "image-pinned-base-git-archive",
+    "sha256": "49bb5f8ec7e0bd76323537a0a3ea503c11ba37c72f630a3b37bd910d88bc0b18"
+  },
+  "base_commit": "22623bd8c265b78b161542663ee980738441c307",
+  "base_version": "1.1.0",
+  "base_version_origin": "pinned-archive-source",
+  "checks": {
+    "base_probes": {
+      "result": [
+        "2aba578c495c76a2f94b627e7d36fd2db4978150796f2ecf759be5ced9bef838"
+      ],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1359050424,
+        "commit_count": 2576,
+        "commit_timestamps": {
+          "546130c8c878adabd16ac5221a36e39e4dab3645": 1786589202
+        },
+        "future_commit_details": [
+          {
+            "changed_file_categories": {
+              "build_metadata": 0,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 0,
+            "changed_path_sha256": [],
+            "changed_source_file_count": 0,
+            "commit": "546130c8c878adabd16ac5221a36e39e4dab3645",
+            "gold_added_line_match_count": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "546130c8c878adabd16ac5221a36e39e4dab3645"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "423514171634aa8df6c19053cc94605ed5c42b50",
+            "present": false
+          }
+        ],
+        "object_count": 10284,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 2577
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [
+          {
+            "base_version": "1.1.0",
+            "different_from_base": true,
+            "gold_added_line_count": 0,
+            "path": "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pip/_vendor/requests",
+            "source_files": 18,
+            "vendored": true,
+            "version": "2.32.3"
+          },
+          {
+            "base_version": "1.1.0",
+            "different_from_base": false,
+            "gold_added_line_count": 1,
+            "path": "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/requests",
+            "source_files": 64,
+            "vendored": false,
+            "version": "1.1.0"
+          },
+          {
+            "base_version": "1.1.0",
+            "different_from_base": true,
+            "gold_added_line_count": 0,
+            "path": "/opt/miniconda3/lib/python3.11/site-packages/pip/_vendor/requests",
+            "source_files": 18,
+            "vendored": true,
+            "version": "2.31.0"
+          },
+          {
+            "base_version": "1.1.0",
+            "different_from_base": true,
+            "gold_added_line_count": 0,
+            "path": "/opt/miniconda3/lib/python3.11/site-packages/requests",
+            "source_files": 18,
+            "vendored": false,
+            "version": "2.31.0"
+          },
+          {
+            "base_version": "1.1.0",
+            "different_from_base": true,
+            "gold_added_line_count": 1,
+            "path": "/usr/lib/python3/dist-packages/pip/_vendor/requests",
+            "source_files": 18,
+            "vendored": true,
+            "version": "2.27.1"
+          }
+        ],
+        "errors": 3,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 20143,
+            "repo_archives": [],
+            "repo_extracted": [
+              {
+                "kind": "conda-extracted",
+                "path_sha256": "7a397a2ac9af8f3fca7f55801a811e01a726851e70ededa026fe4b00efb6fb6b",
+                "version": "2.31.0"
+              }
+            ]
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 3,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:ebfed0b9a44723b3ab1e934f0b040f843abf01e1a3a8b248e150d314e949cfaa",
+  "instance_id": "psf__requests-1142"
+}

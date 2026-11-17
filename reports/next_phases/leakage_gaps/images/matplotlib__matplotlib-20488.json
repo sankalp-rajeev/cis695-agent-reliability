@@ -1,0 +1,96 @@
+{
+  "archive": {
+    "base_commit": "b7ce415c15eb39b026a097a2865da73fbcf15c9c",
+    "instance_id": "matplotlib__matplotlib-20488",
+    "path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-20488.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "73106be4d07b72480bd249c4b895bedc60af3b1b5f29dac3fb46a3d6fcfab02d"
+  },
+  "base_commit": "b7ce415c15eb39b026a097a2865da73fbcf15c9c",
+  "base_version": "3.4.2+git.1136",
+  "base_version_origin": "base-ancestor-tag-description",
+  "checks": {
+    "base_probes": {
+      "result": [
+        "51075c907531c5ce52bb01827d923b792722bcb72859f9caafe31bb31949bcf3",
+        "baf42f2013437f3bad534b7204200fee28a5b3fcedc80ac60fd4934483d18337"
+      ],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1624493385,
+        "commit_count": 39395,
+        "commit_timestamps": {
+          "40d7063d23a34b593a66987d46987ce6cab0c006": 1786597125
+        },
+        "future_commit_details": [
+          {
+            "changed_file_categories": {
+              "build_metadata": 0,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 0,
+            "changed_path_sha256": [],
+            "changed_source_file_count": 0,
+            "commit": "40d7063d23a34b593a66987d46987ce6cab0c006",
+            "gold_added_line_match_count": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "40d7063d23a34b593a66987d46987ce6cab0c006"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "b710e7ac090171e7fe3efaeacb94101e116503cb",
+            "present": false
+          }
+        ],
+        "object_count": 259788,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 39395
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [],
+        "errors": 3,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 18773,
+            "repo_archives": [],
+            "repo_extracted": []
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 717,
+            "repo_archives": [
+              {
+                "kind": "wheel",
+                "path_sha256": "76fc49102c4c84eadf29f6d6a569b885e9e2fcbffbc7034445ff989c64db8004",
+                "version": "3.7.5"
+              }
+            ],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "review",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:e2c911dc9bc0a8847e18cb83b76ec901c5ab5945bf819ac8a6989b55b2c6a1aa",
+  "instance_id": "matplotlib__matplotlib-20488"
+}

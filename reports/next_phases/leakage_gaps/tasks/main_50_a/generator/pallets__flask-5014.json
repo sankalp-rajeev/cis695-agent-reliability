@@ -1,0 +1,218 @@
+{
+  "archive": {
+    "base_commit": "7ee9ceb71e868944a46e1ff00b506772a53a4f1d",
+    "instance_id": "pallets__flask-5014",
+    "path": "/home/sankalp/cg_repos/task_archives/pallets__flask-5014.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "4cc98bbed4b03a91c6c47dbe581056ba77bb5f2436aa5e41c405ecf19da307a9"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "command_sha256": "2d7e5bee0ea0cb6caa0fd3a5a83a06408b322bb99ed903e42172bbc2eed48e5d"
+      },
+      "kind": "git-history-search",
+      "line_no": 27,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pallets__flask-5014/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "2d7e5bee0ea0cb6caa0fd3a5a83a06408b322bb99ed903e42172bbc2eed48e5d"
+      },
+      "kind": "git-history-search",
+      "line_no": 27,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pallets__flask-5014/generation_trajectory.jsonl",
+      "rule": "history-git-reflog",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "2d7e5bee0ea0cb6caa0fd3a5a83a06408b322bb99ed903e42172bbc2eed48e5d"
+      },
+      "kind": "git-history-search",
+      "line_no": 27,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pallets__flask-5014/generation_trajectory.jsonl",
+      "rule": "history-git-stash",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "66c7ab80afe2c062762d6b896673c34248b89c79c2fed39af5ca4255ce84ae7b"
+      },
+      "kind": "fetch-fixed-version",
+      "line_no": 27,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pallets__flask-5014/generation_trajectory.jsonl",
+      "rule": "fetch-pip-download",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 27,
+        "command_sha256": "2d7e5bee0ea0cb6caa0fd3a5a83a06408b322bb99ed903e42172bbc2eed48e5d",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 28,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pallets__flask-5014/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-reflog",
+        "command_line": 27,
+        "command_sha256": "2d7e5bee0ea0cb6caa0fd3a5a83a06408b322bb99ed903e42172bbc2eed48e5d",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 28,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pallets__flask-5014/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-stash",
+        "command_line": 27,
+        "command_sha256": "2d7e5bee0ea0cb6caa0fd3a5a83a06408b322bb99ed903e42172bbc2eed48e5d",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 28,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pallets__flask-5014/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "4cc98bbed4b03a91c6c47dbe581056ba77bb5f2436aa5e41c405ecf19da307a9",
+        "base_present": false,
+        "definition_line": null,
+        "first_appearance_line": 27,
+        "symbol_sha256": "bf7b8bd83dd0445ea916234cde0598df37818b545ba5533a4670af9ca60da658"
+      },
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pallets__flask-5014/generation_trajectory.jsonl",
+      "rule": "test-name-absent-before-definition",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "4cc98bbed4b03a91c6c47dbe581056ba77bb5f2436aa5e41c405ecf19da307a9",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 23,
+        "symbol_sha256": "de9e0024c07f8e138d8de8669dae7b6e7d0da6c17b7678cd9634fdad36d3dd1c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pallets__flask-5014/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "4cc98bbed4b03a91c6c47dbe581056ba77bb5f2436aa5e41c405ecf19da307a9",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 19,
+        "symbol_sha256": "33a883b90741e4fda774baebffff993612d762b65ddcf56e0ff3a1d314460f39"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pallets__flask-5014/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "4cc98bbed4b03a91c6c47dbe581056ba77bb5f2436aa5e41c405ecf19da307a9",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 19,
+        "symbol_sha256": "e3bd2789caf9e9c629795df132a7801b39404c17b9dbdf28d6ccad625ee4ad73"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pallets__flask-5014/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "4cc98bbed4b03a91c6c47dbe581056ba77bb5f2436aa5e41c405ecf19da307a9",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 13,
+        "symbol_sha256": "d5fd82f90f2f43998277f5df56a29a37b991805100b958676fc10c7ae936f1d1"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pallets__flask-5014/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "4cc98bbed4b03a91c6c47dbe581056ba77bb5f2436aa5e41c405ecf19da307a9",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 19,
+        "symbol_sha256": "a16d69d1fb5c434e9780af9f7e12b70c99178689d1db0e8f26e16e2dffbf7b25"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pallets__flask-5014/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "4cc98bbed4b03a91c6c47dbe581056ba77bb5f2436aa5e41c405ecf19da307a9",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 19,
+        "symbol_sha256": "c001d5267329bb0b91684b80eb276a4f434af2b9553341af1baf54dabdf6dc8a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pallets__flask-5014/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {},
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pallets__flask-5014/generation_trajectory.jsonl",
+      "rule": "legacy-review-retained",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "additions": 14,
+    "downgrades": [],
+    "legacy_count": 1,
+    "preserved": 1,
+    "violations": []
+  },
+  "instance_id": "pallets__flask-5014",
+  "legacy_findings": [
+    {
+      "evidence": {},
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pallets__flask-5014/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "review"
+    }
+  ],
+  "role": "generator",
+  "run": "main_50_a",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pallets__flask-5014"
+}

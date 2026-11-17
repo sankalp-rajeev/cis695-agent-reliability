@@ -1,0 +1,116 @@
+{
+  "archive": {
+    "base_commit": "99589b08de8c5a2c6cc61e13a37420a868c80599",
+    "instance_id": "pylint-dev__pylint-4551",
+    "path": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-4551.tar",
+    "pin_origin": "audit-initial-inventory",
+    "sha256": "8a03aefce8e1e751ce1203aba3a0c51ed6a5c8dd85731f7208bbb2ee6bc56083"
+  },
+  "base_commit": "99589b08de8c5a2c6cc61e13a37420a868c80599",
+  "base_version": "2.9.0-dev1",
+  "base_version_origin": "pinned-archive-source",
+  "checks": {
+    "base_probes": {
+      "result": [
+        "26b289cc15166b631c16fde721eb1da9e5fb9ad5b5964d20a20188ad7baaa509",
+        "32a1f79df082ee6d4a59db9daa89b9798e304db10837c8bbb31f08d84e7e089f",
+        "5a025898608719443610dc3ccccc3e40817a5a6fe3372fb12f970c1a77b46944",
+        "5f79f3bf4a3f110a32450727e8d5642b878717ca2f109590f90e421e5f63a6ff",
+        "6246ce166e06732e688ff816b6eee56bea9f86df0a9ce177713fe7d2238818a0",
+        "6c584565929a5801762e16eac6f77578e3d7d288d66377fa2def369ac3dd0d68",
+        "6ea5a98c5e7e4c05cccd936ac967f014ce0a8f03c348b1a4de411aa68f8d3251",
+        "7f7781674f844217745a49255cee57bd2c59078ce35a2c2862eae84a02042d38",
+        "890cc36ee3afb80247f22869e668cec2f081bd7d96362d1b40fab2217e2e9913",
+        "9a4be057c29ba7aca7635daab9bb269011494067112ca2cfe1cdb74d745e3ce7",
+        "a68df5d3dc2f571ed77b392d3b35abd4bc641e715f75776e5bea2b2d302b058c",
+        "ab7c049c25b2e6a1363f3463a336f426dd5fd8fb45a04633683f340990bb30b4",
+        "bc5837d66b9d6bce3434e6fe68dcc685f5533a35d384dbfc221bfbf5ec58df2b",
+        "c2f3942cc3b20f132f153678795a0a9ce42d778d3dbcab3ed7f637956f5bbbd5",
+        "db6bbcaebdfb0f0644d49c0fd8832e64978afd6f50d08a54da1a8e1a0630e7c4",
+        "fad26a46f2724ac7771de3b350a924fc62f7ece4e5d8d312dcd72cc2acafe55f"
+      ],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1624342746,
+        "commit_count": 5547,
+        "commit_timestamps": {
+          "beb0f4d95fa7c36507422c8aed43fbeaae40d2ba": 1786590266
+        },
+        "future_commit_details": [
+          {
+            "changed_file_categories": {
+              "build_metadata": 0,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 0,
+            "changed_path_sha256": [],
+            "changed_source_file_count": 0,
+            "commit": "beb0f4d95fa7c36507422c8aed43fbeaae40d2ba",
+            "gold_added_line_match_count": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "beb0f4d95fa7c36507422c8aed43fbeaae40d2ba"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "4c391c7fa8f8f61bf89eaf54d714b3135cf49fd8",
+            "present": false
+          },
+          {
+            "blob": "d6c0bb9c6abc70fefba0c7066106bbdcc97ac5a8",
+            "present": false
+          },
+          {
+            "blob": "1f4a65e5be991db78bb2b052505c112a9d169793",
+            "present": false
+          },
+          {
+            "blob": "baafc6904f68fde3cdd4b0d81fe643b1b405835f",
+            "present": false
+          }
+        ],
+        "object_count": 40616,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 5547
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [],
+        "errors": 3,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 19504,
+            "repo_archives": [],
+            "repo_extracted": []
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 363,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "review",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:da002762f29d4a55bbd7b2874ff0187525e0cf23b0c1705411a5d54c25702ed5",
+  "instance_id": "pylint-dev__pylint-4551"
+}

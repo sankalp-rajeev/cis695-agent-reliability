@@ -1,0 +1,89 @@
+{
+  "archive": {
+    "base_commit": "a3f4ae6cd24d5ecdf49f213d77b3513dd509a06c",
+    "instance_id": "astropy__astropy-14508",
+    "path": "/home/sankalp/cg_repos/task_archives/astropy__astropy-14508.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "b1aefb2d243c97a5d58dbe7e2c7a1c24cb74ea8c904f10852a6895e584d6c373"
+  },
+  "base_commit": "a3f4ae6cd24d5ecdf49f213d77b3513dd509a06c",
+  "base_version": "0.0.0",
+  "base_version_origin": "pinned-archive-source",
+  "checks": {
+    "base_probes": {
+      "result": [],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1678298193,
+        "commit_count": 35138,
+        "commit_timestamps": {
+          "4521e013b812bf9089bc75f2ec46dcd0caa5262a": 1786582382
+        },
+        "future_commit_details": [
+          {
+            "changed_file_categories": {
+              "build_metadata": 1,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 1,
+            "changed_path_sha256": [
+              "50c86b7ed8ac2cf95bd48334961bf0530cdc77b5a56f852c5c61b89d735fd711"
+            ],
+            "changed_source_file_count": 0,
+            "commit": "4521e013b812bf9089bc75f2ec46dcd0caa5262a",
+            "gold_added_line_match_count": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "4521e013b812bf9089bc75f2ec46dcd0caa5262a"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "1b3285ddce92f55923b08378b20211febc57561a",
+            "present": false
+          }
+        ],
+        "object_count": 224185,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 35138
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [],
+        "errors": 3,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 19436,
+            "repo_archives": [],
+            "repo_extracted": []
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 213,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "review",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:5bddfb5a01db7352b58157f7bfe41674a36ab915efc6fd6586303cc048b974a7",
+  "instance_id": "astropy__astropy-14508"
+}

@@ -1,0 +1,99 @@
+{
+  "archive": {
+    "base_commit": "1f8c4d9eb185c16a2c1d881c054f015e1c2eb334",
+    "instance_id": "pylint-dev__pylint-8898",
+    "path": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-8898.tar",
+    "pin_origin": "audit-initial-inventory",
+    "sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10"
+  },
+  "base_commit": "1f8c4d9eb185c16a2c1d881c054f015e1c2eb334",
+  "base_version": "3.0.0b1",
+  "base_version_origin": "pinned-archive-source",
+  "checks": {
+    "base_probes": {
+      "result": [
+        "0fef2c5d6de57e41fd885c0f996f4df8edf2513987c5cb56eee1a87364b7db40",
+        "c56f4f48a5797a4045778f83de94313bb299354e3c5359ebd077617d335f1d6a",
+        "f103149c250d58369520ddb5e2cd7cb87570135be1c2264fbf74b9f27c7a810a"
+      ],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1690637641,
+        "commit_count": 8772,
+        "commit_timestamps": {
+          "95d0a5c0c22eae3537f125aad9f66d7c465aa271": 1786590628
+        },
+        "future_commit_details": [
+          {
+            "changed_file_categories": {
+              "build_metadata": 0,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 0,
+            "changed_path_sha256": [],
+            "changed_source_file_count": 0,
+            "commit": "95d0a5c0c22eae3537f125aad9f66d7c465aa271",
+            "gold_added_line_match_count": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "95d0a5c0c22eae3537f125aad9f66d7c465aa271"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "2d2a46a3fda891832a2a5bb50543181fc21bea3d",
+            "present": false
+          },
+          {
+            "blob": "eecb3cbe379bb55c4f158262f8484c6e43d48fef",
+            "present": false
+          },
+          {
+            "blob": "8f16d2f1f4fd5cc073c8faf11f9ae312fcfd8b83",
+            "present": false
+          }
+        ],
+        "object_count": 78665,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 8772
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [],
+        "errors": 3,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 19436,
+            "repo_archives": [],
+            "repo_extracted": []
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 331,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "review",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:b0c71d27e9c3a21187e17af515954bebafed91d0911de5585385b34ab90588f2",
+  "instance_id": "pylint-dev__pylint-8898"
+}

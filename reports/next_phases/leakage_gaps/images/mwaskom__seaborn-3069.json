@@ -1,0 +1,90 @@
+{
+  "archive": {
+    "base_commit": "54cab15bdacfaa05a88fbc5502a5b322d99f148e",
+    "instance_id": "mwaskom__seaborn-3069",
+    "path": "/home/sankalp/cg_repos/task_archives/mwaskom__seaborn-3069.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "c7ea642156e5e339d7a3cf4bdf1f712ad4dcdfdfbe523277a364afc981b005ca"
+  },
+  "base_commit": "54cab15bdacfaa05a88fbc5502a5b322d99f148e",
+  "base_version": "0.12.1.dev0",
+  "base_version_origin": "pinned-archive-source",
+  "checks": {
+    "base_probes": {
+      "result": [
+        "372298030a59242600afdc4f52ff513b4915a892c8e45af0e7a89a39efda0bb9",
+        "ee66e251140e20fd65acff84709728926ebc65122da202d1e2c84c2ed8cec5f3"
+      ],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1665358298,
+        "commit_count": 3058,
+        "commit_timestamps": {
+          "e7dc19c10f40a5daf8e0cf67a7e025aa426ce86a": 1786589042
+        },
+        "future_commit_details": [
+          {
+            "changed_file_categories": {
+              "build_metadata": 0,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 0,
+            "changed_path_sha256": [],
+            "changed_source_file_count": 0,
+            "commit": "e7dc19c10f40a5daf8e0cf67a7e025aa426ce86a",
+            "gold_added_line_match_count": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "e7dc19c10f40a5daf8e0cf67a7e025aa426ce86a"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "bfe612a1f51497cc5940b134df70a5fad6608572",
+            "present": false
+          }
+        ],
+        "object_count": 16558,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 3058
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [],
+        "errors": 3,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 19506,
+            "repo_archives": [],
+            "repo_extracted": []
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 273,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "review",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:f0eff75310a1b33ffcdcdaeb2c0e1f67af9711d82cb79cb9a84fc5640d6a2d07",
+  "instance_id": "mwaskom__seaborn-3069"
+}

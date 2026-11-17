@@ -1,0 +1,556 @@
+{
+  "archive": {
+    "base_commit": "1f8c4d9eb185c16a2c1d881c054f015e1c2eb334",
+    "instance_id": "pylint-dev__pylint-8898",
+    "path": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-8898.tar",
+    "pin_origin": "audit-initial-inventory",
+    "sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10"
+  },
+  "findings": [
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 187,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-ambiguous",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-path",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "25d699a88dd64d195f48a285f6da32fa6acbdabf0eb43dcbaca113497a6999bd"
+      },
+      "kind": "git-history-search",
+      "line_no": 19,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "076a4d10d326f2fd2c9b5591d8a23ad952ca6609df7aeaad42961798b1be0dce"
+      },
+      "kind": "git-history-search",
+      "line_no": 21,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 21,
+        "command_sha256": "076a4d10d326f2fd2c9b5591d8a23ad952ca6609df7aeaad42961798b1be0dce",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 22,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "2e235850046f79477d8f2b173801956d9a2aedabf0a9ea574e967e77212f5a37"
+      },
+      "kind": "fetch-fixed-version",
+      "line_no": 37,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "fetch-curl",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "4ee94a2ac2df0a0ad3dba8ae21cacdb767e76102fed80c936c02559f4e702ef6"
+      },
+      "kind": "fetch-fixed-version",
+      "line_no": 47,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "fetch-pip-download",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "05c973450ac2a5c229a1de892ff349c0c8be94011874b3c458fba348a476967e"
+      },
+      "kind": "git-history-search",
+      "line_no": 53,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "history-git-fsck",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-fsck",
+        "command_line": 53,
+        "command_sha256": "05c973450ac2a5c229a1de892ff349c0c8be94011874b3c458fba348a476967e",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 54,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "0370e7cf9e181a8f54b82cd55d3703e95c2f77607a9f66e8f0d3d5c84706ac72"
+      },
+      "kind": "git-history-search",
+      "line_no": 55,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "history-git-reflog",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-reflog",
+        "command_line": 55,
+        "command_sha256": "0370e7cf9e181a8f54b82cd55d3703e95c2f77607a9f66e8f0d3d5c84706ac72",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 56,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "6b077b9c2856cc5a5e287b5bdb85be98c5968ec374f437bf828dcf02710ba29c"
+      },
+      "kind": "git-history-search",
+      "line_no": 59,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "3992904dd9bff1c7f824170fda341f7d60d05612e57e3bc106c90e705a7c3357"
+      },
+      "kind": "git-history-search",
+      "line_no": 75,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "d368232dadbad7bfe2182f9a7f5ecd011acddb79ee15f10afb030b327ea5c536"
+      },
+      "kind": "git-history-search",
+      "line_no": 77,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "6f58e25ca38ab835d4441ad47ef7938eb1e998eb6cc7c5faef7df8a36eb64de9"
+      },
+      "kind": "git-history-search",
+      "line_no": 79,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "8f270d5817e4f9d5094279f6c099b12ecc14b4ce52c0fe62ca96d2239a48be1a"
+      },
+      "kind": "git-history-search",
+      "line_no": 83,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "3df66b14b858587b2f8f5689cd1ffc7372831a5134e3b9e5d1a2380fac88af06"
+      },
+      "kind": "git-history-search",
+      "line_no": 85,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "d64238ce43baf1b5f2abf423dfc67f66f666a7fca1ba191e7c7c01491a3be46f"
+      },
+      "kind": "fetch-fixed-version",
+      "line_no": 95,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "fetch-curl",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "a909d19c056f3f10e8fdae607aae1802e75e3e178f36ad5b14100b5b5cc7284a"
+      },
+      "kind": "git-history-search",
+      "line_no": 133,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "a29075a875f658994474300e5faab98bc63c0d3593f8d94288c38d0475a8c54d"
+      },
+      "kind": "git-history-search",
+      "line_no": 139,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "history-git-cat-file",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "a29075a875f658994474300e5faab98bc63c0d3593f8d94288c38d0475a8c54d"
+      },
+      "kind": "git-history-search",
+      "line_no": 139,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "history-git-rev-list",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "bbe9984dd210256382f8df276af628ddf3ebb1e366e19081848a81766bfa662e"
+      },
+      "kind": "git-history-search",
+      "line_no": 201,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "bbe9984dd210256382f8df276af628ddf3ebb1e366e19081848a81766bfa662e"
+      },
+      "kind": "git-history-search",
+      "line_no": 201,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 32,
+        "symbol_sha256": "e968317e057abb6ef50399649d6d28d992dd67ec6ca82ae0e21c8c2062eb6718"
+      },
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 34,
+        "symbol_sha256": "ad1923a6e77e3f6f9331a11828fd0fe9563a0782a926eb8b6986a28c9ce46cef"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 34,
+        "symbol_sha256": "d852fb35f6b6c05f575cb2485eb4dfb530545ef44292f03d372a39ec182d0379"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 34,
+        "symbol_sha256": "a1349e8244b934b21db266bea00d949f3c39d4cfac4fd7e8732268bdc86b8c76"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 34,
+        "symbol_sha256": "48b5f8f4694c547ae2720f1680d1fb997f1cb6b60c9746ced3a1db67d20c4a93"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 34,
+        "symbol_sha256": "bad447d0b68d175fb3e99e410ac6242ae442b3cbcf209fd70841fbc963f1906e"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 34,
+        "symbol_sha256": "6e1a4918c8e22780ae92d586c701cabb514776327bcad4abb34b753256841d66"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 34,
+        "symbol_sha256": "2d90463a80820dca1660197dd4aef17d686506c975b1de7c14ee0d38a50784bd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 34,
+        "symbol_sha256": "2726d286fb464969f2fc59d1e11c6361f175c8d07f1bc85571af9ccf5aafe2e3"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 32,
+        "symbol_sha256": "5d5dc9cd2b6b63aaf0899eeff475d78c62fc328ff6a46f14334b216391724850"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 34,
+        "symbol_sha256": "dc75abfee0b593b37ea449269d3f63a5badf5cb1d354d16fb7331cbbb6f61c76"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 34,
+        "symbol_sha256": "b32ca522fa151fdf92e9b75ebd5656b1d07736e299fa1335010e120639f898a0"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 34,
+        "symbol_sha256": "d30c449d06da5a5eebe8227da1c7609c3d1a3c58b0396f4ebb106e3e2f73da53"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 34,
+        "symbol_sha256": "a6ba42ea64383c7d2b3a7f05b1d0ca925db12c2074717e9453ac433b44d71c20"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 34,
+        "symbol_sha256": "be148eb4bb1fd234b002895c1a2de9202f319466b3b68edaafbd19af137c9ef3"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 34,
+        "symbol_sha256": "dde7d02802fc06baaf115d2e25d6721cec524dec8a960fcc52568b09a8ca591d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "additions": 36,
+    "downgrades": [],
+    "legacy_count": 6,
+    "preserved": 6,
+    "violations": []
+  },
+  "instance_id": "pylint-dev__pylint-8898",
+  "legacy_findings": [
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 187,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-ambiguous",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-path",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {},
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "review"
+    }
+  ],
+  "role": "repair",
+  "run": "main_50_b",
+  "scanned_files": 7,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pylint-dev__pylint-8898"
+}

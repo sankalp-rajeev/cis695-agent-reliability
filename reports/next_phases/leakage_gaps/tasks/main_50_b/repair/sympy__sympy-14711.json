@@ -1,0 +1,315 @@
+{
+  "archive": {
+    "base_commit": "c6753448b5c34f95e250105d76709fe4d349ca1f",
+    "instance_id": "sympy__sympy-14711",
+    "path": "/home/sankalp/cg_repos/task_archives/sympy__sympy-14711.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "2dc2195d9b655e79fb14b02beb6cb7fdc9876fc840977e7ad70bb7841ad1b36d"
+  },
+  "findings": [
+    {
+      "evidence": {},
+      "kind": "answer-key-search",
+      "line_no": 43,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/repair_record.json",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "answer-key-search",
+      "line_no": 42,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {
+        "command_sha256": "67d62b1f12c018d4fe831f839141eedc05778f576b3198ce5f43ba0394b416cf"
+      },
+      "kind": "git-history-search",
+      "line_no": 15,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 15,
+        "command_sha256": "67d62b1f12c018d4fe831f839141eedc05778f576b3198ce5f43ba0394b416cf",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 16,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "1fceff4af747b1037f49559df628518b70810a259a20c466e4b6ee58fb630a9a"
+      },
+      "kind": "fetch-fixed-version",
+      "line_no": 24,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/trajectory.jsonl",
+      "rule": "fetch-pip-download",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "f45d9d75427e2605f768f2f34949282c21c5249e5eb08dd91929808ecbaae7d7"
+      },
+      "kind": "git-history-search",
+      "line_no": 27,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/trajectory.jsonl",
+      "rule": "history-git-fsck",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "66db6c04b1e7d339fc1e25a76a12a77d8982e9f6e63d757f0516537ed84d7d7f"
+      },
+      "kind": "git-history-search",
+      "line_no": 27,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "911196b07cefe7e4fb9566f25731d20e2ea2872151c05c354b5c2afed042ada8"
+      },
+      "kind": "git-history-search",
+      "line_no": 54,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "6f1a854130c2666901257074e366345e4d3ff0abc51679b4926b00310be75803"
+      },
+      "kind": "git-history-search",
+      "line_no": 57,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/trajectory.jsonl",
+      "rule": "history-git-diff",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-diff",
+        "command_line": 57,
+        "command_sha256": "6f1a854130c2666901257074e366345e4d3ff0abc51679b4926b00310be75803",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 58,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "a3d8b3b1312ee2feed22916bee2828ae987db8530f1f88beb402d9d8ad87155c"
+      },
+      "kind": "git-history-search",
+      "line_no": 63,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "01b0ef41c5d9bb3f30fe81b926b6f489623852931e13412607b6983bc9f6d337"
+      },
+      "kind": "git-history-search",
+      "line_no": 66,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "2dc2195d9b655e79fb14b02beb6cb7fdc9876fc840977e7ad70bb7841ad1b36d",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 13,
+        "symbol_sha256": "f69bba181be8fdbb194a78f56048995f578b5ee83ab40c47e799a5091121e2e4"
+      },
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "2dc2195d9b655e79fb14b02beb6cb7fdc9876fc840977e7ad70bb7841ad1b36d",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 13,
+        "symbol_sha256": "a6461f451b889484284af8ebf41d819f836a5dcf15d1a9a23d72f66d727af0d5"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "2dc2195d9b655e79fb14b02beb6cb7fdc9876fc840977e7ad70bb7841ad1b36d",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 259,
+        "symbol_sha256": "f69bba181be8fdbb194a78f56048995f578b5ee83ab40c47e799a5091121e2e4"
+      },
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "2dc2195d9b655e79fb14b02beb6cb7fdc9876fc840977e7ad70bb7841ad1b36d",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 260,
+        "symbol_sha256": "a6461f451b889484284af8ebf41d819f836a5dcf15d1a9a23d72f66d727af0d5"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "2dc2195d9b655e79fb14b02beb6cb7fdc9876fc840977e7ad70bb7841ad1b36d",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 261,
+        "symbol_sha256": "3b01ef9e37390ac7f10b17112b8faa42fc9e184989d69ee5866481bc161ad73b"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "2dc2195d9b655e79fb14b02beb6cb7fdc9876fc840977e7ad70bb7841ad1b36d",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 259,
+        "symbol_sha256": "f69bba181be8fdbb194a78f56048995f578b5ee83ab40c47e799a5091121e2e4"
+      },
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "2dc2195d9b655e79fb14b02beb6cb7fdc9876fc840977e7ad70bb7841ad1b36d",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 260,
+        "symbol_sha256": "a6461f451b889484284af8ebf41d819f836a5dcf15d1a9a23d72f66d727af0d5"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "2dc2195d9b655e79fb14b02beb6cb7fdc9876fc840977e7ad70bb7841ad1b36d",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 261,
+        "symbol_sha256": "3b01ef9e37390ac7f10b17112b8faa42fc9e184989d69ee5866481bc161ad73b"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "additions": 15,
+    "downgrades": [],
+    "legacy_count": 6,
+    "preserved": 6,
+    "violations": []
+  },
+  "instance_id": "sympy__sympy-14711",
+  "legacy_findings": [
+    {
+      "evidence": {},
+      "kind": "answer-key-search",
+      "line_no": 43,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/repair_record.json",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "answer-key-search",
+      "line_no": 42,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "review"
+    },
+    {
+      "evidence": {},
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/verification_record.baseline.json",
+      "rule": "legacy",
+      "severity": "review"
+    },
+    {
+      "evidence": {},
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711/verification_record.full.json",
+      "rule": "legacy",
+      "severity": "review"
+    }
+  ],
+  "role": "repair",
+  "run": "main_50_b",
+  "scanned_files": 7,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-14711"
+}

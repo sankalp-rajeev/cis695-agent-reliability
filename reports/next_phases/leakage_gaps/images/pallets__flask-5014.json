@@ -1,0 +1,89 @@
+{
+  "archive": {
+    "base_commit": "7ee9ceb71e868944a46e1ff00b506772a53a4f1d",
+    "instance_id": "pallets__flask-5014",
+    "path": "/home/sankalp/cg_repos/task_archives/pallets__flask-5014.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "4cc98bbed4b03a91c6c47dbe581056ba77bb5f2436aa5e41c405ecf19da307a9"
+  },
+  "base_commit": "7ee9ceb71e868944a46e1ff00b506772a53a4f1d",
+  "base_version": "2.3.0.dev",
+  "base_version_origin": "pinned-archive-source",
+  "checks": {
+    "base_probes": {
+      "result": [
+        "b9a131a48d3d37827548e48a9410b302afa81dc2dfb48d3489aaa0b3f78fde24"
+      ],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1678551788,
+        "commit_count": 4968,
+        "commit_timestamps": {
+          "966bb873e3a1e42d857362a17f5af2533dfd8f46": 1786589027
+        },
+        "future_commit_details": [
+          {
+            "changed_file_categories": {
+              "build_metadata": 0,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 0,
+            "changed_path_sha256": [],
+            "changed_source_file_count": 0,
+            "commit": "966bb873e3a1e42d857362a17f5af2533dfd8f46",
+            "gold_added_line_match_count": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "966bb873e3a1e42d857362a17f5af2533dfd8f46"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "1aa825622d5315668b76955d19d1b5d399791c4e",
+            "present": false
+          }
+        ],
+        "object_count": 23268,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 4968
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [],
+        "errors": 3,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 19698,
+            "repo_archives": [],
+            "repo_extracted": []
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 381,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "review",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:bf8242431f5c177d67996b3c888a0f51e4bb7bd0b67009bee6c70842baca1241",
+  "instance_id": "pallets__flask-5014"
+}

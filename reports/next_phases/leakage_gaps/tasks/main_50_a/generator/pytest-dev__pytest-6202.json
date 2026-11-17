@@ -1,0 +1,71 @@
+{
+  "archive": {
+    "base_commit": "3a668ea6ff24b0c8f00498c3144c63bac561d925",
+    "instance_id": "pytest-dev__pytest-6202",
+    "path": "/home/sankalp/cg_repos/task_archives/pytest-dev__pytest-6202.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "1081df715e0db2286a8e3b534cbd6af6900a35e420551c694735979a4adf73ae"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "command_sha256": "9b2340318e7ec0c825fe61142d7350d453dae9ee32b9c9b3adc1e42cc163f55e"
+      },
+      "kind": "git-history-search",
+      "line_no": 20,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pytest-dev__pytest-6202/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1081df715e0db2286a8e3b534cbd6af6900a35e420551c694735979a4adf73ae",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 27,
+        "symbol_sha256": "7d30e2ad617f79f63853f24f3d6e9dda4e11d6f3b6f6e127146c5e4f65bdcbca"
+      },
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pytest-dev__pytest-6202/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1081df715e0db2286a8e3b534cbd6af6900a35e420551c694735979a4adf73ae",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 27,
+        "symbol_sha256": "338eefcc9907fd36c844efda2bf21803a6c90b268e84ac4eb211a341ae1e2d8c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pytest-dev__pytest-6202/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "additions": 2,
+    "downgrades": [],
+    "legacy_count": 1,
+    "preserved": 1,
+    "violations": []
+  },
+  "instance_id": "pytest-dev__pytest-6202",
+  "legacy_findings": [
+    {
+      "evidence": {},
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pytest-dev__pytest-6202/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "review"
+    }
+  ],
+  "role": "generator",
+  "run": "main_50_a",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pytest-dev__pytest-6202"
+}

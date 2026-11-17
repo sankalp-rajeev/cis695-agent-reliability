@@ -1,0 +1,95 @@
+{
+  "archive": {
+    "base_commit": "586a43201d0357e92e8c93548d69a9f42bf548f4",
+    "instance_id": "sympy__sympy-19783",
+    "path": "/home/sankalp/cg_repos/task_archives/sympy__sympy-19783.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "b5463b4f43e379ad1eca071f4a77a8b5e952618ef3f8dc1b3d413be10a41cfd3"
+  },
+  "base_commit": "586a43201d0357e92e8c93548d69a9f42bf548f4",
+  "base_version": "1.7.dev",
+  "base_version_origin": "pinned-archive-source",
+  "checks": {
+    "base_probes": {
+      "result": [
+        "078bce526d1fc580f914396e5dfd71b680da19065e8b08aeb18084828f4aded1",
+        "46d3836f51a88ca100bd03f2a8b6ae58c53a391c156851c42802f7b8d22cc79b",
+        "a7f7bf41d7e7b80b5237182ea63d37e39a50057841d99540aaa5c9a6447df0eb"
+      ],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1594675029,
+        "commit_count": 44070,
+        "commit_timestamps": {
+          "f26c1dbf622d2d1e156fb86b23b5a0af7de81f52": 1786593644
+        },
+        "future_commit_details": [
+          {
+            "changed_file_categories": {
+              "build_metadata": 0,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 0,
+            "changed_path_sha256": [],
+            "changed_source_file_count": 0,
+            "commit": "f26c1dbf622d2d1e156fb86b23b5a0af7de81f52",
+            "gold_added_line_match_count": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "f26c1dbf622d2d1e156fb86b23b5a0af7de81f52"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "a557073a0f07302b32616584e9607ffece467605",
+            "present": false
+          },
+          {
+            "blob": "81460db5c9d8074228612e6f11fab5ffe196987d",
+            "present": false
+          }
+        ],
+        "object_count": 305069,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 44070
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [],
+        "errors": 3,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 19916,
+            "repo_archives": [],
+            "repo_extracted": []
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 9,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "review",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:ce7f364920d9b00f5c5a2a04a7bace60ab81870047bfcb62896875eb38c72023",
+  "instance_id": "sympy__sympy-19783"
+}

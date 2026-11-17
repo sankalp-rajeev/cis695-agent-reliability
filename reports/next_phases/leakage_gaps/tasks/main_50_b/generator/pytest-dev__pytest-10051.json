@@ -1,0 +1,358 @@
+{
+  "archive": {
+    "base_commit": "aa55975c7d3f6c9f6d7f68accc41bb7cadf0eb9a",
+    "instance_id": "pytest-dev__pytest-10051",
+    "path": "/home/sankalp/cg_repos/task_archives/pytest-dev__pytest-10051.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806"
+  },
+  "findings": [
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 45,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 65,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 67,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-ambiguous",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {
+        "command_sha256": "013118ab5ef3743b8bdea8b1533c3f31adeed554d07b0de1407dc2397cefd5be"
+      },
+      "kind": "git-history-search",
+      "line_no": 17,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 17,
+        "command_sha256": "013118ab5ef3743b8bdea8b1533c3f31adeed554d07b0de1407dc2397cefd5be",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 18,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "8ff14d801da6530c6ce76457b7c4372c87a489603d1df53bfa36ff53f453f6df"
+      },
+      "kind": "git-history-search",
+      "line_no": 34,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "history-git-fsck",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "8ff14d801da6530c6ce76457b7c4372c87a489603d1df53bfa36ff53f453f6df"
+      },
+      "kind": "git-history-search",
+      "line_no": 34,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 31,
+        "symbol_sha256": "bc007e6973abf50f22cd5faf94a21c88657afe274e0aa691b88183f8a2ce2353"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 31,
+        "symbol_sha256": "6ed72680a41b17001ce1b9d7f344f1e086ed851cf19a164a3af50ffd1fdd094f"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 31,
+        "symbol_sha256": "023f05bcaafc539139475405df558f459235423ebf415d5915b3693967f40dee"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 31,
+        "symbol_sha256": "f417edf75a6831b0018f595723205fb289a79768bc6b87db29e54a575ba5594a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 31,
+        "symbol_sha256": "6cd2084b801b769e4fabef2de923fec2b6823a1b282487b21ccfc8131302891a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 31,
+        "symbol_sha256": "3cfead15e194d0ad45add555ef75cfc7c4e74825529eb6bd65a993eecedcfd2b"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 31,
+        "symbol_sha256": "77d75baeccc73dbaf14978692ff9e13ea8cdafad86143062b3085842a920dd7d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 31,
+        "symbol_sha256": "f07b8635d2c315d7cf12ee5ae0199da52bae5e24e874661570445d52979286a4"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 31,
+        "symbol_sha256": "fa49d16669b2b274cd70f749ea7ffb2fac958cdc9ac4687edc56df3d0f10861e"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 31,
+        "symbol_sha256": "b8a3cc0451aab68b0a2409f72650bacaad2cac91086418ac0061d4c8963412a1"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 31,
+        "symbol_sha256": "b9cec66fb5aa4c61e2e7b9eb3abaa46c2e12aefa343583720636f2dcb1a10432"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 31,
+        "symbol_sha256": "e4507f81e96803482a6eeb5caa124f89fd309dbdfde0a50af1d92f25f2c31b96"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 31,
+        "symbol_sha256": "d84d04eab4669eb0153b4b5c0d201cb5103df180d3d6776d7e8196f519e70725"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 31,
+        "symbol_sha256": "36dac6fe44d1e20948fe94dd81d84cd7493f9bba7b389b5de79646e17a4f5eff"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 31,
+        "symbol_sha256": "4f288cb6fa6556f956509e7a831b7d0c4ff1b77f5c4a5eb153c4d730b8a3444d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "additions": 19,
+    "downgrades": [],
+    "legacy_count": 5,
+    "preserved": 5,
+    "violations": []
+  },
+  "instance_id": "pytest-dev__pytest-10051",
+  "legacy_findings": [
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 45,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 65,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 67,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-ambiguous",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    }
+  ],
+  "role": "generator",
+  "run": "main_50_b",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051"
+}

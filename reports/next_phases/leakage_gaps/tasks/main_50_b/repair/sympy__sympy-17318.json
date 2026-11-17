@@ -1,0 +1,312 @@
+{
+  "archive": {
+    "base_commit": "d4e0231b08147337745dcf601e62de7eefe2fb2d",
+    "instance_id": "sympy__sympy-17318",
+    "path": "/home/sankalp/cg_repos/task_archives/sympy__sympy-17318.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "fdbe743ca7bb7fc718d43e8bc0a635760e77bf9facfe081616f26f8ffe50e1f5"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "archive_sha256": "fdbe743ca7bb7fc718d43e8bc0a635760e77bf9facfe081616f26f8ffe50e1f5",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 24,
+        "symbol_sha256": "a127585b523bf7c66ad7b94280e57cb0d8a0e27829d0582f07c6272fa29d2ab4"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/repair_record.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 30,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 33,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 36,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 51,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 55,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 55,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {
+        "command_sha256": "01c197e6c6fc3ca60fccaed40d2eb517c0ec28080bfc44df94580825dada2f88"
+      },
+      "kind": "fetch-fixed-version",
+      "line_no": 18,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "fetch-pip-download",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "eafe6ce86f1d20df5a9a4f331992810567fa736c9c5869a1ead6fdddaa26e5cb"
+      },
+      "kind": "git-history-search",
+      "line_no": 27,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 27,
+        "command_sha256": "eafe6ce86f1d20df5a9a4f331992810567fa736c9c5869a1ead6fdddaa26e5cb",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 28,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "fdbe743ca7bb7fc718d43e8bc0a635760e77bf9facfe081616f26f8ffe50e1f5",
+        "base_present": false,
+        "definition_line": null,
+        "first_appearance_line": 51,
+        "symbol_sha256": "db7fde448ef92dafdb3df725d8bbbd18707751ff0667e03924f9f8a8797de108"
+      },
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "test-name-absent-before-definition",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "fdbe743ca7bb7fc718d43e8bc0a635760e77bf9facfe081616f26f8ffe50e1f5",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 13,
+        "symbol_sha256": "a127585b523bf7c66ad7b94280e57cb0d8a0e27829d0582f07c6272fa29d2ab4"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "fdbe743ca7bb7fc718d43e8bc0a635760e77bf9facfe081616f26f8ffe50e1f5",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 15,
+        "symbol_sha256": "8c97105cc3a8ee4596e623334884988cca71f6e162a2cf0c8fe3b91be530ceec"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "fdbe743ca7bb7fc718d43e8bc0a635760e77bf9facfe081616f26f8ffe50e1f5",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 15,
+        "symbol_sha256": "7795da767da0ad9d05260bc48395a140057d867c621632235236b396bceb6104"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "fdbe743ca7bb7fc718d43e8bc0a635760e77bf9facfe081616f26f8ffe50e1f5",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 15,
+        "symbol_sha256": "2c969beefe075b9eb75836f8861610a29391df918bb5d33f538b647ea1e26b43"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "fdbe743ca7bb7fc718d43e8bc0a635760e77bf9facfe081616f26f8ffe50e1f5",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 15,
+        "symbol_sha256": "abbfd64ce27e7e94457d18cdaa5bcea21f874de40093f6dd36083928f21c60d2"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "fdbe743ca7bb7fc718d43e8bc0a635760e77bf9facfe081616f26f8ffe50e1f5",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 49,
+        "symbol_sha256": "a0164264cae2f6136f902d28cca064425a9d44ec241a4fb46ae5392bf54b3b66"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "fdbe743ca7bb7fc718d43e8bc0a635760e77bf9facfe081616f26f8ffe50e1f5",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 49,
+        "symbol_sha256": "b583155375019dced28d1859594162b411438076afffd954b1f1272babe6a66a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {},
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "legacy-review-retained",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "additions": 12,
+    "downgrades": [],
+    "legacy_count": 8,
+    "preserved": 8,
+    "violations": []
+  },
+  "instance_id": "sympy__sympy-17318",
+  "legacy_findings": [
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 30,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 33,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 36,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 51,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 55,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 55,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "review"
+    }
+  ],
+  "role": "repair",
+  "run": "main_50_b",
+  "scanned_files": 7,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/sympy__sympy-17318"
+}

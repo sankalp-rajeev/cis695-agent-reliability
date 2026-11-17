@@ -1,0 +1,112 @@
+{
+  "archive": {
+    "base_commit": "9988d5ce267bf0df4791770b469431b1fb00dcdd",
+    "instance_id": "sphinx-doc__sphinx-7748",
+    "path": "/home/sankalp/cg_repos/task_archives/sphinx-doc__sphinx-7748.tar",
+    "pin_origin": "audit-initial-inventory",
+    "sha256": "cf6751a9712196314142a518196bb9d99c1a1419b507340e5b05b68ebc131bb2"
+  },
+  "base_commit": "9988d5ce267bf0df4791770b469431b1fb00dcdd",
+  "base_version": "3.1.0+",
+  "base_version_origin": "pinned-archive-source",
+  "checks": {
+    "base_probes": {
+      "result": [
+        "272987a2ac49fce92fab3616cf6c7eabcdb7b873e1e205300ed3b05bb1a74758",
+        "4671e4c786441411dfc8fbeb646873c44a6b6079ff871ff55e316855f1073b5a",
+        "48e39af0537b5312e64eb821f20880b2c3a1347981665211f9cfc1d179946d02",
+        "5afaca830e1c627de47034c8d1bb1eaa34ebb68ebb9919bbf84292f2a8913354",
+        "78decadee4c0a8c91f3e1d5e2a7a3040a97449def2bf9c36a578aea74d95ece0",
+        "830dda3f6b23a3bb7ad6573644c8cb92c282d68ecc3c8af422808a63d184f948",
+        "90d4c440a560632bbc913c63885875148811506d87f4ea78c9372ea07c2bb292",
+        "9526cb802af3fa0a28ec84b53faa73eba9aefc112cab11cf15503255f68f54a0",
+        "b1b18a51171cc4b134ac9f3d92254e65fef85e3a639065118b004fd09d291654",
+        "b1caa2c16867dc4840a10f371e84b9790279afa8238062d27802eb1debb15c9e",
+        "b2d630b9a264e36f0b18ff7d6c8484c3b504ebfc9ced18307285a3c7be2a0eed",
+        "b8ae7ffd3bf719f742c203022ea7b58b0b916054f1d747f0de5eb8db256f19c7",
+        "c6ff23cf23ed09b256ba94d59f3e4fb8f342359107c36ca009e7aaff50f40d86",
+        "cd40df29f927d3bc9d1547c1c6b18152521b62e8e763d2224b0c3898b1dec89d",
+        "eecc6fc714fa85a56d7d4fc8dd8a6cc334dd9255de459a1589255172b85202d3"
+      ],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1590820802,
+        "commit_count": 15230,
+        "commit_timestamps": {
+          "9ae68cef788eef17b80927875bb720c9e5f08df6": 1786592869
+        },
+        "future_commit_details": [
+          {
+            "base_is_ancestor": true,
+            "change_status_counts": {
+              "M": 2
+            },
+            "changed_file_categories": {
+              "build_metadata": 2,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 2,
+            "changed_path_sha256": [
+              "60f61ab7a8d1910d86d9fda2261620314edcae5894d5aaa236b821c7256badd7",
+              "ef2cef9f88b4fe09ca3082140e67f5ad34fb65fb6e228f119d3812261ae51449"
+            ],
+            "changed_source_file_count": 1,
+            "commit": "9ae68cef788eef17b80927875bb720c9e5f08df6",
+            "content_changed_files": 2,
+            "gold_added_line_match_count": 0,
+            "mode_only_file_changes": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "9ae68cef788eef17b80927875bb720c9e5f08df6"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "1bdac08a13b045be637b005ce699e5722668e0d5",
+            "present": false
+          }
+        ],
+        "object_count": 106243,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 15230
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [],
+        "errors": 3,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 19504,
+            "repo_archives": [],
+            "repo_extracted": []
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 287,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "review",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:ab98bd08a7db24b56014e39dea546fbc6a6c2e53e2c48802c037e26597ac0853",
+  "instance_id": "sphinx-doc__sphinx-7748"
+}

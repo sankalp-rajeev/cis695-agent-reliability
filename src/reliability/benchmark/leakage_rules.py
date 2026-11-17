@@ -34,6 +34,7 @@ class AuditContext:
     archive: dict = field(default_factory=dict)
     # Per-artifact, per-symbol first definition in an assistant file-write call.
     definitions: dict[str, dict[str, int]] = field(default_factory=dict)
+    base_paths: frozenset[str] = frozenset()
 
 
 def symbols_at_base(archive, symbols):
@@ -120,9 +121,9 @@ def command_rules(command, context):
                 ref_part = ref.split(':', 1)[0]
                 if ref.startswith('-') or ref_part in {'HEAD', context.base_commit}:
                     continue
-                # A filename/path is not a ref. HEAD~1 and base..branch are refs.
-                if ('/' in ref and not ref.startswith(('refs/', 'origin/'))
-                    or '..' not in ref and re.search(r'\.[a-zA-Z]{1,5}$', ref)):
+                # Resolve file operands using the verified archive, rather than
+                # treating every slash as a path: branch names can contain '/'.
+                if ref in context.base_paths or ref.startswith('/') or any(c in ref for c in '*?['):
                     continue
                 if ref_part[:4] and len(ref_part) >= 7 and context.base_commit.startswith(ref_part):
                     continue

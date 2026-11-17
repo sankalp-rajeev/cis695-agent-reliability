@@ -1,0 +1,246 @@
+{
+  "archive": {
+    "base_commit": "7fdf772201e4c9bafbc16dfac23b5472d6a53fa2",
+    "instance_id": "matplotlib__matplotlib-25479",
+    "path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-25479.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "16c168660552fd8f0b616a500014fbb1ca517441feff6e8dc55d0931667e629a"
+  },
+  "findings": [
+    {
+      "evidence": {},
+      "kind": "newer-copy-ambiguous",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {
+        "command_sha256": "51fe9d1eb4bdc01eaa9fd5dfa9f6637bcdc26e7b9a9cce062ee8df2884c33032"
+      },
+      "kind": "git-history-search",
+      "line_no": 41,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479/generation_trajectory.jsonl",
+      "rule": "history-git-fsck",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "51fe9d1eb4bdc01eaa9fd5dfa9f6637bcdc26e7b9a9cce062ee8df2884c33032"
+      },
+      "kind": "git-history-search",
+      "line_no": 41,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-fsck",
+        "command_line": 41,
+        "command_sha256": "51fe9d1eb4bdc01eaa9fd5dfa9f6637bcdc26e7b9a9cce062ee8df2884c33032",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 42,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 41,
+        "command_sha256": "51fe9d1eb4bdc01eaa9fd5dfa9f6637bcdc26e7b9a9cce062ee8df2884c33032",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 42,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "11a6c3e4f63763c81f72f708fb1d68010ebda403aae0501ae9af13fea8ef8ecf"
+      },
+      "kind": "fetch-fixed-version",
+      "line_no": 45,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479/generation_trajectory.jsonl",
+      "rule": "fetch-curl",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "93e1e4fa49f4545856eb9a4d6ce256c0d7eedc1345d12e1b2c2e8ecaf7884a23"
+      },
+      "kind": "git-history-search",
+      "line_no": 65,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "146e4f5b1fb10296d0a60fd296b5d9e0bb211e31a47ea00d51cbf2b4302f27ad"
+      },
+      "kind": "git-history-search",
+      "line_no": 71,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "86ee2a7ed8a94301357a623e7c7921377024b0ff101ecad9e4bd7ceafdcbda9b"
+      },
+      "kind": "git-history-search",
+      "line_no": 73,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479/generation_trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "6d8f60bdee5aaf0eea8e5b53f549b49624779a66bf5d124f137440b7bd59ae5e"
+      },
+      "kind": "fetch-fixed-version",
+      "line_no": 75,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479/generation_trajectory.jsonl",
+      "rule": "fetch-pip-download",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "8d661aa2f4a3bde4bf5f256d79bea39be687cea878e625a1d1beaabbaf6d0895"
+      },
+      "kind": "git-history-search",
+      "line_no": 79,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479/generation_trajectory.jsonl",
+      "rule": "history-git-reflog",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-reflog",
+        "command_line": 79,
+        "command_sha256": "8d661aa2f4a3bde4bf5f256d79bea39be687cea878e625a1d1beaabbaf6d0895",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 80,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "16c168660552fd8f0b616a500014fbb1ca517441feff6e8dc55d0931667e629a",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 24,
+        "symbol_sha256": "161257a0cbcff33b5d7b14d08016b424eaedaea770589e677e972197ff901a9a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "16c168660552fd8f0b616a500014fbb1ca517441feff6e8dc55d0931667e629a",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 26,
+        "symbol_sha256": "ff2e3bedf3e5da18959f9f78e07908f69565694a352791c0b3fedfe2b7e353f9"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "16c168660552fd8f0b616a500014fbb1ca517441feff6e8dc55d0931667e629a",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 26,
+        "symbol_sha256": "86992377692c492cb3880ebc28064e0b2eee1137adcbc07aac9df29925309321"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "16c168660552fd8f0b616a500014fbb1ca517441feff6e8dc55d0931667e629a",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 26,
+        "symbol_sha256": "5bef27b6b5f339867a8ca4d2939da4f34c41aa585e1d01b17a63b3c37f0e7fde"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "16c168660552fd8f0b616a500014fbb1ca517441feff6e8dc55d0931667e629a",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 22,
+        "symbol_sha256": "85d61aecf7aecec003c4dbdec6594b3bff59890eef88d2ac9ab824075374ebe6"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "additions": 16,
+    "downgrades": [],
+    "legacy_count": 2,
+    "preserved": 2,
+    "violations": []
+  },
+  "instance_id": "matplotlib__matplotlib-25479",
+  "legacy_findings": [
+    {
+      "evidence": {},
+      "kind": "newer-copy-ambiguous",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    }
+  ],
+  "role": "generator",
+  "run": "main_50_b",
+  "scanned_files": 2,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-25479"
+}

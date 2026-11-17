@@ -1,0 +1,143 @@
+{
+  "archive": {
+    "base_commit": "847735553aeda6e6633f2b32e14ba14ba86887a4",
+    "instance_id": "psf__requests-1766",
+    "path": "/home/sankalp/projects/wt-leakage/runs/leakage_gaps/source_archives/psf__requests-1766.tar",
+    "pin_origin": "image-pinned-base-git-archive",
+    "sha256": "44dfde0f1cd4293e5a771960e3f3b218f0f57ea32e106e24b43a486b2a8b4ae1"
+  },
+  "base_commit": "847735553aeda6e6633f2b32e14ba14ba86887a4",
+  "base_version": "2.0.1",
+  "base_version_origin": "pinned-archive-source",
+  "checks": {
+    "base_probes": {
+      "result": [
+        "cd37c2d9e7ab76be5a6c401936390317824e66543df9fae44100e4de81548f20",
+        "d04a434e185fd2fb22c469612f00b8a3e3d6156fdab7f8d0016cc6c6802d0945",
+        "ea3750235017889ac4383686cb6c9db9ffb390d6cc3373b64c2083190365ed50"
+      ],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1385573020,
+        "commit_count": 3196,
+        "commit_timestamps": {
+          "4092741a93b8d0f7258a8eb66aa5c278a3f01022": 1786589202
+        },
+        "future_commit_details": [
+          {
+            "changed_file_categories": {
+              "build_metadata": 0,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 0,
+            "changed_path_sha256": [],
+            "changed_source_file_count": 0,
+            "commit": "4092741a93b8d0f7258a8eb66aa5c278a3f01022",
+            "gold_added_line_match_count": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "4092741a93b8d0f7258a8eb66aa5c278a3f01022"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "f87087dfd222167392b4c8aa49747f2cfa64d6e1",
+            "present": false
+          }
+        ],
+        "object_count": 12575,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 3197
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [
+          {
+            "base_version": "2.0.1",
+            "different_from_base": true,
+            "gold_added_line_count": 0,
+            "path": "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/pip/_vendor/requests",
+            "source_files": 18,
+            "vendored": true,
+            "version": "2.32.3"
+          },
+          {
+            "base_version": "2.0.1",
+            "different_from_base": false,
+            "gold_added_line_count": 0,
+            "path": "/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/requests",
+            "source_files": 72,
+            "vendored": false,
+            "version": "2.0.1"
+          },
+          {
+            "base_version": "2.0.1",
+            "different_from_base": true,
+            "gold_added_line_count": 0,
+            "path": "/opt/miniconda3/lib/python3.11/site-packages/pip/_vendor/requests",
+            "source_files": 18,
+            "vendored": true,
+            "version": "2.31.0"
+          },
+          {
+            "base_version": "2.0.1",
+            "different_from_base": true,
+            "gold_added_line_count": 0,
+            "path": "/opt/miniconda3/lib/python3.11/site-packages/requests",
+            "source_files": 18,
+            "vendored": false,
+            "version": "2.31.0"
+          },
+          {
+            "base_version": "2.0.1",
+            "different_from_base": true,
+            "gold_added_line_count": 1,
+            "path": "/usr/lib/python3/dist-packages/pip/_vendor/requests",
+            "source_files": 18,
+            "vendored": true,
+            "version": "2.27.1"
+          }
+        ],
+        "errors": 3,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 20143,
+            "repo_archives": [],
+            "repo_extracted": [
+              {
+                "kind": "conda-extracted",
+                "path_sha256": "7a397a2ac9af8f3fca7f55801a811e01a726851e70ededa026fe4b00efb6fb6b",
+                "version": "2.31.0"
+              }
+            ]
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 3,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:04d36df979a3cc89ceba67df58abd56e975e3b43db54ef69e94ec1ff5223d020",
+  "instance_id": "psf__requests-1766"
+}

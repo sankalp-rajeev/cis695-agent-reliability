@@ -1,0 +1,116 @@
+{
+  "archive": {
+    "base_commit": "6500928dc0e57be8f06d1162eacc3ba5e2eff692",
+    "instance_id": "astropy__astropy-13398",
+    "path": "/home/sankalp/cg_repos/task_archives/astropy__astropy-13398.tar",
+    "pin_origin": "audit-initial-inventory",
+    "sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0"
+  },
+  "base_commit": "6500928dc0e57be8f06d1162eacc3ba5e2eff692",
+  "base_version": "0.0.0",
+  "base_version_origin": "pinned-archive-source",
+  "checks": {
+    "base_probes": {
+      "result": [
+        "010c0d012d507dd071687971c73a0ad597e4a0c9bbcc65571efb12dadddec6ec",
+        "1d1c07fa52116d163814a4215cd33084e77f9828ceafa2a7fea60b54f588ba52",
+        "200a36fd7b66d1a74c98615228771add9ae503d23e3a67f03c6544359d956d4e",
+        "459e576808e28581c30e377aed136d5cd560f81d77bf1021095caf833aa2f7f6",
+        "50689aed2b0cea85f83a26c306ee6f1a51d0f251ef9d95e184e33fc3b3a669f5",
+        "54a836f50d4d12f053e3486be88e5145006aef6d4670da28d23e3bb82bc1f030",
+        "5a5d6a986719bf18aaccb85f97c68e2e27cc79b3073c153a6a842a1e39011737",
+        "5a951e067e4790dda7ec852224b4dec31bdd26440ebc25109e173fbcb5af3308",
+        "66fba46280ec4b77c17e3dd29f62725e31880337bcfbf2ab5429055e004c00ca",
+        "6a742104afad2dc42e974c4072aab6a269639d7c23d4b8a1b67b80a9d4288615",
+        "b03bc22b9afe6a4388647d2ea50e5a55aac4a18dd2714bb172d2601394cb0f91",
+        "b8139828aa23bc3e24c2258642c05748a1caf0419d95251e2e919e0dcce96231",
+        "cf157282b36adfd0b60bedc1431339a2cd805cebdc1e63143a9fb81c1d9ecb1f",
+        "cf49654a68aa371a34a5ecacdde2744bd7dc459a45adb98705c5aed5c6a0af3c"
+      ],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1658933073,
+        "commit_count": 33660,
+        "commit_timestamps": {
+          "4b487276bec69105d8cfcc88e8c5a533abb7124b": 1786582366
+        },
+        "future_commit_details": [
+          {
+            "changed_file_categories": {
+              "build_metadata": 1,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 1,
+            "changed_path_sha256": [
+              "50c86b7ed8ac2cf95bd48334961bf0530cdc77b5a56f852c5c61b89d735fd711"
+            ],
+            "changed_source_file_count": 0,
+            "commit": "4b487276bec69105d8cfcc88e8c5a533abb7124b",
+            "gold_added_line_match_count": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "4b487276bec69105d8cfcc88e8c5a533abb7124b"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "17b524478eb4bfe3bd037246313337cccd7bef52",
+            "present": false
+          },
+          {
+            "blob": "f2a92faf07401e24bbeb337ee1f0bf4f47e93270",
+            "present": false
+          },
+          {
+            "blob": "ce6c1b6b14359feff1ad02fc7dfbca30d6299ab8",
+            "present": false
+          },
+          {
+            "blob": "4aa61e030a6f84e516fd9f495acf1975d643d0b2",
+            "present": false
+          }
+        ],
+        "object_count": 211468,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 33660
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [],
+        "errors": 3,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 19436,
+            "repo_archives": [],
+            "repo_extracted": []
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 213,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "review",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:b0cc2d0d0b35da88c91934467a68aabdc725a7cda238fad2b52696bfc1598d2b",
+  "instance_id": "astropy__astropy-13398"
+}

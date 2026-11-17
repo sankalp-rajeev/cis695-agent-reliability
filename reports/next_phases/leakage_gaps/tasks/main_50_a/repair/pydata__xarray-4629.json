@@ -1,0 +1,1212 @@
+{
+  "archive": {
+    "base_commit": "a41edc7bf5302f2ea327943c0c48c532b12009bc",
+    "instance_id": "pydata__xarray-4629",
+    "path": "/home/sankalp/cg_repos/task_archives/pydata__xarray-4629.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 6,
+        "symbol_sha256": "228bbc6b2879a86e8686c4964bd8282be2c1fcbe5004089fb2322b7b09ad6d03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/agent_output.txt",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 27,
+        "symbol_sha256": "228bbc6b2879a86e8686c4964bd8282be2c1fcbe5004089fb2322b7b09ad6d03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/repair_record.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 6,
+        "symbol_sha256": "228bbc6b2879a86e8686c4964bd8282be2c1fcbe5004089fb2322b7b09ad6d03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/submission_raw.txt",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "command_sha256": "64ca49b98319617d1eae1f8e9fbfd5c398dc9f93c290fafb1d809994f38237fb"
+      },
+      "kind": "git-history-search",
+      "line_no": 36,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 36,
+        "command_sha256": "64ca49b98319617d1eae1f8e9fbfd5c398dc9f93c290fafb1d809994f38237fb",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 37,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": false,
+        "definition_line": null,
+        "first_appearance_line": 36,
+        "symbol_sha256": "bc32dfaaa441250740c154ce2eb38507bb9acb31375d431a16434c2cf1015be5"
+      },
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/trajectory.jsonl",
+      "rule": "test-name-absent-before-definition",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 25,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 25,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 25,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 25,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 25,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 25,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 25,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 25,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 25,
+        "symbol_sha256": "e56dae0bbaf1a379ca605fd5a531fe78e3cd38ef2e95878e0eff0fbce7232e79"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 25,
+        "symbol_sha256": "e0c4bdab1e703ee85d511f7379ff56631e5d4f4ea772c102bbb243f7fae0e576"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 25,
+        "symbol_sha256": "cc89b40b77e8875b98decf1f9233ced972e6cd6f9b3008d578acc04a4496af68"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 25,
+        "symbol_sha256": "85efaaa9affea260d0c90fdda1072d5c1b895b67fe29bf33694f84a724f53276"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 25,
+        "symbol_sha256": "96daa644b4ea3e70d30899ee1c329ec362f0aa9471de73c33160e6e040646c7a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 21,
+        "symbol_sha256": "228bbc6b2879a86e8686c4964bd8282be2c1fcbe5004089fb2322b7b09ad6d03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 254,
+        "symbol_sha256": "affb0724a639b408c8f7c36639efed26effc131b1cf846cc61c392909dfb14d0"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 255,
+        "symbol_sha256": "36f52f1689a82ea738fd62e6badc9f0affdb843775fcc4a464e4ba7bd0e92847"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 256,
+        "symbol_sha256": "cc5e8ac966fdcd1011db063d0e9c32aea0047fe9c0b9a793ef560b731e8e9d8b"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 257,
+        "symbol_sha256": "170ebd76599c7176b9e14301035b75bdc57a69755344459257d33920e6b07bb6"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 258,
+        "symbol_sha256": "b130cc1ed75994e90cd59e43b7565ff7b646c2a2842f08df59ea199bbcd990d7"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 259,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 259,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 259,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 259,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 259,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 259,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 259,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 259,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 260,
+        "symbol_sha256": "e56dae0bbaf1a379ca605fd5a531fe78e3cd38ef2e95878e0eff0fbce7232e79"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 261,
+        "symbol_sha256": "e0c4bdab1e703ee85d511f7379ff56631e5d4f4ea772c102bbb243f7fae0e576"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 262,
+        "symbol_sha256": "cc89b40b77e8875b98decf1f9233ced972e6cd6f9b3008d578acc04a4496af68"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 263,
+        "symbol_sha256": "85efaaa9affea260d0c90fdda1072d5c1b895b67fe29bf33694f84a724f53276"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 264,
+        "symbol_sha256": "96daa644b4ea3e70d30899ee1c329ec362f0aa9471de73c33160e6e040646c7a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 265,
+        "symbol_sha256": "0e9319f172e521762b17d6e962533f19ef038d384feefe55279efa6bc4b05085"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 266,
+        "symbol_sha256": "26611a04c7bda317b414b74ae0c18cd23bd9ee038f759871757a88333950c842"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 267,
+        "symbol_sha256": "c369ca2503c22ee7370c5d4482c87ca45f39a26a2154018a3c4579c267d8f82a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 268,
+        "symbol_sha256": "104a61a0009e6b382edbfec006078271e8eca277cbcb960dd2e12e2bc26cb3f2"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 254,
+        "symbol_sha256": "228bbc6b2879a86e8686c4964bd8282be2c1fcbe5004089fb2322b7b09ad6d03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 270,
+        "symbol_sha256": "a5a0415c6c945e0f95545bbe9c0053302a46a172e7331ed46e7a9b541609d5cd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 271,
+        "symbol_sha256": "24f2e18285d1564dbac116e13d0b5705daa4995b7bbc4393fdb78a3720b1dcba"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 272,
+        "symbol_sha256": "ac29aa8ef446c8f68d8fae8060d995c82f1eecbc322c9983a29a909333ff9d67"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 273,
+        "symbol_sha256": "87bd461c915a14f9da38b799afb83fc637c83dc1ca9369e747ecd4cef958a80d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 273,
+        "symbol_sha256": "87bd461c915a14f9da38b799afb83fc637c83dc1ca9369e747ecd4cef958a80d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 273,
+        "symbol_sha256": "87bd461c915a14f9da38b799afb83fc637c83dc1ca9369e747ecd4cef958a80d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 273,
+        "symbol_sha256": "87bd461c915a14f9da38b799afb83fc637c83dc1ca9369e747ecd4cef958a80d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 274,
+        "symbol_sha256": "752c8adb6c56313b3e7f62742823c33dea7250b4a671a7db1be7b579e39affae"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 275,
+        "symbol_sha256": "be7d9bfe74cd6e820a6e50c047f6117093c0b5609e4c2e4195d1b03ef4a7c4ce"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.baseline.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 254,
+        "symbol_sha256": "affb0724a639b408c8f7c36639efed26effc131b1cf846cc61c392909dfb14d0"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 255,
+        "symbol_sha256": "36f52f1689a82ea738fd62e6badc9f0affdb843775fcc4a464e4ba7bd0e92847"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 256,
+        "symbol_sha256": "cc5e8ac966fdcd1011db063d0e9c32aea0047fe9c0b9a793ef560b731e8e9d8b"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 257,
+        "symbol_sha256": "170ebd76599c7176b9e14301035b75bdc57a69755344459257d33920e6b07bb6"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 258,
+        "symbol_sha256": "b130cc1ed75994e90cd59e43b7565ff7b646c2a2842f08df59ea199bbcd990d7"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 259,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 259,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 259,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 259,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 259,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 259,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 259,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 259,
+        "symbol_sha256": "f29fc768d0bfe8dbc27ca87391a0b6cf3a116e1e2c3a93f793bf9fcfbf63e4dd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 260,
+        "symbol_sha256": "e56dae0bbaf1a379ca605fd5a531fe78e3cd38ef2e95878e0eff0fbce7232e79"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 261,
+        "symbol_sha256": "e0c4bdab1e703ee85d511f7379ff56631e5d4f4ea772c102bbb243f7fae0e576"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 262,
+        "symbol_sha256": "cc89b40b77e8875b98decf1f9233ced972e6cd6f9b3008d578acc04a4496af68"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 263,
+        "symbol_sha256": "85efaaa9affea260d0c90fdda1072d5c1b895b67fe29bf33694f84a724f53276"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 264,
+        "symbol_sha256": "96daa644b4ea3e70d30899ee1c329ec362f0aa9471de73c33160e6e040646c7a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 265,
+        "symbol_sha256": "0e9319f172e521762b17d6e962533f19ef038d384feefe55279efa6bc4b05085"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 266,
+        "symbol_sha256": "26611a04c7bda317b414b74ae0c18cd23bd9ee038f759871757a88333950c842"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 267,
+        "symbol_sha256": "c369ca2503c22ee7370c5d4482c87ca45f39a26a2154018a3c4579c267d8f82a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 268,
+        "symbol_sha256": "104a61a0009e6b382edbfec006078271e8eca277cbcb960dd2e12e2bc26cb3f2"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 254,
+        "symbol_sha256": "228bbc6b2879a86e8686c4964bd8282be2c1fcbe5004089fb2322b7b09ad6d03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 270,
+        "symbol_sha256": "a5a0415c6c945e0f95545bbe9c0053302a46a172e7331ed46e7a9b541609d5cd"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 271,
+        "symbol_sha256": "24f2e18285d1564dbac116e13d0b5705daa4995b7bbc4393fdb78a3720b1dcba"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 272,
+        "symbol_sha256": "ac29aa8ef446c8f68d8fae8060d995c82f1eecbc322c9983a29a909333ff9d67"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 273,
+        "symbol_sha256": "87bd461c915a14f9da38b799afb83fc637c83dc1ca9369e747ecd4cef958a80d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 273,
+        "symbol_sha256": "87bd461c915a14f9da38b799afb83fc637c83dc1ca9369e747ecd4cef958a80d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 273,
+        "symbol_sha256": "87bd461c915a14f9da38b799afb83fc637c83dc1ca9369e747ecd4cef958a80d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 273,
+        "symbol_sha256": "87bd461c915a14f9da38b799afb83fc637c83dc1ca9369e747ecd4cef958a80d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 274,
+        "symbol_sha256": "752c8adb6c56313b3e7f62742823c33dea7250b4a671a7db1be7b579e39affae"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "1ca48bacc36dd79486adb8efe1c369cabc20726fb42867bba0d94853d3226b2b",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 275,
+        "symbol_sha256": "be7d9bfe74cd6e820a6e50c047f6117093c0b5609e4c2e4195d1b03ef4a7c4ce"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/verification_record.full.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {},
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/trajectory.jsonl",
+      "rule": "legacy-review-retained",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "additions": 84,
+    "downgrades": [],
+    "legacy_count": 1,
+    "preserved": 1,
+    "violations": []
+  },
+  "instance_id": "pydata__xarray-4629",
+  "legacy_findings": [
+    {
+      "evidence": {},
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629/trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "review"
+    }
+  ],
+  "role": "repair",
+  "run": "main_50_a",
+  "scanned_files": 7,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pydata__xarray-4629"
+}

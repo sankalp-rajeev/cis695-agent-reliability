@@ -1,0 +1,583 @@
+{
+  "archive": {
+    "base_commit": "6bb2b855498b5c68d7cca8cceb710365d58e6048",
+    "instance_id": "pydata__xarray-6599",
+    "path": "/home/sankalp/cg_repos/task_archives/pydata__xarray-6599.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672"
+  },
+  "findings": [
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 37,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 45,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 52,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 68,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 70,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 78,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 80,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 82,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 86,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "dd45afa685ccf0ef447fdd1e08dfbfdfc6dbbeb04e055c14d17742562d8f3e22"
+      },
+      "kind": "git-history-search",
+      "line_no": 16,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "7aa5b32f9217f1d6e3348b092ac8fa559ff5ccc9fc1759ad4144abe28b200e52"
+      },
+      "kind": "git-history-search",
+      "line_no": 27,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "befb78c469f1e4ef6a929bf600bd42f3d197865d588d7aa53995febf261a4306"
+      },
+      "kind": "git-history-search",
+      "line_no": 27,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 27,
+        "command_sha256": "7aa5b32f9217f1d6e3348b092ac8fa559ff5ccc9fc1759ad4144abe28b200e52",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 28,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "df3e186a6d238205c4c5b03ef6f217d8adb8df86ac8c8e02fc319afb1a79c5c7"
+      },
+      "kind": "fetch-fixed-version",
+      "line_no": 34,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "fetch-pip-download",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "e69465f2846a4250c32fa9e16bea02098392d242f1fb74f1e1ac79d04fd2de2c"
+      },
+      "kind": "git-history-search",
+      "line_no": 42,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-show",
+        "command_line": 42,
+        "command_sha256": "e69465f2846a4250c32fa9e16bea02098392d242f1fb74f1e1ac79d04fd2de2c",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 44,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "7c3a67c48e38e0473102b8c0fcc88ecf7e535f3fe7fcc6407e3c4fb896da5b77"
+      },
+      "kind": "git-history-search",
+      "line_no": 54,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "01e5783001b2b1ee8a59eeca57b3bc958d4557cf3d09fcdfe56b858642af6054"
+      },
+      "kind": "git-history-search",
+      "line_no": 64,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "hints-text-content",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6b7e9af601e1f60eda0d6f75654f6a1645b2e789864f9d11b1a927ea7a52fd03"
+      },
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6b7e9af601e1f60eda0d6f75654f6a1645b2e789864f9d11b1a927ea7a52fd03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6b7e9af601e1f60eda0d6f75654f6a1645b2e789864f9d11b1a927ea7a52fd03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6b7e9af601e1f60eda0d6f75654f6a1645b2e789864f9d11b1a927ea7a52fd03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6b7e9af601e1f60eda0d6f75654f6a1645b2e789864f9d11b1a927ea7a52fd03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6b7e9af601e1f60eda0d6f75654f6a1645b2e789864f9d11b1a927ea7a52fd03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6b7e9af601e1f60eda0d6f75654f6a1645b2e789864f9d11b1a927ea7a52fd03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6b7e9af601e1f60eda0d6f75654f6a1645b2e789864f9d11b1a927ea7a52fd03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6b7e9af601e1f60eda0d6f75654f6a1645b2e789864f9d11b1a927ea7a52fd03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6b7e9af601e1f60eda0d6f75654f6a1645b2e789864f9d11b1a927ea7a52fd03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6b7e9af601e1f60eda0d6f75654f6a1645b2e789864f9d11b1a927ea7a52fd03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6b7e9af601e1f60eda0d6f75654f6a1645b2e789864f9d11b1a927ea7a52fd03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6b7e9af601e1f60eda0d6f75654f6a1645b2e789864f9d11b1a927ea7a52fd03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6b7e9af601e1f60eda0d6f75654f6a1645b2e789864f9d11b1a927ea7a52fd03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6b7e9af601e1f60eda0d6f75654f6a1645b2e789864f9d11b1a927ea7a52fd03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6b7e9af601e1f60eda0d6f75654f6a1645b2e789864f9d11b1a927ea7a52fd03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6b7e9af601e1f60eda0d6f75654f6a1645b2e789864f9d11b1a927ea7a52fd03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6b7e9af601e1f60eda0d6f75654f6a1645b2e789864f9d11b1a927ea7a52fd03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6b7e9af601e1f60eda0d6f75654f6a1645b2e789864f9d11b1a927ea7a52fd03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 20,
+        "symbol_sha256": "6b7e9af601e1f60eda0d6f75654f6a1645b2e789864f9d11b1a927ea7a52fd03"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "0d895b1ce23330385513cae2e5f4c05d74222b0cd9564354d056151f5907c672",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 21,
+        "symbol_sha256": "e46c603fd88045ae03fe24708c3756d2e98c3638bfcb484e01aa7744b808ab82"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "additions": 29,
+    "downgrades": [],
+    "legacy_count": 11,
+    "preserved": 11,
+    "violations": []
+  },
+  "instance_id": "pydata__xarray-6599",
+  "legacy_findings": [
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 37,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 45,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 52,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 68,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 70,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 78,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 80,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 82,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 86,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "hints-text-content",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "review"
+    },
+    {
+      "evidence": {},
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "review"
+    }
+  ],
+  "role": "generator",
+  "run": "main_50_a",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-6599"
+}

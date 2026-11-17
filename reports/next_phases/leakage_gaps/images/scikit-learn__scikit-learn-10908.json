@@ -1,0 +1,94 @@
+{
+  "archive": {
+    "base_commit": "67d06b18c68ee4452768f8a1e868565dd4354abf",
+    "instance_id": "scikit-learn__scikit-learn-10908",
+    "path": "/home/sankalp/cg_repos/task_archives/scikit-learn__scikit-learn-10908.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "1496481ba1b093439ab9437093b706e2744f99cfcd13394f1455083b90a37cf6"
+  },
+  "base_commit": "67d06b18c68ee4452768f8a1e868565dd4354abf",
+  "base_version": "0.20.dev0",
+  "base_version_origin": "pinned-archive-source",
+  "checks": {
+    "base_probes": {
+      "result": [
+        "2a9272677d045d374c47dea8391725c901801092e20fd355074fa7ce0932002c",
+        "3e23bb85797de2c88613a967728fca2cc6c9f76f97538f35ec3b78637230e168",
+        "4e20eb83589d368dd5c0fda1668cf5bb43b21776befc65f873b03954a4b16789",
+        "93f5672b2257d3a3d92d1ed22d860699a42559109af2eacef8b68bc0ec70d1b2",
+        "c010b1086d6c3a42725ce53fe25225672d199eccad8c5d02fb256df411844b07",
+        "ce458698fe43955e5277b29c734f59946a18cbffb92e16e85a623e78fb23dd40"
+      ],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1522719436,
+        "commit_count": 22680,
+        "commit_timestamps": {
+          "de60d3cc1d489509f0d7fe1ad141171628d3d4b7": 1786591181
+        },
+        "future_commit_details": [
+          {
+            "changed_file_categories": {
+              "build_metadata": 0,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 0,
+            "changed_path_sha256": [],
+            "changed_source_file_count": 0,
+            "commit": "de60d3cc1d489509f0d7fe1ad141171628d3d4b7",
+            "gold_added_line_match_count": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "de60d3cc1d489509f0d7fe1ad141171628d3d4b7"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "789e101cc7e1961eb97c24eb4dc907fc5d2393ad",
+            "present": false
+          }
+        ],
+        "object_count": 147323,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 22680
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [],
+        "errors": 3,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 38035,
+            "repo_archives": [],
+            "repo_extracted": []
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 2,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "review",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:e6083af5e692056c551338bf46a9003242fb76df058c9f47f3167464555deafa",
+  "instance_id": "scikit-learn__scikit-learn-10908"
+}

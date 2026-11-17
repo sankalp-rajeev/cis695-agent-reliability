@@ -1,0 +1,87 @@
+{
+  "archive": {
+    "base_commit": "8aba863a634f40560e25055d179220f0eefabe9a",
+    "instance_id": "pytest-dev__pytest-5809",
+    "path": "/home/sankalp/cg_repos/task_archives/pytest-dev__pytest-5809.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "8690468c8668fa44be1553d6e5742dbcbd63deaf7453f22ce2e84fa360b27d3c"
+  },
+  "base_commit": "8aba863a634f40560e25055d179220f0eefabe9a",
+  "base_version": "unknown",
+  "base_version_origin": "pinned-archive-source",
+  "checks": {
+    "base_probes": {
+      "result": [],
+      "rule": "legacy-base-probe-subtraction",
+      "severity": "review",
+      "status": "complete"
+    },
+    "git": {
+      "result": {
+        "base_timestamp": 1567099854,
+        "commit_count": 10438,
+        "commit_timestamps": {
+          "e02f28aef4b008a8bd3876fc7b5d4616d0b8d723": 1786590791
+        },
+        "future_commit_details": [
+          {
+            "changed_file_categories": {
+              "build_metadata": 0,
+              "other_files": 0,
+              "other_source": 0,
+              "test_source": 0,
+              "version_source": 0
+            },
+            "changed_file_count": 0,
+            "changed_path_sha256": [],
+            "changed_source_file_count": 0,
+            "commit": "e02f28aef4b008a8bd3876fc7b5d4616d0b8d723",
+            "gold_added_line_match_count": 0
+          }
+        ],
+        "future_commit_hashes": [
+          "e02f28aef4b008a8bd3876fc7b5d4616d0b8d723"
+        ],
+        "future_object_count": 1,
+        "future_reachable_count": 1,
+        "gold_post_image_blobs": [
+          {
+            "blob": "7a3e80231c27e85ecc169dcc5d4f107dcf149d39",
+            "present": false
+          }
+        ],
+        "object_count": 66550,
+        "post_image_authority": "git-show-pinned-base-exact-hunks",
+        "reachable_commit_count": 10438
+      },
+      "rule": "image-git-object-inventory",
+      "severity": "exposed-copy",
+      "status": "complete"
+    },
+    "packages": {
+      "result": {
+        "copies": [],
+        "errors": 3,
+        "masked": {
+          "/opt/miniconda3/pkgs": {
+            "exists": true,
+            "file_count": 19504,
+            "repo_archives": [],
+            "repo_extracted": []
+          },
+          "/root/.cache/pip": {
+            "exists": true,
+            "file_count": 103,
+            "repo_archives": [],
+            "repo_extracted": []
+          }
+        }
+      },
+      "rule": "image-package-inventory",
+      "severity": "review",
+      "status": "complete"
+    }
+  },
+  "image": "sha256:f60a775b879d5b770d9969b17dcfd45e717410059234e727e02236080b2e47c1",
+  "instance_id": "pytest-dev__pytest-5809"
+}

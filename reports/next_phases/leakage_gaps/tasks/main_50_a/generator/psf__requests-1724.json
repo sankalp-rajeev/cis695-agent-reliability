@@ -1,0 +1,87 @@
+{
+  "archive": {
+    "base_commit": "1ba83c47ce7b177efe90d5f51f7760680f72eda0",
+    "instance_id": "psf__requests-1724",
+    "path": "/home/sankalp/projects/wt-leakage/runs/leakage_gaps/source_archives/psf__requests-1724.tar",
+    "pin_origin": "image-pinned-base-git-archive",
+    "sha256": "0b45276a4ce92769006e1b3026d211f07052e9606a4467cc015eefc7634b1396"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "command_sha256": "508d12b2624ef3d3219d2a4d8ce78b8a25937bfec14572c9b37f8c35df1045a9"
+      },
+      "kind": "git-history-search",
+      "line_no": 49,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/psf__requests-1724/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 49,
+        "command_sha256": "508d12b2624ef3d3219d2a4d8ce78b8a25937bfec14572c9b37f8c35df1045a9",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 51,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/psf__requests-1724/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "ae9cb39b0f1b192dee1bd8df9ee2f4c0c7680beba2e7d23a3e07a1072d128cac"
+      },
+      "kind": "git-history-search",
+      "line_no": 52,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/psf__requests-1724/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "5ef1ff9cdc682458182f94932f05bc3bb54d9275490ca7379ed6ab473de9c7e2"
+      },
+      "kind": "git-history-search",
+      "line_no": 52,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/psf__requests-1724/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "2c3002d246684b43127d5c288d698a58f530b6dc36ac902e208c7738a8e78c16"
+      },
+      "kind": "git-history-search",
+      "line_no": 55,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/psf__requests-1724/generation_trajectory.jsonl",
+      "rule": "history-git-show",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "63e3dcdcac26c3f109745df89f48d053c2baaaaaaa16702d99b353f46444b8dd"
+      },
+      "kind": "git-history-search",
+      "line_no": 58,
+      "path": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/psf__requests-1724/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    }
+  ],
+  "golden": {
+    "additions": 6,
+    "downgrades": [],
+    "legacy_count": 0,
+    "preserved": 0,
+    "violations": []
+  },
+  "instance_id": "psf__requests-1724",
+  "legacy_findings": [],
+  "role": "generator",
+  "run": "main_50_a",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/psf__requests-1724"
+}
