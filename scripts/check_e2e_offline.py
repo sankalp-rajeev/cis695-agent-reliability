@@ -18,6 +18,8 @@ from reliability.verifier.patch import parse_patch
 from reliability.verifier.regression import RunResult, run_from_dict
 from reliability.verifier.selection import Selection, SelectionConfig, select_tests
 from reliability.verifier.task_specs import ROOT, load_registries, require_hash, sha, write
+from reliability.verifier.generic_health import paired_exception_scope, exception_metadata, rules_stamp, check_generic_pair
+from reliability.verifier.run_health import exception_match, exception_rules
 
 FROZEN = Path('/home/sankalp/projects/cis695-agent-reliability/reports/v2_scg_integration/ubuntu_static_b030e50_20261105T172604_853449Z/paired_frozen')
 SEAL = ROOT / 'reports/next_phases/phase4_rerun/attempt4_seal'
@@ -115,9 +117,19 @@ def a2(specs, metadata, captures, output):
     run_schema = {k: True for k in RunResult.__dataclass_fields__}
     for iid, spec in specs.items():
         tests = tuple(projected(FROZEN / metadata[iid]['selections']['v2'], {'tests': True})['tests'])
-        references = {}
+        references, generic_stages = {}, {}
         for tree in ('base', 'patched'):
             collection = read_collection(G1 / 'tasks' / iid / tree / 'collection.json')
+            # Re-evaluate eligibility against the frozen raw collection messages;
+            # published per-task entries retain priority, including nonmatches.
+            generic_stages[tree] = []
+            with paired_exception_scope(iid, spec.source.pre_install.repo):
+                for stage in collection.get('stage_health', ()):
+                    matches = [exception_match(exception_rules(), iid, stage.get('module', ''),
+                        stage['stage'], message, tree=tree) for message in stage.get('messages', ())]
+                    if matches and all(matches) and exception_metadata(matches):
+                        generic_stages[tree].append({**stage, **exception_metadata(matches),
+                            'allowed_exception': sorted({m['cause'] for m in matches})})
             references[tree] = collection_reference(iid, tree, tests, collection, drift)
             projection = project_collection(iid, tree, collection, empty_reference(iid, tree, tests, drift))
             if projection['halt']:
@@ -129,20 +141,27 @@ def a2(specs, metadata, captures, output):
         base, patched = (run_from_dict(read(prefix + name + '.json', run_schema)) for name in ('base', 'patched'))
         confirmations = [run_from_dict(r) for r in expected['C_invalid_excluded'].get('confirmations', [])]
         executor = SealedExecutor(base, patched, confirmations)
-        reports = run_policies(iid, Selection(tests=tests, runner=spec.runner), executor,
-                               references, output / 'tasks' / iid)
+        pair_reasons = check_generic_pair(generic_stages)
+        if pair_reasons:
+            raise ValueError('A2 generic both-tree mismatch: ' + iid)
+        with paired_exception_scope(iid, spec.source.pre_install.repo):
+            reports = run_policies(iid, Selection(tests=tests, runner=spec.runner), executor,
+                                   references, output / 'tasks' / iid)
         differences = {p: {'expected_signal': expected[p]['signal'], 'actual_signal': reports[p].signal,
                            'outcomes_equal': reports[p].outcomes == expected[p]['outcomes']}
                        for p in POLICIES if reports[p].signal != expected[p]['signal'] or
                        reports[p].outcomes != expected[p]['outcomes']}
         row = {'instance_id': iid, 'equal': not differences, 'differences': differences,
-               'signal': reports['S_invalid_excluded'].signal}
+               'signal': reports['S_invalid_excluded'].signal,
+               'generic_rule_modules': sorted({s['module'] for stages in generic_stages.values() for s in stages})}
         rows.append(row)
         if differences:
             write(output / 'A2.json', {'status': 'FAIL', 'tasks': rows})
             raise ValueError('A2 replay difference: ' + iid)
         print(json.dumps({'A2_task': iid, 'equal': True}), flush=True)
-    write(output / 'A2.json', {'status': 'PASS', 'matched': len(rows), 'health_halts': 0, 'tasks': rows})
+    write(output / 'A2.json', {'status': 'PASS', 'matched': len(rows), 'health_halts': 0, 'tasks': rows,
+        'generic_exception_rules': rules_stamp(),
+        'generic_rule_tasks': sum(bool(r['generic_rule_modules']) for r in rows)})
 
 
 def main():

@@ -23,6 +23,42 @@ CAPTURES = Path('/home/sankalp/projects/cis695-v2-scg-ubuntu-publication/runs/ph
 SEAL = ROOT / 'reports/next_phases/phase4_rerun/attempt4_seal'
 G1 = ROOT / 'reports/next_phases/phase4_rerun/fix18b_g1'
 POLICIES = ('C_invalid_excluded', 'C_invalid_missing', 'S_invalid_excluded', 'S_invalid_missing')
+SOURCE_AMENDMENTS_SHA256 = '712c08228bc2ab2119b697dd68b3b9b511e07c80279840c8a05cd2297499492b'
+
+
+def audit_release_sources(frozen, root=ROOT):
+    """Keep historical manifests intact; admit only two exact source transitions."""
+    raw = (root / 'configs/e2e/v1_4_3_source_amendments.json').read_bytes()
+    if hashlib.sha256(raw).hexdigest() != SOURCE_AMENDMENTS_SHA256:
+        raise ValueError('Release source amendment manifest hash mismatch')
+    manifest = json.loads(raw)
+    sources = {r['path']: r for r in manifest['sources']}
+    expected = {'src/reliability/verifier/collection.py', 'src/reliability/verifier/run_health.py'}
+    if (len(manifest['sources']) != 2 or set(sources) != expected
+            or manifest['release'] != 'e2e-v1.4.3'
+            or manifest['base_commit'] != '8a0aea302cce60c4aee6791c668422346fb9382f'):
+        raise ValueError('Unexpected release source amendment scope')
+    result, seen = [], set()
+    for original in frozen:
+        row = dict(original)
+        if row['path'] in sources:
+            source = sources[row['path']]
+            path = root / row['path']
+            if (row['manifest'] != 'reports/umgpt_probe/frozen_files.json'
+                    or row['expected_sha256'] != source['historical_sha256']
+                    or row['status'] != 'MISMATCH' or path.is_symlink()
+                    or not path.resolve().is_relative_to(root.resolve())
+                    or hashlib.sha256(path.read_bytes()).hexdigest() != source['release_sha256']
+                    or row.get('actual_sha256') != source['release_sha256']):
+                raise ValueError('Release source amendment mismatch: ' + row['path'])
+            row.update(status='APPROVED_RELEASE_SOURCE',
+                       source_amendment_manifest_sha256=SOURCE_AMENDMENTS_SHA256,
+                       approved_release_sha256=source['release_sha256'])
+            seen.add(row['path'])
+        result.append(row)
+    if seen != expected:
+        raise ValueError('Missing release source amendment evidence')
+    return result
 
 
 class Projection(StructuralProjection):
@@ -196,8 +232,8 @@ def main():
     parser.add_argument('--captures', type=Path, default=CAPTURES)
     args = parser.parse_args()
     metadata, registry_sha, django_choices = registry_check(args.task_specs)
-    frozen = audit_frozen_files(approved_exceptions=True)
-    if any(r['status'] != 'MATCH' for r in frozen):
+    frozen = audit_release_sources(audit_frozen_files(approved_exceptions=True))
+    if any(r['status'] not in ('MATCH', 'APPROVED_RELEASE_SOURCE') for r in frozen):
         raise ValueError('Frozen artifact mismatch or unapproved file')
     entries, g1_pin = seal_entries(args.captures)
     policies_schema = {'policies': {p: {'signal': True, 'outcomes': True} for p in POLICIES}}
@@ -297,7 +333,8 @@ def main():
         'G1_manifest_sha256': g1_pin, 'frozen_artifacts': frozen,
         'A4_tasks': [r['instance_id'] for r in a4]}, indent=2) + '\n')
     print('PASS registry: 83 frozen task identities and artifact hashes; SHA-256 ' + registry_sha)
-    print('PASS frozen artifacts: ' + str(len(frozen)) + ' matching hashes; golden CSV hashed as bytes only')
+    print('PASS frozen artifacts: ' + str(sum(r['status'] == 'MATCH' for r in frozen))
+          + ' historical matching hashes; 2 exact release source amendments; golden CSV hashed as bytes only')
     print('PASS A1: ' + str(a1) + '/83 identical ordered lists (RECORDED_OUTPUT_ONLY; selector not independently reimplemented)')
     print('PASS A2: ' + str(a2) + '/83 raw four-policy per-test/signal equality, zero recorded health halts')
     print('PASS G1 authority: sealed launch manifest SHA-256 ' + g1_pin)

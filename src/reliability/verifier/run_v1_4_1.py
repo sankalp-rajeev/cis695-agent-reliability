@@ -16,7 +16,8 @@ from reliability.verifier.archive_tree import ArchiveTree
 from reliability.verifier.container import ContainerRepoTree, ContainerTestExecutor
 from reliability.verifier.evidence import has_high_severity_risk, has_prohibited_manipulation, integrity_outcome
 from reliability.verifier.guarded_v2 import FrozenContainer, ReplayMismatch, run_policies
-from reliability.verifier.inline_g1 import guarded_pair, proposed_failure_category
+from reliability.verifier.inline_g1 import guarded_pair, proposed_failure_category, finalize_generic_pair
+from reliability.verifier.generic_health import paired_exception_scope
 from reliability.verifier.integrity import Violation
 from reliability.verifier.integrity_v1_4 import check_integrity
 from reliability.verifier.native_reference import collection_reference, empty_reference, load_drift
@@ -105,12 +106,22 @@ def integrity_signal(patch_text, tree):
 
 
 def run_v2(task, patch_path, selection, folder, *, experiment, drift, stamps):
+    with paired_exception_scope(task.instance_id, task.source.pre_install.repo):
+        return _run_v2(task, patch_path, selection, folder, experiment=experiment, drift=drift, stamps=stamps)
+
+
+def _run_v2(task, patch_path, selection, folder, *, experiment, drift, stamps):
     spec = ExecutionSpec(task.instance_id, task.image_id, task.source, task.runner, patch_path, selection.tests, experiment)
     references, blocked = {}, []
+    healths = []
     for patched in (False, True):
         tree = 'patched' if patched else 'base'
         health = guarded_pair(spec, patched, folder / 'g1',
                               empty_reference(task.instance_id, tree, selection.tests, drift))
+        healths.append(health)
+    finalize_generic_pair(spec, folder / 'g1', healths)
+    for health in healths:
+        tree = health['tree']
         append_health(folder / 'health.jsonl', {'scope': 'G1', **health})
         receipt = folder / 'g1/tasks' / task.instance_id / tree / 'collection.json'
         if receipt.exists():

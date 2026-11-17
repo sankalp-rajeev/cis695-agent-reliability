@@ -1,0 +1,14 @@
+{
+  "rules": [
+    {
+      "id": "django_sqlite_gis_guard",
+      "repo": "django/django",
+      "module_prefix": "tests/gis_tests/",
+      "stages": ["native_collection", "module_execution"],
+      "trees": ["base", "patched"],
+      "require_both_trees": true,
+      "required_message": "A GIS database backend is required to run gis_tests",
+      "cause": "GIS_GUARD"
+    }
+  ]
+}

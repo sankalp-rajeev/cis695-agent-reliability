@@ -14,7 +14,8 @@ from reliability.verifier.id_validation import (
     StaticIndex,
     merge_native,
 )
-from reliability.verifier.run_health import allowed_failure, exception_rules
+from reliability.verifier.run_health import allowed_failure, exception_match, exception_rules
+from reliability.verifier.generic_health import exception_metadata
 from reliability.verifier.selection import TestRunner
 from reliability.verifier.sympy_adapter import _SYMPY_PROGRAM
 
@@ -425,7 +426,8 @@ def collection_stages(task, ids, receipt, exceptions, merged=(), *, tree=None):
         bad += [dict(collection_status=r.failure_status, message=r.message) for r in merged
                 if r.unavailable and r.selected_id.split('::',1)[0] == module]
         messages = list(dict.fromkeys(r.get('message','') for r in bad))
-        causes = [allowed_failure(exceptions,task,module,'native_collection',m,tree=tree) for m in messages]
+        matches = [exception_match(exceptions,task,module,'native_collection',m,tree=tree) for m in messages]
+        causes = [m['cause'] if m else None for m in matches]
         allowed = bool(causes) and all(causes)
         collected = {i for r in records if r.get('completed') and r.get('returncode',0) in (0,5) for i in r.get('ids',[])}
         eligible = [i for i in selected if i not in proven]
@@ -436,7 +438,7 @@ def collection_stages(task, ids, receipt, exceptions, merged=(), *, tree=None):
             'module_skipped_instances':len(skipped),'native_skip_recorded':bool(skipped),
             'allowed_exception':sorted(set(causes)) if allowed else [], 'messages':messages,
             'collector_exit_codes':[g.get('returncode') for g in receipt.get('groups',[]) if g['module']==module],
-            'tests_executed':0})
+            'tests_executed':0, **(exception_metadata(matches) if allowed else {})})
     return tuple(result)
 
 

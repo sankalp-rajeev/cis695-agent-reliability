@@ -30,6 +30,7 @@ from reliability.verifier.admission_reference import JSONProjection
 from reliability.verifier.run_v1_4_1 import default_reproduction_setup, verify_task
 from reliability.verifier.source_integrity import SourceIntegrityError
 from reliability.verifier.task_specs import ROOT, load_registries, require_hash, sha, write
+from reliability.verifier.generic_health import rules_stamp
 
 
 def manifest_ids(path):
@@ -132,7 +133,8 @@ def main(argv=None):
         'ledger_file': str(args.ledger_file.resolve()), 'deepseek_cap_usd': args.deepseek_cap_usd,
         'um_cap_usd': args.um_cap_usd, 'um_job_cap_usd': args.um_job_cap_usd,
         'primary_prices': prices(primary), 'generator_prices': prices(generator),
-        'generator': setup.identity(), 'parallelism': 1, 'patched_tree_drift_guard': 'weaker: no drift reference'}
+        'generator': setup.identity(), 'parallelism': 1, 'patched_tree_drift_guard': 'weaker: no drift reference',
+        'generic_exception_rules': rules_stamp()}
     ledgers = {}
     for config in (primary, generator):
         key = (config['provider'], config.get('account_id', 'default'))

@@ -2,7 +2,9 @@
 """A3: stored V1/V3/V4 evidence plus A2 V2, with explicit v1.4 rule deltas."""
 
 import csv
+import argparse
 import json
+from pathlib import Path
 from collections import Counter
 
 from reliability.env import assert_clean_interpreter
@@ -17,8 +19,13 @@ from check_e2e_offline import FROZEN, frozen_tasks
 
 def main():
     assert_clean_interpreter()
-    report_dir = ROOT / 'reports/next_phases/e2e_v1_4_1'
-    a2 = json.loads((report_dir / 'A2.json').read_text())
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--offline', type=Path, default=ROOT / 'reports/next_phases/e2e_v1_4_1')
+    parser.add_argument('--output', type=Path, default=ROOT / 'reports/next_phases/e2e_v1_4_1')
+    args = parser.parse_args()
+    report_dir = args.output
+    report_dir.mkdir(parents=True, exist_ok=True)
+    a2 = json.loads((args.offline / 'A2.json').read_text())
     if a2['status'] != 'PASS' or a2['matched'] != 83 or a2['health_halts']:
         raise ValueError('A3 requires passing sealed A2')
     inputs = {r['task']: r for r in json.loads((ROOT / 'reports/policy_v1_4/policy_inputs.json').read_text())}

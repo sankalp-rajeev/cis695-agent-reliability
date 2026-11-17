@@ -9,6 +9,7 @@ from pathlib import Path
 
 from reliability.verifier.accounting import ADMITTED_STATUSES
 from reliability.verifier.regression import TestStatus
+from reliability.verifier.generic_health import exception_metadata, generic_match, rules_stamp
 
 
 class RunHealthError(RuntimeError):
@@ -37,9 +38,17 @@ def exception_rules():
     return json.loads(path.read_text())['exceptions']
 
 
+def exception_match(exceptions, task, module, stage, message, *, tree=None):
+    entries = [r for r in exceptions if r['instance_id'] == task and r['module'] == module]
+    if entries:  # Presence, even a nonmatching entry, takes priority over generic rules.
+        return next((r for r in entries if tree in r.get('trees', ())
+                     and stage in r['stages'] and r['required_message'] in message), None)
+    return generic_match(task, module, stage, message, tree)
+
+
 def allowed_failure(exceptions, task, module, stage, message, *, tree=None):
-    return next((r['cause'] for r in exceptions if r['instance_id'] == task
-        and r['module'] == module and tree in r.get('trees',()) and stage in r['stages'] and r['required_message'] in message), None)
+    match = exception_match(exceptions, task, module, stage, message, tree=tree)
+    return match['cause'] if match else None
 
 
 def monotonicity(reference, admitted, invalid):
@@ -178,7 +187,8 @@ def health_for_run(task, tree, run, reference, *, confirmation=False):
         reasons.append('SymPy ' + tree + ': unexplained identity loss')
     executor_failures = explicit_executor_failures(run)
     reasons += ['Executor ' + tree + ': ' + error for error in executor_failures]
-    return {'task': task, 'tree': tree, 'collector_status': run.validation_summary.get('collector_status', 'NOT_REPORTED'),
+    return {'task': task, 'tree': tree, 'generic_exception_rules': rules_stamp(),
+            'collector_status': run.validation_summary.get('collector_status', 'NOT_REPORTED'),
             'input_ids': len(run.requested_tests), 'COLLECTOR_FALLBACK_slots': len(fallback),
             'collector_fallback_ids': sorted(fallback), 'admitted_ids': len(admitted),
             'admitted_share': len(admitted)/len(run.requested_tests) if run.requested_tests else None,
@@ -190,6 +200,7 @@ def health_for_run(task, tree, run, reference, *, confirmation=False):
 
 
 def append_health(path: Path, record):
+    record = {**record, 'generic_exception_rules': rules_stamp()}
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open('a') as stream:
         stream.write(json.dumps(record)+'\n')
@@ -239,7 +250,8 @@ def module_execution_stages(task, tree, runner, run, exceptions):
         message=data[start.get('offset',0):event.get('offset',len(data))].decode('utf-8','replace')
         module=event.get('module',start.get('module',''))
         ids=sorted({t for native in event.get('missing_ids',start.get('ids',())) for t in mapper(native)})
-        cause=allowed_failure(exceptions,task,module,'module_execution',message,tree=tree)
+        match=exception_match(exceptions,task,module,'module_execution',message,tree=tree)
+        cause=match['cause'] if match else None
         induced = bool(ids) and all(run.by_id()[t].status is TestStatus.ERROR for t in ids)
         imported = (event.get('batch') in imports and bool(ids)
                     and all(run.by_id()[t].status is TestStatus.COLLECTION_ERROR for t in ids))
@@ -248,5 +260,6 @@ def module_execution_stages(task, tree, runner, run, exceptions):
             identity_failure=not (induced or imported),
             import_signature=imports.get(event.get('batch'), ''),
             input_count=len(ids),input_ids=ids,output_count=len(ids) if induced else 0,
-            allowed_exception=[cause] if cause else [],message=message))
+            allowed_exception=[cause] if cause else [],message=message,
+            **exception_metadata([match])))
     return stages

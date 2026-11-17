@@ -6,6 +6,7 @@ from reliability.verifier.collection import validate_in_container
 from reliability.verifier.native_reference import project_collection
 from reliability.verifier.run_health import effective_runner, runner_startup, zero_output
 from reliability.verifier.source_integrity import GeneratedInputAudit, SourceIntegrityError
+from reliability.verifier.generic_health import check_generic_pair, rules_stamp
 
 def proposed_failure_category(stage):
     if stage.get('allowed_exception'):
@@ -72,6 +73,9 @@ def audit_pair(spec, patched, output, reference=None):
         health['G2']=projection['G2']
         if projection['halt']:
             health['status']='BLOCKED'
+    health['generic_exception_rules'] = rules_stamp()
+    if health['status'] == 'READY' and any(s.get('exception_source') == 'generic_rule' for s in stages):
+        health['status'] = 'PENDING_BOTH_TREES'
     # Each persistence error belongs to this pair, even when its folder is unwritable.
     for name, value in [('generated_inputs.json', audit.to_dict() if audit else None), ('health.json', health)]:
         if value is None:
@@ -87,11 +91,37 @@ def audit_pair(spec, patched, output, reference=None):
             health['G3']=zero_output(stages)
     return health
 
+
+def finalize_generic_pair(spec, output, healths):
+    """Resolve provisional records before G1 opens; persist the paired proof."""
+    reasons = check_generic_pair({h['tree']: h['stages'] for h in healths})
+    for health in healths:
+        generic = any(s.get('exception_source') == 'generic_rule' or s.get('generic_rule_rejected')
+                      for s in health['stages'])
+        if not generic:
+            continue
+        health['generic_pair_halt_reasons'] = reasons
+        health['G3'] = zero_output(health['stages'])
+        if reasons:
+            health['status'] = 'BLOCKED'
+            health['collector_status'] = 'COLLECTION_ERROR'
+        elif health['status'] == 'PENDING_BOTH_TREES':
+            health['status'] = 'READY'
+        folder = output / 'tasks' / spec.instance_id / health['tree']
+        collection = json.loads((folder / 'collection.json').read_text())
+        collection['stage_health'] = [s for s in health['stages'] if s['stage'] == 'native_collection']
+        collection['collector_status'] = health['collector_status']
+        collection['generic_exception_rules'] = rules_stamp()
+        launch.write(folder / 'collection.json', collection)
+        launch.write(folder / 'health.json', health)
+    return reasons
+
 def guarded_pair(spec, patched, output, reference=None):
     try:
         return audit_pair(spec, patched, output, reference)
     except (KeyboardInterrupt,SystemExit) as exc:
         health={'task':spec.instance_id,'tree':'patched' if patched else 'base',
+                'generic_exception_rules':rules_stamp(),
                 'status':'INTERRUPTED','interruption':type(exc).__name__,'message':repr(exc),
                 'tests_executed':0,'gate_evaluated':False}
         try:
@@ -110,6 +140,7 @@ def guarded_pair(spec, patched, output, reference=None):
         # Even receipt construction and writes are inside the per-pair boundary.
         stage = {'stage':'pair_error','status':'ERROR','input_count':1,'output_count':0,'message':repr(exc)}
         return {'task':spec.instance_id,'tree':'patched' if patched else 'base','status':'BLOCKED',
+                'generic_exception_rules':rules_stamp(),
                 'collector_status':'BLOCKED_UPSTREAM','stages':[stage], 'COLLECTOR_FALLBACK_slots':0,
                 'module_skipped_slots':0,'INVALID_ID_slots':None,'native_collected_ids':[],
                 'G2':'NOT_EVALUATED_NO_TEST_EXECUTION','G3':zero_output([stage]),

@@ -7,6 +7,7 @@ from reliability.verifier.run_health import RunHealthError, append_health, healt
 from reliability.verifier.source_integrity import SourceIntegrityError
 from reliability.verifier.task_specs import write
 from reliability.verifier.regression import RegressionConfig, run_regression
+from reliability.verifier.generic_health import check_generic_pair
 
 class ReplayMismatch(ValueError):
     """A policy requested execution outside its captured call sequence."""
@@ -54,6 +55,13 @@ class Calls:
             g1_ids=evidence.get('g1_collected_ids',()) if isinstance(evidence,dict) else ()
             reference = confirmation_reference(initial, tests, g1_ids)
             record = health_for_run(self.task, 'patched' if patched else 'base', result, reference, confirmation=True)
+            modules = {t.split('::', 1)[0] for t in tests}
+            opposite = self.calls[int(not patched)][3]
+            pair_reasons = check_generic_pair({tree: record['stages'],
+                'base' if patched else 'patched': [dict(s) for s in opposite.stage_health if s.get('module') in modules]})
+            if pair_reasons:
+                record['halt'] = True
+                record['halt_reasons'].extend(pair_reasons)
             record['scope'] = 'confirmation'
             record['call'] = len(self.calls) + 1
             append_health(self.health_path, record)
@@ -112,9 +120,17 @@ def run_policies(instance_id, selection, executor, reference, folder):
     for patched in (False, True):
         run = calls.run(selection.tests, patched=patched, timeout_s=1800)
         write(folder / ('patched.json' if patched else 'base.json'), run_to_dict(run, inline_raw=False))
+    pair_reasons = check_generic_pair({tree: calls.calls[i][3].stage_health
+                                      for i, tree in enumerate(('base', 'patched'))})
+    # Persist the paired approval/rejection and calculate G3 after revocation.
+    if any(s.get('both_trees_confirmed') or s.get('generic_rule_rejected')
+           for entry in calls.calls for s in entry[3].stage_health):
+        for i, tree in enumerate(('base', 'patched')):
+            write(folder / (tree + '.json'), run_to_dict(calls.calls[i][3], inline_raw=False))
     trees = [health_for_run(instance_id, tree, calls.calls[i][3], reference[tree])
              for i, tree in enumerate(('base', 'patched'))]
     reasons = [reason for tree in trees for reason in tree['halt_reasons']]
+    reasons += pair_reasons
     health = {'task': instance_id, 'trees': trees, 'halt': bool(reasons), 'halt_reasons': reasons}
     if reasons:
         append_health(health_path, health)

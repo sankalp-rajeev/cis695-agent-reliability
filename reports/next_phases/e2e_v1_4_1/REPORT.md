@@ -153,3 +153,47 @@ The release diff from `e2e-v1.4.1-frozen` contains only these twelve files:
 - `reports/next_phases/e2e_v1_4_1/REPORT.md`: pilot findings and release validation.
 - `reports/next_phases/e2e_v1_4_1/DECISIONS.md`: retry/timeout evidence and implementation choices.
 - `reports/next_phases/e2e_v1_4_1/RUNBOOK.md`: v1.4.2 tag, new output folders, and no old-pilot resume.
+
+## v1.4.3: generic GIS_GUARD rule
+
+The label-free v1.4.2 pilot completed 4/4 with zero problem calls. Its newly prepared Django-12663 patch selected 1,729 tests. Four GIS modules (99 selected tests) hit the SQLite GIS-backend guard on both trees. The existing 49 per-task/module exceptions include 47 GIS entries tied to modules selected by the frozen patches; a new patch can select a different GIS module and block G1 for the entire task. The supplied 36/32 module counts differ from the artifacts: both the pilot and fresh `selection.json` contain **33 distinct module paths: 4 GIS and 29 others**. Their bytes and ordered IDs are identical (SHA-256 `40a8c3938b4bd2e434701f852f1ba8c43feec7242830e404e096cc1432833112`). Three selected nested helpers in `tests/db_functions/datetime/test_extract_trunc.py` are natively proven invalid; 1,627 tests remain runnable after the 99 GIS-unavailable selections.
+
+`configs/verifier/run_health_generic_exceptions.json` now contains exactly one rule, `django_sqlite_gis_guard`, SHA-256 **133b1718eeb53df319c53042a3a37ffd59f2f97b2955d9871e51543a79928f13**. It requires repo `django/django`, a normalized module path under `tests/gis_tests/`, stage `native_collection` or `module_execution`, and the literal message `A GIS database backend is required to run gis_tests` on both base and patched trees. Additional exceptions, changed guard text, other repositories, other paths and other stages are not excused. There is no generic xmlschema or matplotlib exception.
+
+Per-task entry presence takes priority for the entire (task, module), including a per-task entry whose stage, tree or message does not match. Generic candidates use the existing unavailable-module accounting and stay provisional until paired evidence is checked. G1 cannot open on a single-tree candidate. V2 checks its own pair again and verifies confirmation exceptions against the opposite initial tree. Every application is recorded in `health.jsonl` with `exception_source: generic_rule`, `rule_id`, `rules_file_sha256` and `both_trees_confirmed: true`. The rules-file path and SHA-256 are stamped in the run header and health records. Selection, guard thresholds, accounting, test statuses and the decision rule remain unchanged.
+
+The final full unit suite used the usual offline-cache command and passed **1,665 tests**, with **7 skipped, 6 failed and 17 errors in 73.56 seconds**. All 23 failed/error IDs and statuses exactly match `/home/sankalp/projects/unit_baseline_7fefe1d/failing_ids.txt`: zero new failed/error IDs and no reference failure newly passing. The 24 new tests include real local native collectors and V2 execution, both-tree GIS success, one-tree and different-message halts, non-Django rejection, per-task priority and identical unavailable accounting, mixed failures, path/stage scope, module-execution pairing, provenance, a failure that changes between G1 and V2, and strict source-amendment checks. Evidence: `runs/e2e_v1_4_3_checks/pytest.release.final.out` and `unit_comparison.json`; the earlier focused run passed 96 tests.
+
+The first live attempt, `runs/e2e_v1_4_3_checks/live_django_12663`, is **sandbox-blocked, no collection**: both Docker starts were denied access to `/var/run/docker.sock`. Its folder is preserved unchanged. The second attempt, `live_django_12663_docker`, is **operator error: log path inside output**: the empty-output preflight stopped before creating a header or collecting, and its folder is also preserved. The user approved a corrected Docker-access retry in the previously absent `live_django_12663_final` path, with its log beside the output folder. Actual Docker inspection records network mode `none` in that output's `docker_network.json`.
+
+The corrected retry uses `configs/e2e/gis_guard_check_1.txt`, both requested registries, the frozen v1.4.2 pilot patch, `--mode pilot --verify-only-from runs/e2e_v1_4_2_pilot_A --skip-v4`. It completed with **zero health halts**. G1 is **READY on both trees**, with paired generic applications for `tests/gis_tests/distapp/tests.py` (25), `tests/gis_tests/geoapp/test_functions.py` (37), `tests/gis_tests/geoapp/tests.py` (31), and `tests/gis_tests/test_gis_tests_utils.py` (6). V2 runs the other **29 modules** and reports **INCOMPLETE, n_executed = 1,627**, outcome NOT_AVAILABLE and decision FLAG. Base and patched counts are identical: 1,376 passed, 248 skipped, 2 xfail, 1 error, 99 environment-unavailable collection errors and 3 proven invalid IDs. Skips and unavailable evidence retain their existing semantics; no status is promoted to PASS. V4 is NOT_RUN with `SKIP_V4_FOR_CHECK`. The rules-file stamps, receipt hashes, module execution set and byte-identical selection were checked in `runs/e2e_v1_4_3_checks/live_summary.json`; the log is `live_django_12663_final.out`.
+
+Fresh offline replay in `runs/e2e_v1_4_3_checks/offline` passes **A1 83/83 and A2 83/83**, with identical outcomes and signals in all four policies and zero health halts. It verifies the read-only seal's **1,799 files / 3,488,110,239 bytes**. **0/83 tasks would use the generic rule** after per-task priority. A3 consumes that fresh A2 output through the new `--offline`/`--output` options and returns **14 ACCEPT / 67 FLAG / 2 REJECT**, zero differences and zero unattributed changes. Evidence: `offline.out`, `offline/A2.json`, `decisions.out`, and `decisions/A3.json` under the same checks directory.
+
+The independent checker's first attempt detected that the historical UM probe pins `collection.py` and `run_health.py`, both changed by this authorized implementation. The published `reports/umgpt_probe/frozen_files.json` is preserved. `configs/e2e/v1_4_3_source_amendments.json` registers exactly these two historical-to-release SHA-256 transitions, bound to base commit `8a0aea302cce60c4aee6791c668422346fb9382f`; its own SHA-256 is pinned in the independent checker. The original artifact preflight remains strict. The release checker separately verifies each historical hash against that manifest and each new hash against the current source, with distinct `APPROVED_RELEASE_SOURCE` records. Unknown mismatches remain fatal. Five additional tests cover exact transitions, unknown changes, historical/current/hash-manifest tampering and missing evidence.
+
+`scripts/verify_e2e_v1_4_1.py` **passes**: registry identities, 73 unchanged historical artifact hashes, the 2 exact source amendments, A1/A2, sealed G1 authority and frozen three-runner A4. A4 reads the existing `runs/e2e_v1_4_1_checks/live_frozen` evidence; the new-patch GIS check is reported separately above. The fresh checker output and generated reports are retained as `independent.final.out`, `independent_A4.json` and `independent_A7.json` under `runs/e2e_v1_4_3_checks/`; the historical committed A4/A7 snapshots retain their bytes.
+
+All **328** protected pilot/log/ledger files retain their pre-change SHA-256 hashes, and the existing `e2e-v1.4.1-frozen` and `e2e-v1.4.2-frozen` annotated tag objects are unchanged. Both unsuccessful setup-attempt folders remain untouched. `preservation.json` and `acceptance_summary.json` record the final checks. No paid model calls were made, no labels were decoded for acceptance, no sealed Phase 4 file was written, and nothing was pushed.
+
+The release is committed and frozen by the local annotated tag **`e2e-v1.4.3-frozen`**. The changed files (`git diff --stat e2e-v1.4.2-frozen HEAD`) are:
+
+```text
+ configs/e2e/gis_guard_check_1.txt                  |   1 +
+ configs/e2e/v1_4_3_source_amendments.json          |  18 ++
+ .../verifier/run_health_generic_exceptions.json    |  14 ++
+ reports/next_phases/e2e_v1_4_1/REPORT.md           |  44 ++++
+ reports/next_phases/e2e_v1_4_1/RUNBOOK.md          |  33 ++-
+ scripts/check_e2e_decisions.py                     |  11 +-
+ scripts/check_e2e_offline.py                       |  29 ++-
+ scripts/run_e2e.py                                 |   4 +-
+ scripts/verify_e2e_v1_4_1.py                       |  43 +++-
+ src/reliability/verifier/collection.py             |   8 +-
+ src/reliability/verifier/generic_health.py         | 107 ++++++++
+ src/reliability/verifier/guarded_v2.py             |  16 ++
+ src/reliability/verifier/inline_g1.py              |  31 +++
+ src/reliability/verifier/run_health.py             |  23 +-
+ src/reliability/verifier/run_v1_4_1.py             |  13 +-
+ tests/unit/test_e2e_v1_4_3.py                      | 277 +++++++++++++++++++++
+ 16 files changed, 644 insertions(+), 28 deletions(-)
+```
