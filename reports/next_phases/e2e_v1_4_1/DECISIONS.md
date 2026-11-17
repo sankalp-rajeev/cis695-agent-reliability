@@ -50,3 +50,7 @@
 - Enforce the frozen hygiene removal through proven negative identities only, then discard them; native G1 references contain no historical positive evidence and use the unchanged guard thresholds.
 - Use the user-specified absolute sealed capture root in cis695-v2-scg-ubuntu-publication, read-only, and verify all 1,799 files before replay.
 - The offline cache resolves all 30 prior sandbox errors; retain the exact reference command with the three explicitly approved HF environment variables.
+- Escrow the full configured V4 ceiling before runtime, then account every paid response in the shared provider/account ledger; this prevents an account cap from starting a partially fundable V4 stage.
+- Keep DeepSeek on its native LiteLLM route with a ledger subclass; derive prices from the pinned local cost map unless explicitly configured, and stamp numeric rates in the header and each call.
+- Preserve native mini-SWE command/submission handling by attaching its environment to a preverified immutable container; constructors cannot pull or start an additional image.
+- Choose A4 by smallest nonempty executed selection per effective runner: django-13033, sympy-17318, matplotlib-25287; all three immutable images are already local and no frozen Django task requests parallel one.

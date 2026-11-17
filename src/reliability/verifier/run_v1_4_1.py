@@ -54,8 +54,9 @@ class TaskWallTime(BaseException):
 
 
 class TaskBudgetStop(BudgetCap):
-    def __init__(self, record):
+    def __init__(self, record, termination='BUDGET_CAP'):
         self.record = record
+        self.termination = termination
         super().__init__('BUDGET_STOP')
 
 
@@ -86,6 +87,7 @@ class ExecutionSpec:
     runner: object
     patch_path: Path
     tests: tuple[str, ...]
+    experiment_id: str = 'e2e_v1_4_1'
 
 
 def integrity_signal(patch_text, tree):
@@ -101,7 +103,7 @@ def integrity_signal(patch_text, tree):
 
 
 def run_v2(task, patch_path, selection, folder, *, experiment, drift, stamps):
-    spec = ExecutionSpec(task.instance_id, task.image_id, task.source, task.runner, patch_path, selection.tests)
+    spec = ExecutionSpec(task.instance_id, task.image_id, task.source, task.runner, patch_path, selection.tests, experiment)
     references, blocked = {}, []
     for patched in (False, True):
         tree = 'patched' if patched else 'base'
@@ -210,7 +212,7 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
             raise
         except Exception as exc:
             signals[SignalKind.STATIC] = absence(SignalKind.STATIC, 'EXECUTOR_EXCEPTION:' + type(exc).__name__, infrastructure=True)
-    budget_stop = False
+    budget_stop, stop_termination = False, 'BUDGET_CAP'
     if skip_v4:
         signals[SignalKind.REPRODUCTION] = absence(SignalKind.REPRODUCTION, 'SKIP_V4_FOR_CHECK')
     elif v4_runner is None:
@@ -220,9 +222,11 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
             signals[SignalKind.REPRODUCTION] = v4_runner(instance_id, patch_text, signals[SignalKind.INTEGRITY])
         except SourceIntegrityError:
             raise
-        except BudgetCap:
+        except BudgetCap as exc:
             budget_stop = True
-            signals[SignalKind.REPRODUCTION] = absence(SignalKind.REPRODUCTION, 'BUDGET_STOP', infrastructure=True)
+            stop_termination = getattr(exc, 'termination', 'BUDGET_CAP')
+            signals[SignalKind.REPRODUCTION] = absence(SignalKind.REPRODUCTION,
+                'AUTH_STOP' if stop_termination == 'AUTH_ERROR' else 'BUDGET_STOP', infrastructure=True)
         except Exception as exc:
             signals[SignalKind.REPRODUCTION] = absence(SignalKind.REPRODUCTION, 'V4_EXCEPTION:' + type(exc).__name__, infrastructure=True)
     policy = FullPolicyV141()
@@ -240,5 +244,5 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
         provenance=provenance or {}, v4_run_status='NOT_RUN' if skip_v4 or budget_stop or v4_runner is None else 'RAN', **stamps)
     result.write(task_dir / 'verification_record.full-v1.4.1.json')
     if budget_stop:
-        raise TaskBudgetStop(result)
+        raise TaskBudgetStop(result, stop_termination)
     return result

@@ -28,7 +28,7 @@ def audit_pair(spec, patched, output, reference=None):
     try:
         folder.mkdir(parents=True)
         with launch.FrozenContainer(spec.instance_id,spec.patch_path.read_text(),image=spec.image_id,
-            experiment_id='phase4_fix18b_G1',source_spec=spec.source,
+            experiment_id=getattr(spec,'experiment_id','e2e_v1_4_1_G1'),source_spec=spec.source,
             source_receipt_path=folder/'pristine_source_receipt.json') as container:
             if container.source_integrity.get('status') != 'VERIFIED':
                 raise ValueError('A fresh VERIFIED pristine receipt is required')
