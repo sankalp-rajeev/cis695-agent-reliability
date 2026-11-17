@@ -86,6 +86,45 @@ def test_no_task_spec_gives_both_absences(tmp_path):
     assert record.regression.outcome is record.static.outcome is SignalOutcome.NOT_AVAILABLE
 
 
+@pytest.mark.parametrize('patch', [b'', b' \n\t\r\n'])
+def test_empty_patch_with_task_spec_skips_all_runtime(tmp_path, task, monkeypatch, patch):
+    from reliability.verifier import run_v1_4_1 as runtime
+    def forbidden(*args, **kwargs):
+        pytest.fail('empty patch must not start an executor or V4')
+    monkeypatch.setattr(runtime, 'FrozenContainer', forbidden)
+    monkeypatch.setattr(runtime, 'guarded_pair', forbidden)
+    freeze_patch(tmp_path / 'patch.diff', patch)
+    record, called = verify(tmp_path, task)
+    assert called == []
+    assert record.decision.decision is Decision.REJECT
+    assert record.integrity.outcome is SignalOutcome.FAIL
+    assert all(s.findings == {'absence_reason': 'EMPTY_PATCH', 'infrastructure': False}
+               for s in (record.regression, record.static, record.reproduction))
+
+
+def test_nonempty_patch_with_zero_selected_tests_is_not_infrastructure(tmp_path, task, monkeypatch):
+    from reliability.verifier import run_v1_4_1 as runtime
+    from reliability.verifier.selection import Selection
+    monkeypatch.setattr(runtime, 'select_tests', lambda *a: Selection(tests=(), runner=task.runner))
+    freeze_patch(tmp_path / 'patch.diff', PATCH)
+    record, called = verify(tmp_path, task)
+    assert called == ['V3', 'V4']
+    assert record.regression.outcome is SignalOutcome.NOT_AVAILABLE
+    assert record.regression.detail == 'no tests selected'
+    assert not record.regression.findings.get('infrastructure', False)
+    assert not e2e_runner.infrastructure(record)
+
+
+def test_exhausted_v4_retry_is_attributed_infrastructure(tmp_path, task):
+    from reliability.provider_errors import ProviderTransientError
+    freeze_patch(tmp_path / 'patch.diff', PATCH)
+    record, called = verify(tmp_path, task, v4_failure=ProviderTransientError('Timeout', 408))
+    assert called == ['V2', 'V3', 'V4']
+    assert record.reproduction.detail == 'V4_INFRA:Timeout'
+    assert record.reproduction.findings['infrastructure'] is True
+    assert record.decision.decision is Decision.FLAG
+
+
 def test_verification_preserves_frozen_patch_line_endings(tmp_path, task, monkeypatch):
     from reliability.verifier import run_v1_4_1 as runtime
     raw = PATCH.replace('\n', '\r\n').encode()

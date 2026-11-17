@@ -101,3 +101,55 @@ PASS independent checker; standard library only; no model calls
 - Source-scope note: a source-location search opened Phase 7 stage5 code/recompute notes and V1 probe code outside the narrow decision-table/recompute-input allowance. No referenced label/oracle files or correctness fields were opened; acceptance computations use the permitted frozen data, policy snapshots and decision table.
 
 The release tag is the recreated annotated local `e2e-v1.4.1-frozen`, at the final documentation commit after all checks. Publication is left to the user: **no branch or tag push is made**. [RUNBOOK.md](RUNBOOK.md) gives exact pilot/audited/check commands.
+
+## Pilot findings and v1.4.2 fixes
+
+Reviewed on 17 November 2026: the user confirmed matplotlib-25287's selected SVG cases are skipped in this image, an expected environment limit, and authorized continuation. Its V2 behavior is unchanged. The published `e2e-v1.4.1-frozen` tag remains unchanged; the new release is the local annotated `e2e-v1.4.2-frozen` tag.
+
+The label-free pilot evidence is in `runs/e2e_v1_4_1_pilot_A/tasks/`. Django-13033 has an 885-byte patch, PASS for V1–V4 and decision ACCEPT. Sympy-17318 has a zero-byte patch, V1 FAIL (`empty: patch is empty`), V2 absence `RUN_HEALTH_G1:stage_error_requires_review`, V3 absence `EXECUTOR_EXCEPTION:ContainerError`, and decision REJECT. Its eleventh repair call timed out; v1.4.1 converted the transient failure to an aborting `ProviderStageError`, then froze an empty patch. These records are historical pilot evidence, not rerun results.
+
+Matplotlib-25287 has a nonempty 1,181-byte patch. Its `verification_record.full-v1.4.1.json` records V2 outcome `NOT_AVAILABLE`, absence `incomplete`, no `findings.absence_reason`, and this exact `detail`:
+
+```text
+V2 INCOMPLETE: base: raw SKIPPED: lib/matplotlib/tests/test_skew.py::test_set_line_coll_dash_image[svg]; base: raw SKIPPED: lib/matplotlib/tests/test_skew.py::test_skew_rectangle[svg]; patched: raw SKIPPED: lib/matplotlib/tests/test_skew.py::test_set_line_coll_dash_image[svg]; patched: raw SKIPPED: lib/matplotlib/tests/test_skew.py::test_skew_rectangle[svg]
+```
+
+Its `verification/selection.json` supplies these two ordered IDs, both from tier 2 (tier 1 is empty):
+
+```text
+lib/matplotlib/tests/test_skew.py::test_set_line_coll_dash_image
+lib/matplotlib/tests/test_skew.py::test_skew_rectangle
+```
+
+The selection uses runner `pytest`, evidence `pytest.ini or conftest.py; pytest referenced in tox.ini`, and `django_parallel_one: null`. Its convention is `sibling_tests`, hit rate 0.1 over 200 samples; convention scores are `sibling_tests: 0.1` and zero for `mirrored_tree`, `suffix`, `flat`, and `tests_tree`. Symbols are `XAxis` and `YAxis`; `excluded_agent_tests` is empty. V1, V3 and V4 PASS, while the unchanged policy returns FLAG.
+
+all selected tests skipped on both trees, so NOT_AVAILABLE; expected, not infrastructure
+
+**Transient-provider fix.** DeepSeek repair, UM repair, and both V4 routes share one classifier. Timeout/408, ordinary rate-limit/429, 500/502/503/504, APIConnectionError and ServiceUnavailableError propagate as `ProviderTransientError`, outside `abort_exceptions`. Each attempted request retains its entire conservative reservation as spent (`reservation_retained: true`); the ledger entry is settled at that bound so its existing unsettled-request guard permits the next reservation. No uncertain charge is refunded and `runtime.halt` stays unset. Auth 401/403, payment/balance/quota, and other client errors keep their stop/stage semantics. A rate-limit body saying “rate limit exceeded” alone is transient, not a quota stop.
+
+After the native query retries exhaust, repair captures `git diff --` through the attached environment, using the submit prompt's diff extraction against the current tracked working tree rather than a possibly absent or stale `patch.txt`. The patch is frozen before container teardown; trajectory and `agent_absence.json` retain `AGENT_INFRA:<original exception type>` with `infrastructure: true`. There is no agent-failure repair record for this absence. A failed diff extraction leaves the task unfinished instead of inventing an empty patch. `completion.json` separates `agent_infrastructure_tasks` from `no_patch_tasks`, including infrastructure tasks whose diff really is empty. V4 exhaustion propagates out of generation before an incomplete suite can be screened and becomes `V4_INFRA:<type>` infrastructure absence.
+
+**Retry/timeout comparability.** `uv.lock` pins mini-swe-agent 2.4.6 and LiteLLM 1.100.1. The main-study `scripts/run_pilot.py` and `MiniSweAgentBackend` use the native `LitellmModel.query` retry loop: 10 total attempts (9 retries), `reraise=True`, exponential waits with multiplier 1, minimum 4 seconds and maximum 60 seconds. The nine waits are 4, 4, 4, 8, 16, 32, 60, 60, 60 seconds; the existing `MSWEA_MODEL_RETRY_STOP_AFTER_ATTEMPT` override remains supported. E2E repair and V4 inherit this exact loop. `configs/model/primary.yaml` declares `request_timeout_s: 600`; the main-study runner does not forward that limits field, and neither agent prompt config supplies a model request timeout. The pinned LiteLLM chat resolver independently defaults to 600 seconds, so the effective timeout is still 600 seconds. E2E preserves that default and the unchanged 120-second command / 1800-second repair-task ceilings. No timeout was increased. Details, including inner-client retry handling, are in [DECISIONS.md](DECISIONS.md).
+
+**Empty-patch fix.** V1 and `FullPolicyV141` / `v1.4.1-full` are unchanged. Zero-byte or parsed empty patches (including nonzero whitespace-only files) receive V2/V3/V4 absences with `EMPTY_PATCH` and `infrastructure: false`; no G1/container or paid V4 runtime starts, and V4 is `NOT_RUN`. V1 still FAILs and the decision is REJECT. A nonempty patch with zero selected tests receives V2 `NOT_AVAILABLE` / `nothing_to_check`, detail `no tests selected`, without an infrastructure flag; V3 and V4 continue. No selected-test skips are upgraded to PASS, and the Matplotlib result above remains unchanged. Guards, selection, policy, and billed-usage cost calculation are unchanged.
+
+**Validation.** The final full suite used the same copied `HF_HOME` and both offline flags as the preceding release: **1641 passed, 7 skipped, 6 failed, 17 errors in 69.54 seconds**. All 23 failed/error IDs and statuses match `/home/sankalp/projects/unit_baseline_7fefe1d/failing_ids.txt`: zero new failures/errors and no reference failures newly passing. The focused run passed **140 tests**. Logs and the ID comparison are in `runs/e2e_v1_4_2_checks/`. Mocked regressions exercise both providers and stages, success after a transient eleventh call through the real agent trajectory, ten exhausted attempts with the exact native wait schedule, retained conservative charges, auth/budget/client stops, frozen nonempty and genuinely empty working-tree diffs, failed diff extraction without an invented patch, V4 infrastructure attribution, empty-patch runtime suppression, and ten consecutive empty-patch tasks without a systemic stop. No real model calls or live container checks were launched for this release.
+
+The focused provider/E2E/UM run passes **140/140** tests in 11.69 seconds (`pytest.focused.final.out`). The final full-suite log is `pytest.full.final.out`, and `unit_comparison.json` records the exact reference-ID comparison. All 135 files hashed in the pilot folder, pilot log and shared ledger retain their original bytes (`evidence_before.json`).
+
+Fresh offline replay in `runs/e2e_v1_4_2_checks/offline` passes **A1 83/83 and A2 83/83**, with all four policies equal and zero health halts, after verifying the read-only seal's **1,799 files / 3,488,110,239 bytes**. The fresh A1/A2 outputs are byte-identical to the committed inputs used by the rerun A3: **14 ACCEPT / 67 FLAG / 2 REJECT**, zero differences and zero unattributed changes. `scripts/verify_e2e_v1_4_1.py` passes all registry, 75 frozen-artifact, A1/A2 and frozen A4 checks; registry and all recorded frozen check outputs remain unchanged. Logs are `offline.out`, `decisions.final.out` and `independent.out` under the same checks directory. Offline verifier import leaves LiteLLM uninitialized. All **135** pilot/log/ledger files retain their pre-change SHA-256 hashes. The original annotated tag object and c5b352c target are unchanged. No labels were read, no sealed Phase 4 file was written, and nothing was pushed.
+
+The release diff from `e2e-v1.4.1-frozen` contains only these twelve files:
+
+- `src/reliability/provider_errors.py`: shared retry classification and safe transient exception.
+- `src/reliability/paid_models.py`: DeepSeek retry routing and retained-bound accounting attribution.
+- `src/reliability/umgpt.py`: identical transient routing for UM.
+- `src/reliability/e2e_models.py`: infrastructure diff capture and V4 propagation.
+- `scripts/run_e2e.py`: preserve infrastructure receipts and captured patches.
+- `src/reliability/e2e_runner.py`: separate repair-infrastructure/no-patch completion lists.
+- `src/reliability/verifier/run_v1_4_1.py`: empty-patch/no-selection routing and V4 infrastructure attribution.
+- `tests/unit/test_e2e_v1_4_2.py`: mocked provider/trajectory/exhaustion/batch regressions.
+- `tests/unit/test_e2e_runtime.py`: task-spec empty patches, zero selection, V4 infrastructure regressions.
+- `reports/next_phases/e2e_v1_4_1/REPORT.md`: pilot findings and release validation.
+- `reports/next_phases/e2e_v1_4_1/DECISIONS.md`: retry/timeout evidence and implementation choices.
+- `reports/next_phases/e2e_v1_4_1/RUNBOOK.md`: v1.4.2 tag, new output folders, and no old-pilot resume.

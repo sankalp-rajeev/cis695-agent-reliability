@@ -212,9 +212,18 @@ def run_batch(instance_ids, output, header, agent_stage, verify_stage, *, ledger
         signal.signal(signal.SIGTERM, previous_termination)
         attempt.update(status=status, error=error, finished_utc=now())
         write(attempts_path, attempts)
+        agent_infrastructure, no_patch = [], []
+        for iid in instance_ids:
+            directory = output / 'tasks' / iid
+            receipt = directory / 'agent_absence.json'
+            if receipt.exists() and json.loads(receipt.read_text()).get('infrastructure'):
+                agent_infrastructure.append(iid)
+            elif (directory / 'patch.diff').exists() and not (directory / 'patch.diff').read_bytes().strip():
+                no_patch.append(iid)
         write(output / 'completion.json', {'status': status, 'completed_tasks': completed,
               'not_completed_tasks': [iid for iid in instance_ids if iid not in completed],
-              'current_task': current, 'error': error, 'skip_v4': header['skip_v4']})
+              'current_task': current, 'error': error, 'skip_v4': header['skip_v4'],
+              'agent_infrastructure_tasks': agent_infrastructure, 'no_patch_tasks': no_patch})
         write(output / 'seal.json', {'status': status, 'files_sha256': {
             str(p.relative_to(output)): sha(p) for p in sorted(output.rglob('*'))
             if p.is_file() and p.name != 'seal.json'}})

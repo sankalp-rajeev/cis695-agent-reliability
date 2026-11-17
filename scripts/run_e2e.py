@@ -24,6 +24,7 @@ from reliability.agent.freeze import freeze_patch
 from reliability.e2e_runner import git, run_batch, validate_mode
 from reliability.env import assert_clean_interpreter
 from reliability.provider_spend import ProviderLedger
+from reliability.provider_errors import ProviderTransientError
 from reliability.umgpt_spend import BudgetCap
 from reliability.verifier.admission_reference import JSONProjection
 from reliability.verifier.run_v1_4_1 import default_reproduction_setup, verify_task
@@ -174,6 +175,11 @@ def main(argv=None):
                     manifest_hash=header['manifest_sha256'], limits=limits, agent_task=load_agent_task(iid))
         except (SourceIntegrityError, BudgetCap):
             raise
+        except ProviderTransientError:
+            # PinnedBackend captured the current diff and infrastructure receipt
+            # before its container closed. Never replace it with an empty patch.
+            if not (directory / 'patch.diff').exists():
+                raise
         except Exception as exc:
             write(directory / 'agent_absence.json', {'reason': 'AGENT_EXCEPTION:' + type(exc).__name__})
             if not (directory / 'patch.diff').exists():

@@ -22,6 +22,7 @@ from minisweagent.models.utils.actions_toolcall import BASH_TOOL
 from openai import OpenAI
 
 from reliability.umgpt_spend import BudgetCap, SpendLedger
+from reliability.provider_errors import ProviderTransientError, provider_failure
 
 BASE = "https://api.toolkit.umgpt.umich.edu/v1"
 PRICES = {"gpt-4.1": (2.0, .5, 8.0), "gpt-4.1-mini": (.4, .1, 1.6),
@@ -48,15 +49,7 @@ def error_record(exc):
     if not body:
         body = getattr(exc, "body", None) or getattr(exc, "message", None) or str(exc)
     body = sanitize(body)[:8000]
-    if status in (401, 403):
-        termination = "AUTH_ERROR"
-    elif status == 402 or (status == 429 and any(
-        word in body.lower() for word in ("quota", "budget", "exceeded", "insufficient"))):
-        termination = "BUDGET_CAP"
-    elif status == 429:
-        termination = "RATE_LIMITED"
-    else:
-        termination = "API_ERROR"
+    termination, status = provider_failure(exc)
     return {"termination": termination, "classification": "infrastructure",
             "status_code": status, "response_body": body}
 
@@ -232,13 +225,13 @@ class UMModel(LitellmModel):
             if record["any_filtered"] or "content_filter" in record["finish_reasons"]:
                 record["termination"] = "CONTENT_FILTER"
             runtime.calls.append(record)
+            if record["termination"] == "TRANSIENT":
+                runtime.ledger.settle(call_id, bound, reservation_retained=True, error=record)
+                raise ProviderTransientError(type(exc).__name__, record["status_code"]) from None
             # Definite client rejections have no generation. Ambiguous transport
             # failures keep their reservation, so a restart cannot spend it twice.
             if record["status_code"] and 400 <= record["status_code"] < 500:
                 runtime.ledger.settle(call_id, 0.0, error=record)
-            if record["termination"] == "RATE_LIMITED":
-                raise litellm.RateLimitError(record["response_body"],
-                                            llm_provider="openai", model=cfg["model_id"]) from None
             runtime.halt = record
             raise UMInfrastructureError(record) from None
         try:

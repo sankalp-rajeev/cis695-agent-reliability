@@ -10,6 +10,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from reliability.umgpt_spend import BudgetCap
+from reliability.provider_errors import ProviderTransientError
 from reliability.agent.freeze import FrozenPatch, FrozenPatchError, read_patch, verify as verify_frozen_patch
 from reliability.verifier.archive_tree import ArchiveTree
 from reliability.verifier.container import ContainerRepoTree, ContainerTestExecutor
@@ -185,13 +186,21 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
         from dataclasses import asdict
         write(folder / 'selection.json', asdict(selection))
         stamps['selection_sha256'] = sha(folder / 'selection.json')
-    if task_spec is None:
+    empty_patch = not patch_text.strip() or (
+        integrity is not None and integrity.patch is not None and integrity.patch.is_empty)
+    if empty_patch:
+        signals[SignalKind.REGRESSION] = absence(SignalKind.REGRESSION, 'EMPTY_PATCH')
+        signals[SignalKind.STATIC] = absence(SignalKind.STATIC, 'EMPTY_PATCH')
+    elif task_spec is None:
         signals[SignalKind.REGRESSION] = absence(SignalKind.REGRESSION, 'NO_TASK_SPEC')
         signals[SignalKind.STATIC] = absence(SignalKind.STATIC, 'NO_TASK_SPEC')
     else:
         try:
             if selection is None:
                 signals[SignalKind.REGRESSION] = absence(SignalKind.REGRESSION, 'NO_SELECTION')
+            elif not selection.tests:
+                signals[SignalKind.REGRESSION] = SignalRecord.absent(
+                    SignalKind.REGRESSION, SignalAbsence.NOTHING_TO_CHECK, 'no tests selected')
             else:
                 with v2_deadline():
                     signals[SignalKind.REGRESSION] = (v2_runner or run_v2)(
@@ -218,7 +227,9 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
         except Exception as exc:
             signals[SignalKind.STATIC] = absence(SignalKind.STATIC, 'EXECUTOR_EXCEPTION:' + type(exc).__name__, infrastructure=True)
     budget_stop, stop_termination, paid_before_stop = False, 'BUDGET_CAP', 0
-    if skip_v4:
+    if empty_patch:
+        signals[SignalKind.REPRODUCTION] = absence(SignalKind.REPRODUCTION, 'EMPTY_PATCH')
+    elif skip_v4:
         signals[SignalKind.REPRODUCTION] = absence(SignalKind.REPRODUCTION, 'SKIP_V4_FOR_CHECK')
     elif v4_runner is None:
         signals[SignalKind.REPRODUCTION] = absence(SignalKind.REPRODUCTION, 'NO_V4_RUNTIME')
@@ -227,6 +238,9 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
             signals[SignalKind.REPRODUCTION] = v4_runner(instance_id, patch_text, signals[SignalKind.INTEGRITY])
         except SourceIntegrityError:
             raise
+        except ProviderTransientError as exc:
+            signals[SignalKind.REPRODUCTION] = absence(SignalKind.REPRODUCTION,
+                'V4_INFRA:' + exc.error_type, infrastructure=True)
         except BudgetCap as exc:
             budget_stop = True
             stop_termination = getattr(exc, 'termination', 'BUDGET_CAP')
@@ -252,7 +266,7 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
         archive_sha256=task_spec.source.archive_sha256 if task_spec else None,
         reproduction_generator=setup.identity(),
         provenance=provenance or {}, v4_run_status=('PARTIAL' if budget_stop and paid_before_stop else
-            'NOT_RUN' if skip_v4 or budget_stop or v4_runner is None else 'RAN'), **stamps)
+            'NOT_RUN' if empty_patch or skip_v4 or budget_stop or v4_runner is None else 'RAN'), **stamps)
     result.write(task_dir / 'verification_record.full-v1.4.1.json')
     if budget_stop:
         raise TaskBudgetStop(result, stop_termination)

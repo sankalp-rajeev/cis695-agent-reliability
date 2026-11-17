@@ -16,6 +16,7 @@ from minisweagent.models.litellm_model import LitellmModel
 from minisweagent.models.utils.actions_toolcall import BASH_TOOL
 
 from reliability.provider_spend import AuthStop
+from reliability.provider_errors import ProviderTransientError, provider_failure
 from reliability.umgpt import ACTIVE, Runtime
 from reliability.umgpt_spend import BudgetCap
 
@@ -54,7 +55,8 @@ def paid_stage(config, ledger, task, stage, cap):
                     raise BudgetCap('BUDGET_CAP')
                 raise ProviderStageError(runtime.halt['termination'])
         except BudgetCap as exc:
-            exc.paid_calls = sum(c.get('state') == 'reserved' or c.get('input_tokens') is not None
+            exc.paid_calls = sum(c.get('state') == 'reserved' or c.get('reservation_retained', False)
+                or c.get('input_tokens') is not None
                 for c in ledger.account_calls(ledger.snapshot())
                 if c['job'] == ledger.job and c['task'] == task and c['stage'] == stage)
             raise
@@ -103,10 +105,14 @@ class DeepSeekLedgerModel(LitellmModel):
         try:
             response = super()._query(messages, **kwargs)
         except Exception as exc:
-            code = getattr(exc, 'status_code', None)
-            message = str(exc).casefold()
-            budget = code == 402 or 'insufficient balance' in message or 'insufficient_balance' in message
-            auth = code in (401, 403)
+            failure, code = provider_failure(exc)
+            if failure == 'TRANSIENT':
+                # Finalize this attempt at its full bound so the ledger can
+                # reserve the retry without refunding potentially billed work.
+                runtime.ledger.settle(call_id, bound, reservation_retained=True,
+                    error_type=type(exc).__name__, status_code=code)
+                raise ProviderTransientError(type(exc).__name__, code) from None
+            budget, auth = failure == 'BUDGET_CAP', failure == 'AUTH_ERROR'
             if code is not None and 400 <= code < 500:
                 runtime.ledger.settle(call_id, 0.0, error_type=type(exc).__name__, status_code=code)
             runtime.halt = {'termination': 'BUDGET_CAP' if budget else 'AUTH_ERROR' if auth else 'API_ERROR',

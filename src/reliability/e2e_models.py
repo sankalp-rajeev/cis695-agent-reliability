@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import time
 from contextlib import contextmanager
 from dataclasses import dataclass
@@ -12,7 +13,9 @@ import yaml
 from reliability.agent.runner import (AgentOutcome, MiniSweAgentBackend, _commands_from,
     _serialisable, _split_submission, _step_limit_reached, _sum_tokens, _termination_for)
 from reliability.agent.records import Termination
+from reliability.agent.freeze import freeze_patch
 from reliability.paid_models import model_options, paid_stage
+from reliability.provider_errors import ProviderTransientError
 from reliability.umgpt import ACTIVE
 from reliability.verifier.guarded_v2 import FrozenContainer
 from reliability.verifier.record import SignalAbsence, SignalKind, SignalRecord
@@ -90,6 +93,21 @@ class PinnedBackend(MiniSweAgentBackend):
                 status, submission = result.get('exit_status', ''), result.get('submission', '') or ''
             except SourceIntegrityError:
                 raise
+            except ProviderTransientError as exc:
+                write(workdir / 'agent_absence.json', {
+                    'reason': 'AGENT_INFRA:' + exc.error_type, 'infrastructure': True})
+                (workdir / 'trajectory.jsonl').write_text(''.join(
+                    json.dumps(_serialisable(m)) + '\n' for m in agent.messages))
+                # The submit prompt extracts a git diff from /testbed. On an
+                # exhausted query there may be no patch.txt (or a stale one),
+                # so extract the current tracked working-tree diff directly.
+                diff = env.execute({'command': 'git diff --'})
+                if diff['returncode'] != 0:
+                    # Leave the task unfinished; a failed extraction is never
+                    # evidence that the working tree has no changes.
+                    raise
+                freeze_patch(workdir / 'patch.diff', diff['output'].encode('utf-8'))
+                raise
             except Exception as exc:
                 status, submission = type(exc).__name__, ''
             claim, patch = _split_submission(submission)
@@ -124,6 +142,10 @@ class PinnedGenerator:
             try:
                 termination = agent.run(issue_text).get('exit_status', '') or 'unknown'
             except SourceIntegrityError:
+                raise
+            except ProviderTransientError:
+                # The model query already exhausted the scaffold's retries.
+                # Do not screen an incomplete suite as generated evidence.
                 raise
             except Exception as exc:
                 termination = type(exc).__name__
