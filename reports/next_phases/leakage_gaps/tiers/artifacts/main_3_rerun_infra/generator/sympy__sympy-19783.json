@@ -1,0 +1,391 @@
+{
+  "archive": {
+    "base_commit": "586a43201d0357e92e8c93548d69a9f42bf548f4",
+    "instance_id": "sympy__sympy-19783",
+    "path": "/home/sankalp/cg_repos/task_archives/sympy__sympy-19783.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "b5463b4f43e379ad1eca071f4a77a8b5e952618ef3f8dc1b3d413be10a41cfd3"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 38,
+      "occurrences": {
+        "model_output": {
+          "length": 41,
+          "line": 81,
+          "offset": 445,
+          "text_sha256": "a76e6d5d836dc1426e84a844460323c446b0cefeedca64811d49457990bbcd66",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "113e849599e329fab71359fa803cdebc787f7645832e59bafbcfb5a0adb4bf7c",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "test_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 65,
+      "occurrences": {
+        "model_output": {
+          "length": 69,
+          "line": 25,
+          "offset": 358,
+          "text_sha256": "bf35098e34e4db24faba98ceee2e3d2b3396ea446a509a85a3ad22bbed4293f7",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "c9f88d2bc0f91052c881e02696b65668a1bbb62c72cd8a8845d9e50aa71c7cc0",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "test_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 28,
+      "occurrences": {
+        "model_output": {
+          "length": 33,
+          "line": 100,
+          "offset": 2213,
+          "text_sha256": "5d8ffbdf2d32c2758ca0dca03133e252fba8c5e6d774d5823781905fd3a63528",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "53ac94e01726f0f3f7d0651c08f5632c5dd3e9fd725d2582e228fabfbde7c551",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "test_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 28,
+      "occurrences": {
+        "model_output": {
+          "length": 33,
+          "line": 36,
+          "offset": 3990,
+          "text_sha256": "b530c0ce3458e2a5fb67a1ee03bff46765c34b21b6e0eb7013e188825defdd9e",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "945de606db7ab6788bb556e23b9f034f43151b8b2ec647063cff1f1edb4ee0ba",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "category": "history",
+      "command_line": 19,
+      "command_sha256": "f19904566a9edde92833172ba063152405d7ec3ab67bbf0d5878aa454b6df250",
+      "raw_finding_index": 13,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 20
+    },
+    {
+      "category": "history",
+      "command_line": 57,
+      "command_sha256": "dc8b444d5c6e40fed6563e69207e26902de06123473994c2a87e9cb367389178",
+      "raw_finding_index": 15,
+      "rule": "history-git-reflog",
+      "setup_only": true,
+      "tool_line": 58
+    },
+    {
+      "category": "history",
+      "command_line": 59,
+      "command_sha256": "e17e175298a06d5b4ad1a45ecdcbaebba8f1859b801a5743a1eb46e8d1097fc5",
+      "raw_finding_index": 17,
+      "rule": "history-git-rev-list",
+      "setup_only": false,
+      "tool_line": 61
+    },
+    {
+      "category": "history",
+      "command_line": 62,
+      "command_sha256": "3f3cf74039bde748bb6151c7cd65013f47d8a74d98c45bcda107212ac60be103",
+      "raw_finding_index": 18,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 64
+    },
+    {
+      "category": "history",
+      "command_line": 65,
+      "command_sha256": "d55db70c6dd12ba1da0267e47b2a5ae2ead0f508e81ffb013e8ab3c670fbf6b6",
+      "raw_finding_index": 19,
+      "rule": "history-git-show",
+      "setup_only": false,
+      "tool_line": 66
+    },
+    {
+      "category": "history",
+      "command_line": 67,
+      "command_sha256": "130d1124f63eeb668b3bc92e7b88fa259628afe68fd0eebe234e6df1382291be",
+      "raw_finding_index": 20,
+      "rule": "history-git-show",
+      "setup_only": false,
+      "tool_line": 68
+    },
+    {
+      "category": "history",
+      "command_line": 73,
+      "command_sha256": "683c8f16a56103d588ec1293bfaa5443080a5653b41862d245e0f0feb3fc712a",
+      "raw_finding_index": 21,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 74
+    },
+    {
+      "category": "history",
+      "command_line": 86,
+      "command_sha256": "a2ec0b68e4df2b8ce2baaafeefbd241d0cfe12f3632d11f482a265da81c857cb",
+      "raw_finding_index": 23,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 87
+    },
+    {
+      "category": "history",
+      "command_line": 88,
+      "command_sha256": "3d053abc62c4433dd611eac5aa5dd31dad61117ee8c8c08a0da46cf9c3452559",
+      "raw_finding_index": 24,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 89
+    },
+    {
+      "category": "history",
+      "command_line": 88,
+      "command_sha256": "3d053abc62c4433dd611eac5aa5dd31dad61117ee8c8c08a0da46cf9c3452559",
+      "raw_finding_index": 25,
+      "rule": "history-git-rev-list",
+      "setup_only": false,
+      "tool_line": 89
+    },
+    {
+      "category": "history",
+      "command_line": 90,
+      "command_sha256": "8f32b84964d175e1c1a7a94e77b48f05a076f72f10fdb6fcc4c1bf0e933d9f85",
+      "raw_finding_index": 26,
+      "rule": "history-git-show",
+      "setup_only": false,
+      "tool_line": 91
+    },
+    {
+      "category": "history",
+      "command_line": 92,
+      "command_sha256": "748bb4db946160056d19d63e530d5a10aee18db8ce541181c2e8cbfcd08dcbef",
+      "raw_finding_index": 27,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 94
+    },
+    {
+      "category": "awareness",
+      "command_line": 95,
+      "command_sha256": "8c3bc13f4d2f2df2688b0c916ef5b95edd005b44d68ae7fd0aa9c4931d80facc",
+      "raw_finding_index": 28,
+      "rule": "fetch-pip-download",
+      "setup_only": false,
+      "tool_line": 97
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 0,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 1,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 2,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 3,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 4,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 5,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 6,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 7,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 8,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 9,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 10,
+      "rule": "legacy"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "sympy__sympy-19783",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "916079ecff858f617845c1fb7b025905b863320d092cd0a65064ad0e3e659ee0",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 29,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 30,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 31,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 32,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 33,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 34,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 35,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "2ec6285fd8634c33322c13f5236de47798dbbe7a7941f1c60be5044309d00096",
+  "raw_path": "tasks/main_3_rerun_infra/generator/sympy__sympy-19783.json",
+  "reasons": [
+    "answer-model-output-first",
+    "awareness-no-distinctive-tool-answer",
+    "harmless-setup-history",
+    "history-attempt-no-distinctive-answer"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "fetch-pip-download",
+    "history-git-log",
+    "history-git-reflog",
+    "history-git-rev-list",
+    "history-git-show",
+    "history-newer-commit",
+    "legacy",
+    "test-name-present-at-base"
+  ],
+  "run": "main_3_rerun_infra",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_3_rerun_infra/_reproduction_cache/sympy__sympy-19783",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "fc1792df7ca6f1f735589f3945d363ae6538218d55fb262380ad62903ed193c9"
+  },
+  "underlying_tier": "T3"
+}

@@ -1,0 +1,113 @@
+{
+  "archive": {
+    "base_commit": "5250b2442501e6c671c6b380536f1edb352602d1",
+    "instance_id": "astropy__astropy-13977",
+    "path": "/home/sankalp/cg_repos/task_archives/astropy__astropy-13977.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "1f6604aec29c5bb012035f5b5778602eb4a3d645a43a5bda607ba6f4e2946248"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "category": "history",
+      "command_line": 19,
+      "command_sha256": "dbb9922c35426e80890d3ba5e3187e52c2a8a7dce79f6960de0e60554b67acbf",
+      "raw_finding_index": 1,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 20
+    },
+    {
+      "category": "history",
+      "command_line": 23,
+      "command_sha256": "12c00bdb2d0976faca46e70fa828d36aafa50f4838c04479d3db7752a7f13a3d",
+      "raw_finding_index": 3,
+      "rule": "history-git-fsck",
+      "setup_only": false,
+      "tool_line": 24
+    },
+    {
+      "category": "awareness",
+      "command_line": 53,
+      "command_sha256": "f3e52aa133959f19f0f4bd2c667aacb6ec3e58da85dd6f52b1a33e5d6e4bbb50",
+      "raw_finding_index": 4,
+      "rule": "fetch-curl",
+      "setup_only": false,
+      "tool_line": 54
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 0,
+      "rule": "legacy"
+    }
+  ],
+  "first_seen_in": [],
+  "history_gold": [],
+  "instance_id": "astropy__astropy-13977",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "158e6421f872f54c0af69753f48bb6315e92d365061cf86bd7146f3e9e1354ad",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 5,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 6,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 7,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "d8498d305b6cb4134046ac8a99c80f0ebd7b82378164f97cee7c7c3ce545d151",
+  "raw_path": "tasks/main_50_b/generator/astropy__astropy-13977.json",
+  "reasons": [
+    "awareness-no-distinctive-tool-answer",
+    "harmless-setup-history",
+    "history-attempt-no-distinctive-answer"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "fetch-curl",
+    "history-git-fsck",
+    "history-git-log",
+    "history-newer-commit",
+    "legacy",
+    "test-name-present-at-base"
+  ],
+  "run": "main_50_b",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/astropy__astropy-13977",
+  "tier": "T2",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "8c98c3d9c4de84f43baf7d1e9a92bb7cb7e452fc9976c651d908d5305167b614"
+  },
+  "underlying_tier": "T2"
+}

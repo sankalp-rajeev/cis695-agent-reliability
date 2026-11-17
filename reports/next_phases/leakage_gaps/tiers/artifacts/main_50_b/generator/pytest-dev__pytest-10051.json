@@ -1,0 +1,291 @@
+{
+  "archive": {
+    "base_commit": "aa55975c7d3f6c9f6d7f68accc41bb7cadf0eb9a",
+    "instance_id": "pytest-dev__pytest-10051",
+    "path": "/home/sankalp/cg_repos/task_archives/pytest-dev__pytest-10051.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "test_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 36,
+      "occurrences": {
+        "model_output": {
+          "length": 39,
+          "line": 55,
+          "offset": 10978,
+          "text_sha256": "7930083dc3280f70309adc25c10d587d628ff09706877582dcfbc5814c2b6f66",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "04c37d99910f4197ea8520f2cd80b3071886f1bdf1e72ed5b8cf346b3a5f32b7",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "category": "history",
+      "command_line": 17,
+      "command_sha256": "013118ab5ef3743b8bdea8b1533c3f31adeed554d07b0de1407dc2397cefd5be",
+      "raw_finding_index": 5,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 18
+    },
+    {
+      "category": "history",
+      "command_line": 34,
+      "command_sha256": "8ff14d801da6530c6ce76457b7c4372c87a489603d1df53bfa36ff53f453f6df",
+      "raw_finding_index": 7,
+      "rule": "history-git-fsck",
+      "setup_only": false,
+      "tool_line": 36
+    },
+    {
+      "category": "history",
+      "command_line": 34,
+      "command_sha256": "8ff14d801da6530c6ce76457b7c4372c87a489603d1df53bfa36ff53f453f6df",
+      "raw_finding_index": 8,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 36
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 0,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 1,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 2,
+      "rule": "legacy"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "pytest-dev__pytest-10051",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "196d9ddefdb59e0963ee07397f8e34f2b23709c72fb2d263ae7d98bd3ff9c291",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 9,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 10,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 11,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 12,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 13,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 14,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 15,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 16,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 17,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 18,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 19,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 20,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 21,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 22,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 23,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "f70eeb33536b49cc47dadde84fc7ea9565d4252043a5820ff201539570ad5d27",
+  "raw_path": "tasks/main_50_b/generator/pytest-dev__pytest-10051.json",
+  "reasons": [
+    "answer-model-output-first",
+    "awareness-no-distinctive-tool-answer",
+    "harmless-setup-history",
+    "history-attempt-no-distinctive-answer"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "history-git-fsck",
+    "history-git-log",
+    "history-newer-commit",
+    "legacy",
+    "test-name-present-at-base"
+  ],
+  "run": "main_50_b",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pytest-dev__pytest-10051",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "cbd3c3c398d3d5a5738a08835cb16f18ebbb5d80d0559d9066fc64934c505259"
+  },
+  "underlying_tier": "T3"
+}

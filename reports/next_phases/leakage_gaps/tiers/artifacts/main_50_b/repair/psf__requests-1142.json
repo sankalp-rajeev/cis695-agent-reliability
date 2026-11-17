@@ -1,0 +1,338 @@
+{
+  "archive": {
+    "base_commit": "22623bd8c265b78b161542663ee980738441c307",
+    "instance_id": "psf__requests-1142",
+    "path": "/home/sankalp/projects/wt-leakage/runs/leakage_gaps/source_archives/psf__requests-1142.tar",
+    "pin_origin": "image-pinned-base-git-archive",
+    "sha256": "49bb5f8ec7e0bd76323537a0a3ea503c11ba37c72f630a3b37bd910d88bc0b18"
+  },
+  "comparable": false,
+  "excluded": true,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "test_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 32,
+      "occurrences": {
+        "model_output": {
+          "length": 33,
+          "line": 91,
+          "offset": 5427,
+          "text_sha256": "6d0d57696fa5d4282bbe4c6100029b165b76d8181a18c7ce88976f640b6246eb",
+          "trajectory": "trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "d0f103bb7016c0bf5540f3090541b5b0d28d0e317d56347f6537db5cf59ed110",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "base_occurrences": 0,
+      "category": "answer",
+      "defined_at_first_mention": false,
+      "definition_line": null,
+      "field": "hidden_test_name",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "occurrences": {
+        "model_output": {
+          "length": 22,
+          "line": 91,
+          "offset": 5431,
+          "text_sha256": "6d0d57696fa5d4282bbe4c6100029b165b76d8181a18c7ce88976f640b6246eb",
+          "trajectory": "trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "f359acfa90f3fa0a2474089a939f43e5b5647a324ccb1badfc09918790e07757",
+      "rule": "hidden-name-first-occurrence"
+    },
+    {
+      "category": "history",
+      "command_line": 21,
+      "command_sha256": "a9d5b2d8897ee1ceee9d030622de4b1d5bb4c4a8bfc07b6ff3c2be616c44a39b",
+      "raw_finding_index": 17,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 23
+    },
+    {
+      "category": "awareness",
+      "command_line": 24,
+      "command_sha256": "0f662e226151701b77d0dc34bdd8409287c7667a57d0bba8621d9651765f648b",
+      "raw_finding_index": 19,
+      "rule": "fetch-pip-download",
+      "setup_only": false,
+      "tool_line": 25
+    },
+    {
+      "category": "history",
+      "command_line": 41,
+      "command_sha256": "da62a1cbe4d1c480e894b851c2cffeaa2145134137abb966ef51ff201a118577",
+      "raw_finding_index": 20,
+      "rule": "history-git-show",
+      "setup_only": false,
+      "tool_line": 42
+    },
+    {
+      "category": "history",
+      "command_line": 43,
+      "command_sha256": "45f959cddcd63a5ee1435eb02b7221e4113df8b34599df6fddf5fa08eae19ede",
+      "raw_finding_index": 21,
+      "rule": "history-git-fsck",
+      "setup_only": true,
+      "tool_line": 44
+    },
+    {
+      "category": "history",
+      "command_line": 43,
+      "command_sha256": "45f959cddcd63a5ee1435eb02b7221e4113df8b34599df6fddf5fa08eae19ede",
+      "raw_finding_index": 22,
+      "rule": "history-git-reflog",
+      "setup_only": true,
+      "tool_line": 44
+    },
+    {
+      "category": "history",
+      "command_line": 46,
+      "command_sha256": "03e50a0196f2d5ba1d9a87aa1284ca7118d9f85b05954fe4e8f9d2d9b2e9539f",
+      "raw_finding_index": 25,
+      "rule": "history-git-show",
+      "setup_only": false,
+      "tool_line": 47
+    },
+    {
+      "category": "history",
+      "command_line": 48,
+      "command_sha256": "dd1f9f4abf25c3e2b9ea45c5c3f1748ba8ceaa519e5c54dc71d2f85456481734",
+      "raw_finding_index": 26,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 50
+    },
+    {
+      "category": "history",
+      "command_line": 51,
+      "command_sha256": "ac7b5e5e9536920ad81e04b47c0097f0b1bda9f03ac97ce648fc6f1542d73068",
+      "raw_finding_index": 27,
+      "rule": "history-git-show",
+      "setup_only": false,
+      "tool_line": 52
+    },
+    {
+      "category": "history",
+      "command_line": 82,
+      "command_sha256": "6bf078be7a53f7c00b87e61ade4be7df5067d01e2be7c9a176802d57d2cc2cb0",
+      "raw_finding_index": 28,
+      "rule": "history-git-show",
+      "setup_only": false,
+      "tool_line": 84
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 0,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 1,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 2,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 3,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 4,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 5,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 6,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 7,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 8,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 9,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 10,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 11,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 12,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 13,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 14,
+      "rule": "legacy"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "psf__requests-1142",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "d748e7e1f77f4b12af8b76f6d6513dcece1d730121b9130b72b824b03dcb0d1c",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": true,
+      "finding_index": 29,
+      "first_seen_in": "model_output",
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [
+        "f359acfa90f3fa0a2474089a939f43e5b5647a324ccb1badfc09918790e07757"
+      ],
+      "rule": "test-name-absent-before-definition",
+      "rule_interpretation": "chronology-and-distinctiveness",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 30,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 31,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 32,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 33,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 34,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 35,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "legacy-review-retained",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "5dd65f015c6dc387d9c0ee5226897363105f2f821dbb50162914b903d3090da2",
+  "raw_path": "tasks/main_50_b/repair/psf__requests-1142.json",
+  "reasons": [
+    "answer-model-output-first",
+    "awareness-no-distinctive-tool-answer",
+    "harmless-setup-history",
+    "history-attempt-no-distinctive-answer"
+  ],
+  "role": "repair",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "fetch-pip-download",
+    "hidden-name-first-occurrence",
+    "history-git-fsck",
+    "history-git-log",
+    "history-git-reflog",
+    "history-git-show",
+    "history-newer-commit",
+    "legacy",
+    "legacy-review-retained",
+    "test-name-absent-before-definition",
+    "test-name-present-at-base"
+  ],
+  "run": "main_50_b",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/psf__requests-1142",
+  "tier": "Excluded",
+  "trajectory_sha256": {
+    "trajectory.jsonl": "c84b7a1d23382a5712ecebcdee3acaa21d2a0be166ee1bdfa846bf3829eaba89"
+  },
+  "underlying_tier": "T3"
+}

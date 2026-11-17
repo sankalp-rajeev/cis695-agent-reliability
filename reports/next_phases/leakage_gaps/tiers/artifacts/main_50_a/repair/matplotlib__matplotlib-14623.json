@@ -1,0 +1,286 @@
+{
+  "archive": {
+    "base_commit": "d65c9ca20ddf81ef91199e6d819f9d3506ef477c",
+    "instance_id": "matplotlib__matplotlib-14623",
+    "path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-14623.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "32d9e0ee89a2638b07416ab4a7cefe86bc9c285bba77849ab6e292bef507e87c"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [
+        "patch.diff",
+        "repair_record.json",
+        "submission_raw.txt"
+      ],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": false,
+      "guard_rules": [
+        "guard-short-content"
+      ],
+      "nonwhitespace_length": 21,
+      "occurrences": {
+        "model_output": {
+          "length": 25,
+          "line": 22,
+          "offset": 7577,
+          "text_sha256": "7af80098d207f91f03ca48670b3a881b17cee5c7b2c684e895a77fd6f7376617",
+          "trajectory": "trajectory.jsonl"
+        },
+        "tool_output": {
+          "length": 25,
+          "line": 85,
+          "offset": 795,
+          "text_sha256": "6c2e97a20d5d2f6a8d2b0dc76d9036c0ac8fdf09ca4e8d461c03e171c358c05d",
+          "trajectory": "trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "c6e603ca4fad9a7f6e39ea202dd6784c866b78e4d1f02a92d7e211f46e29c37e",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "category": "awareness",
+      "command_line": 41,
+      "command_sha256": "e80ad2ec093ad05effff92d756c41321124e578246702dd11d6cb0de21b9a716",
+      "raw_finding_index": 7,
+      "rule": "fetch-pip-download",
+      "setup_only": false,
+      "tool_line": 42
+    },
+    {
+      "category": "history",
+      "command_line": 41,
+      "command_sha256": "013118ab5ef3743b8bdea8b1533c3f31adeed554d07b0de1407dc2397cefd5be",
+      "raw_finding_index": 8,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 43
+    },
+    {
+      "category": "history",
+      "command_line": 72,
+      "command_sha256": "9ba15b7b9a029c6530f55566fcf22e99b10c577efed6a667e447b58321a53acf",
+      "raw_finding_index": 10,
+      "rule": "history-git-show",
+      "setup_only": true,
+      "tool_line": 74
+    }
+  ],
+  "first_seen_in": [],
+  "history_gold": [],
+  "instance_id": "matplotlib__matplotlib-14623",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "8b83d2ce2f0b4191609aa047c9dd1a77411af12e8beff79825a26c6e959a6871",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 0,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 1,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 2,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 3,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 4,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 5,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 6,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 12,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 13,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 14,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 15,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 16,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 17,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 18,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 19,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "2c9072d999309334efe3595631deb71f91d75ff39b69f823cafe3bfcf4c75a00",
+  "raw_path": "tasks/main_50_a/repair/matplotlib__matplotlib-14623.json",
+  "reasons": [
+    "awareness-no-distinctive-tool-answer",
+    "guard-short-content",
+    "harmless-setup-history"
+  ],
+  "role": "repair",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "fetch-pip-download",
+    "history-git-log",
+    "history-git-show",
+    "history-newer-commit",
+    "test-name-present-at-base"
+  ],
+  "run": "main_50_a",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/matplotlib__matplotlib-14623",
+  "tier": "T2",
+  "trajectory_sha256": {
+    "trajectory.jsonl": "72a3469553b50b7d8eba66176417900466c6e23a05e3acb0a7d98e4bdb2bdb83"
+  },
+  "underlying_tier": "T2"
+}

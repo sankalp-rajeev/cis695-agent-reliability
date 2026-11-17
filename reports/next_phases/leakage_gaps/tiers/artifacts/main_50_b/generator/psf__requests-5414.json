@@ -1,0 +1,182 @@
+{
+  "archive": {
+    "base_commit": "39d0fdd9096f7dceccbc8f82e1eda7dd64717a8e",
+    "instance_id": "psf__requests-5414",
+    "path": "/home/sankalp/projects/wt-leakage/runs/leakage_gaps/source_archives/psf__requests-5414.tar",
+    "pin_origin": "image-pinned-base-git-archive",
+    "sha256": "e3a5af0915ed9b402b5cc07a397e32c7654fc80f7896d90e8d4821a833936e85"
+  },
+  "comparable": false,
+  "excluded": true,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 33,
+      "occurrences": {
+        "model_output": {
+          "length": 35,
+          "line": 55,
+          "offset": 3007,
+          "text_sha256": "66b56f83213b378f3c456e82935c1bbf3316130d98ca062ff4e1a4c2176c49a2",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "3203c1c3971c424b4ab378205da289e291f9288f20732fe5544dc678b9312b6f",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "category": "awareness",
+      "command_line": 18,
+      "command_sha256": "a4bd37ce6202d6c2d79402b7353cc390585bf3f4500585fc0ab7691333d9bfef",
+      "raw_finding_index": 1,
+      "rule": "fetch-pip-download",
+      "setup_only": false,
+      "tool_line": 19
+    },
+    {
+      "category": "history",
+      "command_line": 18,
+      "command_sha256": "a4bd37ce6202d6c2d79402b7353cc390585bf3f4500585fc0ab7691333d9bfef",
+      "raw_finding_index": 2,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 19
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "psf__requests-5414",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "880161c5520d03287043dfb903e0951cc61029de603719b8cfb2b143e1420fcd",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 4,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 5,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 6,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 7,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 8,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 9,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 10,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 11,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "49a2ecbbb44c08505ff8a7f140da238f02589f447c55f510d094e390a0629945",
+  "raw_path": "tasks/main_50_b/generator/psf__requests-5414.json",
+  "reasons": [
+    "answer-model-output-first",
+    "awareness-no-distinctive-tool-answer",
+    "harmless-setup-history"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "fetch-pip-download",
+    "history-git-log",
+    "history-newer-commit",
+    "legacy",
+    "test-name-present-at-base"
+  ],
+  "run": "main_50_b",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/psf__requests-5414",
+  "tier": "Excluded",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "8c0ecaadca31d4c73866e684b80b3f89a9e870df6365f287e84e232763ead326"
+  },
+  "underlying_tier": "T3"
+}

@@ -1,0 +1,114 @@
+{
+  "archive": {
+    "base_commit": "54cab15bdacfaa05a88fbc5502a5b322d99f148e",
+    "instance_id": "mwaskom__seaborn-3069",
+    "path": "/home/sankalp/cg_repos/task_archives/mwaskom__seaborn-3069.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "c7ea642156e5e339d7a3cf4bdf1f712ad4dcdfdfbe523277a364afc981b005ca"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 49,
+      "occurrences": {
+        "model_output": {
+          "length": 51,
+          "line": 29,
+          "offset": 1342,
+          "text_sha256": "5a7f35d82335613537ea27f8f7e171a604e7202c13e494968705ba70d1071aa7",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "7892ee0218b3ed2f71c766603cfcdc1cba55a0086f40577e3ee1b3f2eeb59539",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "category": "history",
+      "command_line": 27,
+      "command_sha256": "489cfc30a82b971fb9d29231c53d8edc66d0635f3abd561100c32a7f7a2623cd",
+      "raw_finding_index": 2,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 28
+    },
+    {
+      "category": "history",
+      "command_line": 31,
+      "command_sha256": "2b69d8d7b9cc8ccc1b6f015f12d4dbb7cb8188937b22fde720d6e4c9360106ae",
+      "raw_finding_index": 4,
+      "rule": "history-git-fsck",
+      "setup_only": false,
+      "tool_line": 32
+    },
+    {
+      "category": "history",
+      "command_line": 73,
+      "command_sha256": "fbf1b5957f62b25e83ecc48bf210e605c47f1be9e783b2fd7ae1e237db649f0e",
+      "raw_finding_index": 5,
+      "rule": "history-git-diff",
+      "setup_only": true,
+      "tool_line": 74
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 0,
+      "rule": "legacy"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "mwaskom__seaborn-3069",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "93a3310cb50095de67e25bf5237d1f7019764e2635785ffba649c0b388b8cd70",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 7,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "3db7106e3d46258278d62442592213ffa7f453d6ae9ef155eecb3cefe8b84635",
+  "raw_path": "tasks/main_50_b/generator/mwaskom__seaborn-3069.json",
+  "reasons": [
+    "answer-model-output-first",
+    "awareness-no-distinctive-tool-answer",
+    "harmless-setup-history",
+    "history-attempt-no-distinctive-answer"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "history-git-diff",
+    "history-git-fsck",
+    "history-git-log",
+    "history-newer-commit",
+    "legacy",
+    "test-name-present-at-base"
+  ],
+  "run": "main_50_b",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/mwaskom__seaborn-3069",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "2186f782c7b7ca9fe861cb25c89be0a0fd8ef28e46b1e9503b73617f4c5e6694"
+  },
+  "underlying_tier": "T3"
+}

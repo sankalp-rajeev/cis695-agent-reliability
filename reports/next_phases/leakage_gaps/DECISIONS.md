@@ -67,3 +67,14 @@
   access is restricted to explicit allowed paths.
 - The reusable arm audit has no model or Docker calls. Only synthetic folders
   are used for its validation in this session. No push is authorized.
+- Final interpretation: highest-tier lists have 62 T3 and two T4 tasks; 60/83
+  comparable tasks are T3/T4. The T4 tasks are the two historical Matplotlib
+  cache-read cases. The Django history match is model-first working-tree content;
+  source commit is null, with the pinned base hash recorded only as identity.
+- Content guard removes 24 probe matches and three raw occurrences. A fourth
+  raw content occurrence is a match to JSON escaping rather than decoded text.
+  Cache reclassification covers all 40 raw flags and never upgrades an access
+  to T4 without qualifying tool-first answer content.
+- Validation: 24 new synthetic tests, 167 focused audit passes, full-suite
+  1,566 passed / 7 skipped / 6 failed / 17 errors. Exact failed/error IDs match
+  the reference. Independent tier recomputation and chronological receipts pass.

@@ -1,0 +1,157 @@
+{
+  "archive": {
+    "base_commit": "22623bd8c265b78b161542663ee980738441c307",
+    "instance_id": "psf__requests-1142",
+    "path": "/home/sankalp/projects/wt-leakage/runs/leakage_gaps/source_archives/psf__requests-1142.tar",
+    "pin_origin": "image-pinned-base-git-archive",
+    "sha256": "49bb5f8ec7e0bd76323537a0a3ea503c11ba37c72f630a3b37bd910d88bc0b18"
+  },
+  "comparable": false,
+  "excluded": true,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 35,
+      "occurrences": {
+        "model_output": {
+          "length": 40,
+          "line": 51,
+          "offset": 3234,
+          "text_sha256": "3ff6cee340d5b487d59e8f47f9ec378bed7eed19e6282f953f86eb07acb461ae",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "1dc381c3a5cf06da535611300241aa3caaab7cbd0d4e3a8ed7e6564603ce9652",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "category": "history",
+      "command_line": 13,
+      "command_sha256": "0655b6af47ae6b4ceae05782ad4c4f38058640e3a46c4557acc70020d9ebf6b7",
+      "raw_finding_index": 3,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 14
+    },
+    {
+      "category": "history",
+      "command_line": 15,
+      "command_sha256": "a3bcc5f16f4b6f9e26ca1017d8e09765846b4fa4e9cf3e0308019e476a94f420",
+      "raw_finding_index": 5,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 16
+    },
+    {
+      "category": "history",
+      "command_line": 17,
+      "command_sha256": "465081e1800fdb8c352159bb20875ffcc840f8eb84111d223056020dbdee3166",
+      "raw_finding_index": 6,
+      "rule": "history-git-show",
+      "setup_only": false,
+      "tool_line": 18
+    },
+    {
+      "category": "history",
+      "command_line": 27,
+      "command_sha256": "64e3d87c5c9b32dcae3e2e619ba54c8ffd75d54e01e513d3faf861cb3cfe12d1",
+      "raw_finding_index": 7,
+      "rule": "history-git-fsck",
+      "setup_only": true,
+      "tool_line": 28
+    },
+    {
+      "category": "history",
+      "command_line": 27,
+      "command_sha256": "64e3d87c5c9b32dcae3e2e619ba54c8ffd75d54e01e513d3faf861cb3cfe12d1",
+      "raw_finding_index": 8,
+      "rule": "history-git-reflog",
+      "setup_only": true,
+      "tool_line": 28
+    },
+    {
+      "category": "history",
+      "command_line": 35,
+      "command_sha256": "a6c65c4d541cbb1a514f0a11d6fdd414216bd2daeea01b70d198576a48de8c72",
+      "raw_finding_index": 11,
+      "rule": "history-git-diff",
+      "setup_only": false,
+      "tool_line": 36
+    },
+    {
+      "category": "history",
+      "command_line": 67,
+      "command_sha256": "6ec805bd548f58705fd30ac3586c4d9bd2a42f673efafface2dea313f480dc2b",
+      "raw_finding_index": 12,
+      "rule": "history-git-show",
+      "setup_only": false,
+      "tool_line": 68
+    },
+    {
+      "category": "history",
+      "command_line": 71,
+      "command_sha256": "fa19dc08477f3402770db8aaeb29db80dab06d9a2022322aefe6ec6b007b654d",
+      "raw_finding_index": 13,
+      "rule": "history-git-cat-file",
+      "setup_only": false,
+      "tool_line": 72
+    },
+    {
+      "category": "history",
+      "command_line": 73,
+      "command_sha256": "3d3b1d2e0e44a923c292e74220d25f2fb8db9a1bf63c9c53083169cfdcaa421c",
+      "raw_finding_index": 14,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 74
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 0,
+      "rule": "legacy"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "psf__requests-1142",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "d6bf0a9c484ecdd9fa9401a84d94b7986f072a0cf93fc7a0f8cbb245b77ff1da",
+  "raw_finding_interpretations": [],
+  "raw_findings_sha256": "1fec26cee6b3242c8573ad886a606dc51645e446e5d2315ede4b6ec6dcb37e47",
+  "raw_path": "tasks/main_50_b/generator/psf__requests-1142.json",
+  "reasons": [
+    "answer-model-output-first",
+    "awareness-no-distinctive-tool-answer",
+    "harmless-setup-history",
+    "history-attempt-no-distinctive-answer"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "history-git-cat-file",
+    "history-git-diff",
+    "history-git-fsck",
+    "history-git-log",
+    "history-git-reflog",
+    "history-git-show",
+    "history-newer-commit",
+    "legacy"
+  ],
+  "run": "main_50_b",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/psf__requests-1142",
+  "tier": "Excluded",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "781612b0d1f1d761d008866b89daa56342e115752e7894840320319ec1561957"
+  },
+  "underlying_tier": "T3"
+}

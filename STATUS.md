@@ -46,6 +46,30 @@ answer content from model-produced fixes, applies the length/base-occurrence
 guard, and treats accepted setup history as harmless. The rerun CLI is exercised
 only on invented temporary folders. Full-suite comparison is in progress.
 
+Interpretation completed: 210 task/run/role rows (196 observed; 14 explicitly
+unobserved). Over 93 non-requests tasks, repair T0/T1/T2/T3/T4 counts are
+3/0/28/60/2; V4 counts are 22/2/22/45/2, with 84 observed V4 tasks. Highest-tier
+task lists contain 62 T3 and two T4 tasks. T4 is limited to
+`matplotlib__matplotlib-20676` and `matplotlib__matplotlib-21568`, with guarded
+tool-first cached-wheel content. Of the 83 comparable tasks, 60 are T3 or T4.
+T3 explicitly includes legitimate solving; it does not establish an environment
+leak. All original raw findings, totals and image receipts remain unchanged.
+
+The guard removes 24 matched probes (three raw finding occurrences); one further
+raw content match is JSON-serialization-only. The Django history hit is
+model-first working-tree content, with no source commit supplying the additions.
+The 40 raw cache flags resolve to 36 nonempty source/filename observations, two
+metadata-only observations, one empty listing and one other-path output. One
+flag addresses both masks, so the path table has 41 observations.
+
+Validation: all 24 new interpretation tests pass; the focused audit suite has
+167 passes. Full suite: 1,566 passed, 7 skipped, 6 failed, 17 errors; the exact
+failed/error IDs equal the reference, with zero new IDs and zero newly passing
+reference failures. The standalone standard-library verifier independently
+recomputes tiers, CSV and totals, checks original inventory hashes, and validates
+chronological probe/speaker receipts. The reusable rerun entry point was tested
+only on synthetic folders. No real rerun was audited. No push is authorized.
+
 Scope incident: the first guidance-file search in this follow-up included the
 parent projects directory. It returned no paths or contents. Subsequent searches
 use explicit allowed paths; no blinded run payload has been opened or audited.

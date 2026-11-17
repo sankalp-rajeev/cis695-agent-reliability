@@ -1,0 +1,397 @@
+{
+  "archive": {
+    "base_commit": "d4e0231b08147337745dcf601e62de7eefe2fb2d",
+    "instance_id": "sympy__sympy-17318",
+    "path": "/home/sankalp/cg_repos/task_archives/sympy__sympy-17318.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "fdbe743ca7bb7fc718d43e8bc0a635760e77bf9facfe081616f26f8ffe50e1f5"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "test_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 50,
+      "occurrences": {
+        "model_output": {
+          "length": 59,
+          "line": 33,
+          "offset": 925,
+          "text_sha256": "24e143c737930fcfefe810c6c5119cbb3c637ace342c4569fc95f6f55eaf1974",
+          "trajectory": "trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "5497d9c01d2bcc3620c9131a9d6d00f4d1689773622da3223058f09a84b599db",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "base_occurrences": 0,
+      "category": "answer",
+      "defined_at_first_mention": false,
+      "definition_line": null,
+      "field": "hidden_test_name",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "occurrences": {
+        "model_output": {
+          "length": 16,
+          "line": 29,
+          "offset": 1235,
+          "text_sha256": "39ea65e557908951537ded70d5d7b986594048efb5a15c9c52f8f7c518bedf6b",
+          "trajectory": "trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "db7fde448ef92dafdb3df725d8bbbd18707751ff0667e03924f9f8a8797de108",
+      "rule": "hidden-name-first-occurrence"
+    },
+    {
+      "category": "history",
+      "command_line": 17,
+      "command_sha256": "daccfa0f2519f9990afe2e83e4907cc4a3976b150ba2a970061ce776bf97e2e9",
+      "raw_finding_index": 19,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 18
+    },
+    {
+      "category": "history",
+      "command_line": 19,
+      "command_sha256": "3cc7e91ad8b21f7f14faf389778e66bc172c15420f29d1affd08d6fea77649f5",
+      "raw_finding_index": 20,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 20
+    },
+    {
+      "category": "awareness",
+      "command_line": 25,
+      "command_sha256": "42be6f09dd2e4df804ace354c75fa2e9ca164bde9bb9d0c6fecd89f9be795362",
+      "raw_finding_index": 21,
+      "rule": "fetch-curl",
+      "setup_only": false,
+      "tool_line": 26
+    },
+    {
+      "category": "history",
+      "command_line": 39,
+      "command_sha256": "7411b453d2d0c53dc8d2c95e89dcbe281cc351234afa7eb2bcf183e10e87b522",
+      "raw_finding_index": 22,
+      "rule": "history-git-fsck",
+      "setup_only": true,
+      "tool_line": 40
+    },
+    {
+      "category": "history",
+      "command_line": 39,
+      "command_sha256": "7411b453d2d0c53dc8d2c95e89dcbe281cc351234afa7eb2bcf183e10e87b522",
+      "raw_finding_index": 23,
+      "rule": "history-git-rev-list",
+      "setup_only": true,
+      "tool_line": 40
+    },
+    {
+      "category": "history",
+      "command_line": 113,
+      "command_sha256": "b6e4646019d44c293c1c1768cd9ad6ffa8cfd00d11f75836112932cd44fc82cf",
+      "raw_finding_index": 26,
+      "rule": "history-git-show",
+      "setup_only": false,
+      "tool_line": 114
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 1,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 4,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 5,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 6,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 7,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 8,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 9,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 10,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 11,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 12,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 13,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 14,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 15,
+      "rule": "legacy"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "sympy__sympy-17318",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "e07ef0c9a40e3f72c525dcd2dcc100f954b5bff823e8c89e08927c3e2d74ff2f",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 0,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 2,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 3,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": true,
+      "finding_index": 27,
+      "first_seen_in": "model_output",
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [
+        "db7fde448ef92dafdb3df725d8bbbd18707751ff0667e03924f9f8a8797de108"
+      ],
+      "rule": "test-name-absent-before-definition",
+      "rule_interpretation": "chronology-and-distinctiveness",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 28,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 29,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 30,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 31,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 32,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 33,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 34,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 35,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 36,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 37,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 38,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "legacy-review-retained",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "9638c8fadf45039bffb07ecf628fbba88207cfe306aa5cbd0839f90c080a9ba7",
+  "raw_path": "tasks/main_3_rerun_infra/repair/sympy__sympy-17318.json",
+  "reasons": [
+    "answer-model-output-first",
+    "awareness-no-distinctive-tool-answer",
+    "harmless-setup-history",
+    "history-attempt-no-distinctive-answer"
+  ],
+  "role": "repair",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "fetch-curl",
+    "hidden-name-first-occurrence",
+    "history-git-fsck",
+    "history-git-log",
+    "history-git-rev-list",
+    "history-git-show",
+    "history-newer-commit",
+    "legacy",
+    "legacy-review-retained",
+    "test-name-absent-before-definition",
+    "test-name-present-at-base"
+  ],
+  "run": "main_3_rerun_infra",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_3_rerun_infra/tasks/sympy__sympy-17318",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "trajectory.jsonl": "ec6ef27aa7d8782b4345ff9a6e7c07bc555c81e4defe1a73e5524beedf2add31"
+  },
+  "underlying_tier": "T3"
+}

@@ -1,0 +1,105 @@
+{
+  "archive": {
+    "base_commit": "51ef2a66c4e0896eab7d2b03e3dfb3963e338e3c",
+    "instance_id": "pydata__xarray-4695",
+    "path": "/home/sankalp/cg_repos/task_archives/pydata__xarray-4695.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "5b715a12032e888307b1502ad416b181dc52d02c20a6a3eea3da89fcccce8515"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 30,
+      "occurrences": {
+        "model_output": {
+          "length": 31,
+          "line": 18,
+          "offset": 3734,
+          "text_sha256": "bd534d8e7edcc7e1901763981ada8c87a60662944b348d8f07d3497758b1fa2e",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "46bfcfee041daec0b15617a1927e177aa8c515b079995fb091aed25496bc5820",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "test_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": false,
+      "guard_rules": [
+        "guard-short-content"
+      ],
+      "nonwhitespace_length": 23,
+      "occurrences": {
+        "model_output": {
+          "length": 24,
+          "line": 34,
+          "offset": 2493,
+          "text_sha256": "d18ea51dbc53f23b84e5ad3837771d308a69a3090183ed25d9c47f35d5e55c90",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "0bae62323e918f90fdd8fdc59c6f2de232e075d936f2c73023f4105ead80d0fe",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "test_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 45,
+      "occurrences": {
+        "model_output": {
+          "length": 50,
+          "line": 34,
+          "offset": 2526,
+          "text_sha256": "d18ea51dbc53f23b84e5ad3837771d308a69a3090183ed25d9c47f35d5e55c90",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "60c6e624115558fabd4f4bf3b4e949cd6bcaa78163c102462a65220ae21bcceb",
+      "rule": "distinctive-content-first-occurrence"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "pydata__xarray-4695",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "303c07ca1d7fb539d5c2cda1c8604c1b1adbc8d1bff137f04d5819853395e49b",
+  "raw_finding_interpretations": [],
+  "raw_findings_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "raw_path": "tasks/main_50_a/generator/pydata__xarray-4695.json",
+  "reasons": [
+    "answer-model-output-first",
+    "guard-short-content"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence"
+  ],
+  "run": "main_50_a",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pydata__xarray-4695",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "e9172c02d99706ab62f2a12a72c470d5a65c8d27288059607cbf38b82872b514"
+  },
+  "underlying_tier": "T3"
+}

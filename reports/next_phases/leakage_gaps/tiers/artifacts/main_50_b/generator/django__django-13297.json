@@ -1,0 +1,131 @@
+{
+  "archive": {
+    "base_commit": "8954f255bbf5f4ee997fd6de62cb50fc9b5dd697",
+    "instance_id": "django__django-13297",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-13297.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "4f499ef39fae21bfb9ce3eb9cbf2b3878158435323828e5e1a480e90aa810da4"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "category": "history",
+      "command_line": 28,
+      "command_sha256": "5cb92735c0e53794dec4c8c25397083ab3fc9a67fc80759f7997b9a7dd3a0a3b",
+      "raw_finding_index": 2,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 29
+    },
+    {
+      "category": "awareness",
+      "command_line": 28,
+      "command_sha256": "7ff89ae750721b5ca801b829b591d41c2389bc52cab1ebde90dd315552086f7b",
+      "raw_finding_index": 3,
+      "rule": "fetch-pip-download",
+      "setup_only": false,
+      "tool_line": 30
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 0,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 1,
+      "rule": "legacy"
+    }
+  ],
+  "first_seen_in": [],
+  "history_gold": [],
+  "instance_id": "django__django-13297",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "d047942c15121000e740caf7934e65c9e801470a734ad5a0705aeaa1e36e17ac",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 5,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 6,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 7,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 8,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 9,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "90fce4e5385da177d2037027ccd5040e65cad3f14acd030e588a7fe9ef18a35f",
+  "raw_path": "tasks/main_50_b/generator/django__django-13297.json",
+  "reasons": [
+    "awareness-no-distinctive-tool-answer",
+    "harmless-setup-history"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "fetch-pip-download",
+    "history-git-log",
+    "history-newer-commit",
+    "legacy",
+    "test-name-present-at-base"
+  ],
+  "run": "main_50_b",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/django__django-13297",
+  "tier": "T2",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "a33209bdfec03745dc5a9495e9ccf4053fbddc24278846dd8b768cd3da8dcad0"
+  },
+  "underlying_tier": "T2"
+}

@@ -1,0 +1,145 @@
+{
+  "archive": {
+    "base_commit": "19e6efa50b603af325e7f62058364f278596758f",
+    "instance_id": "django__django-16136",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-16136.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "a74a9610df885472979cacf20605f81933da748507225073a59333b5e37a9d83"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 56,
+      "occurrences": {
+        "model_output": {
+          "length": 58,
+          "line": 19,
+          "offset": 5819,
+          "text_sha256": "f56dd2c05f62d641b3b3060e445a30edea5102a79281870c0d2b970c258ee83a",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "63d2e74b384ff6595d66efcf6b18ce20b0cdf6fdf4904f55fb6408b52ee00603",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "category": "history",
+      "command_line": 19,
+      "command_sha256": "206160df9bcf8011657c264f9c3d93ebc996337e69c1ec734d5b419edc03a7cb",
+      "raw_finding_index": 0,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 20
+    },
+    {
+      "category": "awareness",
+      "command_line": 29,
+      "command_sha256": "253b1dd1905ade3cb8aabd8e7cd2635aae5d44234641f684c9dd03db1f9b20a9",
+      "raw_finding_index": 2,
+      "rule": "fetch-pip-download",
+      "setup_only": false,
+      "tool_line": 30
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "django__django-16136",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "7471f846cca8d5516ad0920a77460d5e6a186c9ce732d7b8af5777b5f8ec38d6",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 3,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 4,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 5,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 6,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 7,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "f8e92f0acbb765bdb91e951e01f55993931ac4d89de0880cdab6f7e82684bec0",
+  "raw_path": "tasks/main_50_b/generator/django__django-16136.json",
+  "reasons": [
+    "answer-model-output-first",
+    "awareness-no-distinctive-tool-answer",
+    "harmless-setup-history"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "fetch-pip-download",
+    "history-git-log",
+    "history-newer-commit",
+    "test-name-present-at-base"
+  ],
+  "run": "main_50_b",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/django__django-16136",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "09bc69e3816218d8c7ae7282fadf9f9a4cb8e005c0b2d493b5289d2877f994a5"
+  },
+  "underlying_tier": "T3"
+}

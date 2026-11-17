@@ -1,0 +1,98 @@
+{
+  "archive": {
+    "base_commit": "f83b44075dafa429d59e8755aa47e15577cc49f9",
+    "instance_id": "django__django-13023",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-13023.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "0b3e23fd17b2f1decc95ee743badb54e33aeb502e05f2282fc769f5ac5b486b4"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 54,
+      "occurrences": {
+        "model_output": {
+          "length": 57,
+          "line": 19,
+          "offset": 1923,
+          "text_sha256": "c859f9271bb75bdb0ea84de8f9d64e4666ae3efea8daa0fb5e19f528d1c92956",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "dda3d40db53ff6eb7c1dc6c9847fa7c0177bd0d91579d097bb8225a1a04cede2",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 0,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 1,
+      "rule": "legacy"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "django__django-13023",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "80a69643b265255da09af0aa3c60680997f9787fb89840ddb1bb69975cfb8af8",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 2,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 3,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "e5f15fb29fd1b2dd24f1c3c124296c183850355c87c9cbbb7e83796b15cc3ee2",
+  "raw_path": "tasks/main_50_b/generator/django__django-13023.json",
+  "reasons": [
+    "answer-model-output-first",
+    "awareness-no-distinctive-tool-answer"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "legacy",
+    "test-name-present-at-base"
+  ],
+  "run": "main_50_b",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/django__django-13023",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "d558734267b4572bb8b60344c30c5cd8b1915ee5c27f8ec122e9ae4862f30267"
+  },
+  "underlying_tier": "T3"
+}

@@ -1,0 +1,271 @@
+{
+  "archive": {
+    "base_commit": "a9ba9d5d3fe9d5ac15fbdb06127f97d381148dd0",
+    "instance_id": "matplotlib__matplotlib-24637",
+    "path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-24637.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "5819075eeb56b37df2d63e8f07a785ddcac929f372fc608007791873470e66fd"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "test_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 29,
+      "occurrences": {
+        "model_output": {
+          "length": 30,
+          "line": 73,
+          "offset": 1579,
+          "text_sha256": "e7f0d3e22e3bb97fc708331735b46d5ae6b19ee19f683344da33294cfd250cf7",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "af189d2fbf3d63954820d277dc700d837804a20307636e49eb44f0241bd9a539",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "base_occurrences": 0,
+      "category": "answer",
+      "defined_at_first_mention": false,
+      "definition_line": null,
+      "field": "hidden_test_name",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "occurrences": {
+        "model_output": {
+          "length": 23,
+          "line": 73,
+          "offset": 1583,
+          "text_sha256": "e7f0d3e22e3bb97fc708331735b46d5ae6b19ee19f683344da33294cfd250cf7",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "6ad4ee461ea5492c73be767259be77a20d1f0186c9a4c73fe089e472aaf68688",
+      "rule": "hidden-name-first-occurrence"
+    },
+    {
+      "category": "history",
+      "command_line": 17,
+      "command_sha256": "f9afbe1543409bf8d27c7ee7cfa798f54444dd64eb7bca330cc500b1e3c8833c",
+      "raw_finding_index": 1,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 18
+    },
+    {
+      "category": "history",
+      "command_line": 23,
+      "command_sha256": "4f2f19a326c42896ffdaef4276c54920f1dfca4b4d8232d526c52e9467f7d15c",
+      "raw_finding_index": 2,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 24
+    },
+    {
+      "category": "history",
+      "command_line": 25,
+      "command_sha256": "827adaa265196996cd9c5d4a884000230359c91d701a3794d6ed8f5b70a0bee1",
+      "raw_finding_index": 3,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 26
+    },
+    {
+      "category": "history",
+      "command_line": 33,
+      "command_sha256": "2b69d8d7b9cc8ccc1b6f015f12d4dbb7cb8188937b22fde720d6e4c9360106ae",
+      "raw_finding_index": 4,
+      "rule": "history-git-fsck",
+      "setup_only": false,
+      "tool_line": 34
+    },
+    {
+      "category": "history",
+      "command_line": 35,
+      "command_sha256": "ed9a7827b4821d50f4a0f459c7e7337a123f0ad6e86197a8ba12e6b94bf3cd9f",
+      "raw_finding_index": 5,
+      "rule": "history-git-rev-list",
+      "setup_only": false,
+      "tool_line": 36
+    },
+    {
+      "category": "history",
+      "command_line": 47,
+      "command_sha256": "893ae7cb5d23c92fe0ec0001eead1a4e791a5e522566e62a48a7f7664c20f021",
+      "raw_finding_index": 6,
+      "rule": "history-git-show",
+      "setup_only": false,
+      "tool_line": 48
+    },
+    {
+      "category": "history",
+      "command_line": 49,
+      "command_sha256": "6a97778daef0808fca5156eb7d9bfe95683b0ce7467fe62c1ba65a3358b09b6f",
+      "raw_finding_index": 7,
+      "rule": "history-git-show",
+      "setup_only": false,
+      "tool_line": 50
+    },
+    {
+      "category": "history",
+      "command_line": 51,
+      "command_sha256": "7bcfa11db9827fbb48d73a2a28d316767ec1c0c20ce7b23105ebf368fe0a564c",
+      "raw_finding_index": 8,
+      "rule": "history-git-show",
+      "setup_only": false,
+      "tool_line": 52
+    },
+    {
+      "category": "history",
+      "command_line": 53,
+      "command_sha256": "e2be48899a2223b842f7c9d03fcee2dd2b65e3ce341070e70d78941a15fa9b20",
+      "raw_finding_index": 9,
+      "rule": "history-git-show",
+      "setup_only": false,
+      "tool_line": 54
+    },
+    {
+      "category": "history",
+      "command_line": 57,
+      "command_sha256": "c53ec3d4d2e297dc894c40c47fc76c8c3c85b7aba26588879b8574aa1e902b63",
+      "raw_finding_index": 10,
+      "rule": "history-git-show",
+      "setup_only": true,
+      "tool_line": 58
+    },
+    {
+      "category": "history",
+      "command_line": 63,
+      "command_sha256": "ececfd65d224198f477ea3505d4027114819154bdab59a498e442c4fd067a410",
+      "raw_finding_index": 12,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 64
+    },
+    {
+      "category": "history",
+      "command_line": 65,
+      "command_sha256": "86579a266d08e22b6b6eda700b29789f787c48497362b68b3ee66bf634a5afd3",
+      "raw_finding_index": 14,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 66
+    },
+    {
+      "category": "history",
+      "command_line": 71,
+      "command_sha256": "1d6e8d54c2205353af7eccf7757d7f2ee34dc4534e2401b1424483763a5676e4",
+      "raw_finding_index": 15,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 72
+    },
+    {
+      "category": "history",
+      "command_line": 77,
+      "command_sha256": "511e9aa68dbbbb254b915770731dd9f88e7f356a5ae2cc3a77f2dc01e7572fff",
+      "raw_finding_index": 16,
+      "rule": "history-git-reflog",
+      "setup_only": true,
+      "tool_line": 78
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "matplotlib__matplotlib-24637",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "889f16db150676f4184d0add72cd61a79e9b3620dd9e683c0d0de1b6e01cbe30",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": true,
+      "finding_index": 18,
+      "first_seen_in": "model_output",
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [
+        "6ad4ee461ea5492c73be767259be77a20d1f0186c9a4c73fe089e472aaf68688"
+      ],
+      "rule": "test-name-absent-before-definition",
+      "rule_interpretation": "chronology-and-distinctiveness",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 19,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 20,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 21,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "legacy-review-retained",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "8b4f54b8f6651aa674108c4194bc110fdcfb161095a75657e518e5d7e5bad6cc",
+  "raw_path": "tasks/main_50_b/generator/matplotlib__matplotlib-24637.json",
+  "reasons": [
+    "answer-model-output-first",
+    "harmless-setup-history",
+    "history-attempt-no-distinctive-answer"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "hidden-name-first-occurrence",
+    "history-git-fsck",
+    "history-git-log",
+    "history-git-reflog",
+    "history-git-rev-list",
+    "history-git-show",
+    "history-newer-commit",
+    "legacy",
+    "legacy-review-retained",
+    "test-name-absent-before-definition",
+    "test-name-present-at-base"
+  ],
+  "run": "main_50_b",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/matplotlib__matplotlib-24637",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "3eda1b5a3946f2f87e8ab3203ed036158e20e39961c34a843eed9ef41bef5544"
+  },
+  "underlying_tier": "T3"
+}

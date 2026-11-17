@@ -1,0 +1,181 @@
+{
+  "archive": {
+    "base_commit": "cab2d93076d0cca7c53fac885f927dde3e2a5fec",
+    "instance_id": "sphinx-doc__sphinx-10466",
+    "path": "/home/sankalp/cg_repos/task_archives/sphinx-doc__sphinx-10466.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "311723ac277e0aa438a7b32ef9b644ce737def09175a38e1424ff894cbeb388a"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 26,
+      "occurrences": {
+        "model_output": {
+          "length": 27,
+          "line": 50,
+          "offset": 4570,
+          "text_sha256": "1037f52639d4067508d6e8999657cc6c557848497c483cb48196729db0a0fed0",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "0c82d9f5288a8496e6daab1fc311f4dae8e6beb8980685bbf2588f5058b97655",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "test_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 50,
+      "occurrences": {
+        "model_output": {
+          "length": 54,
+          "line": 6,
+          "offset": 2229,
+          "text_sha256": "10f113483ff009e3917e7157171e5dd892044ea3c7c18c79dd14cc30680010f1",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "9a9ab7b91b98e5a11dab51f5a3e516e6528bf96895717e0939e1316c9758d9de",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "category": "history",
+      "command_line": 21,
+      "command_sha256": "356f4fc6913a497f5b30bd101056138b1e6e0397cd0c34aa949fe064bfcdc421",
+      "raw_finding_index": 1,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 22
+    },
+    {
+      "category": "history",
+      "command_line": 21,
+      "command_sha256": "ae586d5bc230dfe64d50b7e0fdee92b77083a6ac053814efc290949a678a45b3",
+      "raw_finding_index": 2,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 23
+    },
+    {
+      "category": "history",
+      "command_line": 24,
+      "command_sha256": "1aa219c004c294d8cc6209d92cb4f268257100815e40016649bdf3e013b99562",
+      "raw_finding_index": 4,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 25
+    },
+    {
+      "category": "history",
+      "command_line": 26,
+      "command_sha256": "136cfc2b95c8e5006dd6f8c1baa37f6bd34f9ad015b51fda87f7acaa1254a5e4",
+      "raw_finding_index": 5,
+      "rule": "history-git-show",
+      "setup_only": true,
+      "tool_line": 27
+    },
+    {
+      "category": "history",
+      "command_line": 28,
+      "command_sha256": "e10de3c381a2325a9c8f139e7397cd7dfad478c5d2e9a64a658ec9d08b9b2e3a",
+      "raw_finding_index": 7,
+      "rule": "history-git-fsck",
+      "setup_only": false,
+      "tool_line": 29
+    },
+    {
+      "category": "history",
+      "command_line": 28,
+      "command_sha256": "30c02926a139553e45337cf746ae5cd59dc21aa93c72524243c0ae1b82180f45",
+      "raw_finding_index": 8,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 30
+    },
+    {
+      "category": "awareness",
+      "command_line": 48,
+      "command_sha256": "67c2571cd72a2c3a675013013ffb1547808b7c32f9519d82bb4c7379b87f6d6d",
+      "raw_finding_index": 9,
+      "rule": "fetch-pip-download",
+      "setup_only": false,
+      "tool_line": 49
+    },
+    {
+      "category": "history",
+      "command_line": 54,
+      "command_sha256": "755ab4b1bdf2d15f3d44139cb73d39a84991c9794e6ff5546e1a42bfdafd0a30",
+      "raw_finding_index": 10,
+      "rule": "history-git-show",
+      "setup_only": true,
+      "tool_line": 55
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 0,
+      "rule": "legacy"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "sphinx-doc__sphinx-10466",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "642dc4addb8fb3422f3811d3fae1f91e85a26552beac59ef205b7fa1f9a2cadf",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 12,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "7da28fb4ba7233eb742909e377359b2d1d2a6d761d2c0b5983466a71a2f6f03f",
+  "raw_path": "tasks/main_50_b/generator/sphinx-doc__sphinx-10466.json",
+  "reasons": [
+    "answer-model-output-first",
+    "awareness-no-distinctive-tool-answer",
+    "harmless-setup-history",
+    "history-attempt-no-distinctive-answer"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "fetch-pip-download",
+    "history-git-fsck",
+    "history-git-log",
+    "history-git-show",
+    "history-newer-commit",
+    "legacy",
+    "test-name-present-at-base"
+  ],
+  "run": "main_50_b",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/sphinx-doc__sphinx-10466",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "b1db5116f5c578c79afd391b60a20cf03d264659d3e35edd62845201bde8bd8a"
+  },
+  "underlying_tier": "T3"
+}

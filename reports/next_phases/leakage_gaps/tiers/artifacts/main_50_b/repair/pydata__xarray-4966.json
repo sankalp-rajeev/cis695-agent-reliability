@@ -1,0 +1,501 @@
+{
+  "archive": {
+    "base_commit": "37522e991a32ee3c0ad1a5ff8afe8e3eb1885550",
+    "instance_id": "pydata__xarray-4966",
+    "path": "/home/sankalp/cg_repos/task_archives/pydata__xarray-4966.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "3be1b856e4c2045b6816862357888446862c5a43000a660d745db94331a4e75e"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [
+        "agent_output.txt",
+        "patch.diff",
+        "submission_raw.txt"
+      ],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 25,
+      "occurrences": {
+        "model_output": {
+          "length": 28,
+          "line": 20,
+          "offset": 1767,
+          "text_sha256": "7df4d40f43042f1761fab96100e53f558f03a70b716547a7d7e23e5ce59e72ac",
+          "trajectory": "trajectory.jsonl"
+        },
+        "tool_output": {
+          "length": 28,
+          "line": 50,
+          "offset": 1527,
+          "text_sha256": "3438858b0f8b76b2511a77fe558eec4e9cfdf4b47becd24ced7d4cf3effe18fe",
+          "trajectory": "trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "80e22a21bcb3b8f3e9627b4185ffbd1899ed7b6ec5c4b8323357171e76ab2847",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [
+        "patch.diff",
+        "repair_record.json",
+        "submission_raw.txt"
+      ],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 48,
+      "occurrences": {
+        "model_output": {
+          "length": 51,
+          "line": 20,
+          "offset": 1917,
+          "text_sha256": "7df4d40f43042f1761fab96100e53f558f03a70b716547a7d7e23e5ce59e72ac",
+          "trajectory": "trajectory.jsonl"
+        },
+        "tool_output": {
+          "length": 51,
+          "line": 50,
+          "offset": 1689,
+          "text_sha256": "3438858b0f8b76b2511a77fe558eec4e9cfdf4b47becd24ced7d4cf3effe18fe",
+          "trajectory": "trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "45a01de0396d25811d9d3a0d5c7e6c9dcecd747c7ffd3d1480fb82f6196a3178",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [
+        "patch.diff",
+        "repair_record.json",
+        "submission_raw.txt"
+      ],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 52,
+      "occurrences": {
+        "model_output": {
+          "length": 56,
+          "line": 20,
+          "offset": 1985,
+          "text_sha256": "7df4d40f43042f1761fab96100e53f558f03a70b716547a7d7e23e5ce59e72ac",
+          "trajectory": "trajectory.jsonl"
+        },
+        "tool_output": {
+          "length": 56,
+          "line": 50,
+          "offset": 1761,
+          "text_sha256": "3438858b0f8b76b2511a77fe558eec4e9cfdf4b47becd24ced7d4cf3effe18fe",
+          "trajectory": "trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "204001136093177e3f9005095cae0c4256b6ded290f1ef18323aff906db011b9",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "category": "history",
+      "command_line": 26,
+      "command_sha256": "55688fee9bf87cbf1e3a427dfd292d416dca720b65cd9136d3a4294b004e76ba",
+      "raw_finding_index": 19,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 28
+    },
+    {
+      "category": "awareness",
+      "command_line": 32,
+      "command_sha256": "3b308316d3ca39c171088372157ee47b13c8bc4b4d94aa20bd8e46c22ee2a9ca",
+      "raw_finding_index": 20,
+      "rule": "fetch-pip-download",
+      "setup_only": false,
+      "tool_line": 33
+    },
+    {
+      "category": "history",
+      "command_line": 39,
+      "command_sha256": "f11e5e306dd922b4b51fe0d0f0a187242be10d7319397901c52c0c9957e445fb",
+      "raw_finding_index": 21,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 40
+    },
+    {
+      "category": "history",
+      "command_line": 39,
+      "command_sha256": "c9b3ca0190c4c00b8f965bac5f7436da919ed819f704ff6c34b3a835448b5214",
+      "raw_finding_index": 22,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 41
+    },
+    {
+      "category": "history",
+      "command_line": 39,
+      "command_sha256": "c9b3ca0190c4c00b8f965bac5f7436da919ed819f704ff6c34b3a835448b5214",
+      "raw_finding_index": 23,
+      "rule": "history-git-rev-list",
+      "setup_only": false,
+      "tool_line": 41
+    },
+    {
+      "category": "history",
+      "command_line": 71,
+      "command_sha256": "1ef9a71b7e6e3aceb87b4917e57401e41e046fcc06fb5997a410734c2fd230db",
+      "raw_finding_index": 24,
+      "rule": "history-git-fsck",
+      "setup_only": false,
+      "tool_line": 72
+    },
+    {
+      "category": "history",
+      "command_line": 73,
+      "command_sha256": "96f7cdf500df7047ef7b10af453345f00d3324456bae35cdd2ab78eb7b70dc1f",
+      "raw_finding_index": 25,
+      "rule": "history-git-cat-file",
+      "setup_only": false,
+      "tool_line": 74
+    },
+    {
+      "category": "history",
+      "command_line": 73,
+      "command_sha256": "96f7cdf500df7047ef7b10af453345f00d3324456bae35cdd2ab78eb7b70dc1f",
+      "raw_finding_index": 26,
+      "rule": "history-git-rev-list",
+      "setup_only": false,
+      "tool_line": 74
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 0,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 1,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 2,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 3,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 4,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 5,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 6,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 7,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 8,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 9,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 10,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 11,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 12,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 13,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 14,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 15,
+      "rule": "legacy"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "pydata__xarray-4966",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "7b41dfe35d2dadaafc3a96c95d4e57f574cd496e4cb11c7b955c9cd9b891cd74",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 27,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 28,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 29,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 30,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 31,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 32,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 33,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 34,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 35,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 36,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 37,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 38,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 39,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 40,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 41,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 42,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 43,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "73f12014f2c475ca446c131ae82bd85937cb9f17fd765b498e18798f4bdbb771",
+  "raw_path": "tasks/main_50_b/repair/pydata__xarray-4966.json",
+  "reasons": [
+    "answer-model-output-first",
+    "awareness-no-distinctive-tool-answer",
+    "history-attempt-no-distinctive-answer"
+  ],
+  "role": "repair",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "fetch-pip-download",
+    "history-git-cat-file",
+    "history-git-fsck",
+    "history-git-log",
+    "history-git-rev-list",
+    "legacy",
+    "test-name-present-at-base"
+  ],
+  "run": "main_50_b",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/tasks/pydata__xarray-4966",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "trajectory.jsonl": "340a104e52c549b51d6ca27ebf6cf6de41f63ccd73d1659fe5cbe269357f6a39"
+  },
+  "underlying_tier": "T3"
+}

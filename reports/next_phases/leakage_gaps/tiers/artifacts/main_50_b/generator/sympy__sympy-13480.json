@@ -1,0 +1,60 @@
+{
+  "archive": {
+    "base_commit": "f57fe3f4b3f2cab225749e1b3b38ae1bf80b62f0",
+    "instance_id": "sympy__sympy-13480",
+    "path": "/home/sankalp/cg_repos/task_archives/sympy__sympy-13480.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "70f23345e2ded9dac73b1db75a982e3080a40fd917a7335a5e0dedc1056589c1"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 27,
+      "occurrences": {
+        "model_output": {
+          "length": 30,
+          "line": 15,
+          "offset": 943,
+          "text_sha256": "c78a88cd9f5fe300204ea8638c23f8e14b289506c587b7cd0b3efa2d508b7a52",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "a66c513696353903410b90da0c370379e5b983a7c22b48e0d0d9ab613eb42ff0",
+      "rule": "distinctive-content-first-occurrence"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "sympy__sympy-13480",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "5c6938b0435c3ac6fb4973ee65f535e6c04d3f545cdb4bb53e148e462efe36b4",
+  "raw_finding_interpretations": [],
+  "raw_findings_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "raw_path": "tasks/main_50_b/generator/sympy__sympy-13480.json",
+  "reasons": [
+    "answer-model-output-first"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence"
+  ],
+  "run": "main_50_b",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/sympy__sympy-13480",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "8b2b21c813a8b1ddebbfe1266f5749a850eb2bd82cf859841fed9e1d7583f498"
+  },
+  "underlying_tier": "T3"
+}

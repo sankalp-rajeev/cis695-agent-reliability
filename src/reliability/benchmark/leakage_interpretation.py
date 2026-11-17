@@ -60,6 +60,9 @@ def load_inputs(iid, raw, image_root):
     image = json.loads((image_root/(iid + '.json')).read_text())
     if image['base_commit'] != task.base_commit:
         raise ValueError('image-base-mismatch: ' + iid)
+    if any(image.get('checks',{}).get(name,{}).get('status')!='complete'
+           for name in ('git','packages','base_probes')):
+        raise ValueError('image-proof-incomplete: '+iid)
     if raw and raw.get('archive'):
         pin = raw['archive']
         archive = SourceArchive(BaseSourceSpec(task.base_commit, Path(pin['path']), pin['sha256']))
@@ -296,6 +299,17 @@ def _commit_from_output(pair, probe):
     return (literals[-1], 'commit-from-command-hash') if literals else (None, 'commit-resolution-pending')
 
 
+def working_tree_diff(command, base_paths):
+    tokens=shlex.split(command,comments=True)
+    if 'git' not in tokens or 'diff' not in tokens[tokens.index('git')+1:]:
+        return False
+    args=tokens[tokens.index('diff',tokens.index('git')+1)+1:]
+    redirect=next((i for i,t in enumerate(args) if t in {'>','>>','1>'}),None)
+    if redirect is None:
+        return False
+    return all(t.startswith('-') or t in base_paths or t=='.' for t in args[:redirect])
+
+
 def serialized_first_seen(path, probe):
     """Locate a raw JSON encoding hit that is absent from decoded messages."""
     for line,raw in enumerate(path.read_text(errors='replace').splitlines(),1):
@@ -456,9 +470,9 @@ def interpret_record(raw, inputs):
                 source_commit_rule=resolution, probe_sha256=digest(probe),
                 base_occurrences=counts.get(probe, 0), nonwhitespace_length=len(re.sub(r'\s','',probe)),
                 tool_line=pair['end']['line'], trajectory=Path(pair['end']['path']).name)
-            if source_commit is None and 'diff' in shlex.split(pair['command']) and '>' in shlex.split(pair['command']):
+            if source_commit is None and working_tree_diff(pair['command'],inputs.archive.members):
                 check.update(source_commit_rule='working-tree-diff-no-source-commit',
-                    comparator_commit=inputs.pin['base_commit'],origin_working_tree=True)
+                    pinned_base_commit=inputs.pin['base_commit'],comparison_basis='git-index',origin_working_tree=True)
             answer=answer_by_hash.get(('gold_patch',digest(probe)))
             check.update(first_seen_in=answer['first_seen_in'] if answer else None,
                          guard_pass=answer['guard_pass'] if answer else False)
@@ -572,6 +586,9 @@ def render_interpretation(root, raw_report):
         'an artifact inventory, not a contamination verdict. Setup history alone is '
         'harmless under the interpreted rules. The seven requests tasks are reported '
         'as Excluded and contribute to none of the task-tier totals.', '',
+        'The highest applicable tier wins: T0 has no tier evidence; T1 is harmless '
+        'setup history; T2 is awareness or access attempts without qualifying answer '
+        'content; T3 is model-first content; T4 is tool-first answer exposure.', '',
         '| Role (93 non-requests tasks; maximum over runs) | T0 | T1 | T2 | T3 | T4 | Observed |',
         '|---|---:|---:|---:|---:|---:|---:|']
     for role in ('repair','generator'):
@@ -611,12 +628,13 @@ def render_interpretation(root, raw_report):
               'The `django__django-15499` history match is a model-produced working-tree '
               'diff, not a line retrieved from a source commit. Both probes occur zero '
               'times at base and pass the length guard; both were model-first. '
-              'The source commit is therefore null. The comparator commit and command '
+              'The source commit is therefore null: the diff compares the working tree '
+              'against the Git index. The pinned base identity and command '
               'are identified below by hash only.', '',
-              '| Command SHA-256 | Comparator commit | Probe SHA-256 | Base occurrences | Non-whitespace characters | First seen |',
+              '| Command SHA-256 | Pinned base commit | Probe SHA-256 | Base occurrences | Non-whitespace characters | First seen |',
               '|---|---|---|---:|---:|---|']
     history=json.loads((root/'tiers/history_gold_checks.json').read_text()) if (root/'tiers/history_gold_checks.json').is_file() else []
-    lines += [f'| {c["command_sha256"]} | {c.get("comparator_commit") or c.get("source_commit")} | '
+    lines += [f'| {c["command_sha256"]} | {c.get("pinned_base_commit") or c.get("source_commit")} | '
               f'{c["probe_sha256"]} | {c["base_occurrences"]} | {c["nonwhitespace_length"]} | {c.get("first_seen_in")} |'
               for c in history if c['instance_id']=='django__django-15499']
     lines += ['',
@@ -625,6 +643,10 @@ def render_interpretation(root, raw_report):
               'is `scripts/audit_rerun_arm.py --run <output folder>` and was exercised '
               'on synthetic data only. Interpretation validation is recorded separately '
               'in `tiers/unit_comparison.json` and `tiers/verification.json`.', '',
+              'All original per-artifact finding files and image receipts remain unchanged. '
+              'The standard-library verifier independently recomputes every tier and total, '
+              'checks the CSV and immutable input hashes, and rechecks chronological '
+              'speaker/probe receipts against decoded trajectories.', '',
               '<!-- interpreted-totals-json: '+json.dumps(summary,sort_keys=True)+' -->', '',
               '## Raw-rule inventory (historical headline; findings unchanged)', '',
               '<!-- raw-rule-inventory-begin -->', raw_report]
@@ -731,10 +753,13 @@ def refresh_receipts(root):
             # A redirected working-tree diff of a verified source path is not
             # evidence that the matched additions came from another commit.
             tokens=shlex.split(pair['command'],comments=True)
-            if check['source_commit'] is None and 'diff' in tokens and '>' in tokens:
+            if check['source_commit'] is None and 'diff' in tokens and '>' in tokens and (
+                    check.get('origin_working_tree')):
                 check['source_commit_rule']='working-tree-diff-no-source-commit'
                 check['source_commit']=None
-                check['comparator_commit']=record['archive']['base_commit']
+                check.pop('comparator_commit',None)
+                check['pinned_base_commit']=record['archive']['base_commit']
+                check['comparison_basis']='git-index'
                 check['origin_working_tree']=True
             matching=[f for f in record['facts'] if f['category']=='answer' and f['probe_sha256']==check['probe_sha256']]
             check['first_seen_in']=matching[0]['first_seen_in'] if matching else None

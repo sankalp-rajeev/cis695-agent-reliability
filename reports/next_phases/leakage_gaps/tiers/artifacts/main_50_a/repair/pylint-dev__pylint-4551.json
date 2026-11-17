@@ -1,0 +1,404 @@
+{
+  "archive": {
+    "base_commit": "99589b08de8c5a2c6cc61e13a37420a868c80599",
+    "instance_id": "pylint-dev__pylint-4551",
+    "path": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-4551.tar",
+    "pin_origin": "audit-initial-inventory",
+    "sha256": "8a03aefce8e1e751ce1203aba3a0c51ed6a5c8dd85731f7208bbb2ee6bc56083"
+  },
+  "comparable": false,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 44,
+      "occurrences": {
+        "model_output": {
+          "length": 46,
+          "line": 134,
+          "offset": 3380,
+          "text_sha256": "d39e3ba477fd909a801aff3f0a42b5f0fdb45f878b5440247c17ae5fd34d152b",
+          "trajectory": "trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "7191977a24aa3a0c07fce136ed14d45fb696a3483053b21286027fd706b30d03",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [
+        "repair_record.json"
+      ],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 40,
+      "occurrences": {
+        "model_output": {
+          "length": 42,
+          "line": 190,
+          "offset": 9800,
+          "text_sha256": "0f39ca099297bd5f09e43a6bc483ace220410663f2aadd180c6ad55280048d3d",
+          "trajectory": "trajectory.jsonl"
+        },
+        "tool_output": {
+          "length": 42,
+          "line": 199,
+          "offset": 2180,
+          "text_sha256": "4cceedb687015dec6c452dad82151ace6113e727cda93f56eb76966a4e035482",
+          "trajectory": "trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "e36c7d03769382642c5b739c659198facd4037d548f7dedae32374ae1694e9fd",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [
+        "repair_record.json"
+      ],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 65,
+      "occurrences": {
+        "model_output": {
+          "length": 69,
+          "line": 103,
+          "offset": 2494,
+          "text_sha256": "b18cbc092ec54a034dc9666db20d834fcd8313e43e14c9481e1e3089d855f6af",
+          "trajectory": "trajectory.jsonl"
+        },
+        "tool_output": {
+          "length": 69,
+          "line": 201,
+          "offset": 18,
+          "text_sha256": "fc6b98d7d4ece309bce7503d4aef89b14e065f228cf7ea4f861fe20ff23f0f5c",
+          "trajectory": "trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "5cfc3d30a92c636311d102de4289cab7378bcee07c7c8f0b03951a9651734208",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "category": "history",
+      "command_line": 18,
+      "command_sha256": "5eb205e73d28722b27c5a1edbddfd4d8ca0d6ee36559cc9bfc03233c57d4049e",
+      "raw_finding_index": 18,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 19
+    },
+    {
+      "category": "history",
+      "command_line": 18,
+      "command_sha256": "41bf5c98a33d5f638b999601e638d15249afc54651cbec2492b80b5fb69ba298",
+      "raw_finding_index": 19,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 20
+    },
+    {
+      "category": "history",
+      "command_line": 21,
+      "command_sha256": "d6fbc231eec2742ae3fdff5c98656e728647657c6506b9d0189b40d40eed3404",
+      "raw_finding_index": 21,
+      "rule": "history-git-diff",
+      "setup_only": true,
+      "tool_line": 22
+    },
+    {
+      "category": "awareness",
+      "command_line": 27,
+      "command_sha256": "2a402e354528b148fc9e43e7195b48a1db588fc9cea1b6e2fd5d433848613f34",
+      "raw_finding_index": 23,
+      "rule": "fetch-curl",
+      "setup_only": false,
+      "tool_line": 28
+    },
+    {
+      "category": "history",
+      "command_line": 27,
+      "command_sha256": "40be92d0e5bcab1d6971b3880c4ead1c6b9568083f02c416e1f15796146530ac",
+      "raw_finding_index": 24,
+      "rule": "history-git-fsck",
+      "setup_only": false,
+      "tool_line": 29
+    },
+    {
+      "category": "awareness",
+      "command_line": 30,
+      "command_sha256": "f9be0ced08a4d1e9935a5319eb727536b49763a4cdca13c40e30660a441f6aef",
+      "raw_finding_index": 25,
+      "rule": "fetch-curl",
+      "setup_only": false,
+      "tool_line": 31
+    },
+    {
+      "category": "awareness",
+      "command_line": 108,
+      "command_sha256": "c336c3b76fdd0229353f9fddd3c5c926d20df1b000b895cf71101992ff25ff4f",
+      "raw_finding_index": 26,
+      "rule": "fetch-curl",
+      "setup_only": false,
+      "tool_line": 109
+    },
+    {
+      "category": "history",
+      "command_line": 145,
+      "command_sha256": "1090d95c2d7639abe55ceaee2f54a27afa1c9a88f2bbcce52c0dbb94cc8021bd",
+      "raw_finding_index": 27,
+      "rule": "history-git-show",
+      "setup_only": false,
+      "tool_line": 146
+    },
+    {
+      "category": "history",
+      "command_line": 150,
+      "command_sha256": "97252377076c0e745ef2384220ee7e5d1d786bf0e6262fa442143d847d077bc3",
+      "raw_finding_index": 28,
+      "rule": "history-git-reflog",
+      "setup_only": true,
+      "tool_line": 152
+    },
+    {
+      "category": "history",
+      "command_line": 206,
+      "command_sha256": "ca2bae21bcdfd84d27df5f9733e730b5bc374bb0f0649a224491f8ac6bf0ca20",
+      "raw_finding_index": 30,
+      "rule": "history-git-fsck",
+      "setup_only": false,
+      "tool_line": 207
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 0,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 1,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 2,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 3,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 4,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 5,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 6,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 7,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 8,
+      "rule": "legacy"
+    },
+    {
+      "category": "cache",
+      "command_sha256": "899a6ab675d164ccd4016fa5522961ee77af75a37265f84d3ee575b1e3e9241e",
+      "content_bytes": 0,
+      "listed_files": 2,
+      "nonempty_cache": true,
+      "output_bytes": 203,
+      "output_sha256": "61f3fd3b760047beccee43eb700a037414cd0342984d149e9bb1ed5545e1a625",
+      "path": "/root/.cache/pip",
+      "raw_finding_index": 11,
+      "returncode": 0,
+      "rule": "masked-read-listed-files",
+      "tool_line": 41,
+      "trajectory": "trajectory.jsonl"
+    },
+    {
+      "category": "cache",
+      "command_sha256": "82539cd25579b7a1823432282c109244b6dcd639c99bd45e25c1e9c92921101c",
+      "content_bytes": 0,
+      "listed_files": 20,
+      "nonempty_cache": true,
+      "output_bytes": 5444,
+      "output_sha256": "d2672c3f8d601692bb824e64ecee45176a8faa653c9c69c35415aa6374c3fa58",
+      "path": "/root/.cache/pip",
+      "raw_finding_index": 14,
+      "returncode": 0,
+      "rule": "masked-read-listed-files",
+      "tool_line": 87,
+      "trajectory": "trajectory.jsonl"
+    },
+    {
+      "category": "cache",
+      "command_sha256": "8740591bce480ae1e050b0d79b5ce60f329b97df7e90717b673712ca0cf06433",
+      "content_bytes": 0,
+      "listed_files": 2,
+      "nonempty_cache": true,
+      "output_bytes": 1321,
+      "output_sha256": "9ae9ba8675d3dbbdf5c22c43a9e07f48d7066e4a8bda56cd19a4730cce97e960",
+      "path": "/root/.cache/pip",
+      "raw_finding_index": 15,
+      "returncode": 0,
+      "rule": "masked-read-listed-files",
+      "tool_line": 93,
+      "trajectory": "trajectory.jsonl"
+    },
+    {
+      "category": "cache",
+      "command_sha256": "85cf451352067baae45c64c426e1495a94061242847582d7fc551338162f4005",
+      "content_bytes": 1122,
+      "listed_files": 0,
+      "nonempty_cache": true,
+      "output_bytes": 1122,
+      "output_sha256": "c10bde8ce63248a9d00952e3ec58737e702107a9cd31e1686bc6922dc16f43ea",
+      "path": "/root/.cache/pip",
+      "raw_finding_index": 16,
+      "returncode": 0,
+      "rule": "masked-read-content",
+      "tool_line": 94,
+      "trajectory": "trajectory.jsonl"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "pylint-dev__pylint-4551",
+  "observed": true,
+  "raw_cache_findings": 4,
+  "raw_file_sha256": "3140a68615ad29a86fabde4a506073aad37919292bb8e43b8f868fc0788ddc3f",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 31,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 32,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 33,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 34,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 35,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 36,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "99bdc44649ddb5171c615e11727de112d0c5751bbfe553291a34bb28f5e7075e",
+  "raw_path": "tasks/main_50_a/repair/pylint-dev__pylint-4551.json",
+  "reasons": [
+    "answer-model-output-first",
+    "awareness-no-distinctive-tool-answer",
+    "harmless-setup-history",
+    "history-attempt-no-distinctive-answer",
+    "masked-read-content",
+    "masked-read-listed-files"
+  ],
+  "role": "repair",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "fetch-curl",
+    "history-git-diff",
+    "history-git-fsck",
+    "history-git-log",
+    "history-git-reflog",
+    "history-git-show",
+    "history-newer-commit",
+    "legacy",
+    "masked-read-content",
+    "masked-read-listed-files",
+    "test-name-present-at-base"
+  ],
+  "run": "main_50_a",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/pylint-dev__pylint-4551",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "trajectory.jsonl": "27dca9ed59872109e654dc7d0739ba84ed2ffa6f841d9aef47cd4597836120da"
+  },
+  "underlying_tier": "T3"
+}

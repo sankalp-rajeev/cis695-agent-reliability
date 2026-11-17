@@ -1,0 +1,134 @@
+{
+  "archive": {
+    "base_commit": "5a68f024987e6d16c2626a31bf653a2edddea579",
+    "instance_id": "django__django-12209",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-12209.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "06653b4aed8604f85110d9190f8a6933cd6308b3eeaa3cab76e6b5707c47d06d"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "category": "history",
+      "command_line": 15,
+      "command_sha256": "8b1f164c555b850ba36b1385ac6ae6db02a980a19e3daec0d36abc9d5ae36dcb",
+      "raw_finding_index": 0,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 16
+    },
+    {
+      "category": "history",
+      "command_line": 15,
+      "command_sha256": "1163186f9ecbfb04add389c2a0c6508b3a50f96e2b9a3989073ba7ba55ba5a86",
+      "raw_finding_index": 1,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 17
+    },
+    {
+      "category": "awareness",
+      "command_line": 20,
+      "command_sha256": "5e8c31d2e0d651490e6427a4041719aa8a52ebe2e2b690b7dcfc80df674d8baf",
+      "raw_finding_index": 3,
+      "rule": "fetch-pip-download",
+      "setup_only": false,
+      "tool_line": 21
+    },
+    {
+      "category": "history",
+      "command_line": 26,
+      "command_sha256": "158a61b18c65d10afaf5cf60403aa9607f5692c526010f814bd70770426868b0",
+      "raw_finding_index": 4,
+      "rule": "history-git-show",
+      "setup_only": false,
+      "tool_line": 28
+    },
+    {
+      "category": "history",
+      "command_line": 29,
+      "command_sha256": "b15f5004d4a84d3731d547218282755bca58550663f3728b739f125af71bc934",
+      "raw_finding_index": 5,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 31
+    },
+    {
+      "category": "history",
+      "command_line": 32,
+      "command_sha256": "431ee8b89d043200826c26b0d331abf2d3f4a0940d0d85a014ca138587fd7449",
+      "raw_finding_index": 6,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 34
+    },
+    {
+      "category": "history",
+      "command_line": 38,
+      "command_sha256": "61265f9f787d4f9a8af548146e6f162013d900a9345f935af6b32cdd78e55c51",
+      "raw_finding_index": 7,
+      "rule": "history-git-fsck",
+      "setup_only": false,
+      "tool_line": 39
+    },
+    {
+      "category": "history",
+      "command_line": 41,
+      "command_sha256": "354fda7a9859c6b0cf3defe0c935d46fbe84673565a4339bb4683e3486c58aff",
+      "raw_finding_index": 8,
+      "rule": "history-git-show",
+      "setup_only": false,
+      "tool_line": 42
+    },
+    {
+      "category": "history",
+      "command_line": 47,
+      "command_sha256": "061ec16bd31a04f6be27876823873cfd185e9961ff85050029a42845ff9f0b6a",
+      "raw_finding_index": 9,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 48
+    },
+    {
+      "category": "history",
+      "command_line": 47,
+      "command_sha256": "061ec16bd31a04f6be27876823873cfd185e9961ff85050029a42845ff9f0b6a",
+      "raw_finding_index": 10,
+      "rule": "history-git-rev-list",
+      "setup_only": true,
+      "tool_line": 48
+    }
+  ],
+  "first_seen_in": [],
+  "history_gold": [],
+  "instance_id": "django__django-12209",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "abd08c0c8c8e1078150ea0cc95b617261a20955afdb385e48dea10ca04a2295f",
+  "raw_finding_interpretations": [],
+  "raw_findings_sha256": "a0e4e2893e7241def26343a6808b9ee90c7e58adb138d82f148d1cba947142ea",
+  "raw_path": "tasks/main_50_b/generator/django__django-12209.json",
+  "reasons": [
+    "awareness-no-distinctive-tool-answer",
+    "harmless-setup-history",
+    "history-attempt-no-distinctive-answer"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "fetch-pip-download",
+    "history-git-fsck",
+    "history-git-log",
+    "history-git-rev-list",
+    "history-git-show",
+    "history-newer-commit"
+  ],
+  "run": "main_50_b",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/django__django-12209",
+  "tier": "T2",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "83895c6ec529ec0944b21664fe9b68c71f3d222e6f53c7da90206ed474988a65"
+  },
+  "underlying_tier": "T2"
+}

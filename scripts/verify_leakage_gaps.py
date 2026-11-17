@@ -324,6 +324,14 @@ def verify_tiers(root):
     identities={(r['instance_id'],r['run'],r['role']) for r in records}
     if len(identities)!=len(records):
         fail('duplicate interpretation row')
+    raw_files=sorted((root/'tasks').glob('*/*/*.json'))
+    raw_records=[read(path) for path in raw_files]
+    expected={(r['instance_id'],r['run'],role) for r in raw_records for role in ('repair','generator')}
+    if identities!=expected:
+        fail('interpretation role coverage mismatch')
+    referenced={r['raw_path'] for r in records if r.get('raw_path')}
+    if referenced!={p.relative_to(root).as_posix() for p in raw_files}:
+        fail('raw inventory interpretation coverage mismatch')
     for record in records:
         verify_chronological_receipts(record)
         tier,reasons=interpreted_tier(record['facts'])
@@ -355,11 +363,20 @@ def verify_tiers(root):
                 prior=raw['findings'][finding['finding_index']]
                 if (prior['kind'],prior['rule'])!=(finding['kind'],finding['rule']):
                     fail('raw finding interpretation reference mismatch')
+                if (prior['kind'] in {'gold-patch-content','test-patch-content'} or
+                        prior['rule']=='test-name-absent-before-definition') and finding['first_seen_in'] not in {'tool_output','model_output'}:
+                    fail('raw answer finding lacks first speaker classification')
     cohort=sorted({r['instance_id'] for r in records})
     comparable={r['instance_id'] for r in records if r['comparable']}
     expected=interpreted_summary(records,cohort,comparable)
     if expected!=read(tiers/'summary.json'):
         fail('interpretive summary mismatch')
+    history_file=tiers/'history_gold_checks.json'
+    if history_file.is_file():
+        history=[dict(instance_id=r['instance_id'],run=r['run'],role=r['role'],**h)
+                 for r in sorted(records,key=lambda r:(r['run'],r['role'],r['instance_id'])) for h in r['history_gold']]
+        if read(history_file)!=history:
+            fail('focused history receipt inventory mismatch')
     with (tiers/'task_tiers.csv').open(newline='') as stream:
         reader=csv.DictReader(stream); fields=reader.fieldnames; actual=list(reader)
     canonical=[]
@@ -371,6 +388,10 @@ def verify_tiers(root):
     manifest=tiers/'inventory_manifest.json'
     if manifest.is_file():
         pin=read(manifest)
+        historical={r['instance_id'] for r in raw_records if
+                    r.get('archive',{}).get('pin_origin')=='historical-archive-references'}
+        if historical!=comparable:
+            fail('comparable cohort differs from pinned historical inventory')
         for name,expected_hash in pin['files'].items():
             path=root/name
             if Path(name).is_absolute() or '..' in Path(name).parts:
@@ -435,6 +456,13 @@ def verify_chronological_receipts(record):
     for fact in record['facts']:
         if fact['category']!='answer':
             continue
+        if fact['field']=='hidden_test_name' and fact.get('occurrences'):
+            first=min(fact['occurrences'].values(),key=lambda p:p['line'])
+            _,defined=definition_evidence(Path(record['source'])/first['trajectory'],fact['probe_sha256'])
+            if fact.get('definition_line')!=defined:
+                fail('hidden name definition receipt mismatch')
+            if fact.get('defined_at_first_mention')!=(defined is not None and defined<=first['line']):
+                fail('hidden name first-write ordering mismatch')
         for first_kind,proof in fact.get('occurrences',{}).items():
             messages=trajectories.get(proof['trajectory'],{})
             role,text=messages.get(proof['line'],(None,''))

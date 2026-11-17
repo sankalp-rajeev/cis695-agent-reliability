@@ -1,0 +1,60 @@
+{
+  "archive": {
+    "base_commit": "a59de6e89e8dc1f3e71c9a5a5bbceb373ea5247e",
+    "instance_id": "django__django-13033",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-13033.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "234c251613841bdb25bdbd57b3785895b1b83368afdc30806b14677ddfbdc6b0"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 44,
+      "occurrences": {
+        "model_output": {
+          "length": 49,
+          "line": 33,
+          "offset": 456,
+          "text_sha256": "c1127da05cc7c69878295282e63667337ac89d2f34aea18d94686c9b89fd7090",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "937a909005e14984d6bec0959ea178f248caed40663e64d41bdc9b165183bde6",
+      "rule": "distinctive-content-first-occurrence"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "django__django-13033",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "a0e1b0ea2d31da70aa75a9a0e6cca34188e09451ba63dad83d53c4241abea272",
+  "raw_finding_interpretations": [],
+  "raw_findings_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "raw_path": "tasks/main_50_b/generator/django__django-13033.json",
+  "reasons": [
+    "answer-model-output-first"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence"
+  ],
+  "run": "main_50_b",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/django__django-13033",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "5d1761ecc340e544372bd9e210352075563a854069e519ab318901ec9ab31ec6"
+  },
+  "underlying_tier": "T3"
+}

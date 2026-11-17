@@ -1,0 +1,190 @@
+{
+  "archive": {
+    "base_commit": "ac2b7599d212af7d04649959ce6926c63c3133fa",
+    "instance_id": "sphinx-doc__sphinx-10614",
+    "path": "/home/sankalp/cg_repos/task_archives/sphinx-doc__sphinx-10614.tar",
+    "pin_origin": "audit-initial-inventory",
+    "sha256": "628b90e228e06148fa46adca0d9f4160be938baae09b19062d35555487e10125"
+  },
+  "comparable": false,
+  "excluded": false,
+  "facts": [
+    {
+      "category": "history",
+      "command_line": 24,
+      "command_sha256": "228e4422581561e8a116d0f1ee6fa44fce20578c5e6673cd591fedf6eafe6ca9",
+      "raw_finding_index": 3,
+      "rule": "history-git-show",
+      "setup_only": false,
+      "tool_line": 25
+    },
+    {
+      "category": "history",
+      "command_line": 26,
+      "command_sha256": "e3a5e2b37df86b513fb11efbdaa886b9ae05aadcb47c07a8eaf4a11e5fefe08e",
+      "raw_finding_index": 4,
+      "rule": "history-git-show",
+      "setup_only": false,
+      "tool_line": 27
+    },
+    {
+      "category": "awareness",
+      "command_line": 83,
+      "command_sha256": "db75d61f76fa27ec690bfb008847aef29ba9cc5245f071a61a1e4b3c5ecd2f33",
+      "raw_finding_index": 5,
+      "rule": "fetch-pip-download",
+      "setup_only": false,
+      "tool_line": 85
+    },
+    {
+      "category": "history",
+      "command_line": 88,
+      "command_sha256": "4dadd67266586df2f5d75d3ae2650c1e41be9435b84e02644d9c74a515815c34",
+      "raw_finding_index": 6,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 89
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 0,
+      "rule": "legacy"
+    },
+    {
+      "category": "cache",
+      "command_sha256": "bb356391e1d51afc80d83dfa95e56dd422b86f56bb5473f1c0b7b7323ea3c816",
+      "content_bytes": 0,
+      "listed_files": 50,
+      "nonempty_cache": true,
+      "output_bytes": 5511,
+      "output_sha256": "d54bb3158f3272d189ed2e19f610e76d7068140ba6bb68b81032ff8f2c1b6fc9",
+      "path": "/root/.cache/pip",
+      "raw_finding_index": 1,
+      "returncode": 0,
+      "rule": "masked-read-listed-files",
+      "tool_line": 198,
+      "trajectory": "trajectory.jsonl"
+    },
+    {
+      "category": "cache",
+      "command_sha256": "c699de9a78d13c5773e92b8108f11d3d14d0cd96b80840a256eee006437c763b",
+      "content_bytes": 0,
+      "listed_files": 6,
+      "nonempty_cache": true,
+      "output_bytes": 1026,
+      "output_sha256": "51a671e5d6abd97b3c566ec4dc4a3e7b215fc644b9fbf99950b73f7e30bcd6cd",
+      "path": "/root/.cache/pip",
+      "raw_finding_index": 2,
+      "returncode": 0,
+      "rule": "masked-read-listed-files",
+      "tool_line": 200,
+      "trajectory": "trajectory.jsonl"
+    }
+  ],
+  "first_seen_in": [],
+  "history_gold": [],
+  "instance_id": "sphinx-doc__sphinx-10614",
+  "observed": true,
+  "raw_cache_findings": 2,
+  "raw_file_sha256": "925b8b7e39ac5bd5ea98e0bad6c6656706751617b3edca7c4b0588fb273da45b",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 8,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 9,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 10,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 11,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 12,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 13,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "8d98bdfeac6a37aa59f40a6f099cc316581f1bc22eb745543ce868ad91a3e118",
+  "raw_path": "tasks/main_50_a/repair/sphinx-doc__sphinx-10614.json",
+  "reasons": [
+    "awareness-no-distinctive-tool-answer",
+    "harmless-setup-history",
+    "history-attempt-no-distinctive-answer",
+    "masked-read-listed-files"
+  ],
+  "role": "repair",
+  "rule_names": [
+    "fetch-pip-download",
+    "history-git-log",
+    "history-git-show",
+    "history-newer-commit",
+    "legacy",
+    "masked-read-listed-files",
+    "test-name-present-at-base"
+  ],
+  "run": "main_50_a",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/tasks/sphinx-doc__sphinx-10614",
+  "tier": "T2",
+  "trajectory_sha256": {
+    "trajectory.jsonl": "9b4aeec9a0f5562314600042308ae6b685c2e5cdbbb5dbedbec2f75d0e9dd6e8"
+  },
+  "underlying_tier": "T2"
+}

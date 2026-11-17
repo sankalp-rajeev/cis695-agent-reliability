@@ -1,0 +1,160 @@
+{
+  "archive": {
+    "base_commit": "84400d2e9db7c51fee4e9bb04c028f665b8e7624",
+    "instance_id": "django__django-14631",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-14631.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "f705aef70b484877d0ead66e3c957bfc13fda0e598ae2ba82b43c13fb0b11755"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 53,
+      "occurrences": {
+        "model_output": {
+          "length": 62,
+          "line": 15,
+          "offset": 5945,
+          "text_sha256": "21eb5077a40e47fe89e24e79f74025c16834a559f2c157ae0abde8da40f2bf94",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "56d52fbac020f1563ed8294abe0b780056965b0676051098eac8d30ba3686421",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 32,
+      "occurrences": {
+        "model_output": {
+          "length": 36,
+          "line": 15,
+          "offset": 5315,
+          "text_sha256": "21eb5077a40e47fe89e24e79f74025c16834a559f2c157ae0abde8da40f2bf94",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "982fe8284ba2009125ba9142de65bf59913470e07dc53bf120a014df4b137e91",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 43,
+      "occurrences": {
+        "model_output": {
+          "length": 49,
+          "line": 15,
+          "offset": 5385,
+          "text_sha256": "21eb5077a40e47fe89e24e79f74025c16834a559f2c157ae0abde8da40f2bf94",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "7291127d599944205ce7a539a2fbb00a4a5e00f336a35b2e214e55d5d43ca729",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 35,
+      "occurrences": {
+        "model_output": {
+          "length": 38,
+          "line": 15,
+          "offset": 5509,
+          "text_sha256": "21eb5077a40e47fe89e24e79f74025c16834a559f2c157ae0abde8da40f2bf94",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "132b8eb61dff883652a2a6b131d528cdcf0bfe5b9fdb854e6d8811651add4953",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "category": "history",
+      "command_line": 15,
+      "command_sha256": "7aa5b32f9217f1d6e3348b092ac8fa559ff5ccc9fc1759ad4144abe28b200e52",
+      "raw_finding_index": 0,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 17
+    },
+    {
+      "category": "awareness",
+      "command_line": 22,
+      "command_sha256": "a35c484ba3fabc172c182bd779fa9bf6bf695323a8e175c3a3fb272adf35c462",
+      "raw_finding_index": 2,
+      "rule": "fetch-pip-download",
+      "setup_only": false,
+      "tool_line": 23
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "django__django-14631",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "f0f28dfcb72df14271c96c18f54d7c71d7c881fd543173437a3ee81fb618fb16",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 3,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "fb83acb5a85dafd1d84462f68ec033c6aff98098773e515cc40c5851c13b5b5e",
+  "raw_path": "tasks/main_50_b/generator/django__django-14631.json",
+  "reasons": [
+    "answer-model-output-first",
+    "awareness-no-distinctive-tool-answer",
+    "harmless-setup-history"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "fetch-pip-download",
+    "history-git-log",
+    "history-newer-commit",
+    "test-name-present-at-base"
+  ],
+  "run": "main_50_b",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/django__django-14631",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "9c0c289291f31deced9c22a9b74070e1dcbd659bb28aec7bcd23ef93b798755f"
+  },
+  "underlying_tier": "T3"
+}

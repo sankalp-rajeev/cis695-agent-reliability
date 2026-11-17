@@ -1,0 +1,110 @@
+{
+  "archive": {
+    "base_commit": "3d997697fdd166eff428ea9fd35734b6a8ba113e",
+    "instance_id": "scikit-learn__scikit-learn-14141",
+    "path": "/home/sankalp/cg_repos/task_archives/scikit-learn__scikit-learn-14141.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "17e32385bf6ca4a42cfcda214d559f76373500278d653a343d38cb147d9de3f8"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "test_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 25,
+      "occurrences": {
+        "model_output": {
+          "length": 28,
+          "line": 27,
+          "offset": 494,
+          "text_sha256": "b45fa27411ed3d282bbc7c366e2cb3a2ec1487ca1c9fcd71e0582940271aeac2",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "f77343f5c9ca406745e200646cdc474c69849e548c48b4daa52a95c325919631",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "category": "history",
+      "command_line": 27,
+      "command_sha256": "a7cfad2875e60bb78c24e78616e40d007fc7a36801660790464a7b5746dec0dc",
+      "raw_finding_index": 0,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 28
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "scikit-learn__scikit-learn-14141",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "95a036265132de03da01c9ff5246e7a11db42a5114adf12f0a30f55f23fef884",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 2,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 3,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 4,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "4af158c7a9058d7543bf9af4078cc21af7804750882861a7bab5f4dbfaaebb53",
+  "raw_path": "tasks/main_50_a/generator/scikit-learn__scikit-learn-14141.json",
+  "reasons": [
+    "answer-model-output-first",
+    "harmless-setup-history"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "history-git-log",
+    "history-newer-commit",
+    "test-name-present-at-base"
+  ],
+  "run": "main_50_a",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/scikit-learn__scikit-learn-14141",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "b1ca99766ccdddbad58f91c8b2b29a5cd2b299b248d8ef17981d56420d458209"
+  },
+  "underlying_tier": "T3"
+}

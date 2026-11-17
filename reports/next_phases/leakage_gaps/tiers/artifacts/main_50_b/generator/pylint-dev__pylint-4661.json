@@ -1,0 +1,102 @@
+{
+  "archive": {
+    "base_commit": "1d1619ef913b99b06647d2030bddff4800abdf63",
+    "instance_id": "pylint-dev__pylint-4661",
+    "path": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-4661.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "4b8d946b14620123dbdd0a42ecb504727a32298d00e07bc07a201ef9ae1fcfe8"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "category": "history",
+      "command_line": 9,
+      "command_sha256": "f19904566a9edde92833172ba063152405d7ec3ab67bbf0d5878aa454b6df250",
+      "raw_finding_index": 2,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 11
+    },
+    {
+      "category": "history",
+      "command_line": 23,
+      "command_sha256": "81ebaaf29fde020646a408508f701de02443bdba78f16a734db23205fdfaf42e",
+      "raw_finding_index": 4,
+      "rule": "history-git-fsck",
+      "setup_only": true,
+      "tool_line": 25
+    },
+    {
+      "category": "history",
+      "command_line": 23,
+      "command_sha256": "81ebaaf29fde020646a408508f701de02443bdba78f16a734db23205fdfaf42e",
+      "raw_finding_index": 5,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 25
+    },
+    {
+      "category": "awareness",
+      "command_line": 29,
+      "command_sha256": "c0b9110b745b4b3e77febd7ceae8a2b681cefe4951c99a6ab47dd71fcf4ed9fd",
+      "raw_finding_index": 8,
+      "rule": "fetch-pip-download",
+      "setup_only": false,
+      "tool_line": 31
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 0,
+      "rule": "legacy"
+    },
+    {
+      "category": "awareness",
+      "raw_finding_index": 1,
+      "rule": "legacy"
+    }
+  ],
+  "first_seen_in": [],
+  "history_gold": [],
+  "instance_id": "pylint-dev__pylint-4661",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "32b53bdaa0025aae13f5c5974973ce483321a734213f824d7fcee1392c609832",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 9,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "26ed93fedeb66eb0f538bf441b3f89250cdd451bc48f1d372bfc66abaef96579",
+  "raw_path": "tasks/main_50_b/generator/pylint-dev__pylint-4661.json",
+  "reasons": [
+    "awareness-no-distinctive-tool-answer",
+    "harmless-setup-history"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "fetch-pip-download",
+    "history-git-fsck",
+    "history-git-log",
+    "history-newer-commit",
+    "legacy",
+    "test-name-present-at-base"
+  ],
+  "run": "main_50_b",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_b/_reproduction_cache/pylint-dev__pylint-4661",
+  "tier": "T2",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "4acb187fdc7a8c2e6acb1a7fc246fa650248a7a9fcc6eeb495f737152f482ac5"
+  },
+  "underlying_tier": "T2"
+}

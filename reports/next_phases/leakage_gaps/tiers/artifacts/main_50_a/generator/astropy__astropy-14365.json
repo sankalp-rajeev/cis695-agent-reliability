@@ -1,0 +1,60 @@
+{
+  "archive": {
+    "base_commit": "7269fa3e33e8d02485a647da91a5a2a60a06af61",
+    "instance_id": "astropy__astropy-14365",
+    "path": "/home/sankalp/cg_repos/task_archives/astropy__astropy-14365.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "52c5b392a42c15f7a36dde4a000d39b75544e6297f2a34dfe49a5f80eeffdc60"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 48,
+      "occurrences": {
+        "model_output": {
+          "length": 51,
+          "line": 16,
+          "offset": 1272,
+          "text_sha256": "83f42f18a1b60ed81857d2bcc7e9889bba45186c2ef8f0349783a0797175ce43",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "57a7be832a9c30c7a7545a2924656af4e203f13dea0fe2ce66312d580890d3dd",
+      "rule": "distinctive-content-first-occurrence"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "astropy__astropy-14365",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "4019973bef204dd10977d5c357d039c2f0beb9dabe13148c8e9c0e508a3850f2",
+  "raw_finding_interpretations": [],
+  "raw_findings_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "raw_path": "tasks/main_50_a/generator/astropy__astropy-14365.json",
+  "reasons": [
+    "answer-model-output-first"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence"
+  ],
+  "run": "main_50_a",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/astropy__astropy-14365",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "b815c6c1dc31c603e3972c436b0a778a79ae9b627ae89ea2c43e9f5aa56fc80e"
+  },
+  "underlying_tier": "T3"
+}

@@ -1,0 +1,72 @@
+{
+  "archive": {
+    "base_commit": "3a668ea6ff24b0c8f00498c3144c63bac561d925",
+    "instance_id": "pytest-dev__pytest-6202",
+    "path": "/home/sankalp/cg_repos/task_archives/pytest-dev__pytest-6202.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "1081df715e0db2286a8e3b534cbd6af6900a35e420551c694735979a4adf73ae"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "category": "history",
+      "command_line": 20,
+      "command_sha256": "9b2340318e7ec0c825fe61142d7350d453dae9ee32b9c9b3adc1e42cc163f55e",
+      "raw_finding_index": 0,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 21
+    }
+  ],
+  "first_seen_in": [],
+  "history_gold": [],
+  "instance_id": "pytest-dev__pytest-6202",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "5e63b3ce66d61df0da5b0887b06447d7b38b147cdb75b8350a01c3bf4a73a65c",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 1,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 2,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "fbed57b96e5f19b051d78b2f18dfa50e590ed8acb67bd6a34c06aa5a2051b967",
+  "raw_path": "tasks/main_50_a/generator/pytest-dev__pytest-6202.json",
+  "reasons": [
+    "history-attempt-no-distinctive-answer"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "history-git-log",
+    "test-name-present-at-base"
+  ],
+  "run": "main_50_a",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/cis695-agent-reliability/runs/main_50_a/_reproduction_cache/pytest-dev__pytest-6202",
+  "tier": "T2",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "f9286dc07e63646337662a7b23f330cb3943ce9cf3ad553255176b78e07e49b7"
+  },
+  "underlying_tier": "T2"
+}
