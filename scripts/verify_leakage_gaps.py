@@ -112,10 +112,38 @@ def verify(root):
     missing = sorted(r['instance_id'] for r in images if r.get('status') == 'missing')
     if missing != sorted(image_summary['missing']):
         fail('missing image inventory mismatch')
+    git_results = [r.get('checks', {}).get('git', {}).get('result', {}) for r in images]
+    copies = [(r['instance_id'], c) for r in images for c in
+              r.get('checks', {}).get('packages', {}).get('result', {}).get('copies', [])]
+    image_recount = dict(cohort=len(images), present=sum(r.get('status') != 'missing' for r in images),
+        missing=missing,
+        incomplete=sorted(r['instance_id'] for r in images if r.get('status') == 'incomplete' or
+            any(c['status'] != 'complete' for c in r.get('checks', {}).values())),
+        future_history_images=sum(g.get('future_object_count', 0) > 0 for g in git_results),
+        future_reachable_images=sum(g.get('future_reachable_count', 0) > 0 for g in git_results),
+        gold_blob_images=sum(any(b['present'] for b in g.get('gold_post_image_blobs', [])) for g in git_results),
+        gold_blobs_probed=sum(len(g.get('gold_post_image_blobs', [])) for g in git_results),
+        different_version_copies=sum(c.get('different_from_base') is True for _, c in copies),
+        different_version_tasks=sorted({iid for iid,c in copies if c.get('different_from_base')}),
+        unresolved_copy_versions=sum(c.get('different_from_base') is None for _, c in copies))
+    if image_recount != image_summary:
+        fail('image totals mismatch')
     report = (root/'REPORT.md').read_text()
     marker = re.search(r'<!-- totals-json: (.+?) -->', report)
     if not marker or json.loads(marker.group(1)) != dict(trajectory=expected, images=image_summary):
         fail('report totals mismatch')
+    human_totals = {
+        r'Confirmed findings: (\d+)': expected['severity'].get('confirmed', 0),
+        r'Benchmark-awareness findings: (\d+)': expected['severity'].get('benchmark-awareness', 0),
+        r'(\d+) images contain commits after base': image_summary['future_history_images'],
+        r'(\d+) images contain at least one exact gold': image_summary['gold_blob_images'],
+        r'(\d+) unmasked package copies have': image_summary['different_version_copies'],
+        r'(\d+) copy versions remain unresolved': image_summary['unresolved_copy_versions'],
+    }
+    for pattern, expected_value in human_totals.items():
+        found = re.search(pattern, report)
+        if not found or int(found.group(1)) != expected_value:
+            fail('human-readable report total mismatch')
     result = dict(status='pass', task_directories=len(tasks), findings=len(findings),
                   image_tasks=len(images), downgrades_rechecked=checked,
                   golden_violations=expected['golden_violations'])

@@ -13,3 +13,18 @@
   source to classify test names. Missing evidence makes the audit incomplete.
 - Existing tests and the reference failure list remain unchanged. New tests use
   invented data and temporary Git repositories or mocked Docker calls.
+- Source archive inventory: 83 historical pins, 10 existing archives newly pinned
+  by this audit, and 7 missing requests archives exported with read-only
+  `git archive` at the manifest base commit into ignored `runs/`. All are verified
+  with `SourceArchive`; the latter two groups are never represented as old pins.
+- Post-image reconstruction accepts exact context and unique exact hunk offsets
+  only. A missing final newline is preserved. If archive preparation changed a
+  source, reconstruct in memory from read-only `git show BASE:path` in the image.
+- Enumerate all Git objects and all refs. Count both newer timestamps and base
+  descendants; separately compare future commit trees and exact gold blobs.
+  An image exposure is not evidence that a stored agent read it.
+- Keep legacy REVIEW occurrences when the stronger ordered test-name rule adds a
+  CONFIRMED finding. This preserves the original multiset without hiding new
+  evidence. Record explicit rule-3 downgrades if any occur.
+- No cache/theme directory is a package copy merely because its basename matches.
+  Require source files, then report version metadata and match counts.

@@ -11,9 +11,8 @@ import subprocess
 from pathlib import Path
 
 from reliability.agent.isolation import MASKED_TMPFS_PATHS, docker_bin
-from reliability.benchmark.image_probe import version_from_text
+from reliability.benchmark.image_probe import apply_hunks, version_from_text
 from reliability.benchmark.leakage import import_name_for_instance, probes_from_oracle
-from reliability.benchmark.leakage_rules import digest
 from reliability.verifier.source_integrity import BaseSourceSpec, SourceArchive
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -78,22 +77,12 @@ def post_images(archive, patch):
             continue
         path = file.path
         original = io.StringIO(archive.read_many([path]).get(path, b'').decode()).readlines()
-        result, position = [], 0
-        for hunk in file:
-            start = max(0, hunk.source_start - 1)
-            result.extend(original[position:start]); position = start
-            for line in hunk:
-                if line.is_context or line.is_removed:
-                    if position >= len(original) or original[position] != line.value:
-                        raise ValueError('gold post-image context mismatch: path_sha256=' +
-                            digest(path) + ', source_line=' + str(position + 1))
-                    if line.is_context:
-                        result.append(original[position])
-                    position += 1
-                elif line.is_added:
-                    result.append(line.value)
-        result.extend(original[position:])
-        outputs.append(base64.b64encode(''.join(result).encode()).decode())
+        try:
+            result = apply_hunks(original, [dict(start=h.source_start,
+                lines=[(line.line_type, line.value) for line in h]) for h in file])
+        except RuntimeError:
+            raise ValueError('post-image context mismatch') from None
+        outputs.append(base64.b64encode(result).decode())
     return outputs
 
 
@@ -164,4 +153,19 @@ def run_image(image, request, *, runner=subprocess.run):
     if process.returncode:
         return dict(instance_id=request['instance_id'], image=image, status='incomplete',
                     rule='docker-probe-failed', returncode=process.returncode)
-    return public_image_result(json.loads(process.stdout), request, image)
+    raw = json.loads(process.stdout)
+    checks = raw.get('checks', {})
+    if all(checks.get(c, {}).get('status') == 'complete' for c in ['git', 'packages']):
+        supplement_request = dict(request, copies=checks['packages']['result']['copies'],
+                                  future_commit_hashes=checks['git']['result']['future_commit_hashes'])
+        extra_process = runner(docker_command(image, Path(__file__).with_name('image_probe.py')) + ['--supplement'],
+            input=json.dumps(supplement_request), capture_output=True, text=True, timeout=180, check=False)
+        if extra_process.returncode:
+            return dict(instance_id=request['instance_id'], image=image, status='incomplete',
+                        rule='image-supplement-failed')
+        extra = json.loads(extra_process.stdout)
+        request = dict(request, base_version=extra['base_version'])
+        raw['base_version_origin'] = extra['base_version_origin']
+        checks['packages']['result']['copies'] = extra['copies']
+        checks['git']['result']['future_commit_details'] = extra['future_commit_details']
+    return public_image_result(raw, request, image)

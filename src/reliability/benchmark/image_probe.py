@@ -109,6 +109,11 @@ def inspect_packages(request):
     masks = request['masked_paths']
     result = dict(masked={}, copies=[], errors=0)
     package, import_name = request['package'], request['import_name']
+    import_names = {import_name}
+    if import_name == 'pytest':
+        import_names.add('_pytest')
+    if import_name == 'matplotlib':
+        import_names.add('mpl_toolkits')
     for mask in masks:
         count, archives, extracted = 0, [], []
         for directory, folders, files in os.walk(mask):
@@ -121,7 +126,7 @@ def inspect_packages(request):
                             text = stream.read()
                         if name == 'index.json':
                             meta = json.loads(text)
-                            if meta.get('name', '').replace('-', '_') == package.replace('-', '_'):
+                            if isinstance(meta, dict) and str(meta.get('name') or '').replace('-', '_') == package.replace('-', '_'):
                                 extracted.append(dict(kind='conda-extracted', version=meta.get('version'), path_sha256=sha(path)))
                     except (OSError, ValueError):
                         result['errors'] += 1
@@ -145,7 +150,7 @@ def inspect_packages(request):
             if any(directory == mask or directory.startswith(mask + '/') for mask in masks):
                 folders[:] = []
                 continue
-            if os.path.basename(directory) != import_name:
+            if os.path.basename(directory) not in import_names:
                 continue
             resolved = os.path.realpath(directory)
             if directory.startswith('/testbed/') or resolved.startswith('/testbed/') or resolved in found:
@@ -191,6 +196,8 @@ def supplement(request):
             pass
     copies = []
     for copy in request.get('copies', []):
+        if not copy.get('source_files'):
+            continue  # Cache/theme directories sharing a name are not source copies.
         row = dict(copy)
         row['version'] = package_version(copy['path'], request['package'])
         row['base_version'] = version
@@ -200,8 +207,40 @@ def supplement(request):
     for oid in request.get('future_commit_hashes', []):
         raw = git(['diff-tree', '-r', '--no-commit-id', '--name-only', '-z', base, oid])
         paths = [p.decode() for p in raw.split(b'\0') if p]
+        categories = {'build_metadata': 0, 'version_source': 0, 'test_source': 0,
+                      'other_source': 0, 'other_files': 0}
+        for path in paths:
+            leaf = os.path.basename(path)
+            if leaf in {'setup.py', 'setup.cfg', 'pyproject.toml', 'tox.ini', 'MANIFEST.in'}:
+                category = 'build_metadata'
+            elif leaf in {'version.py', '_version.py', '__version__.py', 'release.py'}:
+                category = 'version_source'
+            elif path.endswith(('.py', '.pyx', '.c', '.h')):
+                category = 'test_source' if '/tests/' in '/' + path or leaf.startswith('test_') else 'other_source'
+            else:
+                category = 'other_files'
+            categories[category] += 1
+        diff = git(['diff', '--no-ext-diff', '--no-textconv', base, oid]).decode(errors='replace')
+        added = '\n'.join(line[1:] for line in diff.splitlines() if line.startswith('+') and not line.startswith('+++'))
+        statuses = git(['diff-tree', '-r', '--no-commit-id', '--no-renames', '--name-status', '-z', base, oid]).split(b'\0')
+        status_counts = {}
+        for status in statuses[:-1:2]:
+            key = status.decode()
+            status_counts[key] = status_counts.get(key, 0) + 1
+        raw_deltas = git(['diff-tree', '-r', '--no-commit-id', '--no-renames', '--raw', '-z', base, oid]).split(b'\0')
+        mode_only = 0
+        for metadata in raw_deltas[:-1:2]:
+            old_mode, new_mode, old_blob, new_blob, status = metadata.decode().lstrip(':').split()
+            if old_blob == new_blob and old_mode != new_mode:
+                mode_only += 1
+        ancestor = subprocess.call(['git', '-C', '/testbed', 'merge-base', '--is-ancestor', base, oid],
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) == 0
         details.append(dict(commit=oid, changed_file_count=len(paths),
             changed_source_file_count=sum(p.endswith(('.py', '.pyx', '.c', '.h')) for p in paths),
+            changed_file_categories=categories,
+            change_status_counts=status_counts, base_is_ancestor=ancestor,
+            mode_only_file_changes=mode_only, content_changed_files=len(paths)-mode_only,
+            gold_added_line_match_count=sum(probe in added for probe in request.get('patch_lines', [])),
             changed_path_sha256=sorted(sha(p) for p in paths)))
     return dict(base_version=version, base_version_origin=origin,
                 base_tag_description_sha256=sha(description) if description else None,
@@ -261,21 +300,7 @@ def inspect_git(request):
     post_images = [base64.b64decode(value) for value in request.get('post_images_b64', [])]
     for file in request.get('post_image_hunks', []):
         original = [] if file['added'] else io.StringIO(git(['show', base + ':' + file['path']]).decode()).readlines()
-        result, position = [], 0
-        for hunk in file['hunks']:
-            start = max(0, hunk['start'] - 1)
-            result.extend(original[position:start]); position = start
-            for kind, value in hunk['lines']:
-                if kind in (' ', '-'):
-                    if position >= len(original) or original[position] != value:
-                        raise RuntimeError('post-image-context-mismatch')
-                    if kind == ' ':
-                        result.append(original[position])
-                    position += 1
-                elif kind == '+':
-                    result.append(value)
-        result.extend(original[position:])
-        post_images.append(''.join(result).encode())
+        post_images.append(apply_hunks(original, file['hunks']))
     for value in post_images:
         oid = git(['hash-object', '--stdin'], value).decode().strip()
         present = subprocess.call(['git', '-C', '/testbed', 'cat-file', '-e', oid + '^{blob}'],
@@ -285,6 +310,39 @@ def inspect_git(request):
         reachable_commit_count=len(reachable), future_reachable_count=len(future & set(reachable)),
         future_object_count=len(future), future_commit_hashes=sorted(future),
         gold_post_image_blobs=gold, commit_timestamps=stamps)
+
+
+def apply_hunks(original, hunks):
+    """Exact patch application in memory, accepting only unique exact offsets."""
+    result, position = [], 0
+    for hunk in hunks:
+        lines = []
+        for kind, value in hunk['lines']:
+            if kind == '\\':
+                if lines:
+                    lines[-1] = (lines[-1][0], lines[-1][1].rstrip('\n'))
+            else:
+                lines.append((kind, value))
+        expected = [value for kind, value in lines if kind in (' ', '-')]
+        start = max(0, hunk['start'] - 1)
+        if original[start:start+len(expected)] != expected:
+            matches = [i for i in range(position, len(original)-len(expected)+1)
+                       if original[i:i+len(expected)] == expected]
+            if len(matches) != 1:
+                raise RuntimeError('post-image-context-mismatch:exact-matches=' + str(len(matches)))
+            start = matches[0]
+        if start < position:
+            raise RuntimeError('overlapping-post-image-hunks')
+        result.extend(original[position:start]); position = start
+        for kind, value in lines:
+            if kind in (' ', '-'):
+                if kind == ' ':
+                    result.append(original[position])
+                position += 1
+            elif kind == '+':
+                result.append(value)
+    result.extend(original[position:])
+    return ''.join(result).encode()
 
 
 def base_probes(request):
@@ -318,6 +376,24 @@ def base_probes(request):
 
 def main():
     request = json.load(sys.stdin)
+    if '--legacy-base-only' in sys.argv:
+        probes = request.get('all_lines', [])
+        process = subprocess.run(['git', '-C', '/testbed', 'grep', '-F', '-I', '-f', '/dev/stdin', '--', '.'],
+            input=('\n'.join(probes)+'\n').encode(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if process.returncode not in (0, 1) or process.returncode == 1 and process.stderr.strip():
+            raise RuntimeError('legacy-git-grep-failed')
+        output = process.stdout
+        found = {sha(p) for p in probes if any(p in line.split(':',1)[-1]
+                    for line in output.decode(errors='replace').splitlines())}
+        remaining = [p for p in probes if sha(p) not in found]
+        if remaining:
+            proc = subprocess.run(['bash', '-c', 'grep -rFIsh --exclude-dir=_vendor -f /dev/stdin -- '
+                '/opt/miniconda3/envs/testbed/lib/python*/site-packages'],
+                input=('\n'.join(remaining)+'\n').encode(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            text = proc.stdout.decode(errors='replace')
+            found.update(sha(p) for p in remaining if p in text)
+        print(json.dumps(sorted(found)))
+        return
     if '--supplement' in sys.argv:
         print(json.dumps(supplement(request), sort_keys=True))
         return
@@ -327,7 +403,11 @@ def main():
             result['checks'][name] = dict(status='complete', result=function(request))
         except Exception as exc:
             # Error messages may contain source paths or subprocess output.
-            result['checks'][name] = dict(status='incomplete', error_type=type(exc).__name__)
+            import traceback
+            frames = traceback.extract_tb(sys.exc_info()[2])
+            result['checks'][name] = dict(status='incomplete', error_type=type(exc).__name__,
+                probe_line=frames[-1].lineno,
+                rule=str(exc) if type(exc) is RuntimeError else 'probe-exception')
     print(json.dumps(result, sort_keys=True))
 
 

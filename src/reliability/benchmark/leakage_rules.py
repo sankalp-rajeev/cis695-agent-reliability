@@ -5,12 +5,17 @@ import hashlib
 import json
 import re
 import shlex
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 from reliability.benchmark.leakage import (
-    Finding, OracleProbes, Severity, TRAJECTORY_FILES, _bash_calls,
-    _message_strings, _observation, _split_command, _test_symbol,
+    TRAJECTORY_FILES,
+    Finding,
+    Severity,
+    _bash_calls,
+    _observation,
+    _split_command,
+    _test_symbol,
 )
 
 
@@ -195,6 +200,7 @@ def scan_commands(path, text, probes, context):
 
 def definition_events(task_dir, symbols):
     events = {}
+    symbols = set(symbols)
     for name in TRAJECTORY_FILES:
         path = task_dir / name
         if not path.is_file():
@@ -218,28 +224,49 @@ def definition_events(task_dir, symbols):
             for call_id, command in _bash_calls(msg):
                 if not re.search(r'(?:\b(?:write_text|write_bytes|write|writelines|apply_patch|sed|perl)\b|>|\btee\b)', command):
                     continue
-                for symbol in symbols:
-                    if re.search(r'\b(?:async\s+)?def\s+' + re.escape(symbol) + r'\s*\(', command):
-                        pending.setdefault(call_id, []).append((symbol, n))
+                defined = set(re.findall(r'\b(?:async\s+)?def\s+(test[A-Za-z0-9_]+)\s*\(', command))
+                for symbol in defined & symbols:
+                    pending.setdefault(call_id, []).append((symbol, n))
         events[str(path)] = definitions
     return events
 
 
-def classify_test_names(path, text, probes, context, legacy):
+def classify_test_names(path, text, probes, context, legacy, authored=frozenset()):
     """Replace legacy name checks using verified base source and ordered writes."""
     findings = [f for f in legacy if f.kind != 'fail-to-pass-name']
+    first_appearance = {}
+    for line_no, line in enumerate(text.splitlines(), 1):
+        for symbol in re.findall(r'\btest[A-Za-z0-9_]+\b', line):
+            first_appearance.setdefault(symbol, line_no)
+    # A distinctive test-definition line is still test-name evidence. Resolve
+    # its name against base and ordered writes before keeping CONFIRMED.
+    for index, finding in enumerate(findings):
+        lines = probes.patch_lines if finding.kind == 'gold-patch-content' else (
+            probes.test_patch_lines if finding.kind == 'test-patch-content' else ())
+        for probe in lines:
+            if probe in authored or probe not in text:
+                continue
+            match = re.fullmatch(r'(?:async\s+)?def\s+(test[A-Za-z0-9_]+)\s*\([^\n]*\)\s*:', probe.strip())
+            if match:
+                symbol = match.group(1)
+                definition = context.definitions.get(str(path), {}).get(symbol)
+                present = symbol in context.base_symbols
+                own = definition is not None and definition <= first_appearance.get(symbol, 0)
+                if present or own:
+                    findings[index] = replace(finding, severity=Severity.REVIEW,
+                        rule='test-name-present-at-base' if present else 'test-name-agent-defined-before-output',
+                        evidence={'symbol_sha256':digest(symbol), 'base_present':present,
+                            'first_appearance_line':first_appearance.get(symbol),
+                            'definition_line':definition, 'archive_sha256':context.archive.get('sha256')})
+            break  # Same first matching probe as the legacy content scanner.
     for field_name, names in [('fail-to-pass', probes.fail_to_pass), ('pass-to-pass', probes.pass_to_pass)]:
-        seen = set()
         for name in names:
             symbol = _test_symbol(name)
-            if not symbol or symbol in seen:
+            if not symbol:
                 continue
-            seen.add(symbol)
-            pattern = re.compile(r'\b' + re.escape(symbol) + r'\b')
-            matches = [(i, line) for i, line in enumerate(text.splitlines(), 1) if pattern.search(line)]
-            if not matches:
+            first = first_appearance.get(symbol)
+            if first is None:
                 continue
-            first = matches[0][0]
             defined = context.definitions.get(str(path), {}).get(symbol)
             if symbol in context.base_symbols:
                 severity, rule = Severity.REVIEW, 'test-name-present-at-base'

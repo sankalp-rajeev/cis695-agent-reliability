@@ -83,13 +83,18 @@ def main():
         'descendants of base both count. A setup commit after base alone does not '
         'establish that an answer is available. Exact gold post-image blob presence '
         'is tested independently.', '',
-        '| Task | Future reachable | Future objects | Source-changing future commits | Gold blobs present / probed |',
-        '|---|---:|---:|---:|---:|']
+        '| Task | Future reachable | Future objects | Changed file categories | Gold added-line matches in future diff | Gold blobs present / probed |',
+        '|---|---:|---:|---|---:|---:|']
     for r,g in future:
         details = g.get('future_commit_details',[])
         blobs = g.get('gold_post_image_blobs',[])
+        categories = collections.Counter()
+        for detail in details:
+            categories.update(detail.get('changed_file_categories', {}))
+        description = ', '.join(f'{key}={value}' for key,value in sorted(categories.items()) if value) or 'identical tree'
         lines += [f'| {r["instance_id"]} | {g["future_reachable_count"]} | {g["future_object_count"]} | '
-                  f'{sum(d["changed_source_file_count"] > 0 for d in details)} | {sum(b["present"] for b in blobs)} / {len(blobs)} |']
+                  f'{description} | {sum(d.get("gold_added_line_match_count",0) for d in details)} | '
+                  f'{sum(b["present"] for b in blobs)} / {len(blobs)} |']
     lines += ['', 'Each `images/<iid>.json` records future commit hashes, changed-file counts, '
               'changed-source-file counts, hashed changed paths, object counts and gold blob '
               'hash/presence pairs. No commit messages, source text or patch lines are published.', '',

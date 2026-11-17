@@ -6,22 +6,25 @@ Never reads grader records, correctness labels, or verdict files.
 from __future__ import annotations
 
 import collections
-import dataclasses
-import importlib.util
 import json
-import re
 import subprocess
 import sys
 import types
 from pathlib import Path
 
-from reliability.benchmark.image_leakage import ROOT, archive_for, base_version
+from reliability.benchmark.image_leakage import archive_for, base_version
 from reliability.benchmark.leakage import (
-    OracleProbes, Severity, _test_symbol, audit_task, find_task_dirs, probes_from_oracle,
-    scan_files, without_base_lines,
+    _test_symbol,
+    audit_task,
+    find_task_dirs,
+    probes_from_oracle,
+    without_base_lines,
 )
 from reliability.benchmark.leakage_rules import (
-    AuditContext, definition_events, digest, symbols_at_base,
+    AuditContext,
+    definition_events,
+    digest,
+    symbols_at_base,
 )
 
 STUDY_ROOT = Path('/home/sankalp/projects/cis695-agent-reliability/runs')
@@ -94,8 +97,8 @@ def build_context(task, oracle, archive, pin, image, task_dir=None):
 
 
 def run_study(output, *, run_roots=None, image_root=None):
-    from reliability.benchmark.loader import load_instance, load_verified
     from reliability.benchmark.leakage import import_name_for_instance
+    from reliability.benchmark.loader import load_instance, load_verified
     dataset = load_verified()
     legacy = legacy_module()
     run_roots = run_roots or [STUDY_ROOT/r for r in STUDY_RUNS]
@@ -133,10 +136,14 @@ def run_study(output, *, run_roots=None, image_root=None):
         # Give it its own explicit rule so no golden finding silently vanishes.
         old_safe = [safe_finding(f) for f in old]
         new_safe = [safe_finding(f) for f in new]
+        available_reviews = collections.Counter((key(n), n['severity']) for n in new_safe)
         for finding in old_safe:
-            if finding['kind'] == 'fail-to-pass-name' and not any(
-                key(n) == key(finding) and n['severity'] == finding['severity'] for n in new_safe):
-                new_safe.append(dict(finding, rule='legacy-review-retained'))
+            identity = key(finding), finding['severity']
+            if finding['kind'] == 'fail-to-pass-name':
+                if available_reviews[identity]:
+                    available_reviews[identity] -= 1
+                else:
+                    new_safe.append(dict(finding, rule='legacy-review-retained'))
         golden = compare_golden(old_safe, new_safe)
         # Store only safe finding metadata and hashed symbols. The verifier
         # derives all symbol hashes itself by tokenizing the base archive.

@@ -1122,7 +1122,7 @@ def audit_task(
             content = scan_content(path, text, probes, authored)
             if context is not None:
                 from reliability.benchmark.leakage_rules import classify_test_names
-                content = classify_test_names(path, text, probes, context, content)
+                content = classify_test_names(path, text, probes, context, content, authored)
             findings.extend(content)
 
     return findings, len(files)

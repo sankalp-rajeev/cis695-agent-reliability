@@ -75,7 +75,7 @@ for dir in "${TASK_DIRS[@]}" "${GEN_DIRS[@]}"; do
     scanned=$((scanned + 1))
     if grep -nE "$FIELDS" "$dir/$name" > /dev/null 2>&1; then
       echo "field name present in $dir/$name (layer 2 classifies it)"
-      grep -nE "$FIELDS" "$dir/$name" | head -3
+      # Do not print matching source: a line may contain an oracle test name.
     fi
   done
   for ft in "$dir"/tests/test_repro_*.py; do
@@ -114,7 +114,7 @@ if [ ! -x "$PY" ]; then
   exit 1
 fi
 
-if ! "$PY" scripts/audit_leakage.py --runs "$RUNS_ROOT"; then
+if ! env -u PYTHONPATH PYTHONPATH=src "$PY" scripts/audit_leakage.py --runs "$RUNS_ROOT"; then
   failed=1
 fi
 

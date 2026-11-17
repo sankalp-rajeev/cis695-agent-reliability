@@ -10,9 +10,13 @@ from types import SimpleNamespace
 import pytest
 
 from reliability.benchmark.image_leakage import docker_command, post_images, run_image
-from reliability.benchmark.leakage import OracleProbes, Severity, audit_task, _test_symbol
+from reliability.benchmark.leakage import OracleProbes, Severity, _test_symbol, audit_task
 from reliability.benchmark.leakage_rules import (
-    AuditContext, command_rules, definition_events, digest, scan_commands, symbols_at_base,
+    AuditContext,
+    command_rules,
+    definition_events,
+    scan_commands,
+    symbols_at_base,
 )
 from reliability.verifier.source_integrity import BaseSourceSpec, SourceArchive
 
@@ -174,7 +178,7 @@ def test_probe_finds_dangling_and_reachable_future_commits(tmp_path, monkeypatch
     (tmp_path/'file').write_text('future\n'); git('commit', '-qam', 'future')
     future = git('rev-parse', 'HEAD').decode().strip()
     blob = git('hash-object', 'file').decode().strip()
-    original_run, original_pop, original_call = subprocess.run, subprocess.Popen, subprocess.call
+    original_pop = subprocess.Popen
     def translate(args):
         return [str(tmp_path) if a == '/testbed' else a for a in args]
     monkeypatch.setattr(image_probe, 'git', lambda args, data=None: subprocess.check_output(
@@ -189,3 +193,144 @@ def test_probe_finds_dangling_and_reachable_future_commits(tmp_path, monkeypatch
     second = image_probe.inspect_git(request)
     assert second['future_reachable_count'] == 0 and second['future_object_count'] == 1
     assert future in second['future_commit_hashes']
+
+
+def test_exact_hunk_offsets_and_missing_final_newline():
+    from reliability.benchmark.image_probe import apply_hunks
+    hunks = [{'start':1, 'lines':[(' ', 'anchor\n'), ('-', 'before\n'), ('+', 'after\n')]}]
+    assert apply_hunks(['prefix\n', 'anchor\n', 'before\n'], hunks) == b'prefix\nanchor\nafter\n'
+    no_newline = [{'start':1, 'lines':[('-', 'before\n'), ('\\', ' No newline\n'),
+                                     ('+', 'after\n'), ('\\', ' No newline\n')]}]
+    assert apply_hunks(['before'], no_newline) == b'after'
+    with pytest.raises(RuntimeError, match='exact-matches=0'):
+        apply_hunks(['unrelated\n'], hunks)
+
+
+def test_failed_file_write_does_not_define_a_test(tmp_path, context):
+    task = tmp_path/'synthetic'; task.mkdir()
+    symbol = 'test_invented_new'
+    text = conversation("cat > invented.py <<EOF\ndef test_invented_new(): pass\nEOF", 'write failed', 1)
+    (task/'trajectory.jsonl').write_text(text)
+    assert definition_events(task, [symbol])[str(task/'trajectory.jsonl')] == {}
+
+
+def test_head_file_selection_is_not_a_history_search(context):
+    assert command_rules('git show HEAD:invented.py', context) == []
+
+
+def test_package_cache_non_package_index_and_archive_metadata(tmp_path, monkeypatch):
+    from reliability.benchmark import image_probe
+    cache = tmp_path/'cache'; cache.mkdir()
+    (cache/'index.json').write_text('null')
+    import zipfile
+    wheel = cache/'opaque.body'
+    with zipfile.ZipFile(wheel, 'w') as archive:
+        archive.writestr('invented_pkg-2.0.dist-info/METADATA', 'Name: invented-pkg\nVersion: 2.0\n')
+    assert image_probe.archives_version(str(wheel), 'invented-pkg')[0]['version'] == '2.0'
+    original_walk = image_probe.os.walk
+    def walk(root, *args, **kwargs):
+        return original_walk(root, *args, **kwargs) if str(root) == str(cache) else iter([])
+    monkeypatch.setattr(image_probe.os, 'walk', walk)
+    result = image_probe.inspect_packages({'masked_paths':[str(cache)], 'package':'invented-pkg',
+        'import_name':'invented_pkg', 'base_version':'1.0'})
+    assert result['masked'][str(cache)]['file_count'] == 2
+    assert len(result['masked'][str(cache)]['repo_archives']) == 1
+
+
+def test_golden_preserves_duplicate_occurrences():
+    from reliability.benchmark.leakage_study import compare_golden
+    finding = dict(path='trajectory.jsonl', kind='invented', line_no=1, severity='review', rule='legacy')
+    assert not compare_golden([finding, finding], [finding, finding])['violations']
+    assert len(compare_golden([finding, finding], [finding])['violations']) == 1
+
+
+def test_golden_downgrade_requires_rule_three_evidence():
+    from reliability.benchmark.leakage_study import compare_golden
+    before = dict(path='trajectory.jsonl', kind='fail-to-pass-name', line_no=None, severity='confirmed', rule='legacy')
+    after = dict(before, severity='review', rule='test-name-present-at-base')
+    assert len(compare_golden([before], [after])['downgrades']) == 1
+    assert compare_golden([before], [dict(after,rule='unrelated')])['violations']
+
+
+@pytest.fixture
+def independent_report(tmp_path):
+    """A fully synthetic report with one supported rule-3 downgrade."""
+    import runpy
+    verifier = runpy.run_path(str(Path(__file__).resolve().parents[2]/'scripts/verify_leakage_gaps.py'))
+    archive = archive_fixture(tmp_path, 'def test_invented_fixture(): pass\n')
+    root = tmp_path/'report'; root.mkdir()
+    pin = {'path':str(archive.spec.archive_path), 'sha256':archive.spec.archive_sha256}
+    before = {'path':'trajectory.jsonl','kind':'fail-to-pass-name','line_no':None,
+              'severity':'confirmed','rule':'legacy','evidence':{}}
+    after = dict(before, severity='review',rule='test-name-present-at-base',
+                 evidence={'symbol_sha256':hashlib.sha256(b'test_invented_fixture').hexdigest(),
+                           'base_present':True})
+    downgrade = {'before':before,'after':after}
+    task = {'instance_id':'invented__fixture-1','run':'synthetic','role':'repair',
+            'archive':pin,'scanned_files':1,'findings':[after], 'legacy_findings':[before],
+            'golden':{'downgrades':[downgrade],'violations':[]}}
+    tasks = root/'tasks/synthetic/repair'; tasks.mkdir(parents=True)
+    (tasks/'invented__fixture-1.json').write_text(json.dumps(task))
+    summary = {'task_directories':1,'unique_tasks':1,'repair_directories':1,'generator_directories':0,
+               'scanned_files':1,'findings':1,'severity':{'review':1},'rules':{'test-name-present-at-base':1},
+               'legacy_findings':1,'downgrades':1,'golden_violations':0,'awareness_tasks':0,'confirmed_tasks':[]}
+    images = root/'images'; images.mkdir()
+    (images/'invented__fixture-1.json').write_text(json.dumps({'instance_id':'invented__fixture-1',
+        'checks':{'git':{'status':'complete','result':{}},'packages':{'status':'complete','result':{}}}}))
+    image_summary = {'cohort':1,'present':1,'missing':[],'incomplete':[],'future_history_images':0,
+        'future_reachable_images':0,'gold_blob_images':0,'gold_blobs_probed':0,
+        'different_version_copies':0,'different_version_tasks':[],'unresolved_copy_versions':0}
+    (root/'trajectory_summary.json').write_text(json.dumps(summary))
+    (root/'image_summary.json').write_text(json.dumps(image_summary))
+    (root/'downgrades.json').write_text(json.dumps([downgrade]))
+    (root/'REPORT.md').write_text('<!-- totals-json: '+json.dumps({'trajectory':summary,'images':image_summary})+' -->\n'
+        'Confirmed findings: 0; Benchmark-awareness findings: 0; '
+        '0 images contain commits after base; 0 images contain at least one exact gold; '
+        '0 unmasked package copies have; 0 copy versions remain unresolved')
+    return verifier, root, archive
+
+
+def test_independent_verifier_rechecks_synthetic_downgrade(independent_report):
+    verifier, root, _ = independent_report
+    assert verifier['verify'](root)['downgrades_rechecked'] == 1
+
+
+@pytest.mark.parametrize('tamper', ['archive', 'symbol', 'totals', 'report'])
+def test_independent_verifier_rejects_tampering(independent_report, tamper):
+    verifier, root, archive = independent_report
+    if tamper == 'archive':
+        archive.spec.archive_path.write_bytes(b'tampered')
+    elif tamper == 'symbol':
+        task_file = next((root/'tasks').glob('*/*/*.json'))
+        task = json.loads(task_file.read_text())
+        task['golden']['downgrades'][0]['after']['evidence']['symbol_sha256'] = '0'*64
+        task_file.write_text(json.dumps(task))
+    elif tamper == 'totals':
+        path = root/'trajectory_summary.json'; summary=json.loads(path.read_text())
+        summary['findings'] = 100; path.write_text(json.dumps(summary))
+    else:
+        path=root/'REPORT.md'; path.write_text(path.read_text().replace('Confirmed findings: 0','Confirmed findings: 5'))
+    with pytest.raises(ValueError):
+        verifier['verify'](root)
+
+
+def test_definition_probe_at_base_is_downgraded_with_reason(tmp_path, context):
+    task = tmp_path/'synthetic'; task.mkdir()
+    line = 'def test_invented_existing_different_signature(fixture):'
+    (task/'trajectory.jsonl').write_text(json.dumps({'role':'tool','content':line}))
+    context.base_symbols = frozenset({'test_invented_existing_different_signature'})
+    probes = OracleProbes('synthetic', test_patch_lines=(line,),
+                         fail_to_pass=('test_invented_existing_different_signature',))
+    findings, _ = audit_task(task, probes, context=context)
+    match = next(f for f in findings if f.kind=='test-patch-content')
+    assert match.severity is Severity.REVIEW and match.rule=='test-name-present-at-base'
+    assert match.evidence['symbol_sha256']
+
+
+def test_duplicate_parameterized_legacy_names_remain_counted(tmp_path, context):
+    task = tmp_path/'synthetic'; task.mkdir()
+    (task/'trajectory.jsonl').write_text(conversation('cat output', 'test_invented_parameter', 0))
+    context.base_symbols = frozenset({'test_invented_parameter'})
+    probes=OracleProbes('synthetic', fail_to_pass=('test_invented_parameter[a]','test_invented_parameter[b]'))
+    findings, _ = audit_task(task, probes, context=context)
+    assert len([f for f in findings if f.kind=='fail-to-pass-name']) == 2
