@@ -10,3 +10,13 @@
 - Publish registries and archives with atomic no-replace links, because existing artifacts must never be overwritten.
 - New Django choices use prepared_default=false, because Fix 17's rule used observed run commands and every frozen Django choice is false.
 - Do not push, because the user's current instruction supersedes the pasted push request.
+- Probe versions with /opt/miniconda3/bin/python, because some historical requests task interpreters are Python 2; the probe never imports repository code.
+- Limit base version assignments to the package root (and src/lib equivalents), because vendored dependencies inside a repo are not the repo's own version.
+- Keep successful probe stdout separate from stderr in PreparationContainer, because a Pylint dependency warning otherwise corrupts JSON; retain diagnostics separately.
+- Emit new .expanded.tar files only for exact Git-describe export bytes already proven by unchanged source_integrity, because both host and image Git 2.25 leave describe:tags=true unexpanded; preserve original archives and rerun the full guard.
+- Keep Sphinx 10614 registry-free, because its tox.ini sed edit is mixed with apt-get in the pinned spec and unchanged pre_install.source_edit_commands refuses that entire sequence as a byte-proof authority.
+- Keep all preparation attempts and publish new final registries, because the no-overwrite requirement also applies to partial registries.
+- The 500-named population contains 492 tasks and nine pilot instances, because all eight Verified requests instances are excluded and one pilot belongs to requests.
+- Exact OCI layer queries hit Docker Hub's unauthenticated pull limit; use amd64 tag sizes for explicitly qualified calibrated and conservative estimates, because metadata-only alternatives remain available without image pulls.
+- Compare unit failure/error identities with the local 7fefe1d reference, because count comparisons cannot establish absence of regressions; the first complete run has exactly the same 23 failing/error IDs and none newly passing.
+- Resolve each new task's pre_install projection separately, because an unsupported task/version must create its own failure row without blocking other tasks.
