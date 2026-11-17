@@ -5,35 +5,63 @@ import json
 from pathlib import Path
 
 from reliability.verifier.g1_reference import (
-    clean_reference as frozen_clean_reference,
     native_collected_ids,
-    project_collection as frozen_project_collection,
     published_spurious_ids,
     spurious_reference_ids,
 )
 from reliability.verifier.task_specs import ROOT, require_hash
 
 
-def _hygiene_seed(original, collection):
-    """Seed only proven INVALID_ID exclusions; never historical positive evidence.
+def clean_reference(original, collection, *, task, tree):
+    """Clean an empty original using only the current selected-slot evidence.
 
-    The frozen hygiene checker requires its published exclusions to be present
-    before removal. These negative identities disappear during cleaning and
-    cannot become an admission or drift reference.
+    The published exclusions concern the old pylint-4970 reference. A new
+    patch may select fewer of those IDs; only the selected intersection needs
+    removal, and every removed ID still needs the unchanged native proof.
     """
     if original.get('admitted_ids'):
         raise ValueError('Native G1 construction requires an empty original reference')
+    selected = {r['selected_id'] for r in collection['records']}
+    expected = published_spurious_ids() & selected if task == 'pylint-dev__pylint-4970' else set()
+    removed = set(spurious_reference_ids(collection, expected))
+    if removed != expected:
+        raise ValueError('Reference hygiene removal mismatch: ' + task + '/' + tree)
     evidence = dict(original)
-    evidence['admitted_ids'] = spurious_reference_ids(collection, published_spurious_ids())
+    for field in ('admitted_ids', 'skipped_reference_ids', 'module_skip_blocked_ids', 'drift_reference_ids'):
+        if field in evidence:
+            evidence[field] = sorted(set(evidence[field]) - removed)
+    evidence['excluded_spurious_ids'] = sorted(removed)
     return evidence
 
 
-def clean_reference(original, collection, *, task, tree):
-    return frozen_clean_reference(_hygiene_seed(original, collection), collection, task=task, tree=tree)
-
-
 def project_collection(task, tree, collection, original):
-    return frozen_project_collection(task, tree, collection, _hygiene_seed(original, collection))
+    # Same projection and guard thresholds as the frozen helper, with the
+    # selected-slot cleaner above instead of its old fixed-cohort assertion.
+    from reliability.verifier.regression import RunResult, TestResult, TestStatus
+    from reliability.verifier.run_health import health_for_run
+    reference = clean_reference(original, collection, task=task, tree=tree)
+    reference['g1_collected_ids'] = native_collected_ids(collection)
+    results, receipts = [], []
+    for raw in collection['records']:
+        row = dict(raw)
+        potential = bool(row.get('valid')) and not row.get('collector_fallback')
+        row['admitted'] = potential
+        receipts.append(row)
+        status = (TestStatus.SKIPPED if row.get('module_skip_reason') else TestStatus.PASSED) if potential else (
+            TestStatus.INVALID_ID if row.get('validation_status') == 'INVALID_ID' else
+            TestStatus.NOT_REACHED if row.get('failure_status') == 'NOT_REACHED' else
+            TestStatus.RUNNER_UNAVAILABLE if row.get('failure_status') == 'RUNNER_UNAVAILABLE' else
+            TestStatus.COLLECTION_ERROR)
+        results.append(TestResult(row['selected_id'], status))
+    run = RunResult(results=tuple(results), validation=tuple(receipts),
+                    requested_tests=tuple(r['selected_id'] for r in receipts),
+                    stage_health=tuple(collection.get('stage_health', ())))
+    health = health_for_run(task, tree, run, reference)
+    guard = health.get('G1_collected_guard', {'halt': False})
+    return {'G2': health['G2'], 'G1_collected_guard': guard, 'environment_drift': health['environment_drift'],
+            'halt': health['G2']['halt'] or guard['halt'] or health['environment_drift']['halt'],
+            'excluded_spurious_ids': reference['excluded_spurious_ids'],
+            'natively_collected_slots': len(reference['g1_collected_ids']), 'collection_only': True, 'tests_executed': 0}
 
 
 def load_drift(path=None):

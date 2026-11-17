@@ -5,13 +5,13 @@
 | Check | Result | Evidence |
 |---|---|---|
 | A1 | PASS, 83/83 | Package ArchiveTree and unchanged select_tests reproduce identical IDs and order; A1.json. |
-| A2 | PASS, 83/83 | All four policies match per-test outcomes and signals, with zero health halts; all 1,799 sealed files verified (3,488,110,239 bytes). A2.json and seal_check.json. |
-| A3 | PENDING | Depends on A2 signals. |
-| A4 | PENDING | Three Docker checks, no model calls, will use --skip-v4. |
+| A2 | Initial PASS, 83/83; final replay pending | All four policies match per-test outcomes and signals, with zero health halts; all 1,799 sealed files verified (3,488,110,239 bytes). A2.json and seal_check.json. |
+| A3 | PASS, 83 tasks | 14 ACCEPT / 67 FLAG / 2 REJECT; identical to Phase 7 primary S_invalid_excluded; zero unattributed differences. A3.json and decisions_83.csv. |
+| A4 | Initial PASS; final checkpoint rerun running | Django, native SymPy bin/test, and pytest all match sealed G1 identities and all four policy outcomes; --skip-v4 used. |
 | A4b | PASS | Prepared cohort/origin gives identical operational TaskSpec/BaseSourceSpec; wrong hash, duplicate ID, and missing field refused; A4b.json. |
-| A5 | PASS, focused mocked checks | Attributed V2 absences continue through V3/V4; systemic/integrity/budget stops and frozen-patch resume are covered. New tests total 33/33 pass; final suite pending. |
-| A6 | PROVISIONAL PASS | Approved offline cache resolves all 30 sandbox errors; no failed/error ID beyond the reference. New tests: 33/33 pass. Final suite and merge rerun pending. |
-| A7 | PENDING | Independent acceptance checker still to be completed. |
+| A5 | PASS, focused mocked checks | Attributed V2 absences continue through V3/V4; systemic/integrity/budget stops and frozen-patch resume are covered. New tests total 44/44 pass; final suite pending. |
+| A6 | PROVISIONAL PASS | Approved offline cache resolves all 30 sandbox errors; no failed/error ID beyond the reference. New tests: 44/44 pass. Final suite and merge rerun pending. |
+| A7 | Initial PASS; final checkpoint rerun pending | Standard-library-only checker rehashes registry/frozen sources, compares A1 recorded arrays and raw A2 outcomes, and checks live receipts and policies. |
 
 The shared schema is documented in docs/TASK_SPEC_SCHEMA.md. The generated registry SHA-256 is 076d929f1ba9917abdd367cb06a97bfa33b2a804e0d5082b43da342776fb06c2. Its two optional artifact-path fields rebuild PreInstallSpec without renaming or removing shared fields. The registry contains no patch, selection, outcome, or correctness data.
 

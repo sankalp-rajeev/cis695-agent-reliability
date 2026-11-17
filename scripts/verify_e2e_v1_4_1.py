@@ -191,8 +191,8 @@ def registry_check(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--task-specs', type=Path, default=ROOT / 'configs/e2e/task_specs_83.json')
-    parser.add_argument('--offline', type=Path, default=ROOT / 'runs/e2e_v1_4_1_checks/offline')
-    parser.add_argument('--live', type=Path, default=ROOT / 'runs/e2e_v1_4_1_checks/live_final')
+    parser.add_argument('--offline', type=Path, default=ROOT / 'runs/e2e_v1_4_1_checks/offline_final')
+    parser.add_argument('--live', type=Path, default=ROOT / 'runs/e2e_v1_4_1_checks/live_verified')
     parser.add_argument('--captures', type=Path, default=CAPTURES)
     args = parser.parse_args()
     metadata, registry_sha, django_choices = registry_check(args.task_specs)
@@ -291,6 +291,7 @@ def main():
     (report_dir / 'A4.json').write_text(json.dumps({'A4': 'PASS', 'live_root': str(args.live.resolve()), 'tasks': a4, 'model_calls': 0,
         'django_parallel_one_in_freeze': any(django_choices.values()), 'differences': []}, indent=2) + '\n')
     (report_dir / 'A7.json').write_text(json.dumps({'A7': 'PASS', 'registry_sha256': registry_sha,
+        'offline_root': str(args.offline.resolve()), 'live_root': str(args.live.resolve()),
         'A1': {'matched': a1, 'method': 'RECORDED_OUTPUT_ONLY; selector not independently reimplemented'},
         'A2': {'matched': a2, 'policies': list(POLICIES), 'health_halts': 0},
         'G1_manifest_sha256': g1_pin, 'frozen_artifacts': frozen,

@@ -61,3 +61,5 @@
 - Distinguish a preflight NOT_RUN V4 budget stop from a PARTIAL stop after paid usage; per-call ledger entries remain authoritative.
 - Re-run the three no-model live checks on the final runtime checkpoint after resume/input validation fixes; V2 selection, accounting, guards and decision semantics are unchanged.
 - A7 independently checks recorded selection arrays because reimplementing the multi-tier selector is not feasible in its minimal checker; this limitation is explicit in its output.
+- Supersede the negative-seed adapter: apply the published pylint-4970 hygiene list to the current selection intersection, with the unchanged native absence predicate; an empty original must not inherit the old fixed 16-ID selection requirement.
+- Re-run A1/A2 and the three no-model native-runner cases after the dynamic-selection hygiene correction; all guard thresholds and accounting/decision rules remain unchanged.
