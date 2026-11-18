@@ -1,0 +1,158 @@
+{
+  "archive": {
+    "base_commit": "f4e93919e4608cfc50849a1f764fd856e0917401",
+    "instance_id": "django__django-13212",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-13212.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "3e249f2def29df7904f2a2f9a473809d810b17cbf84d3e015b7c481bb9350cd5"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [
+        "patch.diff",
+        "repair_record.json"
+      ],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 88,
+      "occurrences": {
+        "model_output": {
+          "length": 96,
+          "line": 69,
+          "offset": 818,
+          "text_sha256": "02da735b27a4ddb44b992e5576f24feb8a667601129d43d1499b688fd499051a",
+          "trajectory": "trajectory.jsonl"
+        },
+        "tool_output": {
+          "length": 96,
+          "line": 80,
+          "offset": 857,
+          "text_sha256": "17431ef3927e062b0c6bea34ea691e1863e0a87d5644d0b8473de3722a4b0276",
+          "trajectory": "trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "c496d4bb790c7a4fc8a0e8c2fddda5a898df3ec03cbd34cd81f675e4e6965097",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [
+        "patch.diff",
+        "repair_record.json"
+      ],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 88,
+      "occurrences": {
+        "model_output": {
+          "length": 96,
+          "line": 71,
+          "offset": 105,
+          "text_sha256": "41a1929234c9e7c72e6ee574240df36757e1a2091b18f65801c40b2fcb4dcdfd",
+          "trajectory": "trajectory.jsonl"
+        },
+        "tool_output": {
+          "length": 96,
+          "line": 90,
+          "offset": 814,
+          "text_sha256": "57811a7ece91e8fc40718dddfac6f298206a8d3130530db2c341ab85b35dd312",
+          "trajectory": "trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "d3300356579254a3bb195b16be4cf62c6f9898b79d84b521d8467411477c00d0",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [
+        "patch.diff",
+        "repair_record.json"
+      ],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 94,
+      "occurrences": {
+        "model_output": {
+          "length": 104,
+          "line": 73,
+          "offset": 113,
+          "text_sha256": "c9cc176166cfb0451f8c27373adbd9ac204383f6b67c3aa63656b1d638cfc75c",
+          "trajectory": "trajectory.jsonl"
+        },
+        "tool_output": {
+          "length": 104,
+          "line": 90,
+          "offset": 1201,
+          "text_sha256": "57811a7ece91e8fc40718dddfac6f298206a8d3130530db2c341ab85b35dd312",
+          "trajectory": "trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "ddacde1ce2af96ebc99bd7d3aabafecb488911a1d962b85975939360413d44f0",
+      "rule": "distinctive-content-first-occurrence"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "django__django-13212",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "a0835b65571b65e10f1b7534e8d76c7d2d877cc4fb758e23f3b29a1602b09140",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 0,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 1,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "a4dce5f76dd9a364e1f43711cae96430ecb5f2cb40799b5d3a7ae8054f3a987e",
+  "raw_path": "tasks/e2e_v1_4_3_armB_um/repair/django__django-13212.json",
+  "reasons": [
+    "answer-model-output-first"
+  ],
+  "role": "repair",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "test-name-present-at-base"
+  ],
+  "run": "e2e_v1_4_3_armB_um",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-13212",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "trajectory.jsonl": "7f383d46525fb25282d2a26c841b6db8e3d6328ce2c65b70abdd6f9512ed8da4"
+  },
+  "underlying_tier": "T3"
+}

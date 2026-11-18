@@ -1,0 +1,119 @@
+{
+  "audit_fix_commit": "073294a6853d390a032f7f66a3e8b7b357e8a27b",
+  "audit_manifest_sha256": "ab576cff28861b03e311df7f0be2202495eb638307e6587153dcb51c346d4c90",
+  "checker_runs": {
+    "all_resolved": {
+      "all_live_decisions_checked": 92,
+      "counts_json_checked": true,
+      "known_answer_tests": [
+        "Wilson 11/14",
+        "Newcombe worked example",
+        "Fisher tea tasting",
+        "zero denominators"
+      ],
+      "mismatches": 0,
+      "paired": null,
+      "result": "PASS",
+      "rows_checked": 4867,
+      "stage": 2,
+      "tables_checked": 13
+    },
+    "all_wrong": {
+      "all_live_decisions_checked": 92,
+      "counts_json_checked": true,
+      "known_answer_tests": [
+        "Wilson 11/14",
+        "Newcombe worked example",
+        "Fisher tea tasting",
+        "zero denominators"
+      ],
+      "mismatches": 0,
+      "paired": null,
+      "result": "PASS",
+      "rows_checked": 4867,
+      "stage": 2,
+      "tables_checked": 13
+    },
+    "label_free": {
+      "all_live_decisions_checked": 92,
+      "counts_json_checked": true,
+      "known_answer_tests": [
+        "Wilson 11/14",
+        "Newcombe worked example",
+        "Fisher tea tasting",
+        "zero denominators"
+      ],
+      "mismatches": 0,
+      "paired": null,
+      "result": "PASS",
+      "rows_checked": 112,
+      "stage": 1,
+      "tables_checked": 3
+    },
+    "mixed": {
+      "all_live_decisions_checked": 92,
+      "counts_json_checked": true,
+      "known_answer_tests": [
+        "Wilson 11/14",
+        "Newcombe worked example",
+        "Fisher tea tasting",
+        "zero denominators"
+      ],
+      "mismatches": 0,
+      "paired": null,
+      "result": "PASS",
+      "rows_checked": 5103,
+      "stage": 2,
+      "tables_checked": 13
+    },
+    "self_pair": {
+      "all_live_decisions_checked": 92,
+      "counts_json_checked": true,
+      "known_answer_tests": [
+        "Wilson 11/14",
+        "Newcombe worked example",
+        "Fisher tea tasting",
+        "zero denominators"
+      ],
+      "mismatches": 0,
+      "paired": {
+        "different_correctness": 0,
+        "different_decision": 0,
+        "either": 0,
+        "shared_patch_tasks": 51
+      },
+      "result": "PASS",
+      "rows_checked": 5110,
+      "stage": 2,
+      "tables_checked": 15
+    }
+  },
+  "fixture_sha256": {
+    "labels_SYNTHETIC.csv": "1e9362620862ca9973dcec0e4bb81b9a1a4cab656256d16ed132c5b3227f2b4f",
+    "labels_SYNTHETIC_ALL_RESOLVED.csv": "cc262663ca513499a4d3049739bdc928821c5f74d624866fd4f18eeaea8c53a7",
+    "labels_SYNTHETIC_ALL_WRONG.csv": "6344187fe28b8a4b4bae69341205f49ee20aefe6c7f196349d66e15be1e24256"
+  },
+  "label_gate_checks": {
+    "analysis": "PASS",
+    "independent_checker": "PASS"
+  },
+  "real_labels_accessed": false,
+  "result": "PASS",
+  "script_sha256": {
+    "scripts/analyze_rerun_arm.py": "d084aa433f8f95a519dbc07ab128df3257e2c7f80ef25f696abcef989531b988",
+    "scripts/verify_rerun_arm_analysis.py": "7c1f950741b101b9d1941f767416aabd9c974664931f81cb11eb4b771e9eda95"
+  },
+  "seal_manifest_sha256": "8b9db5d3fc614ea43e56d5a5bf4db3619b708b7e720e9d77a0a8712058f9e9ee",
+  "synthetic_edge_checks": {
+    "all_resolved_patch_tasks": 51,
+    "all_wrong_patch_tasks": 51,
+    "self_pair": {
+      "different_correctness": 0,
+      "different_decision": 0,
+      "either": 0,
+      "shared_patch_tasks": 51
+    },
+    "zero_denominators": "NOT_AVAILABLE"
+  },
+  "synthetic_seed": 20261118
+}

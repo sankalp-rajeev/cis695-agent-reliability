@@ -1,0 +1,35 @@
+{
+  "archive": {
+    "base_commit": "f83b44075dafa429d59e8755aa47e15577cc49f9",
+    "instance_id": "django__django-13023",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-13023.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "0b3e23fd17b2f1decc95ee743badb54e33aeb502e05f2282fc769f5ac5b486b4"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "archive_sha256": "0b3e23fd17b2f1decc95ee743badb54e33aeb502e05f2282fc769f5ac5b486b4",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 6,
+        "symbol_sha256": "5665e74290490be383a2479c2fe9c8a693e67099896664c018add128ea81305e"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-13023/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "django__django-13023",
+  "legacy_findings": [],
+  "role": "repair",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-13023"
+}

@@ -1,0 +1,109 @@
+{
+  "archive": {
+    "base_commit": "c98bc4cd3d687fe9b392d8eecd905627191d4f06",
+    "instance_id": "pytest-dev__pytest-7236",
+    "path": "/home/sankalp/cg_repos/task_archives/pytest-dev__pytest-7236.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "c71daad03ecd5aea44e5c6773cd1028c5e258ce73fe41ff7a4ce2660776e9f65"
+  },
+  "findings": [
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 39,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pytest-dev__pytest-7236/verification/v4/cache/pytest-dev__pytest-7236/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "6ddb088372e0bee91473509711f23ae7434cb9f7fee50fc72d7f0a032d704329"
+      },
+      "kind": "git-history-search",
+      "line_no": 19,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pytest-dev__pytest-7236/verification/v4/cache/pytest-dev__pytest-7236/generation_trajectory.jsonl",
+      "rule": "history-git-fsck",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c71daad03ecd5aea44e5c6773cd1028c5e258ce73fe41ff7a4ce2660776e9f65",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 14,
+        "symbol_sha256": "0e44c9d2db1ecd7240fe995d71815483c3c028cbb6e2fdaddf1a50df96a26ea4"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pytest-dev__pytest-7236/verification/v4/cache/pytest-dev__pytest-7236/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c71daad03ecd5aea44e5c6773cd1028c5e258ce73fe41ff7a4ce2660776e9f65",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 16,
+        "symbol_sha256": "2efd1c455d481eec55edc37f4b57a7152ff4b72d02a4c0009b446e63c0ffb695"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pytest-dev__pytest-7236/verification/v4/cache/pytest-dev__pytest-7236/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c71daad03ecd5aea44e5c6773cd1028c5e258ce73fe41ff7a4ce2660776e9f65",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 14,
+        "symbol_sha256": "445c33f3c1a7ca08d1df5f3a9f1791c28542730c31babe9eb8ff56fc4d671042"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pytest-dev__pytest-7236/verification/v4/cache/pytest-dev__pytest-7236/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c71daad03ecd5aea44e5c6773cd1028c5e258ce73fe41ff7a4ce2660776e9f65",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 14,
+        "symbol_sha256": "af865c51c0f5cb0063085fbd0668ea3edfdda3e61c057728579f42ce8ce91faf"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pytest-dev__pytest-7236/verification/v4/cache/pytest-dev__pytest-7236/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "c71daad03ecd5aea44e5c6773cd1028c5e258ce73fe41ff7a4ce2660776e9f65",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 16,
+        "symbol_sha256": "07818c082f83ab771130583eef787dafc1236d7df7854c6a54808d992804118b"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pytest-dev__pytest-7236/verification/v4/cache/pytest-dev__pytest-7236/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "pytest-dev__pytest-7236",
+  "legacy_findings": [],
+  "role": "generator",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 3,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pytest-dev__pytest-7236/verification/v4/cache/pytest-dev__pytest-7236"
+}

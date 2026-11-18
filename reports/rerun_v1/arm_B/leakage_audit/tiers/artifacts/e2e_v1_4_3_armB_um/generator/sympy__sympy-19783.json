@@ -1,0 +1,60 @@
+{
+  "archive": {
+    "base_commit": "586a43201d0357e92e8c93548d69a9f42bf548f4",
+    "instance_id": "sympy__sympy-19783",
+    "path": "/home/sankalp/cg_repos/task_archives/sympy__sympy-19783.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "b5463b4f43e379ad1eca071f4a77a8b5e952618ef3f8dc1b3d413be10a41cfd3"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "category": "history",
+      "command_line": 25,
+      "command_sha256": "17cf8b4a8ed47af209c930d48200b1245ff19c5f1dcd04be822498829d44a5bd",
+      "raw_finding_index": 0,
+      "rule": "history-git-fsck",
+      "setup_only": false,
+      "tool_line": 26
+    }
+  ],
+  "first_seen_in": [],
+  "history_gold": [],
+  "instance_id": "sympy__sympy-19783",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "76dea75bd893c05c2c9a9399f3bcfab6807c7ef41c0ff0a02e64f91da23cc071",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 1,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "e1fe681a9fe899435f207579b157a560002c451f0a4d29a91498b0994d62683c",
+  "raw_path": "tasks/e2e_v1_4_3_armB_um/generator/sympy__sympy-19783.json",
+  "reasons": [
+    "history-attempt-no-distinctive-answer"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "history-git-fsck",
+    "test-name-present-at-base"
+  ],
+  "run": "e2e_v1_4_3_armB_um",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sympy__sympy-19783/verification/v4/cache/sympy__sympy-19783",
+  "tier": "T2",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "24ca0355493fb65f171fb151903d0480398e8556a709c5b7075a5d7c1fcc42aa"
+  },
+  "underlying_tier": "T2"
+}

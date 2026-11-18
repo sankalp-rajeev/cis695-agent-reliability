@@ -1,0 +1,49 @@
+{
+  "archive": {
+    "base_commit": "1d1619ef913b99b06647d2030bddff4800abdf63",
+    "instance_id": "pylint-dev__pylint-4661",
+    "path": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-4661.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "4b8d946b14620123dbdd0a42ecb504727a32298d00e07bc07a201ef9ae1fcfe8"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "archive_sha256": "4b8d946b14620123dbdd0a42ecb504727a32298d00e07bc07a201ef9ae1fcfe8",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 81,
+        "symbol_sha256": "4354322f068fdc42979df5ef0c20a036ac1b58b85f04812f49be4dff4bcc0183"
+      },
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pylint-dev__pylint-4661/repair_record.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "4b8d946b14620123dbdd0a42ecb504727a32298d00e07bc07a201ef9ae1fcfe8",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 133,
+        "symbol_sha256": "4354322f068fdc42979df5ef0c20a036ac1b58b85f04812f49be4dff4bcc0183"
+      },
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pylint-dev__pylint-4661/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "pylint-dev__pylint-4661",
+  "legacy_findings": [],
+  "role": "repair",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pylint-dev__pylint-4661"
+}

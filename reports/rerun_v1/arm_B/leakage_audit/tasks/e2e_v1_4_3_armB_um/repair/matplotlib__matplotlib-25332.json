@@ -1,0 +1,49 @@
+{
+  "archive": {
+    "base_commit": "66ba515e671638971bd11a34cff12c107a437e0b",
+    "instance_id": "matplotlib__matplotlib-25332",
+    "path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-25332.tar",
+    "pin_origin": "audit-initial-inventory",
+    "sha256": "e154fa1fc88acb17f2b0cb2a4e1b2b8832d2d0eb211b15f4759783ece96ebc0a"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "archive_sha256": "e154fa1fc88acb17f2b0cb2a4e1b2b8832d2d0eb211b15f4759783ece96ebc0a",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 12410,
+        "symbol_sha256": "9d1451b827e0eb0f976a003219c56e6f77b8a5946502ea9d682254586f3c2164"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/matplotlib__matplotlib-25332/verification_record.full-v1.4.1.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "e154fa1fc88acb17f2b0cb2a4e1b2b8832d2d0eb211b15f4759783ece96ebc0a",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 12540,
+        "symbol_sha256": "465654c48162e72e7bc18468c171fa8f493d4d3c66a0dd441a07174052038db4"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/matplotlib__matplotlib-25332/verification_record.full-v1.4.1.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "matplotlib__matplotlib-25332",
+  "legacy_findings": [],
+  "role": "repair",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/matplotlib__matplotlib-25332"
+}

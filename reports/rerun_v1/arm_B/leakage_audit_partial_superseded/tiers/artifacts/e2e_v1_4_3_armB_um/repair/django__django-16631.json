@@ -1,0 +1,131 @@
+{
+  "archive": {
+    "base_commit": "9b224579875e30203d079cc2fee83b116d98eb78",
+    "instance_id": "django__django-16631",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-16631.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "3f304d24d2539f01996a502ee8789cd957f5b284dd31dc4b06523a14d6fead32"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [
+        "patch.diff",
+        "repair_record.json"
+      ],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 50,
+      "occurrences": {
+        "model_output": {
+          "length": 53,
+          "line": 88,
+          "offset": 557,
+          "text_sha256": "d9fa4d64ac5aa7e61637281524f963125d8474ed29763578ee2e3b82197ae0ce",
+          "trajectory": "trajectory.jsonl"
+        },
+        "tool_output": {
+          "length": 53,
+          "line": 91,
+          "offset": 449,
+          "text_sha256": "5cef6e30bae931c3b5812b6ff725a4b23867895b015016463e3d30541802db2d",
+          "trajectory": "trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "9eef1b49ce45204b54f6938930c1f35f43ad322503914dae2e18c813cb977f83",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "category": "history",
+      "command_line": 148,
+      "command_sha256": "2da02800f6ae58be6316e3eac42cd26ab2ab450b906bfd5ab8e707cc1bf0543a",
+      "raw_finding_index": 0,
+      "rule": "history-git-diff",
+      "setup_only": false,
+      "tool_line": 149
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "django__django-16631",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "95e927b735924e16e907472f60abdc1ee76dfbbb2499c69c952601e887c82731",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 1,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 2,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 3,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 4,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "fe8dcffe07565310df6ce18872d6c5d8ef6c1d639e673b18b3c3cb348bdd0806",
+  "raw_path": "tasks/e2e_v1_4_3_armB_um/repair/django__django-16631.json",
+  "reasons": [
+    "answer-model-output-first",
+    "history-attempt-no-distinctive-answer"
+  ],
+  "role": "repair",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "history-git-diff",
+    "test-name-present-at-base"
+  ],
+  "run": "e2e_v1_4_3_armB_um",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-16631",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "trajectory.jsonl": "2ff1cd5973207648434d499b08207098e57b6b1e6f557f8debd3561acbecbd88"
+  },
+  "underlying_tier": "T3"
+}

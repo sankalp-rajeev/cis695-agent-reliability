@@ -1,0 +1,60 @@
+{
+  "archive": {
+    "base_commit": "6500928dc0e57be8f06d1162eacc3ba5e2eff692",
+    "instance_id": "astropy__astropy-13398",
+    "path": "/home/sankalp/cg_repos/task_archives/astropy__astropy-13398.tar",
+    "pin_origin": "audit-initial-inventory",
+    "sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0"
+  },
+  "comparable": false,
+  "excluded": false,
+  "facts": [
+    {
+      "category": "history",
+      "command_line": 58,
+      "command_sha256": "4ae9211f9b97cf811fb8a035a607c8af917cdd9239ebd5b100aa71e27c361445",
+      "raw_finding_index": 0,
+      "rule": "history-git-diff",
+      "setup_only": false,
+      "tool_line": 59
+    }
+  ],
+  "first_seen_in": [],
+  "history_gold": [],
+  "instance_id": "astropy__astropy-13398",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "9042ae016263e66d5e8d08711f054446da1b3aae8a8bdd3740aec3d63bfa84cd",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 1,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "47aa85d3c1be4bfbcb6bfc83668437c9d200274b5c39f66ea430bf0bfafca35c",
+  "raw_path": "tasks/e2e_v1_4_3_armB_um/repair/astropy__astropy-13398.json",
+  "reasons": [
+    "history-attempt-no-distinctive-answer"
+  ],
+  "role": "repair",
+  "rule_names": [
+    "history-git-diff",
+    "test-name-present-at-base"
+  ],
+  "run": "e2e_v1_4_3_armB_um",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/astropy__astropy-13398",
+  "tier": "T2",
+  "trajectory_sha256": {
+    "trajectory.jsonl": "990bb5832700a6beb067cfc8096e4c1d94ddba25066a3f982b8ae8fab9f7b6f7"
+  },
+  "underlying_tier": "T2"
+}

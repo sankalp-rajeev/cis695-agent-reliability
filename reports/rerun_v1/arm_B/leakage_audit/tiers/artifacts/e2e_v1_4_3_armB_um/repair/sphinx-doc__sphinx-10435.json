@@ -1,0 +1,71 @@
+{
+  "archive": {
+    "base_commit": "f1061c012e214f16fd8790dec3c283d787e3daa8",
+    "instance_id": "sphinx-doc__sphinx-10435",
+    "path": "/home/sankalp/cg_repos/task_archives/sphinx-doc__sphinx-10435.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "14f4bb6001c30c652150a969de8746c6dbcdb9d465a2423671ffcd29ecc33abd"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 32,
+      "occurrences": {
+        "model_output": {
+          "length": 32,
+          "line": 32,
+          "offset": 705,
+          "text_sha256": "72624e26453958f2ac4e90407df0adf5155a513eb3b9dedb86ddbae098f39710",
+          "trajectory": "trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "6ac034a3bb40d92c17bf626beeb281c25dbf49d26aeece79defe425e37b35a7a",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "category": "history",
+      "command_line": 124,
+      "command_sha256": "c00a1a628d0a3526f54a1333dde7e8608f3553e029a923584439888edc7cc696",
+      "raw_finding_index": 0,
+      "rule": "history-git-diff",
+      "setup_only": false,
+      "tool_line": 125
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "sphinx-doc__sphinx-10435",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "4afbfe3870a908f866423bd26dac7e193e28ae513d822859caad97cb5d085231",
+  "raw_finding_interpretations": [],
+  "raw_findings_sha256": "5ff422c90c8865ba22419a593bc4820b29f6dc158fac8caf8f9dc5d427f8931e",
+  "raw_path": "tasks/e2e_v1_4_3_armB_um/repair/sphinx-doc__sphinx-10435.json",
+  "reasons": [
+    "answer-model-output-first",
+    "history-attempt-no-distinctive-answer"
+  ],
+  "role": "repair",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "history-git-diff"
+  ],
+  "run": "e2e_v1_4_3_armB_um",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10435",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "trajectory.jsonl": "a34a1b0d18306a6632ef932f5d60a10dde2b2c552194f45e6308eb0d8a4e3f67"
+  },
+  "underlying_tier": "T3"
+}

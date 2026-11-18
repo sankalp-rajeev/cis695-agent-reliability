@@ -1,0 +1,45 @@
+{
+  "archive": {
+    "base_commit": "586a43201d0357e92e8c93548d69a9f42bf548f4",
+    "instance_id": "sympy__sympy-19783",
+    "path": "/home/sankalp/cg_repos/task_archives/sympy__sympy-19783.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "b5463b4f43e379ad1eca071f4a77a8b5e952618ef3f8dc1b3d413be10a41cfd3"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "command_sha256": "17cf8b4a8ed47af209c930d48200b1245ff19c5f1dcd04be822498829d44a5bd"
+      },
+      "kind": "git-history-search",
+      "line_no": 25,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sympy__sympy-19783/verification/v4/cache/sympy__sympy-19783/generation_trajectory.jsonl",
+      "rule": "history-git-fsck",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "b5463b4f43e379ad1eca071f4a77a8b5e952618ef3f8dc1b3d413be10a41cfd3",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "dec929c214f5bffb614e56502fa47e11eac3fb11915a0aff6f0baec2945e5274"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sympy__sympy-19783/verification/v4/cache/sympy__sympy-19783/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "sympy__sympy-19783",
+  "legacy_findings": [],
+  "role": "generator",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sympy__sympy-19783/verification/v4/cache/sympy__sympy-19783"
+}

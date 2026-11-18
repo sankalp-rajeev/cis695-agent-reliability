@@ -1,0 +1,175 @@
+{
+  "archive": {
+    "base_commit": "684a1d6aa0a6791e20078bc524f97c8906332390",
+    "instance_id": "pylint-dev__pylint-7277",
+    "path": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-7277.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "baac4682f2541d8489225f5e3049f46e605e14fb89a70290d447e50c1ed46aa2"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "command_sha256": "aecf95cf2000962f500892f59ad844e262b351fef35e2073f890fb4b1475f98b"
+      },
+      "kind": "git-history-search",
+      "line_no": 9,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pylint-dev__pylint-7277/verification/v4/cache/pylint-dev__pylint-7277/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "1680d22db363a05f324def9d35a8db5fff8013f2dc5b01b87b468c6f6fca7d5c"
+      },
+      "kind": "git-history-search",
+      "line_no": 21,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pylint-dev__pylint-7277/verification/v4/cache/pylint-dev__pylint-7277/generation_trajectory.jsonl",
+      "rule": "history-git-fsck",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "1680d22db363a05f324def9d35a8db5fff8013f2dc5b01b87b468c6f6fca7d5c"
+      },
+      "kind": "git-history-search",
+      "line_no": 21,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pylint-dev__pylint-7277/verification/v4/cache/pylint-dev__pylint-7277/generation_trajectory.jsonl",
+      "rule": "history-git-reflog",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-fsck",
+        "command_line": 21,
+        "command_sha256": "1680d22db363a05f324def9d35a8db5fff8013f2dc5b01b87b468c6f6fca7d5c",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 22,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pylint-dev__pylint-7277/verification/v4/cache/pylint-dev__pylint-7277/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-reflog",
+        "command_line": 21,
+        "command_sha256": "1680d22db363a05f324def9d35a8db5fff8013f2dc5b01b87b468c6f6fca7d5c",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 22,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pylint-dev__pylint-7277/verification/v4/cache/pylint-dev__pylint-7277/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "baac4682f2541d8489225f5e3049f46e605e14fb89a70290d447e50c1ed46aa2",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 6,
+        "symbol_sha256": "ca6b097b63abf2a4f36f4f7da0178224c448686f5eb3340f5b063c5937d4e329"
+      },
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pylint-dev__pylint-7277/verification/v4/cache/pylint-dev__pylint-7277/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "baac4682f2541d8489225f5e3049f46e605e14fb89a70290d447e50c1ed46aa2",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "3eb3eb247b03973345ecc33b200da9ec8b3abb7320a5aa4a062a72289e0ec3f7"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pylint-dev__pylint-7277/verification/v4/cache/pylint-dev__pylint-7277/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "baac4682f2541d8489225f5e3049f46e605e14fb89a70290d447e50c1ed46aa2",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "3eb3eb247b03973345ecc33b200da9ec8b3abb7320a5aa4a062a72289e0ec3f7"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pylint-dev__pylint-7277/verification/v4/cache/pylint-dev__pylint-7277/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "baac4682f2541d8489225f5e3049f46e605e14fb89a70290d447e50c1ed46aa2",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "3eb3eb247b03973345ecc33b200da9ec8b3abb7320a5aa4a062a72289e0ec3f7"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pylint-dev__pylint-7277/verification/v4/cache/pylint-dev__pylint-7277/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "baac4682f2541d8489225f5e3049f46e605e14fb89a70290d447e50c1ed46aa2",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "3eb3eb247b03973345ecc33b200da9ec8b3abb7320a5aa4a062a72289e0ec3f7"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pylint-dev__pylint-7277/verification/v4/cache/pylint-dev__pylint-7277/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "baac4682f2541d8489225f5e3049f46e605e14fb89a70290d447e50c1ed46aa2",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "c74db2c6f312b6e5465cc40f27f6f1c1b9472f8752b7e2a59f91cf6bef84954a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pylint-dev__pylint-7277/verification/v4/cache/pylint-dev__pylint-7277/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "baac4682f2541d8489225f5e3049f46e605e14fb89a70290d447e50c1ed46aa2",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 8,
+        "symbol_sha256": "c74db2c6f312b6e5465cc40f27f6f1c1b9472f8752b7e2a59f91cf6bef84954a"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pylint-dev__pylint-7277/verification/v4/cache/pylint-dev__pylint-7277/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "pylint-dev__pylint-7277",
+  "legacy_findings": [],
+  "role": "generator",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 4,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pylint-dev__pylint-7277/verification/v4/cache/pylint-dev__pylint-7277"
+}

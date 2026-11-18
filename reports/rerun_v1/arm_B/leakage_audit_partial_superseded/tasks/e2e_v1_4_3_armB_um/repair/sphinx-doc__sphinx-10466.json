@@ -1,0 +1,35 @@
+{
+  "archive": {
+    "base_commit": "cab2d93076d0cca7c53fac885f927dde3e2a5fec",
+    "instance_id": "sphinx-doc__sphinx-10466",
+    "path": "/home/sankalp/cg_repos/task_archives/sphinx-doc__sphinx-10466.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "311723ac277e0aa438a7b32ef9b644ce737def09175a38e1424ff894cbeb388a"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "archive_sha256": "311723ac277e0aa438a7b32ef9b644ce737def09175a38e1424ff894cbeb388a",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 30008,
+        "symbol_sha256": "afdaefe1cc1a86665361fe8d0540137cf10311c80262c3a4856a5cd0eaf04650"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10466/verification_record.full-v1.4.1.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "sphinx-doc__sphinx-10466",
+  "legacy_findings": [],
+  "role": "repair",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10466"
+}

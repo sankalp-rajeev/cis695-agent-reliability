@@ -1,0 +1,49 @@
+{
+  "archive": {
+    "base_commit": "f4e93919e4608cfc50849a1f764fd856e0917401",
+    "instance_id": "django__django-13212",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-13212.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "3e249f2def29df7904f2a2f9a473809d810b17cbf84d3e015b7c481bb9350cd5"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "archive_sha256": "3e249f2def29df7904f2a2f9a473809d810b17cbf84d3e015b7c481bb9350cd5",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 589,
+        "symbol_sha256": "b96830e43aee96c112a4aa73d0b9dd305e96f7d8196474d42afa9e150e735761"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-13212/verification_record.full-v1.4.1.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "3e249f2def29df7904f2a2f9a473809d810b17cbf84d3e015b7c481bb9350cd5",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 590,
+        "symbol_sha256": "6b5e2d9346c6b0df4f8220095686b12626376c086eafd77a84140e3d423d4f0e"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-13212/verification_record.full-v1.4.1.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "django__django-13212",
+  "legacy_findings": [],
+  "role": "repair",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-13212"
+}

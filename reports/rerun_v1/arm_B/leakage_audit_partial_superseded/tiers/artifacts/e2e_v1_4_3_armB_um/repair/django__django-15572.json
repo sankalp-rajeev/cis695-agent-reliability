@@ -1,0 +1,223 @@
+{
+  "archive": {
+    "base_commit": "0b31e024873681e187b574fe1c4afe5e48aeeecf",
+    "instance_id": "django__django-15572",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-15572.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "d93ff6be9297a2893a4f9e72e6634f64a1fb0c0b3fafc4f3599e1672bdc71c94"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [
+        "patch.diff",
+        "repair_record.json"
+      ],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 62,
+      "occurrences": {
+        "model_output": {
+          "length": 70,
+          "line": 13,
+          "offset": 1291,
+          "text_sha256": "6c678192dedc4decb4beac89cc2d6e2583d17224415ae42eca6e8e1b90584d8c",
+          "trajectory": "trajectory.jsonl"
+        },
+        "tool_output": {
+          "length": 70,
+          "line": 18,
+          "offset": 643,
+          "text_sha256": "cd7426a8693530592ee9b9a6010558349057f36b606dc1a99e14075e60ddecf7",
+          "trajectory": "trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "9d67f6ccf8ec61188bb9c042cb1fc4581461cffee06455195a3249829f8060fb",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [
+        "patch.diff",
+        "repair_record.json"
+      ],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 42,
+      "occurrences": {
+        "model_output": {
+          "length": 46,
+          "line": 15,
+          "offset": 362,
+          "text_sha256": "28077f083551a26e3abdfee400175346fef079f58be220df3c12c6df2ec99055",
+          "trajectory": "trajectory.jsonl"
+        },
+        "tool_output": {
+          "length": 46,
+          "line": 32,
+          "offset": 1150,
+          "text_sha256": "594c921c455968e8b19507df0958d05af78283fa4b5b2c06af93f89f6ee08f41",
+          "trajectory": "trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "170153a38c073fb86a96b9271c4ffc850c3be199585c751038df9d5bae48f324",
+      "rule": "distinctive-content-first-occurrence"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "django__django-15572",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "05bed6a69aff7e675918f6b809bdd10c3118ad0ff88f17f960d263abd619c971",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 0,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 1,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 2,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 3,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 4,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 5,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 6,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 7,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 8,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 9,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "48f7d4faec0393df05317b8f08c76647e6d3c2a47b1eed0c7f9ad7299c9ea57a",
+  "raw_path": "tasks/e2e_v1_4_3_armB_um/repair/django__django-15572.json",
+  "reasons": [
+    "answer-model-output-first"
+  ],
+  "role": "repair",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "test-name-present-at-base"
+  ],
+  "run": "e2e_v1_4_3_armB_um",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-15572",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "trajectory.jsonl": "2e34fbec97da73fdb73be6776b8e54dab83ea6575f79a1a4b1967209d721ea56"
+  },
+  "underlying_tier": "T3"
+}

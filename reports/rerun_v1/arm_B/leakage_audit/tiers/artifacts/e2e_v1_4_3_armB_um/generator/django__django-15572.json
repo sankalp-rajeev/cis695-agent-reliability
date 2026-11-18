@@ -1,0 +1,254 @@
+{
+  "archive": {
+    "base_commit": "0b31e024873681e187b574fe1c4afe5e48aeeecf",
+    "instance_id": "django__django-15572",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-15572.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "d93ff6be9297a2893a4f9e72e6634f64a1fb0c0b3fafc4f3599e1672bdc71c94"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 62,
+      "occurrences": {
+        "model_output": {
+          "length": 70,
+          "line": 13,
+          "offset": 1445,
+          "text_sha256": "a6e17ee8ce23a291bd96e7515dd58a76e86d815ca4dce03134e8a61871a249c4",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "9d67f6ccf8ec61188bb9c042cb1fc4581461cffee06455195a3249829f8060fb",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 42,
+      "occurrences": {
+        "model_output": {
+          "length": 46,
+          "line": 13,
+          "offset": 1779,
+          "text_sha256": "a6e17ee8ce23a291bd96e7515dd58a76e86d815ca4dce03134e8a61871a249c4",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "170153a38c073fb86a96b9271c4ffc850c3be199585c751038df9d5bae48f324",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "test_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 61,
+      "occurrences": {
+        "model_output": {
+          "length": 62,
+          "line": 11,
+          "offset": 5987,
+          "text_sha256": "b7c86f9143e02323a121d87f55635c2131271d359ab7684e03759ce30ede07c0",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "bc5d0f68958fcce379951adf541326e6031fe95e439821c0de99110a7e58177d",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "category": "history",
+      "command_line": 5,
+      "command_sha256": "f8360cac8f685fac98c618456e5beb63fdc7140bf4c12c497d4b109cd58826e9",
+      "raw_finding_index": 0,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 6
+    },
+    {
+      "category": "history",
+      "command_line": 7,
+      "command_sha256": "ac475b6cd453f4592db1d6fc7f31f08340d1b8a1db439b15eaae3d0b5b360638",
+      "raw_finding_index": 1,
+      "rule": "history-git-show",
+      "setup_only": false,
+      "tool_line": 8
+    },
+    {
+      "category": "history",
+      "command_line": 9,
+      "command_sha256": "17199a7fdf557474d5fa1819af4a95938ee684c0e04d52d22f2e5a5c061c4763",
+      "raw_finding_index": 2,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 10
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "django__django-15572",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "ae68e3e157fb66e9b72761b0a62bd57bc5007364021f6e0211656cdc9aa70655",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 3,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 4,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 5,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 6,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 7,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 8,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 9,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 10,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 11,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 12,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "96c991fa436b88de29372f888ce62d2f5d2bfd5f18c3ebae398ce9b698d5d516",
+  "raw_path": "tasks/e2e_v1_4_3_armB_um/generator/django__django-15572.json",
+  "reasons": [
+    "answer-model-output-first",
+    "history-attempt-no-distinctive-answer"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "history-git-log",
+    "history-git-show",
+    "test-name-present-at-base"
+  ],
+  "run": "e2e_v1_4_3_armB_um",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-15572/verification/v4/cache/django__django-15572",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "61d439a8fbec1e344d8924c121216ecc56db33a0f6886b8ca7f708a70fa90407"
+  },
+  "underlying_tier": "T3"
+}

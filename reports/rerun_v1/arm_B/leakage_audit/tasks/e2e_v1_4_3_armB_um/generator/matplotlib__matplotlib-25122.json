@@ -1,0 +1,64 @@
+{
+  "archive": {
+    "base_commit": "5ec2bd279729ff534719b8bf238dbbca907b93c5",
+    "instance_id": "matplotlib__matplotlib-25122",
+    "path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-25122.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "55447bb4a7814a92d07a4c4e2db9a51023a2fcd83e5a7066e34af1df669030ef"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "command_sha256": "1fc8ade5dcf270b70f390e429529474dcb7e0f8fc59fc098c8d146a7c84ac26c"
+      },
+      "kind": "git-history-search",
+      "line_no": 9,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/matplotlib__matplotlib-25122/verification/v4/cache/matplotlib__matplotlib-25122/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "830e0e1887a9076e687b1614d3510d86ea7f7cffff342a17e0cb758278f524a7"
+      },
+      "kind": "git-history-search",
+      "line_no": 11,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/matplotlib__matplotlib-25122/verification/v4/cache/matplotlib__matplotlib-25122/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "e1e270067afc59b528cdbdbf8a11baf1e85f8257700aae743c266ef33b898845"
+      },
+      "kind": "git-history-search",
+      "line_no": 24,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/matplotlib__matplotlib-25122/verification/v4/cache/matplotlib__matplotlib-25122/generation_trajectory.jsonl",
+      "rule": "history-git-fsck",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-fsck",
+        "command_line": 24,
+        "command_sha256": "e1e270067afc59b528cdbdbf8a11baf1e85f8257700aae743c266ef33b898845",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 25,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/matplotlib__matplotlib-25122/verification/v4/cache/matplotlib__matplotlib-25122/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "matplotlib__matplotlib-25122",
+  "legacy_findings": [],
+  "role": "generator",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/matplotlib__matplotlib-25122/verification/v4/cache/matplotlib__matplotlib-25122"
+}

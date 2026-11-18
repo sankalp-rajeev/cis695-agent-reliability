@@ -1,0 +1,97 @@
+{
+  "archive": {
+    "base_commit": "8aba863a634f40560e25055d179220f0eefabe9a",
+    "instance_id": "pytest-dev__pytest-5809",
+    "path": "/home/sankalp/cg_repos/task_archives/pytest-dev__pytest-5809.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "8690468c8668fa44be1553d6e5742dbcbd63deaf7453f22ce2e84fa360b27d3c"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "command_sha256": "7cf7918bba02de2904fb15ca7a874f240bde7acd5e8ef0108a68807940dc606e"
+      },
+      "kind": "git-history-search",
+      "line_no": 95,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pytest-dev__pytest-5809/trajectory.jsonl",
+      "rule": "history-git-diff",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "8aad7e7063ddd538545d38033f21e794f7518b92ebf4ba6122d9469aabeba7dd"
+      },
+      "kind": "git-history-search",
+      "line_no": 97,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pytest-dev__pytest-5809/trajectory.jsonl",
+      "rule": "history-git-diff",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "8690468c8668fa44be1553d6e5742dbcbd63deaf7453f22ce2e84fa360b27d3c",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 43,
+        "symbol_sha256": "293fe257a18ca4684589630382e4c802c0dfc50e76ab4672885b0d3d8c5169b3"
+      },
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pytest-dev__pytest-5809/verification_record.full-v1.4.1.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "8690468c8668fa44be1553d6e5742dbcbd63deaf7453f22ce2e84fa360b27d3c",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 40,
+        "symbol_sha256": "346040d81ac0d5a63ca24cfe6940a7096e35700418b8fe9464fc00caf33e7544"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pytest-dev__pytest-5809/verification_record.full-v1.4.1.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "8690468c8668fa44be1553d6e5742dbcbd63deaf7453f22ce2e84fa360b27d3c",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 41,
+        "symbol_sha256": "4a486003a88d10431eaadd35790205ad4fbdb4a96ef05aeac8cc9d03bcd42617"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pytest-dev__pytest-5809/verification_record.full-v1.4.1.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "8690468c8668fa44be1553d6e5742dbcbd63deaf7453f22ce2e84fa360b27d3c",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 42,
+        "symbol_sha256": "2214a6e5569b1df220194232aff2e58d71b8bc0aef55b191bfc1d1225001756d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pytest-dev__pytest-5809/verification_record.full-v1.4.1.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "pytest-dev__pytest-5809",
+  "legacy_findings": [],
+  "role": "repair",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pytest-dev__pytest-5809"
+}

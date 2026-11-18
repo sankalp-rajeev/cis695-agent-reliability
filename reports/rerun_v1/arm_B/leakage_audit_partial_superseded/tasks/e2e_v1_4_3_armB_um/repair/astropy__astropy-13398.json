@@ -1,0 +1,45 @@
+{
+  "archive": {
+    "base_commit": "6500928dc0e57be8f06d1162eacc3ba5e2eff692",
+    "instance_id": "astropy__astropy-13398",
+    "path": "/home/sankalp/cg_repos/task_archives/astropy__astropy-13398.tar",
+    "pin_origin": "audit-initial-inventory",
+    "sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "command_sha256": "4ae9211f9b97cf811fb8a035a607c8af917cdd9239ebd5b100aa71e27c361445"
+      },
+      "kind": "git-history-search",
+      "line_no": 58,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "history-git-diff",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "aa09faac141bbd173ba65ede1e5cf8d793fa3e8d9c486a608aba742b005d61b0",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 2,
+        "symbol_sha256": "bd67ab90f3b5b957a3cadc334a06df76f53a6cf7916982cefc1b1c2d922808ab"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/astropy__astropy-13398/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "astropy__astropy-13398",
+  "legacy_findings": [],
+  "role": "repair",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/astropy__astropy-13398"
+}

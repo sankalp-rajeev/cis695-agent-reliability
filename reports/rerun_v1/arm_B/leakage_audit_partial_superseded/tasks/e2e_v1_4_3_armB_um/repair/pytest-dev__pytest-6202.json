@@ -1,0 +1,35 @@
+{
+  "archive": {
+    "base_commit": "3a668ea6ff24b0c8f00498c3144c63bac561d925",
+    "instance_id": "pytest-dev__pytest-6202",
+    "path": "/home/sankalp/cg_repos/task_archives/pytest-dev__pytest-6202.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "1081df715e0db2286a8e3b534cbd6af6900a35e420551c694735979a4adf73ae"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "archive_sha256": "1081df715e0db2286a8e3b534cbd6af6900a35e420551c694735979a4adf73ae",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 147,
+        "symbol_sha256": "34e6d6b76816e9f4ec9c5a42ff296123984dee39097fe586b2536b9863ac1058"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pytest-dev__pytest-6202/verification_record.full-v1.4.1.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "pytest-dev__pytest-6202",
+  "legacy_findings": [],
+  "role": "repair",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pytest-dev__pytest-6202"
+}

@@ -1,0 +1,170 @@
+{
+  "archive": {
+    "base_commit": "7269fa3e33e8d02485a647da91a5a2a60a06af61",
+    "instance_id": "astropy__astropy-14365",
+    "path": "/home/sankalp/cg_repos/task_archives/astropy__astropy-14365.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "52c5b392a42c15f7a36dde4a000d39b75544e6297f2a34dfe49a5f80eeffdc60"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "command_sha256": "f457631dd29991e144df55f1c1d7889a79ca74e98bd2e690a38071dd6afd7f95"
+      },
+      "kind": "git-history-search",
+      "line_no": 14,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/astropy__astropy-14365/verification/v4/cache/astropy__astropy-14365/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 14,
+        "command_sha256": "f457631dd29991e144df55f1c1d7889a79ca74e98bd2e690a38071dd6afd7f95",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 15,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/astropy__astropy-14365/verification/v4/cache/astropy__astropy-14365/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "52c5b392a42c15f7a36dde4a000d39b75544e6297f2a34dfe49a5f80eeffdc60",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 7,
+        "symbol_sha256": "3bd70206212a27a2189462d026f9665963cd1b6a72d57c76ee7786ad744435c0"
+      },
+      "kind": "fail-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/astropy__astropy-14365/verification/v4/cache/astropy__astropy-14365/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "52c5b392a42c15f7a36dde4a000d39b75544e6297f2a34dfe49a5f80eeffdc60",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 7,
+        "symbol_sha256": "45e806541ac6a7716c98e4bf568ae6b6bd0f1f1b84dfbee7841b920db90c4884"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/astropy__astropy-14365/verification/v4/cache/astropy__astropy-14365/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "52c5b392a42c15f7a36dde4a000d39b75544e6297f2a34dfe49a5f80eeffdc60",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 7,
+        "symbol_sha256": "3bd70206212a27a2189462d026f9665963cd1b6a72d57c76ee7786ad744435c0"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/astropy__astropy-14365/verification/v4/cache/astropy__astropy-14365/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "52c5b392a42c15f7a36dde4a000d39b75544e6297f2a34dfe49a5f80eeffdc60",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 7,
+        "symbol_sha256": "de28db59b93450493f2f113c812e49454bb8f5ba2a59efc3bf1ba0cb4fc7cdf1"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/astropy__astropy-14365/verification/v4/cache/astropy__astropy-14365/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "52c5b392a42c15f7a36dde4a000d39b75544e6297f2a34dfe49a5f80eeffdc60",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 7,
+        "symbol_sha256": "0455944390984c474802ae3f961af369f95f1b4020bff77c006ff6dbdf6a9411"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/astropy__astropy-14365/verification/v4/cache/astropy__astropy-14365/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "52c5b392a42c15f7a36dde4a000d39b75544e6297f2a34dfe49a5f80eeffdc60",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 7,
+        "symbol_sha256": "3da851448f943b94a2edb4d6deb728c233af0d4f021ae726c209d4fde8dccf98"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/astropy__astropy-14365/verification/v4/cache/astropy__astropy-14365/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "52c5b392a42c15f7a36dde4a000d39b75544e6297f2a34dfe49a5f80eeffdc60",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 7,
+        "symbol_sha256": "a4d8fc365a10f7a2c7770b9e1e800ceb3f26c950b9c213dfe288cecf22cfd3ad"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/astropy__astropy-14365/verification/v4/cache/astropy__astropy-14365/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "52c5b392a42c15f7a36dde4a000d39b75544e6297f2a34dfe49a5f80eeffdc60",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 7,
+        "symbol_sha256": "c6c5a19671c6264d17ef62c3aebaf7d841f03c6fbeed04686ba12d2b38597fc8"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/astropy__astropy-14365/verification/v4/cache/astropy__astropy-14365/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "52c5b392a42c15f7a36dde4a000d39b75544e6297f2a34dfe49a5f80eeffdc60",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 7,
+        "symbol_sha256": "57e94274e9033f65d8512b7edd4393490bc072844c08420f2721d6bc5ac63770"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/astropy__astropy-14365/verification/v4/cache/astropy__astropy-14365/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "astropy__astropy-14365",
+  "legacy_findings": [],
+  "role": "generator",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 4,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/astropy__astropy-14365/verification/v4/cache/astropy__astropy-14365"
+}

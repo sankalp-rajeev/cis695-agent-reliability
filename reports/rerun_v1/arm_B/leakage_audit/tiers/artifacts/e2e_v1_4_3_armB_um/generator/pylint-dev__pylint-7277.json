@@ -1,0 +1,179 @@
+{
+  "archive": {
+    "base_commit": "684a1d6aa0a6791e20078bc524f97c8906332390",
+    "instance_id": "pylint-dev__pylint-7277",
+    "path": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-7277.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "baac4682f2541d8489225f5e3049f46e605e14fb89a70290d447e50c1ed46aa2"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "test_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 25,
+      "occurrences": {
+        "model_output": {
+          "length": 28,
+          "line": 15,
+          "offset": 4453,
+          "text_sha256": "c6908bfcce5dd564230d69509a287f8e55bfdc8a1040923c63ab13c864c97342",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "63fdf9194ebd6f799d6740e18077b621ce1e03ff600e40260376234c4cea07e9",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "category": "history",
+      "command_line": 9,
+      "command_sha256": "aecf95cf2000962f500892f59ad844e262b351fef35e2073f890fb4b1475f98b",
+      "raw_finding_index": 0,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 10
+    },
+    {
+      "category": "history",
+      "command_line": 21,
+      "command_sha256": "1680d22db363a05f324def9d35a8db5fff8013f2dc5b01b87b468c6f6fca7d5c",
+      "raw_finding_index": 1,
+      "rule": "history-git-fsck",
+      "setup_only": true,
+      "tool_line": 22
+    },
+    {
+      "category": "history",
+      "command_line": 21,
+      "command_sha256": "1680d22db363a05f324def9d35a8db5fff8013f2dc5b01b87b468c6f6fca7d5c",
+      "raw_finding_index": 2,
+      "rule": "history-git-reflog",
+      "setup_only": true,
+      "tool_line": 22
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "pylint-dev__pylint-7277",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "813c951021b98a40769fc0af836238b0995bdf614434a33ffa9546aed8a7a667",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 5,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 6,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 7,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 8,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 9,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 10,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 11,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "ae19879c45db2bebc89c46eb5f070b83ec703cc45a308349e3e6d15117929a92",
+  "raw_path": "tasks/e2e_v1_4_3_armB_um/generator/pylint-dev__pylint-7277.json",
+  "reasons": [
+    "answer-model-output-first",
+    "harmless-setup-history",
+    "history-attempt-no-distinctive-answer"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "history-git-fsck",
+    "history-git-log",
+    "history-git-reflog",
+    "history-newer-commit",
+    "test-name-present-at-base"
+  ],
+  "run": "e2e_v1_4_3_armB_um",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pylint-dev__pylint-7277/verification/v4/cache/pylint-dev__pylint-7277",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "6f2b9bafc3255818f247a20a160ae4a1999408662aed802bb2051143152f8cae"
+  },
+  "underlying_tier": "T3"
+}

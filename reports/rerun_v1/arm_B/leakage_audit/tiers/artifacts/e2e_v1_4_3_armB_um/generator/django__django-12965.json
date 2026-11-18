@@ -1,0 +1,144 @@
+{
+  "archive": {
+    "base_commit": "437196da9a386bd4cc62b0ce3f2de4aba468613d",
+    "instance_id": "django__django-12965",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-12965.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "f721ddedde9fd9bd15ec901592ca9c5d7f222162430bf153bd1e774ee8664836"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 28,
+      "occurrences": {
+        "model_output": {
+          "length": 34,
+          "line": 39,
+          "offset": 12248,
+          "text_sha256": "e520239ea7b1a9b4e812ed10626bfd8a8466190f6e405b9b812a38d36c2c2ee6",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "d29ad35aa7890ae0c806eeff6f6a588d606c6193314e377cb13df14f43b503d6",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "category": "history",
+      "command_line": 13,
+      "command_sha256": "352deeb814686d8a9d6d56807e20f0cd459d14c128558133ed4a0f9fafad68ae",
+      "raw_finding_index": 0,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 14
+    },
+    {
+      "category": "history",
+      "command_line": 15,
+      "command_sha256": "aa52a2a42d7a924902989e71de2fd2f8326157ff816d36a66c04fe5ae3984f0d",
+      "raw_finding_index": 1,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 16
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "django__django-12965",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "bb02bf1c788c5260968ef35423c3554739936c5231b090de335317839340b45a",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 3,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 4,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 5,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 6,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 7,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "210162b18ee9c19e7556ca4f6ebcc705615c19124706ef314b99b1e210fc7ee2",
+  "raw_path": "tasks/e2e_v1_4_3_armB_um/generator/django__django-12965.json",
+  "reasons": [
+    "answer-model-output-first",
+    "harmless-setup-history",
+    "history-attempt-no-distinctive-answer"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "history-git-log",
+    "history-newer-commit",
+    "test-name-present-at-base"
+  ],
+  "run": "e2e_v1_4_3_armB_um",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-12965/verification/v4/cache/django__django-12965",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "21ed16818b2cabf152da893ab81cb3d844d0c3f2ddfbfad9238c6a0e616c8eca"
+  },
+  "underlying_tier": "T3"
+}

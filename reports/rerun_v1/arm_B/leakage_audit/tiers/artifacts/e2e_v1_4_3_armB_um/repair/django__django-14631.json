@@ -1,0 +1,92 @@
+{
+  "archive": {
+    "base_commit": "84400d2e9db7c51fee4e9bb04c028f665b8e7624",
+    "instance_id": "django__django-14631",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-14631.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "f705aef70b484877d0ead66e3c957bfc13fda0e598ae2ba82b43c13fb0b11755"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [
+        "repair_record.json"
+      ],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 26,
+      "occurrences": {
+        "model_output": {
+          "length": 28,
+          "line": 78,
+          "offset": 221,
+          "text_sha256": "f229a3c250f192bf8f2b67d33901df5450617a43253e37749c456160652b121f",
+          "trajectory": "trajectory.jsonl"
+        },
+        "tool_output": {
+          "length": 28,
+          "line": 109,
+          "offset": 456,
+          "text_sha256": "670ab2349347d7104fc543b412a79ad682f935300f9dcc2359d0ba1d20a629c8",
+          "trajectory": "trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "ff682f6f5118aee5e099c1d1ceccf033fce05f0ba8d6d6f5e5ed032f975428f4",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [
+        "repair_record.json"
+      ],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 32,
+      "occurrences": {
+        "model_output": {
+          "length": 36,
+          "line": 84,
+          "offset": 123,
+          "text_sha256": "4d603ed01dea96e486983fc94cb86ae9d8dbc6cadc266457fb8c50db45f1b5ed",
+          "trajectory": "trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "982fe8284ba2009125ba9142de65bf59913470e07dc53bf120a014df4b137e91",
+      "rule": "distinctive-content-first-occurrence"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "django__django-14631",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "0617f416c953b3cb71dcf96a9ed361c20ecba71e54fbabf4e0172da7c740efcc",
+  "raw_finding_interpretations": [],
+  "raw_findings_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "raw_path": "tasks/e2e_v1_4_3_armB_um/repair/django__django-14631.json",
+  "reasons": [
+    "answer-model-output-first"
+  ],
+  "role": "repair",
+  "rule_names": [
+    "distinctive-content-first-occurrence"
+  ],
+  "run": "e2e_v1_4_3_armB_um",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-14631",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "trajectory.jsonl": "a61ec2eeab98d35e1fccd06910fab851e9510ff4bfb40badba5ace7313115d36"
+  },
+  "underlying_tier": "T3"
+}

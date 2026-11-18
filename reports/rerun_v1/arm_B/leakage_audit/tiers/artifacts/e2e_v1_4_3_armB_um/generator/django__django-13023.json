@@ -1,0 +1,74 @@
+{
+  "archive": {
+    "base_commit": "f83b44075dafa429d59e8755aa47e15577cc49f9",
+    "instance_id": "django__django-13023",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-13023.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "0b3e23fd17b2f1decc95ee743badb54e33aeb502e05f2282fc769f5ac5b486b4"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 54,
+      "occurrences": {
+        "model_output": {
+          "length": 57,
+          "line": 7,
+          "offset": 1310,
+          "text_sha256": "42f29fe3df2c8ab2bdaace7bbbf987121e1774f904ec79a32253eb96f05e4114",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "dda3d40db53ff6eb7c1dc6c9847fa7c0177bd0d91579d097bb8225a1a04cede2",
+      "rule": "distinctive-content-first-occurrence"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "django__django-13023",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "b7b3e7b27fe89e7c4b4ef105c55d80974cebea986e975be855d23a1e049b29fc",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 0,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "440a9b3375b26356ef81739a67ac9125e71f334bc63fbb6efabb614a94a205a5",
+  "raw_path": "tasks/e2e_v1_4_3_armB_um/generator/django__django-13023.json",
+  "reasons": [
+    "answer-model-output-first"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "test-name-present-at-base"
+  ],
+  "run": "e2e_v1_4_3_armB_um",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-13023/verification/v4/cache/django__django-13023",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "22fcdb20b7085f5450216a15b0ae03ae958ae4cc60a3a42dc33ddd2723c504da"
+  },
+  "underlying_tier": "T3"
+}

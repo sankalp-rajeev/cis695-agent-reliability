@@ -1,0 +1,124 @@
+{
+  "archive": {
+    "base_commit": "437196da9a386bd4cc62b0ce3f2de4aba468613d",
+    "instance_id": "django__django-12965",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-12965.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "f721ddedde9fd9bd15ec901592ca9c5d7f222162430bf153bd1e774ee8664836"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "command_sha256": "352deeb814686d8a9d6d56807e20f0cd459d14c128558133ed4a0f9fafad68ae"
+      },
+      "kind": "git-history-search",
+      "line_no": 13,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-12965/verification/v4/cache/django__django-12965/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "aa52a2a42d7a924902989e71de2fd2f8326157ff816d36a66c04fe5ae3984f0d"
+      },
+      "kind": "git-history-search",
+      "line_no": 15,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-12965/verification/v4/cache/django__django-12965/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 15,
+        "command_sha256": "aa52a2a42d7a924902989e71de2fd2f8326157ff816d36a66c04fe5ae3984f0d",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 16,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-12965/verification/v4/cache/django__django-12965/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "f721ddedde9fd9bd15ec901592ca9c5d7f222162430bf153bd1e774ee8664836",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 30,
+        "symbol_sha256": "9f276b01b6b17bbc37d281f9c38e0a2b68c10cf3ee7f3fa5c88a7bef8ceade44"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-12965/verification/v4/cache/django__django-12965/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "f721ddedde9fd9bd15ec901592ca9c5d7f222162430bf153bd1e774ee8664836",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 30,
+        "symbol_sha256": "56891db1c12bd0bfc5216afe0e54b13d81730801fe7293e22cf5652811a44f3b"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-12965/verification/v4/cache/django__django-12965/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "f721ddedde9fd9bd15ec901592ca9c5d7f222162430bf153bd1e774ee8664836",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 30,
+        "symbol_sha256": "d0c7a58ee9582292e577879b28cac36a7b54ec9885cb5a442ea13b37541bcac2"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-12965/verification/v4/cache/django__django-12965/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "f721ddedde9fd9bd15ec901592ca9c5d7f222162430bf153bd1e774ee8664836",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 30,
+        "symbol_sha256": "8b5956cfaf9c51e7f32c63a9a8aea2a486dafbe867da3c5ca454c9f9e2125972"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-12965/verification/v4/cache/django__django-12965/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "f721ddedde9fd9bd15ec901592ca9c5d7f222162430bf153bd1e774ee8664836",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 30,
+        "symbol_sha256": "069a36b9f31072ee97cb5aba2d9485a4f4251dd1478aafec77ea86a8087803a8"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-12965/verification/v4/cache/django__django-12965/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "django__django-12965",
+  "legacy_findings": [],
+  "role": "generator",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-12965/verification/v4/cache/django__django-12965"
+}

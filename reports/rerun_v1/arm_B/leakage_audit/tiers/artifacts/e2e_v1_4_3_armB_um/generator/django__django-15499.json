@@ -1,0 +1,192 @@
+{
+  "archive": {
+    "base_commit": "d90e34c61b27fba2527834806639eebbcfab9631",
+    "instance_id": "django__django-15499",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-15499.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "24fd17768dab750beb3150b42b50d2bcc47e07f26e4bb8c7cbf2906914794680"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 40,
+      "occurrences": {
+        "model_output": {
+          "length": 41,
+          "line": 19,
+          "offset": 1916,
+          "text_sha256": "c88fb67cb9fb2c72e6e9a023258bebebe453a9f2ef56fb9d1fc80d0f12022a0a",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "ae8ffa1545b41b18a1cfb86d4751e6a08858372d26adaa30e8c6b943863b3b81",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 28,
+      "occurrences": {
+        "model_output": {
+          "length": 28,
+          "line": 30,
+          "offset": 1362,
+          "text_sha256": "16dc3c63063c585ba16d1b4762b8755599d3fa7cc38d8e49f42352824805131e",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "ac00ec75e2d637d0e826ab86d821becf6836d2a1b5ea0ce64e157012f3bdd89c",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "base_occurrences": 0,
+      "category": "answer",
+      "defined_at_first_mention": false,
+      "definition_line": null,
+      "field": "hidden_test_name",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "occurrences": {
+        "model_output": {
+          "length": 32,
+          "line": 21,
+          "offset": 12656,
+          "text_sha256": "837815af7683e9fb1344aa27a2a15dcdf5b4877dc3d2144986083cbac3a6454a",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "4a4848ead1f82f3bd2eab95ef3df09e3f76bbc995e946d709d437e6307c5a53e",
+      "rule": "hidden-name-first-occurrence"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "django__django-15499",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "f70a50e6f0e14fe1c29c57b9f58250ed1c74f01052df128977a7a876e5d5d028",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": true,
+      "finding_index": 0,
+      "first_seen_in": "model_output",
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [
+        "4a4848ead1f82f3bd2eab95ef3df09e3f76bbc995e946d709d437e6307c5a53e"
+      ],
+      "rule": "test-name-absent-before-definition",
+      "rule_interpretation": "chronology-and-distinctiveness",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 1,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 2,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 3,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 4,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 5,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 6,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "b1977635cac039df37b1f7f035e82d77ca0f27561c5446f72426c62cddecd748",
+  "raw_path": "tasks/e2e_v1_4_3_armB_um/generator/django__django-15499.json",
+  "reasons": [
+    "answer-model-output-first"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "hidden-name-first-occurrence",
+    "test-name-absent-before-definition",
+    "test-name-present-at-base"
+  ],
+  "run": "e2e_v1_4_3_armB_um",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-15499/verification/v4/cache/django__django-15499",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "ba93fece48dda84535b912ec31c4888f2384978c8e66e1ec7aa31698fddb5d0e"
+  },
+  "underlying_tier": "T3"
+}
