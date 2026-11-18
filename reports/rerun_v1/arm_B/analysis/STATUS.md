@@ -40,3 +40,5 @@ The partial audit has 277 files and its [checksum manifest](leakage_audit_partia
 - The `analysis/rerun-v1` worktree starts at `0b57889` and has its dedicated offline frozen environment.
 - The label-free recomputation reproduced 92 of 92 live decisions (5 ACCEPT, 42 FLAG, 45 REJECT). All 41 empty patches were REJECTed, including one provider-blocked task, `django__django-13569`. The 51 patch tasks split 5 ACCEPT, 42 FLAG and 4 REJECT. There were 0 agent-infrastructure tasks and 40 V2 reports. Total ledger spend was $17.88918096 and matched the seal to the cent.
 - The checker's standalone known-answer tests passed. At this point the full synthetic checker suite had not run and draft lint findings were still open.
+
+- 18 November 2026, before unblinding. Git normalized line endings in both audit tier CSVs during the initial local commit. Added path-specific Git attributes to preserve the original tool output bytes and checked the stored audit blobs against their original receipts. The final local freeze tag includes this preservation change.
