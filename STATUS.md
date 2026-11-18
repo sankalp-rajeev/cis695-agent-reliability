@@ -1,4 +1,10 @@
-# E2E v1.4.1 status
+# Rerun v1 status
+
+Arm B completed all 92 tasks. The tmux check found no server, and Docker listed no running containers. The pre-grading seal covers 9,253 files. Grading is pending.
+
+See [Arm B decisions](reports/rerun_v1/arm_B/DECISIONS.md) for the seal and oracle input format.
+
+## E2E v1.4.1 status
 
 COMPLETE: A1–A7 pass, including the 17 November runner/ledger/runbook review fixes. A1 83/83; A2 all four policies 83/83 with zero health halts; A3 14 ACCEPT / 67 FLAG / 2 REJECT with no differences; A4 three native runners match sealed collection identities and outcomes; A4b registry interface passes; A5 all 61 e2e tests pass; A6 has zero new failed/error IDs; A7 independent audit passes again. A1–A4 evidence is reused: the restricted verifier/config diff from the withdrawn tag commit is empty.
 
