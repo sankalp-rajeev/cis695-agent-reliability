@@ -487,6 +487,162 @@ def verify_chronological_receipts(record):
                     fail('earlier occurrence omitted from chronology')
 
 
+FOLLOWUP_TIERS = ('T0', 'T1', 'T2', 'T3-content', 'T3-name', 'T4')
+USED_COLUMNS = ('instance_id', 'repair_run', 'repair_tier', 'repair_rule', 'patch_sha256',
+                'v4_run', 'v4_tier', 'v4_rule', 'v4_suite_sha256')
+SUPERSEDED_COLUMNS = ('instance_id', 'role', 'run', 'tier', 'used_run')
+CACHE_CONTENT_RULES = {
+    'masked-read-content', 'masked-read-listed-files', 'masked-read-archive-member-list',
+}
+
+
+def resolve_repair_run(source_run, frozen_sha256, candidate_hashes):
+    """Honor exact provenance, otherwise require a unique byte-for-byte match."""
+    matches = sorted(run for run, sha in candidate_hashes.items() if sha == frozen_sha256)
+    if source_run in candidate_hashes:
+        if source_run not in matches:
+            fail('explicit repair provenance conflicts with frozen patch hash')
+        return source_run, 'explicit-run-and-patch-sha256'
+    if source_run not in (None, '', 'rerun'):
+        fail('unknown explicit repair provenance')
+    if len(matches) != 1:
+        fail('frozen patch lacks a unique stored run hash match')
+    return matches[0], 'unique-patch-sha256'
+
+
+def split_t3(record):
+    tier, _ = interpreted_tier(record['facts'])
+    if tier != 'T3':
+        return tier
+    has_name = any(
+        fact['category'] == 'answer' and fact['field'] == 'hidden_test_name'
+        and fact['guard_pass'] and fact['first_seen_in'] == 'model_output'
+        and not fact.get('defined_at_first_mention') for fact in record['facts']
+    )
+    return 'T3-name' if has_name else 'T3-content'
+
+
+def used_run_tables(records, provenance):
+    """Recompute rows and both table scopes from accepted role-specific facts."""
+    observed = {
+        (r['instance_id'], r['role'], r['run']): split_t3(r)
+        for r in records if r['observed'] and not r['excluded']
+    }
+    comparable = {r['instance_id'] for r in records if r['comparable'] and not r['excluded']}
+    cohort = {r['instance_id'] for r in records if not r['excluded']}
+    if set(provenance) != comparable:
+        fail('frozen phase 4 cohort differs from comparable task set')
+
+    used, selections = [], {}
+    for iid, proof in sorted(provenance.items()):
+        repair, rule = resolve_repair_run(
+            proof['source_run'], proof['patch_sha256'], proof['repair_patch_sha256s'],
+        )
+        if set(proof['repair_patch_sha256s']) != {
+            run for task, role, run in observed if task == iid and role == 'repair'
+        }:
+            fail('repair candidate provenance coverage mismatch')
+        sources = proof['reproduction_record_provenance']
+        if not sources or any(p['patch_sha256'] != proof['patch_sha256'] for p in sources.values()):
+            fail('V4 signal is not bound to frozen patch')
+        suites = {p['suite_sha256'] for p in sources.values()}
+        if len(suites) != 1:
+            fail('V4 signal records disagree on suite hash')
+        suite = suites.pop()
+        candidates = proof['v4_suite_sha256s']
+        matches = sorted(run for run, sha in candidates.items() if suite and sha == suite)
+        if len(matches) > 1:
+            fail('V4 suite has ambiguous stored run provenance')
+        v4 = matches[0] if matches else ''
+        v4_key = iid, 'generator', v4
+        repair_key = iid, 'repair', repair
+        if repair_key not in observed or (v4 and v4_key not in observed):
+            fail('used-run trajectory lacks accepted tier evidence')
+        selections[iid, 'repair'] = repair
+        if v4:
+            selections[iid, 'generator'] = v4
+        used.append(dict(instance_id=iid, repair_run=repair, repair_tier=observed[repair_key],
+                         repair_rule=rule, patch_sha256=proof['patch_sha256'], v4_run=v4,
+                         v4_tier=observed.get(v4_key, 'Unobserved'),
+                         v4_rule='unique-frozen-suite-sha256' if v4 else 'v4-provenance-unresolved',
+                         v4_suite_sha256=suite or ''))
+
+    superseded = [
+        dict(instance_id=iid, role=role, run=run, tier=tier, used_run=selections[iid, role])
+        for (iid, role, run), tier in sorted(observed.items())
+        if (iid, role) in selections and run != selections[iid, role]
+    ]
+
+    def count(tiers):
+        return {tier: tiers.count(tier) for tier in FOLLOWUP_TIERS}
+
+    def scope(task_ids, selected):
+        result = {}
+        by_task = collections.defaultdict(list)
+        for role in ('repair', 'generator'):
+            grouped = collections.defaultdict(list)
+            for (iid, kind, run), tier in observed.items():
+                if iid in task_ids and kind == role and (not selected or selections.get((iid, kind)) == run):
+                    grouped[iid].append(tier)
+                    by_task[iid].append(tier)
+            worst = [max(tiers, key=FOLLOWUP_TIERS.index) for tiers in grouped.values()]
+            result[role] = dict(counts=count(worst), observed_tasks=len(worst),
+                                unobserved_tasks=len(task_ids) - len(worst))
+        result['any_role'] = {
+            tier: sorted(iid for iid, tiers in by_task.items() if tier in tiers)
+            for tier in ('T3-content', 'T3-name', 'T4')
+        }
+        result['highest_tier'] = count([max(tiers, key=FOLLOWUP_TIERS.index) for tiers in by_task.values()])
+        return result
+
+    cache = {}
+    for run in sorted({r['run'] for r in records}):
+        evidence = [(r['instance_id'], f) for r in records if r['run'] == run
+                    for f in r['facts'] if f['category'] == 'cache']
+        cache[run] = {
+            'nonempty_return_observations': sum(f['rule'] in CACHE_CONTENT_RULES for _, f in evidence),
+            'returned_source_tasks': sorted({iid for iid, f in evidence if f['rule'] == 'masked-read-content'}),
+            'nonempty_return_tasks': sorted({iid for iid, f in evidence if f['rule'] in CACHE_CONTENT_RULES}),
+            'paths': {path: dict(collections.Counter(f['rule'] for _, f in evidence if f['path'] == path))
+                      for path in sorted({f['path'] for _, f in evidence})},
+        }
+    summary = dict(
+        used_comparable=scope(comparable, True), all_runs_comparable=scope(comparable, False),
+        all_runs_non_requests=scope(cohort, False), comparable_count=len(comparable),
+        non_requests_count=len(cohort), superseded_rows=len(superseded), cache_observations=cache,
+    )
+    return used, superseded, summary
+
+
+def verify_used_run_tiers(root):
+    tiers = root / 'tiers'
+    records = [read(p) for p in sorted((tiers / 'artifacts').glob('*/*/*.json'))]
+    receipt = read(tiers / 'used_run_provenance.json')
+    # Reproject only provenance fields from the named frozen inputs and stored runs.
+    from audit_used_run_tiers import collect_provenance, collect_timeline, report_section
+
+    if collect_provenance(Path(receipt['frozen_manifest']), records) != receipt:
+        fail('used-run provenance does not match the stored sources')
+    used, superseded, summary = used_run_tables(records, receipt['tasks'])
+    for name, rows, columns in (
+        ('used_run_tiers.csv', used, USED_COLUMNS),
+        ('superseded_run_tiers.csv', superseded, SUPERSEDED_COLUMNS),
+    ):
+        with (tiers / name).open(newline='') as stream:
+            table = csv.DictReader(stream)
+            if tuple(table.fieldnames or ()) != columns or list(table) != rows:
+                fail('used-run CSV mismatch: ' + name)
+    if summary != read(tiers / 'used_run_summary.json'):
+        fail('used-run tier table mismatch')
+    timeline = collect_timeline(summary['cache_observations'])
+    if timeline != read(tiers / 'cache_mask_timeline.json'):
+        fail('cache mask timeline mismatch')
+    report = (root / 'REPORT.md').read_text()
+    if not report.startswith('# Leakage gaps audit\n\n' + report_section(summary, timeline)):
+        fail('used-run report totals mismatch')
+    return {'status': 'pass', 'comparable_tasks': len(used), 'superseded_rows': len(superseded)}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--report-dir', type=Path, default=Path('reports/next_phases/leakage_gaps'))
@@ -497,6 +653,8 @@ def main():
         result['interpretation'] = verify_tiers(args.report_dir)
     elif args.tiers_only:
         fail('interpretation results missing')
+    if (args.report_dir / 'tiers' / 'used_run_provenance.json').is_file():
+        result['used_runs'] = verify_used_run_tiers(args.report_dir)
     print(json.dumps(result, sort_keys=True))
     return 0
 

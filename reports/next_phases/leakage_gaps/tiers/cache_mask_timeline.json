@@ -1,0 +1,145 @@
+{
+  "fix_branch": "fix/pkg-cache-mask",
+  "fix_branch_snapshot": "9654fc7c4168da0ff0c1bdf786f99a8a38d0c006",
+  "mask_commits": {
+    "conda": {
+      "commit": "8d0f57aa71a8f7b3431a8defa5b535da9d3f6504",
+      "committed_utc": "2026-10-08T23:45:37+00:00",
+      "on_audit_first_parent": true,
+      "on_fix_branch_first_parent": true,
+      "parent_commits": [
+        "8add43ed85da775491f4ecf457401d5d319324ad"
+      ]
+    },
+    "pip": {
+      "commit": "b7f0a0e51b24a272a88692ef997ee091feea8eb9",
+      "committed_utc": "2026-10-09T16:31:39+00:00",
+      "on_audit_first_parent": true,
+      "on_fix_branch_first_parent": true,
+      "parent_commits": [
+        "b4aca76bc13c244334fc4a056f6016b20aec9bbf"
+      ]
+    }
+  },
+  "runs": {
+    "main_2_rerun_mpl": {
+      "git_commit": "86724bea9b5a3cb51ba901bcbf16add5066f2977",
+      "masks_by_role": {
+        "generator": {
+          "conda": true,
+          "pip": true
+        },
+        "repair": {
+          "conda": true,
+          "pip": true
+        }
+      },
+      "observed_cache": {
+        "nonempty_return_observations": 0,
+        "nonempty_return_tasks": [],
+        "paths": {},
+        "returned_source_tasks": []
+      },
+      "started_utc": "2026-10-09T16:37:42+00:00"
+    },
+    "main_3_rerun_infra": {
+      "git_commit": "5f5d71d43bd950bcb4fb9a49cdea079520024204",
+      "masks_by_role": {
+        "generator": {
+          "conda": true,
+          "pip": true
+        },
+        "repair": {
+          "conda": true,
+          "pip": true
+        }
+      },
+      "observed_cache": {
+        "nonempty_return_observations": 0,
+        "nonempty_return_tasks": [],
+        "paths": {},
+        "returned_source_tasks": []
+      },
+      "started_utc": "2026-10-10T16:07:01+00:00"
+    },
+    "main_50_a": {
+      "git_commit": "b4aca76bc13c244334fc4a056f6016b20aec9bbf",
+      "masks_by_role": {
+        "generator": {
+          "conda": true,
+          "pip": false
+        },
+        "repair": {
+          "conda": true,
+          "pip": false
+        }
+      },
+      "observed_cache": {
+        "nonempty_return_observations": 36,
+        "nonempty_return_tasks": [
+          "matplotlib__matplotlib-14623",
+          "matplotlib__matplotlib-20676",
+          "matplotlib__matplotlib-21568",
+          "matplotlib__matplotlib-24026",
+          "matplotlib__matplotlib-24627",
+          "matplotlib__matplotlib-25122",
+          "matplotlib__matplotlib-25332",
+          "psf__requests-1766",
+          "pylint-dev__pylint-4551",
+          "pylint-dev__pylint-4970",
+          "pylint-dev__pylint-6528",
+          "pylint-dev__pylint-7277",
+          "sphinx-doc__sphinx-10614",
+          "sphinx-doc__sphinx-7748",
+          "sphinx-doc__sphinx-7910"
+        ],
+        "paths": {
+          "/root/.cache/pip": {
+            "masked-read-archive-member-list": 3,
+            "masked-read-content": 15,
+            "masked-read-directory-metadata": 1,
+            "masked-read-file-metadata": 1,
+            "masked-read-listed-files": 18,
+            "masked-read-other-paths-only": 1
+          }
+        },
+        "returned_source_tasks": [
+          "matplotlib__matplotlib-20676",
+          "matplotlib__matplotlib-21568",
+          "matplotlib__matplotlib-25122",
+          "pylint-dev__pylint-4551",
+          "pylint-dev__pylint-6528",
+          "pylint-dev__pylint-7277"
+        ]
+      },
+      "started_utc": "2026-10-09T02:30:48+00:00"
+    },
+    "main_50_b": {
+      "git_commit": "17fdf59793089def69a5f4a21624dbf8a72ce9ec",
+      "masks_by_role": {
+        "generator": {
+          "conda": true,
+          "pip": true
+        },
+        "repair": {
+          "conda": true,
+          "pip": true
+        }
+      },
+      "observed_cache": {
+        "nonempty_return_observations": 0,
+        "nonempty_return_tasks": [],
+        "paths": {
+          "/opt/miniconda3/pkgs": {
+            "masked-read-empty-listing": 1
+          },
+          "/root/.cache/pip": {
+            "masked-read-empty-listing": 1
+          }
+        },
+        "returned_source_tasks": []
+      },
+      "started_utc": "2026-10-09T20:40:27+00:00"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "command": "env -u PYTHONPATH PYTHONPATH=src .venv/bin/python -m pytest -p no:cacheprovider -rfE",
+  "new_failed_or_error_count": 0,
+  "new_unit_tests": 12,
+  "offline_hf_home": "/home/sankalp/projects/wt-leakage/runs/hf_home",
+  "reference_commit": "7fefe1d",
+  "reference_ids_sha256": "07fa440e9a3fda1fcfe1f4328f231b4c8ee79ad261e2c5e8197f01272aee3553",
+  "reference_now_passing_count": 0,
+  "suite_result": "6 failed, 1578 passed, 7 skipped, 17 errors in 57.66s",
+  "verifier": {
+    "downgrades_rechecked": 0,
+    "findings": 32567,
+    "golden_violations": 0,
+    "image_tasks": 100,
+    "interpretation": {
+      "T3_tasks": 62,
+      "T4_tasks": 2,
+      "comparable_T3_or_T4_count": 60,
+      "rows": 210,
+      "status": "pass"
+    },
+    "status": "pass",
+    "task_directories": 196,
+    "used_runs": {
+      "comparable_tasks": 83,
+      "status": "pass",
+      "superseded_rows": 5
+    }
+  }
+}
