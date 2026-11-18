@@ -14,7 +14,10 @@ violated, so it cannot be left to discipline.
 
 from __future__ import annotations
 
+import hashlib
 import json
+from importlib import import_module
+from pathlib import Path
 
 import pytest
 
@@ -354,6 +357,86 @@ def test_an_empty_patch_short_circuits_without_the_harness(task_dir):
     assert result.outcome is OracleOutcome.EMPTY_PATCH
     assert result.resolved is None          # not False
     assert not (task_dir / "harness.log").exists()
+
+
+@pytest.fixture
+def grade_driver(monkeypatch):
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[2] / "scripts"))
+    return import_module("grade_arm")
+
+
+@pytest.fixture
+def sealed_repair_absence(tmp_path):
+    sealed = tmp_path / "sealed"
+    task = sealed / "tasks" / INSTANCE
+    digest = write_patch(task, content="")
+    record = write_verification_record(task, digest)
+    (task / "verification_record.full.json").rename(task / "verification_record.full-v1.4.1.json")
+    absence = b'{ "reason": "AGENT_EXCEPTION:JSONDecodeError" }\r\n'
+    (task / "agent_absence.json").write_bytes(absence)
+    staged = tmp_path / "out" / "tasks" / INSTANCE
+    return sealed, task, staged, record
+
+
+def seal_manifest(sealed):
+    return {
+        p.relative_to(sealed).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
+        for p in sealed.rglob("*")
+        if p.is_file()
+    }
+
+
+def test_grader_uses_empty_patch_rule_for_sealed_repair_absence(
+    grade_driver, sealed_repair_absence, monkeypatch,
+):
+    from reliability.oracle.records import OracleOutcome, OracleRecord
+
+    def unexpected_harness(*args, **kwargs):
+        pytest.fail("a sealed empty patch must not enter the harness")
+
+    monkeypatch.setattr(grade_driver, "require_idle", unexpected_harness)
+    monkeypatch.setattr("reliability.oracle.runner._invoke_harness", unexpected_harness)
+    sealed, source, staged, verifier = sealed_repair_absence
+    manifest = seal_manifest(sealed)
+    absence = grade_driver.stage_task(sealed, manifest, staged)
+    digest = manifest[f"tasks/{INSTANCE}/patch.diff"]
+    result = grade_driver.grade_task(staged, digest, absence)
+    oracle = OracleRecord.read(staged / "oracle_record.json")
+
+    assert (staged / "patch.diff").read_bytes() == (source / "patch.diff").read_bytes() == b""
+    assert (staged / "agent_absence.json").read_bytes() == (source / "agent_absence.json").read_bytes()
+    assert not (staged / "repair_record.json").exists()
+    assert not (staged / "harness.log").exists()
+    assert oracle.outcome is OracleOutcome.EMPTY_PATCH
+    assert oracle.resolved is None
+    assert oracle.experiment_id == verifier.experiment_id
+    assert oracle.patch_sha256 == verifier.patch_sha256
+    assert result["repair_record"] == {"status": "NOT_AVAILABLE", "reason": "AGENT_EXCEPTION:JSONDecodeError"}
+    assert result["outcome"] == "empty_patch"
+    assert len(result["attempts"]) == 1
+    assert grade_driver.grade_task(staged, digest, absence) == result
+    assert OracleRecord.read(staged / "oracle_record.json") == oracle
+
+
+@pytest.mark.parametrize("patch", [PATCH_TEXT, "\n"])
+def test_grader_refuses_nonempty_patch_without_repair_record(
+    grade_driver, sealed_repair_absence, patch,
+):
+    sealed, source, staged, _ = sealed_repair_absence
+    (source / "patch.diff").chmod(0o644)
+    (source / "patch.diff").write_text(patch)
+    with pytest.raises(ValueError, match="repair_record.json for non-empty patch"):
+        grade_driver.stage_task(sealed, seal_manifest(sealed), staged)
+    assert not staged.exists()
+
+
+def test_grader_refuses_unsealed_repair_absence(grade_driver, sealed_repair_absence):
+    sealed, _, staged, _ = sealed_repair_absence
+    manifest = seal_manifest(sealed)
+    del manifest[f"tasks/{INSTANCE}/agent_absence.json"]
+    with pytest.raises(ValueError, match="Missing sealed agent_absence.json"):
+        grade_driver.stage_task(sealed, manifest, staged)
+    assert not staged.exists()
 
 
 def test_the_oracle_refuses_to_overwrite_its_own_record(verified):

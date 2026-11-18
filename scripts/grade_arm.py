@@ -142,16 +142,34 @@ def checked_source(sealed, manifest, name):
 def stage_task(sealed, manifest, task):
     from reliability.verifier.record import VerificationRecord
 
-    task.mkdir(parents=True, exist_ok=True)
     prefix = f"tasks/{task.name}"
-    for name in ("patch.diff", "repair_record.json", "verification_record.full-v1.4.1.json"):
-        raw = checked_source(sealed, manifest, f"{prefix}/{name}")
-        if name.startswith("verification_record."):
-            source = json.loads(raw)
-            fields = {key: source[key] for key in VerificationRecord.model_fields if key in source}
-            VerificationRecord.validate_dict(fields)
-            raw = (json.dumps(fields, indent=2) + "\n").encode()
-            name = "verification_record.full.json"
+    patch_name = f"{prefix}/patch.diff"
+    repair_name = f"{prefix}/repair_record.json"
+    files = {"patch.diff": checked_source(sealed, manifest, patch_name)}
+    repair_absence = None
+    if repair_name in manifest:
+        files["repair_record.json"] = checked_source(sealed, manifest, repair_name)
+    else:
+        if manifest[patch_name] != EMPTY_DIGEST or files["patch.diff"]:
+            raise ValueError(f"Missing sealed repair_record.json for non-empty patch: {task.name}")
+        absence_name = f"{prefix}/agent_absence.json"
+        if absence_name not in manifest:
+            raise ValueError(f"Missing sealed agent_absence.json for absent repair record: {task.name}")
+        if (task / "repair_record.json").exists() or (task / "repair_record.json").is_symlink():
+            raise ValueError(f"Unexpected repair record in grading copy: {task.name}")
+        absence = checked_source(sealed, manifest, absence_name)
+        reason = json.loads(absence)["reason"]
+        if not isinstance(reason, str) or not reason.strip():
+            raise ValueError(f"Missing sealed repair absence reason: {task.name}")
+        files["agent_absence.json"] = absence
+        repair_absence = {"status": "NOT_AVAILABLE", "reason": reason}
+
+    source = json.loads(checked_source(sealed, manifest, f"{prefix}/verification_record.full-v1.4.1.json"))
+    fields = {key: source[key] for key in VerificationRecord.model_fields if key in source}
+    VerificationRecord.validate_dict(fields)
+    files["verification_record.full.json"] = (json.dumps(fields, indent=2) + "\n").encode()
+    task.mkdir(parents=True, exist_ok=True)
+    for name, raw in files.items():
         target = task / name
         if target.exists():
             if target.is_symlink() or target.read_bytes() != raw:
@@ -163,6 +181,7 @@ def stage_task(sealed, manifest, task):
                 temporary.chmod(stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
             temporary.replace(target)
     check_patch(manifest, task.parent.parent, task.name)
+    return repair_absence
 
 
 def check_task_location(task):
@@ -252,7 +271,58 @@ def run_attempt(run_oracle, task):
     return oracle
 
 
-def grade_task(task, expected):
+def write_grading_result(task, oracle, attempts, repair_absence=None):
+    result = {
+        "swebench_version": SWEBENCH_VERSION, "timeout_s": TIMEOUT_S,
+        "outcome": oracle.outcome.value, "error_class": attempts[-1]["error_class"],
+        "attempts": attempts,
+    }
+    if repair_absence is not None:
+        result["repair_record"] = repair_absence
+    write_json(task / "grading.json", result)
+    return result
+
+
+def grade_sealed_empty_patch(task, expected, repair_absence):
+    from reliability.oracle.records import OracleOutcome, OracleRecord
+    from reliability.verifier.record import VerificationRecord
+
+    verifier = VerificationRecord.read(task / "verification_record.full.json")
+    if (expected != EMPTY_DIGEST or (task / "patch.diff").read_bytes()
+            or verifier.instance_id != task.name or verifier.patch_sha256 != f"sha256:{expected}"):
+        raise ValueError(f"Empty patch or verifier record disagrees with the seal: {task.name}")
+
+    path = task / "oracle_record.json"
+    existing = OracleRecord.read(path) if path.is_file() else None
+    evaluated_at = existing.evaluated_at if existing else utc_now()
+    # The frozen runner's empty-patch rule skips the harness and reaches no verdict.
+    oracle = OracleRecord(
+        instance_id=task.name, experiment_id=verifier.experiment_id,
+        patch_sha256=verifier.patch_sha256, outcome=OracleOutcome.EMPTY_PATCH,
+        resolved=None, error_detail="agent produced no diff; the harness was not invoked",
+        evaluated_at=evaluated_at,
+    )
+    if existing is None:
+        write_json(path, oracle.model_dump(mode="json"))
+    elif existing != oracle:
+        raise ValueError(f"Existing oracle record disagrees with the empty-patch rule: {task.name}")
+
+    attempt = {
+        "started_at": evaluated_at, "finished_at": evaluated_at, "wall_seconds": 0.0,
+        "error_class": "", "interference": None,
+    }
+    receipt = task / "attempt.json"
+    if not receipt.exists():
+        write_json(receipt, attempt)
+    elif read_json(receipt) != attempt:
+        raise ValueError(f"Existing receipt disagrees with the empty-patch rule: {task.name}")
+    return write_grading_result(task, oracle, [attempt], repair_absence)
+
+
+def grade_task(task, expected, repair_absence=None):
+    if repair_absence is not None:
+        return grade_sealed_empty_patch(task, expected, repair_absence)
+
     from pydantic import ValidationError
     from reliability.oracle.records import OracleRecord
     from reliability.oracle.runner import run_oracle
@@ -291,13 +361,7 @@ def grade_task(task, expected):
             continue
         attempts = [read_json(retry / receipt.name)] if retry.exists() else []
         attempts.append(read_json(receipt))
-        result = {
-            "swebench_version": SWEBENCH_VERSION, "timeout_s": TIMEOUT_S,
-            "outcome": oracle.outcome.value, "error_class": attempts[-1]["error_class"],
-            "attempts": attempts,
-        }
-        write_json(task / "grading.json", result)
-        return result
+        return write_grading_result(task, oracle, attempts)
 
 
 def write_progress(out, ids, results, status, current=None, error=None):
@@ -335,6 +399,10 @@ def grade(args, sealed, out):
                         or result["swebench_version"] != SWEBENCH_VERSION
                         or result["timeout_s"] != TIMEOUT_S):
                     raise ValueError(f"Completed grading record disagrees with the seal or oracle: {iid}")
+                if f"tasks/{iid}/repair_record.json" not in manifest:
+                    repair_absence = stage_task(sealed, manifest, task)
+                    if result.get("repair_record") != repair_absence or oracle.outcome.value != "empty_patch":
+                        raise ValueError(f"Completed grading record disagrees with the sealed repair absence: {iid}")
                 results[iid] = result
         require_idle()
         if args.smoke_test:
@@ -354,8 +422,8 @@ def grade(args, sealed, out):
             current = iid
             write_progress(out, ids, results, "running", current)
             task = out / "tasks" / iid
-            stage_task(sealed, manifest, task)
-            results[iid] = grade_task(task, manifest[f"tasks/{iid}/patch.diff"])
+            repair_absence = stage_task(sealed, manifest, task)
+            results[iid] = grade_task(task, manifest[f"tasks/{iid}/patch.diff"], repair_absence)
             check_patch(manifest, out, iid)
             write_progress(out, ids, results, "running")
             current = None
