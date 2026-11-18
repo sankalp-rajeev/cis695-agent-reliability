@@ -24,3 +24,25 @@ Neither smoke task required a re-run.
 ## After grading
 
 Finalized and verified 92 labels. See [the report](REPORT.md) for timing and re-runs.
+
+### Post-unblinding tooling deviation, 18 November 2026
+
+Grading paused at 90/92 on `pylint-dev__pylint-8898`. The driver expected a repair record, but the seal contained a byte-empty patch and `agent_absence.json` with reason `AGENT_EXCEPTION:JSONDecodeError`. Commit `8b864b4e178e88fadada356e86a2f845883e1369` allows the grading adapter to use the oracle's empty-patch rule only when the manifest lists the absence record and the patch has the SHA-256 of zero bytes. The adapter copied both sealed inputs byte for byte and recorded the repair record as `NOT_AVAILABLE` with the sealed reason. The harness was skipped. A missing repair record for any non-empty patch still stops grading.
+
+The resumed run finished the two remaining tasks, both `empty_patch`. All 90 previously completed grading, oracle, and attempt receipts matched their pre-resumption SHA-256 digests. The frozen oracle, SWE-bench 5.0.2, and all previously recorded labels remained intact. Finalization and the independent seal, copy, and label verification passed for 92 tasks.
+
+### Harness apply-failure investigation, after unblinding
+
+The grading receipts record five events under `patch_apply_failed` across three tasks. The SHA-256 checks tied each harness intermediate patch to the sealed bytes, including both re-runs. All three patches used LF line endings and ended with a newline.
+
+| Task | First attempt error text | Re-run result | Final outcome and class |
+| --- | --- | --- | --- |
+| `django__django-13023` | `Patch Apply Failed`. `patch: **** Only garbage was found in the patch input.` The harness exited 0 without a report. | Same error and no report, exit 0. | `infra_error` (X) |
+| `django__django-14140` | Git logged `Applied patch django/db/models/query_utils.py cleanly.` Django then raised `TypeError: register_lookup() missing 1 required positional argument: 'lookup_class'`. The harness report set `patch_successfully_applied=false` and `infra_failure=false`. | No re-run. The oracle recorded a non-infrastructure outcome. | `patch_apply_failed` (X) |
+| `django__django-16667` | `Patch Apply Failed`. `patch: **** Only garbage was found in the patch input.` The harness exited 0 without a report. | Same error and no report, exit 0. | `infra_error` (X) |
+
+- **`django__django-13023`.** The patch begins with `---` and `+++` file headers and has a range-less hunk header, `@@ class DecimalField(Field):`. A local Git patch parse returned `error: unrecognized input`. Sealed V1 recorded FAIL and `unparseable`, with `patch_applies=true`.
+- **`django__django-16667`.** The submission begins with `FINAL_STATUS: RESOLVED` and contains no file or hunk headers. The local Git patch parser returned `error: unrecognized input`. Sealed V1 recorded FAIL and `unparseable`, with `patch_applies=true`.
+- **`django__django-14140`.** Sealed V1 recorded PASS and `patch_applies=true`, consistent with Git's observed success. The applied patch changed `register_lookup` from a class method to an instance method. The import traceback stopped the suite before it produced any test results. Both output markers were present. Reprocessing the retained log with the installed harness parser reproduced the exact report. The parser found neither a test result nor evidence the suite ran, and the infrastructure classifier returned no match, so the report retained its default `patch_successfully_applied=false`.
+
+The frozen V1.4.1 adapter sets `patch_applies` when the `does_not_apply` violation is absent. For the two malformed submissions, the parser returned `unparseable` before an apply check. The boolean therefore coexists with V1 FAIL and gives no evidence of a successful application. The third event is a harness report classification after a successful application. These findings are descriptive and the three final X labels are preserved.
