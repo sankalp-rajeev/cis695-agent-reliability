@@ -19,3 +19,10 @@
 - 18 November 2026, before unblinding. Tested the Stage 1 label gate and then used the Stage 2 argument pair with synthetic fixtures only. The independent checker compared every CSV and `counts.json`, including the same-arm shared-patch pair. The seal, full audit, and two scripts are bound by hashes in the receipt and the freeze tag.
 
 - 18 November 2026, before unblinding. Git normalized line endings in both audit tier CSVs during the initial local commit. Added path-specific Git attributes to preserve the original tool output bytes and checked the stored audit blobs against their original receipts. The final local freeze tag includes this preservation change.
+
+## Stage 2, after unblinding
+
+- 18 November 2026. Sankalp authorized Stage 2. Took the CSV and summary from grading commit `bf832e9d9dd686d6255c01ca656b3d401271cec4` and confirmed byte identity at results head `9b07499dd3cf561c05e522bc3bcad0572d1c0805`. The schema matched all three frozen fixtures. The real CSV contains `infra_error`, an outcome accepted by both frozen scripts and absent from the synthetic fixture values. The frozen scripts consumed the original files and the checked report retains every graded class.
+- 18 November 2026. Ran the frozen scripts on the real labels once each. The analysis made the primary call using A3's prespecified supplementary interval. The checked sensitivity tables retain all four accountings and all five cohorts. The report shows (a)–(e) with rates and intervals rounded to one decimal for display.
+- 18 November 2026. Recorded the session-1 grading-status exposure from before this session's unblinding and copied the hash-verified disclosure. The audit discovery fix `073294a` occurred before unblinding and is recorded in the Stage 1 decision log above. The grading fix `8b864b4` occurred after unblinding and affected only the empty-patch task `pylint-dev__pylint-8898`.
+- 18 November 2026. The operator requested descriptive X notes using the evidence recorded at `9b07499`. The import crash for `django__django-14140` explains the mechanism while its oracle class remains X. No outcome, metric or filter was changed.

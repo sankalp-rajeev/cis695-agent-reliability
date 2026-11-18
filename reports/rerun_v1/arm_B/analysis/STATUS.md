@@ -1,5 +1,15 @@
 # Arm B analysis status
 
+## 18 November 2026, Stage 2
+
+After Sankalp authorized the real-label run, both input files were taken from the verified grading commit `bf832e9d9dd686d6255c01ca656b3d401271cec4`. Their Git blobs were byte-identical at results head `9b07499dd3cf561c05e522bc3bcad0572d1c0805`. The columns, allowed outcomes, task IDs and patch hashes passed preflight. The grading verifier passed for all 92 cases. [Input provenance](input_provenance.json)
+
+All 9,253 sealed input files passed their manifest check. The scripts matched the freeze tag. The analyzer ran once with real labels under `--stage 2`. The independent checker passed with zero mismatches across 13 CSVs, 5,107 rows, and `counts.json`. [Checker receipt](checker_receipt.json)
+
+The report uses the checked results and includes the three documented deviations and the descriptive X notes. The copied session-1 disclosure matches the SHA-256 in A3. [Arm B report](REPORT.md)
+
+The final manifest binds the contents of this directory. Stage 2 ends at the annotated `rerun-armB-analysis-sealed` tag.
+
 ## 18 November 2026, Stage 1 resumed after the audit coverage fix
 
 Sankalp authorized a label-free fix to the audit's nested e2e V4 discovery. The fix at `073294a6853d390a032f7f66a3e8b7b357e8a27b` on `analysis/leakage-gaps` adds the explicit `tasks/<id>/verification/v4/cache/<id>/generation_trajectory.jsonl` layout, validates the inner task ID, and preserves duplicate detection across the three layouts. The 167 synthetic leakage unit tests passed.
@@ -17,7 +27,7 @@ Across both roles, the full audit found T3-name evidence on 4 tasks, T3-content 
 
 The analysis scripts pass lint. The analysis and independent checker passed the Stage 1 label-free case, the seeded mixed synthetic case, the all-resolved and all-wrong patch cases, and the synthetic Arm B self-pair. Each checker run reported zero mismatches. Zero denominators produced `NOT_AVAILABLE`. The self-pair shared 51 patch tasks with zero decision or correctness differences. The label argument gate was tested for both scripts. The [synthetic checker receipt](../../../../tests/fixtures/rerun_arm_analysis/checker_receipt.json) records the script, fixture, seal, and audit hashes. Generated result tables are under the ignored `runs/synthetic_check/` directory.
 
-The Stage 1 freeze commit contains the scripts, fixtures, checker receipt, full and superseded audit outputs, and this log. Wait for Sankalp to push the protocol and analysis tags and explicitly authorize Stage 2. No real labels or grading output were accessed.
+The Stage 1 freeze commit contains the scripts, fixtures, checker receipt, full and superseded audit outputs, and this log. At the Stage 1 freeze, Stage 2 was pending operator authorization. No real labels or grading output were accessed.
 
 ## 18 November 2026, Stage 1 hard stop at the contamination audit
 

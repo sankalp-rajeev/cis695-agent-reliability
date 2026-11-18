@@ -1,0 +1,46 @@
+{
+  "analysis_frozen_commit": "c6da900f10b47ce83dcb0383311377965bf5e35e",
+  "bytes_match_both_commits": true,
+  "columns": [
+    "instance_id",
+    "patch_sha256",
+    "oracle_outcome",
+    "resolved",
+    "fail_to_pass_passed",
+    "fail_to_pass_total",
+    "pass_to_pass_passed",
+    "pass_to_pass_total",
+    "harness_error_class",
+    "wrong_patch_type"
+  ],
+  "expected_outcomes": [
+    "empty_patch",
+    "infra_error",
+    "patch_apply_failed",
+    "resolved",
+    "unresolved"
+  ],
+  "files_sha256": {
+    "labels.csv": "044504dd4614da6ce68546776c7eb793565c74da6e17562ca89020562515202d",
+    "labels_summary.json": "75e4d84c5966cd390ee21f6a33a010a49d9eaeb19dba1225393ff4b912cd57e8"
+  },
+  "fixture_outcomes": [
+    "empty_patch",
+    "patch_apply_failed",
+    "resolved",
+    "unresolved"
+  ],
+  "grading_fix_commit": "8b864b4e178e88fadada356e86a2f845883e1369",
+  "label_commit": "bf832e9d9dd686d6255c01ca656b3d401271cec4",
+  "real_outcomes": [
+    "empty_patch",
+    "infra_error",
+    "patch_apply_failed",
+    "resolved",
+    "unresolved"
+  ],
+  "results_commit": "9b07499dd3cf561c05e522bc3bcad0572d1c0805",
+  "rows": 92,
+  "task_set_matches_seal": true,
+  "verification": "PASS for 92 at the grading commit"
+}

@@ -1,0 +1,151 @@
+{
+  "leakage_task_counts": {
+    "T3_content": 30,
+    "T3_name": 4,
+    "T4": 0,
+    "awareness": 33
+  },
+  "panels": {
+    "C_invalid_excluded": {
+      "excluding_T4": {
+        "better_than_chance": true,
+        "correct": 25,
+        "tasks": 51
+      },
+      "excluding_T4_and_T3_name": {
+        "better_than_chance": true,
+        "correct": 23,
+        "tasks": 47
+      },
+      "including_no_patch": {
+        "better_than_chance": true,
+        "correct": 25,
+        "tasks": 91
+      },
+      "including_no_patch_and_provider_blocked": {
+        "better_than_chance": true,
+        "correct": 25,
+        "tasks": 92
+      },
+      "primary": {
+        "better_than_chance": true,
+        "correct": 25,
+        "tasks": 51
+      }
+    },
+    "C_invalid_missing": {
+      "excluding_T4": {
+        "better_than_chance": false,
+        "correct": 25,
+        "tasks": 51
+      },
+      "excluding_T4_and_T3_name": {
+        "better_than_chance": false,
+        "correct": 23,
+        "tasks": 47
+      },
+      "including_no_patch": {
+        "better_than_chance": true,
+        "correct": 25,
+        "tasks": 91
+      },
+      "including_no_patch_and_provider_blocked": {
+        "better_than_chance": true,
+        "correct": 25,
+        "tasks": 92
+      },
+      "primary": {
+        "better_than_chance": false,
+        "correct": 25,
+        "tasks": 51
+      }
+    },
+    "S_invalid_excluded": {
+      "excluding_T4": {
+        "better_than_chance": false,
+        "correct": 25,
+        "tasks": 51
+      },
+      "excluding_T4_and_T3_name": {
+        "better_than_chance": false,
+        "correct": 23,
+        "tasks": 47
+      },
+      "including_no_patch": {
+        "better_than_chance": true,
+        "correct": 25,
+        "tasks": 91
+      },
+      "including_no_patch_and_provider_blocked": {
+        "better_than_chance": true,
+        "correct": 25,
+        "tasks": 92
+      },
+      "primary": {
+        "better_than_chance": false,
+        "correct": 25,
+        "tasks": 51
+      }
+    },
+    "S_invalid_missing": {
+      "excluding_T4": {
+        "better_than_chance": false,
+        "correct": 25,
+        "tasks": 51
+      },
+      "excluding_T4_and_T3_name": {
+        "better_than_chance": false,
+        "correct": 23,
+        "tasks": 47
+      },
+      "including_no_patch": {
+        "better_than_chance": true,
+        "correct": 25,
+        "tasks": 91
+      },
+      "including_no_patch_and_provider_blocked": {
+        "better_than_chance": true,
+        "correct": 25,
+        "tasks": 92
+      },
+      "primary": {
+        "better_than_chance": false,
+        "correct": 25,
+        "tasks": 51
+      }
+    }
+  },
+  "run": "e2e_v1_4_3_armB_um",
+  "seal_manifest_sha256": "8b9db5d3fc614ea43e56d5a5bf4db3619b708b7e720e9d77a0a8712058f9e9ee",
+  "self_checks": {
+    "categories": {
+      "agent_infrastructure": 0,
+      "no_patch": 40,
+      "patch": 51,
+      "provider_blocked": 1
+    },
+    "completed_tasks": 92,
+    "filtered_repair_calls": 1,
+    "live_decisions": {
+      "ACCEPT": 5,
+      "FLAG": 42,
+      "REJECT": 45
+    },
+    "patch_decisions": {
+      "ACCEPT": 5,
+      "FLAG": 42,
+      "REJECT": 4
+    },
+    "provider_blocked_tasks": [
+      "django__django-13569"
+    ],
+    "reproduced_live_decisions": 92,
+    "spend_by_provider_usd": {
+      "deepseek": 1.03063056,
+      "umgpt": 16.858550400000002
+    },
+    "spend_usd": 17.88918096,
+    "v2_reports": 40
+  },
+  "stage": 2
+}
