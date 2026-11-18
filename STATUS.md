@@ -1,6 +1,8 @@
 # Rerun v1 status
 
-Arm B completed all 92 tasks. The tmux check found no server, and Docker listed no running containers. The pre-grading seal covers 9,253 files. Grading is pending.
+Arm B completed all 92 run tasks. The pre-grading seal covers 9,253 files and is tagged `rerun-armB-sealed`.
+
+Arm B grading smoke test completed 2 of 92 tasks with SWE-bench 5.0.2. The two records are retained in `runs/grading_B` for resume. The `grading` tmux session is ready for operator launch via `scripts/start_grading.sh`.
 
 See [Arm B decisions](reports/rerun_v1/arm_B/DECISIONS.md) for the seal and oracle input format.
 
