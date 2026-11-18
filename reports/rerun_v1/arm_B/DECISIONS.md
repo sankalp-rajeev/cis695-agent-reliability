@@ -20,3 +20,7 @@
 | `astropy__astropy-14365` | Unresolved (U) | 0/1 | 8/8 | 64.110223 s |
 
 Neither smoke task required a re-run.
+
+## After grading
+
+Finalized and verified 92 labels. See [the report](REPORT.md) for timing and re-runs.
