@@ -18,6 +18,7 @@ from reliability.benchmark.leakage_rules import (
     scan_commands,
     symbols_at_base,
 )
+from reliability.benchmark.rerun_leakage import discover_arm
 from reliability.verifier.source_integrity import BaseSourceSpec, SourceArchive
 
 
@@ -353,3 +354,34 @@ def test_independent_definition_check_requires_decoded_successful_write(tmp_path
     assert verifier['definition_evidence'](path, symbol_hash) == (1,1)
     path.write_text(conversation(command, 'failed', 1))
     assert verifier['definition_evidence'](path, symbol_hash) == (1,None)
+
+
+@pytest.fixture
+def e2e_generator_cache(tmp_path):
+    iid = 'invented__package-1'
+    cache = tmp_path / 'tasks' / iid / 'verification/v4/cache' / iid
+    cache.mkdir(parents=True)
+    (cache / 'generation_trajectory.jsonl').touch()
+    return iid, cache
+
+
+def test_discover_arm_finds_e2e_generator_cache(tmp_path, e2e_generator_cache):
+    iid, cache = e2e_generator_cache
+    assert discover_arm(tmp_path) == [(iid, 'generator', cache)]
+
+
+def test_discover_arm_rejects_e2e_generator_cache_id_mismatch(tmp_path, e2e_generator_cache):
+    _, cache = e2e_generator_cache
+    cache.rename(cache.with_name('invented__package-2'))
+    with pytest.raises(ValueError, match='^generator-cache-id-mismatch$'):
+        discover_arm(tmp_path)
+
+
+@pytest.mark.parametrize('legacy_root', ['_reproduction_cache', 'tasks'])
+def test_discover_arm_rejects_e2e_generator_cache_duplicates(tmp_path, e2e_generator_cache, legacy_root):
+    iid, _ = e2e_generator_cache
+    legacy = tmp_path / legacy_root / iid
+    legacy.mkdir(parents=True, exist_ok=True)
+    (legacy / 'generation_trajectory.jsonl').touch()
+    with pytest.raises(ValueError, match='^duplicate-generator-layout$'):
+        discover_arm(tmp_path)

@@ -18,17 +18,26 @@ from reliability.benchmark.leakage_study import safe_finding
 
 def discover_arm(run):
     """Explicit agent/generator layouts; never recursively scan other outputs."""
-    found={}
-    for path in sorted((run/'tasks').glob('*/trajectory.jsonl')):
-        found[(path.parent.name,'repair')]=path.parent
-    for path in sorted((run/'_reproduction_cache').glob('*/generation_trajectory.jsonl')):
-        found[(path.parent.name,'generator')]=path.parent
-    for path in sorted((run/'tasks').glob('*/generation_trajectory.jsonl')):
-        key=(path.parent.name,'generator')
-        if key in found:
-            raise ValueError('duplicate-generator-layout')
-        found[key]=path.parent
-    return [(iid,role,path) for (iid,role),path in sorted(found.items())]
+    tasks = run / 'tasks'
+    found = {}
+    for path in sorted(tasks.glob('*/trajectory.jsonl')):
+        found[(path.parent.name, 'repair')] = path.parent
+
+    generator_layouts = (
+        (run / '_reproduction_cache', '*/generation_trajectory.jsonl'),
+        (tasks, '*/generation_trajectory.jsonl'),
+        (tasks, '*/verification/v4/cache/*/generation_trajectory.jsonl'),
+    )
+    for root, pattern in generator_layouts:
+        for path in sorted(root.glob(pattern)):
+            iid = path.parent.name
+            if iid != path.relative_to(root).parts[0]:
+                raise ValueError('generator-cache-id-mismatch')
+            key = (iid, 'generator')
+            if key in found:
+                raise ValueError('duplicate-generator-layout')
+            found[key] = path.parent
+    return [(iid, role, path) for (iid, role), path in sorted(found.items())]
 
 
 def audit_arm(run, output, image_root, *, input_provider=None):
