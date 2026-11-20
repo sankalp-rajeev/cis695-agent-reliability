@@ -83,7 +83,7 @@ Applied once, in Phase 7, to the development data: gold-92 for costs, arm B's 51
 
 - **H1.** Pooled ACCEPT precision is above the pooled base rate (correct ÷ patch tasks). Task-clustered bootstrap, 95% CI lower bound above the base rate.
 - **H2.** Wrong patches are held back (not ACCEPTed) more often than correct patches. Pooled difference with task-clustered bootstrap CI above 0.
-- **H3.** v1.5 REJECTs at most 3% of the 108 gold patches. Report the count and Wilson upper bound.
+- **H3.** v1.5 REJECTs at most 3% of the test-set gold patches. Report the count and Wilson upper bound.
 - **Per system:** decision counts, base rate, ACCEPT precision (Wilson), coverage, correct accepted, wrong held back, held-back difference (Newcombe), two-sided Fisher exact. Same methods as arm B.
 - **By wrong-patch type** (R regression, U under-solved, X other; from grader evidence only, as in the arm B protocol): share caught.
 - **Gold:** every FLAG and REJECT on a gold patch, with the signal that caused it.
@@ -108,13 +108,16 @@ Each phase ends with a commit. A gate must pass before the next phase starts. "S
 | 8. Freeze v1.5 | Set the switches in `configs/verifier/v1_5.yaml` exactly as `ADOPTION.md` says, commit, tag `v1.5-frozen`. | Tag pushed; nothing in `src/` or `configs/` changes after it |
 | 9. Public systems, development | Verify-only with `--reuse-v4-from runs/study_dev_gold`, one system at a time in priority order: `runs/study_dev_<system>`. Seal each. | Each sealed; ledger $0 |
 
-### Stage B: test set (108 tasks)
+### Stage B: test set (108 tasks, in two seeded batches)
+
+The 108 test tasks keep their seeded order. **Batch 1** is the first 60 in that order; **batch 2** is the remaining 48. Batch 2 runs only if time allows (section 10).
 
 | Phase | Work | Gate |
 |---|---|---|
-| 10. Swap images | After every Stage A run is sealed, remove the 92 task images. Prepare the 108 test tasks with the task-prep job used for the 9 added tasks (branch `feature/task-prep`), applying the replacement rule from section 3. | At most 22 replacements; task specs committed |
-| 11. Gold run, test | Verify-only, gold patches, 108 tasks, frozen V4 generator (`study-v4-frozen` settings) generating V4 here: `runs/study_test_gold`. Seal. | Sealed; ledger within cap; leakage audit passes |
-| 12. Public systems, test | Verify-only with `--reuse-v4-from runs/study_test_gold`, priority order: `runs/study_test_<system>`. Seal each. | Each sealed; ledger $0 |
+| 10. Prepare batch 1 | Prepare the first 60 test tasks with the task-prep job used for the 9 added tasks (branch `feature/task-prep`), applying the replacement rule from section 3. Run `docker system df` first: if the 60 images (about 180 GB) fit alongside the 92, prepare them while Stage A runs; if not, prepare them after Stage A is sealed and the 92 images are removed. | At most 12 replacements in batch 1; task specs committed |
+| 11. Gold run, test batch 1 | Verify-only, gold patches, frozen V4 generator (`study-v4-frozen` settings) generating V4 here: `runs/study_test1_gold`. Seal. | Sealed; ledger within cap; leakage audit passes |
+| 12. Public systems, test batch 1 | Verify-only with `--reuse-v4-from runs/study_test1_gold`, priority order: `runs/study_test1_<system>`. Seal each. | Each sealed; ledger $0 |
+| 12b. Batch 2 (if time) | Same as 10–12 for the remaining 48 tasks, with `test2` in place of `test1`. Prepare after removing the 92 development images if disk requires. | Same gates |
 
 ### Stage C: grading and analysis
 
@@ -143,6 +146,29 @@ Each phase ends with a commit. A gate must pass before the next phase starts. "S
 - Any sha256 mismatch when reusing V4.
 - Any change needed to `src/` or `configs/` after `v1.5-frozen`.
 
-## 10. Scaling to 500 (after the final presentation)
+## 10. Schedule (final presentation Thursday 26 Nov) and cut rules
+
+| Day | Work |
+|---|---|
+| Fri 20 | Phase 1 (pre-register and tag). Phase 2 (fetch patches). Request the DeepSeek top-up. |
+| Sat 21 | Phase 3 (build), with Cursor. |
+| Sun 22 | Finish Phase 3. Phase 4 (V4 pilot), Phase 5 (freeze V4). Start Phase 6 (development gold run) overnight. |
+| Mon 23 | Phase 7 (arm B re-verify, adoption), Phase 8 (freeze v1.5). Phase 10 (prepare test batch 1). Phase 14 (analysis script) while runs go. |
+| Tue 24 | Phase 11 (test gold, batch 1). Phase 12 for systems 1–3 begins. Grading (Phase 13) of each sealed run as soon as it is sealed. |
+| Wed 25 | Finish Phase 12 for systems 1–3 and their grading. **Analysis cutoff 18:00.** Phase 15–16 (results, ablations). |
+| Thu 26 | Phase 17 (presentation). |
+
+**Cut rules, fixed now and applied in this order when time runs short:**
+
+1. Phase 9 (public systems on the development set) runs only when the machine would otherwise be idle. It is descriptive and is skipped first.
+2. Systems 4–6 run only after systems 1–3 have finished on test batch 1.
+3. Batch 2 runs only after systems 1–3 have finished on batch 1.
+4. **Results at the cutoff use only runs that are sealed and fully graded.** A system is included only if it completed every task in the batch. The cutoff is a time, not a result, so it doesn't bias anything.
+5. **V4 fallback:** if the per-requirement V4 (changes 3–5) does not pass Phase 3's tests by Sunday 22:00, use the current V4 design instead (one generator pass, up to three tests). Coverage and FAIL-confirmed verdicts are then unavailable, and R3's backing-up rule becomes "2+ failing tests, or a V4 failure with V2 FAIL or a V3 failure". Record which design was used in `ADOPTION.md`.
+6. If Phase 6 shows a verify-only run takes more than 8 hours for the 92 gold patches, run only systems 1–2 on test batch 1 and report system 3 later.
+
+Anything that does not finish by the cutoff goes into the final report after the presentation, labelled with its date.
+
+## 11. Scaling to 500 (after the final presentation)
 
 Same frozen v1.5 and V4 generator, remaining tasks in batches of about 90 (prepare, gold run, public systems, seal, remove images). About 300 more tasks, roughly $6–9 of DeepSeek for one-pass V4 or double for two passes, and about 2–3 weeks of machine time.
