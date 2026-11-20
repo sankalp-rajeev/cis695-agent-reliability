@@ -7,7 +7,7 @@ Status key: ✅ done · 🔄 in progress · ⏳ not started · ⛔ blocked · �
 
 ## Current state
 
-Phase 2 stopped at the fetch gate. Claude Sonnet 4 exceeded the missing-prediction limit in both sets. The partial GPT-4.1 development fetch also exceeded the limit. Coverage and drop decisions are recorded in [FETCH.md](inputs/FETCH.md).
+Phase 2 stopped at format detection. The first Qwen3-Coder development task folder listed zero filenames. GPT-4.1 mini acquisition is complete. The invalid Claude Sonnet 4 and GPT-4.1 rows were withdrawn. The confirmed layouts and observed counts are recorded in [FETCH.md](inputs/FETCH.md).
 
 ## Pre-flight checks
 
@@ -23,7 +23,7 @@ Phase 2 stopped at the fetch gate. Claude Sonnet 4 exceeded the missing-predicti
 | # | Phase | What it does | Why | Status | Result / link |
 |---|---|---|---|---|---|
 | 1 | Pre-register | Merge task-prep, write PROTOCOL.md, tag `study-v1.5-prereg` | Rules are fixed before we see any data | ✅ | tag study-v1.5-prereg @ 52186c0; unit baseline: no new issues |
-| 2 | Fetch patches | Download public patches for 200 tasks, draw the test set | Patches from 6 agents of different strength, without running agents ourselves | ⛔ | `23cdfe3113fdffd0e11753b8bffea8e9ee7ad1d5` · [FETCH.md](inputs/FETCH.md) · 493/1,332 checked, 222 fetched, 8 empty (0 blank, 8 null), 271 missing, 0 malformed |
+| 2 | Fetch patches | Download public patches for 200 tasks, draw the test set | Patches from 6 agents of different strength, without running agents ourselves | ⛔ | [FETCH.md](inputs/FETCH.md) · GPT-4.1 mini: 222 fetched, 8 empty (0 blank, 8 null), 0 missing, 0 malformed including reserves. Priorities 2–6 await fetch after format detection. |
 | 3 | Build | Paired-skip, V2 fallback, per-requirement V4, reuse flag, v1.5 rules | The two fixes for what held the verifier back | ⏳ | |
 | 4 | V4 pilot | New V4 on 10 gold patches | Check cost, coverage and leakage before spending on full runs | ⏳ | |
 | 5 | Freeze V4 | Tag `study-v4-frozen` | The test generator can't change after this | ⏳ | |
@@ -50,3 +50,5 @@ One line per entry, newest last: date, what was decided or deviated from the pla
 - 20 Nov: V4 mode set to two passes (balance ~$9 ≥ $7 rule).
 - 20 Nov: model_patch null counted as empty (no-patch), same as blank; absent or non-string recorded as malformed. Clarifies 'empty' in PROTOCOL §6; no rule changed.
 - 20 Nov: The live downloader finished the Claude Sonnet 4 requests and checked 49 GPT-4.1 development keys before the gate failure was observed and the process was stopped. The downloader now enforces the gate after each recorded key.
+- 20 Nov: v1.0.0 submissions store <id>/<id>.traj.json, not <id>.pred; the 404s were a wrong file name in the plan, not missing predictions. Drops withdrawn; fetch layout corrected per system. No protocol rule changed.
+- 20 Nov: The first Qwen3-Coder development task folder listed zero filenames. The format check stopped before any corrected prediction downloads.
