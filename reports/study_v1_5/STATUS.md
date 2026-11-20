@@ -7,7 +7,7 @@ Status key: ✅ done · 🔄 in progress · ⏳ not started · ⛔ blocked · �
 
 ## Current state
 
-Phase 1 in progress. `feature/task-prep` merged (`9d5fb6a`); the unit suite shows no new failures beyond the documented baseline. Next: PROTOCOL.md and the `study-v1.5-prereg` tag.
+Phase 2 stopped at the fetch gate. Claude Sonnet 4 exceeded the missing-prediction limit in both sets. The partial GPT-4.1 development fetch also exceeded the limit. Coverage and drop decisions are recorded in [FETCH.md](inputs/FETCH.md).
 
 ## Pre-flight checks
 
@@ -23,7 +23,7 @@ Phase 1 in progress. `feature/task-prep` merged (`9d5fb6a`); the unit suite show
 | # | Phase | What it does | Why | Status | Result / link |
 |---|---|---|---|---|---|
 | 1 | Pre-register | Merge task-prep, write PROTOCOL.md, tag `study-v1.5-prereg` | Rules are fixed before we see any data | ✅ | tag study-v1.5-prereg @ 52186c0; unit baseline: no new issues |
-| 2 | Fetch patches | Download public patches for 200 tasks, draw the test set | Patches from 6 agents of different strength, without running agents ourselves | ⏳ | |
+| 2 | Fetch patches | Download public patches for 200 tasks, draw the test set | Patches from 6 agents of different strength, without running agents ourselves | ⛔ | [FETCH.md](inputs/FETCH.md) · 493/1,332 checked, 222 fetched, 8 empty (0 blank, 8 null), 271 missing, 0 malformed |
 | 3 | Build | Paired-skip, V2 fallback, per-requirement V4, reuse flag, v1.5 rules | The two fixes for what held the verifier back | ⏳ | |
 | 4 | V4 pilot | New V4 on 10 gold patches | Check cost, coverage and leakage before spending on full runs | ⏳ | |
 | 5 | Freeze V4 | Tag `study-v4-frozen` | The test generator can't change after this | ⏳ | |
@@ -48,3 +48,5 @@ One line per entry, newest last: date, what was decided or deviated from the pla
 - 20 Nov: plan revised after the validation pass (16 changes, PLAN.md §0).
 - 20 Nov: Phase 1 test gate clarified to "no new failures beyond the documented baseline" (`reports/next_phases/MERGE_NOTES.md`).
 - 20 Nov: V4 mode set to two passes (balance ~$9 ≥ $7 rule).
+- 20 Nov: model_patch null counted as empty (no-patch), same as blank; absent or non-string recorded as malformed. Clarifies 'empty' in PROTOCOL §6; no rule changed.
+- 20 Nov: The live downloader finished the Claude Sonnet 4 requests and checked 49 GPT-4.1 development keys before the gate failure was observed and the process was stopped. The downloader now enforces the gate after each recorded key.
