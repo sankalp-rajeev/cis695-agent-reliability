@@ -1,0 +1,171 @@
+{
+  "built_by_commit": "71a78cc162a738a27e5b88349d55ca88b7329c87",
+  "cohort": "main100_rest10_retry2",
+  "schema": "task_spec_registry/1",
+  "tasks": [
+    {
+      "archive": {
+        "path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-24627.expanded.tar",
+        "pax_comment": "9d22ab09d52d279b125d8770967569de070913b2",
+        "sha256": "ceee9feac540334b48c46933ca30a026307ee2808de09dc31fc8a49b0d27cf84"
+      },
+      "base_commit": "9d22ab09d52d279b125d8770967569de070913b2",
+      "dataset_projection_row": {
+        "base_commit": "9d22ab09d52d279b125d8770967569de070913b2",
+        "instance_id": "matplotlib__matplotlib-24627",
+        "repo": "matplotlib/matplotlib",
+        "version": "3.6"
+      },
+      "image": {
+        "id": "sha256:576160b02ee53603932571b414a794ec36922b530b7350346e0b888b839029ad",
+        "tag": "swebench/sweb.eval.x86_64.matplotlib_1776_matplotlib-24627:latest"
+      },
+      "instance_id": "matplotlib__matplotlib-24627",
+      "integrity_preflight": {
+        "receipt_path": "/home/sankalp/projects/wt-task-prep/configs/e2e/task_specs_main100_rest10_retry2_evidence/matplotlib__matplotlib-24627/source_receipt.json",
+        "receipt_sha256": "68d0f7175e5bc1cc0a8a5c0aa5d30180c5e316c47d5d9b5ebb31883fdbf5fbfe",
+        "status": "VERIFIED"
+      },
+      "origin": "prepared",
+      "pre_install": {
+        "dataset_projection_sha256": "abd8c33cef30f859221dcdc00d90ff87534aa91cb85b4bca0eec80ae295b5228",
+        "spec": {
+          "commands": [
+            "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super dvipng",
+            "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+            "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+            "QHULL_BUILD_DIR=\"/testbed/build\"",
+            "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+            "mkdir -p \"$QHULL_BUILD_DIR\"",
+            "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+          ],
+          "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+          "constants_path": "swebench/harness/constants/python.py",
+          "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+          "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+          "dataset_projection_sha256": "abd8c33cef30f859221dcdc00d90ff87534aa91cb85b4bca0eec80ae295b5228",
+          "dataset_row": {
+            "base_commit": "9d22ab09d52d279b125d8770967569de070913b2",
+            "instance_id": "matplotlib__matplotlib-24627",
+            "repo": "matplotlib/matplotlib",
+            "version": "3.6"
+          },
+          "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+          "project_swebench_version": "5.0.2",
+          "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+          "spec_key": [
+            "matplotlib/matplotlib",
+            "3.6",
+            "pre_install"
+          ],
+          "swebench_version": "4.0.4",
+          "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+          "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl"
+        },
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+      },
+      "preflight_identity": {
+        "archive_sha256": "ceee9feac540334b48c46933ca30a026307ee2808de09dc31fc8a49b0d27cf84",
+        "base_commit": "9d22ab09d52d279b125d8770967569de070913b2",
+        "image_id": "sha256:576160b02ee53603932571b414a794ec36922b530b7350346e0b888b839029ad"
+      },
+      "repo": "matplotlib/matplotlib",
+      "runner": {
+        "django_parallel_one": null,
+        "evidence": "pytest.ini or conftest.py; pytest referenced in tox.ini",
+        "name": "pytest"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      },
+      "version": "3.6"
+    },
+    {
+      "archive": {
+        "path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-25332.expanded.tar",
+        "pax_comment": "66ba515e671638971bd11a34cff12c107a437e0b",
+        "sha256": "b4288aad81a69955f4e90d3a9dfb5a31599b33997e48b8893021ff5f1f799365"
+      },
+      "base_commit": "66ba515e671638971bd11a34cff12c107a437e0b",
+      "dataset_projection_row": {
+        "base_commit": "66ba515e671638971bd11a34cff12c107a437e0b",
+        "instance_id": "matplotlib__matplotlib-25332",
+        "repo": "matplotlib/matplotlib",
+        "version": "3.7"
+      },
+      "image": {
+        "id": "sha256:00d42a208a1bf1eed6ce2b3c82dfa8522ff5653df697a02f3433a99fdf181198",
+        "tag": "swebench/sweb.eval.x86_64.matplotlib_1776_matplotlib-25332:latest"
+      },
+      "instance_id": "matplotlib__matplotlib-25332",
+      "integrity_preflight": {
+        "receipt_path": "/home/sankalp/projects/wt-task-prep/configs/e2e/task_specs_main100_rest10_retry2_evidence/matplotlib__matplotlib-25332/source_receipt.json",
+        "receipt_sha256": "b9af52f61faf4c6dc8b9bf9e5bc8001eea97a4b3a6cca5be0d7963cc62768795",
+        "status": "VERIFIED"
+      },
+      "origin": "prepared",
+      "pre_install": {
+        "dataset_projection_sha256": "abd8c33cef30f859221dcdc00d90ff87534aa91cb85b4bca0eec80ae295b5228",
+        "spec": {
+          "commands": [
+            "apt-get -y update && apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y imagemagick ffmpeg texlive texlive-latex-extra texlive-fonts-recommended texlive-xetex texlive-luatex cm-super dvipng",
+            "QHULL_URL=\"http://www.qhull.org/download/qhull-2020-src-8.0.2.tgz\"",
+            "QHULL_TAR=\"/tmp/qhull-2020-src-8.0.2.tgz\"",
+            "QHULL_BUILD_DIR=\"/testbed/build\"",
+            "wget -O \"$QHULL_TAR\" \"$QHULL_URL\"",
+            "mkdir -p \"$QHULL_BUILD_DIR\"",
+            "tar -xvzf \"$QHULL_TAR\" -C \"$QHULL_BUILD_DIR\""
+          ],
+          "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+          "constants_path": "swebench/harness/constants/python.py",
+          "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+          "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+          "dataset_projection_sha256": "abd8c33cef30f859221dcdc00d90ff87534aa91cb85b4bca0eec80ae295b5228",
+          "dataset_row": {
+            "base_commit": "66ba515e671638971bd11a34cff12c107a437e0b",
+            "instance_id": "matplotlib__matplotlib-25332",
+            "repo": "matplotlib/matplotlib",
+            "version": "3.7"
+          },
+          "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+          "project_swebench_version": "5.0.2",
+          "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+          "spec_key": [
+            "matplotlib/matplotlib",
+            "3.7",
+            "pre_install"
+          ],
+          "swebench_version": "4.0.4",
+          "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+          "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl"
+        },
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+      },
+      "preflight_identity": {
+        "archive_sha256": "b4288aad81a69955f4e90d3a9dfb5a31599b33997e48b8893021ff5f1f799365",
+        "base_commit": "66ba515e671638971bd11a34cff12c107a437e0b",
+        "image_id": "sha256:00d42a208a1bf1eed6ce2b3c82dfa8522ff5653df697a02f3433a99fdf181198"
+      },
+      "repo": "matplotlib/matplotlib",
+      "runner": {
+        "django_parallel_one": null,
+        "evidence": "pytest.ini or conftest.py; pytest referenced in tox.ini",
+        "name": "pytest"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      },
+      "version": "3.7"
+    }
+  ]
+}

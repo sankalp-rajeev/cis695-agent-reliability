@@ -1,0 +1,81 @@
+{
+  "built_by_commit": "71a78cc162a738a27e5b88349d55ca88b7329c87",
+  "cohort": "main100_rest10_retry1",
+  "schema": "task_spec_registry/1",
+  "tasks": [
+    {
+      "archive": {
+        "path": "/home/sankalp/cg_repos/task_archives/pylint-dev__pylint-8898.canonical.tar",
+        "pax_comment": "1f8c4d9eb185c16a2c1d881c054f015e1c2eb334",
+        "sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10"
+      },
+      "base_commit": "1f8c4d9eb185c16a2c1d881c054f015e1c2eb334",
+      "dataset_projection_row": {
+        "base_commit": "1f8c4d9eb185c16a2c1d881c054f015e1c2eb334",
+        "instance_id": "pylint-dev__pylint-8898",
+        "repo": "pylint-dev/pylint",
+        "version": "3.0"
+      },
+      "image": {
+        "id": "sha256:b0c71d27e9c3a21187e17af515954bebafed91d0911de5585385b34ab90588f2",
+        "tag": "swebench/sweb.eval.x86_64.pylint-dev_1776_pylint-8898:latest"
+      },
+      "instance_id": "pylint-dev__pylint-8898",
+      "integrity_preflight": {
+        "receipt_path": "/home/sankalp/projects/wt-task-prep/configs/e2e/task_specs_main100_rest10_retry1_evidence/pylint-dev__pylint-8898/source_receipt.json",
+        "receipt_sha256": "e7226441756bb1f743e2ed16dc70a6a6f9f26bf50a89b21edf021c977a98673a",
+        "status": "VERIFIED"
+      },
+      "origin": "prepared",
+      "pre_install": {
+        "dataset_projection_sha256": "db3c6cf3b1cb77ebde226c69c50e4a2d8c05ddf3403d0649a4e7cfcca53052ae",
+        "spec": {
+          "commands": [],
+          "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+          "constants_path": "swebench/harness/constants/python.py",
+          "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+          "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+          "dataset_projection_sha256": "db3c6cf3b1cb77ebde226c69c50e4a2d8c05ddf3403d0649a4e7cfcca53052ae",
+          "dataset_row": {
+            "base_commit": "1f8c4d9eb185c16a2c1d881c054f015e1c2eb334",
+            "instance_id": "pylint-dev__pylint-8898",
+            "repo": "pylint-dev/pylint",
+            "version": "3.0"
+          },
+          "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+          "project_swebench_version": "5.0.2",
+          "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+          "spec_key": [
+            "pylint-dev/pylint",
+            "3.0",
+            "pre_install"
+          ],
+          "swebench_version": "4.0.4",
+          "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+          "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl"
+        },
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+      },
+      "preflight_identity": {
+        "archive_sha256": "631ca9a51cad16469c84d9a74246ffe8571e14ba724a68ba58d85aa892880e10",
+        "base_commit": "1f8c4d9eb185c16a2c1d881c054f015e1c2eb334",
+        "image_id": "sha256:b0c71d27e9c3a21187e17af515954bebafed91d0911de5585385b34ab90588f2"
+      },
+      "repo": "pylint-dev/pylint",
+      "runner": {
+        "django_parallel_one": null,
+        "evidence": "[tool.pytest] in pyproject.toml; pytest referenced in tox.ini",
+        "name": "pytest"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "[tool.pytest] in pyproject.toml; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      },
+      "version": "3.0"
+    }
+  ]
+}
