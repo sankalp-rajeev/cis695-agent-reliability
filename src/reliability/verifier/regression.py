@@ -173,6 +173,11 @@ class RegressionConfig:
     baseline_cache_dir: Path | None = None
     skip_compatible: bool = True       # Policy C; False selects Policy S
     invalid_as_missing: bool = False   # required sensitivity report
+    skip_paired: bool = False         # Policy P
+
+    def __post_init__(self) -> None:
+        if self.skip_compatible and self.skip_paired:
+            raise ValueError("skip_compatible and skip_paired are mutually exclusive")
 
 
 @dataclass(frozen=True, slots=True)
@@ -255,11 +260,24 @@ def run_from_dict(payload: dict) -> RunResult:
     return RunResult(**fields)
 
 
+def _skipped_ids(results: tuple[TestResult, ...]) -> set[str]:
+    return ({r.test_id for r in results if r.status is TestStatus.SKIPPED}
+            - {r.test_id for r in results if r.status is not TestStatus.SKIPPED})
+
+
 def completeness_of(tests: tuple[str, ...], base: RunResult | None,
                     patched: RunResult | None, *,
                     skip_compatible: bool = True,
-                    invalid_as_missing: bool = False) -> tuple[str, tuple[str, ...]]:
+                    invalid_as_missing: bool = False,
+                    skip_paired: bool = False) -> tuple[str, tuple[str, ...]]:
     """Separate known execution gaps from missing historical capture evidence."""
+    if skip_compatible and skip_paired:
+        raise ValueError("skip_compatible and skip_paired are mutually exclusive")
+    paired_selected, paired_raw = set(), set()
+    # A confirmation supplies the same observation on both sides.
+    if skip_paired and base is not None and patched is not None and base is not patched:
+        paired_selected = _skipped_ids(base.results) & _skipped_ids(patched.results)
+        paired_raw = _skipped_ids(base.raw_results) & _skipped_ids(patched.raw_results)
     gaps, unknown = [], []
     excluded = {r.test_id for run in (base, patched) if run is not None
                 for r in run.results if r.status is TestStatus.INVALID_ID and not invalid_as_missing}
@@ -293,11 +311,13 @@ def completeness_of(tests: tuple[str, ...], base: RunResult | None,
                                     (TestStatus.NOT_RUN, TestStatus.NOT_REACHED, TestStatus.TIMEOUT) for t in expected)
             if missing_expansion:
                 gaps.append(f"{label}: {tid}: expanded instance not admitted")
+            if tid in paired_selected:
+                continue
             # Lossless accounting can establish a healthy selected parameter
             # family even when the unchanged legacy parser admitted only exact
             # IDs. Do not invent a pass or silently absorb an unscored failure.
             cases = mapped_raw.get(tid, ())
-            recovered = (cases and all(r.status in healthy for r in cases))
+            recovered = cases and all(r.status in healthy or r.test_id in paired_raw for r in cases)
             if (result is None or result.status is TestStatus.NOT_RUN) and recovered and not missing_expansion:
                 continue
             if (result is None or result.status in (TestStatus.NOT_RUN, TestStatus.NOT_REACHED, TestStatus.TIMEOUT,
@@ -319,19 +339,20 @@ def completeness_of(tests: tuple[str, ...], base: RunResult | None,
             ids = run.raw_id_map.get(result.test_id, ())
             if ids and set(ids) <= excluded:
                 continue
-            if not skip_compatible and result.status is TestStatus.SKIPPED:
+            if not skip_compatible and result.status is TestStatus.SKIPPED and result.test_id not in paired_raw:
                 gaps.append(f"{label}: raw SKIPPED: {result.test_id}")
             if not ids:
                 gaps.append(f"{label}: unaccounted raw ID: {result.test_id}")
             if len(ids) == 1 and result.status in (TestStatus.FAILED, TestStatus.ERROR, TestStatus.CRASH):
                 selected = by_id.get(ids[0])
-                if selected and selected.status in healthy:
+                if selected and (selected.status in healthy or selected.test_id in paired_selected):
                     gaps.append(f"{label}: raw/selected status conflict: {result.test_id}")
         if not run.evidence_complete:
             unknown.append(f"{label}: complete raw/runner capture unavailable")
     def comparable_ids(run):
         return {r.test_id for r in run.raw_results
-                if not excluded or not set(run.raw_id_map.get(r.test_id, ())) <= excluded}
+                if r.test_id not in paired_raw
+                and (not excluded or not set(run.raw_id_map.get(r.test_id, ())) <= excluded)}
     if (base and patched and base.raw_results and patched.raw_results
             and comparable_ids(base) != comparable_ids(patched)):
         gaps.append("concrete raw test IDs differ between base and patched")
@@ -590,6 +611,13 @@ def run_regression(
                     notes.append(f"{test}: confirmation identity/evidence unavailable: {unavailable.value}")
 
     n_executed = sum(1 for o in outcomes.values() if o.executed)
+    if config.skip_paired and baseline is not patched:
+        for test, outcome in outcomes.items():
+            base_case, patched_case = base_by_id[test], patched_by_id[test]
+            if (outcome is Outcome.SKIPPED and base_case and patched_case
+                    and base_case.status is TestStatus.SKIPPED
+                    and base_case.test_id == patched_case.test_id):
+                n_executed -= 1
     n_regressions = sum(1 for o in outcomes.values() if o.counts_as_regression)
 
     if n_executed == 0:
@@ -610,12 +638,14 @@ def run_regression(
     original_signal = signal
     completeness, gaps = completeness_of(selection.tests, baseline, patched,
                                          skip_compatible=config.skip_compatible,
-                                         invalid_as_missing=config.invalid_as_missing)
+                                         invalid_as_missing=config.invalid_as_missing,
+                                         skip_paired=config.skip_paired)
     for confirmation in confirmations:
         state, reasons = completeness_of(
             confirmation.requested_tests or tuple(r.test_id for r in confirmation.results),
             confirmation, confirmation, skip_compatible=config.skip_compatible,
-                                         invalid_as_missing=config.invalid_as_missing)
+                                         invalid_as_missing=config.invalid_as_missing,
+                                         skip_paired=config.skip_paired)
         if state != "COMPLETE":
             completeness = "INCOMPLETE_CONFIRMED" if state == "INCOMPLETE_CONFIRMED" else completeness
             if completeness == "COMPLETE":

@@ -293,3 +293,21 @@ suite catches 11/11 violation probes and passes 3/3 controls. All 45 new unit
 tests pass; every existing test retains its baseline status. The independent
 standard-library checker confirms the golden and delta tables. No model call,
 label access or live generator run is part of this validation.
+
+## Policy P (paired-skip), proposed
+
+V2 excludes a selected test from evidence when both the base and patched
+results are `SKIPPED`, using the same evidence treatment as an excluded
+`INVALID_ID`. A skip on only one side is an evidence gap. Raw results follow
+the same rule, paired by exact raw test ID. Each confirmation uses Policy S
+semantics, so a skip there is always an evidence gap.
+
+Run timeouts, collection and infrastructure errors retain their existing gap
+handling. `FAIL` retains its outcome, zero executed evidence yields
+`NOT_AVAILABLE`, and `INVALID_ID` handling still follows `invalid_as_missing`.
+The guarded verifier records `P_invalid_excluded` and `P_invalid_missing` as
+sensitivities. Policy S remains primary.
+
+Policy P was designed after the Arm B and DeepSeek correctness labels were
+seen, so these replays are exploratory. Policy P can become primary only
+through a protocol amendment frozen before Arm A and the 200-task run.

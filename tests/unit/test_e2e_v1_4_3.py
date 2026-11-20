@@ -107,6 +107,10 @@ def test_g1_paired_rule_controls_real_v2(tmp_path, monkeypatch, messages, repo, 
         assert signal.findings['signal'] == 'INCOMPLETE'
         assert len(created) == 3
         policies = json.loads((folder / 'v2_policies.json').read_text())['policies']
+        assert set(policies) == {
+            f'{policy}_invalid_{handling}'
+            for policy in 'SCP' for handling in ('excluded', 'missing')
+        }
         for policy in policies.values():
             for tree in ('baseline', 'patched'):
                 assert not any('gis_tests' in e.get('module', '') for e in policy[tree]['events'])

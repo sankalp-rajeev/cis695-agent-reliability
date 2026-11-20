@@ -138,10 +138,14 @@ def run_policies(instance_id, selection, executor, reference, folder):
     primary = run_regression(instance_id, selection, Replay(calls.calls, fallback=calls),
                              RegressionConfig(per_pass_timeout_s=1800, rerun_flaky=True, baseline_cache_dir=None))
     objects = {'C_invalid_excluded': primary}
-    for policy, skip, missing in [('C', True, True), ('S', False, False), ('S', False, True)]:
+    for policy, compatible, paired, missing in [
+        ('C', True, False, True),
+        ('S', False, False, False), ('S', False, False, True),
+        ('P', False, True, False), ('P', False, True, True),
+    ]:
         report = run_regression(instance_id, selection, Replay(calls.calls),
             RegressionConfig(per_pass_timeout_s=1800, rerun_flaky=True, baseline_cache_dir=None,
-                             skip_compatible=skip, invalid_as_missing=missing))
+                             skip_compatible=compatible, invalid_as_missing=missing, skip_paired=paired))
         objects[policy + ('_invalid_missing' if missing else '_invalid_excluded')] = report
     reports = {name: report_json(report) for name, report in objects.items()}
     write(folder / 'v2_policies.json', {'instance_id': instance_id, 'policies': reports,
