@@ -27,5 +27,9 @@ systems:
   format: traj_json_v1
 - priority: 6
   folder: 20250802_mini-v1.0.0_qwen3-coder-480b-a35b-instruct
-  trajs_prefix: s3://swe-bench-submissions/bash-only/20250802_mini-v1.0.0_Qwen3-Coder-480B-A35B-Instruct/trajs
+  trajs_prefix: s3://swe-bench-submissions/bash-only/20250802_mini-v1.0.0_qwen3-coder-480b-a35b-instruct/trajs
   metadata_sha256: 7813690b363324f8d13a307e158f1899d5fc78a2638ee8b8e681ef182709f1b1
+  metadata_trajs: s3://swe-bench-submissions/bash-only/20250802_mini-v1.0.0_Qwen3-Coder-480B-A35B-Instruct/trajs
+  prefix_override_reason: metadata.yaml prefix case does not match the bucket; folder
+    confirmed by aws s3 ls bash-only/ on 20 Nov
+  format: traj_json_v1

@@ -7,7 +7,7 @@ Status key: ✅ done · 🔄 in progress · ⏳ not started · ⛔ blocked · �
 
 ## Current state
 
-Phase 2 stopped at format detection. The first Qwen3-Coder development task folder listed zero filenames. GPT-4.1 mini acquisition is complete. The invalid Claude Sonnet 4 and GPT-4.1 rows were withdrawn. The confirmed layouts and observed counts are recorded in [FETCH.md](inputs/FETCH.md).
+Phase 2 is complete. The corrected public submission fetch passed the gate for all six systems. The Sonnet cross-check matched 222/222 fetched submissions, and 181 reference patches were extracted from the cached dataset.
 
 ## Pre-flight checks
 
@@ -23,7 +23,7 @@ Phase 2 stopped at format detection. The first Qwen3-Coder development task fold
 | # | Phase | What it does | Why | Status | Result / link |
 |---|---|---|---|---|---|
 | 1 | Pre-register | Merge task-prep, write PROTOCOL.md, tag `study-v1.5-prereg` | Rules are fixed before we see any data | ✅ | tag study-v1.5-prereg @ 52186c0; unit baseline: no new issues |
-| 2 | Fetch patches | Download public patches for 200 tasks, draw the test set | Patches from 6 agents of different strength, without running agents ourselves | ⛔ | [FETCH.md](inputs/FETCH.md) · GPT-4.1 mini: 222 fetched, 8 empty (0 blank, 8 null), 0 missing, 0 malformed including reserves. Priorities 2–6 await fetch after format detection. |
+| 2 | Fetch patches | Download public patches for 200 tasks, draw the test set | Patches from 6 agents of different strength, without running agents ourselves | ✅ | [FETCH.md](inputs/FETCH.md) · 1,332 fetched, 34 empty, 0 missing, 0 malformed |
 | 3 | Build | Paired-skip, V2 fallback, per-requirement V4, reuse flag, v1.5 rules | The two fixes for what held the verifier back | ⏳ | |
 | 4 | V4 pilot | New V4 on 10 gold patches | Check cost, coverage and leakage before spending on full runs | ⏳ | |
 | 5 | Freeze V4 | Tag `study-v4-frozen` | The test generator can't change after this | ⏳ | |
@@ -41,6 +41,19 @@ Phase 2 stopped at format detection. The first Qwen3-Coder development task fold
 | 16 | Ablations | Signal drop-outs, S/C/P, old vs new V4, one vs two passes | Answers RQ3 and RQ4 | ⏳ | |
 | 17 | Presentation | Final deck | Thu 26 Nov | ⏳ | |
 
+## Phase 2 public patch totals
+
+Includes the 22 reserve IDs per system.
+
+| System | Fetched | Empty (blank) | Empty (null) | Missing | Malformed |
+|---|---:|---:|---:|---:|---:|
+| `gpt-4.1-mini-2025-04-14` | 222 | 0 | 8 | 0 | 0 |
+| `claude-sonnet-4-20250514` | 222 | 0 | 0 | 0 | 0 |
+| `gpt-4.1-2025-04-14` | 222 | 8 | 0 | 0 | 0 |
+| `gemini-2.5-flash` | 222 | 7 | 0 | 0 | 0 |
+| `o4-mini-2025-04-16` | 222 | 4 | 0 | 0 | 0 |
+| `qwen3-coder-480b-a35b-instruct` | 222 | 7 | 0 | 0 | 0 |
+
 ## Decisions and deviations log
 
 One line per entry, newest last: date, what was decided or deviated from the plan, and why.
@@ -52,3 +65,4 @@ One line per entry, newest last: date, what was decided or deviated from the pla
 - 20 Nov: The live downloader finished the Claude Sonnet 4 requests and checked 49 GPT-4.1 development keys before the gate failure was observed and the process was stopped. The downloader now enforces the gate after each recorded key.
 - 20 Nov: v1.0.0 submissions store <id>/<id>.traj.json, not <id>.pred; the 404s were a wrong file name in the plan, not missing predictions. Drops withdrawn; fetch layout corrected per system. No protocol rule changed.
 - 20 Nov: The first Qwen3-Coder development task folder listed zero filenames. The format check stopped before any corrected prediction downloads.
+- 20 Nov: Qwen3-Coder's metadata.yaml trajs prefix is capitalised but the bucket folder is lowercase; prefix overridden with the confirmed bucket path. Not dropped. No protocol rule changed.
