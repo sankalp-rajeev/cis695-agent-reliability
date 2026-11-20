@@ -23,7 +23,7 @@ Phase 2 stopped at the fetch gate. Claude Sonnet 4 exceeded the missing-predicti
 | # | Phase | What it does | Why | Status | Result / link |
 |---|---|---|---|---|---|
 | 1 | Pre-register | Merge task-prep, write PROTOCOL.md, tag `study-v1.5-prereg` | Rules are fixed before we see any data | ✅ | tag study-v1.5-prereg @ 52186c0; unit baseline: no new issues |
-| 2 | Fetch patches | Download public patches for 200 tasks, draw the test set | Patches from 6 agents of different strength, without running agents ourselves | ⛔ | [FETCH.md](inputs/FETCH.md) · 493/1,332 checked, 222 fetched, 8 empty (0 blank, 8 null), 271 missing, 0 malformed |
+| 2 | Fetch patches | Download public patches for 200 tasks, draw the test set | Patches from 6 agents of different strength, without running agents ourselves | ⛔ | `23cdfe3113fdffd0e11753b8bffea8e9ee7ad1d5` · [FETCH.md](inputs/FETCH.md) · 493/1,332 checked, 222 fetched, 8 empty (0 blank, 8 null), 271 missing, 0 malformed |
 | 3 | Build | Paired-skip, V2 fallback, per-requirement V4, reuse flag, v1.5 rules | The two fixes for what held the verifier back | ⏳ | |
 | 4 | V4 pilot | New V4 on 10 gold patches | Check cost, coverage and leakage before spending on full runs | ⏳ | |
 | 5 | Freeze V4 | Tag `study-v4-frozen` | The test generator can't change after this | ⏳ | |
