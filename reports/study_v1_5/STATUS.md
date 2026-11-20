@@ -7,7 +7,7 @@ Status key: ✅ done · 🔄 in progress · ⏳ not started · ⛔ blocked · �
 
 ## Current state
 
-Phase 2 is complete. The corrected public submission fetch passed the gate for all six systems. The Sonnet cross-check matched 222/222 fetched submissions, and 181 reference patches were extracted from the cached dataset.
+Phase 10 is complete. All 60 final batch-1 tasks are prepared and their pinned Docker images are local. The final registry includes 4 ordered reserve replacements and passed the frozen E2E v1.4.1 loader. Phase 2 acquisition is complete.
 
 ## Pre-flight checks
 
@@ -31,7 +31,7 @@ Phase 2 is complete. The corrected public submission fetch passed the gate for a
 | 7 | Calibrate | Re-verify arm B's 51 patches, apply thresholds, write ADOPTION.md | Decides which new rules to keep, using only the practice set | ⏳ | |
 | 8 | Freeze v1.5 | Set switches, tag `v1.5-frozen` | The verifier can't change before the exam | ⏳ | |
 | 9 | Dev public systems | Public patches on the practice set (only if the machine is idle) | Descriptive only; first to be cut | ⏳ | |
-| 10 | Prepare batch 1 | Pull and check images for the first 60 test tasks | The exam set must be ready before the runs | ⏳ | |
+| 10 | Prepare batch 1 | Pull and check images for the first 60 test tasks | The exam set must be ready before the runs | ✅ | [PREP_BATCH1.md](inputs/PREP_BATCH1.md) · 60/60 pinned images, 4 replacements, 32.87 GiB root disk used, 217G available |
 | 11 | Test gold run | Verify 60 gold patches, generate V4 for the exam | Gold cost on unseen tasks (H3) plus the shared V4 tests | ⏳ | |
 | 12 | Test public systems | Verify each system's patches with the frozen V4 | The headline result | ⏳ | |
 | 12b | Batch 2 | Same for the remaining 48 tasks (if time) | More power; optional | ⏳ | |
@@ -66,3 +66,9 @@ One line per entry, newest last: date, what was decided or deviated from the pla
 - 20 Nov: v1.0.0 submissions store <id>/<id>.traj.json, not <id>.pred; the 404s were a wrong file name in the plan, not missing predictions. Drops withdrawn; fetch layout corrected per system. No protocol rule changed.
 - 20 Nov: The first Qwen3-Coder development task folder listed zero filenames. The format check stopped before any corrected prediction downloads.
 - 20 Nov: Qwen3-Coder's metadata.yaml trajs prefix is capitalised but the bucket folder is lowercase; prefix overridden with the confirmed bucket path. Not dropped. No protocol rule changed.
+- 20 Nov: Phase 10 used the task-prep default container Git archive path and `--allow-pull`. 4 slots used ordered reserve replacements after source or environment verification failures. See PREP_BATCH1.md for each ID and reason.
+- 20 Nov: Docker Hub reached its pull-rate limit during Phase 10. The tmux job waited for quota and resumed at the prescribed registry and image tags.
+- 20 Nov: Retried `django__django-13925` on its prescribed Docker tag after a manifest lookup error. The original ID passed on retry.
+- 20 Nov: Retried `sphinx-doc__sphinx-8269` on its prescribed Docker tag after a manifest lookup error. The original ID passed on retry.
+- 20 Nov: Retried `sympy__sympy-23262` on its prescribed Docker tag after a manifest lookup error. The original ID passed on retry.
+- 20 Nov: Retried `django__django-14493` on its prescribed Docker tag after a manifest lookup error. The original ID passed on retry.

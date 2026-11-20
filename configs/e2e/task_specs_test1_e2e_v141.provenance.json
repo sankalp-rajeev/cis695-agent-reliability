@@ -1,0 +1,1460 @@
+{
+  "frozen_commit": "c5b352c83c6bd7e9afdcb465bf966535543192fc",
+  "frozen_input_sha256": {
+    "configs/e2e/task_specs_83.json": "9e55c5a82501753f19f5f83cdcab69afe178a9800aaa848918867a5a8af1d5fb",
+    "configs/e2e/tasks_83.txt": "09555d42c7c712ecd11cee691093eede7e28b29d95e866be2dfacffb1c25e9b9",
+    "docs/TASK_SPEC_SCHEMA.md": "adc57f77912799eddd1dcf0f3832abd93601c57763f05e837461e7fee49c596e",
+    "src/reliability/verifier/task_specs.py": "f20461bc970ae7a3bf09802802e3b4c6ae496f4132cb129e0732eb642c4dbbf5"
+  },
+  "frozen_tag": "e2e-v1.4.1-frozen",
+  "registry_path": "/home/sankalp/projects/wt-study/configs/e2e/task_specs_test1_e2e_v141.json",
+  "registry_sha256": "e8447d0b24d1c6b66d34e183a6744dcc07dc6b0b90987b38c6f17651df6dd28a",
+  "source_registries": [
+    {
+      "metadata": {
+        "built_by_commit": "929ea5980f9394a4c0147b31185d7d8396533248",
+        "cohort": "study_test1",
+        "schema": "task_spec_registry/1"
+      },
+      "path": "/home/sankalp/projects/wt-study/configs/study_v1_5/task_specs_test1.json",
+      "sha256": "6f9eed4412756ce127791a64bc8e227055f227fd300ff30e73c8b93ee8361797",
+      "task_order": [
+        "sympy__sympy-22714",
+        "sympy__sympy-14248",
+        "django__django-15695",
+        "django__django-12273",
+        "django__django-14539",
+        "sympy__sympy-22456",
+        "matplotlib__matplotlib-26342",
+        "django__django-14559",
+        "django__django-11951",
+        "astropy__astropy-13453",
+        "django__django-12419",
+        "matplotlib__matplotlib-25960",
+        "astropy__astropy-12907",
+        "scikit-learn__scikit-learn-25931",
+        "django__django-15863",
+        "django__django-14434",
+        "django__django-13449",
+        "pydata__xarray-7229",
+        "pydata__xarray-6721",
+        "django__django-11451",
+        "django__django-16801",
+        "django__django-17084",
+        "sympy__sympy-20590",
+        "django__django-11149",
+        "sphinx-doc__sphinx-9591",
+        "django__django-11333",
+        "django__django-13346",
+        "django__django-13109",
+        "astropy__astropy-7671",
+        "astropy__astropy-13236",
+        "sympy__sympy-17630",
+        "scikit-learn__scikit-learn-12973",
+        "django__django-10554",
+        "django__django-12039",
+        "django__django-13512",
+        "django__django-12193",
+        "sympy__sympy-14531",
+        "django__django-12308",
+        "pydata__xarray-3151",
+        "sphinx-doc__sphinx-9658",
+        "scikit-learn__scikit-learn-25973",
+        "sympy__sympy-12096",
+        "sphinx-doc__sphinx-8035",
+        "sympy__sympy-23824",
+        "django__django-15957",
+        "pydata__xarray-3677",
+        "django__django-11728",
+        "django__django-13401",
+        "pydata__xarray-7393",
+        "django__django-14534",
+        "sympy__sympy-13551",
+        "sympy__sympy-15809"
+      ]
+    },
+    {
+      "metadata": {
+        "built_by_commit": "929ea5980f9394a4c0147b31185d7d8396533248",
+        "cohort": "study_test1_retries",
+        "schema": "task_spec_registry/1"
+      },
+      "path": "/home/sankalp/projects/wt-study/configs/study_v1_5/task_specs_test1_retries.json",
+      "sha256": "d3f68d580491001257f03ae224ab2bf1c6028cff3da0394fde18fcf33d47de6f",
+      "task_order": [
+        "django__django-13925",
+        "django__django-14493",
+        "sphinx-doc__sphinx-8269",
+        "sympy__sympy-23262"
+      ]
+    },
+    {
+      "metadata": {
+        "built_by_commit": "929ea5980f9394a4c0147b31185d7d8396533248",
+        "cohort": "study_test1_replacements",
+        "schema": "task_spec_registry/1"
+      },
+      "path": "/home/sankalp/projects/wt-study/configs/study_v1_5/task_specs_test1_replacements.json",
+      "sha256": "c7eb3ee420fde8645b397e1998c01a6a5fce611be835506bcbe17049d76b2c45",
+      "task_order": [
+        "django__django-13343",
+        "pydata__xarray-4356",
+        "pydata__xarray-4687",
+        "sympy__sympy-15017"
+      ]
+    }
+  ],
+  "stable_input_sha256": {
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_0901423b1595b49572a57dd93d3f17a742dae737a3fde47980f33ec477a60033.json": "0901423b1595b49572a57dd93d3f17a742dae737a3fde47980f33ec477a60033",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_09f3ed67710aa53927a55c95411481799364b5fea8cbcec1276fb1321c464760.json": "09f3ed67710aa53927a55c95411481799364b5fea8cbcec1276fb1321c464760",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_0d9eb593efee027ff9854f610ffde4118246ae22f55bba4a28f5095921e2a84d.json": "0d9eb593efee027ff9854f610ffde4118246ae22f55bba4a28f5095921e2a84d",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_145de1d05f8538f11dbf6be58e68e3af35fab26115234649f60bba12406456bf.json": "145de1d05f8538f11dbf6be58e68e3af35fab26115234649f60bba12406456bf",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_14a6d02f977196d832e309f62a6f95dd3966bd6de84c1f816b86d79b498bef3a.json": "14a6d02f977196d832e309f62a6f95dd3966bd6de84c1f816b86d79b498bef3a",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_1d8dea50f622ddfe468dcf5b9d73e1c4e234e3800c62b624a5a56cf7bcfd92f9.json": "1d8dea50f622ddfe468dcf5b9d73e1c4e234e3800c62b624a5a56cf7bcfd92f9",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_1ee4f33adf688de5128d0c081a65b8720632d91ea557ff86e47e7a511c3d7a9b.json": "1ee4f33adf688de5128d0c081a65b8720632d91ea557ff86e47e7a511c3d7a9b",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_27510f732d86338d02a32d9572aa2c3ceafc4cd7a4dc7787e98978b78c3e5f90.json": "27510f732d86338d02a32d9572aa2c3ceafc4cd7a4dc7787e98978b78c3e5f90",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_27db3ed8f9c24f1cd46f32eeba36c1e2d88b870f2ade51d5ae55076951adb958.json": "27db3ed8f9c24f1cd46f32eeba36c1e2d88b870f2ade51d5ae55076951adb958",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_286706fc552cad91d46337cf38744f7ee9554b5cef3b54647776808037a2bd8b.json": "286706fc552cad91d46337cf38744f7ee9554b5cef3b54647776808037a2bd8b",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_2867bd69b6162942dcd1aa5661c0d39419417de102a9b09f4856f0679b3a7bea.json": "2867bd69b6162942dcd1aa5661c0d39419417de102a9b09f4856f0679b3a7bea",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_30331fcc68368418b89ea3135276f3810fb6c1c788d21406b3f8b0538c70fb4b.json": "30331fcc68368418b89ea3135276f3810fb6c1c788d21406b3f8b0538c70fb4b",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_341e5627000d17ad75f6bfc39bb883344afd4c1ad4da0c3755100aafe542526b.json": "341e5627000d17ad75f6bfc39bb883344afd4c1ad4da0c3755100aafe542526b",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_38a1d982ddc452c59bf389a809598f5211c250fa5a93f2fafb6de253055ef0c8.json": "38a1d982ddc452c59bf389a809598f5211c250fa5a93f2fafb6de253055ef0c8",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_44eb1ff41421cb3a6306f5b4ccd992f60d55c25cd165f9e45acb8c074851ed6c.json": "44eb1ff41421cb3a6306f5b4ccd992f60d55c25cd165f9e45acb8c074851ed6c",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_4be0ef900bcabcf785603fed7e8dba69693f8b530d4e19d1ee8db549f487a032.json": "4be0ef900bcabcf785603fed7e8dba69693f8b530d4e19d1ee8db549f487a032",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_502962cbaab587e6f4c3205c2a84553b99bf064a4d3b4b20c1f36e23688e771e.json": "502962cbaab587e6f4c3205c2a84553b99bf064a4d3b4b20c1f36e23688e771e",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_51090d0518eaaf6e7cee99d78cd3fca4bf540942a5d23e810fbe31f3e0930316.json": "51090d0518eaaf6e7cee99d78cd3fca4bf540942a5d23e810fbe31f3e0930316",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_571ed4067845b88ee2becffdb2dc0aafc93bb6fdbb3d79d5956cd9abe93d7084.json": "571ed4067845b88ee2becffdb2dc0aafc93bb6fdbb3d79d5956cd9abe93d7084",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_5fb4036431c3d1649572f20194a5cdd5a7863dd7c32314247e6ad974b4f8ffd5.json": "5fb4036431c3d1649572f20194a5cdd5a7863dd7c32314247e6ad974b4f8ffd5",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_68037274ec08b77f36c72277fcdbd3053002cf767cfdfd0521ac4ed6fab4a2ad.json": "68037274ec08b77f36c72277fcdbd3053002cf767cfdfd0521ac4ed6fab4a2ad",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_6b90f28c55fd39a1f5ecfbecdb2d84e97bbb1a2360d4a0ab9cf3d3c28fc06971.json": "6b90f28c55fd39a1f5ecfbecdb2d84e97bbb1a2360d4a0ab9cf3d3c28fc06971",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_6bffd3897b4eb58bdcfbbbe165751cbf2ed455fb99b58124dfba2e3ebf633acf.json": "6bffd3897b4eb58bdcfbbbe165751cbf2ed455fb99b58124dfba2e3ebf633acf",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_6ee0658b87ec3451c4841f3660152c9c4981eb59c4bba9414901635cd542a145.json": "6ee0658b87ec3451c4841f3660152c9c4981eb59c4bba9414901635cd542a145",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_71d0a533a2098d98940d198538483a72dc76bf9b2fc414cc3c5ab432a9e9cc1b.json": "71d0a533a2098d98940d198538483a72dc76bf9b2fc414cc3c5ab432a9e9cc1b",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_7abe6a036f30e90d8e787d279c0561d02d208d20b5510889c6489240ce5b0297.json": "7abe6a036f30e90d8e787d279c0561d02d208d20b5510889c6489240ce5b0297",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_7ae97c0ccde5b64f4d9824445ea09b73100138e9b4c2e152333644078f63e613.json": "7ae97c0ccde5b64f4d9824445ea09b73100138e9b4c2e152333644078f63e613",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_828fe6643c1971d559b1088b728036d4cab52c9f7e5a0dadcbfa8ad149a99a16.json": "828fe6643c1971d559b1088b728036d4cab52c9f7e5a0dadcbfa8ad149a99a16",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_82c2e5e0ca54e61929640bc87db2bab01adb5a76a5a0297c5ee0179c08abac89.json": "82c2e5e0ca54e61929640bc87db2bab01adb5a76a5a0297c5ee0179c08abac89",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_875525fbdeca614dbcfe1adf577f41f29630b3dd4681db18f556090d71a22f7f.json": "875525fbdeca614dbcfe1adf577f41f29630b3dd4681db18f556090d71a22f7f",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_8dafdfebc2696a39b8f05648bcc2b684708ef8ecce9465663eadaada5fc287d0.json": "8dafdfebc2696a39b8f05648bcc2b684708ef8ecce9465663eadaada5fc287d0",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_99f9ff108615ad96bf9cd153540c1ae41d52569aaccd9bf867e76398e7264460.json": "99f9ff108615ad96bf9cd153540c1ae41d52569aaccd9bf867e76398e7264460",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_9a8afbf3e7a5fd5301d3ec172ec863d2ab4453bacbde01fceb86ceb9768840a2.json": "9a8afbf3e7a5fd5301d3ec172ec863d2ab4453bacbde01fceb86ceb9768840a2",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_9b1f35fe068b2dcb321e23a2be768e1e29d86e2df0a8ea30ee137753566b1e84.json": "9b1f35fe068b2dcb321e23a2be768e1e29d86e2df0a8ea30ee137753566b1e84",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_a0e4acc7a8e1fd9f3592aa9794c1f14fc7b4704d7d9d39cdd86fa08f9ea7ff40.json": "a0e4acc7a8e1fd9f3592aa9794c1f14fc7b4704d7d9d39cdd86fa08f9ea7ff40",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_ae25c4ccaf254eddf349c73b8b151ea4f7613c9b1fed87b3e9032eba88bb1a01.json": "ae25c4ccaf254eddf349c73b8b151ea4f7613c9b1fed87b3e9032eba88bb1a01",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_b0fba706c17823c4eaa859bb0930bc8f441137c76f7443a18ebd8f1ceeb1a20f.json": "b0fba706c17823c4eaa859bb0930bc8f441137c76f7443a18ebd8f1ceeb1a20f",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_b7f1bc705c7a7454f455fccec14c75f5cba472abf16865ed98fe528088a891e0.json": "b7f1bc705c7a7454f455fccec14c75f5cba472abf16865ed98fe528088a891e0",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_bb977befa1b4124b04cd82a9faea0ef93cf16c15d5ac6226eebddb226cbd03ea.json": "bb977befa1b4124b04cd82a9faea0ef93cf16c15d5ac6226eebddb226cbd03ea",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_bbb4671c2020abc55cee3b5ee93cd95f9f174c309c23751d7691c5fd024fa134.json": "bbb4671c2020abc55cee3b5ee93cd95f9f174c309c23751d7691c5fd024fa134",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_c0203d1c0f563c42ebb3a016764eb5b8d3257c2f68d37d6b385f7cd96d1cb6fe.json": "c0203d1c0f563c42ebb3a016764eb5b8d3257c2f68d37d6b385f7cd96d1cb6fe",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_c13ba7ac95c0cc43722eb6eb2d44fc3828563d7489272102d4a70b5e269bd6e8.json": "c13ba7ac95c0cc43722eb6eb2d44fc3828563d7489272102d4a70b5e269bd6e8",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_cde76beddc1b7f50a5bb105de437685853cb63e9ed165aaeacab7fac16a80759.json": "cde76beddc1b7f50a5bb105de437685853cb63e9ed165aaeacab7fac16a80759",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_d30d9f7282740339781918605663eb7b39105fdf1acd89a9edc0fbf62ee75bb8.json": "d30d9f7282740339781918605663eb7b39105fdf1acd89a9edc0fbf62ee75bb8",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_db88edb1c032ee2c70f2aa87851753b148e4dbcea7b0fd6cd911b7bbac07195a.json": "db88edb1c032ee2c70f2aa87851753b148e4dbcea7b0fd6cd911b7bbac07195a",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_dbdbe7d8e2e2bfc5b5d0e40609243dbce2149fa053e54eada0ab18f19e899d27.json": "dbdbe7d8e2e2bfc5b5d0e40609243dbce2149fa053e54eada0ab18f19e899d27",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_de13767c379c1771aabc8cea29f9e0245001625f3e717c5cb6eb336aa81a6bb9.json": "de13767c379c1771aabc8cea29f9e0245001625f3e717c5cb6eb336aa81a6bb9",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_dedc39b31126fccb9de917755942c79e226ddda2860c1cd7996985803568cc2a.json": "dedc39b31126fccb9de917755942c79e226ddda2860c1cd7996985803568cc2a",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_e041abb361173a5e637249def53480e3f912b81b28961b17f9572fd8ae2d84f2.json": "e041abb361173a5e637249def53480e3f912b81b28961b17f9572fd8ae2d84f2",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_e343e98d66e15293ae6be935013d0cd362901615749505b0a657dfa6e00b1021.json": "e343e98d66e15293ae6be935013d0cd362901615749505b0a657dfa6e00b1021",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_e4e1846c299d55b8d38d8b77e36f00d01164f8d007ae362872950639dc81b9cc.json": "e4e1846c299d55b8d38d8b77e36f00d01164f8d007ae362872950639dc81b9cc",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_e7b52699bd0b446c95e9a27a23d4cf923a30acf57eb7a5d35011bd0c63ec79c0.json": "e7b52699bd0b446c95e9a27a23d4cf923a30acf57eb7a5d35011bd0c63ec79c0",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_e96ffb676db98ff30dd3c6386b1594f7e84d8ceef592022a41869e10fc744df1.json": "e96ffb676db98ff30dd3c6386b1594f7e84d8ceef592022a41869e10fc744df1",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_e9d68ac8d98a3aa4121f681795c3b20d15f88ee400c821c25c9d5d4ff3471929.json": "e9d68ac8d98a3aa4121f681795c3b20d15f88ee400c821c25c9d5d4ff3471929",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_ec991a24d43b2eb1d143576763b49aa1991e6e60d180e49b11f7c1cd1a8c157b.json": "ec991a24d43b2eb1d143576763b49aa1991e6e60d180e49b11f7c1cd1a8c157b",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_ee46c2f08edc24a318f164080be26a8393365b2ee6b0531e9649eeaaac9fcda6.json": "ee46c2f08edc24a318f164080be26a8393365b2ee6b0531e9649eeaaac9fcda6",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_f1dcdeb24c3ad3a5ac819e476dcccd8e5c4fe0e43d42913ea99ddac7a60c3bec.json": "f1dcdeb24c3ad3a5ac819e476dcccd8e5c4fe0e43d42913ea99ddac7a60c3bec",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_f469fa277c048a9940a723cbfc69b9c8c2ff9059c32f0548004fd654961a0ef2.json": "f469fa277c048a9940a723cbfc69b9c8c2ff9059c32f0548004fd654961a0ef2",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_fb9efcd1a691bee3174185eab56081f479fda81f582a202e69aedff17d3d77c2.json": "fb9efcd1a691bee3174185eab56081f479fda81f582a202e69aedff17d3d77c2",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/dataset_projection_ff25de7b5d1c95b6fcb7c62160e1330ae0aecdfe172600f6b5d2909ef7bace2a.json": "ff25de7b5d1c95b6fcb7c62160e1330ae0aecdfe172600f6b5d2909ef7bace2a",
+    "/home/sankalp/projects/wt-e2e/runs/task_prep_inputs/swebench-4.0.4-py3-none-any.whl": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+  },
+  "tasks": {
+    "astropy__astropy-12907": {
+      "dataset_projection_row": {
+        "base_commit": "d16bfe05a744909de4b27f5875fe0d4ed41ce607",
+        "instance_id": "astropy__astropy-12907",
+        "repo": "astropy/astropy",
+        "version": "4.3"
+      },
+      "preflight_identity": {
+        "archive_sha256": "f246014ac1e8c2cca812f3e97a3472016c07acbd5db754d33c81df568dd43e9e",
+        "base_commit": "d16bfe05a744909de4b27f5875fe0d4ed41ce607",
+        "image_id": "sha256:9b1cabf7bcd83a28469f67e3852d8e2207e90d45aa71f436bb7e600bdee8bae2"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; [tool:pytest] in setup.cfg; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "astropy__astropy-13236": {
+      "dataset_projection_row": {
+        "base_commit": "6ed769d58d89380ebaa1ef52b300691eefda8928",
+        "instance_id": "astropy__astropy-13236",
+        "repo": "astropy/astropy",
+        "version": "5.0"
+      },
+      "preflight_identity": {
+        "archive_sha256": "8fd16e9e21e68dca78bbc8f2aa9a1e560865fce03a34f3f9d57d8a9c173d3a3f",
+        "base_commit": "6ed769d58d89380ebaa1ef52b300691eefda8928",
+        "image_id": "sha256:c1c25a905a0d26525907f74c2f3925c58fcef6e0965a922af3a8389548a67404"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; [tool:pytest] in setup.cfg; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "astropy__astropy-13453": {
+      "dataset_projection_row": {
+        "base_commit": "19cc80471739bcb67b7e8099246b391c355023ee",
+        "instance_id": "astropy__astropy-13453",
+        "repo": "astropy/astropy",
+        "version": "5.0"
+      },
+      "preflight_identity": {
+        "archive_sha256": "86832d83024e4b5b67a211adb84d1ad8bee11328a494668ec1b8cee213a04044",
+        "base_commit": "19cc80471739bcb67b7e8099246b391c355023ee",
+        "image_id": "sha256:96aab9414477cd80c16b76c97836756096d766597dedcd2e3c2171636f4c99e4"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; [tool:pytest] in setup.cfg; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "astropy__astropy-7671": {
+      "dataset_projection_row": {
+        "base_commit": "a7141cd90019b62688d507ae056298507678c058",
+        "instance_id": "astropy__astropy-7671",
+        "repo": "astropy/astropy",
+        "version": "1.3"
+      },
+      "preflight_identity": {
+        "archive_sha256": "d1d546815a8555ed06266678d28131eedc3ea9438096d129e659a4a877ca0c65",
+        "base_commit": "a7141cd90019b62688d507ae056298507678c058",
+        "image_id": "sha256:048d1bb0a7db2e43fc15388db84565f921adc0dcf976dc93fd9d3cce64d1fef3"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; [tool:pytest] in setup.cfg",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "django__django-10554": {
+      "dataset_projection_row": {
+        "base_commit": "14d026cccb144c6877294ba4cd4e03ebf0842498",
+        "instance_id": "django__django-10554",
+        "repo": "django/django",
+        "version": "3.0"
+      },
+      "preflight_identity": {
+        "archive_sha256": "eaa0246e40e2fe4236f6fa621108867d7dda94d10703ca25b2d651408bdfe131",
+        "base_commit": "14d026cccb144c6877294ba4cd4e03ebf0842498",
+        "image_id": "sha256:45aca01030369d95825fa67ed38d1984b2b6e6a2561d2de371804622ec3bece4"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-11149": {
+      "dataset_projection_row": {
+        "base_commit": "e245046bb6e8b32360aa48b8a41fb7050f0fc730",
+        "instance_id": "django__django-11149",
+        "repo": "django/django",
+        "version": "3.0"
+      },
+      "preflight_identity": {
+        "archive_sha256": "0afcb8b90e531b4ccec83766e74e49569b9533548d2adf086669604c1555d658",
+        "base_commit": "e245046bb6e8b32360aa48b8a41fb7050f0fc730",
+        "image_id": "sha256:4ae9b0e3ab2ff58390766b9f068c43b37fb2b241f26ed6178810398ce1fc08f9"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-11333": {
+      "dataset_projection_row": {
+        "base_commit": "55b68de643b5c2d5f0a8ea7587ab3b2966021ccc",
+        "instance_id": "django__django-11333",
+        "repo": "django/django",
+        "version": "3.0"
+      },
+      "preflight_identity": {
+        "archive_sha256": "7d6975584debdd9af72e8253d49924eeb7871cf30b980ea10c3b2a85ecc5ddbf",
+        "base_commit": "55b68de643b5c2d5f0a8ea7587ab3b2966021ccc",
+        "image_id": "sha256:1770234cb0f5ecf1677e407d04af8dc27422f7e281c283a646fd02efcf41172e"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-11451": {
+      "dataset_projection_row": {
+        "base_commit": "e065b293878b1e3ea56655aa9d33e87576cd77ff",
+        "instance_id": "django__django-11451",
+        "repo": "django/django",
+        "version": "3.0"
+      },
+      "preflight_identity": {
+        "archive_sha256": "ba85507613b8cdbd2519fc4b7128ba604b1a8790a1ddb759711c7097386275e2",
+        "base_commit": "e065b293878b1e3ea56655aa9d33e87576cd77ff",
+        "image_id": "sha256:aad8f68c59b6dce0f5d2ec80cf617d4f8c9e44a11ea54d2043cfa6acda21ebf6"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-11728": {
+      "dataset_projection_row": {
+        "base_commit": "05457817647368be4b019314fcc655445a5b4c0c",
+        "instance_id": "django__django-11728",
+        "repo": "django/django",
+        "version": "3.0"
+      },
+      "preflight_identity": {
+        "archive_sha256": "e621f2cdae9adddf0df0df8e75f60a9a8e4f1b6b42d4e6e4f71cdf5fbb9b0404",
+        "base_commit": "05457817647368be4b019314fcc655445a5b4c0c",
+        "image_id": "sha256:3daae3c5fbcb517d2934208db5bb309cdc87039653fbff3ea463e67d990b8d58"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-11951": {
+      "dataset_projection_row": {
+        "base_commit": "312049091288dbba2299de8d07ea3e3311ed7238",
+        "instance_id": "django__django-11951",
+        "repo": "django/django",
+        "version": "3.1"
+      },
+      "preflight_identity": {
+        "archive_sha256": "ddbef207b15b5233b94df2c2c5346ad2fa3455926791cb68b5fff253d7004a70",
+        "base_commit": "312049091288dbba2299de8d07ea3e3311ed7238",
+        "image_id": "sha256:d09e15a3e57587c02e44bfd6b8ffd44c2e8019fe5b2e8167db16b93d519b30d4"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-12039": {
+      "dataset_projection_row": {
+        "base_commit": "58c1acb1d6054dfec29d0f30b1033bae6ef62aec",
+        "instance_id": "django__django-12039",
+        "repo": "django/django",
+        "version": "3.1"
+      },
+      "preflight_identity": {
+        "archive_sha256": "9c5f6b1d770cdf1e4e04bee1f33118c50d4c2a7a1fb2bef4c579d40abb89bd6c",
+        "base_commit": "58c1acb1d6054dfec29d0f30b1033bae6ef62aec",
+        "image_id": "sha256:c5bd39b008bb82e1a41314c2947bbf47af67d00e4a4c27d9e4bfb974c70c910d"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-12193": {
+      "dataset_projection_row": {
+        "base_commit": "3fb7c12158a2402f0f80824f6778112071235803",
+        "instance_id": "django__django-12193",
+        "repo": "django/django",
+        "version": "3.1"
+      },
+      "preflight_identity": {
+        "archive_sha256": "dc287550c0206f9a7762a05faa130df2047a47f17453d1679d457e57f0a3f537",
+        "base_commit": "3fb7c12158a2402f0f80824f6778112071235803",
+        "image_id": "sha256:65a6a28c4d13824391aa8bdbfe47c07947c9011ec09cb60197ad84e5ece738b2"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-12273": {
+      "dataset_projection_row": {
+        "base_commit": "927c903f3cd25c817c21738328b53991c035b415",
+        "instance_id": "django__django-12273",
+        "repo": "django/django",
+        "version": "3.1"
+      },
+      "preflight_identity": {
+        "archive_sha256": "b765e85213d19bec2e9078e752f806616567aaccb8f8ae483a302511a4389f4f",
+        "base_commit": "927c903f3cd25c817c21738328b53991c035b415",
+        "image_id": "sha256:075463641d53e3110109bc6b02a4973f327cf22ba72304cb2449643a96b94dfa"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-12308": {
+      "dataset_projection_row": {
+        "base_commit": "2e0f04507b17362239ba49830d26fec504d46978",
+        "instance_id": "django__django-12308",
+        "repo": "django/django",
+        "version": "3.1"
+      },
+      "preflight_identity": {
+        "archive_sha256": "1ae43640548a5155d992a205b3f09a88c7f775ec85a7fc748c595c320c0849d1",
+        "base_commit": "2e0f04507b17362239ba49830d26fec504d46978",
+        "image_id": "sha256:e49ccb30fc6e1f2f5153b2472b4bfcbb6accc8346f9eb55b1c45c7fcf4828d3e"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-12419": {
+      "dataset_projection_row": {
+        "base_commit": "7fa1a93c6c8109010a6ff3f604fda83b604e0e97",
+        "instance_id": "django__django-12419",
+        "repo": "django/django",
+        "version": "3.1"
+      },
+      "preflight_identity": {
+        "archive_sha256": "0630191cea9d489a8420444cd1e517239ac9390b3895b676400f243c5034a82c",
+        "base_commit": "7fa1a93c6c8109010a6ff3f604fda83b604e0e97",
+        "image_id": "sha256:23100ccbe352aeaa1827ac03a1c7fea60198ce08646b693f3d9ada659c5eb8dd"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-13109": {
+      "dataset_projection_row": {
+        "base_commit": "fbe82f82555bc25dccb476c749ca062f0b522be3",
+        "instance_id": "django__django-13109",
+        "repo": "django/django",
+        "version": "3.2"
+      },
+      "preflight_identity": {
+        "archive_sha256": "62c909bf1302529790b937b43a2f7c37766e8ea71c8bfa7ef75f75b82aca76f5",
+        "base_commit": "fbe82f82555bc25dccb476c749ca062f0b522be3",
+        "image_id": "sha256:f07d510a95590299d5ce8c02d761a33704c82e65f6b67e582f383fefe015e27b"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-13343": {
+      "dataset_projection_row": {
+        "base_commit": "ece18207cbb64dd89014e279ac636a6c9829828e",
+        "instance_id": "django__django-13343",
+        "repo": "django/django",
+        "version": "3.2"
+      },
+      "preflight_identity": {
+        "archive_sha256": "c9fc558ecd113b649a857c0d0837a7bc45b192873d9f0fc5ca8e3c450c94f396",
+        "base_commit": "ece18207cbb64dd89014e279ac636a6c9829828e",
+        "image_id": "sha256:280024acdf333bf529baec7e580cd03e62556557eefcc91125f0f4695eb0e8ea"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-13346": {
+      "dataset_projection_row": {
+        "base_commit": "9c92924cd5d164701e2514e1c2d6574126bd7cc2",
+        "instance_id": "django__django-13346",
+        "repo": "django/django",
+        "version": "3.2"
+      },
+      "preflight_identity": {
+        "archive_sha256": "a3174158238ba61780f848a7e666597b7857581552a63a1a0425944fe5e719a0",
+        "base_commit": "9c92924cd5d164701e2514e1c2d6574126bd7cc2",
+        "image_id": "sha256:5297fbfb017dcb9c45cce0a3a9b844487cff98829826779007a62fade3c29a29"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-13401": {
+      "dataset_projection_row": {
+        "base_commit": "453967477e3ddae704cd739eac2449c0e13d464c",
+        "instance_id": "django__django-13401",
+        "repo": "django/django",
+        "version": "3.2"
+      },
+      "preflight_identity": {
+        "archive_sha256": "9c1eacf74dfe1d2bce8fda56b5ef128c1eac408937433986c2244e7751408f1f",
+        "base_commit": "453967477e3ddae704cd739eac2449c0e13d464c",
+        "image_id": "sha256:fe9dff8a31b76e659487f557d549afa2762eefcf9151c8ff8a5132fe1ee2f16e"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-13449": {
+      "dataset_projection_row": {
+        "base_commit": "2a55431a5678af52f669ffe7dff3dd0bd21727f8",
+        "instance_id": "django__django-13449",
+        "repo": "django/django",
+        "version": "3.2"
+      },
+      "preflight_identity": {
+        "archive_sha256": "02ade7b7c81fe332ca39763d8f514690a7bc9f3b99cf2ef2fa7e014f5983c6c3",
+        "base_commit": "2a55431a5678af52f669ffe7dff3dd0bd21727f8",
+        "image_id": "sha256:820cd63dce1f8459bfdf53d528c9bd7d321e77bfe226dac6cee3fcb5f65754e7"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-13512": {
+      "dataset_projection_row": {
+        "base_commit": "b79088306513d5ed76d31ac40ab3c15f858946ea",
+        "instance_id": "django__django-13512",
+        "repo": "django/django",
+        "version": "3.2"
+      },
+      "preflight_identity": {
+        "archive_sha256": "9b8a00075d7d8525314e372285072083848c973a84dae7372ff16560f937aec2",
+        "base_commit": "b79088306513d5ed76d31ac40ab3c15f858946ea",
+        "image_id": "sha256:6d829b07502b56c84e0a8fffea5d4a9acd0eac8219dd52fbd1357a7614c1a6b4"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-13925": {
+      "dataset_projection_row": {
+        "base_commit": "0c42cdf0d2422f4c080e93594d5d15381d6e955e",
+        "instance_id": "django__django-13925",
+        "repo": "django/django",
+        "version": "4.0"
+      },
+      "preflight_identity": {
+        "archive_sha256": "c2f40244a66c77fe1372cec515ec2dd14c07646863977756f60ef2029403946b",
+        "base_commit": "0c42cdf0d2422f4c080e93594d5d15381d6e955e",
+        "image_id": "sha256:c08d4a51e5a5c8aee7ce9b06c8f01ff0c67da737d328525c66232bda661eff9f"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-14434": {
+      "dataset_projection_row": {
+        "base_commit": "5e04e84d67da8163f365e9f5fcd169e2630e2873",
+        "instance_id": "django__django-14434",
+        "repo": "django/django",
+        "version": "4.0"
+      },
+      "preflight_identity": {
+        "archive_sha256": "f8fe09aadd5e9cc636aee5a34427eda00b99087cd1d62a3cf0ddf9e3599d9a8c",
+        "base_commit": "5e04e84d67da8163f365e9f5fcd169e2630e2873",
+        "image_id": "sha256:ea04025d4c818808840e559f38ff5e2eb9326944b440dc5baaa344121ce334a4"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-14493": {
+      "dataset_projection_row": {
+        "base_commit": "7272e1963ffdf39c1d4fe225d5425a45dd095d11",
+        "instance_id": "django__django-14493",
+        "repo": "django/django",
+        "version": "4.0"
+      },
+      "preflight_identity": {
+        "archive_sha256": "8d55d3737205cf24e9ba09d36dea3fd1ccbb81a1b84aad53510ca4844efbe68b",
+        "base_commit": "7272e1963ffdf39c1d4fe225d5425a45dd095d11",
+        "image_id": "sha256:1167d13a2d671de231295c3c8d3730908a4211c725a810cd84bb0e343fcaca3e"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-14534": {
+      "dataset_projection_row": {
+        "base_commit": "910ecd1b8df7678f45c3d507dde6bcb1faafa243",
+        "instance_id": "django__django-14534",
+        "repo": "django/django",
+        "version": "4.0"
+      },
+      "preflight_identity": {
+        "archive_sha256": "ef85f98bbb95b107888aaec66963b95b5eed41f2cad2d46101e2fff657fdc8c6",
+        "base_commit": "910ecd1b8df7678f45c3d507dde6bcb1faafa243",
+        "image_id": "sha256:75aadded6a70bba28f53336de84f9848c582a3d2a8dd48472b5c3105ad176fd6"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-14539": {
+      "dataset_projection_row": {
+        "base_commit": "6a5ef557f80a8eb6a758ebe99c8bb477ca47459e",
+        "instance_id": "django__django-14539",
+        "repo": "django/django",
+        "version": "4.0"
+      },
+      "preflight_identity": {
+        "archive_sha256": "dcaf9ad511ba3149bce562f65b8dcbde242757d0d2a81c6f42410189be9199a0",
+        "base_commit": "6a5ef557f80a8eb6a758ebe99c8bb477ca47459e",
+        "image_id": "sha256:87ee174bf76b880a59fe31b9e4587a8cd9db24fe0728e5aed16ceecd07a23432"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-14559": {
+      "dataset_projection_row": {
+        "base_commit": "d79be3ed39b76d3e34431873eec16f6dd354ab17",
+        "instance_id": "django__django-14559",
+        "repo": "django/django",
+        "version": "4.0"
+      },
+      "preflight_identity": {
+        "archive_sha256": "1dfa5ea34d38c1e8fd3107371f8c2a0869c6752fceccac3e68509f4b925bd8d9",
+        "base_commit": "d79be3ed39b76d3e34431873eec16f6dd354ab17",
+        "image_id": "sha256:8bc43a2b552764aeee2b54cf80a285614b11d351339bbcad7823b64fb6aad19f"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-15695": {
+      "dataset_projection_row": {
+        "base_commit": "647480166bfe7532e8c471fef0146e3a17e6c0c9",
+        "instance_id": "django__django-15695",
+        "repo": "django/django",
+        "version": "4.1"
+      },
+      "preflight_identity": {
+        "archive_sha256": "b3ee1f6a6c69a52646a0a3691db15d0c19874758a19c79a7e8b1ca1edcc88845",
+        "base_commit": "647480166bfe7532e8c471fef0146e3a17e6c0c9",
+        "image_id": "sha256:0579f22ab677d4c076278018e4ea1e550eb6eef9d65ae20f0731103d7dc976e7"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-15863": {
+      "dataset_projection_row": {
+        "base_commit": "37c5b8c07be104fd5288cd87f101e48cb7a40298",
+        "instance_id": "django__django-15863",
+        "repo": "django/django",
+        "version": "4.2"
+      },
+      "preflight_identity": {
+        "archive_sha256": "5732ac5103c612a9809609836260c9a0ba65a8a08e1908aa95489df5cc10b64c",
+        "base_commit": "37c5b8c07be104fd5288cd87f101e48cb7a40298",
+        "image_id": "sha256:b30f477a7b55b52a52212e6a8a6ebb54eed561c6461abe38f10730365e750bb3"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-15957": {
+      "dataset_projection_row": {
+        "base_commit": "f387d024fc75569d2a4a338bfda76cc2f328f627",
+        "instance_id": "django__django-15957",
+        "repo": "django/django",
+        "version": "4.2"
+      },
+      "preflight_identity": {
+        "archive_sha256": "5522f087fddfa72404c44fceaaebb3a5afeed7f023e9e19d6758393b7e41e4aa",
+        "base_commit": "f387d024fc75569d2a4a338bfda76cc2f328f627",
+        "image_id": "sha256:9f8a9395422947576288c0955ad7a7b75bb160ea2ea3660578518d19860f4f70"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-16801": {
+      "dataset_projection_row": {
+        "base_commit": "3b62d8c83e3e48d2ed61cfa32a61c56d9e030293",
+        "instance_id": "django__django-16801",
+        "repo": "django/django",
+        "version": "5.0"
+      },
+      "preflight_identity": {
+        "archive_sha256": "84bb4471207c258b33ada5eacb03601741d6e02dc8b4c045279c28a505255378",
+        "base_commit": "3b62d8c83e3e48d2ed61cfa32a61c56d9e030293",
+        "image_id": "sha256:472ee82cf5f13b8c96a24720db5a01437ae39b88fb0266a856e7de2dab6376ca"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "django__django-17084": {
+      "dataset_projection_row": {
+        "base_commit": "f8c43aca467b7b0c4bb0a7fa41362f90b610b8df",
+        "instance_id": "django__django-17084",
+        "repo": "django/django",
+        "version": "5.0"
+      },
+      "preflight_identity": {
+        "archive_sha256": "84df3626edd7dfb54bb4d9520b4eb408b479a2670144170cd857d7d4045288a0",
+        "base_commit": "f8c43aca467b7b0c4bb0a7fa41362f90b610b8df",
+        "image_id": "sha256:2552f759129d4573ca1e94dd32fc039fca0f1acccab96f2f34d9cd0fdc62eb90"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      }
+    },
+    "matplotlib__matplotlib-25960": {
+      "dataset_projection_row": {
+        "base_commit": "1d0d255b79e84dfc9f2123c5eb85a842d342f72b",
+        "instance_id": "matplotlib__matplotlib-25960",
+        "repo": "matplotlib/matplotlib",
+        "version": "3.7"
+      },
+      "preflight_identity": {
+        "archive_sha256": "42b5e7a31dcb0f89a1fea673156415f4247eca58e09edf34653cdbce9a6aa77e",
+        "base_commit": "1d0d255b79e84dfc9f2123c5eb85a842d342f72b",
+        "image_id": "sha256:9d121c6eb5119496dc44f71550f2f06a2731ccf98c6b352794594cd40f3fbf85"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "matplotlib__matplotlib-26342": {
+      "dataset_projection_row": {
+        "base_commit": "2aee6ccd7c7e1f8d282c1e7579f4ee546b838542",
+        "instance_id": "matplotlib__matplotlib-26342",
+        "repo": "matplotlib/matplotlib",
+        "version": "3.7"
+      },
+      "preflight_identity": {
+        "archive_sha256": "1da93b1f972a4bf305e833bffc87d5064899c95f6122a1ad13f6a3354ffc9fab",
+        "base_commit": "2aee6ccd7c7e1f8d282c1e7579f4ee546b838542",
+        "image_id": "sha256:005276f8388eeee1caec470c4d8da926cccaa959a74ef22545ad857f62c6bde8"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "pydata__xarray-3151": {
+      "dataset_projection_row": {
+        "base_commit": "118f4d996e7711c9aced916e6049af9f28d5ec66",
+        "instance_id": "pydata__xarray-3151",
+        "repo": "pydata/xarray",
+        "version": "0.12"
+      },
+      "preflight_identity": {
+        "archive_sha256": "31908ad6bef257f6524e6b565ca44a95f863315fba41c7bfe0200e5c513b7435",
+        "base_commit": "118f4d996e7711c9aced916e6049af9f28d5ec66",
+        "image_id": "sha256:77bcc0b610c1a7fd60cadd50acaccafb7627b04aaaa6d13b8aa95e1d920e4247"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; [tool:pytest] in setup.cfg",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "pydata__xarray-3677": {
+      "dataset_projection_row": {
+        "base_commit": "ef6e6a7b86f8479b9a1fecf15ad5b88a2326b31e",
+        "instance_id": "pydata__xarray-3677",
+        "repo": "pydata/xarray",
+        "version": "0.12"
+      },
+      "preflight_identity": {
+        "archive_sha256": "cbcb292009648034bf53a0e3bbe3779ec3646986253dbbb4bf0a3217aa169d6a",
+        "base_commit": "ef6e6a7b86f8479b9a1fecf15ad5b88a2326b31e",
+        "image_id": "sha256:9565b12e06238c704b0f287e66ba97dd85e039367c3868f5eb7eb58119f3d8ed"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; [tool:pytest] in setup.cfg",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "pydata__xarray-4356": {
+      "dataset_projection_row": {
+        "base_commit": "e05fddea852d08fc0845f954b79deb9e9f9ff883",
+        "instance_id": "pydata__xarray-4356",
+        "repo": "pydata/xarray",
+        "version": "0.12"
+      },
+      "preflight_identity": {
+        "archive_sha256": "bb76fbcbeb0460511511f203b40f3bf33ffeed8e5d0949668f9216d891621eb7",
+        "base_commit": "e05fddea852d08fc0845f954b79deb9e9f9ff883",
+        "image_id": "sha256:7dd40503a0a6107a7b1d37ed7e8739c8721c64954e879f6b1ed3dab4ff4ac8c6"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; [tool:pytest] in setup.cfg",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "pydata__xarray-4687": {
+      "dataset_projection_row": {
+        "base_commit": "d3b6aa6d8b997df115a53c001d00222a0f92f63a",
+        "instance_id": "pydata__xarray-4687",
+        "repo": "pydata/xarray",
+        "version": "0.12"
+      },
+      "preflight_identity": {
+        "archive_sha256": "9f17a2cfce76b4034c4fb4738cdb8a05d5d929dbba0c0472deec22a38d536837",
+        "base_commit": "d3b6aa6d8b997df115a53c001d00222a0f92f63a",
+        "image_id": "sha256:32f5d2e9668c981e0e75536064e8be85dd853f45b69067d88d726d1f846c05e8"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; [tool:pytest] in setup.cfg",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "pydata__xarray-6721": {
+      "dataset_projection_row": {
+        "base_commit": "cc183652bf6e1273e985e1c4b3cba79c896c1193",
+        "instance_id": "pydata__xarray-6721",
+        "repo": "pydata/xarray",
+        "version": "2022.06"
+      },
+      "preflight_identity": {
+        "archive_sha256": "5548c1588f32e77401e8d50828887297f9e1088c2e44fe7d76d87b2bc301a0d4",
+        "base_commit": "cc183652bf6e1273e985e1c4b3cba79c896c1193",
+        "image_id": "sha256:855880ce6241af2349762fe34b893eb277216c9d053d08e1372c8dd6eb066021"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; [tool:pytest] in setup.cfg",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "pydata__xarray-7229": {
+      "dataset_projection_row": {
+        "base_commit": "3aa75c8d00a4a2d4acf10d80f76b937cadb666b7",
+        "instance_id": "pydata__xarray-7229",
+        "repo": "pydata/xarray",
+        "version": "2022.09"
+      },
+      "preflight_identity": {
+        "archive_sha256": "d0a8192c8e396c757520127db054bea09f924eb7adfb3ed1d258b3383b407dc9",
+        "base_commit": "3aa75c8d00a4a2d4acf10d80f76b937cadb666b7",
+        "image_id": "sha256:b2db3a6ab994cd3873198d9d37835e476178d4a6c0612afd37c6e378f32aaa5a"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; [tool:pytest] in setup.cfg",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "pydata__xarray-7393": {
+      "dataset_projection_row": {
+        "base_commit": "41fef6f1352be994cd90056d47440fe9aa4c068f",
+        "instance_id": "pydata__xarray-7393",
+        "repo": "pydata/xarray",
+        "version": "2022.09"
+      },
+      "preflight_identity": {
+        "archive_sha256": "858cc2302a22790f4c8751e789891242380ac6cc7e17d339a5589414c33d1802",
+        "base_commit": "41fef6f1352be994cd90056d47440fe9aa4c068f",
+        "image_id": "sha256:32537775cd1fce4a9e15c75e77b69bb382cb38640c8bda7915e550738555984b"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; [tool:pytest] in setup.cfg",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "scikit-learn__scikit-learn-12973": {
+      "dataset_projection_row": {
+        "base_commit": "a7b8b9e9e16d4e15fabda5ae615086c2e1c47d8a",
+        "instance_id": "scikit-learn__scikit-learn-12973",
+        "repo": "scikit-learn/scikit-learn",
+        "version": "0.21"
+      },
+      "preflight_identity": {
+        "archive_sha256": "37b578085fd1fd024e3847007da822a2a0863cfd94d0fc9d2074b46c4a2f007a",
+        "base_commit": "a7b8b9e9e16d4e15fabda5ae615086c2e1c47d8a",
+        "image_id": "sha256:1a5f4a80fa6497c27d424f44380bf8a4b02b1bd2b57dc45f4723d3fd16100992"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; [tool:pytest] in setup.cfg",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "scikit-learn__scikit-learn-25931": {
+      "dataset_projection_row": {
+        "base_commit": "e3d1f9ac39e4bf0f31430e779acc50fb05fe1b64",
+        "instance_id": "scikit-learn__scikit-learn-25931",
+        "repo": "scikit-learn/scikit-learn",
+        "version": "1.3"
+      },
+      "preflight_identity": {
+        "archive_sha256": "15b6ee2623c8e31fffc5588ba74022cf836052fe674a61212da7308d934bce99",
+        "base_commit": "e3d1f9ac39e4bf0f31430e779acc50fb05fe1b64",
+        "image_id": "sha256:2e9247652ee97580e2be8e620a0fd609ae52692a86d238f1903e6f03dd4e7623"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; [tool:pytest] in setup.cfg",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "scikit-learn__scikit-learn-25973": {
+      "dataset_projection_row": {
+        "base_commit": "10dbc142bd17ccf7bd38eec2ac04b52ce0d1009e",
+        "instance_id": "scikit-learn__scikit-learn-25973",
+        "repo": "scikit-learn/scikit-learn",
+        "version": "1.3"
+      },
+      "preflight_identity": {
+        "archive_sha256": "e92833bf6287792f04495329258fd6f2e4c768e0a71ff24e9fcd79b439ed0c32",
+        "base_commit": "10dbc142bd17ccf7bd38eec2ac04b52ce0d1009e",
+        "image_id": "sha256:36f14a37aed57080e4220cee9ca819a5d0bc6aff9321fb09b01a09b766234e57"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; [tool:pytest] in setup.cfg",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "sphinx-doc__sphinx-8035": {
+      "dataset_projection_row": {
+        "base_commit": "5e6da19f0e44a0ae83944fb6ce18f18f781e1a6e",
+        "instance_id": "sphinx-doc__sphinx-8035",
+        "repo": "sphinx-doc/sphinx",
+        "version": "3.2"
+      },
+      "preflight_identity": {
+        "archive_sha256": "4a3af107792bfa87204bba8df13e6ebbc5f6edc93b5ede7976dccc0e64240949",
+        "base_commit": "5e6da19f0e44a0ae83944fb6ce18f18f781e1a6e",
+        "image_id": "sha256:8e8f6693846f3176c3492a526dcecabf01ac87e72b79465e29cc37ac7797aa21"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "[tool:pytest] in setup.cfg; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "sphinx-doc__sphinx-8269": {
+      "dataset_projection_row": {
+        "base_commit": "1e2ccd8f0eca0870cf6f8fce6934e2da8eba9b72",
+        "instance_id": "sphinx-doc__sphinx-8269",
+        "repo": "sphinx-doc/sphinx",
+        "version": "3.3"
+      },
+      "preflight_identity": {
+        "archive_sha256": "b4fae2c824e322296135e62841486876e1724ff84b3eb559c4c31890a8266817",
+        "base_commit": "1e2ccd8f0eca0870cf6f8fce6934e2da8eba9b72",
+        "image_id": "sha256:e023c685c822048da08c3dbdbb126eb312b35b2f3f48ec517e342df4a56d63d9"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "[tool:pytest] in setup.cfg; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "sphinx-doc__sphinx-9591": {
+      "dataset_projection_row": {
+        "base_commit": "9ed054279aeffd5b1d0642e2d24a8800389de29f",
+        "instance_id": "sphinx-doc__sphinx-9591",
+        "repo": "sphinx-doc/sphinx",
+        "version": "4.2"
+      },
+      "preflight_identity": {
+        "archive_sha256": "7667861f224dfc460144195e18538f93b01d338c40d5ba982ac8029a34969159",
+        "base_commit": "9ed054279aeffd5b1d0642e2d24a8800389de29f",
+        "image_id": "sha256:2dca3f31f7195a925a7f0d48a0c6bbfc7d10a7f7b7d67af7c90e7863b5ae1529"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "[tool:pytest] in setup.cfg; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "sphinx-doc__sphinx-9658": {
+      "dataset_projection_row": {
+        "base_commit": "232dbe41c5250eb7d559d40438c4743483e95f15",
+        "instance_id": "sphinx-doc__sphinx-9658",
+        "repo": "sphinx-doc/sphinx",
+        "version": "4.3"
+      },
+      "preflight_identity": {
+        "archive_sha256": "a88853f77c11739d89f057326eeefeac390923b3b47c0e93dd903fb0309a2abc",
+        "base_commit": "232dbe41c5250eb7d559d40438c4743483e95f15",
+        "image_id": "sha256:52ced1351ee5f5e8b75e7140be218d575723ef5c994fb2ddfe518a23b11cac5c"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "[tool:pytest] in setup.cfg; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      }
+    },
+    "sympy__sympy-12096": {
+      "dataset_projection_row": {
+        "base_commit": "d7c3045115693e887bcd03599b7ca4650ac5f2cb",
+        "instance_id": "sympy__sympy-12096",
+        "repo": "sympy/sympy",
+        "version": "1.0"
+      },
+      "preflight_identity": {
+        "archive_sha256": "5eabd7f43a167c6c80260516f8c44b568a1bfbe8b2f0d485ed6cfa969772ae21",
+        "base_commit": "d7c3045115693e887bcd03599b7ca4650ac5f2cb",
+        "image_id": "sha256:660e7d92998f55c98443175b42fe6e4234ba788b4e1cda753384059edd7cc1b8"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "native SymPy bin/test runner",
+          "name": "sympy"
+        },
+        "effective_name": "sympy"
+      }
+    },
+    "sympy__sympy-13551": {
+      "dataset_projection_row": {
+        "base_commit": "9476425b9e34363c2d9ac38e9f04aa75ae54a775",
+        "instance_id": "sympy__sympy-13551",
+        "repo": "sympy/sympy",
+        "version": "1.1"
+      },
+      "preflight_identity": {
+        "archive_sha256": "98d5c96024eb739faaf4dc7d692a29c84f921afe99d9abe4b11424ac5f111d34",
+        "base_commit": "9476425b9e34363c2d9ac38e9f04aa75ae54a775",
+        "image_id": "sha256:c31a169a1c8cd4f0f0ef67c4830742c24ebfba3b82ca935ff3b28482394c702a"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "native SymPy bin/test runner",
+          "name": "sympy"
+        },
+        "effective_name": "sympy"
+      }
+    },
+    "sympy__sympy-14248": {
+      "dataset_projection_row": {
+        "base_commit": "9986b38181cdd556a3f3411e553864f11912244e",
+        "instance_id": "sympy__sympy-14248",
+        "repo": "sympy/sympy",
+        "version": "1.1"
+      },
+      "preflight_identity": {
+        "archive_sha256": "fde36c24c9e37f74f675b19792964cf154ac8361de8cbe850b7d6b34bf22decf",
+        "base_commit": "9986b38181cdd556a3f3411e553864f11912244e",
+        "image_id": "sha256:51647cff0a6adbc1ce14d191abdc9b46985d68389ac9d95c9c59091c0e3c177b"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "native SymPy bin/test runner",
+          "name": "sympy"
+        },
+        "effective_name": "sympy"
+      }
+    },
+    "sympy__sympy-14531": {
+      "dataset_projection_row": {
+        "base_commit": "205da797006360fc629110937e39a19c9561313e",
+        "instance_id": "sympy__sympy-14531",
+        "repo": "sympy/sympy",
+        "version": "1.1"
+      },
+      "preflight_identity": {
+        "archive_sha256": "77eed19910f0c1f5baf0ba98980d827e62c97ee506cd2e65295b5aa2e9f2f478",
+        "base_commit": "205da797006360fc629110937e39a19c9561313e",
+        "image_id": "sha256:9881c36d06d92e1c40d3246bd03d1cc0e7c087749785b2a45ff6b8d7207192d6"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "native SymPy bin/test runner",
+          "name": "sympy"
+        },
+        "effective_name": "sympy"
+      }
+    },
+    "sympy__sympy-15017": {
+      "dataset_projection_row": {
+        "base_commit": "6810dee426943c1a2fe85b5002dd0d4cf2246a05",
+        "instance_id": "sympy__sympy-15017",
+        "repo": "sympy/sympy",
+        "version": "1.2"
+      },
+      "preflight_identity": {
+        "archive_sha256": "dbefb46d19434c6bca6d6a3edb18f7f7f5a0381bf506b7c7ec1df692bb88dc39",
+        "base_commit": "6810dee426943c1a2fe85b5002dd0d4cf2246a05",
+        "image_id": "sha256:73950f4090b50a86e56d2bc99dabcd56e86bf25708f82a195fa0f507b616f3c1"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "native SymPy bin/test runner",
+          "name": "sympy"
+        },
+        "effective_name": "sympy"
+      }
+    },
+    "sympy__sympy-15809": {
+      "dataset_projection_row": {
+        "base_commit": "28d913d3cead6c5646307ffa6540b21d65059dfd",
+        "instance_id": "sympy__sympy-15809",
+        "repo": "sympy/sympy",
+        "version": "1.4"
+      },
+      "preflight_identity": {
+        "archive_sha256": "d7e653e5149cba0ab7b33a6e9ce625d1f8b67a75a135820602b5152bb2206da3",
+        "base_commit": "28d913d3cead6c5646307ffa6540b21d65059dfd",
+        "image_id": "sha256:7d443fcfb175412173a215057bbbe2c09a1bedf11836c99b4c7472bf1f28d93d"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "native SymPy bin/test runner",
+          "name": "sympy"
+        },
+        "effective_name": "sympy"
+      }
+    },
+    "sympy__sympy-17630": {
+      "dataset_projection_row": {
+        "base_commit": "58e78209c8577b9890e957b624466e5beed7eb08",
+        "instance_id": "sympy__sympy-17630",
+        "repo": "sympy/sympy",
+        "version": "1.5"
+      },
+      "preflight_identity": {
+        "archive_sha256": "5f5de0b0e3a83174b7057ce93d48f8a30564b1410b68d6985e7e20c40521fbd8",
+        "base_commit": "58e78209c8577b9890e957b624466e5beed7eb08",
+        "image_id": "sha256:1d48feb9b070f23fd96ff7c0a2bc5deca20079a37b9c9bf6660fcc6af9082b6b"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "native SymPy bin/test runner",
+          "name": "sympy"
+        },
+        "effective_name": "sympy"
+      }
+    },
+    "sympy__sympy-20590": {
+      "dataset_projection_row": {
+        "base_commit": "cffd4e0f86fefd4802349a9f9b19ed70934ea354",
+        "instance_id": "sympy__sympy-20590",
+        "repo": "sympy/sympy",
+        "version": "1.7"
+      },
+      "preflight_identity": {
+        "archive_sha256": "08a268eab247bf7ac9847e581b15b195d0a81c800f30ad94e058a5ca90c4457e",
+        "base_commit": "cffd4e0f86fefd4802349a9f9b19ed70934ea354",
+        "image_id": "sha256:fcfe2aec281d3a1af6a71bedef4637a446bcb076e0acdec6fec03b9b25a346f2"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "native SymPy bin/test runner",
+          "name": "sympy"
+        },
+        "effective_name": "sympy"
+      }
+    },
+    "sympy__sympy-22456": {
+      "dataset_projection_row": {
+        "base_commit": "a3475b3f9ac662cd425157dd3bdb93ad7111c090",
+        "instance_id": "sympy__sympy-22456",
+        "repo": "sympy/sympy",
+        "version": "1.10"
+      },
+      "preflight_identity": {
+        "archive_sha256": "32787e9e4dc003d286a17a5f8f298351e18109828fef51ba6e1c95e4491d581a",
+        "base_commit": "a3475b3f9ac662cd425157dd3bdb93ad7111c090",
+        "image_id": "sha256:dc83561702fdaa58a128b00a6c3aa7113bc4b587ac59a5d4b6a4635540d421b2"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "native SymPy bin/test runner",
+          "name": "sympy"
+        },
+        "effective_name": "sympy"
+      }
+    },
+    "sympy__sympy-22714": {
+      "dataset_projection_row": {
+        "base_commit": "3ff4717b6aef6086e78f01cdfa06f64ae23aed7e",
+        "instance_id": "sympy__sympy-22714",
+        "repo": "sympy/sympy",
+        "version": "1.10"
+      },
+      "preflight_identity": {
+        "archive_sha256": "56ffd319fc5c5ec1bc849acd4271d7315844b5639cc1c065e80d318519bc8b0a",
+        "base_commit": "3ff4717b6aef6086e78f01cdfa06f64ae23aed7e",
+        "image_id": "sha256:d1176d5b452035eeab61f89284e1a8bd6d2519ab0c244f08685118468fd6a2fa"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "native SymPy bin/test runner",
+          "name": "sympy"
+        },
+        "effective_name": "sympy"
+      }
+    },
+    "sympy__sympy-23262": {
+      "dataset_projection_row": {
+        "base_commit": "fdc707f73a65a429935c01532cd3970d3355eab6",
+        "instance_id": "sympy__sympy-23262",
+        "repo": "sympy/sympy",
+        "version": "1.11"
+      },
+      "preflight_identity": {
+        "archive_sha256": "1acdcd7293d658977ccf83120e5d6386794a0894f93778f3183d2d258fe25798",
+        "base_commit": "fdc707f73a65a429935c01532cd3970d3355eab6",
+        "image_id": "sha256:b86968e820014e91e7394ceb998602324e8ea5f0c3093844d606aa379fa15007"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "native SymPy bin/test runner",
+          "name": "sympy"
+        },
+        "effective_name": "sympy"
+      }
+    },
+    "sympy__sympy-23824": {
+      "dataset_projection_row": {
+        "base_commit": "39de9a2698ad4bb90681c0fdb70b30a78233145f",
+        "instance_id": "sympy__sympy-23824",
+        "repo": "sympy/sympy",
+        "version": "1.12"
+      },
+      "preflight_identity": {
+        "archive_sha256": "32c86cb2f38f5366c67bc541fbb934064e0715c6f403f4818fc83f63bb82eb39",
+        "base_commit": "39de9a2698ad4bb90681c0fdb70b30a78233145f",
+        "image_id": "sha256:743db3a4c4bae7f7736762ec7029e370955925cbb9ece3ca7f861a6e170c1a37"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "native SymPy bin/test runner",
+          "name": "sympy"
+        },
+        "effective_name": "sympy"
+      }
+    }
+  }
+}

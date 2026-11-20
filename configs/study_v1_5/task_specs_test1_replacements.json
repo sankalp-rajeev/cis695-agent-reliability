@@ -1,0 +1,304 @@
+{
+  "built_by_commit": "929ea5980f9394a4c0147b31185d7d8396533248",
+  "cohort": "study_test1_replacements",
+  "schema": "task_spec_registry/1",
+  "tasks": [
+    {
+      "archive": {
+        "path": "/home/sankalp/cg_repos/task_archives/django__django-13343.tar",
+        "pax_comment": "ece18207cbb64dd89014e279ac636a6c9829828e",
+        "sha256": "c9fc558ecd113b649a857c0d0837a7bc45b192873d9f0fc5ca8e3c450c94f396"
+      },
+      "base_commit": "ece18207cbb64dd89014e279ac636a6c9829828e",
+      "dataset_projection_row": {
+        "base_commit": "ece18207cbb64dd89014e279ac636a6c9829828e",
+        "instance_id": "django__django-13343",
+        "repo": "django/django",
+        "version": "3.2"
+      },
+      "image": {
+        "id": "sha256:280024acdf333bf529baec7e580cd03e62556557eefcc91125f0f4695eb0e8ea",
+        "tag": "swebench/sweb.eval.x86_64.django_1776_django-13343:latest"
+      },
+      "instance_id": "django__django-13343",
+      "integrity_preflight": {
+        "receipt_path": "/home/sankalp/projects/wt-study/configs/study_v1_5/task_specs_test1_replacements_evidence/attempt_02_01/task_specs_evidence/django__django-13343/source_receipt.json",
+        "receipt_sha256": "1bf6628016548148e9b2dbd5d884dad64e05c333a4f5dbfe6554c159062c3aa0",
+        "status": "VERIFIED"
+      },
+      "origin": "prepared",
+      "pre_install": {
+        "dataset_projection_sha256": "38a1d982ddc452c59bf389a809598f5211c250fa5a93f2fafb6de253055ef0c8",
+        "spec": {
+          "commands": [],
+          "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+          "constants_path": "swebench/harness/constants/python.py",
+          "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+          "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+          "dataset_projection_sha256": "38a1d982ddc452c59bf389a809598f5211c250fa5a93f2fafb6de253055ef0c8",
+          "dataset_row": {
+            "base_commit": "ece18207cbb64dd89014e279ac636a6c9829828e",
+            "instance_id": "django__django-13343",
+            "repo": "django/django",
+            "version": "3.2"
+          },
+          "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+          "project_swebench_version": "5.0.2",
+          "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+          "spec_key": [
+            "django/django",
+            "3.2",
+            "pre_install"
+          ],
+          "swebench_version": "4.0.4",
+          "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+          "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl"
+        },
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+      },
+      "preflight_identity": {
+        "archive_sha256": "c9fc558ecd113b649a857c0d0837a7bc45b192873d9f0fc5ca8e3c450c94f396",
+        "base_commit": "ece18207cbb64dd89014e279ac636a6c9829828e",
+        "image_id": "sha256:280024acdf333bf529baec7e580cd03e62556557eefcc91125f0f4695eb0e8ea"
+      },
+      "repo": "django/django",
+      "runner": {
+        "django_parallel_one": false,
+        "evidence": "found tests/runtests.py in a Django tree",
+        "name": "django"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "prepared_default",
+        "effective_name": "django"
+      },
+      "version": "3.2"
+    },
+    {
+      "archive": {
+        "path": "/home/sankalp/cg_repos/task_archives/pydata__xarray-4356.tar",
+        "pax_comment": "e05fddea852d08fc0845f954b79deb9e9f9ff883",
+        "sha256": "bb76fbcbeb0460511511f203b40f3bf33ffeed8e5d0949668f9216d891621eb7"
+      },
+      "base_commit": "e05fddea852d08fc0845f954b79deb9e9f9ff883",
+      "dataset_projection_row": {
+        "base_commit": "e05fddea852d08fc0845f954b79deb9e9f9ff883",
+        "instance_id": "pydata__xarray-4356",
+        "repo": "pydata/xarray",
+        "version": "0.12"
+      },
+      "image": {
+        "id": "sha256:7dd40503a0a6107a7b1d37ed7e8739c8721c64954e879f6b1ed3dab4ff4ac8c6",
+        "tag": "swebench/sweb.eval.x86_64.pydata_1776_xarray-4356:latest"
+      },
+      "instance_id": "pydata__xarray-4356",
+      "integrity_preflight": {
+        "receipt_path": "/home/sankalp/projects/wt-study/configs/study_v1_5/task_specs_test1_replacements_evidence/attempt_01_01/task_specs_evidence/pydata__xarray-4356/source_receipt.json",
+        "receipt_sha256": "fab9a628198660a69fd58b30314f34884e9324b0578168f8d4be6b11671d5563",
+        "status": "VERIFIED"
+      },
+      "origin": "prepared",
+      "pre_install": {
+        "dataset_projection_sha256": "f1dcdeb24c3ad3a5ac819e476dcccd8e5c4fe0e43d42913ea99ddac7a60c3bec",
+        "spec": {
+          "commands": [],
+          "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+          "constants_path": "swebench/harness/constants/python.py",
+          "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+          "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+          "dataset_projection_sha256": "f1dcdeb24c3ad3a5ac819e476dcccd8e5c4fe0e43d42913ea99ddac7a60c3bec",
+          "dataset_row": {
+            "base_commit": "e05fddea852d08fc0845f954b79deb9e9f9ff883",
+            "instance_id": "pydata__xarray-4356",
+            "repo": "pydata/xarray",
+            "version": "0.12"
+          },
+          "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+          "project_swebench_version": "5.0.2",
+          "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+          "spec_key": [
+            "pydata/xarray",
+            "0.12",
+            "pre_install"
+          ],
+          "swebench_version": "4.0.4",
+          "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+          "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl"
+        },
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+      },
+      "preflight_identity": {
+        "archive_sha256": "bb76fbcbeb0460511511f203b40f3bf33ffeed8e5d0949668f9216d891621eb7",
+        "base_commit": "e05fddea852d08fc0845f954b79deb9e9f9ff883",
+        "image_id": "sha256:7dd40503a0a6107a7b1d37ed7e8739c8721c64954e879f6b1ed3dab4ff4ac8c6"
+      },
+      "repo": "pydata/xarray",
+      "runner": {
+        "django_parallel_one": null,
+        "evidence": "pytest.ini or conftest.py; [tool:pytest] in setup.cfg",
+        "name": "pytest"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; [tool:pytest] in setup.cfg",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      },
+      "version": "0.12"
+    },
+    {
+      "archive": {
+        "path": "/home/sankalp/cg_repos/task_archives/pydata__xarray-4687.tar",
+        "pax_comment": "d3b6aa6d8b997df115a53c001d00222a0f92f63a",
+        "sha256": "9f17a2cfce76b4034c4fb4738cdb8a05d5d929dbba0c0472deec22a38d536837"
+      },
+      "base_commit": "d3b6aa6d8b997df115a53c001d00222a0f92f63a",
+      "dataset_projection_row": {
+        "base_commit": "d3b6aa6d8b997df115a53c001d00222a0f92f63a",
+        "instance_id": "pydata__xarray-4687",
+        "repo": "pydata/xarray",
+        "version": "0.12"
+      },
+      "image": {
+        "id": "sha256:32f5d2e9668c981e0e75536064e8be85dd853f45b69067d88d726d1f846c05e8",
+        "tag": "swebench/sweb.eval.x86_64.pydata_1776_xarray-4687:latest"
+      },
+      "instance_id": "pydata__xarray-4687",
+      "integrity_preflight": {
+        "receipt_path": "/home/sankalp/projects/wt-study/configs/study_v1_5/task_specs_test1_replacements_evidence/attempt_04_01/task_specs_evidence/pydata__xarray-4687/source_receipt.json",
+        "receipt_sha256": "c88589eba5371e443995593310c4a3c742a2e4b99e43f61cf262b1f63b66adc0",
+        "status": "VERIFIED"
+      },
+      "origin": "prepared",
+      "pre_install": {
+        "dataset_projection_sha256": "a0e4acc7a8e1fd9f3592aa9794c1f14fc7b4704d7d9d39cdd86fa08f9ea7ff40",
+        "spec": {
+          "commands": [],
+          "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+          "constants_path": "swebench/harness/constants/python.py",
+          "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+          "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+          "dataset_projection_sha256": "a0e4acc7a8e1fd9f3592aa9794c1f14fc7b4704d7d9d39cdd86fa08f9ea7ff40",
+          "dataset_row": {
+            "base_commit": "d3b6aa6d8b997df115a53c001d00222a0f92f63a",
+            "instance_id": "pydata__xarray-4687",
+            "repo": "pydata/xarray",
+            "version": "0.12"
+          },
+          "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+          "project_swebench_version": "5.0.2",
+          "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+          "spec_key": [
+            "pydata/xarray",
+            "0.12",
+            "pre_install"
+          ],
+          "swebench_version": "4.0.4",
+          "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+          "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl"
+        },
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+      },
+      "preflight_identity": {
+        "archive_sha256": "9f17a2cfce76b4034c4fb4738cdb8a05d5d929dbba0c0472deec22a38d536837",
+        "base_commit": "d3b6aa6d8b997df115a53c001d00222a0f92f63a",
+        "image_id": "sha256:32f5d2e9668c981e0e75536064e8be85dd853f45b69067d88d726d1f846c05e8"
+      },
+      "repo": "pydata/xarray",
+      "runner": {
+        "django_parallel_one": null,
+        "evidence": "pytest.ini or conftest.py; [tool:pytest] in setup.cfg",
+        "name": "pytest"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "pytest.ini or conftest.py; [tool:pytest] in setup.cfg",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      },
+      "version": "0.12"
+    },
+    {
+      "archive": {
+        "path": "/home/sankalp/cg_repos/task_archives/sympy__sympy-15017.tar",
+        "pax_comment": "6810dee426943c1a2fe85b5002dd0d4cf2246a05",
+        "sha256": "dbefb46d19434c6bca6d6a3edb18f7f7f5a0381bf506b7c7ec1df692bb88dc39"
+      },
+      "base_commit": "6810dee426943c1a2fe85b5002dd0d4cf2246a05",
+      "dataset_projection_row": {
+        "base_commit": "6810dee426943c1a2fe85b5002dd0d4cf2246a05",
+        "instance_id": "sympy__sympy-15017",
+        "repo": "sympy/sympy",
+        "version": "1.2"
+      },
+      "image": {
+        "id": "sha256:73950f4090b50a86e56d2bc99dabcd56e86bf25708f82a195fa0f507b616f3c1",
+        "tag": "swebench/sweb.eval.x86_64.sympy_1776_sympy-15017:latest"
+      },
+      "instance_id": "sympy__sympy-15017",
+      "integrity_preflight": {
+        "receipt_path": "/home/sankalp/projects/wt-study/configs/study_v1_5/task_specs_test1_replacements_evidence/attempt_03_01/task_specs_evidence/sympy__sympy-15017/source_receipt.json",
+        "receipt_sha256": "3d2671ea8c9ff58053b9e7e9162e1a0adb9cf63de0ae8458674fa0e673fa41f8",
+        "status": "VERIFIED"
+      },
+      "origin": "prepared",
+      "pre_install": {
+        "dataset_projection_sha256": "44eb1ff41421cb3a6306f5b4ccd992f60d55c25cd165f9e45acb8c074851ed6c",
+        "spec": {
+          "commands": [],
+          "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+          "constants_path": "swebench/harness/constants/python.py",
+          "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+          "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+          "dataset_projection_sha256": "44eb1ff41421cb3a6306f5b4ccd992f60d55c25cd165f9e45acb8c074851ed6c",
+          "dataset_row": {
+            "base_commit": "6810dee426943c1a2fe85b5002dd0d4cf2246a05",
+            "instance_id": "sympy__sympy-15017",
+            "repo": "sympy/sympy",
+            "version": "1.2"
+          },
+          "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+          "project_swebench_version": "5.0.2",
+          "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+          "spec_key": [
+            "sympy/sympy",
+            "1.2",
+            "pre_install"
+          ],
+          "swebench_version": "4.0.4",
+          "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+          "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl"
+        },
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+      },
+      "preflight_identity": {
+        "archive_sha256": "dbefb46d19434c6bca6d6a3edb18f7f7f5a0381bf506b7c7ec1df692bb88dc39",
+        "base_commit": "6810dee426943c1a2fe85b5002dd0d4cf2246a05",
+        "image_id": "sha256:73950f4090b50a86e56d2bc99dabcd56e86bf25708f82a195fa0f507b616f3c1"
+      },
+      "repo": "sympy/sympy",
+      "runner": {
+        "django_parallel_one": null,
+        "evidence": "native SymPy bin/test runner",
+        "name": "sympy"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "native SymPy bin/test runner",
+          "name": "sympy"
+        },
+        "effective_name": "sympy"
+      },
+      "version": "1.2"
+    }
+  ]
+}
