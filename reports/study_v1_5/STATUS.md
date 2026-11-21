@@ -7,7 +7,7 @@ Status key: ✅ done · 🔄 in progress · ⏳ not started · ⛔ blocked · �
 
 ## Current state
 
-Phase 4b (prompt fix and one-pass re-pilot) passed all five gates. Total DeepSeek spend was $0.331. 2 of 10 gold patches had a V4 FAIL and 8 had a V4 full pass. Phase 5 (freeze V4, tag `study-v4-frozen`) is next. Phase 10 is complete with 60 pinned images and four ordered reserve replacements.
+Phase 5 is done. V4 is frozen at the Phase 4b prompts with one pass (tag `study-v4-frozen`), the generator fingerprint is pinned at `bc19ba97cbe016479903222bb1578db6`, and amendment A1-A5 is in force ([AMENDMENT_2026-11-21.md](AMENDMENT_2026-11-21.md)). The DeepSeek balance is $8.64. Phase 6 (dev gold run) is next. Phase 10 is complete with 60 pinned images and four ordered reserve replacements.
 
 ## Pre-flight checks
 
@@ -16,7 +16,7 @@ Phase 4b (prompt fix and one-pass re-pilot) passed all five gates. Total DeepSee
 | S3 trajectories reachable | ✅ `aws s3 ls --no-sign-request` lists task folders |
 | Disk for test batch 1 | ✅ 250 GB free; images average ~1.4 GB |
 | Dev images | ✅ 83 of 83 present with pinned ids (add9 checked after merge) |
-| DeepSeek balance | ✅ $9.03 confirmed by the provider balance API on 20 Nov; ≥ $7 → two-pass V4 |
+| DeepSeek balance | ✅ $9.03 confirmed by the provider balance API on 20 Nov; ≥ $7 → two-pass V4 (superseded by amendment A1: one pass). $8.64 on 21 Nov at the V4 freeze |
 
 ## Phases
 
@@ -27,7 +27,7 @@ Phase 4b (prompt fix and one-pass re-pilot) passed all five gates. Total DeepSee
 | 3 | Build | Paired-skip, V2 fallback, per-requirement V4, reuse flag, v1.5 rules | The two fixes for what held the verifier back | ✅ | part D follow-up: `87a40c978e909481ad327d1ccd9a31eafa99fb1f` · parts A-D done: `c87d8b3eb27c168151fc7d78b4b20b09abc1cdd3` · [PART_D.md](build/PART_D.md) · truth table 8,640/8,640 equal to v1.4.1 with switches off · part C done: `4d714c12b4ca2b85a32a918594037ca33f31c0d5` · [PART_C.md](build/PART_C.md) · part B done: `74f0488320256dc2f7cc9984b64d654f07ff725c` · [PART_B.md](build/PART_B.md) · part A done: `cae8769394a67b4e8584e971fd20cfc6583d6ea4` · [PART_A.md](build/PART_A.md) |
 | 4 | V4 pilot | New V4 on 10 gold patches | Check cost, coverage and leakage before spending on full runs | ⛔ | `53303bccba0df7d49fa02795bccb442461f0baec` · [PILOT.md](pilot/PILOT.md) · G1 ⛔ $0.670 total, $0.0670/task, max $0.1585 · G2 ✅ 10/10 covered · G3 ⛔ audit exit 1 · G4 ✅ 0 error tasks |
 | 4b | V4 prompt fix + re-pilot | Prompt fix (no invented expected values; no incidental state; explicit arguments), one V4 pass, re-pilot on the same 10 gold patches | Fix what the pass-1 review of 4 gold tasks found, then re-check cost, coverage, leakage and gold V4 failures | ✅ | `6cf1c2b54b1b39a01df56047fe1a9f6847912959` · [PILOT2.md](pilot/PILOT2.md) · G1 ✅ $0.331 total, $0.0331/task, max $0.0665 · G2 ✅ 10/10 covered · G3 ✅ 0 lines outside model, 17 model-written · G4 ✅ 0 error tasks · G5 ✅ 2 with V4 FAIL, 8 full passes |
-| 5 | Freeze V4 | Tag `study-v4-frozen` | The test generator can't change after this | ⏳ | |
+| 5 | Freeze V4 | Tag `study-v4-frozen` | The test generator can't change after this | ✅ | [V4_FREEZE.md](V4_FREEZE.md) · [AMENDMENT_2026-11-21.md](AMENDMENT_2026-11-21.md) · fingerprint bc19ba97cbe016479903222bb1578db6 · balance $8.64 · unit gate = baseline · truth table unchanged · v1.4.1 replay 51/51 |
 | 6 | Dev gold run | Verify 51 gold patches, generate and freeze V4 | Shows what the verifier wrongly blocks (costs) | ⏳ | |
 | 7 | Calibrate | Re-verify arm B's 51 patches, apply thresholds, write ADOPTION.md | Decides which new rules to keep, using only the practice set | ⏳ | |
 | 8 | Freeze v1.5 | Set switches, tag `v1.5-frozen` | The verifier can't change before the exam | ⏳ | |
@@ -39,7 +39,7 @@ Phase 4b (prompt fix and one-pass re-pilot) passed all five gates. Total DeepSee
 | 13 | Labels | Fetch official SWE-bench labels after each seal; cross-check with our grader | Find out which patches were really correct, from an independent source | ⏳ | |
 | 14 | Analysis script | Write, test on fake labels, tag `study-analysis-frozen` | The analysis is fixed before real labels are joined | ⏳ | |
 | 15 | Results | Join labels, compute H1–H3 and per-system numbers | Answers RQ1, RQ2 and RQ5 | ⏳ | |
-| 16 | Ablations | Signal drop-outs, S/C/P, old vs new V4, one vs two passes | Answers RQ3 and RQ4 | ⏳ | |
+| 16 | Ablations | Signal drop-outs, S/C/P, old vs new V4 (one vs two passes dropped, amendment A1) | Answers RQ3 and RQ4 | ⏳ | |
 | 17 | Presentation | Final deck | Thu 26 Nov | ⏳ | |
 
 ## Phase 2 public patch totals
@@ -88,3 +88,11 @@ One line per entry, newest last: date, what was decided or deviated from the pla
 - 21 Nov: Phase 4b unit gate: 1,836 passed, 6 skipped, 6 failed and 17 errors. The failing and erroring IDs equal unit_baseline_phase1.json. The four two-pass V4 tests now pin passes=2 explicitly, and one new test pins the study config at one pass. The v1.4.1 replay matched 51/51 decisions and 51/51 V2 outcomes. v1.5 with switches off matched 51/51, and the truth table still equals v1.4.1 with switches off.
 - 21 Nov: Phase 4b re-pilot gates were fixed before launch. G1: mean ≤ $0.06 per task and no task above $0.15. G2: ≥ 7/10 tasks fully covered. G3: no gold line whose first appearance is outside the model's own messages; model-written recall is counted and does not fail. G4: infrastructure errors on ≤ 1 task. G5: fewer than 3 gold patches with any V4 FAIL and at least 6 V4 full passes; if G5 fails, keep the old prompts.
 - 21 Nov: Phase 4b re-pilot passed: G1 ✅ $0.331 total, $0.0331/task, max $0.0665 · G2 ✅ 10/10 covered · G3 ✅ 0 lines outside model, 17 model-written · G4 ✅ 0 error tasks · G5 ✅ 2 with V4 FAIL, 8 full passes. See PILOT2.md.
+- 21 Nov: Phase 5 step 1: the generator trajectories already record `extra.response.system_fingerprint` on every response (re-pilot: 858 of 858, all bc19ba97cbe016479903222bb1578db6). generation_calls does not record it. No code was added, because the prompt allowed a change only if the trajectories lacked the field.
+- 21 Nov: `scripts/verify_model.py --config configs/model/generator.yaml --update`: PASS. Fingerprint aeb56401ca74e127821c4f9126dcb669 → bc19ba97cbe016479903222bb1578db6, cost $0.00011237. DeepSeek balance $8.64 (provider API, 16:05 UTC). This is $0.39 below the $9.03 reading, while the ledger shows $1.00 spent on the two pilots. The gap is not explained and is recorded as read.
+- 21 Nov: Amendment A1: one V4 pass with the 4b prompts. FAIL-confirmed is removed. Extended R3 = V4 FAIL and (≥2 failing requirements or a V3 failure). The one-vs-two-pass ablation is dropped. G1 is a budget gate.
+- 21 Nov: Amendment A2: the fingerprint is pinned now, and every run logs per-response fingerprints. A change by Phase 11 is a logged deviation, not a stop.
+- 21 Nov: Amendment A3: stop on a gold line first seen outside the model's own messages, or on any other CONFIRMED finding. Model-written gold lines and gold lines in kept tests are recorded per task. There is a sensitivity analysis on tasks without recall. The first pilot stays failed G3, and the rule applies from Phase 6.
+- 21 Nov: Amendment A4: adoption rules (i)-(vi). This adds a cap of 1 REJECT among arm B's 25 correct patches, sends V2 FAIL with partial V4 PASS to R5, narrows R6's V2-NOT_AVAILABLE branch to nothing-to-check, sets a 70% bar on newly ACCEPTed patches, adds a no-fallback V2 switch, and compares old and new V4 in Phase 7. The code is due before Phase 7.
+- 21 Nov: Amendment A5: one restart per run, from scratch, for infrastructure-only failures. If Phase 7 is not sealed by Mon 23 Nov 12:00, v1.5 is frozen with all switches off.
+- 21 Nov: Phase 5 gates: unit 1,836 passed, 6 skipped, 6 failed, 17 errors, with failing and erroring IDs equal to Phase 4b and the baseline. test_policy_v1_5.py passes, including switches-off = v1.4.1 on every truth-table case. The v1.4.1 replay matched 51/51 decisions and 51/51 V2 outcomes, and v1.5 with switches off matched 51/51. Tag study-v4-frozen.
