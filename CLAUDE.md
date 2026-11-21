@@ -40,3 +40,18 @@ Single-context: one root `GLOSSARY.md` plus `docs/adr/`, both created lazily. Se
 
 - Tooling and agent-config commits (CLAUDE.md, docs/agents/, .gitignore) are allowed outside
   phases; keep them separate from study commits and never include reports/ or runs/ in them.
+
+  ## How each task runs
+- Commit at the end of each phase or part, with STATUS.md updated in the same commit, then
+  push to origin study/v1.5-200. A second small commit that only pins the hash in STATUS.md is
+  fine. Never commit half-finished work, never force-push, never amend pushed commits.
+- Long runs (Docker or model calls): launch in a detached tmux session with output tee'd to a
+  log under runs/study_v1_5/, check that the first task starts cleanly, queue a finish script
+  that seals, audits, writes the report, updates STATUS.md, commits and pushes, then stop and
+  report. Never sit and monitor a run.
+- Skills: test-driven-development for new code (failing test first); verification-before-
+  completion before reporting any gate (run it, quote the counts); systematic-debugging or
+  diagnosing-bugs when a failure isn't obvious; handoff if the session gets long, then stop.
+  Do not use brainstorming, writing-plans, executing-plans, subagent-driven-development,
+  using-git-worktrees, finishing-a-development-branch, to-spec, to-tickets, implement or
+  improve-codebase-architecture: the prompt is the approved plan.
