@@ -1,13 +1,13 @@
 # Study v1.5 status
 
 Plan: `reports/study_v1_5/PLAN.md` · Branch: `study/v1.5-200` · Final presentation: Thu 26 Nov
-Last updated: Fri 20 Nov 2026
+Last updated: Sat 21 Nov 2026
 
 Status key: ✅ done · 🔄 in progress · ⏳ not started · ⛔ blocked · ✂️ cut (by a cut rule)
 
 ## Current state
 
-Phase 3 is complete. Parts A through D passed their offline gates. The v1.5 decision rules R1-R8 are built as v1.4.1 plus three default-off switches, and `scripts/decide_v1_5.py` recomputes decisions offline from a sealed run for any switch setting. The study config enables Policy P, the five-file V2 fallback, per-requirement V4 with two independent test passes, and `decision_policy: full-v1.5` with every switch off. Phase 4 (the V4 pilot on 10 gold patches) is next. Phase 10 is complete with 60 pinned images and four ordered reserve replacements.
+Phase 4 (the V4 pilot) failed G1, G3; see [PILOT.md](pilot/PILOT.md). The run was sealed and audited, and the protocol allows no retry, prompt change or rerun. Phase 5 waits for a decision. Phase 10 is complete with 60 pinned images and four ordered reserve replacements.
 
 ## Pre-flight checks
 
@@ -16,7 +16,7 @@ Phase 3 is complete. Parts A through D passed their offline gates. The v1.5 deci
 | S3 trajectories reachable | ✅ `aws s3 ls --no-sign-request` lists task folders |
 | Disk for test batch 1 | ✅ 250 GB free; images average ~1.4 GB |
 | Dev images | ✅ 83 of 83 present with pinned ids (add9 checked after merge) |
-| DeepSeek balance | 🔄 ~$4 + $5 top-up → ~$9 → two-pass V4 (confirm on dashboard) |
+| DeepSeek balance | ✅ $9.03 confirmed by the provider balance API on 20 Nov; ≥ $7 → two-pass V4 |
 
 ## Phases
 
@@ -25,7 +25,7 @@ Phase 3 is complete. Parts A through D passed their offline gates. The v1.5 deci
 | 1 | Pre-register | Merge task-prep, write PROTOCOL.md, tag `study-v1.5-prereg` | Rules are fixed before we see any data | ✅ | tag study-v1.5-prereg @ 52186c0; unit baseline: no new issues |
 | 2 | Fetch patches | Download public patches for 200 tasks, draw the test set | Patches from 6 agents of different strength, without running agents ourselves | ✅ | `176a2062226dbf37b22a5ecfc34071948c733a6e` · [FETCH.md](inputs/FETCH.md) · 1,332 fetched, 34 empty, 0 missing, 0 malformed |
 | 3 | Build | Paired-skip, V2 fallback, per-requirement V4, reuse flag, v1.5 rules | The two fixes for what held the verifier back | ✅ | part D follow-up: `87a40c978e909481ad327d1ccd9a31eafa99fb1f` · parts A-D done: `c87d8b3eb27c168151fc7d78b4b20b09abc1cdd3` · [PART_D.md](build/PART_D.md) · truth table 8,640/8,640 equal to v1.4.1 with switches off · part C done: `4d714c12b4ca2b85a32a918594037ca33f31c0d5` · [PART_C.md](build/PART_C.md) · part B done: `74f0488320256dc2f7cc9984b64d654f07ff725c` · [PART_B.md](build/PART_B.md) · part A done: `cae8769394a67b4e8584e971fd20cfc6583d6ea4` · [PART_A.md](build/PART_A.md) |
-| 4 | V4 pilot | New V4 on 10 gold patches | Check cost, coverage and leakage before spending on full runs | ⏳ | |
+| 4 | V4 pilot | New V4 on 10 gold patches | Check cost, coverage and leakage before spending on full runs | ⛔ | [PILOT.md](pilot/PILOT.md) · G1 ⛔ $0.670 total, $0.0670/task, max $0.1585 · G2 ✅ 10/10 covered · G3 ⛔ audit exit 1 · G4 ✅ 0 error tasks |
 | 5 | Freeze V4 | Tag `study-v4-frozen` | The test generator can't change after this | ⏳ | |
 | 6 | Dev gold run | Verify 51 gold patches, generate and freeze V4 | Shows what the verifier wrongly blocks (costs) | ⏳ | |
 | 7 | Calibrate | Re-verify arm B's 51 patches, apply thresholds, write ADOPTION.md | Decides which new rules to keep, using only the practice set | ⏳ | |
@@ -78,3 +78,6 @@ One line per entry, newest last: date, what was decided or deviated from the pla
 - 20 Nov: Phase 2 manifests converted to run inputs by make_verify_inputs.py; --reference-patches records gold input rather than relaxing a guard (the guard never matched 'reference'); gold-overlap audit excludes lines present in the issue, '-' lines or the base tree
 - 20 Nov: v1.5 policy built as v1.4.1 plus three default-off switches; with switches off it equals v1.4.1 on every truth-table case; R7's likely_right means V2 PASS or at least one V4 requirement PASS
 - 20 Nov: R3 extended conditions require V4 FAIL, so missing V4 evidence never REJECTs; headline decisions come only from decide_v1_5.py --frozen (switches read at tag v1.5-frozen); live run records keep v1.4.1 decisions, identical to v1.5 with switches off
+- 21 Nov: Phase 4 pilot ids drawn as random.Random(20261121).sample(sorted 51 arm B patch ids, 10), in sample order: matplotlib__matplotlib-25479, django__django-13807, django__django-15572, django__django-16667, pytest-dev__pytest-5809, django__django-12965, django__django-16631, django__django-11095, astropy__astropy-13398, sympy__sympy-13480.
+- 21 Nov: DeepSeek balance confirmed at $9.03 by the API, so two-pass V4 stands. The generator returned fingerprint bc19ba97cbe016479903222bb1578db6, not the aeb56401ca74e127821c4f9126dcb669 recorded in generator.yaml. The run does not check the fingerprint. It is recorded in PILOT.md and the config is unchanged.
+- 21 Nov: The Phase 4 run used --mode pilot, because audited needs the Phase 5 tag. The header records git_dirty true because the pre-flight files were uncommitted at launch. The 51-id dev reference list is in reports/study_v1_5/pilot/dev_reference_ids.json.
