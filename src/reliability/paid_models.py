@@ -42,8 +42,9 @@ def prices(config):
 
 
 @contextmanager
-def paid_stage(config, ledger, task, stage, cap):
-    with ledger.stage(task, stage, cap):
+def paid_stage(config, ledger, task, stage, cap, *, allow_partial=False):
+    options = {'allow_partial': True} if allow_partial else {}
+    with ledger.stage(task, stage, cap, **options):
         runtime = Runtime(ledger, task, cap, stage)
         token = ACTIVE.set(runtime)
         try:

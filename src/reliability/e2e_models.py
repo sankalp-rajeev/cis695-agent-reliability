@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import time
 from contextlib import contextmanager
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 import yaml
@@ -17,10 +17,14 @@ from reliability.agent.freeze import freeze_patch
 from reliability.paid_models import model_options, paid_stage
 from reliability.provider_errors import ProviderTransientError
 from reliability.umgpt import ACTIVE
+from reliability.umgpt_spend import BudgetCap
 from reliability.verifier.guarded_v2 import FrozenContainer
 from reliability.verifier.record import SignalAbsence, SignalKind, SignalRecord
 from reliability.verifier.reproduction import ContainerSandbox, evaluate_frozen, signal_before_patch, signal_from_reproduction
-from reliability.verifier.reproduction_freeze import GenerationOutcome, _read_out, freeze_tests
+from reliability.verifier.reproduction_freeze import (
+    GenerationOutcome, GenerationRequest, PerRequirementSetup, _read_out, _sha256,
+    freeze_requirements, freeze_tests, sum_generation_usage,
+)
 from reliability.verifier.reproduction_v1_4 import RecordingGenerator
 from reliability.verifier.source_integrity import SourceIntegrityError
 from reliability.verifier.task_specs import ROOT, write
@@ -128,19 +132,32 @@ class PinnedGenerator:
     config_path: Path
     folder: Path
     experiment: str
+    request: GenerationRequest | None = None
 
     def generate(self, issue_text, instance_id):
         if instance_id != self.task.instance_id:
             raise ValueError('Generator task identity mismatch')
-        config = yaml.safe_load((ROOT / self.setup.prompt_path).read_text())
         budget = self.setup.budget
+        steps = budget.generator_max_steps
+        if self.request is None:
+            config = yaml.safe_load((ROOT / self.setup.prompt_path).read_text())
+            variables, readout = {}, {}
+        else:
+            requirements_call = self.request.pass_number is None
+            prompt, expected = self.setup.prompts[0 if requirements_call else 1]
+            raw = (ROOT / prompt).read_bytes()
+            if _sha256(raw) != expected:
+                raise ValueError('Pinned V4 prompt changed: ' + prompt)
+            config = yaml.safe_load(raw)
+            steps = self.setup.requirements_max_steps if requirements_call else self.setup.tests_max_steps
+            variables, readout = self.request.prompt_variables, {'paths': self.request.paths}
         config['environment']['timeout'] = budget.per_command_timeout_s
         with pristine(self.task, self.folder / 'generator', self.experiment, agent=True) as container:
             env = attached_environment(container, config['environment'])
-            agent = configured_agent(config, self.config_path, env, budget.generator_max_steps,
+            agent = configured_agent(config, self.config_path, env, steps,
                                       budget.generator_max_cost_usd, budget.generator_timeout_s)
             try:
-                termination = agent.run(issue_text).get('exit_status', '') or 'unknown'
+                termination = agent.run(issue_text, **variables).get('exit_status', '') or 'unknown'
             except SourceIntegrityError:
                 raise
             except ProviderTransientError:
@@ -148,11 +165,39 @@ class PinnedGenerator:
                 # Do not screen an incomplete suite as generated evidence.
                 raise
             except Exception as exc:
+                if self.request is not None and isinstance(exc, BudgetCap):
+                    raise
                 termination = type(exc).__name__
-            files, ignored = _read_out(env, budget)
+            files, ignored = _read_out(env, budget, **readout)
             return GenerationOutcome(files, termination, n_steps=int(getattr(agent, 'n_calls', 0)),
                 cost_usd=float(getattr(agent, 'cost', 0.0)), ignored=ignored,
                 trajectory=tuple(_serialisable(m) for m in agent.messages))
+
+
+def _generation_ledger_calls(ledger, instance_id, stages):
+    return [call for call in ledger.account_calls(ledger.snapshot())
+            if call['job'] == ledger.job and call['task'] == instance_id and call['stage'] in stages]
+
+
+@dataclass
+class MeteredGenerator:
+    generator: PinnedGenerator
+    model_config: dict
+    ledger: object
+
+    def generate(self, issue_text, instance_id):
+        name = self.generator.request.name
+        stage = f'V4_{name}'
+        cap = self.generator.setup.budget.generator_max_cost_usd
+        try:
+            with paid_stage(self.model_config, self.ledger, instance_id, stage, cap, allow_partial=True):
+                outcome = self.generator.generate(issue_text, instance_id)
+        finally:
+            calls = _generation_ledger_calls(self.ledger, instance_id, {stage})
+            usage = sum_generation_usage(calls)
+            write(self.generator.folder / 'generation_usage.json',
+                  {'call': name, 'stage': stage, 'provider_requests': len(calls), **usage})
+        return replace(outcome, **usage)
 
 
 def run_v4(task, patch_text, integrity, setup, model_path, model_config, ledger, folder, experiment, issue_text):
@@ -173,11 +218,7 @@ def run_v4(task, patch_text, integrity, setup, model_path, model_config, ledger,
             source_errors.append(exc)
             raise
 
-    with paid_stage(model_config, ledger, task.instance_id, 'V4', setup.budget.generator_max_cost_usd):
-        generator = RecordingGenerator(PinnedGenerator(task, setup, model_path, folder, experiment), setup,
-                                        folder / 'generation_evidence.v1_4_1.json')
-        suite = freeze_tests(issue_text, task.instance_id, setup=setup, cache_dir=folder / 'cache',
-                             generator=generator, base_sandbox=base)
+    def finish(suite):
         if source_errors:
             raise source_errors[0]
         early = signal_before_patch(suite, setup, duration_s=time.monotonic() - started)
@@ -187,3 +228,26 @@ def run_v4(task, patch_text, integrity, setup, model_path, model_config, ledger,
             container.set_patched(True)
             patched = evaluate_frozen(suite, patch_text, ContainerSandbox(container), setup)
         return signal_from_reproduction(suite, patched, setup, duration_s=time.monotonic() - started)
+
+    if isinstance(setup, PerRequirementSetup):
+        def generator_for(request):
+            generator = PinnedGenerator(task, setup, model_path, folder / request.name, experiment, request)
+            return MeteredGenerator(generator, model_config, ledger)
+
+        try:
+            suite = freeze_requirements(issue_text, task.instance_id, setup=setup, directory=folder,
+                                        generator_for=generator_for, base_sandbox=base)
+        except BudgetCap as exc:
+            stages = {'V4_requirements', *(f'V4_pass_{number}' for number in range(1, setup.passes + 1))}
+            exc.paid_calls = sum(call['state'] == 'reserved' or call.get('reservation_retained', False)
+                                 or call.get('input_tokens') is not None
+                                 for call in _generation_ledger_calls(ledger, task.instance_id, stages))
+            raise
+        return finish(suite)
+
+    with paid_stage(model_config, ledger, task.instance_id, 'V4', setup.budget.generator_max_cost_usd):
+        generator = RecordingGenerator(PinnedGenerator(task, setup, model_path, folder, experiment), setup,
+                                        folder / 'generation_evidence.v1_4_1.json')
+        suite = freeze_tests(issue_text, task.instance_id, setup=setup, cache_dir=folder / 'cache',
+                             generator=generator, base_sandbox=base)
+        return finish(suite)

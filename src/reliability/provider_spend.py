@@ -102,8 +102,8 @@ class ProviderLedger(SpendLedger):
         self._budget_check(data, 0.0)
 
     @contextmanager
-    def stage(self, task, stage, maximum_usd):
-        """Reserve the complete stage ceiling before its first paid call."""
+    def stage(self, task, stage, maximum_usd, *, allow_partial=False):
+        """Reserve a stage ceiling, optionally limited by remaining aggregate budget."""
         if self.stage_id is not None:
             raise ValueError('Nested paid stages are unsupported')
         with self.locked() as data:
@@ -114,6 +114,11 @@ class ProviderLedger(SpendLedger):
                         if c['job'] == self.job and c['task'] == task and c['stage'] == stage)
             if spent > 1e-12:
                 raise BudgetCap('A full fresh stage would reset its already-used per-task ceiling')
+            if allow_partial:
+                maximum_usd = min(maximum_usd, self.total_usd - self._total(data),
+                                  self.job_usd - self._total(data, job=self.job))
+                if maximum_usd <= 0:
+                    raise BudgetCap('No remaining run or account budget for this stage')
             self._budget_check(data, maximum_usd)
             token = uuid.uuid4().hex
             data.setdefault('stage_escrows', []).append({'id': token, 'provider': self.provider,

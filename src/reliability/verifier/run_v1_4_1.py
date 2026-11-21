@@ -74,10 +74,10 @@ def v2_signal_for_decision(reports, settings: V2Settings | None = None):
     return signal
 
 
-def default_reproduction_setup(generator_config=None):
+def default_reproduction_setup(generator_config=None, *, verifier_config=DEFAULT_VERIFIER_CONFIG):
     from dataclasses import replace
     from reliability.verifier.reproduction_freeze import GeneratorModel, ReproductionSetup
-    setup = ReproductionSetup.load(verifier_config=ROOT / 'configs/verifier/full_v1_4_1.yaml', repo_root=ROOT)
+    setup = ReproductionSetup.load(verifier_config=verifier_config, repo_root=ROOT)
     path = Path(generator_config or ROOT / 'configs/model/generator.yaml').resolve()
     return replace(setup, model=GeneratorModel.load(path, repo_root=ROOT if path.is_relative_to(ROOT) else None))
 

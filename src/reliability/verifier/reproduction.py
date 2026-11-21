@@ -30,6 +30,7 @@ import shlex
 from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
+from enum import Enum
 from pathlib import Path
 from typing import Any
 
@@ -40,11 +41,13 @@ from reliability.verifier.record import SignalAbsence, SignalKind, SignalRecord
 from reliability.verifier.reproduction_freeze import (
     RUNNER_PATH,
     FrozenSuite,
+    PerRequirementSetup,
     ReproductionSetup,
     RunOutcome,
     RunResult,
     Sandbox,
     run_frozen,
+    sum_generation_usage,
 )
 
 
@@ -139,6 +142,8 @@ def signal_from_reproduction(
     *, duration_s: float = 0.0,
 ) -> SignalRecord:
     findings = _findings(suite, setup, patched)
+    if isinstance(setup, PerRequirementSetup):
+        return _per_requirement_signal(suite, patched, setup, findings, duration_s)
     if any(t.verdict == "not_in_place" for t in patched):
         return _absent(SignalAbsence.ERROR,
                        "frozen bytes could not be placed in the patched tree",
@@ -168,6 +173,10 @@ def signal_before_patch(
     suite: FrozenSuite, setup: ReproductionSetup, *, duration_s: float = 0.0,
 ) -> SignalRecord | None:
     """The absence to record when the freeze left nothing to run, else None."""
+    if isinstance(setup, PerRequirementSetup):
+        if not suite.requirements or not suite.kept:
+            return signal_from_reproduction(suite, [], setup, duration_s=duration_s)
+        return None
     findings = _findings(suite, setup, [])
     if suite.error:
         return _absent(SignalAbsence.ERROR, suite.error, findings, duration_s)
@@ -216,6 +225,67 @@ def _findings(suite: FrozenSuite, setup: ReproductionSetup,
         "frozen": [t.as_dict() for t in suite.tests],
         "patched": [t.as_dict() for t in patched],
     }
+
+
+class RequirementVerdict(str, Enum):
+    UNCOVERED = "UNCOVERED"
+    NO_RESULT = "NO_RESULT"
+    PASS = "PASS"
+    FAIL_CONFIRMED = "FAIL_CONFIRMED"
+    FAIL_SINGLE = "FAIL_SINGLE"
+
+
+def _requirement_verdict(kept, patched_by_path, passes):
+    if not kept:
+        return RequirementVerdict.UNCOVERED
+    failures = {test.pass_number for test in kept if patched_by_path[test.path].verdict == "fail"}
+    if failures:
+        if passes == 2 and failures == {1, 2}:
+            return RequirementVerdict.FAIL_CONFIRMED
+        return RequirementVerdict.FAIL_SINGLE
+    if any(patched_by_path[test.path].verdict == "pass" for test in kept):
+        return RequirementVerdict.PASS
+    return RequirementVerdict.NO_RESULT
+
+
+def _per_requirement_signal(suite, patched, setup, findings, duration_s):
+    patched_by_path = {test.path: test for test in patched}
+    verdicts = {
+        requirement.id: _requirement_verdict(
+            [test for test in suite.kept if test.requirement_id == requirement.id],
+            patched_by_path, setup.passes,
+        ).value
+        for requirement in suite.requirements
+    }
+    counts = {verdict.value: sum(value == verdict.value for value in verdicts.values())
+              for verdict in RequirementVerdict}
+    uncovered = [iid for iid, verdict in verdicts.items() if verdict == RequirementVerdict.UNCOVERED]
+    full_pass = bool(verdicts) and counts["PASS"] == len(verdicts)
+    findings.update(
+        requirements=[requirement.evidence() for requirement in suite.requirements],
+        requirements_sha256=suite.requirements_sha256,
+        requirement_verdicts=verdicts, verdict_counts=counts, uncovered_ids=uncovered,
+        full_pass=full_pass,
+        kept_tests=[{**test.as_dict(), "patched": patched_by_path[test.path].as_dict()}
+                    for test in suite.kept],
+        generation_calls=list(suite.generation_calls),
+        generation_totals=sum_generation_usage(suite.generation_calls),
+    )
+    if suite.requirements_truncated_from is not None:
+        findings["requirements_truncated_from"] = suite.requirements_truncated_from
+    if any(test.verdict == "not_in_place" for test in patched):
+        findings["absence_reason"] = "FROZEN_BYTES_NOT_IN_PLACE"
+        return _absent(SignalAbsence.ERROR,
+                       "frozen bytes could not be placed in the patched tree", findings, duration_s)
+    if full_pass or counts["FAIL_CONFIRMED"] or counts["FAIL_SINGLE"]:
+        detail = ", ".join(f"{iid} {verdict}" for iid, verdict in verdicts.items())
+        return SignalRecord(kind=SignalKind.REPRODUCTION,
+                            outcome=SignalOutcome.PASS if full_pass else SignalOutcome.FAIL,
+                            detail=detail, duration_s=duration_s, findings=findings)
+    reason = "REQUIREMENTS_UNAVAILABLE" if not verdicts else "UNCOVERED" if uncovered else "NO_RESULT"
+    findings["absence_reason"] = reason
+    return _absent(SignalAbsence.ERROR if suite.error else SignalAbsence.NOTHING_TO_CHECK,
+                   suite.error or reason, findings, duration_s)
 
 
 def _touched_paths(patch_text: str) -> set[str]:

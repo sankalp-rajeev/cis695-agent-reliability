@@ -128,7 +128,7 @@ def main(argv=None):
             raise ValueError('Model config role/verified identity mismatch')
         if config.get('provider') not in ('deepseek', 'umgpt'):
             raise ValueError('Unsupported paid provider')
-    setup = default_reproduction_setup(generator_path)
+    setup = default_reproduction_setup(generator_path, verifier_config=verifier_config)
     from reliability.paid_models import prices
     header = {'policy_version': 'v1.4.1-full', 'config_sha256': sha(verifier_config),
         'registry_sha256': registries, 'primary_config_sha256': sha(primary_path), 'generator_config_sha256': sha(generator_path),
