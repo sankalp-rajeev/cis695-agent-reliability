@@ -1,8 +1,9 @@
 """v1.5 decision rules R1-R8 (study PROTOCOL §4 "Decision rules", §5 switches).
 
-v1.5 is v1.4.1 plus three candidate switches, all default False. With every
-switch off it returns v1.4.1's decision on every input (the unit truth table
-pins this); what it adds is the matched rule (`rule_id`) and a review label for
+v1.5 is v1.4.1 plus three candidate switches, all default False, and one
+default rule from amendment A4 (ii). With every switch off it returns v1.4.1's
+decision on every input except the A4 (ii) class, where v1.4.1's R3b REJECT
+becomes R5 FLAG (the unit truth table pins this); what it adds is the matched rule (`rule_id`) and a review label for
 ordering human review of FLAGs. First match wins:
 
     R1  REJECT  patch does not apply, integrity FAIL, or prohibited manipulation
@@ -10,11 +11,15 @@ ordering human review of FLAGs. First match wins:
     R3  REJECT  V4 FAIL and V2 FAIL; with [r3_extended_reject] also V4 FAIL
                 with a FAIL-confirmed requirement, 2+ failing units, or a V3
                 failure (failing units under V4 NOT_AVAILABLE never REJECT)
+    R5  FLAG    (amendment A4 (ii), default) V2 FAIL with per-requirement V4
+                NOT_AVAILABLE, 1+ requirement PASS and none failing
+                                                           signals_disagree
     R3b REJECT  V2 FAIL and V4 neither PASS nor FAIL
     R4  FLAG    V4 FAIL                                        likely_wrong
     R5  FLAG    V2 FAIL and V4 PASS                            signals_disagree
     R6  ACCEPT  v1.4.1's ACCEPT conditions with a V4 full pass (V2
-                NOT_AVAILABLE also counts with [r6_accept_v2_not_available])
+                NOT_AVAILABLE because it had nothing to check also counts
+                with [r6_accept_v2_not_available], amendment A4 (iii))
     R7  FLAG    nothing failing, V4 not PASS        likely_right if V2 PASS or
                                                     a V4 unit passed, else none
     R8  FLAG    anything else, with v1.4.1's reasons
@@ -34,6 +39,8 @@ from reliability.verifier.policy_v1_4_1 import FullPolicyV141
 
 SWITCH_NAMES = ("r2_v3_reject", "r3_extended_reject", "r6_accept_v2_not_available")
 V4_DESIGNS = ("per_requirement", "legacy")
+#: The one V2 absence the R6 switch accepts (SignalAbsence.NOTHING_TO_CHECK).
+V2_NOTHING_TO_CHECK = "nothing_to_check"
 REVIEW_LABELS = ("likely_wrong", "likely_right", "signals_disagree", "none")
 RULE_DECISIONS = {
     "R1": Decision.REJECT, "R2": Decision.REJECT, "R3": Decision.REJECT,
@@ -51,6 +58,8 @@ class EvidenceV15(EvidenceV14):
     v4_failing_units: int = 0
     #: requirements (or kept tests) at PASS
     v4_pass_units: int = 0
+    #: why V2 did not report (a SignalAbsence value), None when it reported
+    v2_absence: str | None = None
 
     def as_dict(self):
         return {
@@ -60,6 +69,7 @@ class EvidenceV15(EvidenceV14):
             "v4_fail_confirmed": self.v4_fail_confirmed,
             "v4_failing_units": self.v4_failing_units,
             "v4_pass_units": self.v4_pass_units,
+            "v2_absence": self.v2_absence,
         }
 
 
@@ -111,6 +121,15 @@ class FullPolicyV15(FullPolicyV141):
             ) if condition]
             if extended:
                 return self._rule("R3", [f"extended: {r}" for r in extended], evidence)
+        passing = getattr(evidence, "v4_pass_units", 0)
+        if (v2.is_fail and v4 is SignalOutcome.NOT_AVAILABLE
+                and getattr(evidence, "v4_design", "legacy") == "per_requirement"
+                and passing >= 1 and failing == 0):
+            # Amendment A4 (ii): a passing requirement is evidence against V2.
+            return self._rule("R5", [
+                "regression test failed",
+                f"reproduction NOT_AVAILABLE with {passing} requirement(s) PASS and none failing",
+            ], evidence, "signals_disagree")
         if v2.is_fail and not v4.is_pass and not v4.is_fail:
             return self._rule(
                 "R3b", ["regression test failed", f"reproduction is {v4.value}"], evidence)
@@ -120,13 +139,16 @@ class FullPolicyV15(FullPolicyV141):
             return self._rule("R5", old.reasons, evidence, "signals_disagree")
 
         accept_evidence = evidence
-        if self.r6_accept_v2_not_available and v2 is SignalOutcome.NOT_AVAILABLE:
+        if (self.r6_accept_v2_not_available and v2 is SignalOutcome.NOT_AVAILABLE
+                and getattr(evidence, "v2_absence", None) == V2_NOTHING_TO_CHECK):
+            # Amendment A4 (iii): any other absence means V2 could not run.
             accept_evidence = replace(evidence, regression=SignalOutcome.PASS)
         accept = old if accept_evidence is evidence else FullPolicyV141.decide(self, accept_evidence)
         if getattr(evidence, "v4_full_pass", False) and accept.decision is Decision.ACCEPT:
             reasons = list(accept.reasons)
             if accept_evidence is not evidence:
-                reasons.append("regression NOT_AVAILABLE accepted (r6_accept_v2_not_available)")
+                reasons.append("regression NOT_AVAILABLE (nothing to check) accepted "
+                               "(r6_accept_v2_not_available)")
             return self._rule("R6", reasons, evidence)
 
         if not v2.is_fail and not v4.is_fail and not v3 and not v4.is_pass:
@@ -172,9 +194,11 @@ def evidence_from_signals(signals) -> EvidenceV15:
     from reliability.verifier.record import SignalKind
 
     base = v1_4_evidence(signals)
+    absence = signals[SignalKind.REGRESSION].absence
     return EvidenceV15(
         **{k: getattr(base, k) for k in EvidenceV14.__dataclass_fields__},
         **_v4_fields(signals[SignalKind.REPRODUCTION]),
+        v2_absence=absence.value if absence is not None else None,
     )
 
 

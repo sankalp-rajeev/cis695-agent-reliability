@@ -14,6 +14,14 @@ and a JSON summary for the chosen switches:
 annotated tag v1.5-frozen and records the tag commit and config SHA-256.
 Headline results use --frozen only; --switches is for Phase 7 calibration and
 Phase 16 ablations.
+
+--no-v2-fallback (amendment A4 (v)) recomputes V2 as if the V2 fallback were off,
+from each task's sealed selection.json. The fallback runs only when Tiers 1 and
+2 select nothing, so a fallback selection holds only fallback tests, and without
+it V2 is NOT_AVAILABLE with nothing to check, which is what the run itself
+records for an empty selection. A task whose stored selection does not show
+which tests the fallback chose, or mixes fallback and other tests, is refused
+rather than guessed.
 """
 
 from __future__ import annotations
@@ -25,15 +33,17 @@ import json
 import subprocess
 import sys
 from collections import Counter
+from dataclasses import replace
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from e2e_input_preflight import FORBIDDEN_NAMES  # noqa: E402
 
-from reliability.verifier.decision import Decision  # noqa: E402
+from reliability.verifier.decision import Decision, SignalOutcome  # noqa: E402
 from reliability.verifier.policy_v1_5 import (  # noqa: E402
-    RULE_DECISIONS, FullPolicyV15, evidence_from_signals, switches_from_config_text,
+    RULE_DECISIONS, V2_NOTHING_TO_CHECK, FullPolicyV15, evidence_from_signals,
+    switches_from_config_text,
 )
 from reliability.verifier.reproduction_reuse import RECORD  # noqa: E402
 from reliability.verifier.run_v1_4_1 import VerificationRecordV141  # noqa: E402
@@ -45,10 +55,13 @@ FROZEN_CONFIG = "configs/verifier/v1_5.yaml"
 LABEL_WORDS = FORBIDDEN_NAMES + ("grading", "per_instance_details", "git_peek",
                                  "decision_by_correctness")
 SWITCH_KEYS = {"r2": "r2_v3_reject", "r3": "r3_extended_reject", "r6": "r6_accept_v2_not_available"}
+EVIDENCE_FIELDS = ("v3_absolute_failure", "v1_analysis_incomplete", "high_severity_risk",
+                   "v4_design", "v4_full_pass", "v4_fail_confirmed", "v4_failing_units",
+                   "v4_pass_units", "v2_absence")
 FIELDS = ("instance_id", "has_patch", "stored_decision", "stored_policy_version",
-          "integrity", "v2", "v4", "v3_absolute_failure", "v1_analysis_incomplete",
-          "high_severity_risk", "v4_design", "v4_full_pass", "v4_fail_confirmed",
-          "v4_failing_units", "v4_pass_units", "decision", "rule_id", "review_label")
+          "integrity", "v2", "v4", *EVIDENCE_FIELDS, "v2_fallback_removed",
+          "decision", "rule_id", "review_label")
+SELECTION = "verification/selection.json"
 
 
 def parse_switches(text: str) -> dict[str, bool]:
@@ -131,11 +144,41 @@ def _read(run: Path, files: dict[str, str], name: str) -> bytes:
     return raw
 
 
-def tag(switches: dict[str, bool]) -> str:
-    return "_".join(f"{key}-{int(switches[name])}" for key, name in SWITCH_KEYS.items())
+def tag(switches: dict[str, bool], v2_fallback: bool = True) -> str:
+    name = "_".join(f"{key}-{int(switches[name])}" for key, name in SWITCH_KEYS.items())
+    return name if v2_fallback else name + "_v2-nofallback"
 
 
-def decide_run(run: Path, switches: dict[str, bool], output: Path, frozen: dict | None = None) -> dict:
+def without_v2_fallback(run: Path, files: dict[str, str], iid: str, record, evidence):
+    """V2 evidence with the fallback off. Returns (evidence, whether the fallback was removed)."""
+    name = f"tasks/{iid}/{SELECTION}"
+    if name not in files:
+        # No selection was made, so no fallback ran; V2 is absent either way.
+        if evidence.regression is not SignalOutcome.NOT_AVAILABLE:
+            raise ValueError(f"cannot tell which tests the V2 fallback selected: {iid} "
+                             "has a V2 result but no stored selection")
+        return evidence, False
+    raw = _read(run, files, name)
+    if record.selection_sha256 != hashlib.sha256(raw).hexdigest():
+        raise ValueError(f"stored selection differs from the record's selection_sha256: {iid}")
+    selection = json.loads(raw)
+    used, fallback = selection.get("fallback_used"), selection.get("fallback_tests")
+    tests = selection.get("tests")
+    if type(used) is not bool or not isinstance(fallback, list) or not isinstance(tests, list):
+        raise ValueError(f"cannot tell which tests the V2 fallback selected: {iid}")
+    if used != bool(fallback) or not set(fallback) <= set(tests):
+        raise ValueError(f"stored selection mixes fallback and other tests: {iid}")
+    if not used:
+        return evidence, False
+    if set(tests) != set(fallback):
+        raise ValueError(f"stored selection mixes fallback and other tests: {iid}; V2 without "
+                         "the fallback cannot be recomputed from stored signals")
+    return replace(evidence, regression=SignalOutcome.NOT_AVAILABLE,
+                   v2_absence=V2_NOTHING_TO_CHECK), True
+
+
+def decide_run(run: Path, switches: dict[str, bool], output: Path, frozen: dict | None = None,
+               *, v2_fallback: bool = True) -> dict:
     run, output = Path(run).resolve(), Path(output).resolve()
     check_label_free(run)
     if output.is_relative_to(run):
@@ -152,7 +195,9 @@ def decide_run(run: Path, switches: dict[str, bool], output: Path, frozen: dict 
         record = VerificationRecordV141.model_validate_json(_read(run, files, name))
         if record.instance_id != iid:
             raise ValueError(f"record instance differs: {name}")
-        evidence = evidence_from_signals(record.signals)
+        evidence, removed = evidence_from_signals(record.signals), False
+        if not v2_fallback:
+            evidence, removed = without_v2_fallback(run, files, iid, record, evidence)
         result = policy.decide(evidence)
         rows.append({
             "instance_id": iid, "has_patch": iid not in no_patch,
@@ -160,12 +205,13 @@ def decide_run(run: Path, switches: dict[str, bool], output: Path, frozen: dict 
             "stored_policy_version": record.decision.policy_version,
             "integrity": evidence.integrity.value, "v2": evidence.regression.value,
             "v4": evidence.reproduction.value,
-            **{k: getattr(evidence, k) for k in FIELDS[7:15]},
+            **{k: getattr(evidence, k) for k in EVIDENCE_FIELDS},
+            "v2_fallback_removed": removed,
             "decision": result.decision.value, "rule_id": result.rule_id,
             "review_label": result.review_label,
         })
     output.mkdir(parents=True, exist_ok=True)
-    csv_path = output / f"decisions_v1_5_{tag(switches)}.csv"
+    csv_path = output / f"decisions_v1_5_{tag(switches, v2_fallback)}.csv"
     with csv_path.open("w", newline="", encoding="utf-8") as stream:
         writer = csv.DictWriter(stream, fieldnames=FIELDS, lineterminator="\n")
         writer.writeheader()
@@ -182,12 +228,14 @@ def decide_run(run: Path, switches: dict[str, bool], output: Path, frozen: dict 
     summary = {
         "run": str(run), "seal_sha256": seal_sha256,
         "policy": {"name": policy.name, "version": policy.version}, "switches": switches,
+        "v2_fallback": v2_fallback,
+        "v2_fallback_removed_tasks": sorted(r["instance_id"] for r in rows if r["v2_fallback_removed"]),
         "switch_source": "frozen" if frozen else "command line", "frozen": frozen,
         "tasks": len(rows), "patch_tasks": len(patch_rows),
         "counts": {"all": counts(rows), "patch": counts(patch_rows)},
         "csv": str(csv_path),
         "csv_sha256": hashlib.sha256(csv_path.read_bytes()).hexdigest(),
-        "summary_name": f"summary_v1_5_{tag(switches)}.json",
+        "summary_name": f"summary_v1_5_{tag(switches, v2_fallback)}.json",
     }
     (output / summary["summary_name"]).write_text(
         json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -202,17 +250,20 @@ def main(argv=None) -> int:
     source.add_argument("--frozen", action="store_true",
                         help=f"switches from {FROZEN_CONFIG} at annotated tag {FROZEN_TAG}")
     source.add_argument("--switches", help="r2=0|1,r3=0|1,r6=0|1")
+    parser.add_argument("--no-v2-fallback", action="store_true",
+                        help="recompute V2 without fallback-selected tests (amendment A4 (v))")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(argv)
     if args.frozen:
         switches, frozen = frozen_switches()
     else:
         switches, frozen = parse_switches(args.switches), None
-    summary = decide_run(args.run, switches, args.output, frozen)
+    summary = decide_run(args.run, switches, args.output, frozen,
+                         v2_fallback=not args.no_v2_fallback)
     patch = summary["counts"]["patch"]
     if frozen:
         print(f"switches from {frozen['tag']} @ {frozen['tag_commit']}")
-    print(f"{summary['policy']['version']} {tag(summary['switches'])}: "
+    print(f"{summary['policy']['version']} {tag(summary['switches'], summary['v2_fallback'])}: "
           f"{summary['tasks']} tasks, {summary['patch_tasks']} with a patch")
     print("patch decisions: " + ", ".join(f"{k} {v}" for k, v in patch["decision"].items()))
     print("patch rules: " + ", ".join(f"{k} {v}" for k, v in patch["rule"].items() if v))

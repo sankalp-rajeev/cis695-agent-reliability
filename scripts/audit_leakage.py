@@ -7,6 +7,13 @@ or the verifier's selection path may import it.
     .venv/bin/python scripts/audit_leakage.py               # all runs
     .venv/bin/python scripts/audit_leakage.py --runs runs/9_pilot
     .venv/bin/python scripts/audit_leakage.py --no-content  # names only, FAILS
+    .venv/bin/python scripts/audit_leakage.py --runs runs/study_dev_gold \
+        --reference-summary OUT.json   # per-task gold-line summary, hashes only
+
+Reference (gold-patch) runs follow study amendment A3: a gold line whose first
+appearance in a conversation is model-written is GENERATOR_RECALL and a gold
+line in a kept frozen test is GOLD_LINE_IN_FROZEN_TEST, both recorded and not
+failing; a first appearance anywhere else is GOLD_LINE_LEAK, which is confirmed.
 
 Exit codes:
     0  every in-scope artifact scanned, both checks ran, nothing confirmed
@@ -92,6 +99,8 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--runs", default="runs",
                         help="root to scan (default: runs/)")
+    parser.add_argument("--reference-summary", type=pathlib.Path, default=None,
+                        help="write the per-task reference gold-line summary (hashes only) here")
     parser.add_argument("--no-content", action="store_true",
                         help="skip dataset-backed content checks; still exits 1, "
                              "because a partial audit is not a pass")
@@ -134,6 +143,24 @@ def main(argv=None) -> int:
 
     for finding in result.findings:
         print(f"  {finding}")
+
+    for row in result.reference_summaries:
+        print(f"reference summary: task={row['instance_id']} "
+              f"recall_lines={len(row['recall_lines'])} "
+              f"recall_messages={len(row['recall_messages'])} "
+              f"frozen_test_lines={len(row['frozen_test_lines'])} "
+              f"leak_lines={len(row['leak_lines'])}")
+    if args.reference_summary is not None:
+        args.reference_summary.parent.mkdir(parents=True, exist_ok=True)
+        args.reference_summary.write_text(json.dumps(
+            {"runs": sorted({row["run"] for row in result.reference_summaries}),
+             "tasks": result.reference_summaries}, indent=1) + "\n", encoding="utf-8")
+        print(f"wrote reference summary: {args.reference_summary}")
+
+    if result.recorded:
+        print(f"\n{len(result.recorded)} recorded reference finding(s) "
+              "(GENERATOR_RECALL, GOLD_LINE_IN_FROZEN_TEST). Recorded per task under "
+              "amendment A3; they do not fail the gate.")
 
     if result.review:
         print(f"\n{len(result.review)} finding(s) need review. These are not "

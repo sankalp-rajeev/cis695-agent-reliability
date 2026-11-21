@@ -17,6 +17,10 @@ from reliability.verifier.policy_v1_5 import (
 
 P, F, NA = SignalOutcome.PASS, SignalOutcome.FAIL, SignalOutcome.NOT_AVAILABLE
 OUTCOMES = (P, F, NA)
+NOTHING = "nothing_to_check"
+#: V2 outcome with its absence: an absent V2 either had nothing to check or
+#: could not run (any other absence, represented by "error").
+V2_CASES = ((P, None), (F, None), (NA, NOTHING), (NA, "error"))
 SWITCHES = tuple(
     dict(zip(("r2_v3_reject", "r3_extended_reject", "r6_accept_v2_not_available"), bits))
     for bits in itertools.product((False, True), repeat=3)
@@ -45,15 +49,16 @@ def consistent(v4, design, confirmed, failing, passing):
 
 
 def truth_table():
-    for (integrity, v2, v4, applies, prohibited, v3, v1_incomplete, risk, design,
+    for (integrity, (v2, v2_absence), v4, applies, prohibited, v3, v1_incomplete, risk, design,
          confirmed, failing, passing) in itertools.product(
-            OUTCOMES, OUTCOMES, OUTCOMES, (True, False), (False, True), (False, True),
+            OUTCOMES, V2_CASES, OUTCOMES, (True, False), (False, True), (False, True),
             (False, True), (False, True), ("per_requirement", "legacy"), (0, 1), (0, 1, 2),
             (0, 1)):
         if not consistent(v4, design, confirmed, failing, passing):
             continue
         yield EvidenceV15(
-            integrity=integrity, regression=v2, reproduction=v4, patch_applies=applies,
+            integrity=integrity, regression=v2, v2_absence=v2_absence, reproduction=v4,
+            patch_applies=applies,
             prohibited_manipulation=prohibited, v3_absolute_failure=v3,
             v1_analysis_incomplete=v1_incomplete, high_severity_risk=risk,
             v4_design=design, v4_full_pass=v4 is P, v4_fail_confirmed=confirmed,
@@ -62,6 +67,18 @@ def truth_table():
 
 
 CASES = tuple(truth_table())
+
+
+def in_a4_ii_class(evidence):
+    """Amendment A4 (ii): V2 FAIL, per-requirement V4 NOT_AVAILABLE, a PASS and nothing failing."""
+    return (evidence.regression is F and evidence.reproduction is NA
+            and evidence.v4_design == "per_requirement"
+            and evidence.v4_pass_units >= 1 and evidence.v4_failing_units == 0)
+
+
+def r1_applies(evidence):
+    return (not evidence.patch_applies or evidence.integrity is F
+            or evidence.prohibited_manipulation)
 
 
 def ev(**kw):
@@ -78,10 +95,11 @@ def v4_fail(**kw):
 
 
 def test_truth_table_size_is_reported():
-    # 3^2 integrity/V2 outcomes x 2^5 flags = 288, times 30 consistent
-    # (V4 outcome, design, confirmed, failing, passing) combinations:
+    # 3 integrity outcomes x 4 V2 cases (PASS, FAIL, NOT_AVAILABLE with nothing
+    # to check, NOT_AVAILABLE for another reason) x 2^5 flags = 384, times 30
+    # consistent (V4 outcome, design, confirmed, failing, passing) combinations:
     # PASS 1+1, FAIL 8 per_requirement + 4 legacy, NOT_AVAILABLE 10 + 6.
-    assert len(CASES) == 288 * 30 == 8640
+    assert len(CASES) == 384 * 30 == 11520
 
 
 @pytest.mark.parametrize("switches", SWITCHES, ids=lambda s: "".join(str(int(v)) for v in s.values()))
@@ -99,10 +117,24 @@ def test_every_case_returns_one_decision_and_a_rule(switches):
         assert record.as_dict()["review_label"] == record.review_label
 
 
-def test_switches_off_equals_v1_4_1_on_every_case():
+def test_switches_off_equals_v1_4_1_except_the_a4_ii_class():
+    # Amendment A4 (ii) is a default rule: with switches off, v1.5 differs from
+    # v1.4.1 exactly on the A4 (ii) cases that R1 does not REJECT first, where
+    # v1.4.1's R3b REJECT becomes R5 FLAG "signals disagree". 3 integrity x 2^5
+    # flags = 96 cases are in the class; integrity PASS or NOT_AVAILABLE with
+    # the patch applying and no manipulation leaves 2 x 2^3 = 16 that change.
     policy, old = FullPolicyV15(), FullPolicyV141()
     differing = [e for e in CASES if policy.decide(e).decision is not old.decide(e).decision]
-    assert differing == []
+    assert all(in_a4_ii_class(e) for e in differing)
+    assert len([e for e in CASES if in_a4_ii_class(e)]) == 96
+    assert len(differing) == 16
+    for evidence in differing:
+        assert old.decide(evidence).decision is Decision.REJECT
+        record = policy.decide(evidence)
+        assert (record.decision, record.rule_id, record.review_label) == (
+            Decision.FLAG, "R5", "signals_disagree")
+    unchanged = [e for e in CASES if in_a4_ii_class(e) and e not in differing]
+    assert all(r1_applies(e) for e in unchanged)
 
 
 @pytest.mark.parametrize("switches", SWITCHES, ids=lambda s: "".join(str(int(v)) for v in s.values()))
@@ -116,12 +148,15 @@ def test_switches_only_change_decisions_through_their_own_rules(switches):
     for evidence in CASES:
         new, before = policy.decide(evidence), old.decide(evidence).decision
         if new.decision is not before:
+            if in_a4_ii_class(evidence) and (new.rule_id, new.decision) == ("R5", Decision.FLAG):
+                assert before is Decision.REJECT
+                continue
             assert before is Decision.FLAG
             assert (new.rule_id, new.decision) in allowed
             if new.rule_id == "R3":
                 assert any("extended" in r for r in new.reasons)
             if new.rule_id == "R6":
-                assert evidence.regression is NA
+                assert evidence.regression is NA and evidence.v2_absence == NOTHING
 
 
 def test_defaults_and_identity():
@@ -224,10 +259,41 @@ def test_r6_accepts():
 
 
 def test_r6_accepts_v2_not_available_only_when_switched_on():
-    evidence = ev(regression=NA)
+    evidence = ev(regression=NA, v2_absence=NOTHING)
     assert FullPolicyV15(r6_accept_v2_not_available=True).decide(evidence).rule_id == "R6"
     off = FullPolicyV15().decide(evidence)
     assert (off.decision, off.rule_id) == (Decision.FLAG, "R8")
+
+
+@pytest.mark.parametrize("absence", [
+    "error", "timeout", "incomplete", "disabled", "not_configured", "not_implemented", None])
+def test_r6_switch_needs_nothing_to_check(absence):
+    # Amendment A4 (iii): a V2 that could not run says nothing; only
+    # "nothing to check" qualifies for the R6 V2-NOT_AVAILABLE branch.
+    record = FullPolicyV15(r6_accept_v2_not_available=True).decide(
+        ev(regression=NA, v2_absence=absence))
+    assert (record.decision, record.rule_id) == (Decision.FLAG, "R8")
+
+
+def test_a4_ii_flags_v2_fail_with_partial_v4_pass_as_disagreement():
+    evidence = ev(regression=F, reproduction=NA, v4_full_pass=False, v4_pass_units=1,
+                  v4_failing_units=0)
+    for switches in SWITCHES:
+        record = FullPolicyV15(**switches).decide(evidence)
+        assert (record.decision, record.rule_id, record.review_label) == (
+            Decision.FLAG, "R5", "signals_disagree")
+    assert FullPolicyV141().decide(evidence).decision is Decision.REJECT
+
+
+@pytest.mark.parametrize("kw", [
+    dict(v4_pass_units=0, v4_failing_units=0),
+    dict(v4_pass_units=1, v4_failing_units=1),
+    dict(v4_pass_units=1, v4_failing_units=0, v4_design="legacy"),
+], ids=["no-pass", "one-failing", "legacy"])
+def test_a4_ii_needs_a_pass_no_failure_and_per_requirement_v4(kw):
+    evidence = ev(regression=F, reproduction=NA, v4_full_pass=False, **kw)
+    record = FullPolicyV15().decide(evidence)
+    assert (record.decision, record.rule_id) == (Decision.REJECT, "R3b")
 
 
 @pytest.mark.parametrize("field,value", [
@@ -360,6 +426,18 @@ def test_adapter_legacy_absent_v4_has_no_units():
     evidence = evidence_from_signals(_signals(NA, {"absence_reason": "EMPTY_PATCH"}))
     assert (evidence.v4_design, evidence.v4_full_pass, evidence.v4_failing_units,
             evidence.v4_pass_units) == ("legacy", False, 0, 0)
+
+
+def test_adapter_records_v2_absence():
+    from reliability.verifier.record import SignalKind, SignalRecord
+
+    signals = _signals(P, {"setup": {}, "patched": [{"verdict": "pass"}]}, regression=NA)
+    assert evidence_from_signals(signals).v2_absence == NOTHING
+    signals[SignalKind.REGRESSION] = SignalRecord(
+        kind=SignalKind.REGRESSION, outcome=NA, absence="error", detail="x")
+    assert evidence_from_signals(signals).v2_absence == "error"
+    assert evidence_from_signals(_signals(P, {"setup": {}, "patched": []})).v2_absence is None
+    assert evidence_from_signals(signals).as_dict()["v2_absence"] == "error"
 
 
 def test_adapter_keeps_v1_4_fields():

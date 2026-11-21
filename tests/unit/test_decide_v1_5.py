@@ -245,3 +245,105 @@ def test_help_names_frozen_for_headline_results(capsys):
     text = " ".join(capsys.readouterr().out.split())
     assert ("Headline results use --frozen only; --switches is for Phase 7 calibration "
             "and Phase 16 ablations.") in text
+
+
+# Amendment A4 (v): --no-v2-fallback, V2 recomputed without fallback-selected tests.
+
+def _selection(tests, fallback):
+    return {"tests": tests, "by_tier": {}, "fallback_used": bool(fallback),
+            "fallback_tests": fallback, "fallback_candidates_total": len(fallback)}
+
+
+def make_fallback_run(root, selections, *, v2="FAIL", record_overrides=None):
+    """One task per entry of `selections` (None: no selection.json), V4 full pass."""
+    root.mkdir(parents=True)
+    for iid, selection in selections.items():
+        record = _record(iid, v2=v2, v4="PASS", decision="FLAG",
+                         v4_findings=_per_requirement({"PASS": 1}, full_pass=True))
+        record.update((record_overrides or {}).get(iid, {}))
+        folder = root / "tasks" / iid
+        (folder / "verification").mkdir(parents=True)
+        if selection is not None:
+            raw = json.dumps(selection).encode()
+            (folder / "verification" / "selection.json").write_bytes(raw)
+            record["selection_sha256"] = hashlib.sha256(raw).hexdigest()
+        (folder / RECORD).write_text(json.dumps(record))
+    (root / "header.json").write_text(json.dumps({"policy_version": "v1.4.1-full"}))
+    (root / "completion.json").write_text(json.dumps({
+        "status": "COMPLETE", "completed_tasks": sorted(selections), "no_patch_tasks": []}))
+    files = {p.relative_to(root).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
+             for p in root.rglob("*") if p.is_file()}
+    (root / "seal.json").write_text(json.dumps({"status": "COMPLETE", "files_sha256": files}))
+    return root
+
+
+def test_no_v2_fallback_makes_fallback_only_v2_nothing_to_check(tmp_path):
+    mod = _script()
+    run = make_fallback_run(tmp_path / "run", {
+        "b__b-1": _selection(["t.py::a", "t.py::b"], ["t.py::a", "t.py::b"]),
+        "b__b-2": _selection(["u.py::a"], []),
+    })
+    off = mod.parse_switches("r2=0,r3=0,r6=0")
+    with_fallback = rows(mod.decide_run(run, off, tmp_path / "with")["csv"])
+    assert (with_fallback["b__b-1"]["v2"], with_fallback["b__b-1"]["rule_id"]) == ("FAIL", "R5")
+    summary = mod.decide_run(run, off, tmp_path / "without", v2_fallback=False)
+    table = rows(summary["csv"])
+    assert (table["b__b-1"]["v2"], table["b__b-1"]["v2_absence"]) == ("NOT_AVAILABLE",
+                                                                      "nothing_to_check")
+    assert table["b__b-1"]["v2_fallback_removed"] == "True"
+    assert (table["b__b-1"]["decision"], table["b__b-1"]["rule_id"]) == ("FLAG", "R8")
+    assert (table["b__b-2"]["v2"], table["b__b-2"]["rule_id"]) == ("FAIL", "R5")
+    assert table["b__b-2"]["v2_fallback_removed"] == "False"
+    assert summary["v2_fallback"] is False
+    assert summary["summary_name"] == "summary_v1_5_r2-0_r3-0_r6-0_v2-nofallback.json"
+    assert pathlib.Path(summary["csv"]).name == "decisions_v1_5_r2-0_r3-0_r6-0_v2-nofallback.csv"
+    on = mod.decide_run(run, mod.parse_switches("r2=0,r3=0,r6=1"), tmp_path / "on", v2_fallback=False)
+    assert rows(on["csv"])["b__b-1"]["rule_id"] == "R6"
+
+
+def test_no_v2_fallback_without_selection_keeps_an_absent_v2(tmp_path):
+    mod = _script()
+    run = make_fallback_run(tmp_path / "run", {"b__b-1": None}, v2="NOT_AVAILABLE")
+    table = rows(mod.decide_run(run, mod.parse_switches("r2=0,r3=0,r6=0"), tmp_path / "o",
+                                v2_fallback=False)["csv"])
+    assert (table["b__b-1"]["v2"], table["b__b-1"]["v2_fallback_removed"]) == ("NOT_AVAILABLE", "False")
+
+
+@pytest.mark.parametrize("selection,match", [
+    (None, "cannot tell"),
+    ({"tests": ["t.py::a"], "by_tier": {}}, "cannot tell"),
+    (_selection(["t.py::a", "u.py::b"], ["t.py::a"]), "mixes"),
+    (_selection(["t.py::a"], ["u.py::b"]), "mixes"),
+], ids=["no-selection-but-v2-ran", "no-fallback-fields", "mixed", "fallback-not-selected"])
+def test_no_v2_fallback_refuses_instead_of_guessing(tmp_path, selection, match):
+    mod = _script()
+    run = make_fallback_run(tmp_path / "run", {"b__b-1": selection})
+    with pytest.raises(ValueError, match=match):
+        mod.decide_run(run, mod.parse_switches("r2=0,r3=0,r6=0"), tmp_path / "o", v2_fallback=False)
+    assert not (tmp_path / "o").exists()
+
+
+def test_no_v2_fallback_checks_the_selection_hash(tmp_path):
+    mod = _script()
+    run = make_fallback_run(tmp_path / "run", {"b__b-1": _selection(["t.py::a"], ["t.py::a"])},
+                            record_overrides={"b__b-1": {}})
+    record_path = run / "tasks" / "b__b-1" / RECORD
+    record = json.loads(record_path.read_text())
+    record["selection_sha256"] = "0" * 64
+    record_path.write_text(json.dumps(record))
+    seal = json.loads((run / "seal.json").read_text())
+    seal["files_sha256"][f"tasks/b__b-1/{RECORD}"] = hashlib.sha256(record_path.read_bytes()).hexdigest()
+    (run / "seal.json").write_text(json.dumps(seal))
+    with pytest.raises(ValueError, match="selection"):
+        mod.decide_run(run, mod.parse_switches("r2=0,r3=0,r6=0"), tmp_path / "o", v2_fallback=False)
+
+
+def test_main_accepts_no_v2_fallback(tmp_path):
+    mod = _script()
+    run = make_fallback_run(tmp_path / "run", {"b__b-1": _selection(["t.py::a"], ["t.py::a"])})
+    assert mod.main([str(run), "--switches", "r2=0,r3=0,r6=0", "--no-v2-fallback",
+                     "--output", str(tmp_path / "o")]) == 0
+    summary = json.loads((tmp_path / "o" / "summary_v1_5_r2-0_r3-0_r6-0_v2-nofallback.json").read_text())
+    assert summary["v2_fallback"] is False
+    assert mod.main([str(run), "--switches", "r2=0,r3=0,r6=0", "--output", str(tmp_path / "p")]) == 0
+    assert json.loads((tmp_path / "p" / "summary_v1_5_r2-0_r3-0_r6-0.json").read_text())["v2_fallback"]
