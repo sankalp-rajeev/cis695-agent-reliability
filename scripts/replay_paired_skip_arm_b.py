@@ -14,7 +14,12 @@ from reliability.verifier.guarded_v2 import Replay
 from reliability.verifier.policy_v1_4 import evidence_from_signals
 from reliability.verifier.policy_v1_4_1 import FullPolicyV141
 from reliability.verifier.regression import RegressionConfig, run_from_dict, run_regression
-from reliability.verifier.run_v1_4_1 import VerificationRecordV141
+from reliability.verifier.run_v1_4_1 import (
+    DEFAULT_VERIFIER_CONFIG,
+    VerificationRecordV141,
+    load_v2_settings,
+    v2_signal_for_decision,
+)
 from reliability.verifier.selection import Selection
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -234,11 +239,52 @@ def check_decisions():
         print(f"P/C decision differences with INVALID_ID {handling}: {len(tasks)}")
 
 
+def check_primary_accountings():
+    """Check configured primaries against frozen records and the label-free CSV."""
+    rows = read_csv("decisions_label_free.csv")
+    completion = json.loads((RUN / "completion.json").read_text(encoding="utf-8"))
+    ids = set(completion["completed_tasks"]) - set(completion["no_patch_tasks"])
+    require(completion["status"] == "COMPLETE" and len(rows) == len(ids) == 51
+            and {row["instance_id"] for row in rows} == ids,
+            "Expected the 51 sealed Arm B patch tasks")
+    legacy = load_v2_settings(DEFAULT_VERIFIER_CONFIG)
+    study = load_v2_settings(ROOT / "configs/verifier/v1_5.yaml")
+    require(study is not None, "Missing study V2 settings")
+    carried = set()
+    for row in rows:
+        iid = row["instance_id"]
+        record = read_record(iid)
+        if row["provenance"] == CARRY:
+            # These tasks have no executed V2 evidence under any accounting.
+            require(record.regression.outcome.value == "NOT_AVAILABLE"
+                    and record.regression.findings.get("n_executed", 0) == 0,
+                    f"Expected stored V2 absence: {iid}")
+            old_signal = study_signal = record.regression
+            carried.add(iid)
+        else:
+            calls = captured_calls(record)
+            reports = {name: replay_v2(record, calls, name)
+                       for name in ("S_invalid_excluded", "P_invalid_excluded")}
+            old_signal = v2_signal_for_decision(reports, legacy)
+            study_signal = v2_signal_for_decision(reports, study)
+        evidence = replace(evidence_from_signals(record.signals), regression=old_signal.outcome)
+        decision = FullPolicyV141().decide(evidence).decision.value
+        require(decision == record.decision.decision.value, f"Stored decision differs: {iid}")
+        require(study_signal.outcome.value == row["v2_P_invalid_excluded"],
+                f"Study V2 outcome differs from the label-free file: {iid}")
+    require(carried == CARRY_IDS, "Carry-forward task identities differ")
+    print(f"Used {len(rows) - len(carried)} captured executions and {len(carried)} stored V2 absences")
+    print("PASS: full_v1_4_1.yaml matched 51/51 stored decisions")
+    print("PASS: v1_5.yaml matched 51/51 label-free P_invalid_excluded V2 outcomes")
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("step", choices=("decisions", "check"))
+    parser.add_argument("step", choices=("decisions", "check", "primary-config"))
     args = parser.parse_args()
     if args.step == "decisions":
         generate_decisions()
-    else:
+    elif args.step == "check":
         check_decisions()
+    else:
+        check_primary_accountings()

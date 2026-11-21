@@ -9,6 +9,11 @@ from reliability.verifier.task_specs import write
 from reliability.verifier.regression import RegressionConfig, run_regression
 from reliability.verifier.generic_health import check_generic_pair
 
+DEFAULT_V2_ACCOUNTING = 'S_invalid_excluded'
+V2_ACCOUNTINGS = frozenset(
+    f'{policy}_invalid_{handling}' for policy in 'CSP' for handling in ('excluded', 'missing')
+)
+
 class ReplayMismatch(ValueError):
     """A policy requested execution outside its captured call sequence."""
 
@@ -99,8 +104,32 @@ class Replay:
             raise ReplayMismatch('Policy replay request differs from captured execution')
         return entry[3]
 
-def report_json(report):
+def fallback_results(report):
+    """Record selection origin for both selected and concrete outcome IDs."""
+    selection = report.selection
+    fallback = set(selection.fallback_tests) if selection is not None else set()
+    owners = {test: {test} for test in selection.tests} if selection is not None else {}
+    for run in (report.baseline, report.patched, *report.confirmations):
+        if run is None:
+            continue
+        for mapping in (run.raw_id_map, run.execution_id_map):
+            for test, selected in mapping.items():
+                owners.setdefault(test, set()).update(selected)
+        for raw, execution in run.raw_execution_map.items():
+            owners.setdefault(execution, set()).update(run.raw_id_map.get(raw, ()))
+    return {
+        test: {'outcome': outcome.value, 'from_fallback': bool(owners.get(test))
+               and owners[test] <= fallback}
+        for test, outcome in report.outcomes.items()
+    }
+
+
+def report_json(report, *, include_fallback=False):
     data = asdict(report)
+    if report.selection is not None:
+        data['selection'] = report.selection.to_dict(include_fallback=include_fallback)
+        if include_fallback:
+            data.update(report.selection.fallback_metadata(), test_results=fallback_results(report))
     for field in ('baseline', 'patched'):
         run = getattr(report, field)
         data[field] = run_to_dict(run, inline_raw=False) if run is not None else None
@@ -108,11 +137,11 @@ def report_json(report):
     return data
 
 
-def run_policies(instance_id, selection, executor, reference, folder):
+def run_policies(instance_id, selection, executor, reference, folder, *, primary_accounting=None):
     """Capture both trees, guard them, confirm live once, then replay all arms.
 
-    The live primary is C_invalid_excluded. The caller uses the returned
-    S_invalid_excluded report as the decision signal.
+    C_invalid_excluded drives the live capture. The caller selects the
+    decision signal from the returned reports.
     """
     folder.mkdir(parents=True, exist_ok=True)
     health_path = folder / 'health.jsonl'
@@ -147,9 +176,13 @@ def run_policies(instance_id, selection, executor, reference, folder):
             RegressionConfig(per_pass_timeout_s=1800, rerun_flaky=True, baseline_cache_dir=None,
                              skip_compatible=compatible, invalid_as_missing=missing, skip_paired=paired))
         objects[policy + ('_invalid_missing' if missing else '_invalid_excluded')] = report
-    reports = {name: report_json(report) for name, report in objects.items()}
-    write(folder / 'v2_policies.json', {'instance_id': instance_id, 'policies': reports,
-          'native_passes': len(calls.calls), 'both_initial_trees_captured': True})
+    reports = {name: report_json(report, include_fallback=primary_accounting is not None)
+               for name, report in objects.items()}
+    payload = {'instance_id': instance_id, 'policies': reports,
+               'native_passes': len(calls.calls), 'both_initial_trees_captured': True}
+    if primary_accounting is not None:
+        payload['primary_accounting'] = primary_accounting
+    write(folder / 'v2_policies.json', payload)
     health['confirmation_collector_statuses'] = [r.validation_summary.get('collector_status', 'NOT_REPORTED')
                                                 for _, _, _, r in calls.calls[2:]]
     append_health(health_path, health)

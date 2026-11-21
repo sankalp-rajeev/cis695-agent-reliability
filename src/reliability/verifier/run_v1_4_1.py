@@ -9,13 +9,18 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 
+import yaml
+
 from reliability.umgpt_spend import BudgetCap
 from reliability.provider_errors import ProviderTransientError
 from reliability.agent.freeze import FrozenPatch, FrozenPatchError, read_patch, verify as verify_frozen_patch
 from reliability.verifier.archive_tree import ArchiveTree
 from reliability.verifier.container import ContainerRepoTree, ContainerTestExecutor
 from reliability.verifier.evidence import has_high_severity_risk, has_prohibited_manipulation, integrity_outcome
-from reliability.verifier.guarded_v2 import FrozenContainer, ReplayMismatch, run_policies
+from reliability.verifier.guarded_v2 import (
+    DEFAULT_V2_ACCOUNTING, V2_ACCOUNTINGS, FrozenContainer, ReplayMismatch, fallback_results,
+    run_policies,
+)
 from reliability.verifier.inline_g1 import guarded_pair, proposed_failure_category, finalize_generic_pair
 from reliability.verifier.generic_health import paired_exception_scope
 from reliability.verifier.integrity import Violation
@@ -26,11 +31,47 @@ from reliability.verifier.policy_v1_4_1 import FullPolicyV141
 from reliability.verifier.record import DecisionEntry, SignalAbsence, SignalKind, SignalRecord, VerificationRecord
 from reliability.verifier.run import signal_from_regression
 from reliability.verifier.run_health import RunHealthError, append_health, zero_output
-from reliability.verifier.selection import SelectionConfig, select_tests
+from reliability.verifier.selection import Selection, SelectionConfig, select_tests
 from reliability.verifier.source_integrity import SourceIntegrityError
 from reliability.verifier.static_v1_4 import ContainerEvidenceExecutor, run_static_checks
 from reliability.verifier.task_specs import sha, write
 from reliability.verifier.task_specs import ROOT
+
+DEFAULT_VERIFIER_CONFIG = ROOT / 'configs/verifier/full_v1_4_1.yaml'
+
+
+@dataclass(frozen=True)
+class V2Settings:
+    primary_accounting: str
+    selection: SelectionConfig
+
+
+def load_v2_settings(path: Path) -> V2Settings | None:
+    block = yaml.safe_load(path.read_text(encoding='utf-8')).get('v1_5')
+    if block is None or block == {}:
+        return None
+    if not isinstance(block, dict):
+        raise ValueError('v1_5 must be a mapping')
+    accounting = block.get('v2_primary_accounting', DEFAULT_V2_ACCOUNTING)
+    fallback = block.get('v2_fallback_any_convention', False)
+    max_files = block.get('v2_fallback_max_files', 5)
+    if not isinstance(accounting, str) or accounting not in V2_ACCOUNTINGS:
+        raise ValueError('v2_primary_accounting must name one of the six V2 reports')
+    if type(fallback) is not bool or type(max_files) is not int or max_files < 0:
+        raise ValueError('V2 fallback requires a boolean switch and a nonnegative file cap')
+    return V2Settings(accounting, SelectionConfig(
+        fallback_any_convention=fallback, fallback_max_files=max_files))
+
+
+def v2_signal_for_decision(reports, settings: V2Settings | None = None):
+    key = settings.primary_accounting if settings is not None else DEFAULT_V2_ACCOUNTING
+    report = reports[key]
+    signal = signal_from_regression(report)
+    if settings is not None:
+        selection = report.selection if report.selection is not None else Selection()
+        signal.findings.update(primary_accounting=key, **selection.fallback_metadata(),
+                               test_results=fallback_results(report))
+    return signal
 
 
 def default_reproduction_setup(generator_config=None):
@@ -105,12 +146,13 @@ def integrity_signal(patch_text, tree):
     return report, record
 
 
-def run_v2(task, patch_path, selection, folder, *, experiment, drift, stamps):
+def run_v2(task, patch_path, selection, folder, *, experiment, drift, stamps, v2_settings=None):
     with paired_exception_scope(task.instance_id, task.source.pre_install.repo):
-        return _run_v2(task, patch_path, selection, folder, experiment=experiment, drift=drift, stamps=stamps)
+        return _run_v2(task, patch_path, selection, folder, experiment=experiment, drift=drift,
+                       stamps=stamps, v2_settings=v2_settings)
 
 
-def _run_v2(task, patch_path, selection, folder, *, experiment, drift, stamps):
+def _run_v2(task, patch_path, selection, folder, *, experiment, drift, stamps, v2_settings=None):
     spec = ExecutionSpec(task.instance_id, task.image_id, task.source, task.runner, patch_path, selection.tests, experiment)
     references, blocked = {}, []
     healths = []
@@ -147,8 +189,9 @@ def _run_v2(task, patch_path, selection, folder, *, experiment, drift, stamps):
         stamps['pristine_receipt_sha256'] = sha(receipt_path)
         write(folder / 'pristine_generated_inputs.json', container.generated_snapshot())
         executor = ContainerTestExecutor(container, runner=task.runner, evidence_dir=folder / 'raw')
-        reports = run_policies(task.instance_id, selection, executor, references, folder)
-    return signal_from_regression(reports['S_invalid_excluded'])
+        options = {'primary_accounting': v2_settings.primary_accounting} if v2_settings else {}
+        reports = run_policies(task.instance_id, selection, executor, references, folder, **options)
+    return v2_signal_for_decision(reports, v2_settings)
 
 
 def run_v3(task, patch_text, patch, folder, *, experiment):
@@ -163,7 +206,7 @@ def run_v3(task, patch_text, patch, folder, *, experiment):
 
 def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=False,
                 provenance=None, v4_runner=None, drift=None, v2_runner=None, v3_runner=None,
-                reproduction_setup=None):
+                reproduction_setup=None, v2_settings=None):
     """Never swallow source-integrity errors; V2 absence does not skip V3/V4."""
     task_dir = Path(task_dir)
     folder = task_dir / 'verification'
@@ -185,7 +228,8 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
             with ArchiveTree(task_spec.source.archive_path) as tree:
                 integrity, signals[SignalKind.INTEGRITY] = integrity_signal(patch_text, tree)
                 if integrity.patch is not None:
-                    selection = select_tests(integrity.patch, tree, SelectionConfig())
+                    selection_config = v2_settings.selection if v2_settings else SelectionConfig()
+                    selection = select_tests(integrity.patch, tree, selection_config)
                     # Commands use the registry's frozen Django parallel choice.
                     from dataclasses import replace
                     selection = replace(selection, runner=task_spec.runner)
@@ -194,8 +238,7 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
     except Exception as exc:
         signals[SignalKind.INTEGRITY] = absence(SignalKind.INTEGRITY, 'V1_EXCEPTION:' + type(exc).__name__)
     if selection is not None:
-        from dataclasses import asdict
-        write(folder / 'selection.json', asdict(selection))
+        write(folder / 'selection.json', selection.to_dict(include_fallback=v2_settings is not None))
         stamps['selection_sha256'] = sha(folder / 'selection.json')
     empty_patch = not patch_text.strip() or (
         integrity is not None and integrity.patch is not None and integrity.patch.is_empty)
@@ -212,11 +255,14 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
             elif not selection.tests:
                 signals[SignalKind.REGRESSION] = SignalRecord.absent(
                     SignalKind.REGRESSION, SignalAbsence.NOTHING_TO_CHECK, 'no tests selected')
+                if v2_settings and v2_settings.selection.fallback_any_convention:
+                    signals[SignalKind.REGRESSION].findings['absence_reason'] = 'NO_SELECTION'
             else:
                 with v2_deadline():
+                    options = {'v2_settings': v2_settings} if v2_settings else {}
                     signals[SignalKind.REGRESSION] = (v2_runner or run_v2)(
                         task_spec, patch_path, selection, folder, experiment=experiment_id,
-                        drift=drift if drift is not None else load_drift(), stamps=stamps)
+                        drift=drift if drift is not None else load_drift(), stamps=stamps, **options)
         except SourceIntegrityError:
             raise
         except TaskWallTime:
@@ -237,6 +283,11 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
             raise
         except Exception as exc:
             signals[SignalKind.STATIC] = absence(SignalKind.STATIC, 'EXECUTOR_EXCEPTION:' + type(exc).__name__, infrastructure=True)
+    regression_findings = signals[SignalKind.REGRESSION].findings
+    if v2_settings is not None and 'primary_accounting' not in regression_findings:
+        v2_selection = selection if selection is not None else Selection()
+        regression_findings.update(primary_accounting=v2_settings.primary_accounting,
+                                   **v2_selection.fallback_metadata(), test_results={})
     budget_stop, stop_termination, paid_before_stop = False, 'BUDGET_CAP', 0
     if empty_patch:
         signals[SignalKind.REPRODUCTION] = absence(SignalKind.REPRODUCTION, 'EMPTY_PATCH')
@@ -266,7 +317,7 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
     except FrozenPatchError as exc:
         raise SourceIntegrityError({'mismatches': [{'path': 'patch.diff', 'reason': str(exc)}]}) from exc
     result = VerificationRecordV141(instance_id=instance_id, experiment_id=experiment_id,
-        verifier_config='full-v1.4.1', patch_sha256=frozen.sha256,
+        verifier_config='full-v1.5' if v2_settings else 'full-v1.4.1', patch_sha256=frozen.sha256,
         integrity=signals[SignalKind.INTEGRITY], regression=signals[SignalKind.REGRESSION],
         static=signals[SignalKind.STATIC], reproduction=signals[SignalKind.REPRODUCTION],
         decision=DecisionEntry.from_record(policy.decide(evidence_from_signals(signals))),

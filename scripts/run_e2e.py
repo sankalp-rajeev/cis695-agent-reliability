@@ -27,7 +27,9 @@ from reliability.provider_spend import ProviderLedger
 from reliability.provider_errors import ProviderTransientError
 from reliability.umgpt_spend import BudgetCap
 from reliability.verifier.admission_reference import JSONProjection
-from reliability.verifier.run_v1_4_1 import default_reproduction_setup, verify_task
+from reliability.verifier.run_v1_4_1 import (
+    DEFAULT_VERIFIER_CONFIG, default_reproduction_setup, load_v2_settings, verify_task,
+)
 from reliability.verifier.source_integrity import SourceIntegrityError
 from reliability.verifier.task_specs import ROOT, load_registries, require_hash, sha, write
 from reliability.verifier.generic_health import rules_stamp
@@ -99,6 +101,7 @@ def main(argv=None):
     parser.add_argument('--task-specs', type=Path, nargs='+', required=True)
     parser.add_argument('--primary-config', type=Path, default=ROOT / 'configs/model/primary.yaml')
     parser.add_argument('--generator-config', type=Path, default=ROOT / 'configs/model/generator.yaml')
+    parser.add_argument('--verifier-config', type=Path, default=DEFAULT_VERIFIER_CONFIG)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--mode', choices=('pilot', 'audited'), required=True)
     parser.add_argument('--freeze-tag')
@@ -110,6 +113,8 @@ def main(argv=None):
     parser.add_argument('--um-job-cap-usd', type=float, default=3.0)
     args = parser.parse_args(argv)
     validate_mode(args.mode, args.freeze_tag, args.verify_only_from, args.skip_v4)
+    verifier_config = args.verifier_config.resolve()
+    v2_settings = load_v2_settings(verifier_config)
     output = args.output.resolve()
     if not output.is_relative_to((ROOT / 'runs').resolve()):
         raise ValueError('--output must be under runs/')
@@ -125,7 +130,7 @@ def main(argv=None):
             raise ValueError('Unsupported paid provider')
     setup = default_reproduction_setup(generator_path)
     from reliability.paid_models import prices
-    header = {'policy_version': 'v1.4.1-full', 'config_sha256': sha(ROOT / 'configs/verifier/full_v1_4_1.yaml'),
+    header = {'policy_version': 'v1.4.1-full', 'config_sha256': sha(verifier_config),
         'registry_sha256': registries, 'primary_config_sha256': sha(primary_path), 'generator_config_sha256': sha(generator_path),
         'manifest_sha256': sha(args.manifest), 'git_head': git('rev-parse', 'HEAD'),
         'git_dirty': bool(git('status', '--porcelain')), 'mode': args.mode, 'freeze_tag': args.freeze_tag,
@@ -198,9 +203,10 @@ def main(argv=None):
             return run_v4(tasks.get(iid), patch_text, integrity, setup, generator_path, generator,
                           ledger(generator), directory / 'verification/v4', output.name,
                           load_agent_task(instance_id).problem_statement)
+        options = {'v2_settings': v2_settings} if v2_settings else {}
         return verify_task(directory, instance_id=iid, task_spec=tasks.get(iid), experiment_id=output.name,
             skip_v4=args.skip_v4, provenance=json.loads((output / 'header.json').read_text()),
-            v4_runner=v4, reproduction_setup=setup)
+            v4_runner=v4, reproduction_setup=setup, **options)
 
     status = run_batch(ids, output, header, agent_stage, verify_stage, ledgers=tuple(ledgers.values()))
     print(json.dumps({'status': status, 'output': str(output)}))

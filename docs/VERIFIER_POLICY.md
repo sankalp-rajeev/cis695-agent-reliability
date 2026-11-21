@@ -294,7 +294,7 @@ tests pass; every existing test retains its baseline status. The independent
 standard-library checker confirms the golden and delta tables. No model call,
 label access or live generator run is part of this validation.
 
-## Policy P (paired-skip), proposed
+## Policy P (paired-skip)
 
 V2 excludes a selected test from evidence when both the base and patched
 results are `SKIPPED`, using the same evidence treatment as an excluded
@@ -305,9 +305,12 @@ semantics, so a skip there is always an evidence gap.
 Run timeouts, collection and infrastructure errors retain their existing gap
 handling. `FAIL` retains its outcome, zero executed evidence yields
 `NOT_AVAILABLE`, and `INVALID_ID` handling still follows `invalid_as_missing`.
-The guarded verifier records `P_invalid_excluded` and `P_invalid_missing` as
-sensitivities. Policy S remains primary.
+`configs/verifier/v1_5.yaml` uses `P_invalid_excluded` as the primary V2 report
+under [`PROTOCOL.md`](../reports/study_v1_5/PROTOCOL.md), frozen at
+`study-v1.5-prereg`. The guarded verifier still records C, S, and P with both
+`INVALID_ID` treatments. `configs/verifier/full_v1_4_1.yaml` uses
+`S_invalid_excluded` as its primary report.
 
 Policy P was designed after the Arm B and DeepSeek correctness labels were
-seen, so these replays are exploratory. Policy P can become primary only
-through a protocol amendment frozen before Arm A and the 200-task run.
+seen, so the retrospective replays are exploratory. The tagged study protocol
+specifies Policy P for the new 200-task study.

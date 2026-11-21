@@ -27,7 +27,7 @@ import ast
 import random
 import re
 import shlex
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from enum import Enum
 from pathlib import Path, PurePosixPath
 from typing import Protocol
@@ -111,6 +111,8 @@ class SelectionConfig:
     convention_sample_size: int = 200
     convention_seed: int = 695
     exclude_agent_authored_tests: bool = True
+    fallback_any_convention: bool = False
+    fallback_max_files: int = 5
 
 
 @dataclass(frozen=True, slots=True)
@@ -171,6 +173,23 @@ class Selection:
     runner: TestRunner | None = None
     excluded_agent_tests: tuple[str, ...] = ()
     symbols: tuple[str, ...] = ()
+    fallback_used: bool = False
+    fallback_tests: tuple[str, ...] = ()
+    fallback_candidates_total: int = 0
+
+    def fallback_metadata(self) -> dict:
+        return {
+            "fallback_used": self.fallback_used,
+            "fallback_tests": list(self.fallback_tests),
+            "fallback_candidates_total": self.fallback_candidates_total,
+        }
+
+    def to_dict(self, *, include_fallback: bool = False) -> dict:
+        data = asdict(self)
+        if not include_fallback:
+            for key in self.fallback_metadata():
+                data.pop(key)
+        return data
 
     def __len__(self) -> int:
         return len(self.tests)
@@ -630,6 +649,28 @@ def select_tests(
             seen.add(test)
             ordered.append(test)
 
+    fallback_tests = ()
+    fallback_candidates_total = 0
+    if config.fallback_any_convention and not any(
+        test in seen
+        for tier in (Tier.DIRECT_CORRESPONDENCE, Tier.SYMBOL_REFERENCE)
+        for test in by_tier.get(tier.value, ())
+    ):
+        index = _TreeIndex.of(tuple(sorted(tree.list_files())))
+        candidates = tuple(dict.fromkeys(
+            path
+            for source in source_paths
+            for layout in _PROBED  # TESTS_TREE is last.
+            for path in _corresponding_tests(source, layout, index)
+            if path not in patch_test_paths
+        ))
+        fallback_candidates_total = len(candidates)
+        fallback_tests = tuple(dict.fromkeys(
+            test for test in _expand_node_ids(tree, candidates[:config.fallback_max_files])
+            if test not in seen
+        ))
+        ordered.extend(fallback_tests)
+
     return Selection(
         tests=tuple(ordered),
         by_tier={t: tuple(v) for t, v in by_tier.items()},
@@ -637,4 +678,7 @@ def select_tests(
         runner=runner,
         excluded_agent_tests=tuple(sorted(set(excluded))),
         symbols=symbols,
+        fallback_used=bool(fallback_tests),
+        fallback_tests=fallback_tests,
+        fallback_candidates_total=fallback_candidates_total,
     )

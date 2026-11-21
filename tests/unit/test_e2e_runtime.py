@@ -42,7 +42,7 @@ def good(kind):
                         findings={'summary': {'syntax': 'PASS', 'import': 'PASS'}} if kind is SignalKind.STATIC else {})
 
 
-def verify(directory, task, *, failure=None, v4_failure=None):
+def verify(directory, task, *, failure=None, v4_failure=None, v2_settings=None):
     called = []
     def v2(*args, **kwargs):
         called.append('V2')
@@ -58,7 +58,7 @@ def verify(directory, task, *, failure=None, v4_failure=None):
             raise v4_failure
         return good(SignalKind.REPRODUCTION)
     result = verify_task(directory, instance_id=task.instance_id, task_spec=task,
-        experiment_id='mock', v2_runner=v2, v3_runner=v3, v4_runner=v4, drift={})
+        experiment_id='mock', v2_runner=v2, v3_runner=v3, v4_runner=v4, drift={}, v2_settings=v2_settings)
     return result, called
 
 
@@ -113,6 +113,27 @@ def test_nonempty_patch_with_zero_selected_tests_is_not_infrastructure(tmp_path,
     assert record.regression.detail == 'no tests selected'
     assert not record.regression.findings.get('infrastructure', False)
     assert not e2e_runner.infrastructure(record)
+
+
+def test_enabled_fallback_with_no_matches_records_no_selection(tmp_path, task, monkeypatch):
+    from reliability.verifier import run_v1_4_1 as runtime
+    from reliability.verifier.selection import Selection
+
+    def no_matches(patch, tree, config):
+        assert config.fallback_any_convention
+        return Selection(runner=task.runner)
+
+    monkeypatch.setattr(runtime, 'select_tests', no_matches)
+    freeze_patch(tmp_path / 'patch.diff', PATCH)
+    settings = runtime.load_v2_settings(runtime.DEFAULT_VERIFIER_CONFIG.with_name('v1_5.yaml'))
+    record, called = verify(tmp_path, task, v2_settings=settings)
+    assert called == ['V3', 'V4']
+    assert record.regression.outcome is SignalOutcome.NOT_AVAILABLE
+    assert record.regression.findings == {
+        'primary_accounting': 'P_invalid_excluded', 'absence_reason': 'NO_SELECTION',
+        'fallback_used': False, 'fallback_tests': [], 'fallback_candidates_total': 0,
+        'test_results': {},
+    }
 
 
 def test_exhausted_v4_retry_is_attributed_infrastructure(tmp_path, task):

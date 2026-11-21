@@ -69,6 +69,90 @@ index 1..2 100644
 """)
 
 
+def change(path, before="value = 1", after="value = 2"):
+    return (
+        f"diff --git a/{path} b/{path}\n--- a/{path}\n+++ b/{path}\n"
+        f"@@ -1 +1 @@\n-{before}\n+{after}\n"
+    )
+
+
+@pytest.fixture
+def fallback_tree(tmp_path):
+    def add(path, text="def test_case(): pass\n"):
+        target = tmp_path / path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(text)
+
+    for number in range(3):
+        add(f"pkg/support{number}.py", "value = 1\n")
+        add(f"pkg/tests/test_support{number}.py")
+    add("pkg/sub/target.py", "value = 1\n")
+    add("pkg/other.py", "value = 1\n")
+    candidates = (
+        "tests/pkg/sub/test_target.py",
+        "test/pkg/sub/test_target.py",
+        "tests/sub/test_target.py",
+        "test/sub/test_target.py",
+        "pkg/sub/target_test.py",
+        "tests/test_target.py",
+        "tests/test_sub_target.py",
+        "pkg/other_test.py",
+    )
+    for path in (*candidates, "pkg/sub/tests/test_target.py"):
+        add(path)
+    return LocalRepoTree(tmp_path), candidates, add
+
+
+def test_fallback_only_after_tier_1_agent_tests_are_excluded(fallback_tree):
+    tree, candidates, _ = fallback_tree
+    changed_test = "pkg/sub/tests/test_target.py"
+    patch = parse_patch(change("pkg/sub/target.py") + change("pkg/other.py") + change(changed_test))
+    config = SelectionConfig(fallback_any_convention=True)
+    selected = select_tests(patch, tree, config)
+
+    assert selected.convention.convention is Convention.SIBLING_TESTS
+    assert selected.by_tier == {1: (f"{changed_test}::test_case",), 2: ()}
+    assert selected.excluded_agent_tests == (f"{changed_test}::test_case",)
+    assert selected.fallback_used
+    assert selected.fallback_candidates_total == len(candidates)
+    assert selected.tests == selected.fallback_tests == tuple(
+        f"{path}::test_case" for path in candidates[:5]
+    )
+    assert select_tests(patch, tree, config) == selected
+    assert select_tests(patch, tree, SelectionConfig(
+        fallback_any_convention=True, fallback_max_files=8,
+    )).fallback_tests == tuple(f"{path}::test_case" for path in candidates)
+
+
+def test_fallback_disabled_preserves_legacy_selection(fallback_tree):
+    tree, _, _ = fallback_tree
+    changed_test = "pkg/sub/tests/test_target.py"
+    patch = parse_patch(change("pkg/sub/target.py") + change(changed_test))
+    legacy = select_tests(patch, tree)
+    assert legacy == select_tests(patch, tree, SelectionConfig(fallback_max_files=0))
+    assert legacy.tests == () and legacy.by_tier == {1: (f"{changed_test}::test_case",), 2: ()}
+    assert not legacy.fallback_used and legacy.fallback_tests == ()
+    assert "fallback_used" not in legacy.to_dict()
+
+
+@pytest.mark.parametrize("tier", [Tier.DIRECT_CORRESPONDENCE, Tier.SYMBOL_REFERENCE])
+def test_fallback_does_not_fire_if_either_tier_selects(fallback_tree, tier):
+    tree, _, add = fallback_tree
+    patch_text = change("pkg/sub/target.py")
+    if tier is Tier.SYMBOL_REFERENCE:
+        patch_text = change("pkg/sub/target.py", "def explicit_name(): pass", "def explicit_name(): return 2")
+        patch_text += change("pkg/sub/tests/test_target.py")
+        add("tests/test_contract.py", "from pkg.sub.target import explicit_name\ndef test_case(): pass\n")
+    selection = select_tests(parse_patch(patch_text), tree, SelectionConfig(fallback_any_convention=True))
+    assert not selection.fallback_used and selection.fallback_tests == ()
+    assert selection.fallback_candidates_total == 0
+    if tier is Tier.DIRECT_CORRESPONDENCE:
+        assert selection.tests == ("pkg/sub/tests/test_target.py::test_case",)
+        assert selection.by_tier[2] == ()
+    else:
+        assert selection.tests == ("tests/test_contract.py::test_case",)
+
+
 # --- §3.1 convention discovery --------------------------------------------
 
 
