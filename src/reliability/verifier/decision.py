@@ -324,6 +324,11 @@ POLICIES: dict[str, type] = {
 
 
 def get_policy(name: str) -> DecisionPolicy:
+    if name == "full-v1.5":
+        # Registered by name only: the v1.5 rules live in policy_v1_5, which
+        # builds on this module, so it is imported when selected, not here.
+        from reliability.verifier.policy_v1_5 import FullPolicyV15
+        return FullPolicyV15()
     if name not in POLICIES:
-        raise KeyError(f"unknown policy {name!r}; available: {sorted(POLICIES)}")
+        raise KeyError(f"unknown policy {name!r}; available: {sorted([*POLICIES, 'full-v1.5'])}")
     return POLICIES[name]()

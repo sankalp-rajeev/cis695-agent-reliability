@@ -7,7 +7,7 @@ Status key: ✅ done · 🔄 in progress · ⏳ not started · ⛔ blocked · �
 
 ## Current state
 
-Phase 3 is in progress. Parts A through C passed their offline gates. The study config enables Policy P, the five-file V2 fallback, and per-requirement V4 with two independent test passes. Phase 2 patches can be converted to verified run inputs, and reference runs can be audited for overlap with generator conversations. The runner supports sealed V4 reuse. Phase 10 is complete with 60 pinned images and four ordered reserve replacements.
+Phase 3 is complete. Parts A through D passed their offline gates. The v1.5 decision rules R1-R8 are built as v1.4.1 plus three default-off switches, and `scripts/decide_v1_5.py` recomputes decisions offline from a sealed run for any switch setting. The study config enables Policy P, the five-file V2 fallback, per-requirement V4 with two independent test passes, and `decision_policy: full-v1.5` with every switch off. Phase 4 (the V4 pilot on 10 gold patches) is next. Phase 10 is complete with 60 pinned images and four ordered reserve replacements.
 
 ## Pre-flight checks
 
@@ -24,7 +24,7 @@ Phase 3 is in progress. Parts A through C passed their offline gates. The study 
 |---|---|---|---|---|---|
 | 1 | Pre-register | Merge task-prep, write PROTOCOL.md, tag `study-v1.5-prereg` | Rules are fixed before we see any data | ✅ | tag study-v1.5-prereg @ 52186c0; unit baseline: no new issues |
 | 2 | Fetch patches | Download public patches for 200 tasks, draw the test set | Patches from 6 agents of different strength, without running agents ourselves | ✅ | `176a2062226dbf37b22a5ecfc34071948c733a6e` · [FETCH.md](inputs/FETCH.md) · 1,332 fetched, 34 empty, 0 missing, 0 malformed |
-| 3 | Build | Paired-skip, V2 fallback, per-requirement V4, reuse flag, v1.5 rules | The two fixes for what held the verifier back | 🔄 | part C done: `4d714c12b4ca2b85a32a918594037ca33f31c0d5` · [PART_C.md](build/PART_C.md) · part B done: `74f0488320256dc2f7cc9984b64d654f07ff725c` · [PART_B.md](build/PART_B.md) · part A done: `cae8769394a67b4e8584e971fd20cfc6583d6ea4` · [PART_A.md](build/PART_A.md) |
+| 3 | Build | Paired-skip, V2 fallback, per-requirement V4, reuse flag, v1.5 rules | The two fixes for what held the verifier back | ✅ | parts A-D done · [PART_D.md](build/PART_D.md) · truth table 4,896/4,896 equal to v1.4.1 with switches off · part C done: `4d714c12b4ca2b85a32a918594037ca33f31c0d5` · [PART_C.md](build/PART_C.md) · part B done: `74f0488320256dc2f7cc9984b64d654f07ff725c` · [PART_B.md](build/PART_B.md) · part A done: `cae8769394a67b4e8584e971fd20cfc6583d6ea4` · [PART_A.md](build/PART_A.md) |
 | 4 | V4 pilot | New V4 on 10 gold patches | Check cost, coverage and leakage before spending on full runs | ⏳ | |
 | 5 | Freeze V4 | Tag `study-v4-frozen` | The test generator can't change after this | ⏳ | |
 | 6 | Dev gold run | Verify 51 gold patches, generate and freeze V4 | Shows what the verifier wrongly blocks (costs) | ⏳ | |
@@ -76,3 +76,4 @@ One line per entry, newest last: date, what was decided or deviated from the pla
 - 20 Nov: V2 fallback clarified before freeze: tries every probed test layout (Tier 1 uses only the discovered one) and is capped at 5 files, because the code has no 'Tier 2 limit' as PLAN §4 assumed. No rule threshold changed.
 - 20 Nov: requirement list capped at 4; tests named per requirement and pass; NO_RESULT and UNCOVERED map to V4 NOT_AVAILABLE
 - 20 Nov: Phase 2 manifests converted to run inputs by make_verify_inputs.py; --reference-patches records gold input rather than relaxing a guard (the guard never matched 'reference'); gold-overlap audit excludes lines present in the issue, '-' lines or the base tree
+- 20 Nov: v1.5 policy built as v1.4.1 plus three default-off switches; with switches off it equals v1.4.1 on every truth-table case; R7's likely_right means V2 PASS or at least one V4 requirement PASS

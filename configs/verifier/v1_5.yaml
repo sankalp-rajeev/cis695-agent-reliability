@@ -142,3 +142,10 @@ v1_5:
   v4_max_requirements: 4
   v4_requirements_max_steps: 40
   v4_tests_max_steps: 80
+  # Decision rules R1-R8 (PROTOCOL §4). Candidate switches stay false until
+  # Phase 8 sets them from ADOPTION.md; with all three false v1.5 decides
+  # exactly as v1.4.1.
+  decision_policy: full-v1.5
+  r2_v3_reject: false
+  r3_extended_reject: false
+  r6_accept_v2_not_available: false

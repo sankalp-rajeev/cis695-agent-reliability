@@ -278,13 +278,76 @@ def check_primary_accountings():
     print("PASS: v1_5.yaml matched 51/51 label-free P_invalid_excluded V2 outcomes")
 
 
+def study_evidence(record, row, study):
+    """v1.5 evidence for a stored Arm B record with the study's primary V2 (P)."""
+    from reliability.verifier.policy_v1_5 import evidence_from_signals as v1_5_evidence
+
+    if row["provenance"] == CARRY:
+        signal = record.regression
+    else:
+        calls = captured_calls(record)
+        reports = {name: replay_v2(record, calls, name)
+                   for name in ("S_invalid_excluded", "P_invalid_excluded")}
+        signal = v2_signal_for_decision(reports, study)
+    require(signal.outcome.value == row["v2_P_invalid_excluded"],
+            f"Study V2 outcome differs from the label-free file: {record.instance_id}")
+    return replace(v1_5_evidence(record.signals), regression=signal.outcome)
+
+
+def check_policy_v1_5():
+    """Part D gate (c): full-v1.5 on Arm B, accounting P, old (legacy) V4 evidence."""
+    from reliability.verifier.policy_v1_5 import FullPolicyV15
+
+    rows = read_csv("decisions_label_free.csv")
+    require(len(rows) == 51 and len({row["instance_id"] for row in rows}) == 51,
+            "Expected 51 unique Arm B patch rows")
+    study = load_v2_settings(ROOT / "configs/verifier/v1_5.yaml")
+    require(study is not None and study.primary_accounting == "P_invalid_excluded",
+            "Study config must use P_invalid_excluded")
+    off, on = FullPolicyV15(), FullPolicyV15(
+        r2_v3_reject=True, r3_extended_reject=True, r6_accept_v2_not_available=True)
+    fields = ("instance_id", "decision_P_invalid_excluded", "decision_all_on", "rule_id",
+              "review_label", "reasons")
+    differences, bad = [], []
+    for row in rows:
+        iid, expected = row["instance_id"], row["decision_P_invalid_excluded"]
+        evidence = study_evidence(read_record(iid), row, study)
+        require(evidence.v4_design == "legacy", f"Arm B V4 should be legacy: {iid}")
+        require(off.decide(evidence).decision.value == expected,
+                f"full-v1.5 with switches off differs from decision_P_invalid_excluded: {iid}")
+        result = on.decide(evidence)
+        if result.decision.value == expected:
+            continue
+        differences.append(dict(zip(fields, (iid, expected, result.decision.value, result.rule_id,
+                                             result.review_label, "; ".join(result.reasons)))))
+        extended = result.rule_id == "R3" and any(r.startswith("extended:") for r in result.reasons)
+        if result.decision.value == "REJECT" and not (result.rule_id == "R2" or extended):
+            bad.append(f"{iid}: REJECT from {result.rule_id}")
+        if result.decision.value == "ACCEPT" and result.rule_id != "R6":
+            bad.append(f"{iid}: ACCEPT from {result.rule_id}")
+    out = ROOT / "reports/study_v1_5/build/part_d_armB_all_switches.csv"
+    with out.open("w", newline="", encoding="utf-8") as stream:
+        writer = csv.DictWriter(stream, fieldnames=fields, lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(differences)
+    require(not bad, "New decisions from rules other than R2, extended R3 or R6:\n" + "\n".join(bad))
+    print("PASS: full-v1.5 switches off matched 51/51 decision_P_invalid_excluded")
+    print(f"All switches on: {len(differences)} decisions differ from decision_P_invalid_excluded")
+    for row in differences:
+        print(f"  {row['instance_id']}: {row['decision_P_invalid_excluded']} -> "
+              f"{row['decision_all_on']} ({row['rule_id']}; {row['reasons']})")
+    print("PASS: every new REJECT comes from R2 or extended R3")
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("step", choices=("decisions", "check", "primary-config"))
+    parser.add_argument("step", choices=("decisions", "check", "primary-config", "policy-v1-5"))
     args = parser.parse_args()
     if args.step == "decisions":
         generate_decisions()
     elif args.step == "check":
         check_decisions()
-    else:
+    elif args.step == "primary-config":
         check_primary_accountings()
+    else:
+        check_policy_v1_5()
