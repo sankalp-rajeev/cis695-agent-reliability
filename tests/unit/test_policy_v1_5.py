@@ -27,11 +27,11 @@ def consistent(v4, design, confirmed, failing, passing):
     """The V4 summary counts a real record can carry for a V4 outcome.
 
     V4 PASS is a full pass: nothing failing and at least one unit at PASS.
-    V4 FAIL needs at least one failing unit. V4 NOT_AVAILABLE has no failing
-    unit (UNCOVERED / NO_RESULT / absent); under the legacy design it has no
-    passing test either, since one stable pass makes legacy V4 PASS.
-    FAIL-confirmed requirements are failing requirements, and the legacy
-    design (one pass) has none.
+    V4 FAIL needs at least one failing unit. V4 NOT_AVAILABLE can carry any
+    counts: frozen bytes that could not be placed (FROZEN_BYTES_NOT_IN_PLACE)
+    make V4 NOT_AVAILABLE whatever the other tests did, so failing and passing
+    units with V4 NOT_AVAILABLE are real cases. FAIL-confirmed requirements
+    are failing requirements, and the legacy design (one pass) has none.
     """
     if confirmed > failing:
         return False
@@ -41,7 +41,7 @@ def consistent(v4, design, confirmed, failing, passing):
         return failing == 0 and passing >= 1
     if v4 is F:
         return failing >= 1
-    return failing == 0 and not (design == "legacy" and passing)
+    return True
 
 
 def truth_table():
@@ -78,10 +78,10 @@ def v4_fail(**kw):
 
 
 def test_truth_table_size_is_reported():
-    # 3^2 integrity/V2 outcomes x 2^5 flags = 288, times 17 consistent
+    # 3^2 integrity/V2 outcomes x 2^5 flags = 288, times 30 consistent
     # (V4 outcome, design, confirmed, failing, passing) combinations:
-    # PASS 1+1, FAIL 8 per_requirement + 4 legacy, NOT_AVAILABLE 2 + 1.
-    assert len(CASES) == 288 * 17 == 4896
+    # PASS 1+1, FAIL 8 per_requirement + 4 legacy, NOT_AVAILABLE 10 + 6.
+    assert len(CASES) == 288 * 30 == 8640
 
 
 @pytest.mark.parametrize("switches", SWITCHES, ids=lambda s: "".join(str(int(v)) for v in s.values()))
@@ -164,6 +164,34 @@ def test_r3_extended_rejects_only_when_switched_on(evidence):
     assert any("extended" in r for r in on.reasons)
     off = FullPolicyV15().decide(evidence)
     assert (off.decision, off.rule_id, off.review_label) == (Decision.FLAG, "R4", "likely_wrong")
+
+
+@pytest.mark.parametrize("confirmed,failing", [(0, 2), (1, 1), (1, 2)])
+def test_r3_extended_needs_v4_fail(confirmed, failing):
+    # Failing units with V4 NOT_AVAILABLE (e.g. FROZEN_BYTES_NOT_IN_PLACE) are
+    # missing V4 evidence, not a V4 failure: FLAG, never REJECT.
+    policy = FullPolicyV15(r2_v3_reject=True, r3_extended_reject=True,
+                           r6_accept_v2_not_available=True)
+    record = policy.decide(ev(reproduction=NA, v4_full_pass=False, v4_fail_confirmed=confirmed,
+                              v4_failing_units=failing, v4_pass_units=0))
+    assert record.decision is Decision.FLAG and record.rule_id != "R3"
+
+
+def test_v4_not_available_with_two_failing_units_flags_under_all_switches():
+    policy = FullPolicyV15(r2_v3_reject=True, r3_extended_reject=True,
+                           r6_accept_v2_not_available=True)
+    record = policy.decide(ev(reproduction=NA, v4_full_pass=False, v4_failing_units=2,
+                              v4_pass_units=0))
+    assert record.decision is Decision.FLAG
+
+
+def test_r3_extended_never_rejects_without_v4_fail():
+    for switches in SWITCHES:
+        policy = FullPolicyV15(**switches)
+        for evidence in CASES:
+            record = policy.decide(evidence)
+            if record.rule_id == "R3":
+                assert evidence.reproduction is F
 
 
 def test_r3_extended_leaves_a_single_unconfirmed_failure_alone():

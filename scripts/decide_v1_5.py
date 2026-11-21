@@ -7,7 +7,13 @@ naming labels, grading or post-hoc material is refused before anything is
 read; every file opened is checked by name too. Writes one CSV row per task
 and a JSON summary for the chosen switches:
 
+    scripts/decide_v1_5.py runs/study_test1_gold --frozen --output DIR
     scripts/decide_v1_5.py runs/study_dev_armB --switches r2=0,r3=0,r6=0 --output DIR
+
+--frozen reads the switches from configs/verifier/v1_5.yaml as committed at the
+annotated tag v1.5-frozen and records the tag commit and config SHA-256.
+Headline results use --frozen only; --switches is for Phase 7 calibration and
+Phase 16 ablations.
 """
 
 from __future__ import annotations
@@ -16,6 +22,7 @@ import argparse
 import csv
 import hashlib
 import json
+import subprocess
 import sys
 from collections import Counter
 from pathlib import Path
@@ -25,10 +32,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from e2e_input_preflight import FORBIDDEN_NAMES  # noqa: E402
 
 from reliability.verifier.decision import Decision  # noqa: E402
-from reliability.verifier.policy_v1_5 import RULE_DECISIONS, FullPolicyV15, evidence_from_signals  # noqa: E402
+from reliability.verifier.policy_v1_5 import (  # noqa: E402
+    RULE_DECISIONS, FullPolicyV15, evidence_from_signals, switches_from_config_text,
+)
 from reliability.verifier.reproduction_reuse import RECORD  # noqa: E402
 from reliability.verifier.run_v1_4_1 import VerificationRecordV141  # noqa: E402
 
+ROOT = Path(__file__).resolve().parents[1]
+FROZEN_TAG = "v1.5-frozen"
+FROZEN_CONFIG = "configs/verifier/v1_5.yaml"
 #: CLAUDE.md names these too; "grading" does not contain "grade".
 LABEL_WORDS = FORBIDDEN_NAMES + ("grading", "per_instance_details", "git_peek",
                                  "decision_by_correctness")
@@ -47,6 +59,28 @@ def parse_switches(text: str) -> dict[str, bool]:
     if sorted(keys) != sorted(SWITCH_KEYS) or any(value not in ("0", "1") for _, value in pairs):
         raise ValueError("--switches needs r2, r3 and r6 exactly once, each 0 or 1")
     return {SWITCH_KEYS[key]: value == "1" for key, value in pairs}
+
+
+def frozen_switches(repo: Path | None = None, tag: str = FROZEN_TAG) -> tuple[dict[str, bool], dict]:
+    """Switches from the config as committed at an annotated tag, never the working tree."""
+    repo = Path(repo or ROOT)
+
+    def git(*args):
+        return subprocess.run(["git", "-C", str(repo), *args], capture_output=True)
+
+    kind = git("cat-file", "-t", f"refs/tags/{tag}")
+    if kind.returncode != 0:
+        raise ValueError(f"tag {tag} is missing")
+    if kind.stdout.decode().strip() != "tag":
+        raise ValueError(f"tag {tag} is not an annotated tag")
+    commit = git("rev-parse", f"refs/tags/{tag}^{{commit}}")
+    raw = git("show", f"refs/tags/{tag}:{FROZEN_CONFIG}")
+    if commit.returncode != 0 or raw.returncode != 0:
+        raise ValueError(f"cannot read {FROZEN_CONFIG} at tag {tag}")
+    switches = switches_from_config_text(raw.stdout.decode("utf-8"))
+    return switches, {"tag": tag, "tag_commit": commit.stdout.decode().strip(),
+                      "config_path": FROZEN_CONFIG,
+                      "config_sha256": hashlib.sha256(raw.stdout).hexdigest()}
 
 
 def _label_words(path: Path) -> set[str]:
@@ -101,7 +135,7 @@ def tag(switches: dict[str, bool]) -> str:
     return "_".join(f"{key}-{int(switches[name])}" for key, name in SWITCH_KEYS.items())
 
 
-def decide_run(run: Path, switches: dict[str, bool], output: Path) -> dict:
+def decide_run(run: Path, switches: dict[str, bool], output: Path, frozen: dict | None = None) -> dict:
     run, output = Path(run).resolve(), Path(output).resolve()
     check_label_free(run)
     if output.is_relative_to(run):
@@ -148,6 +182,7 @@ def decide_run(run: Path, switches: dict[str, bool], output: Path) -> dict:
     summary = {
         "run": str(run), "seal_sha256": seal_sha256,
         "policy": {"name": policy.name, "version": policy.version}, "switches": switches,
+        "switch_source": "frozen" if frozen else "command line", "frozen": frozen,
         "tasks": len(rows), "patch_tasks": len(patch_rows),
         "counts": {"all": counts(rows), "patch": counts(patch_rows)},
         "csv": str(csv_path),
@@ -163,11 +198,20 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("run", type=Path, help="sealed run directory")
-    parser.add_argument("--switches", required=True, help="r2=0|1,r3=0|1,r6=0|1")
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument("--frozen", action="store_true",
+                        help=f"switches from {FROZEN_CONFIG} at annotated tag {FROZEN_TAG}")
+    source.add_argument("--switches", help="r2=0|1,r3=0|1,r6=0|1")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(argv)
-    summary = decide_run(args.run, parse_switches(args.switches), args.output)
+    if args.frozen:
+        switches, frozen = frozen_switches()
+    else:
+        switches, frozen = parse_switches(args.switches), None
+    summary = decide_run(args.run, switches, args.output, frozen)
     patch = summary["counts"]["patch"]
+    if frozen:
+        print(f"switches from {frozen['tag']} @ {frozen['tag_commit']}")
     print(f"{summary['policy']['version']} {tag(summary['switches'])}: "
           f"{summary['tasks']} tasks, {summary['patch_tasks']} with a patch")
     print("patch decisions: " + ", ".join(f"{k} {v}" for k, v in patch["decision"].items()))

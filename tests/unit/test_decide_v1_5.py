@@ -163,3 +163,85 @@ def test_main_writes_csv_and_summary(tmp_path, capsys):
     assert (tmp_path / "o" / "decisions_v1_5_r2-0_r3-1_r6-0.csv").is_file()
     assert (tmp_path / "o" / "summary_v1_5_r2-0_r3-1_r6-0.json").is_file()
     assert "R3" in capsys.readouterr().out
+
+
+FROZEN_CONFIG = ("v1_5:\n  decision_policy: full-v1.5\n  r2_v3_reject: true\n"
+                 "  r3_extended_reject: false\n  r6_accept_v2_not_available: true\n")
+
+
+def _git(repo, *args):
+    import subprocess
+    subprocess.run(["git", "-C", str(repo), "-c", "user.name=t", "-c", "user.email=t@t",
+                    *args], check=True, capture_output=True)
+
+
+def make_repo(tmp_path, *, tag=None):
+    repo = tmp_path / "repo"
+    (repo / "configs" / "verifier").mkdir(parents=True)
+    (repo / "configs" / "verifier" / "v1_5.yaml").write_text(FROZEN_CONFIG)
+    _git(repo, "init", "-q")
+    _git(repo, "add", ".")
+    _git(repo, "commit", "-q", "-m", "c")
+    if tag == "annotated":
+        _git(repo, "tag", "-a", "v1.5-frozen", "-m", "freeze")
+    elif tag == "lightweight":
+        _git(repo, "tag", "v1.5-frozen")
+    # A later edit must not leak into the frozen switches.
+    (repo / "configs" / "verifier" / "v1_5.yaml").write_text(FROZEN_CONFIG.replace("true", "false"))
+    return repo
+
+
+def test_frozen_reads_switches_at_the_annotated_tag(tmp_path):
+    import subprocess
+    mod = _script()
+    repo = make_repo(tmp_path, tag="annotated")
+    switches, frozen = mod.frozen_switches(repo)
+    assert switches == {"r2_v3_reject": True, "r3_extended_reject": False,
+                        "r6_accept_v2_not_available": True}
+    commit = subprocess.check_output(["git", "-C", str(repo), "rev-parse", "HEAD"], text=True).strip()
+    assert frozen == {"tag": "v1.5-frozen", "tag_commit": commit,
+                      "config_path": "configs/verifier/v1_5.yaml",
+                      "config_sha256": hashlib.sha256(FROZEN_CONFIG.encode()).hexdigest()}
+
+
+def test_frozen_refuses_a_missing_tag(tmp_path):
+    mod = _script()
+    with pytest.raises(ValueError, match="missing"):
+        mod.frozen_switches(make_repo(tmp_path))
+
+
+def test_frozen_refuses_a_lightweight_tag(tmp_path):
+    mod = _script()
+    with pytest.raises(ValueError, match="annotated"):
+        mod.frozen_switches(make_repo(tmp_path, tag="lightweight"))
+
+
+def test_frozen_summary_records_the_tag(tmp_path, monkeypatch):
+    mod = _script()
+    repo = make_repo(tmp_path, tag="annotated")
+    monkeypatch.setattr(mod, "ROOT", repo)
+    run = make_run(tmp_path / "run")
+    assert mod.main([str(run), "--frozen", "--output", str(tmp_path / "o")]) == 0
+    summary = json.loads((tmp_path / "o" / "summary_v1_5_r2-1_r3-0_r6-1.json").read_text())
+    assert summary["frozen"]["tag"] == "v1.5-frozen"
+    assert summary["frozen"]["config_sha256"] == hashlib.sha256(FROZEN_CONFIG.encode()).hexdigest()
+    assert summary["switches"]["r2_v3_reject"] is True
+
+
+def test_frozen_and_switches_are_mutually_exclusive(tmp_path, capsys):
+    mod = _script()
+    run = make_run(tmp_path / "run")
+    with pytest.raises(SystemExit):
+        mod.main([str(run), "--frozen", "--switches", "r2=0,r3=0,r6=0", "--output", str(tmp_path / "o")])
+    with pytest.raises(SystemExit):
+        mod.main([str(run), "--output", str(tmp_path / "o")])
+    assert not (tmp_path / "o").exists()
+
+
+def test_help_names_frozen_for_headline_results(capsys):
+    mod = _script()
+    with pytest.raises(SystemExit):
+        mod.main(["--help"])
+    text = " ".join(capsys.readouterr().out.split())
+    assert ("Headline results use --frozen only; --switches is for Phase 7 calibration "
+            "and Phase 16 ablations.") in text

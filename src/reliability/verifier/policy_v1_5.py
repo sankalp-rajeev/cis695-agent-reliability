@@ -7,9 +7,9 @@ ordering human review of FLAGs. First match wins:
 
     R1  REJECT  patch does not apply, integrity FAIL, or prohibited manipulation
     R2  REJECT  [r2_v3_reject] V3 syntax or import failure
-    R3  REJECT  V4 FAIL and V2 FAIL; with [r3_extended_reject] also any
-                FAIL-confirmed requirement, 2+ failing units, or V4 FAIL with a
-                V3 failure
+    R3  REJECT  V4 FAIL and V2 FAIL; with [r3_extended_reject] also V4 FAIL
+                with a FAIL-confirmed requirement, 2+ failing units, or a V3
+                failure (failing units under V4 NOT_AVAILABLE never REJECT)
     R3b REJECT  V2 FAIL and V4 neither PASS nor FAIL
     R4  FLAG    V4 FAIL                                        likely_wrong
     R5  FLAG    V2 FAIL and V4 PASS                            signals_disagree
@@ -101,11 +101,13 @@ class FullPolicyV15(FullPolicyV141):
             return self._rule("R2", ["v3_absolute_failure"], evidence)
         if v4.is_fail and v2.is_fail:
             return self._rule("R3", ["regression test failed", "reproduction FAIL"], evidence)
-        if self.r3_extended_reject:
+        if self.r3_extended_reject and v4.is_fail:
+            # Only a V4 FAIL is backed up. Failing units under V4 NOT_AVAILABLE
+            # (e.g. FROZEN_BYTES_NOT_IN_PLACE) are missing evidence and fall through.
             extended = [reason for condition, reason in (
                 (confirmed >= 1, f"{confirmed} FAIL-confirmed V4 requirement(s)"),
                 (failing >= 2, f"{failing} failing V4 units"),
-                (v4.is_fail and v3, "reproduction FAIL with v3_absolute_failure"),
+                (v3, "reproduction FAIL with v3_absolute_failure"),
             ) if condition]
             if extended:
                 return self._rule("R3", [f"extended: {r}" for r in extended], evidence)
@@ -176,17 +178,22 @@ def evidence_from_signals(signals) -> EvidenceV15:
     )
 
 
-def policy_from_config(path: Path) -> FullPolicyV15:
-    """The v1.5 policy and switches named in a verifier config's `v1_5` block."""
+def switches_from_config_text(text: str) -> dict[str, bool]:
+    """The three switches from a verifier config's `v1_5` block."""
     import yaml
 
-    block = yaml.safe_load(Path(path).read_text(encoding="utf-8")).get("v1_5") or {}
+    block = (yaml.safe_load(text) or {}).get("v1_5") or {}
     if block.get("decision_policy") != "full-v1.5":
         raise ValueError("config does not select decision_policy: full-v1.5")
     switches = {name: block.get(name, False) for name in SWITCH_NAMES}
     if any(type(value) is not bool for value in switches.values()):
         raise ValueError("v1.5 switches must be booleans")
-    return FullPolicyV15(**switches)
+    return switches
+
+
+def policy_from_config(path: Path) -> FullPolicyV15:
+    """The v1.5 policy and switches named in a verifier config's `v1_5` block."""
+    return FullPolicyV15(**switches_from_config_text(Path(path).read_text(encoding="utf-8")))
 
 
 def get_policy(name: str = "full-v1.5", **switches) -> FullPolicyV15:
