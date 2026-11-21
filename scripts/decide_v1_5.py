@@ -162,7 +162,7 @@ def tag(switches: dict[str, bool], v2_fallback: bool = True) -> str:
 
 def added_paths(run: Path, files: dict[str, str], iid: str) -> tuple[str, ...]:
     """Files the task's sealed patch adds or renames to (amendment A6). Contents are never printed."""
-    from reliability.verifier.patch import parse_patch
+    from reliability.verifier.patch import PatchParseError, parse_patch
 
     name = f"tasks/{iid}/patch.diff"
     if name not in files:
@@ -170,7 +170,12 @@ def added_paths(run: Path, files: dict[str, str], iid: str) -> tuple[str, ...]:
     text = _read(run, files, name).decode("utf-8", errors="replace")
     if not text.strip():
         return ()
-    return tuple(sorted(f.path for f in parse_patch(text) if f.kind.value in ("added", "renamed")))
+    try:
+        changes = parse_patch(text)
+    except PatchParseError:
+        # V1 records such a patch as unparseable (integrity FAIL, R1 REJECT).
+        return ()
+    return tuple(sorted(f.path for f in changes if f.kind.value in ("added", "renamed")))
 
 
 def without_v2_fallback(run: Path, files: dict[str, str], iid: str, record, evidence):

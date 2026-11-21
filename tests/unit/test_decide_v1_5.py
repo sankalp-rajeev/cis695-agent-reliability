@@ -422,3 +422,14 @@ def test_r6b_switch_parses_and_names_files(tmp_path):
     on = rows(mod.decide_run(root, mod.parse_switches("r2=0,r3=0,r6=0,r6b=1"), tmp_path / "b")["csv"])["d__d-1"]
     assert (off["rule_id"], on["rule_id"], on["decision"]) == ("R7", "R6b", "ACCEPT")
     assert on["v4_uncovered_units"] == "1"
+
+
+def test_added_paths_tolerates_a_patch_v1_could_not_parse(tmp_path):
+    # V1 already fails an unparseable patch (R1); A6 then has no added files to use.
+    mod = _script()
+    root = tmp_path / "run"
+    (root / "tasks" / "e__e-1").mkdir(parents=True)
+    (root / "tasks" / "e__e-1" / "patch.diff").write_text("--- a/x.py\n+++ b/x.py\n@@ -1 +1 @@\n-a\n+b\n")
+    files = {"tasks/e__e-1/patch.diff": hashlib.sha256(
+        (root / "tasks" / "e__e-1" / "patch.diff").read_bytes()).hexdigest()}
+    assert mod.added_paths(root, files, "e__e-1") == ()
