@@ -18,7 +18,17 @@ agent:
     reported. Write exactly one standalone Python script for each listed
     requirement at /testbed/v4_repro/test_repro_<ID>.py. For example, use
     /testbed/v4_repro/test_repro_R1.py for R1. Each script must assert only its
-    corresponding requirement. Do not fix the problem or modify any existing file.
+    corresponding requirement.
+
+    Assert only the observable behaviour the requirement states. Do not
+    assert internal or incidental state the requirement does not name, such
+    as stored hashes, session or cache keys, private attributes, call counts
+    or exact log text. If more than one result would satisfy the requirement,
+    accept any of them. When calling a function, method or hook named in the
+    issue, pass every argument the issue mentions explicitly, including ones
+    it shows with a default value.
+
+    Do not fix the problem or modify any existing file.
 
     Each script must assert the correct behaviour so that it fails with
     AssertionError on the current code and exits zero once the issue is fixed.

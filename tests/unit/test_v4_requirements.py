@@ -63,6 +63,16 @@ def setup():
     return study
 
 
+@pytest.fixture
+def two_pass_setup(setup):
+    """The study setup with two independent test passes, for the two-pass mechanics."""
+    return replace(setup, passes=2)
+
+
+def test_study_config_runs_one_v4_pass(setup):
+    assert setup.passes == 1
+
+
 class Sandbox:
     def __init__(self, statuses):
         self.files = {}
@@ -174,7 +184,8 @@ def test_unavailable_requirements_skips_tests_without_retry(tmp_path, setup, fil
     assert not (tmp_path / "requirements.json").exists()
 
 
-def test_freeze_order_isolation_truncation_and_ignore_unknown_ids(tmp_path, setup):
+def test_freeze_order_isolation_truncation_and_ignore_unknown_ids(tmp_path, two_pass_setup):
+    setup = two_pass_setup
     events = []
     requirements_path = tmp_path / "requirements.json"
     first_pass_marker = b"FIRST_PASS_BYTES"
@@ -328,8 +339,9 @@ def test_explicit_legacy_config_uses_the_original_setup_and_freeze(tmp_path):
 
 @pytest.mark.parametrize("run_cap", [0.07, 0.05])
 def test_e2e_fresh_calls_frozen_before_patch_and_run_cap_is_aggregate(
-    tmp_path, monkeypatch, setup, run_cap
+    tmp_path, monkeypatch, two_pass_setup, run_cap
 ):
+    setup = two_pass_setup
     ledger = ProviderLedger(
         tmp_path / "ledger.json",
         provider="deepseek",
@@ -500,7 +512,9 @@ def test_v4_reuse_requires_matching_settings(sealed_v4, setup, field):
         index = 0 if field == "requirement_prompt" else 1
         header["generator"]["prompts"][setup.prompts[index][0]] = "sha256:" + "b" * 64
     else:
-        header["generator"][field] = "legacy" if field == "design" else 1
+        header["generator"][field] = (
+            "legacy" if field == "design" else 3 - setup.passes if field == "passes" else 1
+        )
     write(source / "header.json", header)
     seal_run(source)
     with pytest.raises(ValueError, match="V4 settings"):

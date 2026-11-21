@@ -15,6 +15,12 @@ agent:
     input or situation and an observable expected result that a test can assert.
     Focus on behaviour. Omit refactors, documentation and performance changes.
 
+    Write only what the issue states or directly implies. An expected result
+    may name a specific value, message or return value only if the issue
+    gives it. If the issue only says that something must stop happening (an
+    error, a crash, a wrong result), the expected result is that it stops
+    happening, not a particular replacement value.
+
     Write one to four items, most central first, to exactly this file:
 
         /testbed/v4_repro/requirements.json
