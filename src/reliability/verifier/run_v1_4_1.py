@@ -5,7 +5,8 @@ from __future__ import annotations
 import signal
 import time
 from contextlib import contextmanager
-from dataclasses import dataclass
+import re
+from dataclasses import dataclass, replace
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -152,31 +153,108 @@ def run_v2(task, patch_path, selection, folder, *, experiment, drift, stamps, v2
                        stamps=stamps, v2_settings=v2_settings)
 
 
-def _run_v2(task, patch_path, selection, folder, *, experiment, drift, stamps, v2_settings=None):
-    spec = ExecutionSpec(task.instance_id, task.image_id, task.source, task.runner, patch_path, selection.tests, experiment)
-    references, blocked = {}, []
-    healths = []
+_BLOCKING = ('COLLECTION_ERROR', 'RUNNER_UNAVAILABLE', 'NOT_REACHED', 'ERROR')
+_PYTEST_E = re.compile(r'^E\s+((?:[A-Za-z_]\w*\.)*[A-Za-z_]\w*): ')
+_PLAIN_EXC = re.compile(r'^((?:[A-Za-z_]\w*\.)*[A-Z]\w*): ')
+_NOT_EXCEPTIONS = frozenset({'Hint', 'Traceback', 'Note', 'ERROR', 'FAILED'})
+
+
+def collection_exception_type(text):
+    """The exception a module's collection failed with: pytest `E   Type:` lines first."""
+    text = text or ''
+    lines = [line.strip() for line in text.splitlines()]
+    # A bare `Name: text` line is an exception only after a Python traceback; a
+    # runner that prints and exits (e.g. "Aborting: ...") has no exception type.
+    patterns = (_PYTEST_E, _PLAIN_EXC) if 'Traceback (most recent call last)' in text else (_PYTEST_E,)
+    for pattern in patterns:
+        for line in reversed(lines):
+            match = pattern.match(line)
+            if match and match.group(1).rsplit('.', 1)[-1] not in _NOT_EXCEPTIONS:
+                return match.group(1)
+    return None
+
+
+def _blocking_stages(health):
+    return [stage for stage in health.get('stages', ())
+            if stage['status'] in _BLOCKING or zero_output([stage])['halt']]
+
+
+def paired_collection_exclusions(healths):
+    """Amendment A7: modules whose collection fails on both trees with the same exception type.
+
+    Returns None unless both trees are BLOCKED only by per-module native
+    collection errors, every one with a known exception type, and the same
+    module -> exception type map on both trees.
+    """
+    if sorted(h.get('tree') for h in healths) != ['base', 'patched']:
+        return None
+    per_tree = {}
+    for health in healths:
+        if health.get('status') != 'BLOCKED' or health.get('generic_pair_halt_reasons'):
+            return None
+        stages = _blocking_stages(health)
+        if not stages:
+            return None
+        found = {}
+        for stage in stages:
+            if (stage.get('stage') != 'native_collection' or stage.get('status') != 'COLLECTION_ERROR'
+                    or not stage.get('module') or stage.get('allowed_exception')):
+                return None
+            exc = collection_exception_type('\n'.join(stage.get('messages') or ()) + '\n'
+                                            + str(stage.get('message') or ''))
+            if exc is None or found.get(stage['module'], exc) != exc:
+                return None
+            found[stage['module']] = exc
+        per_tree[health['tree']] = found
+    if per_tree['base'] != per_tree['patched']:
+        return None
+    return [{'module': module, 'exception_type': exc} for module, exc in sorted(per_tree['base'].items())]
+
+
+def _g1(task, spec, folder, output, tests, drift, stamps, scope, suffix=''):
+    references, blocked, healths = {}, [], []
     for patched in (False, True):
         tree = 'patched' if patched else 'base'
-        health = guarded_pair(spec, patched, folder / 'g1',
-                              empty_reference(task.instance_id, tree, selection.tests, drift))
+        health = guarded_pair(spec, patched, output,
+                              empty_reference(task.instance_id, tree, tests, drift))
         healths.append(health)
-    finalize_generic_pair(spec, folder / 'g1', healths)
+    finalize_generic_pair(spec, output, healths)
     for health in healths:
         tree = health['tree']
-        append_health(folder / 'health.jsonl', {'scope': 'G1', **health})
-        receipt = folder / 'g1/tasks' / task.instance_id / tree / 'collection.json'
+        append_health(folder / 'health.jsonl', {'scope': scope, **health})
+        receipt = output / 'tasks' / task.instance_id / tree / 'collection.json'
         if receipt.exists():
-            stamps['g1_receipt_sha256'][tree] = sha(receipt)
+            stamps['g1_receipt_sha256'][tree + suffix] = sha(receipt)
         if health['status'] != 'READY':
-            failed = [stage for stage in health.get('stages', ()) if
-                      stage['status'] in ('COLLECTION_ERROR', 'RUNNER_UNAVAILABLE', 'NOT_REACHED', 'ERROR')
-                      or zero_output([stage])['halt']]
+            failed = _blocking_stages(health)
             blocked.append(proposed_failure_category(failed[0]) if failed else 'stage_error_requires_review')
         else:
             import json
-            references[tree] = collection_reference(task.instance_id, tree, selection.tests,
+            references[tree] = collection_reference(task.instance_id, tree, tests,
                                                     json.loads(receipt.read_bytes()), drift)
+    return healths, references, blocked
+
+
+def _run_v2(task, patch_path, selection, folder, *, experiment, drift, stamps, v2_settings=None):
+    spec = ExecutionSpec(task.instance_id, task.image_id, task.source, task.runner, patch_path, selection.tests, experiment)
+    healths, references, blocked = _g1(task, spec, folder, folder / 'g1', selection.tests, drift, stamps, 'G1')
+    exclusions = []
+    if blocked:
+        paired = paired_collection_exclusions(healths) or []
+        modules = {entry['module'] for entry in paired}
+        remaining = tuple(t for t in selection.tests if t.split('::', 1)[0] not in modules)
+        if paired and remaining:
+            # Amendment A7: drop the paired modules, record them, and re-check G1 on the rest.
+            for entry in paired:
+                entry.update(excluded_tests=[t for t in selection.tests if t.split('::', 1)[0] == entry['module']],
+                             trees=['base', 'patched'])
+            fallback = tuple(t for t in selection.fallback_tests if t in remaining)
+            selection = replace(selection, tests=remaining, fallback_tests=fallback, fallback_used=bool(fallback))
+            spec = replace(spec, tests=remaining)
+            healths, references, blocked = _g1(task, spec, folder, folder / 'g1_after_paired_exclusion',
+                                               remaining, drift, stamps, 'G1_after_paired_exclusion',
+                                               '_after_paired_exclusion')
+            exclusions = paired
     if blocked:
         error = RunHealthError({'task': task.instance_id, 'halt': True, 'halt_reasons': blocked})
         error.g1_category = blocked[0]
@@ -191,7 +269,10 @@ def _run_v2(task, patch_path, selection, folder, *, experiment, drift, stamps, v
         executor = ContainerTestExecutor(container, runner=task.runner, evidence_dir=folder / 'raw')
         options = {'primary_accounting': v2_settings.primary_accounting} if v2_settings else {}
         reports = run_policies(task.instance_id, selection, executor, references, folder, **options)
-    return v2_signal_for_decision(reports, v2_settings)
+    signal = v2_signal_for_decision(reports, v2_settings)
+    if exclusions:
+        signal.findings['paired_collection_exclusions'] = exclusions
+    return signal
 
 
 def run_v3(task, patch_text, patch, folder, *, experiment):

@@ -88,18 +88,33 @@ def local_runtime(tmp_path, monkeypatch, messages, repo='django/django'):
     return task, patch, created
 
 
+# The last two abort the GIS module with SystemExit on both trees. Amendment A7
+# (part F) excludes such a paired collection error and runs the rest; before A7
+# they blocked, because only the GIS guard rule could unblock a module.
 @pytest.mark.parametrize('messages,repo,proceeds', [
     ((MESSAGE, MESSAGE), 'django/django', True),
     ((MESSAGE, ''), 'django/django', False),
     ((MESSAGE, 'different failure'), 'django/django', False),
-    (('different failure', 'different failure'), 'django/django', False),
-    ((MESSAGE, MESSAGE), 'example/project', False),
+    (('different failure', 'different failure'), 'django/django', 'excluded'),
+    ((MESSAGE, MESSAGE), 'example/project', 'excluded'),
 ])
 def test_g1_paired_rule_controls_real_v2(tmp_path, monkeypatch, messages, repo, proceeds):
     task, patch, created = local_runtime(tmp_path, monkeypatch, messages, repo)
     folder = tmp_path / 'verification'
     call = lambda: runtime.run_v2(task, patch, Selection(tests=(GIS, HEALTHY), runner=task.runner),
         folder, experiment='unit', drift={}, stamps={'g1_receipt_sha256': {}})
+    if proceeds == 'excluded':
+        signal = call()
+        assert signal.findings['n_executed'] == 1 and signal.findings['signal'] == 'PASS'
+        assert signal.findings['paired_collection_exclusions'] == [{
+            'module': GIS.split('::')[0], 'exception_type': 'SystemExit',
+            'excluded_tests': [GIS], 'trees': ['base', 'patched']}]
+        assert len(created) == 5
+        health = [json.loads(line) for line in (folder / 'health.jsonl').read_text().splitlines()]
+        assert [r['status'] for r in health if r.get('scope') == 'G1'] == ['BLOCKED', 'BLOCKED']
+        assert [r['status'] for r in health if r.get('scope') == 'G1_after_paired_exclusion'] == [
+            'READY', 'READY']
+        return
     if proceeds:
         signal = call()
         assert signal.findings['n_executed'] == 1

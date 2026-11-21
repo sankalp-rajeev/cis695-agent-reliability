@@ -80,7 +80,8 @@ def rows(path):
 def test_switches_parse_and_name():
     mod = _script()
     assert mod.parse_switches("r2=0,r3=1,r6=0") == {
-        "r2_v3_reject": False, "r3_extended_reject": True, "r6_accept_v2_not_available": False}
+        "r2_v3_reject": False, "r3_extended_reject": True, "r6_accept_v2_not_available": False,
+        "r6b_accept_one_uncovered": False}
     for bad in ("r2=0,r3=1", "r2=0,r3=1,r6=2", "r2=0,r3=1,r6=0,r6=1", "x=0,r3=1,r6=0"):
         with pytest.raises(ValueError):
             mod.parse_switches(bad)
@@ -101,7 +102,8 @@ def test_switches_off_recomputes_every_task(tmp_path):
     assert summary["counts"]["patch"]["decision"] == {"ACCEPT": 1, "FLAG": 2, "REJECT": 0}
     assert summary["tasks"] == 4 and summary["patch_tasks"] == 3
     assert json.loads((tmp_path / "out" / summary["summary_name"]).read_text())["switches"] == {
-        "r2_v3_reject": False, "r3_extended_reject": False, "r6_accept_v2_not_available": False}
+        "r2_v3_reject": False, "r3_extended_reject": False, "r6_accept_v2_not_available": False,
+        "r6b_accept_one_uncovered": False}
 
 
 def test_switches_on_change_only_their_rules(tmp_path):
@@ -197,7 +199,7 @@ def test_frozen_reads_switches_at_the_annotated_tag(tmp_path):
     repo = make_repo(tmp_path, tag="annotated")
     switches, frozen = mod.frozen_switches(repo)
     assert switches == {"r2_v3_reject": True, "r3_extended_reject": False,
-                        "r6_accept_v2_not_available": True}
+                        "r6_accept_v2_not_available": True, "r6b_accept_one_uncovered": False}
     commit = subprocess.check_output(["git", "-C", str(repo), "rev-parse", "HEAD"], text=True).strip()
     assert frozen == {"tag": "v1.5-frozen", "tag_commit": commit,
                       "config_path": "configs/verifier/v1_5.yaml",
@@ -347,3 +349,76 @@ def test_main_accepts_no_v2_fallback(tmp_path):
     assert summary["v2_fallback"] is False
     assert mod.main([str(run), "--switches", "r2=0,r3=0,r6=0", "--output", str(tmp_path / "p")]) == 0
     assert json.loads((tmp_path / "p" / "summary_v1_5_r2-0_r3-0_r6-0.json").read_text())["v2_fallback"]
+
+
+# Amendment A6: V3 recomputed from stored base and patched checks.
+
+def _v3_findings(path, base_status, exc="TypeError"):
+    tb = (f'Traceback (most recent call last):\n  File "<string>", line 1, in <module>\n'
+          f'  File "/testbed/{path}", line 3, in <module>\n    x()\n{exc}: boom\n')
+    module = path[:-3].replace("/", ".")
+    imp = {"kind": "import", "status": "FAIL", "command": ["python", "-c", "import " + module],
+           "exit_code": 1, "stdout": "", "stderr": tb,
+           "base_result": {"status": base_status, "exit_code": int(base_status == "FAIL"), "stdout": "",
+                           "stderr": tb if base_status == "FAIL" else ""}}
+    return {"summary": {"syntax": "PASS", "import": "FAIL"}, "v3_absolute_failure": True,
+            "checks": [imp]}
+
+
+@pytest.mark.parametrize("base_status,added,expected", [
+    ("FAIL", False, ("False", "import", "")),
+    ("PASS", False, ("True", "", "")),
+    ("FAIL", True, ("False", "", "import")),
+], ids=["pre-existing", "real", "patch-added-module"])
+def test_v3_is_recomputed_with_added_files_from_the_sealed_patch(tmp_path, base_status, added, expected):
+    mod = _script()
+    root = tmp_path / "run"
+    root.mkdir()
+    record = _record("c__c-1", v2="PASS", v4="PASS", decision="FLAG",
+                     v4_findings=_per_requirement({"PASS": 1}, full_pass=True))
+    record["static"]["outcome"] = "FAIL"
+    record["static"]["findings"] = _v3_findings("pkg/mod.py", base_status)
+    folder = root / "tasks" / "c__c-1"
+    folder.mkdir(parents=True)
+    (folder / RECORD).write_text(json.dumps(record))
+    header = "new file mode 100644\n--- /dev/null\n" if added else "--- a/pkg/mod.py\n"
+    (folder / "patch.diff").write_text("diff --git a/pkg/mod.py b/pkg/mod.py\n" + header +
+                                       "+++ b/pkg/mod.py\n@@ -0,0 +1 @@\n+x = 1\n")
+    (root / "header.json").write_text(json.dumps({"policy_version": "v1.4.1-full"}))
+    (root / "completion.json").write_text(json.dumps({
+        "status": "COMPLETE", "completed_tasks": ["c__c-1"], "no_patch_tasks": []}))
+    files = {p.relative_to(root).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
+             for p in root.rglob("*") if p.is_file()}
+    (root / "seal.json").write_text(json.dumps({"status": "COMPLETE", "files_sha256": files}))
+    row = rows(mod.decide_run(root, mod.parse_switches("r2=1,r3=0,r6=0"), tmp_path / "o")["csv"])["c__c-1"]
+    assert (row["v3_absolute_failure"], row["v3_pre_existing"], row["v3_base_unknown"]) == expected
+    assert (row["rule_id"] == "R2") is (expected[0] == "True")
+
+
+# Amendment A8: r6b is an optional fourth switch.
+
+def test_r6b_switch_parses_and_names_files(tmp_path):
+    mod = _script()
+    assert mod.parse_switches("r2=0,r3=0,r6=0")["r6b_accept_one_uncovered"] is False
+    assert mod.parse_switches("r2=1,r3=0,r6=1,r6b=1")["r6b_accept_one_uncovered"] is True
+    for bad in ("r2=0,r3=0,r6=0,r6b=2", "r2=0,r3=0,r6=0,r6b=1,r6b=0", "r2=0,r3=0,r6b=1"):
+        with pytest.raises(ValueError):
+            mod.parse_switches(bad)
+    assert mod.tag(mod.parse_switches("r2=1,r3=0,r6=1,r6b=1")) == "r2-1_r3-0_r6-1_r6b-1"
+    assert mod.tag(mod.parse_switches("r2=1,r3=0,r6=1")) == "r2-1_r3-0_r6-1"
+    root = tmp_path / "run"
+    root.mkdir()
+    record = _record("d__d-1", v2="PASS", v4="NOT_AVAILABLE", decision="FLAG",
+                     v4_findings=_per_requirement({"PASS": 2, "UNCOVERED": 1}, passes=1))
+    (root / "tasks" / "d__d-1").mkdir(parents=True)
+    (root / "tasks" / "d__d-1" / RECORD).write_text(json.dumps(record))
+    (root / "header.json").write_text(json.dumps({"policy_version": "v1.4.1-full"}))
+    (root / "completion.json").write_text(json.dumps({
+        "status": "COMPLETE", "completed_tasks": ["d__d-1"], "no_patch_tasks": []}))
+    files = {p.relative_to(root).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
+             for p in root.rglob("*") if p.is_file()}
+    (root / "seal.json").write_text(json.dumps({"status": "COMPLETE", "files_sha256": files}))
+    off = rows(mod.decide_run(root, mod.parse_switches("r2=0,r3=0,r6=0"), tmp_path / "a")["csv"])["d__d-1"]
+    on = rows(mod.decide_run(root, mod.parse_switches("r2=0,r3=0,r6=0,r6b=1"), tmp_path / "b")["csv"])["d__d-1"]
+    assert (off["rule_id"], on["rule_id"], on["decision"]) == ("R7", "R6b", "ACCEPT")
+    assert on["v4_uncovered_units"] == "1"

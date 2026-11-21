@@ -32,6 +32,8 @@ The three prompt hashes equal the ones the re-pilot recorded in every task's `ve
 
 Per-response fingerprints are already in every generator trajectory, so no recording code was added. If the fingerprint changes, it is logged as a deviation, not a stop (amendment A2).
 
+**Correction (21 Nov):** the re-pilot count is **286 of 286** responses with the pinned fingerprint, not 858 of 858. The first count read the combined trajectory file as well as the per-conversation files, so each response was counted three times. The conclusion is unchanged. See [AMENDMENT_2026-11-21.md](AMENDMENT_2026-11-21.md), "Correction: pilot 2 fingerprint count". The file hashes above are unchanged.
+
 ## DeepSeek balance
 
 $8.64, read from the provider balance API on 2026-11-21 16:05 UTC, after the verification request. The previous reading was $9.03, before the first pilot. The ledger cost of the two pilots is $1.00 ($0.670 + $0.331), but the reported balance fell by $0.39. This gap has not been explained. The figure above is the provider's own reading.

@@ -538,3 +538,99 @@ def test_study_config_selects_v1_5_with_switches_off():
 def test_replace_keeps_v1_5_fields():
     evidence = replace(ev(v4_failing_units=0), regression=NA)
     assert isinstance(evidence, EvidenceV15) and evidence.v4_design == "per_requirement"
+
+
+# Amendment A8: switch r6b, between R6 and R7.
+
+R6B = "r6b_accept_one_uncovered"
+
+
+def r6b_table():
+    """Per-requirement V4 NOT_AVAILABLE with uncovered and NO_RESULT requirement counts."""
+    for (integrity, (v2, v2_absence, v2_crash), applies, prohibited, v3, v1_incomplete, risk,
+         uncovered, no_result, failing, passing) in itertools.product(
+            OUTCOMES, V2_CASES, (True, False), (False, True), (False, True), (False, True),
+            (False, True), (0, 1, 2), (0, 1), (0, 1), (0, 1, 2)):
+        yield EvidenceV15(
+            integrity=integrity, regression=v2, v2_absence=v2_absence,
+            v2_patched_timeout_or_crash=v2_crash, reproduction=NA, patch_applies=applies,
+            prohibited_manipulation=prohibited, v3_absolute_failure=v3,
+            v1_analysis_incomplete=v1_incomplete, high_severity_risk=risk,
+            v4_design="per_requirement", v4_full_pass=False, v4_failing_units=failing,
+            v4_pass_units=passing, v4_uncovered_units=uncovered, v4_no_result_units=no_result,
+        )
+
+
+R6B_CASES = tuple(r6b_table())
+
+
+def r6b_conditions(e):
+    return (e.v4_design == "per_requirement" and e.reproduction is NA and e.regression is P
+            and e.v4_uncovered_units == 1 and e.v4_failing_units == 0 and e.v4_no_result_units == 0
+            and e.v4_pass_units >= 1 and e.integrity is P and e.patch_applies
+            and not e.prohibited_manipulation and not e.v3_absolute_failure
+            and not e.v1_analysis_incomplete and not e.high_severity_risk)
+
+
+def test_r6b_is_off_by_default_and_in_the_switch_names():
+    from reliability.verifier.policy_v1_5 import SWITCH_NAMES
+    assert R6B in SWITCH_NAMES and getattr(FullPolicyV15(), R6B) is False
+    assert RULE_DECISIONS["R6b"] is Decision.ACCEPT
+
+
+@pytest.mark.parametrize("switches", SWITCHES, ids=lambda s: "".join(str(int(v)) for v in s.values()))
+def test_r6b_off_changes_nothing(switches):
+    # With r6b off the uncovered and NO_RESULT counts it reads are ignored, and the
+    # main truth table (no uncovered requirement) is unchanged by turning r6b on.
+    off, on = FullPolicyV15(**switches), FullPolicyV15(**switches, **{R6B: True})
+    for evidence in R6B_CASES:
+        record = off.decide(evidence)
+        assert record.rule_id != "R6b"
+        zeroed = replace(evidence, v4_uncovered_units=0, v4_no_result_units=0)
+        assert record.decision is off.decide(zeroed).decision
+    for evidence in CASES:
+        assert on.decide(evidence).decision is off.decide(evidence).decision
+
+
+@pytest.mark.parametrize("switches", SWITCHES, ids=lambda s: "".join(str(int(v)) for v in s.values()))
+def test_r6b_on_accepts_exactly_its_class(switches):
+    off, on = FullPolicyV15(**switches), FullPolicyV15(**switches, **{R6B: True})
+    for evidence in R6B_CASES:
+        before, after = off.decide(evidence), on.decide(evidence)
+        if r6b_conditions(evidence):
+            assert (after.decision, after.rule_id) == (Decision.ACCEPT, "R6b")
+            assert before.decision is Decision.FLAG and before.rule_id == "R7"
+        else:
+            assert after.rule_id != "R6b" and after.decision is before.decision
+
+
+def r6b_ev(**kw):
+    base = dict(reproduction=NA, v4_full_pass=False, v4_pass_units=2, v4_uncovered_units=1)
+    base.update(kw)
+    return ev(**base)
+
+
+def test_r6b_accepts_one_uncovered_requirement_when_switched_on():
+    record = FullPolicyV15(**{R6B: True}).decide(r6b_ev())
+    assert (record.decision, record.rule_id, record.review_label) == (Decision.ACCEPT, "R6b", "none")
+    assert any("uncovered" in reason for reason in record.reasons)
+    off = FullPolicyV15().decide(r6b_ev())
+    assert (off.decision, off.rule_id, off.review_label) == (Decision.FLAG, "R7", "likely_right")
+
+
+@pytest.mark.parametrize("kw", [
+    dict(v4_uncovered_units=2), dict(v4_uncovered_units=0), dict(v4_no_result_units=1),
+    dict(v4_failing_units=1), dict(v4_pass_units=0), dict(regression=NA, v2_absence=NOTHING),
+    dict(v4_design="legacy"), dict(high_severity_risk=True), dict(v3_absolute_failure=True),
+    dict(v1_analysis_incomplete=True), dict(integrity=NA),
+], ids=lambda kw: ",".join(f"{k}={v}" for k, v in kw.items()))
+def test_r6b_needs_every_condition(kw):
+    record = FullPolicyV15(**{R6B: True}).decide(r6b_ev(**kw))
+    assert record.rule_id != "R6b" and record.decision is not Decision.ACCEPT
+
+
+def test_adapter_reads_uncovered_and_no_result_counts():
+    evidence = evidence_from_signals(_signals(NA, _per_requirement(1, {"PASS": 2, "UNCOVERED": 1, "NO_RESULT": 1})))
+    assert (evidence.v4_uncovered_units, evidence.v4_no_result_units, evidence.v4_pass_units) == (1, 1, 2)
+    legacy = evidence_from_signals(_signals(F, {"setup": {}, "patched": [{"verdict": "fail"}]}))
+    assert (legacy.v4_uncovered_units, legacy.v4_no_result_units) == (0, 0)

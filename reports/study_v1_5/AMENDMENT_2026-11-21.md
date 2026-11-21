@@ -72,3 +72,44 @@ The analysis items (audit M1-M6) will come in a second amendment before Phase 11
   It never applies to any other absence, including error (which is how an unreliable baseline is recorded), timeout, disabled, not configured and not implemented.
 - **Reason.** In the code, "incomplete" means V2 ran with no failures in the tests that finished: at least one test executed, with no regression and no regression error, but the evidence was not complete. That is positive evidence, unlike an error. A patched-side timeout or crash could hide a failure, so those cases stay excluded.
 - **When and why it was made.** The change was prompted by part E's arm B replay with old-V4 signals ([PART_E.md](build/PART_E.md)). Arm B's V2 and V4 outcomes and its decisions under the switches were therefore known when it was made. No arm B labels were opened. No Phase 6 or test-set data exists yet.
+
+## A6–A8 and a correction, 21 Nov (Phase 6 dev gold review)
+
+These three items came from the read-only review of the sealed Phase 6 dev gold run (`runs/study_dev_gold`). Only dev data was used. Arm B's outcomes under the v1.5 rules were already known from part E's replay with old-V4 signals. No labels were opened, and no test-set data exists yet. The code is in Phase 3 part F ([PART_F.md](build/PART_F.md)).
+
+### A6. V3 pre-existing failures
+
+- **Old rule.** A V3 syntax or import FAIL on the patched tree is a V3 failure (`v3_absolute_failure`), whatever the same check does on the base tree.
+- **New rule.**
+  - A syntax or import failure counts as a V3 failure only if the same check does not fail the same way on base. That means base PASS, a different final exception type, or a failure in a different file.
+  - The same exception type in the same file on base is **pre-existing**. The check is then V3 not available: never PASS, never a failure.
+  - **Modules the patch adds** (or renames to) have no base version. For them, only a syntax error (py_compile) counts as a V3 failure. An import-time failure in a patch-added module is recorded as **base-unknown**, and that check is V3 not available.
+  - A stored syntax FAIL with no base result stays a V3 failure, marked base-unknown. Live V3 runs the syntax check on base from now on, when it fails on the patched tree.
+  - If a failure can't be attributed to a file, it is pre-existing only when no check target is patch-added.
+  - The v1.5 evidence (`decide_v1_5.py`) recomputes this from the stored base and patched V3 results, and from the sealed patch's added files. v1.4.1's own V3 evidence is unchanged.
+- **Reason.** The Phase 6 gold patch `django__django-16631` failed the import check with `ImproperlyConfigured` on both trees. The image doesn't configure Django settings, and importing a module that defines a model needs them. It is an environment gap, not evidence about the patch. A new module can't be compared with base, and an import failure there can't be told apart from the same environment gap (a correct new Django model module raises `ImproperlyConfigured` too). V2 and V4 still exercise new modules.
+
+### A7. Paired collection errors in V2
+
+- **Old rule.** Any collection error in a selected test module blocks V2's run-health check. V2 is then NOT_AVAILABLE, absence error.
+- **New rule.**
+  - A selected module whose collection fails on both base and patched, with the same exception type, is excluded from V2's selection. It is recorded with its module, exception type, excluded tests and trees, like a paired skip, and V2 runs the rest.
+  - The run-health check then runs again on the reduced selection, so every other guard still applies.
+  - A collection error on only one tree, a different exception type, or an error with no recognisable exception type still blocks.
+  - If no module remains, today's behaviour is kept (absence error).
+- **Reason.** In Phase 6, `pytest-dev__pytest-7236` and `pytest-dev__pytest-7521` lost V2 entirely. A few selected pytest modules couldn't be collected on either tree, because the images lack `hypothesis` and `xmlschema` (and a sample script raises `UsageError` on purpose). The other selected modules were healthy, so V2 could still check them.
+
+### A8. Switch r6b (default off)
+
+- **Old rule.** ACCEPT needs a V4 full pass (R6), so a per-requirement V4 with any uncovered requirement is FLAG (R7 "likely right").
+- **New rule.** New switch `r6b_accept_one_uncovered`, default off, with rule R6b between R6 and R7. R6b is ACCEPT when all of these hold:
+  - V1 passes with analysis complete, there is no V3 failure and no high-severity risk flag.
+  - V2 is PASS.
+  - The V4 is per-requirement with exactly one requirement UNCOVERED, every covered requirement PASS (at least one), none failing and none NO_RESULT.
+
+  Adoption in Phase 7 uses the same bar as R6's branch: at least 70% of the arm B patches it newly ACCEPTs must be correct. With r6b off, nothing changes.
+- **Reason.** In Phase 6, five gold patches had exactly one uncovered requirement, with every other requirement PASS and V2 PASS or absent. In each, the uncovered requirement's test was dropped only because it passed on the original code, so it couldn't show the bug. Nothing was failing.
+
+### Correction: pilot 2 fingerprint count
+
+The re-pilot has **286 of 286** generator responses with `system_fingerprint` `bc19ba97cbe016479903222bb1578db6`, not 858 of 858 as written under A2 and in V4_FREEZE.md and STATUS.md. The first count read the combined `generation_trajectory.jsonl` as well as the per-conversation files, so every response was counted three times. 284 of the responses are assistant turns. Two are user turns that carry the provider response the harness could not parse. The conclusion is unchanged: every response has the pinned fingerprint.

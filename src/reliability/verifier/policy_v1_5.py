@@ -21,6 +21,10 @@ ordering human review of FLAGs. First match wins:
                 [r6_accept_v2_not_available], V2 NOT_AVAILABLE also counts
                 when it had nothing to check, or was incomplete with no
                 patched-side timeout or crash: amendment A4 (iii) revised)
+    R6b ACCEPT  [r6b_accept_one_uncovered] (amendment A8) R6's conditions with V2
+                PASS, and per-requirement V4 with exactly one requirement
+                UNCOVERED, every covered one PASS (at least one), none
+                failing and none NO_RESULT
     R7  FLAG    nothing failing, V4 not PASS        likely_right if V2 PASS or
                                                     a V4 unit passed, else none
     R8  FLAG    anything else, with v1.4.1's reasons
@@ -38,7 +42,8 @@ from reliability.verifier.decision import Decision, DecisionRecord, SignalOutcom
 from reliability.verifier.policy_v1_4 import EvidenceV14
 from reliability.verifier.policy_v1_4_1 import FullPolicyV141
 
-SWITCH_NAMES = ("r2_v3_reject", "r3_extended_reject", "r6_accept_v2_not_available")
+SWITCH_NAMES = ("r2_v3_reject", "r3_extended_reject", "r6_accept_v2_not_available",
+                "r6b_accept_one_uncovered")
 V4_DESIGNS = ("per_requirement", "legacy")
 #: V2 absences the R6 switch can accept (SignalAbsence values). Incomplete
 #: qualifies only without a patched-side timeout or crash (A4 (iii) revised).
@@ -49,7 +54,7 @@ REVIEW_LABELS = ("likely_wrong", "likely_right", "signals_disagree", "none")
 RULE_DECISIONS = {
     "R1": Decision.REJECT, "R2": Decision.REJECT, "R3": Decision.REJECT,
     "R3b": Decision.REJECT, "R4": Decision.FLAG, "R5": Decision.FLAG,
-    "R6": Decision.ACCEPT, "R7": Decision.FLAG, "R8": Decision.FLAG,
+    "R6": Decision.ACCEPT, "R6b": Decision.ACCEPT, "R7": Decision.FLAG, "R8": Decision.FLAG,
 }
 
 
@@ -62,11 +67,19 @@ class EvidenceV15(EvidenceV14):
     v4_failing_units: int = 0
     #: requirements (or kept tests) at PASS
     v4_pass_units: int = 0
+    #: per-requirement V4 only: requirements with no kept test, and with NO_RESULT
+    v4_uncovered_units: int = 0
+    v4_no_result_units: int = 0
     #: why V2 did not report (a SignalAbsence value), None when it reported
     v2_absence: str | None = None
     #: a test timed out or crashed on the patched tree (pass or patched
     #: confirmation), or no patched run is stored so it cannot be ruled out
     v2_patched_timeout_or_crash: bool = False
+    #: V3 checks that are not available under amendment A6: the same failure
+    #: on base (PRE_EXISTING), or an import failure in a patch-added module
+    #: (BASE_UNKNOWN). v3_absolute_failure counts only A6 failures.
+    v3_pre_existing: tuple[str, ...] = ()
+    v3_base_unknown: tuple[str, ...] = ()
 
     def as_dict(self):
         return {
@@ -76,8 +89,12 @@ class EvidenceV15(EvidenceV14):
             "v4_fail_confirmed": self.v4_fail_confirmed,
             "v4_failing_units": self.v4_failing_units,
             "v4_pass_units": self.v4_pass_units,
+            "v4_uncovered_units": self.v4_uncovered_units,
+            "v4_no_result_units": self.v4_no_result_units,
             "v2_absence": self.v2_absence,
             "v2_patched_timeout_or_crash": self.v2_patched_timeout_or_crash,
+            "v3_pre_existing": list(self.v3_pre_existing),
+            "v3_base_unknown": list(self.v3_base_unknown),
         }
 
 
@@ -98,6 +115,7 @@ class FullPolicyV15(FullPolicyV141):
     r2_v3_reject: bool = False
     r3_extended_reject: bool = False
     r6_accept_v2_not_available: bool = False
+    r6b_accept_one_uncovered: bool = False
 
     def decide(self, evidence) -> DecisionRecordV15:
         v2, v4 = evidence.regression, evidence.reproduction
@@ -163,6 +181,18 @@ class FullPolicyV15(FullPolicyV141):
                                "(r6_accept_v2_not_available)")
             return self._rule("R6", reasons, evidence)
 
+        if (self.r6b_accept_one_uncovered and v2.is_pass and v4 is SignalOutcome.NOT_AVAILABLE
+                and getattr(evidence, "v4_design", "legacy") == "per_requirement"
+                and getattr(evidence, "v4_uncovered_units", 0) == 1 and failing == 0
+                and getattr(evidence, "v4_no_result_units", 0) == 0 and passing >= 1):
+            # Amendment A8: R6's conditions with V4 standing in for one uncovered requirement.
+            accept = FullPolicyV141.decide(self, replace(evidence, reproduction=SignalOutcome.PASS))
+            if accept.decision is Decision.ACCEPT:
+                return self._rule("R6b", [
+                    "all accept conditions met",
+                    f"V4: {passing} requirement(s) PASS, exactly one uncovered, none failing or NO_RESULT "
+                    "(r6b_accept_one_uncovered)"], evidence)
+
         if not v2.is_fail and not v4.is_fail and not v3 and not v4.is_pass:
             likely_right = v2.is_pass or getattr(evidence, "v4_pass_units", 0) >= 1
             return self._rule("R7", old.reasons, evidence,
@@ -195,6 +225,8 @@ def _v4_fields(reproduction) -> dict:
             v4_fail_confirmed=confirmed,
             v4_failing_units=counts.get("FAIL_CONFIRMED", 0) + counts.get("FAIL_SINGLE", 0),
             v4_pass_units=counts.get("PASS", 0),
+            v4_uncovered_units=counts.get("UNCOVERED", 0),
+            v4_no_result_units=counts.get("NO_RESULT", 0),
         )
     verdicts = [test.get("verdict") for test in findings.get("patched", ())]
     return dict(v4_design=design, v4_full_pass=is_pass, v4_fail_confirmed=0,
@@ -219,18 +251,35 @@ def patched_timeout_or_crash(findings) -> bool:
         for run in runs)
 
 
-def evidence_from_signals(signals) -> EvidenceV15:
+def evidence_from_signals(signals, *, added_paths=None) -> EvidenceV15:
+    """v1.5 evidence. V3 is recomputed from the stored base and patched checks (A6).
+
+    `added_paths` are the files the patch adds; when None, a live record's
+    `patch_added_paths` is used, and otherwise no file is taken as added.
+    """
     from reliability.verifier.policy_v1_4 import evidence_from_signals as v1_4_evidence
     from reliability.verifier.record import SignalKind
+    from reliability.verifier.static_v1_4 import paired_v3
 
     base = v1_4_evidence(signals)
     regression = signals[SignalKind.REGRESSION]
     absence = regression.absence
+    static = signals[SignalKind.STATIC].findings
+    if added_paths is None:
+        added_paths = static.get("patch_added_paths") or ()
+    v3 = paired_v3(static.get("checks") or (), added_paths)
+    # A summary FAIL with no stored check to pair cannot be recomputed: it stays a failure.
+    unpaired = [kind for kind in ("syntax", "import")
+                if (static.get("summary") or {}).get(kind) == "FAIL" and kind not in v3["checks"]]
+    fields = {k: getattr(base, k) for k in EvidenceV14.__dataclass_fields__}
+    fields["v3_absolute_failure"] = v3["failure"] or bool(unpaired)
     return EvidenceV15(
-        **{k: getattr(base, k) for k in EvidenceV14.__dataclass_fields__},
+        **fields,
         **_v4_fields(signals[SignalKind.REPRODUCTION]),
         v2_absence=absence.value if absence is not None else None,
         v2_patched_timeout_or_crash=patched_timeout_or_crash(regression.findings),
+        v3_pre_existing=tuple(v3["pre_existing"]),
+        v3_base_unknown=tuple(v3["base_unknown"]),
     )
 
 
