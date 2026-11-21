@@ -57,7 +57,7 @@ LABEL_WORDS = FORBIDDEN_NAMES + ("grading", "per_instance_details", "git_peek",
 SWITCH_KEYS = {"r2": "r2_v3_reject", "r3": "r3_extended_reject", "r6": "r6_accept_v2_not_available"}
 EVIDENCE_FIELDS = ("v3_absolute_failure", "v1_analysis_incomplete", "high_severity_risk",
                    "v4_design", "v4_full_pass", "v4_fail_confirmed", "v4_failing_units",
-                   "v4_pass_units", "v2_absence")
+                   "v4_pass_units", "v2_absence", "v2_patched_timeout_or_crash")
 FIELDS = ("instance_id", "has_patch", "stored_decision", "stored_policy_version",
           "integrity", "v2", "v4", *EVIDENCE_FIELDS, "v2_fallback_removed",
           "decision", "rule_id", "review_label")

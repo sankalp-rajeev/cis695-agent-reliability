@@ -17,9 +17,10 @@ ordering human review of FLAGs. First match wins:
     R3b REJECT  V2 FAIL and V4 neither PASS nor FAIL
     R4  FLAG    V4 FAIL                                        likely_wrong
     R5  FLAG    V2 FAIL and V4 PASS                            signals_disagree
-    R6  ACCEPT  v1.4.1's ACCEPT conditions with a V4 full pass (V2
-                NOT_AVAILABLE because it had nothing to check also counts
-                with [r6_accept_v2_not_available], amendment A4 (iii))
+    R6  ACCEPT  v1.4.1's ACCEPT conditions with a V4 full pass (with
+                [r6_accept_v2_not_available], V2 NOT_AVAILABLE also counts
+                when it had nothing to check, or was incomplete with no
+                patched-side timeout or crash: amendment A4 (iii) revised)
     R7  FLAG    nothing failing, V4 not PASS        likely_right if V2 PASS or
                                                     a V4 unit passed, else none
     R8  FLAG    anything else, with v1.4.1's reasons
@@ -39,8 +40,11 @@ from reliability.verifier.policy_v1_4_1 import FullPolicyV141
 
 SWITCH_NAMES = ("r2_v3_reject", "r3_extended_reject", "r6_accept_v2_not_available")
 V4_DESIGNS = ("per_requirement", "legacy")
-#: The one V2 absence the R6 switch accepts (SignalAbsence.NOTHING_TO_CHECK).
+#: V2 absences the R6 switch can accept (SignalAbsence values). Incomplete
+#: qualifies only without a patched-side timeout or crash (A4 (iii) revised).
 V2_NOTHING_TO_CHECK = "nothing_to_check"
+V2_INCOMPLETE = "incomplete"
+_TIMEOUT_OR_CRASH = ("timeout", "crash")
 REVIEW_LABELS = ("likely_wrong", "likely_right", "signals_disagree", "none")
 RULE_DECISIONS = {
     "R1": Decision.REJECT, "R2": Decision.REJECT, "R3": Decision.REJECT,
@@ -60,6 +64,9 @@ class EvidenceV15(EvidenceV14):
     v4_pass_units: int = 0
     #: why V2 did not report (a SignalAbsence value), None when it reported
     v2_absence: str | None = None
+    #: a test timed out or crashed on the patched tree (pass or patched
+    #: confirmation), or no patched run is stored so it cannot be ruled out
+    v2_patched_timeout_or_crash: bool = False
 
     def as_dict(self):
         return {
@@ -70,6 +77,7 @@ class EvidenceV15(EvidenceV14):
             "v4_failing_units": self.v4_failing_units,
             "v4_pass_units": self.v4_pass_units,
             "v2_absence": self.v2_absence,
+            "v2_patched_timeout_or_crash": self.v2_patched_timeout_or_crash,
         }
 
 
@@ -139,15 +147,19 @@ class FullPolicyV15(FullPolicyV141):
             return self._rule("R5", old.reasons, evidence, "signals_disagree")
 
         accept_evidence = evidence
+        absence = getattr(evidence, "v2_absence", None)
         if (self.r6_accept_v2_not_available and v2 is SignalOutcome.NOT_AVAILABLE
-                and getattr(evidence, "v2_absence", None) == V2_NOTHING_TO_CHECK):
-            # Amendment A4 (iii): any other absence means V2 could not run.
+                and (absence == V2_NOTHING_TO_CHECK
+                     or (absence == V2_INCOMPLETE
+                         and not getattr(evidence, "v2_patched_timeout_or_crash", True)))):
+            # Amendment A4 (iii) revised: error (including an unreliable
+            # baseline), timeout and every other absence mean V2 could not run.
             accept_evidence = replace(evidence, regression=SignalOutcome.PASS)
         accept = old if accept_evidence is evidence else FullPolicyV141.decide(self, accept_evidence)
         if getattr(evidence, "v4_full_pass", False) and accept.decision is Decision.ACCEPT:
             reasons = list(accept.reasons)
             if accept_evidence is not evidence:
-                reasons.append("regression NOT_AVAILABLE (nothing to check) accepted "
+                reasons.append(f"regression NOT_AVAILABLE ({absence.replace('_', ' ')}) accepted "
                                "(r6_accept_v2_not_available)")
             return self._rule("R6", reasons, evidence)
 
@@ -189,16 +201,36 @@ def _v4_fields(reproduction) -> dict:
                 v4_failing_units=verdicts.count("fail"), v4_pass_units=verdicts.count("pass"))
 
 
+def patched_timeout_or_crash(findings) -> bool:
+    """Whether a stored V2 patched run or patched confirmation has a timeout or crash.
+
+    True also when no patched run is stored, because then it cannot be ruled out.
+    """
+    patched = findings.get("patched")
+    if not isinstance(patched, dict):
+        return True
+    runs = [patched] + [run for run in findings.get("confirmations") or ()
+                        if (run.get("confirmation") or {}).get("tree") == "patched"]
+    return any(
+        run.get("timed_out") is True
+        or any(test.get("status") in _TIMEOUT_OR_CRASH
+               for key in ("results", "raw_results", "execution_results")
+               for test in run.get(key) or ())
+        for run in runs)
+
+
 def evidence_from_signals(signals) -> EvidenceV15:
     from reliability.verifier.policy_v1_4 import evidence_from_signals as v1_4_evidence
     from reliability.verifier.record import SignalKind
 
     base = v1_4_evidence(signals)
-    absence = signals[SignalKind.REGRESSION].absence
+    regression = signals[SignalKind.REGRESSION]
+    absence = regression.absence
     return EvidenceV15(
         **{k: getattr(base, k) for k in EvidenceV14.__dataclass_fields__},
         **_v4_fields(signals[SignalKind.REPRODUCTION]),
         v2_absence=absence.value if absence is not None else None,
+        v2_patched_timeout_or_crash=patched_timeout_or_crash(regression.findings),
     )
 
 

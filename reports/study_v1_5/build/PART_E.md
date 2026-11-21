@@ -117,3 +117,16 @@ The 4 R6 ACCEPTs that remain all have V2 nothing-to-check. This is label-free: n
 ## Nothing stopped
 
 Every gate gave the expected result.
+
+## Follow-up: A4 (iii) revised (21 Nov)
+
+Amendment section "A4 (iii) revised, 21 Nov": the R6 switch now also accepts V2 absence `incomplete`, but only when no test timed out or crashed on the patched tree. `EvidenceV15` gains `v2_patched_timeout_or_crash`, which comes from the stored patched run and patched confirmations, and is True when no patched run is stored. `decide_v1_5.py` writes it as a CSV column.
+
+The truth table now has **17,280** cases (576 × 30, with 6 V2 cases). With switches off it still differs from v1.4.1 in exactly the 16 A4 (ii) cases.
+
+Unit gate: 1,879 passed, 6 skipped, 6 failed, 17 errors, with IDs equal to the baseline. The v1.4.1 replay matched 51/51 decisions and 51/51 V2 outcomes, and v1.5 with switches off matched 51/51.
+
+All switches on, arm B: **14** decisions differ from `decision_P_invalid_excluded`.
+- The 7 REJECTs are unchanged.
+- 7 ACCEPTs come from R6: 4 with V2 nothing-to-check (astropy-13398, astropy-14508, matplotlib-24627, pylint-6903) and 3 with V2 incomplete and no patched timeout or crash (django-15499, django-16082, sympy-13480).
+- Two of Part D's R6 ACCEPTs stay out: `django__django-11095` (V2 incomplete, but its stored patched run has crash statuses) and `pytest-dev__pytest-7236` (V2 error).

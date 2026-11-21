@@ -61,3 +61,14 @@ The code for (ii), (iii) and (v) is written and unit-tested before Phase 7. None
 ## Not in this amendment
 
 The analysis items (audit M1-M6) will come in a second amendment before Phase 11.
+
+## A4 (iii) revised, 21 Nov
+
+- **Old rule (A4 (iii) as first written).** R6's V2-NOT_AVAILABLE branch (switch `r6_accept_v2_not_available`) applies only when V2's absence is nothing-to-check.
+- **New rule.** The branch applies in two cases:
+  - V2's absence is nothing-to-check.
+  - V2's absence is incomplete, and no test timed out or crashed on the patched tree. This covers the patched pass and every patched confirmation, including a pass that timed out as a whole. If no patched run is stored, a timeout or crash cannot be ruled out, so the branch does not apply.
+
+  It never applies to any other absence, including error (which is how an unreliable baseline is recorded), timeout, disabled, not configured and not implemented.
+- **Reason.** In the code, "incomplete" means V2 ran with no failures in the tests that finished: at least one test executed, with no regression and no regression error, but the evidence was not complete. That is positive evidence, unlike an error. A patched-side timeout or crash could hide a failure, so those cases stay excluded.
+- **When and why it was made.** The change was prompted by part E's arm B replay with old-V4 signals ([PART_E.md](build/PART_E.md)). Arm B's V2 and V4 outcomes and its decisions under the switches were therefore known when it was made. No arm B labels were opened. No Phase 6 or test-set data exists yet.

@@ -18,9 +18,20 @@ from reliability.verifier.policy_v1_5 import (
 P, F, NA = SignalOutcome.PASS, SignalOutcome.FAIL, SignalOutcome.NOT_AVAILABLE
 OUTCOMES = (P, F, NA)
 NOTHING = "nothing_to_check"
-#: V2 outcome with its absence: an absent V2 either had nothing to check or
-#: could not run (any other absence, represented by "error").
-V2_CASES = ((P, None), (F, None), (NA, NOTHING), (NA, "error"))
+INCOMPLETE = "incomplete"
+#: V2 outcome, its absence, and whether a patched-side test timed out or
+#: crashed. An absent V2 had nothing to check, was incomplete (with or without
+#: a patched-side timeout or crash), or could not run (any other absence,
+#: represented by "error").
+V2_CASES = ((P, None, False), (F, None, False), (NA, NOTHING, False), (NA, INCOMPLETE, False),
+            (NA, INCOMPLETE, True), (NA, "error", False))
+
+
+def r6_branch_allowed(evidence):
+    """Amendment A4 (iii) revised: nothing to check, or incomplete with no patched timeout/crash."""
+    return evidence.regression is NA and (
+        evidence.v2_absence == NOTHING
+        or (evidence.v2_absence == INCOMPLETE and not evidence.v2_patched_timeout_or_crash))
 SWITCHES = tuple(
     dict(zip(("r2_v3_reject", "r3_extended_reject", "r6_accept_v2_not_available"), bits))
     for bits in itertools.product((False, True), repeat=3)
@@ -49,7 +60,7 @@ def consistent(v4, design, confirmed, failing, passing):
 
 
 def truth_table():
-    for (integrity, (v2, v2_absence), v4, applies, prohibited, v3, v1_incomplete, risk, design,
+    for (integrity, (v2, v2_absence, v2_crash), v4, applies, prohibited, v3, v1_incomplete, risk, design,
          confirmed, failing, passing) in itertools.product(
             OUTCOMES, V2_CASES, OUTCOMES, (True, False), (False, True), (False, True),
             (False, True), (False, True), ("per_requirement", "legacy"), (0, 1), (0, 1, 2),
@@ -57,7 +68,8 @@ def truth_table():
         if not consistent(v4, design, confirmed, failing, passing):
             continue
         yield EvidenceV15(
-            integrity=integrity, regression=v2, v2_absence=v2_absence, reproduction=v4,
+            integrity=integrity, regression=v2, v2_absence=v2_absence,
+            v2_patched_timeout_or_crash=v2_crash, reproduction=v4,
             patch_applies=applies,
             prohibited_manipulation=prohibited, v3_absolute_failure=v3,
             v1_analysis_incomplete=v1_incomplete, high_severity_risk=risk,
@@ -95,11 +107,12 @@ def v4_fail(**kw):
 
 
 def test_truth_table_size_is_reported():
-    # 3 integrity outcomes x 4 V2 cases (PASS, FAIL, NOT_AVAILABLE with nothing
-    # to check, NOT_AVAILABLE for another reason) x 2^5 flags = 384, times 30
-    # consistent (V4 outcome, design, confirmed, failing, passing) combinations:
+    # 3 integrity outcomes x 6 V2 cases (PASS, FAIL, NOT_AVAILABLE with nothing
+    # to check, incomplete without and with a patched timeout/crash, another
+    # absence) x 2^5 flags = 576, times 30 consistent (V4 outcome, design,
+    # confirmed, failing, passing) combinations:
     # PASS 1+1, FAIL 8 per_requirement + 4 legacy, NOT_AVAILABLE 10 + 6.
-    assert len(CASES) == 384 * 30 == 11520
+    assert len(CASES) == 576 * 30 == 17280
 
 
 @pytest.mark.parametrize("switches", SWITCHES, ids=lambda s: "".join(str(int(v)) for v in s.values()))
@@ -156,7 +169,7 @@ def test_switches_only_change_decisions_through_their_own_rules(switches):
             if new.rule_id == "R3":
                 assert any("extended" in r for r in new.reasons)
             if new.rule_id == "R6":
-                assert evidence.regression is NA and evidence.v2_absence == NOTHING
+                assert r6_branch_allowed(evidence)
 
 
 def test_defaults_and_identity():
@@ -266,12 +279,27 @@ def test_r6_accepts_v2_not_available_only_when_switched_on():
 
 
 @pytest.mark.parametrize("absence", [
-    "error", "timeout", "incomplete", "disabled", "not_configured", "not_implemented", None])
-def test_r6_switch_needs_nothing_to_check(absence):
-    # Amendment A4 (iii): a V2 that could not run says nothing; only
-    # "nothing to check" qualifies for the R6 V2-NOT_AVAILABLE branch.
+    "error", "timeout", "disabled", "not_configured", "not_implemented", None])
+def test_r6_switch_never_accepts_a_v2_that_could_not_run(absence):
+    # Amendment A4 (iii) revised: error (which includes an unreliable
+    # baseline), timeout and every other absence stay FLAG.
     record = FullPolicyV15(r6_accept_v2_not_available=True).decide(
         ev(regression=NA, v2_absence=absence))
+    assert (record.decision, record.rule_id) == (Decision.FLAG, "R8")
+
+
+def test_r6_switch_accepts_incomplete_v2_without_patched_timeout_or_crash():
+    record = FullPolicyV15(r6_accept_v2_not_available=True).decide(
+        ev(regression=NA, v2_absence=INCOMPLETE, v2_patched_timeout_or_crash=False))
+    assert (record.decision, record.rule_id) == (Decision.ACCEPT, "R6")
+    assert any("incomplete" in reason for reason in record.reasons)
+    off = FullPolicyV15().decide(ev(regression=NA, v2_absence=INCOMPLETE))
+    assert (off.decision, off.rule_id) == (Decision.FLAG, "R8")
+
+
+def test_r6_switch_rejects_incomplete_v2_with_patched_timeout_or_crash():
+    record = FullPolicyV15(r6_accept_v2_not_available=True).decide(
+        ev(regression=NA, v2_absence=INCOMPLETE, v2_patched_timeout_or_crash=True))
     assert (record.decision, record.rule_id) == (Decision.FLAG, "R8")
 
 
@@ -438,6 +466,42 @@ def test_adapter_records_v2_absence():
     assert evidence_from_signals(signals).v2_absence == "error"
     assert evidence_from_signals(_signals(P, {"setup": {}, "patched": []})).v2_absence is None
     assert evidence_from_signals(signals).as_dict()["v2_absence"] == "error"
+
+
+def _incomplete_v2(patched=None, confirmations=()):
+    from reliability.verifier.record import SignalKind, SignalRecord
+
+    findings = {"confirmations": list(confirmations)}
+    if patched is not None:
+        findings["patched"] = patched
+    signals = _signals(P, {"setup": {}, "patched": [{"verdict": "pass"}]}, regression=NA)
+    signals[SignalKind.REGRESSION] = SignalRecord(
+        kind=SignalKind.REGRESSION, outcome=NA, absence=INCOMPLETE, detail="x", findings=findings)
+    return evidence_from_signals(signals)
+
+
+def _run(*statuses, timed_out=False, tree=None, key="results"):
+    run = {"results": [], "raw_results": [], "execution_results": [], "timed_out": timed_out}
+    run[key] = [{"test_id": f"t{i}", "status": s} for i, s in enumerate(statuses)]
+    if tree:
+        run["confirmation"] = {"tree": tree}
+    return run
+
+
+@pytest.mark.parametrize("patched,confirmations,expected", [
+    (_run("passed", "skipped"), (), False),
+    (_run("passed", "timeout"), (), True),
+    (_run("passed", "crash", key="raw_results"), (), True),
+    (_run("passed", "timeout", key="execution_results"), (), True),
+    (_run("passed", timed_out=True), (), True),
+    (_run("passed", "error", "collection_error"), (), False),
+    (_run("passed"), (_run("crash", tree="patched"),), True),
+    (_run("passed"), (_run("crash", tree="base"),), False),
+    (None, (), True),
+], ids=["clean", "timeout", "raw-crash", "execution-timeout", "pass-timed-out", "error-only",
+        "patched-confirmation-crash", "base-confirmation-crash", "no-patched-run"])
+def test_adapter_records_patched_timeout_or_crash(patched, confirmations, expected):
+    assert _incomplete_v2(patched, confirmations).v2_patched_timeout_or_crash is expected
 
 
 def test_adapter_keeps_v1_4_fields():
