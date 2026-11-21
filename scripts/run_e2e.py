@@ -25,11 +25,13 @@ from reliability.e2e_runner import git, run_batch, validate_mode
 from reliability.env import assert_clean_interpreter
 from reliability.provider_spend import ProviderLedger
 from reliability.provider_errors import ProviderTransientError
+from reliability.study_inputs import patch_digest, verification_source
 from reliability.umgpt_spend import BudgetCap
 from reliability.verifier.admission_reference import JSONProjection
 from reliability.verifier.run_v1_4_1 import (
     DEFAULT_VERIFIER_CONFIG, default_reproduction_setup, load_v2_settings, verify_task,
 )
+from reliability.verifier.reproduction_reuse import V4Reuse
 from reliability.verifier.source_integrity import SourceIntegrityError
 from reliability.verifier.task_specs import ROOT, load_registries, require_hash, sha, write
 from reliability.verifier.generic_health import rules_stamp
@@ -106,12 +108,18 @@ def main(argv=None):
     parser.add_argument('--mode', choices=('pilot', 'audited'), required=True)
     parser.add_argument('--freeze-tag')
     parser.add_argument('--verify-only-from', type=Path)
+    parser.add_argument('--reference-patches', action='store_true')
+    parser.add_argument('--reuse-v4-from', type=Path)
     parser.add_argument('--skip-v4', action='store_true')
     parser.add_argument('--ledger-file', type=Path, default=ROOT / 'runs/provider_spend_ledger.json')
     parser.add_argument('--deepseek-cap-usd', type=float, default=4.0)
     parser.add_argument('--um-cap-usd', type=float, default=20.0)
     parser.add_argument('--um-job-cap-usd', type=float, default=3.0)
     args = parser.parse_args(argv)
+    input_folder = args.verify_only_from.resolve() if args.verify_only_from is not None else None
+    source_fields, origin_rows = verification_source(input_folder, args.reference_patches, ROOT)
+    if args.reuse_v4_from is not None and (input_folder is None or args.skip_v4):
+        raise ValueError('--reuse-v4-from requires verification-only mode with V4 enabled')
     validate_mode(args.mode, args.freeze_tag, args.verify_only_from, args.skip_v4)
     verifier_config = args.verifier_config.resolve()
     v2_settings = load_v2_settings(verifier_config)
@@ -119,6 +127,11 @@ def main(argv=None):
     if not output.is_relative_to((ROOT / 'runs').resolve()):
         raise ValueError('--output must be under runs/')
     ids = manifest_ids(args.manifest)
+    supplied = frozen_inputs(input_folder, ids) if input_folder is not None else None
+    if origin_rows is not None:
+        for iid in ids:
+            if supplied[iid]['sha256'] != patch_digest(origin_rows, iid):
+                raise ValueError('Copied patch differs from the Phase 2 manifest for ' + iid)
     tasks, registries = load_registries(args.task_specs)
     primary_path, generator_path = args.primary_config.resolve(), args.generator_config.resolve()
     primary, generator = (yaml.safe_load(p.read_text()) for p in (primary_path, generator_path))
@@ -129,17 +142,23 @@ def main(argv=None):
         if config.get('provider') not in ('deepseek', 'umgpt'):
             raise ValueError('Unsupported paid provider')
     setup = default_reproduction_setup(generator_path, verifier_config=verifier_config)
+    generator_digest = sha(generator_path)
+    reuse = V4Reuse(args.reuse_v4_from, setup, generator_digest) if args.reuse_v4_from else None
+    if reuse is not None and (output.is_relative_to(reuse.root) or reuse.root.is_relative_to(output)):
+        raise ValueError('Reuse source and destination run directories must be separate')
     from reliability.paid_models import prices
     header = {'policy_version': 'v1.4.1-full', 'config_sha256': sha(verifier_config),
-        'registry_sha256': registries, 'primary_config_sha256': sha(primary_path), 'generator_config_sha256': sha(generator_path),
+        'registry_sha256': registries, 'primary_config_sha256': sha(primary_path), 'generator_config_sha256': generator_digest,
         'manifest_sha256': sha(args.manifest), 'git_head': git('rev-parse', 'HEAD'),
         'git_dirty': bool(git('status', '--porcelain')), 'mode': args.mode, 'freeze_tag': args.freeze_tag,
-        'skip_v4': args.skip_v4, 'verify_only_inputs': frozen_inputs(args.verify_only_from, ids) if args.verify_only_from else None,
+        'skip_v4': args.skip_v4, 'verify_only_inputs': supplied, **source_fields,
         'ledger_file': str(args.ledger_file.resolve()), 'deepseek_cap_usd': args.deepseek_cap_usd,
         'um_cap_usd': args.um_cap_usd, 'um_job_cap_usd': args.um_job_cap_usd,
         'primary_prices': prices(primary), 'generator_prices': prices(generator),
         'generator': setup.identity(), 'parallelism': 1, 'patched_tree_drift_guard': 'weaker: no drift reference',
         'generic_exception_rules': rules_stamp()}
+    if reuse is not None:
+        header.update(reuse_v4_from=str(reuse.root), reuse_v4_seal_sha256=reuse.seal_sha256)
     ledgers = {}
     for config in (primary, generator):
         key = (config['provider'], config.get('account_id', 'default'))
@@ -193,7 +212,25 @@ def main(argv=None):
                 freeze_patch(directory / 'patch.diff', b'')
 
     def verify_stage(iid, directory):
+        folder = directory / 'verification/v4'
+        reuse_evidence = None
+        suite = None
+        if reuse is not None:
+            destination = folder / 'cache' / iid if reuse.settings[0] == 'legacy' else folder
+            suite = reuse.load(iid, destination)
+            reuse_evidence = {
+                'reused_from': str(reuse.root),
+                'requirements_sha256': suite.requirements_sha256 if suite is not None else None,
+                'kept_test_sha256s': {test.path: test.sha256 for test in suite.kept} if suite is not None else {},
+            }
+            if suite is not None:
+                reuse_evidence.update(suite_sha256=suite.suite_sha256,
+                                      frozen=[test.as_dict() for test in suite.tests])
+
         def v4(instance_id, patch_text, integrity):
+            if reuse is not None:
+                from reliability.e2e_models import run_reused_v4
+                return run_reused_v4(tasks.get(iid), patch_text, integrity, setup, suite, folder, output.name)
             if iid not in tasks:
                 from reliability.verifier.run_v1_4_1 import absence
                 from reliability.verifier.record import SignalKind
@@ -204,11 +241,14 @@ def main(argv=None):
                           ledger(generator), directory / 'verification/v4', output.name,
                           load_agent_task(instance_id).problem_statement)
         options = {'v2_settings': v2_settings} if v2_settings else {}
+        if reuse_evidence is not None:
+            options['v4_reuse_evidence'] = reuse_evidence
         return verify_task(directory, instance_id=iid, task_spec=tasks.get(iid), experiment_id=output.name,
             skip_v4=args.skip_v4, provenance=json.loads((output / 'header.json').read_text()),
             v4_runner=v4, reproduction_setup=setup, **options)
 
-    status = run_batch(ids, output, header, agent_stage, verify_stage, ledgers=tuple(ledgers.values()))
+    options = {'reuse_v4': reuse} if reuse is not None else {}
+    status = run_batch(ids, output, header, agent_stage, verify_stage, ledgers=tuple(ledgers.values()), **options)
     print(json.dumps({'status': status, 'output': str(output)}))
     return 0 if status == 'COMPLETE' else 2
 

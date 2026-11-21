@@ -22,9 +22,10 @@ from reliability.verifier.guarded_v2 import FrozenContainer
 from reliability.verifier.record import SignalAbsence, SignalKind, SignalRecord
 from reliability.verifier.reproduction import ContainerSandbox, evaluate_frozen, signal_before_patch, signal_from_reproduction
 from reliability.verifier.reproduction_freeze import (
-    GenerationOutcome, GenerationRequest, PerRequirementSetup, _read_out, _sha256,
+    GenerationOutcome, GenerationRequest, PerRequirementSetup, ReproductionConfigError, _read_out, _sha256,
     freeze_requirements, freeze_tests, sum_generation_usage,
 )
+from reliability.verifier.reproduction_reuse import GENERATOR_OVERRIDE, V4ReuseError
 from reliability.verifier.reproduction_v1_4 import RecordingGenerator
 from reliability.verifier.source_integrity import SourceIntegrityError
 from reliability.verifier.task_specs import ROOT, write
@@ -135,6 +136,8 @@ class PinnedGenerator:
     request: GenerationRequest | None = None
 
     def generate(self, issue_text, instance_id):
+        if (disabled := GENERATOR_OVERRIDE.get()) is not None:
+            return disabled.generate(issue_text, instance_id)
         if instance_id != self.task.instance_id:
             raise ValueError('Generator task identity mismatch')
         budget = self.setup.budget
@@ -168,10 +171,16 @@ class PinnedGenerator:
                 if self.request is not None and isinstance(exc, BudgetCap):
                     raise
                 termination = type(exc).__name__
+            finally:
+                trajectory = tuple(_serialisable(m) for m in agent.messages)
+                path = self.folder / 'generator/generation_trajectory.jsonl'
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(''.join(json.dumps(message) + '\n' for message in trajectory),
+                                encoding='utf-8')
             files, ignored = _read_out(env, budget, **readout)
             return GenerationOutcome(files, termination, n_steps=int(getattr(agent, 'n_calls', 0)),
                 cost_usd=float(getattr(agent, 'cost', 0.0)), ignored=ignored,
-                trajectory=tuple(_serialisable(m) for m in agent.messages))
+                trajectory=trajectory)
 
 
 def _generation_ledger_calls(ledger, instance_id, stages):
@@ -186,6 +195,8 @@ class MeteredGenerator:
     ledger: object
 
     def generate(self, issue_text, instance_id):
+        if (disabled := GENERATOR_OVERRIDE.get()) is not None:
+            return disabled.generate(issue_text, instance_id)
         name = self.generator.request.name
         stage = f'V4_{name}'
         cap = self.generator.setup.budget.generator_max_cost_usd
@@ -200,7 +211,31 @@ class MeteredGenerator:
         return replace(outcome, **usage)
 
 
+def run_reused_v4(task, patch_text, integrity, setup, suite, folder, experiment):
+    if suite is None:
+        signal = SignalRecord.absent(SignalKind.REPRODUCTION, SignalAbsence.NOTHING_TO_CHECK, 'NO_FROZEN_V4')
+        signal.findings['absence_reason'] = 'NO_FROZEN_V4'
+        return signal
+    if (early := signal_before_patch(suite, setup)) is not None:
+        return early
+    if task is None or not integrity.findings.get('patch_applies', True):
+        return SignalRecord.absent(SignalKind.REPRODUCTION, SignalAbsence.NOTHING_TO_CHECK,
+                                   'no task spec or patch does not apply')
+    started = time.monotonic()
+    with pristine(task, folder / 'patched', experiment, patch_text=patch_text) as container:
+        container.set_patched(True)
+        try:
+            patched = evaluate_frozen(suite, patch_text, ContainerSandbox(container), setup)
+        except (OSError, ReproductionConfigError) as exc:
+            raise V4ReuseError(task.instance_id, 'reused frozen test could not be read or verified') from exc
+    if any(test.verdict == 'not_in_place' for test in patched):
+        raise V4ReuseError(task.instance_id, 'reused frozen test or runner SHA-256 mismatch in patched tree')
+    return signal_from_reproduction(suite, patched, setup, duration_s=time.monotonic() - started)
+
+
 def run_v4(task, patch_text, integrity, setup, model_path, model_config, ledger, folder, experiment, issue_text):
+    if (disabled := GENERATOR_OVERRIDE.get()) is not None:
+        return disabled.generate(issue_text, getattr(task, 'instance_id', '<no task spec>'))
     if task is None:
         return SignalRecord.absent(SignalKind.REPRODUCTION, SignalAbsence.ERROR, 'NO_TASK_SPEC')
     if not patch_text.strip() or not integrity.findings.get('patch_applies', True):

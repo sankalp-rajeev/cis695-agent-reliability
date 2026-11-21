@@ -21,12 +21,16 @@ a silent pass in Phase 5.
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
 import pathlib
+import re
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "src"))
 
 from reliability.benchmark.leakage import (
+    ReferenceAuditTask,
     Severity,
     audit,
     find_task_dirs,
@@ -37,38 +41,96 @@ from reliability.benchmark.leakage import (
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 
-def main() -> int:
+def reference_runs(runs_root):
+    headers = [runs_root / "header.json", *sorted(runs_root.glob("*/header.json")),
+               *sorted(runs_root.glob("*/*/header.json"))]
+    runs = {}
+    for path in headers:
+        if path.is_file():
+            header = json.loads(path.read_bytes())
+            if header.get("reference_patches") is True:
+                runs[path.parent] = header
+    return runs
+
+
+def load_reference_tasks(runs):
+    from reliability.benchmark.loader import load_agent_tasks
+    from reliability.verifier.admission_reference import JSONProjection
+    from reliability.verifier.task_specs import absolute
+
+    issues = {task.instance_id: task.problem_statement for task in load_agent_tasks()}
+    tasks = []
+    archive_schema = {"tasks": {"*": {"instance_id": True, "archive": {"path": True, "sha256": True}}}}
+    for run, header in runs.items():
+        archives = {}
+        for filename, digest in header["registry_sha256"].items():
+            raw = absolute(filename).read_bytes()
+            if hashlib.sha256(raw).hexdigest() != digest:
+                raise ValueError("reference audit task registry hash differs from run header")
+            for row in JSONProjection(raw.decode()).project(archive_schema)["tasks"]:
+                iid = row["instance_id"]
+                if iid in archives:
+                    raise ValueError("duplicate reference audit task ID")
+                archives[iid] = row["archive"]
+        run_tasks = []
+        for iid, patch in header["verify_only_inputs"].items():
+            if not re.fullmatch(r"[A-Za-z0-9_.-]+__[A-Za-z0-9_.-]+", iid):
+                raise ValueError("invalid reference audit task ID")
+            if (run / "tasks" / iid).is_dir():
+                archive = archives[iid]
+                run_tasks.append(ReferenceAuditTask(
+                    run, iid, patch["sha256"], issues[iid], absolute(archive["path"]),
+                    archive["sha256"], reused=header.get("reuse_v4_from") is not None,
+                ))
+        if not run_tasks:
+            raise ValueError("reference audit found no task directories")
+        tasks.extend(run_tasks)
+    return tuple(tasks)
+
+
+def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--runs", default="runs",
                         help="root to scan (default: runs/)")
     parser.add_argument("--no-content", action="store_true",
                         help="skip dataset-backed content checks; still exits 1, "
                              "because a partial audit is not a pass")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     runs_root = (REPO_ROOT / args.runs).resolve()
     if not runs_root.is_dir():
         print(f"FAIL: no such runs directory: {runs_root}")
         return 1
 
-    task_dirs = find_task_dirs(runs_root)
+    try:
+        references = reference_runs(runs_root)
+        reference_tasks = load_reference_tasks(references) if references and not args.no_content else ()
+    except Exception as exc:
+        print(f"FAIL: could not bind reference audit inputs ({type(exc).__name__}).")
+        return 1
+    task_dirs = [d for d in find_task_dirs(runs_root)
+                 if not any(d.is_relative_to(run) for run in references)]
     n_generator = sum(1 for d in task_dirs if d.parent.name == "_reproduction_cache")
     print(f"scope: {len(task_dirs) - n_generator} agent task directories and "
-          f"{n_generator} V4 generator directories under {runs_root}")
+          f"{n_generator} V4 generator directories and "
+          f"{len(reference_tasks)} reference verification tasks under {runs_root}")
 
-    if not task_dirs:
+    if not task_dirs and not references:
         print("FAIL: no agent task directories found. An audit that scanned "
               "nothing has not passed — check the runs root.")
         return 1
 
-    probes, content_ok = ({}, False) if args.no_content else load_probes(task_dirs)
+    probes, content_ok = load_probes(task_dirs) if task_dirs and not args.no_content else ({}, not args.no_content)
 
-    result = audit(task_dirs, probes)
+    result = audit(task_dirs, probes, reference_tasks=reference_tasks)
 
     print(f"scanned: {result.scanned_files} files across "
           f"{result.scanned_tasks} tasks")
     print(f"content-checked: {result.content_checked_tasks}/{result.scanned_tasks} "
-          f"tasks against real oracle values")
+          f"tasks against bound reference or oracle values")
+
+    for (run, iid), count in result.reference_candidate_counts.items():
+        print(f"reference candidate lines: run={run} task={iid} count={count}")
 
     for finding in result.findings:
         print(f"  {finding}")

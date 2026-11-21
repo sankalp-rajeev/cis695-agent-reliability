@@ -206,7 +206,7 @@ def run_v3(task, patch_text, patch, folder, *, experiment):
 
 def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=False,
                 provenance=None, v4_runner=None, drift=None, v2_runner=None, v3_runner=None,
-                reproduction_setup=None, v2_settings=None):
+                reproduction_setup=None, v2_settings=None, v4_reuse_evidence=None):
     """Never swallow source-integrity errors; V2 absence does not skip V3/V4."""
     task_dir = Path(task_dir)
     folder = task_dir / 'verification'
@@ -289,7 +289,8 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
         regression_findings.update(primary_accounting=v2_settings.primary_accounting,
                                    **v2_selection.fallback_metadata(), test_results={})
     budget_stop, stop_termination, paid_before_stop = False, 'BUDGET_CAP', 0
-    if empty_patch:
+    no_frozen_v4 = v4_reuse_evidence is not None and 'suite_sha256' not in v4_reuse_evidence
+    if empty_patch and not no_frozen_v4:
         signals[SignalKind.REPRODUCTION] = absence(SignalKind.REPRODUCTION, 'EMPTY_PATCH')
     elif skip_v4:
         signals[SignalKind.REPRODUCTION] = absence(SignalKind.REPRODUCTION, 'SKIP_V4_FOR_CHECK')
@@ -311,6 +312,8 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
                 'AUTH_STOP' if stop_termination == 'AUTH_ERROR' else 'BUDGET_STOP', infrastructure=True)
         except Exception as exc:
             signals[SignalKind.REPRODUCTION] = absence(SignalKind.REPRODUCTION, 'V4_EXCEPTION:' + type(exc).__name__, infrastructure=True)
+    if v4_reuse_evidence is not None:
+        signals[SignalKind.REPRODUCTION].findings.update(v4_reuse_evidence)
     policy = FullPolicyV141()
     try:
         verify_frozen_patch(frozen)

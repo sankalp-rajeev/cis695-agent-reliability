@@ -39,9 +39,11 @@ Two scoping decisions that matter for the result to mean anything:
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import shlex
+import tarfile
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
@@ -198,6 +200,7 @@ class AuditResult:
     scanned_files: int = 0
     scanned_tasks: int = 0
     content_checked_tasks: int = 0
+    reference_candidate_counts: dict[tuple[str, str], int] = field(default_factory=dict)
 
     @property
     def confirmed(self) -> list[Finding]:
@@ -1115,8 +1118,119 @@ def audit_task(
     return findings, len(files)
 
 
+@dataclass(frozen=True, slots=True)
+class ReferenceAuditTask:
+    run: Path
+    instance_id: str
+    patch_sha256: str
+    problem_statement: str
+    archive_path: Path
+    archive_sha256: str
+    reused: bool = False
+
+
+def _normalized(text: str) -> str:
+    return " ".join(text.split())
+
+
+def gold_candidate_lines(patch: str, problem_statement: str, archive: Path) -> tuple[str, ...]:
+    """Keep only normalized additions that the generator could not see in its inputs."""
+    issue = _normalized(problem_statement)
+    removed = {_normalized(raw[1:]) for raw in patch.splitlines()
+               if raw.startswith("-") and not raw.startswith("---")}
+    candidates = {}
+    for raw in patch.splitlines():
+        if not raw.startswith("+") or raw.startswith("+++"):
+            continue
+        line = _normalized(raw[1:])
+        if len(line.replace(" ", "")) >= 20 and line not in issue and line not in removed:
+            candidates[line] = None
+    if candidates:
+        with tarfile.open(archive) as tree:
+            for member in tree:
+                if not member.isfile():
+                    continue
+                with tree.extractfile(member) as stream:
+                    base = _normalized(stream.read().decode("utf-8", errors="replace"))
+                candidates = {line: None for line in candidates if line not in base}
+                if not candidates:
+                    break
+    return tuple(candidates)
+
+
+def _generator_trajectories(task_dir, *, reused):
+    folders = [task_dir / "verification/v4", *sorted(task_dir.glob("attempts/*/verification/v4"))]
+    for folder in folders:
+        if not folder.is_dir():
+            continue
+        prefix = "" if folder == folders[0] else folder.parent.parent.name + "/"
+        phase_dirs = [(name, folder / name) for name in ("requirements", "pass_1", "pass_2")]
+        paths = [(name, directory / "generator/generation_trajectory.jsonl")
+                 for name, directory in phase_dirs if directory.is_dir()]
+        if (folder / "generator").is_dir():
+            paths.append(("legacy", folder / "generator/generation_trajectory.jsonl"))
+        manifest = folder / "frozen.json"
+        calls = json.loads(manifest.read_text()).get("generation_calls", ()) if manifest.is_file() else ()
+        expected = {call["call"] for call in calls}
+        if (paths and expected.issubset(name for name, _ in paths)
+                and all(path.is_file() for _, path in paths)):
+            for name, path in paths:
+                yield prefix + name, path
+            continue
+        combined = folder / "generation_trajectory.jsonl"
+        legacy = folder / "cache" / task_dir.name / "generation_trajectory.jsonl"
+        if combined.is_file():
+            yield prefix + "combined", combined
+        elif legacy.is_file():
+            yield prefix + "legacy", legacy
+        elif paths or (not reused and (manifest.exists() or legacy.parent.exists())):
+            # Missing conversations cannot be treated as a clean audit.
+            raise ValueError("missing V4 generator trajectory")
+
+
+def _reference_findings(task):
+    from reliability.verifier.task_specs import require_hash
+
+    task_dir = task.run / "tasks" / task.instance_id
+    patch = task_dir / "patch.diff"
+    require_hash(patch, task.patch_sha256)
+    require_hash(task.archive_path, task.archive_sha256)
+    candidates = gold_candidate_lines(patch.read_text(encoding="utf-8"), task.problem_statement,
+                                      task.archive_path)
+    digests = {line: hashlib.sha256(line.encode("utf-8")).hexdigest() for line in candidates}
+    findings, files = [], 1
+    for name, path in _generator_trajectories(task_dir, reused=task.reused):
+        if path.resolve() != path:
+            raise ValueError("unexpected V4 trajectory symlink")
+        text = path.read_text(encoding="utf-8")
+        findings.extend(scan_field_names(path, text))
+        files += 1
+        conversation, index, section = name, 0, 0
+        for row in text.splitlines():
+            message = json.loads(row)
+            if not isinstance(message, dict):
+                raise ValueError("invalid V4 generator message")
+            if name.endswith("combined") and message.get("role") == "system":
+                # Older completed freezes concatenated conversations in call order.
+                phases = ("requirements", "pass_1", "pass_2")
+                conversation = name.removesuffix("combined") + phases[section]
+                section += 1
+                index = 0
+            index += 1
+            strings = tuple(_normalized(value) for value in _message_strings(message))
+            for line, digest in digests.items():
+                if any(line in value for value in strings):
+                    findings.append(Finding(
+                        severity=Severity.CONFIRMED, kind="GOLD_LINE_IN_GENERATOR", path=str(path),
+                        detail=(f"task={task.instance_id} conversation={conversation} "
+                                f"message_index={index} sha256={digest}"),
+                    ))
+    return findings, files, len(candidates)
+
+
 def audit(
-    task_dirs: list[Path], probes_by_instance: dict[str, OracleProbes] | None = None
+    task_dirs: list[Path], probes_by_instance: dict[str, OracleProbes] | None = None,
+    *, reference_tasks: tuple[ReferenceAuditTask, ...] = (),
 ) -> AuditResult:
     """Audit every task directory given.
 
@@ -1137,6 +1251,20 @@ def audit(
         result.scanned_tasks += 1
         if probes is not None and not probes.is_empty:
             result.content_checked_tasks += 1
+
+    for task in reference_tasks:
+        result.scanned_tasks += 1
+        try:
+            findings, files, count = _reference_findings(task)
+        except (OSError, ValueError, TypeError, IndexError, KeyError, AttributeError, tarfile.TarError):
+            # Avoid including the malformed record or its content in the report.
+            result.findings.append(Finding(Severity.CONFIRMED, "reference-audit-incomplete",
+                                           str(task.run), f"could not audit task={task.instance_id}"))
+            continue
+        result.findings.extend(findings)
+        result.scanned_files += files
+        result.content_checked_tasks += 1
+        result.reference_candidate_counts[str(task.run), task.instance_id] = count
 
     return result
 

@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import signal
 import subprocess
+from contextlib import nullcontext
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -14,6 +15,7 @@ from reliability.umgpt_spend import BudgetCap
 from reliability.verifier.decision import SignalOutcome
 from reliability.verifier.record import SignalKind
 from reliability.verifier.run_v1_4_1 import TaskBudgetStop, VerificationRecordV141
+from reliability.verifier.reproduction_reuse import V4ReuseError
 from reliability.verifier.source_integrity import SourceIntegrityError
 from reliability.verifier.task_specs import ROOT, sha, write
 
@@ -119,7 +121,15 @@ def resume_identity(header):
     return {key: value for key, value in header.items() if key not in CAP_FIELDS}
 
 
-def run_batch(instance_ids, output, header, agent_stage, verify_stage, *, ledgers=()):
+def _reuse_usage(reuse, ledgers, output):
+    paths = {ledger.path: ledger for ledger in ledgers}
+    calls = [call for ledger in paths.values() for call in ledger.snapshot()['calls']
+             if call['job'] == str(output)]
+    return {'generator_calls': reuse.generator.calls, 'ledger_calls': len(calls),
+            'ledger_cost_usd': sum((call['cost_usd'] for call in calls), 0.0)}
+
+
+def run_batch(instance_ids, output, header, agent_stage, verify_stage, *, ledgers=(), reuse_v4=None):
     """All stop paths persist completion; a complete patch is never regenerated."""
     output = Path(output).resolve()
     if not output.is_relative_to((ROOT / 'runs').resolve()):
@@ -147,6 +157,8 @@ def run_batch(instance_ids, output, header, agent_stage, verify_stage, *, ledger
         raise KeyboardInterrupt
     previous_termination = signal.signal(signal.SIGTERM, terminate)
     try:
+        if reuse_v4 is not None and any(_reuse_usage(reuse_v4, ledgers, output).values()):
+            raise V4ReuseError(output, 'V4 reuse requires zero previous generator and ledger calls')
         snapshots = {}
         for ledger in ledgers:
             if ledger.path not in snapshots:
@@ -174,8 +186,9 @@ def run_batch(instance_ids, output, header, agent_stage, verify_stage, *, ledger
                     break
                 continue
             if not budget_checked:
-                for ledger in ledgers:
-                    ledger.check_current_budget(snapshots[ledger.path])
+                if reuse_v4 is None:
+                    for ledger in ledgers:
+                        ledger.check_current_budget(snapshots[ledger.path])
                 budget_checked = True
             ensure_patch(iid, directory, agent_stage)
             archived = restart_verification(directory)
@@ -184,7 +197,8 @@ def run_batch(instance_ids, output, header, agent_stage, verify_stage, *, ledger
             write(attempts_path, attempts)
             stop = None
             try:
-                record = verify_stage(iid, directory)
+                with reuse_v4.prohibit_generation() if reuse_v4 is not None else nullcontext():
+                    record = verify_stage(iid, directory)
             except TaskBudgetStop as exc:
                 record, stop = exc.record, exc
             write(done, {'complete': stop is None, 'completed_utc': now(), 'skip_v4': header['skip_v4'],
@@ -210,6 +224,15 @@ def run_batch(instance_ids, output, header, agent_stage, verify_stage, *, ledger
         status, error = 'ABORTED_RUNNER', type(exc).__name__ + ': ' + str(exc)
     finally:
         signal.signal(signal.SIGTERM, previous_termination)
+        reuse_summary = {}
+        if reuse_v4 is not None:
+            try:
+                reuse_summary['v4_reuse'] = usage = _reuse_usage(reuse_v4, ledgers, output)
+                if any(usage.values()):
+                    status = 'ABORTED_INTEGRITY'
+                    error = error or 'V4 reuse recorded a generator or ledger call'
+            except (OSError, ValueError, KeyError, TypeError) as exc:
+                status, error = 'ABORTED_INTEGRITY', 'V4 reuse ledger could not be verified: ' + str(exc)
         attempt.update(status=status, error=error, finished_utc=now())
         write(attempts_path, attempts)
         agent_infrastructure, no_patch = [], []
@@ -223,7 +246,7 @@ def run_batch(instance_ids, output, header, agent_stage, verify_stage, *, ledger
         write(output / 'completion.json', {'status': status, 'completed_tasks': completed,
               'not_completed_tasks': [iid for iid in instance_ids if iid not in completed],
               'current_task': current, 'error': error, 'skip_v4': header['skip_v4'],
-              'agent_infrastructure_tasks': agent_infrastructure, 'no_patch_tasks': no_patch})
+              'agent_infrastructure_tasks': agent_infrastructure, 'no_patch_tasks': no_patch, **reuse_summary})
         write(output / 'seal.json', {'status': status, 'files_sha256': {
             str(p.relative_to(output)): sha(p) for p in sorted(output.rglob('*'))
             if p.is_file() and p.name != 'seal.json'}})

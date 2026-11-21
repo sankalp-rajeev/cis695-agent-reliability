@@ -434,3 +434,163 @@ def test_e2e_fresh_calls_frozen_before_patch_and_run_cap_is_aggregate(
     )
     for name in ("requirements", "pass_1", "pass_2"):
         assert (folder / name / "generation_usage.json").is_file()
+
+
+V4_MODEL_SHA = "a" * 64
+
+
+def seal_run(root):
+    from reliability.verifier.task_specs import sha, write
+
+    write(root / "seal.json", {"status": "COMPLETE", "files_sha256": {
+        str(path.relative_to(root)): sha(path) for path in root.rglob("*")
+        if path.is_file() and path.name != "seal.json"
+    }})
+
+
+@pytest.fixture
+def sealed_v4(tmp_path, setup):
+    from reliability.verifier.reproduction_reuse import RECORD
+    from reliability.verifier.task_specs import write
+
+    source = tmp_path / "source"
+    task = source / "tasks" / IID
+    folder = task / "verification/v4"
+
+    def generator(request):
+        if not request.pass_number:
+            return Generator({REQUIREMENTS_PATH: requirement_json(1)})
+        return Generator({path("R1"): b"synthetic reproduction bytes\n"})
+
+    suite = freeze_requirements(
+        ISSUE, IID, setup=setup, directory=folder, generator_for=generator,
+        base_sandbox=lambda iid: nullcontext(Sandbox({path("R1", p): [ASSERT, ASSERT] for p in (1, 2)})),
+    )
+    header = {"generator": setup.identity(), "generator_config_sha256": V4_MODEL_SHA}
+    write(source / "header.json", header)
+    write(task / RECORD, {
+        "instance_id": IID, "reproduction": {"findings": {
+            "suite_sha256": suite.suite_sha256, "frozen": [t.as_dict() for t in suite.tests],
+            "requirements_sha256": suite.requirements_sha256,
+        }},
+    })
+    seal_run(source)
+    return source, header, suite
+
+
+def test_v4_reuse_refuses_unsealed_source(sealed_v4, setup):
+    from reliability.verifier.reproduction_reuse import V4Reuse
+
+    source, _, _ = sealed_v4
+    (source / "seal.json").unlink()
+    with pytest.raises(ValueError, match="must have a seal"):
+        V4Reuse(source, setup, V4_MODEL_SHA)
+
+
+@pytest.mark.parametrize("field", ["design", "passes", "max_requirements", "requirement_prompt",
+                                   "test_prompt", "model_config"])
+def test_v4_reuse_requires_matching_settings(sealed_v4, setup, field):
+    from reliability.verifier.reproduction_reuse import V4Reuse
+    from reliability.verifier.task_specs import write
+
+    source, header, _ = sealed_v4
+    if field == "model_config":
+        header["generator_config_sha256"] = "b" * 64
+    elif field.endswith("_prompt"):
+        index = 0 if field == "requirement_prompt" else 1
+        header["generator"]["prompts"][setup.prompts[index][0]] = "sha256:" + "b" * 64
+    else:
+        header["generator"][field] = "legacy" if field == "design" else 1
+    write(source / "header.json", header)
+    seal_run(source)
+    with pytest.raises(ValueError, match="V4 settings"):
+        V4Reuse(source, setup, V4_MODEL_SHA)
+
+
+@pytest.mark.parametrize("cause", ["seal", "requirements", "test", "generator"])
+def test_v4_reuse_integrity_failure_stops_batch(tmp_path, monkeypatch, sealed_v4, setup, cause):
+    from reliability import e2e_runner
+    from reliability.agent.freeze import freeze_patch
+    from reliability.verifier.reproduction_reuse import V4Reuse
+
+    source, _, suite = sealed_v4
+    output = tmp_path / "runs/reuse"
+    monkeypatch.setattr(e2e_runner, "ROOT", tmp_path)
+
+    if cause in ("requirements", "test"):
+        name = "requirements.json" if cause == "requirements" else "tests/test_repro_R1_p1.py"
+        (suite.directory / name).write_bytes(b"substituted contents")
+        seal_run(source)
+    reuse = V4Reuse(source, setup, V4_MODEL_SHA)
+    if cause == "seal":
+        (suite.directory / "tests/test_repro_R1_p1.py").write_bytes(b"changed after startup")
+
+    def agent_stage(iid, directory):
+        freeze_patch(directory / "patch.diff", b"synthetic candidate")
+
+    def verify_stage(iid, directory):
+        if cause == "generator":
+            e2e_models.PinnedGenerator(None, None, None, directory, "test").generate(ISSUE, iid)
+        reuse.load(iid, directory / "verification/v4")
+        pytest.fail("reuse must abort immediately")
+
+    later = "demo__repo-2"
+    assert e2e_runner.run_batch(
+        [IID, later], output, {"skip_v4": False}, agent_stage, verify_stage, reuse_v4=reuse,
+    ) == "ABORTED_INTEGRITY"
+    assert not (output / "tasks" / later).exists()
+    completion = json.loads((output / "completion.json").read_text())
+    assert completion["completed_tasks"] == []
+    assert completion["v4_reuse"] == {
+        "generator_calls": int(cause == "generator"), "ledger_calls": 0, "ledger_cost_usd": 0.0,
+    }
+
+
+def test_missing_frozen_v4_is_not_available(tmp_path, sealed_v4, setup):
+    from reliability.verifier.reproduction_reuse import V4Reuse
+
+    source, _, _ = sealed_v4
+    folder = tmp_path / "reuse"
+    suite = V4Reuse(source, setup, V4_MODEL_SHA).load("demo__repo-2", folder)
+    assert suite is None
+    signal = e2e_models.run_reused_v4(None, PATCH, None, setup, suite, folder, "test")
+    assert signal.outcome is SignalOutcome.NOT_AVAILABLE
+    assert signal.findings["absence_reason"] == "NO_FROZEN_V4"
+
+
+def test_v4_reuse_runs_only_patched_and_matches_original(tmp_path, monkeypatch, sealed_v4, setup):
+    from reliability.verifier.reproduction_reuse import V4Reuse
+
+    source, _, original = sealed_v4
+    reuse = V4Reuse(source, setup, V4_MODEL_SHA)
+    destination = tmp_path / "reuse"
+    suite = reuse.load(IID, destination)
+    assert suite.tests == original.tests
+    assert suite.requirements == original.requirements
+    assert suite.requirements_sha256 == original.requirements_sha256
+    assert [suite.bytes_of(test) for test in suite.kept] == [
+        original.bytes_of(test) for test in original.kept
+    ]
+
+    statuses = {path("R1", 1): [0] * setup.budget.patched_runs,
+                path("R1", 2): [ASSERT] * setup.budget.patched_runs}
+    expected = signal_from_reproduction(original, evaluate_frozen(original, PATCH, Sandbox(statuses), setup), setup)
+    visited = []
+
+    @contextmanager
+    def pristine(task, folder, experiment, *, patch_text):
+        assert (task.instance_id, folder, patch_text) == (IID, destination / "patched", PATCH)
+        visited.append(folder.name)
+        yield Sandbox(statuses)
+
+    monkeypatch.setattr(e2e_models, "pristine", pristine)
+    monkeypatch.setattr(e2e_models, "ContainerSandbox", lambda container: container)
+    with reuse.prohibit_generation():
+        signal = e2e_models.run_reused_v4(
+            SimpleNamespace(instance_id=IID), PATCH, SimpleNamespace(findings={}), setup,
+            suite, destination, "test",
+        )
+    assert visited == ["patched"]
+    assert reuse.generator.calls == 0
+    assert signal.outcome is expected.outcome
+    assert signal.findings == expected.findings
