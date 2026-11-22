@@ -88,3 +88,14 @@ These files changed after tag `v1.5-frozen`; nothing else in `src/` or `configs/
 | `src/reliability/e2e_runner.py` | `ba4dca6420506f102c83047138938d86e7f7076d91fe36319110425ec1a21c2a` |
 | `scripts/preflight.py` | `b7eecd6df918a68c772555733d2835031c8c232202eea64f726692b38d606f6a` |
 | `configs/study_v1_5/headline_exclusions.json` | `d7b22229390e0e081ae6adc7261543f48bd25999889a01f068677b3dda9a7165` |
+
+Amendment B12 (grader's patch application) changed these further files before the tag; where a file is also listed above, this hash supersedes it. The tag is `v1.5-frozen-2`.
+
+| File | sha256 |
+|---|---|
+| `src/reliability/verifier/container.py` | `9cbe89b71260fc5a56f73729ccd5183f47c806c12115e0f419cb1c04deed183e` |
+| `src/reliability/verifier/run_v1_4_1.py` | `c022507c1b6a5f6560714cfd59ac47683e744346b247337204b94698d5a49134` |
+| `src/reliability/verifier/integrity_v1_4.py` | `906e25aedd37493816c6f260b78aec184a17942f18cca4e9ffbd49a11d84fcdf` |
+| `scripts/preflight.py` | `5dd22fe8da1086c8072c4a727f55d9b621e7d75e5d044f111b7228216a70055a` |
+| `scripts/part_g_rederive.py` | `5d53128caea392fe7cecbda2798dbbffab7df6fcf78aa17cdafa3a60220d98ea` |
+| `configs/study_v1_5/phase7_rerun3_ids.json` | `f5f02e1f80607bd5c04deff0c27334d013e5523a04e325bcc0f04dc5f2f11874` |
