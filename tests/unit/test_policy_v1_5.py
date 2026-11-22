@@ -528,11 +528,12 @@ def test_registered_for_config_selection(tmp_path):
         policy_from_config(config)
 
 
-def test_study_config_selects_v1_5_with_switches_off():
+def test_study_config_selects_v1_5_with_the_adopted_switches():
+    """Phase 8 (tag v1.5-frozen) set the switches ADOPTION.md adopted: r2, r6, r6b."""
     from reliability.verifier.policy_v1_5 import policy_from_config
     from reliability.verifier.task_specs import ROOT
 
-    assert policy_from_config(ROOT / "configs/verifier/v1_5.yaml") == FullPolicyV15()
+    assert policy_from_config(ROOT / "configs/verifier/v1_5.yaml") == FullPolicyV15(r2_v3_reject=True, r6_accept_v2_not_available=True, r6b_accept_one_uncovered=True)
 
 
 def test_replace_keeps_v1_5_fields():

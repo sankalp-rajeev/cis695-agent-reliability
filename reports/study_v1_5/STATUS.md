@@ -7,7 +7,7 @@ Status key: ✅ done · 🔄 in progress · ⏳ not started · ⛔ blocked · �
 
 ## Current state
 
-Phase 7 (calibration on arm B, run 2) passed its gates; adopted: r2, r6, r6b ([ADOPTION.md](ADOPTION.md)). Phase 8 (set the switches exactly as ADOPTION.md says, tag v1.5-frozen) is next.
+Phase 7 (calibration on arm B) and Phase 8 (v1.5 frozen at tag v1.5-frozen, [V1_5_FREEZE.md](V1_5_FREEZE.md)) are done. Next, run by chain_p8_p11.sh: preflight of the 60 batch 1 gold patches, then Phase 11 (batch 1 gold run).
 
 ## Pre-flight checks
 
@@ -30,7 +30,7 @@ Phase 7 (calibration on arm B, run 2) passed its gates; adopted: r2, r6, r6b ([A
 | 5 | Freeze V4 | Tag `study-v4-frozen` | The test generator can't change after this | ✅ | `79e8a2e1b9594bc08560652d28c303b316fb6511` (tag study-v4-frozen) · [V4_FREEZE.md](V4_FREEZE.md) · [AMENDMENT_2026-11-21.md](AMENDMENT_2026-11-21.md) · fingerprint bc19ba97cbe016479903222bb1578db6 · balance $8.64 · unit gate = baseline · truth table unchanged · v1.4.1 replay 51/51 |
 | 6 | Dev gold run | Verify 51 gold patches, generate and freeze V4 | Shows what the verifier wrongly blocks (costs) | ✅ | `6c084c3d81105307d3cb1c9f2011c5c833a02e4b` · [DEV_GOLD.md](dev_gold/DEV_GOLD.md) · sealed ✅ · ledger ✅ $1.373 (cap $4.0010) · audit ✅ exit 0 · infra ✅ 2 error tasks · 40 V4 full passes, 5 with V4 FAIL · A/F/R off 25/26/0, all on 31/16/4 · recall 48 lines in 16 tasks · fingerprints 1223/1223 match pin |
 | 7 | Calibrate | Re-verify arm B's 51 patches, apply thresholds, write ADOPTION.md | Decides which new rules to keep, using only the practice set | ✅ | `d0910927170a6eef2655a635b6e4de00e2af1763` · [ADOPTION.md](ADOPTION.md) · run 2: 40 rerun + 11 kept = 51 · V4: new (per-requirement) V4 · switches pass: r2 ✅, r3 ⛔, r6 ✅, r6b ✅ · adopted: r2, r6, r6b · fallback kept: yes · arm B ACCEPT precision v1.4.1 80% (16 correct), off 83% (20), adopted 81% (13) · dev gold adopted A/F/R 37/14/0 |
-| 8 | Freeze v1.5 | Set switches, tag `v1.5-frozen` | The verifier can't change before the exam | ⏳ | |
+| 8 | Freeze v1.5 | Set switches, tag `v1.5-frozen` | The verifier can't change before the exam | ✅ | tag v1.5-frozen · [V1_5_FREEZE.md](V1_5_FREEZE.md) · switches on: r2, r6, r6b · unit 2013 passed, 6 failed, 17 errors, no new · truth table passed · V4 keys and V4_FREEZE.md hashes unchanged |
 | 9 | Dev public systems | Public patches on the practice set (only if the machine is idle) | Descriptive only; first to be cut | ⏳ | |
 | 10 | Prepare batch 1 | Pull and check images for the first 60 test tasks | The exam set must be ready before the runs | ✅ | `b02834f6fb7b368c104522af54ee4e3afe51d949` · [PREP_BATCH1.md](inputs/PREP_BATCH1.md) · 60/60 pinned images, 4 replacements, 32.87 GiB root disk used, 217G available |
 | 11 | Test gold run | Verify 60 gold patches, generate V4 for the exam | Gold cost on unseen tasks (H3) plus the shared V4 tests | ⏳ | |
@@ -114,3 +114,4 @@ One line per entry, newest last: date, what was decided or deviated from the pla
 - 21 Nov: Step 6: dev gold 51/51 records unchanged under the new code (outcomes, flags, decisions). Arm B: 11 of the 15 completed tasks identical; django-13023 also changes (its V4 ContainerError becomes nothing to check, because its patch does not apply in the container), so 40 tasks are rerun and 11 kept, not 39 and 12. Preflight on arm B's 51 patches: pass, 51/51 in 15.7 min, 0 run-stopping conditions, 0 unclassified exceptions, 0 infrastructure flags; listed 13023, 13158, 16667 (patch does not apply) and 14140, sphinx-10323 (patch-caused run-health block).
 - 21 Nov: Phase 7 continues as a deviation from A5 (B9): partial rerun of 40 tasks, 11 kept from the sealed stopped run (seal 81fa418a…), because the stop was not an infrastructure failure, no adoption result existed and arm B labels were known before the run. Lists: configs/study_v1_5/phase7_rerun_ids.json, phase7_kept_ids.json.
 - 22 Nov: Phase 7 run 2 passed: run 2: 40 rerun + 11 kept = 51 · V4: new (per-requirement) V4 · switches pass: r2 ✅, r3 ⛔, r6 ✅, r6b ✅ · adopted: r2, r6, r6b · fallback kept: yes · arm B ACCEPT precision v1.4.1 80% (16 correct), off 83% (20), adopted 81% (13) · dev gold adopted A/F/R 37/14/0. See ADOPTION.md.
+- 22 Nov: Phase 8: switches set to the Phase 7 adopted set (r2, r6, r6b); nothing else in v1_5.yaml changed; V4 keys equal study-v4-frozen and the other V4_FREEZE.md hashes match; unit 2013 passed, 6 failed, 17 errors, failing/erroring IDs within the baseline; truth table passed. Tag v1.5-frozen. See V1_5_FREEZE.md.
