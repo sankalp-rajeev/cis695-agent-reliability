@@ -1,0 +1,80 @@
+{
+  "counts": {
+    "all": {
+      "decision": {
+        "ACCEPT": 39,
+        "FLAG": 20,
+        "REJECT": 1
+      },
+      "review_label": {
+        "likely_right": 2,
+        "likely_wrong": 8,
+        "none": 48,
+        "signals_disagree": 2
+      },
+      "rule": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 1,
+        "R3b": 0,
+        "R4": 8,
+        "R5": 2,
+        "R6": 36,
+        "R6b": 3,
+        "R7": 2,
+        "R8": 8
+      }
+    },
+    "patch": {
+      "decision": {
+        "ACCEPT": 39,
+        "FLAG": 20,
+        "REJECT": 1
+      },
+      "review_label": {
+        "likely_right": 2,
+        "likely_wrong": 8,
+        "none": 48,
+        "signals_disagree": 2
+      },
+      "rule": {
+        "R1": 0,
+        "R2": 0,
+        "R3": 1,
+        "R3b": 0,
+        "R4": 8,
+        "R5": 2,
+        "R6": 36,
+        "R6b": 3,
+        "R7": 2,
+        "R8": 8
+      }
+    }
+  },
+  "csv": "/home/sankalp/projects/wt-study/runs/study_v1_5/phase11_decisions_frozen/decisions_v1_5_r2-1_r3-0_r6-1_r6b-1.csv",
+  "csv_sha256": "6b19efdc37b6af575c61283002cb201b57dce4f9fccd7a7a89fbc3383b6cde72",
+  "frozen": {
+    "config_path": "configs/verifier/v1_5.yaml",
+    "config_sha256": "be997bc6c48d9108b0f3b0e411603677639e55b5c2d57b991b0394a6792d15cb",
+    "tag": "v1.5-frozen",
+    "tag_commit": "569bb7fc2e4cd860dbbc0fdd54c838d208af3b11"
+  },
+  "patch_tasks": 60,
+  "policy": {
+    "name": "full-v1.5",
+    "version": "v1.5.0-full"
+  },
+  "run": "/home/sankalp/projects/wt-study/runs/study_test_gold_b1",
+  "seal_sha256": "8776eb8e24dfe2e4448823177136f4f83774e936cff76893796a54d8efdf8d12",
+  "summary_name": "summary_v1_5_r2-1_r3-0_r6-1_r6b-1.json",
+  "switch_source": "frozen",
+  "switches": {
+    "r2_v3_reject": true,
+    "r3_extended_reject": false,
+    "r6_accept_v2_not_available": true,
+    "r6b_accept_one_uncovered": true
+  },
+  "tasks": 60,
+  "v2_fallback": true,
+  "v2_fallback_removed_tasks": []
+}

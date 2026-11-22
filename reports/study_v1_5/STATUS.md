@@ -7,7 +7,7 @@ Status key: ✅ done · 🔄 in progress · ⏳ not started · ⛔ blocked · �
 
 ## Current state
 
-Phase 7 (calibration on arm B) and Phase 8 (v1.5 frozen at tag v1.5-frozen, [V1_5_FREEZE.md](V1_5_FREEZE.md)) are done. Next, run by chain_p8_p11.sh: preflight of the 60 batch 1 gold patches, then Phase 11 (batch 1 gold run).
+Phase 11 (batch 1 gold run) failed audit; see [TEST_GOLD_B1.md](test_gold_b1/TEST_GOLD_B1.md). Nothing was restarted. Phase 12 waits for a decision.
 
 ## Pre-flight checks
 
@@ -33,7 +33,7 @@ Phase 7 (calibration on arm B) and Phase 8 (v1.5 frozen at tag v1.5-frozen, [V1_
 | 8 | Freeze v1.5 | Set switches, tag `v1.5-frozen` | The verifier can't change before the exam | ✅ | `389f0a82a0ad86dd6c53fbd51fc2e04a87dab66b` · tag v1.5-frozen · [V1_5_FREEZE.md](V1_5_FREEZE.md) · switches on: r2, r6, r6b · unit 2013 passed, 6 failed, 17 errors, no new · truth table passed · V4 keys and V4_FREEZE.md hashes unchanged |
 | 9 | Dev public systems | Public patches on the practice set (only if the machine is idle) | Descriptive only; first to be cut | ⏳ | |
 | 10 | Prepare batch 1 | Pull and check images for the first 60 test tasks | The exam set must be ready before the runs | ✅ | `b02834f6fb7b368c104522af54ee4e3afe51d949` · [PREP_BATCH1.md](inputs/PREP_BATCH1.md) · 60/60 pinned images, 4 replacements, 32.87 GiB root disk used, 217G available |
-| 11 | Test gold run | Verify 60 gold patches, generate V4 for the exam | Gold cost on unseen tasks (H3) plus the shared V4 tests | ⏳ | |
+| 11 | Test gold run | Verify 60 gold patches, generate V4 for the exam | Gold cost on unseen tasks (H3) plus the shared V4 tests | ⛔ | [TEST_GOLD_B1.md](test_gold_b1/TEST_GOLD_B1.md) · sealed ✅ · ledger ✅ $2.036 (cap $5.3739) · audit ⛔ exit 1 · infra ✅ 0 error tasks · 46 V4 full passes, 9 with V4 FAIL · A/F/R frozen 39/20/1 · recall 39 lines in 22 tasks · fingerprints 1742/1742 match pin |
 | 12 | Test public systems | Verify each system's patches with the frozen V4 | The headline result | ⏳ | |
 | 12b | Batch 2 | Same for the remaining 48 tasks (if time) | More power; optional | ⏳ | |
 | 13 | Labels | Fetch official SWE-bench labels after each seal; cross-check with our grader | Find out which patches were really correct, from an independent source | ⏳ | |
@@ -115,3 +115,4 @@ One line per entry, newest last: date, what was decided or deviated from the pla
 - 21 Nov: Phase 7 continues as a deviation from A5 (B9): partial rerun of 40 tasks, 11 kept from the sealed stopped run (seal 81fa418a…), because the stop was not an infrastructure failure, no adoption result existed and arm B labels were known before the run. Lists: configs/study_v1_5/phase7_rerun_ids.json, phase7_kept_ids.json.
 - 22 Nov: Phase 7 run 2 passed: run 2: 40 rerun + 11 kept = 51 · V4: new (per-requirement) V4 · switches pass: r2 ✅, r3 ⛔, r6 ✅, r6b ✅ · adopted: r2, r6, r6b · fallback kept: yes · arm B ACCEPT precision v1.4.1 80% (16 correct), off 83% (20), adopted 81% (13) · dev gold adopted A/F/R 37/14/0. See ADOPTION.md.
 - 22 Nov: Phase 8: switches set to the Phase 7 adopted set (r2, r6, r6b); nothing else in v1_5.yaml changed; V4 keys equal study-v4-frozen and the other V4_FREEZE.md hashes match; unit 2013 passed, 6 failed, 17 errors, failing/erroring IDs within the baseline; truth table passed. Tag v1.5-frozen. See V1_5_FREEZE.md.
+- 22 Nov: Phase 11 batch 1 gold run failed audit: sealed ✅ · ledger ✅ $2.036 (cap $5.3739) · audit ⛔ exit 1 · infra ✅ 0 error tasks · 46 V4 full passes, 9 with V4 FAIL · A/F/R frozen 39/20/1 · recall 39 lines in 22 tasks · fingerprints 1742/1742 match pin. See TEST_GOLD_B1.md.
