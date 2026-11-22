@@ -29,6 +29,13 @@ def test_exceptions_are_classified():
     assert mod.classify(ValueError('anything else')) == 'unclassified'
 
 
+def test_an_unparseable_patch_is_classified():
+    # verify_task records it as a V1 exception absence on that task; it never stops a run.
+    from reliability.verifier.patch import PatchParseError
+    mod = _script()
+    assert mod.classify(PatchParseError("no 'diff --git' file headers")) == 'patch_unparseable'
+
+
 def test_run_health_attribution_is_reported():
     mod = _script()
     error = RunHealthError({'halt': True})

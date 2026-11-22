@@ -137,6 +137,11 @@ def report_json(report, *, include_fallback=False):
     return data
 
 
+#: Amendment B10: every V2 policy run (live and replayed) stops after this many confirmed
+#: regressions. Policies replay one captured call sequence, so all stop at the same point.
+V2_STOP_AFTER_REGRESSIONS = 3
+
+
 def run_policies(instance_id, selection, executor, reference, folder, *, primary_accounting=None):
     """Capture both trees, guard them, confirm live once, then replay all arms.
 
@@ -165,7 +170,8 @@ def run_policies(instance_id, selection, executor, reference, folder, *, primary
         append_health(health_path, health)
         raise RunHealthError(health)
     primary = run_regression(instance_id, selection, Replay(calls.calls, fallback=calls),
-                             RegressionConfig(per_pass_timeout_s=1800, rerun_flaky=True, baseline_cache_dir=None))
+                             RegressionConfig(per_pass_timeout_s=1800, rerun_flaky=True, baseline_cache_dir=None,
+                                              stop_after_regressions=V2_STOP_AFTER_REGRESSIONS))
     objects = {'C_invalid_excluded': primary}
     for policy, compatible, paired, missing in [
         ('C', True, False, True),
@@ -174,7 +180,8 @@ def run_policies(instance_id, selection, executor, reference, folder, *, primary
     ]:
         report = run_regression(instance_id, selection, Replay(calls.calls),
             RegressionConfig(per_pass_timeout_s=1800, rerun_flaky=True, baseline_cache_dir=None,
-                             skip_compatible=compatible, invalid_as_missing=missing, skip_paired=paired))
+                             skip_compatible=compatible, invalid_as_missing=missing, skip_paired=paired,
+                             stop_after_regressions=V2_STOP_AFTER_REGRESSIONS))
         objects[policy + ('_invalid_missing' if missing else '_invalid_excluded')] = report
     reports = {name: report_json(report, include_fallback=primary_accounting is not None)
                for name, report in objects.items()}

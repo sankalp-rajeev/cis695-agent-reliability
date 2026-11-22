@@ -96,3 +96,11 @@ Format as in DEV_GOLD.md. Decisions come from `scripts/decide_v1_5.py --frozen` 
 - Generator fingerprints: 1742 responses in 120 conversation files; 1742 match the pin `bc19ba97cbe016479903222bb1578db6`, 0 do not (bc19ba97cbe016479903222bb1578db6 1742).
 
 Machine-readable results: `reports/study_v1_5/test_gold_b1/test_gold_b1_results.json`.
+
+## Addendum, 22 Nov 2026: re-audit under amendment B11
+
+The audit gate above failed on 5 GOLD_LINE_LEAK lines in `astropy__astropy-7671` (requirements conversation, message 10). They come from `git show` of commits that are ancestors of the task's base commit. Amendment B11 ([AMENDMENT_2026-11-21b.md](../AMENDMENT_2026-11-21b.md)) records such lines as BASE_HISTORY.
+
+The audit was re-run read-only on the sealed run (`runs/study_test_gold_b1`, unchanged): **exit 0**, 5 BASE_HISTORY lines, all in astropy-7671 (sha256 `25486da2…`, `9bbd4487…`, `cbcc8441…`, `2609f67b…`, `265cfc95…`), **0 leaks**; every other task's summary is unchanged (log `runs/study_v1_5/phase11_reaudit_b11.log`). **The audit gate now passes**, so all four gates pass: sealed ✅, ledger ✅ $2.036 (cap $5.3739), audit ✅, infrastructure ✅ 0 error tasks.
+
+astropy-7671's two kept frozen tests contain none of the lines, and it is excluded from the headline (B11). Its decision is unchanged.

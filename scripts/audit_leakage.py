@@ -67,7 +67,8 @@ def load_reference_tasks(runs):
 
     issues = {task.instance_id: task.problem_statement for task in load_agent_tasks()}
     tasks = []
-    archive_schema = {"tasks": {"*": {"instance_id": True, "archive": {"path": True, "sha256": True}}}}
+    archive_schema = {"tasks": {"*": {"instance_id": True, "archive": {"path": True, "sha256": True},
+                                      "base_commit": True, "image": {"id": True}}}}
     for run, header in runs.items():
         archives = {}
         for filename, digest in header["registry_sha256"].items():
@@ -78,7 +79,8 @@ def load_reference_tasks(runs):
                 iid = row["instance_id"]
                 if iid in archives:
                     raise ValueError("duplicate reference audit task ID")
-                archives[iid] = row["archive"]
+                archives[iid] = {**row["archive"], "base_commit": row.get("base_commit"),
+                                 "image_id": (row.get("image") or {}).get("id")}
         run_tasks = []
         for iid, patch in header["verify_only_inputs"].items():
             if not re.fullmatch(r"[A-Za-z0-9_.-]+__[A-Za-z0-9_.-]+", iid):
@@ -88,6 +90,7 @@ def load_reference_tasks(runs):
                 run_tasks.append(ReferenceAuditTask(
                     run, iid, patch["sha256"], issues[iid], absolute(archive["path"]),
                     archive["sha256"], reused=header.get("reuse_v4_from") is not None,
+                    base_commit=archive["base_commit"], image_id=archive["image_id"],
                 ))
         if not run_tasks:
             raise ValueError("reference audit found no task directories")

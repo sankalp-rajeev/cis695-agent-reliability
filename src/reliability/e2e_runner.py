@@ -31,11 +31,21 @@ def git(*args):
 
 
 def require_frozen_head(tag):
+    """A clean HEAD at the annotated freeze tag, or a descendant of it whose every change
+    since the tag is under reports/ (report commits between audited runs, amendment B10)."""
     if not tag or git('cat-file', '-t', 'refs/tags/' + tag) != 'tag':
         raise ValueError('Audited mode requires an annotated freeze tag')
     head = git('rev-parse', 'HEAD')
-    if git('rev-parse', 'refs/tags/' + tag + '^{}') != head or git('status', '--porcelain'):
+    frozen = git('rev-parse', 'refs/tags/' + tag + '^{}')
+    if git('status', '--porcelain'):
         raise ValueError('Audited mode requires clean HEAD at the freeze tag')
+    if frozen != head:
+        descends = subprocess.run(['git', 'merge-base', '--is-ancestor', frozen, head], cwd=ROOT,
+                                  capture_output=True, check=False).returncode == 0
+        changed = git('diff', '--name-only', frozen, head).splitlines() if descends else ['?']
+        if not descends or any(not path.startswith('reports/') for path in changed):
+            raise ValueError('Audited mode requires clean HEAD at the freeze tag '
+                             '(or only report commits after it)')
     return head
 
 

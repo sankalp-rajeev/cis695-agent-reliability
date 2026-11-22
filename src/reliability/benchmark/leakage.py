@@ -42,6 +42,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import subprocess
 import shlex
 import tarfile
 from dataclasses import dataclass, field
@@ -1138,6 +1139,10 @@ class ReferenceAuditTask:
     archive_path: Path
     archive_sha256: str
     reused: bool = False
+    #: Amendment B11: the task's base commit and pinned image, to verify that git
+    #: history the generator read is the base commit's own past.
+    base_commit: str | None = None
+    image_id: str | None = None
 
 
 def _normalized(text: str) -> str:
@@ -1268,6 +1273,118 @@ def _frozen_test_findings(task, folder, digests):
     return findings, files, lines
 
 
+_GIT_HISTORY = re.compile(r"^git\s+(?:-C\s+\S+\s+)?(?:--no-pager\s+)?(?:show|log)\b")
+_OUTPUT_FILTER = re.compile(
+    r"^(?:(?:head|tail)(?:\s+-n\s*\d+|\s+-\d+)?"
+    r"|sed\s+-n\s+'?\d+(?:,\d+)?p'?"
+    r"|grep(?:\s+-[A-Za-z]+)*\s+(?:\"[^\"]*\"|'[^']*'|[^\s'\"|;&]+))$")
+_REVISION = re.compile(r"^(?:[0-9a-f]{7,40}|HEAD)(?:[\^~]\d*)*$")
+_COMMIT_HEADER = re.compile(r"^commit ([0-9a-f]{40})\b")
+
+
+def history_revisions(command, output, line):
+    """Amendment B11: the git revisions whose objects produced `line` in `output`, or None.
+
+    None unless every segment of `command` is a `cd`, or a `git show` / `git log`
+    piped only through output filters that cannot add text (head, tail, sed -n
+    'N,Mp', grep). The line's revision is the nearest `commit <sha>` header above
+    its first occurrence; without one, every revision the command names.
+    """
+    if not isinstance(command, str) or not isinstance(output, str):
+        return None
+    revisions, history = set(), False
+    for segment in re.split(r"&&|\|\||;|\n", command):
+        parts = [part.strip() for part in segment.split("|")]
+        head, filters = parts[0], parts[1:]
+        if not head and not filters:
+            continue
+        if re.match(r"^cd(?:\s+\S+)?$", head) and not filters:
+            continue
+        if not _GIT_HISTORY.match(head) or not all(_OUTPUT_FILTER.match(f) for f in filters):
+            return None
+        history = True
+        try:
+            tokens = shlex.split(head)
+        except ValueError:
+            return None
+        for token in tokens[2:]:
+            if token == "--":
+                break
+            rev = token.split(":", 1)[0]
+            if _REVISION.match(rev):
+                revisions.add(rev)
+    if not history:
+        return None
+    header = None
+    for raw in output.splitlines():
+        match = _COMMIT_HEADER.match(raw)
+        if match:
+            header = match.group(1)
+        if line in _normalized(raw):
+            return {header} if header else (revisions or None)
+    return None
+
+
+def verify_ancestors(task, revisions):
+    """{revision: whether it is an ancestor of the task's base commit}, checked by git in the
+    task's pinned image (read-only, no network). Raises if it cannot be checked."""
+    if not task.base_commit or not task.image_id:
+        raise ValueError("no base commit or image to verify ancestry")
+    if not all(_REVISION.match(rev) for rev in revisions):
+        raise ValueError("unexpected revision")
+    script = ('cd /testbed && base=$1 && shift && for r in "$@"; do '
+              'c=$(git rev-parse --verify --quiet "$r^{commit}") && git merge-base --is-ancestor "$c" "$base" '
+              '&& echo "OK $r" || echo "NO $r"; done')
+    proc = subprocess.run(["docker", "run", "--rm", "--pull=never", "--network", "none", task.image_id,
+                           "bash", "-c", script, "_", task.base_commit, *sorted(revisions)],
+                          capture_output=True, text=True, timeout=600, check=False)
+    verdicts = {}
+    for row in proc.stdout.splitlines():
+        status, _, rev = row.partition(" ")
+        if status in ("OK", "NO"):
+            verdicts[rev] = status == "OK"
+    if proc.returncode or set(verdicts) != set(revisions):
+        raise RuntimeError("ancestry check failed")
+    return verdicts
+
+
+def _tool_command(messages, position):
+    """The shell command whose output is `messages[position]`, or None."""
+    message = messages[position]
+    if message.get("role") != "tool":
+        return None
+    for previous in reversed(messages[:position]):
+        if previous.get("role") != "assistant":
+            continue
+        calls = [c for c in previous.get("tool_calls") or () if isinstance(c, dict)]
+        call = next((c for c in calls if c.get("id") == message.get("tool_call_id")), None)
+        call = call or (calls[0] if len(calls) == 1 else None)
+        try:
+            return json.loads((call or {}).get("function", {}).get("arguments") or "{}").get("command")
+        except (json.JSONDecodeError, AttributeError):
+            return None
+    return None
+
+
+def _base_history(task, messages, position, line, cache):
+    """Amendment B11: the line's first appearance is a tool output of git history that is
+    verified as the base commit's own past."""
+    content = messages[position].get("content")
+    if not task.base_commit or not task.image_id:
+        return False
+    revisions = history_revisions(_tool_command(messages, position), content, line)
+    if not revisions:
+        return False
+    key = frozenset(revisions)
+    if key not in cache:
+        try:
+            verdicts = verify_ancestors(task, revisions)
+            cache[key] = all(verdicts.get(rev) is True for rev in revisions)
+        except Exception:  # noqa: BLE001 - unverifiable ancestry stays a leak
+            cache[key] = False
+    return cache[key]
+
+
 def _reference_findings(task):
     """Amendment A3: classify each gold line by where it first appears in each conversation.
 
@@ -1291,7 +1408,8 @@ def _reference_findings(task):
                                       task.archive_path)
     digests = {line: hashlib.sha256(line.encode("utf-8")).hexdigest() for line in candidates}
     findings, files = [], 1
-    recall, leaks, frozen_lines = set(), set(), set()
+    recall, leaks, frozen_lines, base_history = set(), set(), set(), set()
+    ancestry_cache: dict = {}
     recall_messages: list[dict] = []
     written_in_requirements: dict[Path, set[str]] = {}
     for name, path, folder in _generator_trajectories(task_dir, reused=task.reused):
@@ -1332,6 +1450,10 @@ def _reference_findings(task):
                                 written.add(digest)
                             findings.append(Finding(Severity.RECORDED, "GENERATOR_RECALL",
                                                     str(path), where))
+                        elif _base_history(task, messages, position, line, ancestry_cache):
+                            base_history.add(digest)
+                            findings.append(Finding(Severity.RECORDED, "BASE_HISTORY",
+                                                    str(path), where))
                         else:
                             leaks.add(digest)
                             findings.append(Finding(Severity.CONFIRMED, "GOLD_LINE_LEAK",
@@ -1349,6 +1471,7 @@ def _reference_findings(task):
         "candidate_lines": len(candidates),
         "recall_lines": sorted(recall), "recall_messages": recall_messages,
         "frozen_test_lines": sorted(frozen_lines), "leak_lines": sorted(leaks),
+        "base_history_lines": sorted(base_history),
     }
     return findings, files, len(candidates), summary
 

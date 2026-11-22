@@ -29,6 +29,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from reliability.e2e_runner import CONSECUTIVE_START_FAILURES, machine_status  # noqa: E402
 from reliability.verifier import container as containers  # noqa: E402
 from reliability.verifier.container import ContainerStartError, PatchApplyError  # noqa: E402
+from reliability.verifier.patch import PatchParseError  # noqa: E402
 from reliability.verifier.run_health import RunHealthError  # noqa: E402
 
 EXPERIMENT = 'preflight'
@@ -40,6 +41,8 @@ def classify(exc):
         return 'patch_does_not_apply'
     if isinstance(exc, ContainerStartError):
         return 'container_start'
+    if isinstance(exc, PatchParseError):
+        return 'patch_unparseable'  # verify_task records a V1 exception absence on that task
     return 'unclassified'
 
 

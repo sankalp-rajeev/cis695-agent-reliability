@@ -174,6 +174,8 @@ class RegressionConfig:
     skip_compatible: bool = True       # Policy C; False selects Policy S
     invalid_as_missing: bool = False   # required sensitivity report
     skip_paired: bool = False         # Policy P
+    # Amendment B10: stop confirming after this many confirmed regressions (None: never).
+    stop_after_regressions: int | None = None
 
     def __post_init__(self) -> None:
         if self.skip_compatible and self.skip_paired:
@@ -198,6 +200,7 @@ class RegressionReport:
     confirmations: tuple[RunResult, ...] = ()
     confirmation_summary: tuple[dict, ...] = ()
     evidence_flags: tuple[str, ...] = ()
+    early_exit: dict | None = None
 
     @property
     def regressions(self) -> tuple[str, ...]:
@@ -550,10 +553,17 @@ def run_regression(
     # Fix 8: each new failure gets three independent processes on EACH tree.
     # Never batch candidates, reuse a baseline cache, or stop after one success.
     confirmations, confirmation_summary = [], []
+    early_exit, confirmed = None, []
     if config.rerun_flaky:
         suspects = tuple(t for t, o in outcomes.items()
                          if o in (Outcome.REGRESSION, Outcome.REGRESSION_ERROR))
-        for test in suspects:
+        for position, test in enumerate(suspects):
+            if config.stop_after_regressions is not None and len(confirmed) >= config.stop_after_regressions:
+                # Amendment B10: enough confirmed regressions; the rest are not confirmed.
+                early_exit = {"stopped_early": True,
+                              "after_confirmed_regressions": config.stop_after_regressions,
+                              "confirmed": list(confirmed), "not_confirmed": list(suspects[position:])}
+                break
             initial_outcome=outcomes[test]
             statuses = {False: [], True: []}
             usable = True
@@ -588,6 +598,8 @@ def run_regression(
                       and all(s in non_pass for s in statuses[True]))
             if stable and all(s in (TestStatus.ERROR,TestStatus.CRASH) for s in statuses[True]):
                 outcomes[test]=Outcome.REGRESSION_ERROR
+            if stable:
+                confirmed.append(test)
             confirmation_summary.append({
                 "candidate_id": test, "initial_outcome": initial_outcome.value,
                 "stable": stable, "base_PASS": statuses[False].count(TestStatus.PASSED),
@@ -652,6 +664,11 @@ def run_regression(
                 completeness = "UNVERIFIABLE"
             gaps += tuple("confirmation: " + reason for reason in reasons)
     signal = Signal(integrity_verdict(original_signal.value, completeness))
+    if early_exit is not None:
+        # Amendment B10: three reproduced regressions decide V2 whatever else is missing.
+        signal = Signal.FAIL
+        notes.append(f"regressions >= {config.stop_after_regressions}, stopped early")
+        early_exit.update(tests_executed=n_executed, confirmation_runs=len(confirmations))
     return RegressionReport(
         instance_id=instance_id, signal=signal, outcomes=outcomes,
         selection=selection, baseline_from_cache=from_cache,
@@ -662,4 +679,5 @@ def run_regression(
         confirmation_summary=tuple(confirmation_summary),
         evidence_flags=tuple(sorted({flag for run in (baseline, patched, *confirmations)
                                      for flag in run.evidence_flags})),
+        early_exit=early_exit,
     )

@@ -11,9 +11,9 @@
     "configs/e2e/cohorts/verified200.json": "cohort definition never run: no run header or run metadata in any local worktree names it, and reports/next_phases/task_prep/REPORT.md states no images were pulled and no archives built for the 200/492 expansion"
   },
   "counts": {
-    "batch1": 2,
+    "batch1": 3,
     "batch2": 3,
-    "total": 5
+    "total": 6
   },
   "excluded": [
     {
@@ -146,6 +146,16 @@
         "reports/v2_discovery_cleanup/initial_state.json",
         "reports/v2_stabilization/verdict_diff.csv"
       ]
+    },
+    {
+      "instance_id": "astropy__astropy-7671",
+      "batch": 1,
+      "amendment": "B11 (AMENDMENT_2026-11-21b.md)",
+      "reason": "In the Phase 11 gold run the V4 generator read gold lines in pre-base git history (BASE_HISTORY); decided before any exam system patch was verified.",
+      "sources": []
     }
+  ],
+  "amendments": [
+    "B11 adds astropy__astropy-7671 (BASE_HISTORY in Phase 11); it stays in the all-tasks sensitivity analysis."
   ]
 }

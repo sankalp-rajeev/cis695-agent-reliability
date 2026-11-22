@@ -68,3 +68,23 @@ The V4 keys of `v1_5.yaml` (`reproduction` and every `v1_5.v4_*`) equal their va
 | runner | `scripts/decide_v1_5.py` | `aca6638114519889a031d9bf4aad8bd4d8023cf9b4c319cc065f6cd8a856f5cc` |
 
 V4's own files are pinned in [V4_FREEZE.md](V4_FREEZE.md).
+
+## Addendum, 22 Nov 2026: changes for `v1.5-frozen-2` (amendments B10, B11)
+
+These files changed after tag `v1.5-frozen`; nothing else in `src/` or `configs/` did. `configs/verifier/v1_5.yaml` and the switches are unchanged, and the V4 files in [V4_FREEZE.md](V4_FREEZE.md) are unchanged.
+
+- B10: V2 stops after 3 confirmed regressions (`regression.py`, `guarded_v2.py`, `run.py`).
+- B11: BASE_HISTORY in the reference audit (`leakage.py`, `audit_leakage.py`); astropy-7671 excluded from the headline (`headline_exclusions.json`).
+- Audited runs accept a HEAD that descends from the freeze tag with only `reports/` changed (`e2e_runner.require_frozen_head`), so the three Phase 12 systems can run from one tag with a report commit between them.
+- The preflight classifies an unparseable patch (`scripts/preflight.py`).
+
+| File | sha256 |
+|---|---|
+| `src/reliability/benchmark/leakage.py` | `9183adc6f1c925f6aa0c5323936475a192a0c44a6721a7e9ef4b151bf48207ec` |
+| `scripts/audit_leakage.py` | `b01ad03f87f04fc3c53b03056282bda483e2ad732e6d142cd8ee83dea06d22b8` |
+| `src/reliability/verifier/regression.py` | `fdafd712aacb05732e3f8fe05c9b32d349efc46f5060b5d2a0a10fdfb9a17302` |
+| `src/reliability/verifier/guarded_v2.py` | `3b78b30a33d4f5359f6c1670fa145ed400a59f0b47670508f50581875c749e67` |
+| `src/reliability/verifier/run.py` | `82172f5d9db3b94ca60ebc07bbe1c2db13026b3b5e3bbf53e04a6d16c21e13ca` |
+| `src/reliability/e2e_runner.py` | `ba4dca6420506f102c83047138938d86e7f7076d91fe36319110425ec1a21c2a` |
+| `scripts/preflight.py` | `b7eecd6df918a68c772555733d2835031c8c232202eea64f726692b38d606f6a` |
+| `configs/study_v1_5/headline_exclusions.json` | `d7b22229390e0e081ae6adc7261543f48bd25999889a01f068677b3dda9a7165` |
