@@ -5,6 +5,7 @@ from reliability.verifier import guarded_v2 as launch
 from reliability.verifier.collection import validate_in_container
 from reliability.verifier.native_reference import project_collection
 from reliability.verifier.run_health import effective_runner, runner_startup, zero_output
+from reliability.verifier.container import PatchApplyError
 from reliability.verifier.source_integrity import GeneratedInputAudit, SourceIntegrityError
 from reliability.verifier.generic_health import check_generic_pair, rules_stamp
 
@@ -52,7 +53,8 @@ def audit_pair(spec, patched, output, reference=None):
             ok=not unexpected and not g3['halt']
     except (KeyboardInterrupt,SystemExit):
         raise
-    except SourceIntegrityError:
+    except (SourceIntegrityError, PatchApplyError):
+        # A patch git rejects fails V1 (amendment B9), never a run-health block.
         raise
     except Exception as exc:  # noqa: BLE001
         stages.append({'stage':'stage_error','status':'ERROR','input_count':1,'output_count':0,'message':repr(exc)})
@@ -134,7 +136,8 @@ def guarded_pair(spec, patched, output, reference=None):
                 health['fallback_recording_error']=repr(fallback_error)
         exc.g1_record=health
         raise
-    except SourceIntegrityError:
+    except (SourceIntegrityError, PatchApplyError):
+        # A patch git rejects fails V1 (amendment B9), never a run-health block.
         raise
     except Exception as exc:
         # Even receipt construction and writes are inside the per-pair boundary.

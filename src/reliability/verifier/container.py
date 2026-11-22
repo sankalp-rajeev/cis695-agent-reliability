@@ -81,6 +81,28 @@ class ContainerError(RuntimeError):
     pass
 
 
+class ContainerStartError(ContainerError):
+    """`docker run` failed: a machine-level failure, never the patch's (amendment B9)."""
+
+
+class PatchApplyError(ContainerError):
+    """`git apply` rejected the patch in the container: the patch does not apply (B9)."""
+
+
+# One entry per container start attempt in this process: True started, False failed.
+# The run loop reads it to stop on consecutive start failures (amendment B9, 7a).
+START_EVENTS: list[bool] = []
+
+
+def git_apply_command(*, reverse: bool = False, check: bool = False) -> str:
+    """The one `git apply` command used to apply, revert and check a patch.
+
+    V1's apply check and the container's apply share it, so they cannot disagree.
+    """
+    flag = "-R" if reverse else "--check" if check else ""
+    return f"git apply {flag} -"
+
+
 @dataclass
 class TaskContainer:
     """A running container for one instance, with patch apply/revert.
@@ -130,7 +152,9 @@ class TaskContainer:
             capture_output=True, text=True, env=clean_env(), check=False,
         )
         if proc.returncode != 0:
-            raise ContainerError(f"could not start {self.image}: {proc.stderr.strip()}")
+            START_EVENTS.append(False)
+            raise ContainerStartError(f"could not start {self.image}: {proc.stderr.strip()}")
+        START_EVENTS.append(True)
         self._started = True
         if self.source_spec is not None:
             try:
@@ -228,18 +252,22 @@ class TaskContainer:
         if patched:
             rc, out = self._apply(reverse=False)
             if rc != 0:
-                raise ContainerError(f"patch did not apply in container: {out[:300]}")
+                raise PatchApplyError(f"patch did not apply in container: {out[:300]}")
         else:
             rc, out = self._apply(reverse=True)
             if rc != 0:
                 raise ContainerError(f"patch did not revert in container: {out[:300]}")
         self._patch_applied = patched
 
-    def _apply(self, *, reverse: bool) -> tuple[int, str]:
-        flag = "-R" if reverse else ""
+    def apply_check(self) -> tuple[bool, str]:
+        """Whether this container's `git apply` accepts the patch, without applying it."""
+        rc, out = self._apply(reverse=False, check=True)
+        return rc == 0, out.strip()
+
+    def _apply(self, *, reverse: bool, check: bool = False) -> tuple[int, str]:
         proc = subprocess.run(
             [_docker_bin(), "exec", "-i", "-w", WORKDIR, self.name,
-             "bash", "-lc", f"git apply {flag} -"],
+             "bash", "-lc", git_apply_command(reverse=reverse, check=check)],
             input=self.patch_text, capture_output=True, text=True, errors="replace",
             env=clean_env(), check=False,
         )

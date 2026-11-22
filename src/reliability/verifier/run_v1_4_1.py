@@ -16,7 +16,7 @@ from reliability.umgpt_spend import BudgetCap
 from reliability.provider_errors import ProviderTransientError
 from reliability.agent.freeze import FrozenPatch, FrozenPatchError, read_patch, verify as verify_frozen_patch
 from reliability.verifier.archive_tree import ArchiveTree
-from reliability.verifier.container import ContainerRepoTree, ContainerTestExecutor
+from reliability.verifier.container import ContainerRepoTree, ContainerTestExecutor, PatchApplyError
 from reliability.verifier.evidence import has_high_severity_risk, has_prohibited_manipulation, integrity_outcome
 from reliability.verifier.guarded_v2 import (
     DEFAULT_V2_ACCOUNTING, V2_ACCOUNTINGS, FrozenContainer, ReplayMismatch, fallback_results,
@@ -24,7 +24,7 @@ from reliability.verifier.guarded_v2 import (
 )
 from reliability.verifier.inline_g1 import guarded_pair, proposed_failure_category, finalize_generic_pair
 from reliability.verifier.generic_health import paired_exception_scope
-from reliability.verifier.integrity import Violation
+from reliability.verifier.integrity import Finding, IntegrityReport, Violation
 from reliability.verifier.integrity_v1_4 import check_integrity
 from reliability.verifier.native_reference import collection_reference, empty_reference, load_drift
 from reliability.verifier.policy_v1_4 import evidence_from_signals
@@ -137,14 +137,40 @@ class ExecutionSpec:
 
 def integrity_signal(patch_text, tree):
     report = check_integrity(patch_text, tree=tree)
+    return report, integrity_record(report)
+
+
+def integrity_record(report, **extra):
     record = SignalRecord(kind=SignalKind.INTEGRITY, outcome=integrity_outcome(report),
         detail='; '.join(str(f) for f in report.findings) or 'no violations',
         findings={'violations': [v.value for v in report.violations],
                   'patch_applies': Violation.DOES_NOT_APPLY not in report.violations,
                   'prohibited_manipulation': has_prohibited_manipulation(report),
                   'high_severity_risk': has_high_severity_risk(report),
-                  'ast_analysis': list(report.analysis)})
-    return report, record
+                  'ast_analysis': list(getattr(report, 'analysis', ()))})
+    record.findings.update(extra)
+    return record
+
+
+def with_does_not_apply(report, detail):
+    """Amendment B9: a patch the container's `git apply` rejects fails V1 (R1 REJECT)."""
+    finding = Finding(Violation.DOES_NOT_APPLY, detail=(detail or '')[:300] or 'git apply --check failed')
+    if report is None:
+        return IntegrityReport(findings=(finding,))
+    if Violation.DOES_NOT_APPLY in report.violations:
+        return report
+    return replace(report, findings=report.findings + (finding,))
+
+
+def container_apply_check(task, patch_text, folder, experiment):
+    """V1's apply check (B9): the task's verified pristine container runs the same
+    `git apply` the container uses to apply the patch, so the two cannot disagree."""
+    with FrozenContainer(task.instance_id, patch_text, image=task.image_id, experiment_id=experiment,
+                         source_spec=task.source,
+                         source_receipt_path=folder / 'v1_pristine_source_receipt.json') as container:
+        if container.source_integrity.get('status') != 'VERIFIED':
+            raise ValueError('A fresh VERIFIED pristine receipt is required')
+        return container.apply_check()
 
 
 def run_v2(task, patch_path, selection, folder, *, experiment, drift, stamps, v2_settings=None):
@@ -197,18 +223,68 @@ def paired_collection_exclusions(healths):
             return None
         found = {}
         for stage in stages:
+            if stage.get('allowed_exception'):
+                # A prelisted environment guard (e.g. GIS) that G1 already allows; it
+                # never blocks, so it neither prevents nor joins the exclusion (B9).
+                continue
             if (stage.get('stage') != 'native_collection' or stage.get('status') != 'COLLECTION_ERROR'
-                    or not stage.get('module') or stage.get('allowed_exception')):
+                    or not stage.get('module')):
                 return None
             exc = collection_exception_type('\n'.join(stage.get('messages') or ()) + '\n'
                                             + str(stage.get('message') or ''))
             if exc is None or found.get(stage['module'], exc) != exc:
                 return None
             found[stage['module']] = exc
+        if not found:
+            return None
         per_tree[health['tree']] = found
     if per_tree['base'] != per_tree['patched']:
         return None
     return [{'module': module, 'exception_type': exc} for module, exc in sorted(per_tree['base'].items())]
+
+
+_MACHINE_SIGNS = ('No space left on device', 'Cannot connect to the Docker daemon', 'OCI runtime',
+                  'OOMKilled', 'Out of memory', 'ContainerStartError')
+
+
+def _stage_text(stage):
+    return '\n'.join(stage.get('messages') or ()) + '\n' + str(stage.get('message') or '')
+
+
+def _machine_failure(stage):
+    """A harness or machine failure: an exception in the verifier itself, or a Docker,
+    disk or out-of-memory signature. Never something the patch or the image causes."""
+    return (stage.get('status') in ('ERROR', 'INTERRUPTED')
+            or any(sign in _stage_text(stage) for sign in _MACHINE_SIGNS)
+            or 137 in (stage.get('collector_exit_codes') or ()))
+
+
+def _tree_clean(health):
+    """A tree is clean when G1 is READY, or when every blocking stage is a prelisted
+    environment guard (allowed, or revoked only because the other tree did not match)."""
+    if health.get('status') == 'READY':
+        return True
+    stages = _blocking_stages(health)
+    return bool(stages) and all(s.get('allowed_exception') or s.get('generic_rule_rejected') for s in stages)
+
+
+def g1_attribution(healths):
+    """Amendment B9: who caused a G1 run-health block.
+
+    infrastructure: a machine or harness failure on either tree (Docker, container,
+        disk, out of memory, a verifier exception). Only these set the infrastructure flag.
+    patch: the base tree is clean and the patched tree is blocked (e.g. django-14140).
+    environment: both trees are blocked by the code under test or the image (a
+        collector or dependency gap that A7 could not exclude). Not infrastructure.
+    """
+    if any(h.get('status') == 'INTERRUPTED' for h in healths) or any(
+            _machine_failure(stage) for h in healths for stage in _blocking_stages(h)):
+        return 'infrastructure'
+    trees = {h.get('tree'): h for h in healths}
+    base, patched = trees.get('base'), trees.get('patched')
+    if base is not None and patched is not None and _tree_clean(base) and patched.get('status') != 'READY':
+        return 'patch'
+    return 'environment'
 
 
 def _g1(task, spec, folder, output, tests, drift, stamps, scope, suffix=''):
@@ -235,7 +311,12 @@ def _g1(task, spec, folder, output, tests, drift, stamps, scope, suffix=''):
     return healths, references, blocked
 
 
-def _run_v2(task, patch_path, selection, folder, *, experiment, drift, stamps, v2_settings=None):
+def g1_with_paired_exclusion(task, patch_path, selection, folder, *, experiment, drift, stamps):
+    """G1 on both trees, then amendment A7's paired exclusion. Collection only: no test runs.
+
+    Raises RunHealthError with `g1_category` and `attribution` (B9) if G1 stays blocked.
+    Returns (selection, references, exclusions).
+    """
     spec = ExecutionSpec(task.instance_id, task.image_id, task.source, task.runner, patch_path, selection.tests, experiment)
     healths, references, blocked = _g1(task, spec, folder, folder / 'g1', selection.tests, drift, stamps, 'G1')
     exclusions = []
@@ -258,7 +339,14 @@ def _run_v2(task, patch_path, selection, folder, *, experiment, drift, stamps, v
     if blocked:
         error = RunHealthError({'task': task.instance_id, 'halt': True, 'halt_reasons': blocked})
         error.g1_category = blocked[0]
+        error.attribution = g1_attribution(healths)
         raise error
+    return selection, references, exclusions
+
+
+def _run_v2(task, patch_path, selection, folder, *, experiment, drift, stamps, v2_settings=None):
+    selection, references, exclusions = g1_with_paired_exclusion(
+        task, patch_path, selection, folder, experiment=experiment, drift=drift, stamps=stamps)
     receipt_path = folder / 'pristine_source_receipt.json'
     with FrozenContainer(task.instance_id, patch_path.read_bytes().decode('utf-8'), image=task.image_id,
         experiment_id=experiment, source_spec=task.source, source_receipt_path=receipt_path) as container:
@@ -287,8 +375,12 @@ def run_v3(task, patch_text, patch, folder, *, experiment):
 
 def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=False,
                 provenance=None, v4_runner=None, drift=None, v2_runner=None, v3_runner=None,
-                reproduction_setup=None, v2_settings=None, v4_reuse_evidence=None):
-    """Never swallow source-integrity errors; V2 absence does not skip V3/V4."""
+                reproduction_setup=None, v2_settings=None, v4_reuse_evidence=None, apply_check=None):
+    """Never swallow source-integrity errors; V2 absence does not skip V3/V4.
+
+    A patch the container's `git apply` rejects fails V1, and V2/V3 are then not run
+    (amendment B9); `apply_check` defaults to the container check.
+    """
     task_dir = Path(task_dir)
     folder = task_dir / 'verification'
     folder.mkdir(parents=True, exist_ok=True)
@@ -318,6 +410,30 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
         raise
     except Exception as exc:
         signals[SignalKind.INTEGRITY] = absence(SignalKind.INTEGRITY, 'V1_EXCEPTION:' + type(exc).__name__)
+    apply_status = None
+
+    def does_not_apply(detail):
+        nonlocal integrity
+        integrity = with_does_not_apply(integrity, detail)
+        signals[SignalKind.INTEGRITY] = integrity_record(integrity, apply_check=apply_status)
+
+    if task_spec is not None and patch_text.strip():
+        try:
+            applies, detail = (apply_check or container_apply_check)(task_spec, patch_text, folder, experiment_id)
+        except SourceIntegrityError:
+            raise
+        except Exception as exc:
+            apply_status = 'UNAVAILABLE:' + type(exc).__name__
+            signals[SignalKind.INTEGRITY].findings['apply_check'] = apply_status
+        else:
+            apply_status = 'PASS' if applies else 'FAIL'
+            if applies:
+                signals[SignalKind.INTEGRITY].findings['apply_check'] = apply_status
+            else:
+                does_not_apply(detail)
+
+    def rejected():
+        return integrity is not None and Violation.DOES_NOT_APPLY in integrity.violations
     if selection is not None:
         write(folder / 'selection.json', selection.to_dict(include_fallback=v2_settings is not None))
         stamps['selection_sha256'] = sha(folder / 'selection.json')
@@ -333,6 +449,8 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
         try:
             if selection is None:
                 signals[SignalKind.REGRESSION] = absence(SignalKind.REGRESSION, 'NO_SELECTION')
+            elif rejected():
+                signals[SignalKind.REGRESSION] = absence(SignalKind.REGRESSION, 'PATCH_DOES_NOT_APPLY')
             elif not selection.tests:
                 signals[SignalKind.REGRESSION] = SignalRecord.absent(
                     SignalKind.REGRESSION, SignalAbsence.NOTHING_TO_CHECK, 'no tests selected')
@@ -352,16 +470,28 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
             signals[SignalKind.REGRESSION] = absence(SignalKind.REGRESSION, 'REPLAY_MISMATCH', infrastructure=True)
         except RunHealthError as exc:
             reason = ('RUN_HEALTH_G1:' + exc.g1_category) if hasattr(exc, 'g1_category') else 'RUN_HEALTH:' + str(exc)
-            signals[SignalKind.REGRESSION] = absence(SignalKind.REGRESSION, reason, infrastructure=True)
+            # Amendment B9: only a machine or harness failure is infrastructure.
+            attribution = getattr(exc, 'attribution', 'infrastructure')
+            signals[SignalKind.REGRESSION] = absence(SignalKind.REGRESSION, reason,
+                                                     infrastructure=attribution == 'infrastructure')
+            signals[SignalKind.REGRESSION].findings['attribution'] = attribution
+        except PatchApplyError as exc:
+            does_not_apply(str(exc))
+            signals[SignalKind.REGRESSION] = absence(SignalKind.REGRESSION, 'PATCH_DOES_NOT_APPLY')
         except Exception as exc:
             signals[SignalKind.REGRESSION] = absence(SignalKind.REGRESSION, 'EXECUTOR_EXCEPTION:' + type(exc).__name__, infrastructure=True)
         try:
             if integrity is None or integrity.patch is None:
                 signals[SignalKind.STATIC] = absence(SignalKind.STATIC, 'NO_PARSEABLE_PATCH')
+            elif rejected():
+                signals[SignalKind.STATIC] = absence(SignalKind.STATIC, 'PATCH_DOES_NOT_APPLY')
             else:
                 signals[SignalKind.STATIC] = (v3_runner or run_v3)(task_spec, patch_text, integrity.patch, folder, experiment=experiment_id)
         except SourceIntegrityError:
             raise
+        except PatchApplyError as exc:
+            does_not_apply(str(exc))
+            signals[SignalKind.STATIC] = absence(SignalKind.STATIC, 'PATCH_DOES_NOT_APPLY')
         except Exception as exc:
             signals[SignalKind.STATIC] = absence(SignalKind.STATIC, 'EXECUTOR_EXCEPTION:' + type(exc).__name__, infrastructure=True)
     regression_findings = signals[SignalKind.REGRESSION].findings

@@ -21,7 +21,7 @@ os.environ.setdefault('LITELLM_LOCAL_MODEL_COST_MAP', 'True')
 import yaml
 
 from reliability.agent.freeze import freeze_patch
-from reliability.e2e_runner import git, run_batch, validate_mode
+from reliability.e2e_runner import git, machine_status, run_batch, validate_mode
 from reliability.env import assert_clean_interpreter
 from reliability.provider_spend import ProviderLedger
 from reliability.provider_errors import ProviderTransientError
@@ -248,7 +248,8 @@ def main(argv=None):
             v4_runner=v4, reproduction_setup=setup, **options)
 
     options = {'reuse_v4': reuse} if reuse is not None else {}
-    status = run_batch(ids, output, header, agent_stage, verify_stage, ledgers=tuple(ledgers.values()), **options)
+    status = run_batch(ids, output, header, agent_stage, verify_stage, ledgers=tuple(ledgers.values()),
+                       machine_check=lambda: machine_status(output), **options)
     print(json.dumps({'status': status, 'output': str(output)}))
     return 0 if status == 'COMPLETE' else 2
 

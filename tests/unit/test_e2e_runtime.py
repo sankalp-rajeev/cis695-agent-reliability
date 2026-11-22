@@ -58,7 +58,8 @@ def verify(directory, task, *, failure=None, v4_failure=None, v2_settings=None):
             raise v4_failure
         return good(SignalKind.REPRODUCTION)
     result = verify_task(directory, instance_id=task.instance_id, task_spec=task,
-        experiment_id='mock', v2_runner=v2, v3_runner=v3, v4_runner=v4, drift={}, v2_settings=v2_settings)
+        experiment_id='mock', v2_runner=v2, v3_runner=v3, v4_runner=v4, drift={}, v2_settings=v2_settings,
+        apply_check=lambda *args: (True, ''))
     return result, called
 
 
@@ -214,27 +215,22 @@ def batch(tmp_path, monkeypatch, task, *, count=4, failure=None, stop_agent=Fals
     return status, json.loads((output / 'completion.json').read_text())
 
 
-def test_three_consecutive_infrastructure_absences_stop_systemically(tmp_path, monkeypatch, task):
+def test_infrastructure_absences_no_longer_stop_the_run(tmp_path, monkeypatch, task):
+    # Amendment B9 (7a) replaced the systemic stop: a task never stops a run.
     status, completion = batch(tmp_path, monkeypatch, task,
         failure=RunHealthError({'halt': True, 'halt_reasons': ['injected']}))
-    assert status == 'STOPPED_SYSTEMIC'
-    assert completion['completed_tasks'] == ['demo__repo-0', 'demo__repo-1', 'demo__repo-2']
-    assert completion['not_completed_tasks'] == ['demo__repo-3']
+    assert status == 'COMPLETE'
+    assert len(completion['completed_tasks']) == 4
 
 
-def test_systemic_twenty_percent_rule_starts_at_ten_completed():
-    assert not e2e_runner.systemic([True, False, True])
-    assert not e2e_runner.systemic([True, False, True] + [False] * 6)
-    assert e2e_runner.systemic([True, False, True] + [False] * 7)
-
-
-def test_integrity_abort_writes_completion_and_receipt(tmp_path, monkeypatch, task):
+def test_task_source_integrity_error_is_recorded_on_the_task(tmp_path, monkeypatch, task):
     error = SourceIntegrityError({'mismatches': [{'path': 'foo.py', 'reason': 'bytes'}]})
     status, completion = batch(tmp_path, monkeypatch, task, failure=error)
-    assert status == 'ABORTED_INTEGRITY'
+    assert status == 'COMPLETE_WITH_TASK_ERRORS'
     assert completion['completed_tasks'] == []
-    assert len(completion['not_completed_tasks']) == 4
-    assert (tmp_path / 'runs/batch/integrity_abort.json').exists()
+    assert len(completion['task_errors']) == 4
+    receipt = json.loads((tmp_path / 'runs/batch/tasks/demo__repo-0/task_error.json').read_text())
+    assert receipt['receipt'] == {'mismatches': [{'path': 'foo.py', 'reason': 'bytes'}]}
 
 
 @pytest.mark.parametrize('error,expected', [(BudgetCap('UM cap'), 'STOPPED_BUDGET'), (AuthStop('UM auth'), 'STOPPED_AUTH')])

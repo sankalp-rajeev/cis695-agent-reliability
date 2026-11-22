@@ -123,14 +123,14 @@ def check_label_free(run: Path) -> None:
             raise ValueError("run path has a forbidden name (gold) and is not a reference-patch run")
 
 
-def check_sealed(run: Path) -> tuple[dict[str, str], str]:
+def check_sealed(run: Path, *, require_complete: bool = True) -> tuple[dict[str, str], str]:
     seal = run / "seal.json"
     if not seal.is_file() or seal.is_symlink():
         raise ValueError("run has no seal.json; only sealed runs can be decided")
     raw = seal.read_bytes()
     data = json.loads(raw)
     files = data.get("files_sha256")
-    if data.get("status") != "COMPLETE" or not isinstance(files, dict):
+    if not isinstance(files, dict) or (require_complete and data.get("status") != "COMPLETE"):
         raise ValueError("run seal is not COMPLETE")
     paths = list(run.rglob("*"))
     if any(path.is_symlink() for path in paths):
@@ -206,8 +206,30 @@ def without_v2_fallback(run: Path, files: dict[str, str], iid: str, record, evid
                    v2_absence=V2_NOTHING_TO_CHECK), True
 
 
+def kept_tasks(run: Path, ids, output: Path) -> tuple[dict[str, str], str, set[str]]:
+    """Tasks kept from a sealed run that stopped early (amendment B9). The seal must
+    match, but its status may be a stop. Each kept task needs a sealed completion
+    file saying it completed, and its record."""
+    check_label_free(run)
+    if output.is_relative_to(run):
+        raise ValueError("output must not be inside the sealed run")
+    files, seal_sha256 = check_sealed(run, require_complete=False)
+    completion = json.loads(_read(run, files, "completion.json"))
+    for iid in ids:
+        name = f"tasks/{iid}/task_completion.json"
+        if name not in files:
+            raise ValueError(f"kept task has no completion file in {run}: {iid}")
+        if json.loads(_read(run, files, name)).get("complete") is not True:
+            raise ValueError(f"kept task's completion file does not say complete: {iid}")
+        if f"tasks/{iid}/{RECORD}" not in files:
+            raise ValueError(f"kept task has no verification record: {iid}")
+    return files, seal_sha256, set(completion.get("no_patch_tasks", ()))
+
+
 def decide_run(run: Path, switches: dict[str, bool], output: Path, frozen: dict | None = None,
-               *, v2_fallback: bool = True) -> dict:
+               *, v2_fallback: bool = True, kept=None, expected_ids=None) -> dict:
+    """`kept=(run, ids)` adds tasks kept from a stopped sealed run; with `expected_ids`
+    the merged set must be exactly those ids, each from one run only (amendment B9)."""
     run, output = Path(run).resolve(), Path(output).resolve()
     check_label_free(run)
     if output.is_relative_to(run):
@@ -217,35 +239,54 @@ def decide_run(run: Path, switches: dict[str, bool], output: Path, frozen: dict 
     if completion.get("status") != "COMPLETE":
         raise ValueError("run completion is not COMPLETE")
     no_patch = set(completion.get("no_patch_tasks", ()))
+    sources = [(run, files, list(completion["completed_tasks"]), no_patch)]
+    kept_summary = None
+    if kept is not None:
+        kept_run, kept_ids = Path(kept[0]).resolve(), list(kept[1])
+        kept_files, kept_seal, kept_no_patch = kept_tasks(kept_run, kept_ids, output)
+        sources.insert(0, (kept_run, kept_files, kept_ids, kept_no_patch))
+        kept_summary = {"run": str(kept_run), "seal_sha256": kept_seal, "ids": kept_ids}
+    order = [iid for _, _, ids, _ in sources for iid in ids]
+    duplicates = sorted(iid for iid, n in Counter(order).items() if n > 1)
+    if duplicates:
+        raise ValueError("duplicate task in the merged set: " + ", ".join(duplicates))
+    if expected_ids is not None and set(order) != set(expected_ids):
+        missing, extra = sorted(set(expected_ids) - set(order)), sorted(set(order) - set(expected_ids))
+        raise ValueError(f"merged set is not exactly the expected ids: missing {missing}, extra {extra}")
     policy = FullPolicyV15(**switches)
     rows = []
-    for iid in completion["completed_tasks"]:
-        name = f"tasks/{iid}/{RECORD}"
-        record = VerificationRecordV141.model_validate_json(_read(run, files, name))
-        if record.instance_id != iid:
-            raise ValueError(f"record instance differs: {name}")
-        evidence = evidence_from_signals(record.signals,
-                                         added_paths=added_paths(run, files, iid))
-        removed = False
-        if not v2_fallback:
-            evidence, removed = without_v2_fallback(run, files, iid, record, evidence)
-        result = policy.decide(evidence)
-        rows.append({
-            "instance_id": iid, "has_patch": iid not in no_patch,
-            "stored_decision": record.decision.decision.value,
-            "stored_policy_version": record.decision.policy_version,
-            "integrity": evidence.integrity.value, "v2": evidence.regression.value,
-            "v4": evidence.reproduction.value,
-            **{k: (";".join(v) if isinstance(v := getattr(evidence, k), tuple) else v)
-               for k in EVIDENCE_FIELDS},
-            "v2_fallback_removed": removed,
-            "decision": result.decision.value, "rule_id": result.rule_id,
-            "review_label": result.review_label,
-        })
+    for source_run, files, ids, no_patch in sources:
+        for iid in ids:
+            run = source_run
+            name = f"tasks/{iid}/{RECORD}"
+            record = VerificationRecordV141.model_validate_json(_read(run, files, name))
+            if record.instance_id != iid:
+                raise ValueError(f"record instance differs: {name}")
+            evidence = evidence_from_signals(record.signals,
+                                             added_paths=added_paths(run, files, iid))
+            removed = False
+            if not v2_fallback:
+                evidence, removed = without_v2_fallback(run, files, iid, record, evidence)
+            result = policy.decide(evidence)
+            rows.append({
+                "instance_id": iid, "has_patch": iid not in no_patch,
+                "stored_decision": record.decision.decision.value,
+                "stored_policy_version": record.decision.policy_version,
+                "integrity": evidence.integrity.value, "v2": evidence.regression.value,
+                "v4": evidence.reproduction.value,
+                **{k: (";".join(v) if isinstance(v := getattr(evidence, k), tuple) else v)
+                   for k in EVIDENCE_FIELDS},
+                "v2_fallback_removed": removed,
+                "decision": result.decision.value, "rule_id": result.rule_id,
+                "review_label": result.review_label,
+                **({"source_run": str(source_run)} if kept is not None else {}),
+            })
+    run = sources[-1][0]
     output.mkdir(parents=True, exist_ok=True)
     csv_path = output / f"decisions_v1_5_{tag(switches, v2_fallback)}.csv"
     with csv_path.open("w", newline="", encoding="utf-8") as stream:
-        writer = csv.DictWriter(stream, fieldnames=FIELDS, lineterminator="\n")
+        writer = csv.DictWriter(stream, fieldnames=FIELDS + (("source_run",) if kept is not None else ()),
+                                lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
@@ -269,6 +310,8 @@ def decide_run(run: Path, switches: dict[str, bool], output: Path, frozen: dict 
         "csv_sha256": hashlib.sha256(csv_path.read_bytes()).hexdigest(),
         "summary_name": f"summary_v1_5_{tag(switches, v2_fallback)}.json",
     }
+    if kept is not None:
+        summary.update(kept_from=kept_summary, sources={r["instance_id"]: r["source_run"] for r in rows})
     (output / summary["summary_name"]).write_text(
         json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return summary
@@ -285,13 +328,29 @@ def main(argv=None) -> int:
     parser.add_argument("--no-v2-fallback", action="store_true",
                         help="recompute V2 without fallback-selected tests (amendment A4 (v))")
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--kept-run", type=Path, help="sealed stopped run to keep tasks from (B9)")
+    parser.add_argument("--kept-ids", type=Path, help="JSON list of the task ids kept from --kept-run")
+    parser.add_argument("--expect-ids", type=Path, help="JSON list the merged set must equal exactly")
     args = parser.parse_args(argv)
+    try:
+        return _main(args)
+    except (ValueError, OSError, KeyError, TypeError) as exc:
+        # Report, never crash (amendment B9): the finish script records this message.
+        print(f"decide_v1_5: cannot decide {args.run}: {type(exc).__name__}: {exc}", file=sys.stderr)
+        return 2
+
+
+def _main(args) -> int:
+    if (args.kept_run is None) != (args.kept_ids is None):
+        raise ValueError("--kept-run and --kept-ids go together")
     if args.frozen:
         switches, frozen = frozen_switches()
     else:
         switches, frozen = parse_switches(args.switches), None
+    kept = (args.kept_run, json.loads(args.kept_ids.read_text())) if args.kept_run else None
+    expected = json.loads(args.expect_ids.read_text()) if args.expect_ids else None
     summary = decide_run(args.run, switches, args.output, frozen,
-                         v2_fallback=not args.no_v2_fallback)
+                         v2_fallback=not args.no_v2_fallback, kept=kept, expected_ids=expected)
     patch = summary["counts"]["patch"]
     if frozen:
         print(f"switches from {frozen['tag']} @ {frozen['tag_commit']}")
