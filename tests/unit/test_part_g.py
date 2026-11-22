@@ -33,24 +33,8 @@ def running(name='n'):
     return container
 
 
-def test_apply_check_and_container_apply_run_the_same_git_command(monkeypatch):
-    calls = []
-    monkeypatch.setattr(C.subprocess, 'run', recorder(calls))
-    container = running()
-    assert container.apply_check() == (True, '')
-    container.set_patched(True)
-    check, apply = calls
-    assert check[:-1] == apply[:-1]
-    assert check[-1] == C.git_apply_command(check=True) == 'git apply --check -'
-    assert apply[-1] == C.git_apply_command() == 'git apply  -'
-
-
-def test_failed_container_apply_is_a_patch_apply_error(monkeypatch):
-    monkeypatch.setattr(C.subprocess, 'run', recorder([], rc=128, stderr='error: corrupt patch at line 5'))
-    with pytest.raises(C.PatchApplyError, match='corrupt patch') as caught:
-        running().set_patched(True)
-    assert isinstance(caught.value, C.ContainerError)
-    assert running().apply_check() == (False, 'error: corrupt patch at line 5')
+# The part G single-command apply (`git apply --check -`) is superseded by amendment B12's
+# grader sequence; see tests/unit/test_harness_apply.py.
 
 
 def test_container_start_failure_is_typed_and_counted(monkeypatch):

@@ -115,8 +115,8 @@ def apply_job(job):
     folder = WORK / group / iid
     folder.mkdir(parents=True, exist_ok=True)
     try:
-        applies, _ = container_apply_check(tasks[iid], text, folder, 'part_g_rederive')
-        return group, iid, applies, None
+        applies, _, command = container_apply_check(tasks[iid], text, folder, 'part_g_rederive')
+        return group, iid, applies, command
     except Exception as exc:  # noqa: BLE001
         return group, iid, None, type(exc).__name__
 

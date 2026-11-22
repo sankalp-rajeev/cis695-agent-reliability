@@ -73,7 +73,7 @@ def check_task(job):
     patch_text = patch_path.read_bytes().decode('utf-8')
     folder = Path(output) / 'tasks' / iid / 'verification'
     folder.mkdir(parents=True, exist_ok=True)
-    row = {'instance_id': iid, 'exceptions': [], 'apply': None, 'v1': None, 'v3': None, 'g1': 'NOT_RUN',
+    row = {'instance_id': iid, 'exceptions': [], 'apply': None, 'apply_command': None, 'v1': None, 'v3': None, 'g1': 'NOT_RUN',
            'g1_category': None, 'attribution': None, 'paired_exclusions': [], 'selected_tests': 0,
            'infrastructure': False}
     integrity = selection = None
@@ -90,8 +90,8 @@ def check_task(job):
     applies = False
     if patch_text.strip():
         try:
-            applies, _ = container_apply_check(task, patch_text, folder, EXPERIMENT)
-            row['apply'] = 'PASS' if applies else 'FAIL'
+            applies, _, command = container_apply_check(task, patch_text, folder, EXPERIMENT)
+            row['apply'], row['apply_command'] = ('PASS' if applies else 'FAIL'), command
             if not applies:
                 row['v1'] = 'FAIL'  # does_not_apply: R1 REJECT; V2 and V3 are not run (B9)
         except Exception as exc:  # noqa: BLE001
@@ -143,8 +143,14 @@ def summarize(rows, machine):
             stopping.append(f'{CONSECUTIVE_START_FAILURES} consecutive tasks with only container-start '
                             f'failures ending at {row["instance_id"]}')
     unclassified = [r['instance_id'] for r in rows if any(e['class'] == 'unclassified' for e in r['exceptions'])]
+    commands = {}
+    for r in rows:
+        if r.get('apply') == 'PASS':
+            commands[r.get('apply_command')] = commands.get(r.get('apply_command'), 0) + 1
     return {'pass': not stopping and not unclassified, 'run_stopping': stopping, 'unclassified': unclassified,
-            'listed': [r['instance_id'] for r in rows if listed(r)]}
+            'listed': [r['instance_id'] for r in rows if listed(r)], 'apply_commands': commands,
+            'apply_failed': [r['instance_id'] for r in rows if r.get('apply') == 'FAIL'],
+            'empty': [r['instance_id'] for r in rows if r.get('apply') is None and not r['exceptions']]}
 
 
 def table(rows):

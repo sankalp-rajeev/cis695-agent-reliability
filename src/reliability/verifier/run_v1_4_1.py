@@ -410,16 +410,20 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
         raise
     except Exception as exc:
         signals[SignalKind.INTEGRITY] = absence(SignalKind.INTEGRITY, 'V1_EXCEPTION:' + type(exc).__name__)
-    apply_status = None
+    apply_status, apply_command = None, None
 
     def does_not_apply(detail):
         nonlocal integrity
         integrity = with_does_not_apply(integrity, detail)
-        signals[SignalKind.INTEGRITY] = integrity_record(integrity, apply_check=apply_status)
+        signals[SignalKind.INTEGRITY] = integrity_record(integrity, apply_check=apply_status,
+                                                         apply_command=apply_command)
 
     if task_spec is not None and patch_text.strip():
         try:
-            applies, detail = (apply_check or container_apply_check)(task_spec, patch_text, folder, experiment_id)
+            # Amendment B12: the grader's sequence; the third value names the command that applied it.
+            result = (apply_check or container_apply_check)(task_spec, patch_text, folder, experiment_id)
+            applies, detail = result[0], result[1]
+            apply_command = result[2] if len(result) > 2 else None
         except SourceIntegrityError:
             raise
         except Exception as exc:
@@ -428,7 +432,7 @@ def verify_task(task_dir, *, instance_id, task_spec, experiment_id, skip_v4=Fals
         else:
             apply_status = 'PASS' if applies else 'FAIL'
             if applies:
-                signals[SignalKind.INTEGRITY].findings['apply_check'] = apply_status
+                signals[SignalKind.INTEGRITY].findings.update(apply_check=apply_status, apply_command=apply_command)
             else:
                 does_not_apply(detail)
 

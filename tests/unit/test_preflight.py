@@ -81,3 +81,14 @@ def test_machine_conditions_and_three_start_failures_in_a_row_are_run_stopping()
         '3 consecutive tasks with only container-start failures ending at a__a-3']
     summary = mod.summarize([row('a__a-1')], machine=['disk below 20 GB: 5.0 GB free at /', None])
     assert not summary['pass'] and summary['run_stopping'] == ['before: disk below 20 GB: 5.0 GB free at /']
+
+
+def test_summary_counts_the_grader_command_that_applied_each_patch():
+    mod = _script()
+    rows = [row('a__a-1', apply='PASS', apply_command='git apply --verbose'),
+            row('a__a-2', apply='PASS', apply_command='patch --batch --forward --fuzz=5 -p1 -i'),
+            row('a__a-3', apply='PASS', apply_command='git apply --verbose'),
+            row('a__a-4', apply='FAIL', apply_command=None), row('a__a-5', apply=None, apply_command=None)]
+    summary = mod.summarize(rows, machine=[None, None])
+    assert summary['apply_commands'] == {'git apply --verbose': 2, 'patch --batch --forward --fuzz=5 -p1 -i': 1}
+    assert summary['apply_failed'] == ['a__a-4'] and summary['empty'] == ['a__a-5']
