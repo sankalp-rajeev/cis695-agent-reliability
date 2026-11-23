@@ -124,3 +124,4 @@ One line per entry, newest last: date, what was decided or deviated from the pla
 - 22 Nov: Phase 12 gpt-4.1-mini (batch 1): [gpt-4.1-mini](test_b1/gpt-4.1-mini.md) ✅ A/F/R 11/22/27, 0 empty, 0 errors. See test_b1/gpt-4.1-mini.md.
 - 23 Nov: Phase 12 claude-sonnet-4 (batch 1): [claude-sonnet-4](test_b1/claude-sonnet-4.md) ✅ A/F/R 14/33/13, 0 empty, 0 errors. See test_b1/claude-sonnet-4.md.
 - 23 Nov: Phase 12 gemini-2.5-flash (batch 1): [gemini-2.5-flash](test_b1/gemini-2.5-flash.md) ✅ A/F/R 8/17/35, 3 empty, 0 errors. See test_b1/gemini-2.5-flash.md.
+- 23 Nov: Batch 2 prepared by chain_b2 (outputs under reports/study_v1_5/inputs/batch2, reports-only; configs/ unchanged after v1.5-frozen-2). See inputs/batch2/PREP_BATCH2.md.
