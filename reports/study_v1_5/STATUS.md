@@ -7,7 +7,7 @@ Status key: ✅ done · 🔄 in progress · ⏳ not started · ⛔ blocked · �
 
 ## Current state
 
-Amendment B12 is in: V1 and the container apply patches exactly as the SWE-bench 5.0.2 grader does. The adopted switches are unchanged (r2, r6, r6b; ADOPTION_B12.md). Frozen at tag v1.5-frozen-2. Phase 12 (batch 1, three systems) runs next in chain_p12, which commits each system's report under reports/study_v1_5/test_b1/.
+Phase 12 (batch 1, three systems): gpt-4.1-mini finished; claude-sonnet-4, gemini-2.5-flash next, run by chain_p12.sh.
 
 ## Pre-flight checks
 
@@ -34,7 +34,7 @@ Amendment B12 is in: V1 and the container apply patches exactly as the SWE-bench
 | 9 | Dev public systems | Public patches on the practice set (only if the machine is idle) | Descriptive only; first to be cut | ⏳ | |
 | 10 | Prepare batch 1 | Pull and check images for the first 60 test tasks | The exam set must be ready before the runs | ✅ | `b02834f6fb7b368c104522af54ee4e3afe51d949` · [PREP_BATCH1.md](inputs/PREP_BATCH1.md) · 60/60 pinned images, 4 replacements, 32.87 GiB root disk used, 217G available |
 | 11 | Test gold run | Verify 60 gold patches, generate V4 for the exam | Gold cost on unseen tasks (H3) plus the shared V4 tests | ✅ | `798b44829eb93eaf333b5c4a32a4c52ad2d716b2` · [TEST_GOLD_B1.md](test_gold_b1/TEST_GOLD_B1.md) · sealed ✅ · ledger ✅ $2.036 (cap $5.3739) · audit ⛔ exit 1 · infra ✅ 0 error tasks · 46 V4 full passes, 9 with V4 FAIL · A/F/R frozen 39/20/1 · recall 39 lines in 22 tasks · fingerprints 1742/1742 match pin · B11 re-audit: exit 0, 5 BASE_HISTORY lines (astropy-7671), 0 leaks: all four gates pass (addendum in TEST_GOLD_B1.md) |
-| 12 | Test public systems | Verify each system's patches with the frozen V4 | The headline result | 🔄 | chain_p12 runs the three systems from tag v1.5-frozen-2 (B12: V1 applies patches as the grader) |
+| 12 | Test public systems | Verify each system's patches with the frozen V4 | The headline result | 🔄 | [gpt-4.1-mini](test_b1/gpt-4.1-mini.md) ✅ A/F/R 11/22/27, 0 empty, 0 errors |
 | 12b | Batch 2 | Same for the remaining 48 tasks (if time) | More power; optional | ⏳ | |
 | 13 | Labels | Fetch official SWE-bench labels after each seal; cross-check with our grader | Find out which patches were really correct, from an independent source | ⏳ | |
 | 14 | Analysis script | Write, test on fake labels, tag `study-analysis-frozen` | The analysis is fixed before real labels are joined | ⏳ | |
@@ -121,3 +121,4 @@ One line per entry, newest last: date, what was decided or deviated from the pla
 - 22 Nov: Amendment B10: V2 stops after 3 confirmed regressions (FAIL, `regressions >= 3, stopped early`). Outcome check on all 168 stored V2 records (141 replayed from their captures): the 5 with 3 or more confirmed regressions are stored FAIL and stay FAIL; 0 problems. Audited runs now accept report-only commits after the freeze tag. Gates: unit 2,043 passed, 6 failed, 17 errors, IDs within the baseline; truth table 114 passed; v1_5.yaml identical to v1.5-frozen; V4_FREEZE.md hashes match.
 - 22 Nov: Phase 12 stopped before launch. Batch 1 verify inputs built for gpt-4.1-mini (60, 0 empty), Claude Sonnet 4 (60, 0 empty) and Gemini 2.5 Flash (60, 3 empty). Preflight: every non-empty Claude (60) and Gemini (57) patch fails `git apply`, because the fetched v1.0.0 `info.submission` strings end without a newline (gpt-4.1-mini's v0.0.0 `model_patch` and all gold patches end with one). With a final newline, 52/60 Claude and 37/57 Gemini apply; 14 Gemini patches have text before the first diff. Gemini sphinx-9658 raised PatchParseError in V1 (now classified by the preflight; verify_task records it on the task). Waiting for a decision.
 - 22 Nov: Amendment B12: V1 and the container apply patches with the grader's sequence (git apply --verbose, --3way, --reject, patch --fuzz=5, with its reset and reverse check) on the stored bytes, recording the command. Dev impact: gold 51/51 unchanged (git apply --verbose); arm B only django-13158 changes (now applies by patch --fuzz), re-verified in runs/study_dev_armb_3 (FLAG). Adoption recomputed on the merged 51: all gates pass, adopted set unchanged (r2, r6, r6b). Gates: unit 2,053 passed, IDs within the baseline; truth table 114 passed; v1_5.yaml identical to v1.5-frozen; V4_FREEZE.md hashes match.
+- 22 Nov: Phase 12 gpt-4.1-mini (batch 1): [gpt-4.1-mini](test_b1/gpt-4.1-mini.md) ✅ A/F/R 11/22/27, 0 empty, 0 errors. See test_b1/gpt-4.1-mini.md.
