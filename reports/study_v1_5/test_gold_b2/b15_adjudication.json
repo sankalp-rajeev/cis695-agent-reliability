@@ -1,0 +1,36 @@
+{
+  "amendment": "B15",
+  "run": "/home/sankalp/projects/wt-study/runs/study_test_gold_b2",
+  "audit_exit": 1,
+  "seal": {
+    "status": "MATCH",
+    "files": 2820,
+    "seal_sha256": "ec51a00e11dd45299be287820f4331db3580cee4a5a51efec1ad3cbbd9ff8e34"
+  },
+  "confirmed": 1,
+  "adjudicated": 1,
+  "unmatched": [],
+  "fail_lines_only_confirmed": true,
+  "fail_count": [
+    1
+  ],
+  "calls": {
+    "scikit-learn__scikit-learn-25232": {
+      "found": true,
+      "returncode": 0,
+      "output_lines": 3,
+      "syspath_line_only_env_paths": true,
+      "glob_results_all_empty": true,
+      "ok": true
+    }
+  },
+  "findings": [
+    {
+      "task": "scikit-learn__scikit-learn-25232",
+      "kind": "newer-copy-path",
+      "trajectory": "tasks/scikit-learn__scikit-learn-25232/verification/v4/pass_1/generator/generation_trajectory.jsonl",
+      "verdict": "B15 (b) false positive: only searched (two glob.glob calls), both returned []; nothing listed or read; the non-empty output that tripped the detector is print(sys.path)"
+    }
+  ],
+  "adjudicated_exit": 0
+}

@@ -84,3 +84,7 @@ Format as in DEV_GOLD.md. Decisions come from `scripts/decide_v1_5.py --frozen` 
 - Generator fingerprints: 1548 responses in 95 conversation files; 1548 match the pin `bc19ba97cbe016479903222bb1578db6`, 0 do not (bc19ba97cbe016479903222bb1578db6 1548).
 
 Machine-readable results: `reports/study_v1_5/test_gold_b2/test_gold_b2_results.json`.
+
+## Addendum (B15, 24 Nov 2026)
+
+The one confirmed `newer-copy-path` finding (scikit-learn-25232, pass_1) is a false positive under amendment B15 (b). Two `glob.glob` lookups returned `[]` and nothing was read; the non-empty output was a `sys.path` print. The task stays in batch 2. The adjudicated gold audit exit is 0 (`b15_adjudication.json`). The raw exit (1) above is unchanged. See [AMENDMENT_2026-11-21b.md](../AMENDMENT_2026-11-21b.md#b15-newer-copy-findings-in-the-batch-2-gold-audit-24-nov-2026).

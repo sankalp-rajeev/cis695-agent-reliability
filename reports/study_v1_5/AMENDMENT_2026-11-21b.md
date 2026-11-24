@@ -145,3 +145,28 @@ The finish script then ran on the partial run. The adoption script crashed on a 
 - **Reason.** V1 should reject a patch only if the grader that produces the labels cannot apply it; a stricter apply check measures the patch's serialization, not the patch.
 
 **Gates.** Unit gate: 2,082 tests, 2,053 passed, 6 skipped, 6 failed, 17 errors; failing and erroring IDs within `unit_baseline_phase1.json` (no rerun needed). Truth table: 114 passed. `v1_5.yaml` identical to `v1.5-frozen`; the other eight V4_FREEZE.md hashes match. Frozen at tag `v1.5-frozen-2`.
+
+## B15. Newer-copy findings in the batch 2 gold audit (24 Nov 2026)
+
+**When it was written.** After the Phase 12b batch 2 gold audit failed and before any batch 2 exam system patch was verified. No label was opened.
+
+**Rule.** For a confirmed `newer-copy-path` finding: (a) **real leak**: a file from a newer version of the task's own package was read. The task id is excluded from batch 2 for every system (added to the batch 2 section of `headline_exclusions.json`). It stays in the all-tasks sensitivity analysis, and batch 2 continues with the other 47. (b) **False positive**: only listed and not read, or not newer, or not the task's package. The reason is recorded and the task stays. If neither clearly applies, stop and report.
+
+**What happened.** The audit's one confirmed finding is `scikit-learn__scikit-learn-25232`, V4 conversation `pass_1`, message 12:
+
+```
+python - <<'PY'
+import sys, glob, os
+print(sys.path)
+print(glob.glob('/usr/local/lib/python*/site-packages/sklearn/impute/_iterative.py'))
+print(glob.glob('/root/.cache/pip/**/*scikit*', recursive=True)[:10])
+PY
+```
+
+The observation (return code 0) has three lines: the `sys.path` list (only the testbed conda env and `/testbed`), `[]`, and `[]`. Both globs found nothing, so no file was listed or read and no out-of-tree copy exists to compare with the base. The detector (`scan_newer_copies`) treats a `python` heredoc as a read verb. The command names the masked path `/root/.cache/pip`, and the output was non-empty, so it confirmed the finding. That output was the `sys.path` print, not cache content. Every other command in both of this task's conversations reads only `/testbed` (sources, `git log`, `doc/whats_new`) or runs scratch checks. The two kept frozen tests (`test_repro_R1_p1.py`: `IterativeImputer(initial_strategy='constant', fill_value=-7.5)` imputes the missing entries with that value; `test_repro_R2_p1.py`: `fill_value=np.nan` is accepted and kept) assert behaviour stated in the issue and cannot depend on the empty lookup.
+
+**Verdict.** (b) false positive. Nothing was read. `scikit-learn__scikit-learn-25232` stays in batch 2 and `headline_exclusions.json` is unchanged.
+
+**Mechanics (reports-only; `src/` and `configs/` unchanged).** The audit code is frozen, so a re-audit would still exit 1. Instead, `b15_adjudicate.py` (copy in [test_gold_b2/](test_gold_b2/b15_adjudicate.py)) checks the sealed run read-only. It writes adjudicated exit 0 only if: the seal still matches; the audit's only failing cause is confirmed findings, each one listed in B15 by kind, path and command; and each flagged call's output is the `sys.path` line plus empty glob results. The result is `phase12b_gold_b2_audit_b15.exit` = 0 (seal MATCH over 2820 files; [b15_adjudication.json](test_gold_b2/b15_adjudication.json)). The batch 2 system finish reads this file as the reused-V4 audit exit, in place of the raw exit, as batch 1 read `phase11_reaudit_b11.exit`. The system reports name the file. The original gold audit exit (1) and log are kept unchanged.
+
+**Restart.** chain_b2 restarts from step 5 (`chain_b2_from5.sh`): steps 1–4 are unchanged, and its step 5 and helpers, including the stray-file sweep, are byte-identical to `chain_b2.sh`. The order is preflight on the 3 × 48 system patches, then gpt-4.1-mini, Claude Sonnet 4 and Gemini 2.5 Flash, each reusing the batch 2 gold V4 (`runs/study_test_gold_b2`).
