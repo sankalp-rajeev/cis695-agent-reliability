@@ -1,0 +1,366 @@
+{
+ "system": "gpt-4.1-mini",
+ "source": "our grader (amendment B14)",
+ "labels": {
+  "astropy__astropy-12907": {
+   "resolved": false,
+   "official_patch_sha256": "63537d6189e2fa81c7e4dfe545376e66a9f03fb5e5ad4f50fcf53848d6465277",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "astropy__astropy-13236": {
+   "resolved": false,
+   "official_patch_sha256": "555c2899a4d427ccab8703980ed629c7c6b7a00517563836597ac9d56696d538",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "astropy__astropy-13453": {
+   "resolved": false,
+   "official_patch_sha256": "2d313b771aab62285975a30f26e40bf11f7d9f37d60479ba4c7cf44aacf39859",
+   "outcome": "patch_apply_failed",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "astropy__astropy-7671": {
+   "resolved": true,
+   "official_patch_sha256": "a0a71ad2a5c85c43e4de99483bfb12cd4baa23b47fc6ba879f0daa7b8a3818a5",
+   "outcome": "resolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-10554": {
+   "resolved": false,
+   "official_patch_sha256": "b64db4278e1a72e399d72352f3be84aa0a04e37895d21a2aec78df004c865ca3",
+   "outcome": "patch_apply_failed",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-11149": {
+   "resolved": null,
+   "official_patch_sha256": "26e33094e5e009d994fdbd870ff479dbb08efc6095c876dd64d66f15e6a0bc09",
+   "outcome": "infra_error",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-11333": {
+   "resolved": false,
+   "official_patch_sha256": "f4a63d230059181de591c78f9760662da86974d852b32da10bbd4a01075cbc25",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-11451": {
+   "resolved": true,
+   "official_patch_sha256": "6a8a65f27464542dae84eea9664757addb6550722425a09e25ff681b6e29c923",
+   "outcome": "resolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-11728": {
+   "resolved": false,
+   "official_patch_sha256": "63d48b3a8be1ab388300508e2a97ac3682bc3f4dc21828ae496b1a4b859cc734",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-11951": {
+   "resolved": false,
+   "official_patch_sha256": "26b1432d364ba3594fd0a1c8af95aea0aa796b51efc82d574a3a065320c6a22e",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-12039": {
+   "resolved": false,
+   "official_patch_sha256": "3ab500155b08f193ef3dd7eb1fa5aef7c4653b4fe70dcb72a417befd5ff39992",
+   "outcome": "patch_apply_failed",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-12193": {
+   "resolved": false,
+   "official_patch_sha256": "6d02d0e1a4c1b75d5132cd513b0a66f5f26edd0a0a6f409f3733424dcde58fe1",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-12273": {
+   "resolved": false,
+   "official_patch_sha256": "c8eef75362a4f1e08aa5edbb99c3f5ede4a2b02fd82ca554660b4169155504b0",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-12308": {
+   "resolved": false,
+   "official_patch_sha256": "7b92eec28b5ffd064ebf87808f7e067bac9fd2e3be2cf98fdc8fbd492d4465e7",
+   "outcome": "patch_apply_failed",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-12419": {
+   "resolved": true,
+   "official_patch_sha256": "32976ae52754873793d9de91c690bcdee038de259656b69298dbd301d2dd8cc9",
+   "outcome": "resolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-13109": {
+   "resolved": false,
+   "official_patch_sha256": "6844ac796ecb719169ebf0bd2c9567165e9f83fdaf48ae1c3828bcb8d2fbbc3f",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-13343": {
+   "resolved": false,
+   "official_patch_sha256": "ce491f881fed26a085e20c11aa89f0300570188ccf3f86d348364008658f44cf",
+   "outcome": "patch_apply_failed",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-13346": {
+   "resolved": false,
+   "official_patch_sha256": "866466a7c6dba2877754b5d46c881f3571ec0b79fd1849bc11aa1652a4f44dfe",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-13401": {
+   "resolved": false,
+   "official_patch_sha256": "41ed3f3df3b421a99667fe13f3e33f8139ed2132906bf38264560cab329cb0eb",
+   "outcome": "patch_apply_failed",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-13449": {
+   "resolved": false,
+   "official_patch_sha256": "bfcd97d9a3342111b5474049f5abca4b727a61842f4c260ba306a2f995cbede1",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-13512": {
+   "resolved": false,
+   "official_patch_sha256": "7e5009305f53fbd08379ac8916ed408c559642131a690d45e217c4ff2f74adff",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-13925": {
+   "resolved": false,
+   "official_patch_sha256": "4c907ba2b7be491e38cd1e855eccdcf58405ef917bcaeaf37ebf380b8d91cbd9",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-14434": {
+   "resolved": false,
+   "official_patch_sha256": "ab4bc1e3cb5d08ea82f958f838557592bafa3dca17f4d62b1ff643849dd08ff0",
+   "outcome": "patch_apply_failed",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-14493": {
+   "resolved": true,
+   "official_patch_sha256": "32e265fe49ee39b0e1ecbb01f9ec3e2d9ffc5197cde2d7fefc7eed8d51b0399d",
+   "outcome": "resolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-14534": {
+   "resolved": false,
+   "official_patch_sha256": "bc41545b414d70f0eac2bdec4900848d1036ab50c2be3df30c23432de6cbbb2e",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-14539": {
+   "resolved": false,
+   "official_patch_sha256": "ae69564842081dbbed73c0c1e7b50e789495f00c0b54579934928c5694854a47",
+   "outcome": "patch_apply_failed",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-14559": {
+   "resolved": false,
+   "official_patch_sha256": "ec2ff8da469a2e5e858ec4132321f89acb2c980750d0d731ce300b86123e37da",
+   "outcome": "patch_apply_failed",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-15695": {
+   "resolved": false,
+   "official_patch_sha256": "dcf146f69b894d8b1a34b979f8d790b9b4fe6fe4f98db0a0b1bf0af51a90e77f",
+   "outcome": "patch_apply_failed",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-15863": {
+   "resolved": false,
+   "official_patch_sha256": "7e2cc171fa6e45626966522bb145c650511e4754b9c6a801e7a7883783786b33",
+   "outcome": "patch_apply_failed",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-15957": {
+   "resolved": false,
+   "official_patch_sha256": "395f8bb147b27b9b73cd68225dd590afc8af17878d099edd0be77356cced34bc",
+   "outcome": "patch_apply_failed",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-16801": {
+   "resolved": false,
+   "official_patch_sha256": "7bea9eb2756ac626fc35d196f5b4124bce6fc98ab8288538dbda329b755cf2db",
+   "outcome": "patch_apply_failed",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "django__django-17084": {
+   "resolved": false,
+   "official_patch_sha256": "286e0b2eeba9ea5f1b127fda191ecf8f31d6439772b65707426f50c399aa2190",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "matplotlib__matplotlib-25960": {
+   "resolved": false,
+   "official_patch_sha256": "50c1e40a2b92c6627f060993f5afbeb51d2d3afc902960b0cc04f39eedaa1002",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "matplotlib__matplotlib-26342": {
+   "resolved": true,
+   "official_patch_sha256": "82ea985249c1dd7151e28914e0f7a17f736193c7358055a97ea59ce909e81a6f",
+   "outcome": "resolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "pydata__xarray-3151": {
+   "resolved": false,
+   "official_patch_sha256": "cad00852486702a7d2ba44cc4c090d32d1c864dd842f24bb09c88bc5e0565889",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "pydata__xarray-3677": {
+   "resolved": false,
+   "official_patch_sha256": "f2e54164637008f44ef88d1ccc16164af94fd7ec0fe696fbf76d56fb6258941b",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "pydata__xarray-4356": {
+   "resolved": true,
+   "official_patch_sha256": "a9c770016aef5eacecc79fb8155549cd5241c8afc5067e8f8bad83bd209f9d22",
+   "outcome": "resolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "pydata__xarray-4687": {
+   "resolved": false,
+   "official_patch_sha256": "88c6db62e272b5cffc6ac1e3ab9d5681dce062bc25ebe7768c675006febf3fad",
+   "outcome": "patch_apply_failed",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "pydata__xarray-6721": {
+   "resolved": false,
+   "official_patch_sha256": "8936e6aa36e6d82e3a9b0e60c4cdb0401430805bf83d899585fe8d2d34e5fd95",
+   "outcome": "patch_apply_failed",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "pydata__xarray-7229": {
+   "resolved": false,
+   "official_patch_sha256": "28fd5f3d197db861bb4653a21e3bea6385958dd74d730b546a549c5b86ca2806",
+   "outcome": "patch_apply_failed",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "pydata__xarray-7393": {
+   "resolved": false,
+   "official_patch_sha256": "23200b6656fa483e9e10d3e2164afeab3d78f41fe4fa8a84727de9b868e9ba46",
+   "outcome": "patch_apply_failed",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "scikit-learn__scikit-learn-12973": {
+   "resolved": false,
+   "official_patch_sha256": "5892e39ad6da688f3223f2e95b2928f4fbab4f3f07ff4d88b7e62d76fe3c2822",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "scikit-learn__scikit-learn-25931": {
+   "resolved": true,
+   "official_patch_sha256": "a67523789a9d8c7db37dd6c7efd09840b51d41afa853330a1f235af9e7f8d6ff",
+   "outcome": "resolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "scikit-learn__scikit-learn-25973": {
+   "resolved": false,
+   "official_patch_sha256": "9fd02756e0991a5c424ac2bcf2ed7ba83980caa80b64461c23e076f6165b4fc6",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "sphinx-doc__sphinx-8035": {
+   "resolved": null,
+   "official_patch_sha256": "9f91e21f8820fe2128fc38d1f4b74c02b6ac086e6c4460f0368f7434b5d470cc",
+   "outcome": "infra_error",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "sphinx-doc__sphinx-8269": {
+   "resolved": false,
+   "official_patch_sha256": "ec38c9014744f1642cfcc789e9310719d5ed9656747d1153978a69a582c7ad8e",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "sphinx-doc__sphinx-9591": {
+   "resolved": false,
+   "official_patch_sha256": "aab2f508ed8191d5bb793d26d9d4bfcaaf05dfdc3bf7ae35da55c77e4c22024d",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "sphinx-doc__sphinx-9658": {
+   "resolved": false,
+   "official_patch_sha256": "3790f76748d2207f3d96f94a39fd05d122204a7720cd05d213aa53ac57f4ab51",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "sympy__sympy-12096": {
+   "resolved": false,
+   "official_patch_sha256": "cf932064817015c545a0fb94033b190fb0802310d631ae6100747414a8035a65",
+   "outcome": "patch_apply_failed",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "sympy__sympy-13551": {
+   "resolved": false,
+   "official_patch_sha256": "5cb913c783c1d8eeb98b63dbd262494894792017b7a19d129ca60a79240c51cc",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "sympy__sympy-14248": {
+   "resolved": false,
+   "official_patch_sha256": "5f325024594027505fa75a5027d525b507770f0d0d13e7697a97797155cdb6c2",
+   "outcome": "patch_apply_failed",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "sympy__sympy-14531": {
+   "resolved": false,
+   "official_patch_sha256": "dd78c8b46055b2562f8bf176089f3d9ebbe398e232317fa4e50fe8d21f6e146c",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "sympy__sympy-15017": {
+   "resolved": false,
+   "official_patch_sha256": "bfb26b70fc82fa1911bd63468889aa1abca938c4ac18815d2402981e3c440bb1",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "sympy__sympy-15809": {
+   "resolved": true,
+   "official_patch_sha256": "6ba20369eeb4e2ea09b2d70d90e6101b3744dde81271ad3d50bd37cf69f308cd",
+   "outcome": "resolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "sympy__sympy-17630": {
+   "resolved": false,
+   "official_patch_sha256": "bd011086e2942c0affce93847d8491b142c28f0282612f546f5715bdb0848fa1",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "sympy__sympy-20590": {
+   "resolved": true,
+   "official_patch_sha256": "6fe229a72073d50b716ed5f8ee91836500af135047cf3e98bf11eb8dba0ab356",
+   "outcome": "resolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "sympy__sympy-22456": {
+   "resolved": true,
+   "official_patch_sha256": "a0062318529c61024f12024d78aa7eea1efa02ee77ca3b269e057c9cdaac3328",
+   "outcome": "resolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "sympy__sympy-22714": {
+   "resolved": false,
+   "official_patch_sha256": "b2f87921eb0cdf6c0bbfc29de305281d9cc495a09e2fd4c3c3ca8aba9d3bdc55",
+   "outcome": "unresolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "sympy__sympy-23262": {
+   "resolved": true,
+   "official_patch_sha256": "c97f7d99a711c8537c688bb841ba1cb32757d5d5fda06ddb58b5bf124a0377a1",
+   "outcome": "resolved",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  },
+  "sympy__sympy-23824": {
+   "resolved": false,
+   "official_patch_sha256": "500e17547ff145483d947a75ccb506c1abf6d8e68056437a23df8254a544f0e4",
+   "outcome": "patch_apply_failed",
+   "evidence": "our swebench 5.0.2 grader (B14)"
+  }
+ }
+}
