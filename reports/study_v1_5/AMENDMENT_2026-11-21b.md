@@ -146,6 +146,69 @@ The finish script then ran on the partial run. The adoption script crashed on a 
 
 **Gates.** Unit gate: 2,082 tests, 2,053 passed, 6 skipped, 6 failed, 17 errors; failing and erroring IDs within `unit_baseline_phase1.json` (no rerun needed). Truth table: 114 passed. `v1_5.yaml` identical to `v1.5-frozen`; the other eight V4_FREEZE.md hashes match. Frozen at tag `v1.5-frozen-2`.
 
+## B13. Official patch bytes checked; inputs normalized; pair-level headline exclusions (22 Nov 2026)
+
+**When.** During the Phase 12 chain, while gpt-4.1-mini ran and before Claude Sonnet 4 or Gemini 2.5 Flash launched. No exam decision existed for those systems, and no label or result file was read.
+
+**What was checked.** For Claude Sonnet 4 and Gemini 2.5 Flash, batch 1 and batch 2 (108 ids each), only the key `logs/<id>/patch.diff` was fetched from each submission's official evaluation folder (`s3://swe-bench-submissions/bash-only/<folder>/`, `--no-sign-request`). Nothing else under `logs/` was requested or listed; no `report.json`, `test_output.txt` or `run_instance.log` was read. Where the key was absent, the folder's `preds.json` / `all_preds.jsonl` was tried for `model_patch`; neither exists at the folder root. Bytes and manifests: `runs/study_v1_5/patches_official/<system>/`.
+
+**Result.**
+- Claude Sonnet 4: 108/108 `patch.diff` present, every one byte-identical (sha256) to our input. None ends with a newline.
+- Gemini 2.5 Flash: 91/108 present (batch 1: 53, batch 2: 38), every one byte-identical to our input; 17 absent (7 batch 1, 10 batch 2; one of them is an empty patch in our inputs); no predictions file to fall back to.
+- gpt-4.1-mini (read-only comparison): no `logs/<id>/patch.diff` and no root predictions file under those names in its v0.0.0 folder; not compared.
+
+So the grader received exactly our bytes: the trajectory `info.submission` field did not lose anything relative to the grader's input. The earlier hypothesis was wrong, and the Claude and Gemini verify inputs were **not** replaced (it would have been a no-op).
+
+**Apply check on the official bytes.** The bytes are identical to the inputs the B12 preflight checked with the frozen grader sequence (tag `v1.5-frozen-2`), so the result is that preflight's, batch 1: Claude 13 apply (all by `patch --batch --forward --fuzz=5 -p1 -i`), 47 fail every command; Gemini 28 apply (all by `patch --fuzz`), 29 fail every command, 3 empty. Batch 2 cannot be checked: its images are not prepared.
+
+**Open question.** The grader's own copy of these patches does not apply under the grader's own sequence for 47 Claude and 29 Gemini batch 1 tasks. Whether the official run applied them some other way can only be read from its `run_instance.log`, which the protocol forbids opening.
+
+### Addendum: the grader's apply lines (22 Nov 2026, read-only)
+
+The planned check read `logs/<id>/run_instance.log` for each batch 1 id with a `patch.diff` (60 Claude, 53 Gemini), streaming it through memory to keep only the harness's apply lines (`Failed to apply patch to container: <cmd>`, `>>>>> Applied Patch`, `>>>>> Patch Apply Failed`). That key does not exist for any of the 113 ids (S3 404; checked with a metadata-only head-object on django__django-15695, whose `logs/<id>/patch.diff` exists, 23,551 bytes). No log content was read and none was stored, so there is no per-id comparison with our preflight and no proposed V1 change. Finding the log under another name needs a file-name listing of a `logs/<id>/` folder, which this check did not allow. Step 4 (which of the 17 Gemini ids without a `patch.diff` had no official evaluation) cannot be told from `patch.diff` alone either.
+
+### Addendum 2: grader apply status from file names; inputs normalized (22 Nov 2026)
+
+**Evidence.** Only file names (and sizes) were listed in each batch 1 `logs/<id>/` folder of Claude Sonnet 4 (60) and Gemini 2.5 Flash (60); no file contents were read. The published folders hold only `patch.diff`, `report.json` and `test_output.txt` (no run log). In the installed harness, `test_output.txt` is written only after the model patch applies, so its presence means the official grader applied the patch. Claude: 60/60 applied. Gemini: 53 applied; 7 ids have no `logs/` folder at all (never evaluated, so no label).
+
+**Finding.** The stored submissions (identical to the grader's own `patch.diff`) end without a final newline, and the official grader applied patches our grader mirror rejects as stored (preflight: Claude 47, Gemini 29 failing every command).
+
+**Inputs normalized.** For both systems' batch 1, the fetched bytes with a final newline added where missing, nothing else changed (Claude 60 changed; Gemini 57 changed, 3 empty left empty; the 7 never-evaluated Gemini ids use the Phase 2 submission bytes, normalized the same way). Manifests: `runs/study_v1_5/patches/official_<system>/tasks.json` (each row keeps the source sha256 and `final_newline_added`). The chain's verify inputs `runs/study_v1_5/verify_inputs/test1_<system>` were rebuilt from them with `make_verify_inputs.py` before either system launched (the previous folders are kept as `test1_<system>_trajectory_b12`); a dry load of each passes the run's provenance and sha256 checks.
+
+**Agreement** (grader applied vs our sequence on the normalized bytes, apply check only, one container at a time):
+- Claude Sonnet 4: 60/60 agree (ours: `git apply --verbose` 52, `--3way` 7, `patch --fuzz` 1).
+- Gemini 2.5 Flash: 37 agree; 13 disagree (the grader applied, ours rejects even with the newline); 3 empty patches (the grader ran tests on the unchanged tree; V1 records them as empty); 7 never evaluated (ours applies all 7).
+
+**Headline.** The 13 disagreeing (Gemini, id) pairs are left out of the headline, decided before any exam-system decision or label (`runs/study_v1_5/headline_exclusions_pending.json`, per system). The 3 empty Gemini patches are not excluded (not an apply disagreement); the 7 never-evaluated ids have no label and drop out of labelled analyses.
+
+### Decisions (22 Nov 2026)
+
+- **Headline exclusion is pair-level.** Only the 13 (Gemini 2.5 Flash, id) pairs whose apply status disagrees with the official grader are left out of the headline. The same task ids stay in the headline for every other system. They are merged into `configs/study_v1_5/headline_exclusions.json` as a pair-level list after the chain finishes (`runs/study_v1_5/headline_exclusions_pending.json`).
+- **Empty patches** (3 Gemini batch 1) follow the existing protocol: out of the verifier's pooled metrics and counted under RQ1. They are not a headline exclusion.
+- **Never-evaluated ids** (7 Gemini batch 1) have no official label and drop out of the labelled analyses. They are not a headline exclusion.
+
+### Batch 2 (chain_b2 step 3, 23 Nov 2026)
+
+The same file-name-only check on Gemini 2.5 Flash's 48 batch 2 ids: 38 applied by the official grader, 10 never evaluated, 2 empty. 33 agree with our sequence on the normalized bytes. 4 disagree (the grader applied, ours rejects): django__django-16662, pydata__xarray-3095, sphinx-doc__sphinx-8548, sympy__sympy-13031. Those 4 pairs are left out of the headline on the same rule (`runs/study_v1_5/b2_inputs_check.json`).
+
+**Merged (Wed 25 Nov 2026).** After chain_b2 finished, all pending pairs were merged into `configs/study_v1_5/headline_exclusions.json` as pair-level rows (key `system`, field `amendment: B13`).
+
+## B14. gpt-4.1-mini labels from our grader (23 Nov 2026)
+
+**When.** After tag `study-analysis-frozen` and after every batch 1 seal (gpt-4.1-mini, Claude Sonnet 4, Gemini 2.5 Flash).
+
+**Why.** gpt-4.1-mini (`20250720_mini-v0.0.0`) published no per-instance results: its `logs/` prefix in the submissions bucket is empty, the experiments repository folder has only `metadata.yaml`, `logo.svg` and `git_peek_suspicious_commits.md` (upstream unchanged), and its leaderboard entry has the aggregate only (no `per_instance_details`).
+
+**New rule.** gpt-4.1-mini's labels come from our swebench 5.0.2 grader, called as arm B was graded (`reliability.oracle.runner`'s harness call: `swebench.harness.run_evaluation`, SWE-bench Verified test split, one instance, `--max_workers 1`, `--timeout 1800`), on the exact sealed input bytes of the Phase 12 run (sha256 checked before each call). They are validated by agreement with the official labels on the B6 sample of 30 (system, id) pairs graded with the same grader on the same sealed bytes. The agreement rate is reported, not a gate.
+
+**Agreement.** 30 sample pairs graded; 10 have both an official and our label; 10 agree (100.0%). Per system: {'claude-sonnet-4': {'agree': 10}, 'gemini-2.5-flash': {'no_official_label': 7}, 'gpt-4.1-mini': {'no_official_label': 13}}. The sample's gpt-4.1-mini pairs have no official label (none was published), so they are not comparable. Disagreements: none.
+
+**gpt-4.1-mini labels.** 60 graded: resolved 11, unresolved 47, no label 2 (outcomes {'infra_error': 2, 'patch_apply_failed': 20, 'resolved': 11, 'unresolved': 27}).
+
+Files: `runs/study_v1_5/labels/gpt-4.1-mini_ours/`, `runs/study_v1_5/labels/agreement_ours/` (per pair: predictions, harness log, report, result).
+
+**Batch 2.** gpt-4.1-mini's 48 batch 2 patches were graded the same way, on the exact sealed Phase 12b inputs (`b14_grade.py pairs gpt-4.1-mini-b2`): 45 labelled, resolved 12 (outcomes {'empty_patch': 3, 'patch_apply_failed': 4, 'resolved': 12, 'unresolved': 29}). Files: `runs/study_v1_5/labels/gpt-4.1-mini_b2/`.
+
 ## B15. Newer-copy findings in the batch 2 gold audit (24 Nov 2026)
 
 **When it was written.** After the Phase 12b batch 2 gold audit failed and before any batch 2 exam system patch was verified. No label was opened.

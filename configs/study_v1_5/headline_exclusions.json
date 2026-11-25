@@ -13,7 +13,10 @@
   "counts": {
     "batch1": 3,
     "batch2": 3,
-    "total": 6
+    "total": 6,
+    "pairs_batch1": 13,
+    "pairs_batch2": 4,
+    "pairs_total": 17
   },
   "excluded": [
     {
@@ -153,9 +156,129 @@
       "amendment": "B11 (AMENDMENT_2026-11-21b.md)",
       "reason": "In the Phase 11 gold run the V4 generator read gold lines in pre-base git history (BASE_HISTORY); decided before any exam system patch was verified.",
       "sources": []
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "pydata__xarray-4356",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "sympy__sympy-22714",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "django__django-15695",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "django__django-14539",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "astropy__astropy-12907",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "django__django-13925",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "scikit-learn__scikit-learn-25931",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "django__django-11333",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "sympy__sympy-17630",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "django__django-12308",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "sympy__sympy-23824",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "django__django-11728",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "pydata__xarray-7393",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "django__django-16662",
+      "batch": 2,
+      "reason": "file-name-only check: the official grader's apply status (test_output.txt) disagrees with our grader-mirror apply check on the normalized bytes",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "pydata__xarray-3095",
+      "batch": 2,
+      "reason": "file-name-only check: the official grader's apply status (test_output.txt) disagrees with our grader-mirror apply check on the normalized bytes",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "sphinx-doc__sphinx-8548",
+      "batch": 2,
+      "reason": "file-name-only check: the official grader's apply status (test_output.txt) disagrees with our grader-mirror apply check on the normalized bytes",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "sympy__sympy-13031",
+      "batch": 2,
+      "reason": "file-name-only check: the official grader's apply status (test_output.txt) disagrees with our grader-mirror apply check on the normalized bytes",
+      "amendment": "B13"
     }
   ],
   "amendments": [
-    "B11 adds astropy__astropy-7671 (BASE_HISTORY in Phase 11); it stays in the all-tasks sensitivity analysis."
+    "B11 adds astropy__astropy-7671 (BASE_HISTORY in Phase 11); it stays in the all-tasks sensitivity analysis.",
+    "B13 adds 17 pair-level (system, instance_id) exclusions (13 batch 1, 4 batch 2, all gemini-2.5-flash): the official grader applied the patch but the grader-mirror sequence rejects it. The same task ids stay in the headline for every other system. Rows with a 'system' key are pair-level; 'counts.batch1/batch2/total' count task-level rows only."
   ]
 }
