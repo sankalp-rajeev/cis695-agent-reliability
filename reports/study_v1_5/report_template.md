@@ -10,7 +10,7 @@ Sankalp Rajeev · advisor Dr. Foyzul Hassan · CIS 695, University of Michigan�
 ## 1. Summary
 
 - **Question.** When should a developer believe a coding agent's claim that its patch fixes an issue? We test whether an oracle-blind verifier that runs the patch can tell correct patches from wrong ones well enough that its ACCEPT is worth more than the agent's word.
-- **Setup.** A frozen verifier (v1.5: patch integrity, regression tests, static checks and issue-derived reproduction tests, combined by fixed rules into ACCEPT, FLAG or REJECT) judged the public SWE-bench Verified patches of three agents (gpt-4.1-mini, Claude Sonnet 4 and Gemini 2.5 Flash, all mini-SWE-agent) on 108 held-out tasks, plus the gold patches. Correctness labels came from the SWE-bench grader only after each run was sealed. Rules, switches, analysis code and hypotheses were all fixed before any label was opened.
+- **Setup.** A frozen verifier (v1.5: patch integrity, regression tests, static checks and issue-derived reproduction tests, combined by fixed rules into ACCEPT, FLAG or REJECT) judged the public SWE-bench Verified patches of three agents (gpt-4.1-mini, Claude Sonnet 4 and Gemini 2.5 Flash, all mini-SWE-agent) on 108 held-out tasks ({{headline_tasks}} in the headline scope), plus the gold patches. Correctness labels came from the SWE-bench grader only after each run was sealed. Rules, switches, analysis code and hypotheses were all fixed before any label was opened.
 - **Headline.** Pooled ACCEPT precision is {{prec}} against a base rate of {{base}} (n = {{n}} labelled non-empty patches). {{h1h2}}. H3: {{h3_short}}. Batch 2 alone, held out from everything that shaped the analysis, gives {{b2_prec}} against {{b2_base}}.
 - **Ablations.** V2 (regression tests) and V4 (reproduction tests) carry the verifier: forcing either to PASS raises the false-accept rate from {{far_value}} to {{v2_far}} (V2) and {{v4_far}} (V4). V3 adds nothing measurable here, and V1 costs the most coverage.
 - **Gold ceiling.** v1.5 ACCEPTs {{gold_acc}} of gold patches. Superseded assertions and issues that cannot be reproduced as a test, the limit of any oracle-blind verifier, account for {{gold_limit}} of all gold patches; V4 tests that assert the wrong thing and V2 runs that produce no result, both fixable, account for {{gold_fixable}}.
@@ -74,7 +74,7 @@ Phase 7 calibrated four default-off switches on the development set ([ADOPTION_B
 - **Benchmark.** SWE-bench Verified (500 Python tasks). The study draws 200: the 92 development tasks of the earlier arm B study, and 108 new test tasks drawn with seed 20261120 after removing the development tasks and every `psf__requests` task. The test tasks are split into batch 1 (60) and batch 2 (48).
 - **Patches.** The submitted patches of three public systems, fetched from the SWE-bench experiments and submissions buckets, not rerun by us: gpt-4.1-mini (mini-SWE-agent v0.0.0), Claude Sonnet 4 and Gemini 2.5 Flash (v1.0.0). Plus the gold patch for every task.
 - **Development set (arm B).** {{armb_n}} gpt-4.1-mini patches from the earlier study ({{armb_correct}} correct, {{armb_wrong}} wrong) and their gold patches. They were used to build and calibrate v1.5 (Phases 6–7) and never enter the test-set numbers.
-- **V4 generator.** DeepSeek (`deepseek-v4-flash`), one pass (amendment A1), fingerprint pinned (A2), prompts frozen at `study-v4-frozen`. Total DeepSeek spend across all study runs, from `runs/provider_spend_ledger.json`: {{spend_total}} ({{spend_runs}}).
+- **V4 generator.** DeepSeek (`deepseek-v4-flash`), one pass (amendment A1), fingerprint pinned (A2), prompts frozen at `study-v4-frozen`. Total DeepSeek spend across all study runs, from [results/inputs/deepseek_spend.json](results/inputs/deepseek_spend.json) (summed from the provider ledger): {{spend_total}} ({{spend_runs}}).
 
 ## 5. How the study was run
 
@@ -164,7 +164,7 @@ Bootstrap (task-clustered, 10,000 resamples, seed 20261126, {{boot_tasks}} tasks
 
 **Sensitivities.** Pooled, v1.5 frozen. git_peek lists come from each system's `git_peek_suspicious_commits.md` ({{gp_files}}; {{gp_removed}} scored pairs removed). Empty patches in the headline scope: {{empty_counts}}.
 
-{{table_sens}}
+{{table_sens}}{{uncertain_row}}
 
 ![Figure 1: base rate vs ACCEPT precision per system and pooled, with Wilson 95% CIs]({{fig1}})
 
@@ -233,9 +233,10 @@ Why the signals did not catch them:
 
 ## 7. Threats to validity
 
-- **Gemini 2.5 Flash.** {{gem_no_label}} of its patches in the headline scope have no usable official label, and B13 drops further pairs. With {{gem_accepts}} ACCEPTs its precision ({{gem_prec}}) has a wide interval.
+- **Gemini 2.5 Flash.** {{gem_unlab_nonempty}} non-empty patches (and {{gem_unlab_empty}} empty one) in the headline scope have no usable official label, and B13 drops further pairs. With {{gem_accepts}} ACCEPTs its precision ({{gem_prec}}) has a wide interval.
 - **gpt-4.1-mini labels** come from our own grader (B14). The B6 agreement sample had only {{agree_comp}} comparable pairs, none of them gpt-4.1-mini ({{agree_gpt_none}} gpt-4.1-mini pairs had no official label).
-- **What B14's "patch_apply_failed" means.** In swebench 5.0.2, `patch_successfully_applied` is false not only when the patch fails to apply but also when the tests run and produce no parsable result. Of the {{b14_pairs}} gpt-4.1-mini pairs with that outcome ([b14_no_results.json](results/b14_no_results.json)), {{b14_ok}} applied (grader commands: {{b14_cmds}}) with both test markers and no bad code, and {{b14_both_fail}} failed to apply on both sides. {{b14_named}} of the applied ones show a named Python exception between the markers ({{b14_exc}}): the patched code breaks at import or collection, so no test result is parsed. These patches are unresolved under SWE-bench's rules, the same as in official grading. Our frozen decisions on them: {{b14_dec}}. The two R1 cases applied on both sides and were rejected for V1 findings: {{b14_r1}}.
+- **What B14's "patch_apply_failed" means.** In swebench 5.0.2, `patch_successfully_applied` is false not only when the patch fails to apply but also when the tests run and produce no parsable result. Of the {{b14_pairs}} gpt-4.1-mini pairs with that outcome ([b14_no_results.json](results/b14_no_results.json)), {{b14_ok}} applied (grader commands: {{b14_cmds}}) with both test markers and no bad code, and {{b14_both_fail}} failed to apply on both sides. {{b14_named}} of the applied ones show a named Python exception between the markers ({{b14_exc}}): the patched code breaks at import or collection, so no test result is parsed. The runners' own summary lines between the markers: {{b14_runner}}. These patches are unresolved under SWE-bench's rules, the same as in official grading.{{b14_note}} Our frozen decisions on them: {{b14_dec}}. The two R1 cases applied on both sides and were rejected for V1 findings: {{b14_r1}}.
+{{threat_uncertain}}
 - **Ablation timing.** The ablation code was written after labels were joined, although every ablation was pre-specified (PLAN §6, PROTOCOL). No rule, switch or threshold was chosen from them.
 - **Contamination.** pylint-6386's repair agent recalled the upstream pull request in the earlier pilot (docs/checklist.md); that task is excluded under B2. Generator recall is audited (section 6.5), and the git_peek sensitivity removes trajectories that peeked at git history.
 - **Oracle noise.** SWE-bench's hidden tests miss some wrong patches, so a patch labelled correct can still be wrong; the measured false-accept rate is a lower bound.
@@ -264,17 +265,23 @@ env -u PYTHONPATH PYTHONPATH=src .venv/bin/python scripts/analyze_v1_5.py \
   --system gemini-2.5-flash=runs/study_test_gemini-2.5-flash_b1 --system gemini-2.5-flash=runs/study_test_gemini-2.5-flash_b2 \
   --labels gemini-2.5-flash=reports/study_v1_5/results/labels/final/gemini-2.5-flash.json \
   --gold runs/study_test_gold_b1,runs/study_test_gold_b2 \
-  --batch-ids runs/study_v1_5/final_ids_b1b2.json --recall runs/study_v1_5/recall_b1b2.json \
+  --batch-ids reports/study_v1_5/results/inputs/final_ids_b1b2.json \
+  --recall reports/study_v1_5/results/inputs/recall_b1b2.json \
   --out-md results_final.md --out-json results_final.json
 
 # ablations and failure modes (Phase 16)
-env -u PYTHONPATH PYTHONPATH=src .venv/bin/python scripts/ablate_v1_5.py --out-dir reports/study_v1_5/results
+env -u PYTHONPATH PYTHONPATH=src .venv/bin/python scripts/ablate_v1_5.py \
+  --batch-ids reports/study_v1_5/results/inputs/final_ids_b1b2.json \
+  --recall reports/study_v1_5/results/inputs/recall_b1b2.json --out-dir reports/study_v1_5/results
+
+# the B14 no-result check (reads the grading logs under runs/study_v1_5/labels/)
+python3 scripts/phase18_b14_no_results.py reports/study_v1_5/results/b14_no_results.json
 
 # this report, the README block and the figures (Phase 18)
 env -u PYTHONPATH PYTHONPATH=src .venv/bin/python scripts/build_report_v1_5.py
 ```
 
-The sealed runs under `runs/` are not in git (they hold the patches and are large); the commands assume them. Tags: `study-v1.5-prereg`, `study-v4-frozen`, `v1.5-frozen`, `v1.5-frozen-2`, `study-analysis-frozen`.
+The sealed runs under `runs/` are not in git (they hold the patches and are large); the commands assume them. The non-patch inputs they need are committed in [results/inputs/](results/inputs/): the batch 1 + 2 id list, a reduced recall file (ids and counts only, because the original lists gold-patch lines) and the per-run DeepSeek spend. Tags: `study-v1.5-prereg`, `study-v4-frozen`, `v1.5-frozen`, `v1.5-frozen-2`, `study-analysis-frozen`.
 
 ## 10. Where everything is
 
@@ -291,4 +298,10 @@ The sealed runs under `runs/` are not in git (they hold the patches and are larg
 
 ### Earlier work
 
-{{earlier_work}}
+Before v1.5 (the record of how the verifier got here):
+
+- V2 test selection and execution, Oct–Nov 2026: [v2_diagnostic/](../v2_diagnostic/), [v2_discovery_cleanup/](../v2_discovery_cleanup/), [v2_scoring_audit/](../v2_scoring_audit/), [v2_stabilization/](../v2_stabilization/), [v2_scg_analysis/](../v2_scg_analysis/), [v2_scg_integration/](../v2_scg_integration/), [v2_scg_monitoring/](../v2_scg_monitoring/), [v2_scg_paired/](../v2_scg_paired/), [callgraph_selection/](../callgraph_selection/), [callgraph_implementation_audit/](../callgraph_implementation_audit/), [paired_skip/](../paired_skip/)
+- Decision policies before v1.5: [policy_v1_4/](../policy_v1_4/), [policy_comparison/](../policy_comparison/)
+- The gpt-4.1-mini rerun (arm B, source of the development set): [rerun_v1/](../rerun_v1/)
+- Planning notes: [next_steps/](../next_steps/), [next_phases/](../next_phases/)
+- Other: [failure_analysis/](../failure_analysis/) (post-hoc failure analysis), [umgpt_probe/](../umgpt_probe/) (U-M GPT Toolkit model probe), [cases/](../cases/) (case files), [feasibility.md](../feasibility.md), [pilot_summary.md](../pilot_summary.md), [smoke_3.1.md](../smoke_3.1.md)

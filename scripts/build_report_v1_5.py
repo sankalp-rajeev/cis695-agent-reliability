@@ -12,7 +12,8 @@ figures/fig2_ablations.svg. Every statistic comes from a file:
     reports/study_v1_5/test_gold_b{1,2}/decisions_frozen/decisions_*.csv
     and, for context: adoption_b12.json, results/labels/agreement_ours/agreement.json,
     results/b3_cutoff.json, configs/study_v1_5/headline_exclusions.json, docs/results_100.md,
-    PLAN.md §11, STATUS.md (phase table), runs/provider_spend_ledger.json, git tags.
+    PLAN.md §11, STATUS.md (phase table), results/inputs/deepseek_spend.json, git tags,
+    and analyze_v1_5.py's metrics and bootstrap for the uncertain-label sensitivity.
 
 Each message the report states in words is checked against the numbers first; if one no longer
 holds, the build stops instead of writing a false sentence. Output is deterministic: running the
@@ -272,29 +273,26 @@ def phase_table():
 
 
 def spend():
-    ledger = ROOT / "runs/provider_spend_ledger.json"
-    calls = [c for c in load(ledger)["calls"] if c.get("provider") == "deepseek"]
-    by_job = Counter()
-    for c in calls:
-        by_job[Path(str(c.get("job"))).name] += float(c["cost_usd"])
-    total = sum(by_job.values())
-    return total, by_job
+    d = load(RES / "inputs/deepseek_spend.json")
+    return d["total_usd"], Counter({run: v["cost_usd"] for run, v in d["runs"].items()})
 
 
-def earlier_work():
-    lines = []
-    for d in sorted(p for p in (ROOT / "reports").iterdir() if p.is_dir() and p.name not in ("study_v1_5", "history")):
-        main = next((d / n for n in ("REPORT.md", "README.md", "report.md", "analysis.md") if (d / n).is_file()), None)
-        if main is None:
-            mds = sorted(d.rglob("*.md"))
-            main = mds[0] if mds else None
-        title = "(no markdown document)"
-        if main is not None:
-            m = re.search(r"^#\s+(.+)$", main.read_text(encoding="utf-8", errors="replace"), re.M)
-            title = m.group(1).strip() if m else main.stem
-        link = f"[{main.relative_to(d).as_posix()}](../{d.name}/{main.relative_to(d).as_posix()})" if main else ""
-        lines.append(f"- `reports/{d.name}/` (before v1.5): {title} {link}".rstrip())
-    return "\n".join(lines)
+def analysis_module():
+    import importlib.util
+    sys.path.insert(0, str(ROOT / "scripts"))
+    sys.path.insert(0, str(ROOT / "src"))
+    spec = importlib.util.spec_from_file_location("analyze_v1_5", ROOT / "scripts/analyze_v1_5.py")
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules["analyze_v1_5"] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def runner_text(rs):
+    if rs["runner"] == "no summary line":
+        return "no runner summary line between the markers"
+    counts = ", ".join(f"{v} {k.replace('_', ' ')}" for k, v in sorted(rs.items()) if k not in ("runner", "kind", "status"))
+    return f"{rs['runner']} summary: {rs.get('status', '') + ', ' if rs.get('status') else ''}{counts}"
 
 
 def need(cond, message):
@@ -343,6 +341,12 @@ def values():
     V["b2_h3"] = f"{h3b['rejects']} of {h3b['gold_patches']} batch 2 gold patches REJECTed (Wilson upper {pct(h3b['wilson_upper'])})"
     need(bs["h1_supported"] and bs["h2_supported"] and bsb["h1_supported"] and bsb["h2_supported"],
          "H1 and H2 hold on the headline and on batch 2 alone")
+
+    rows_json = F["rows"]
+    V["headline_tasks"] = str(len({r["instance_id"] for r in rows_json}))
+    gem = [r for r in rows_json if r["system"] == "gemini-2.5-flash" and not r["labelled"]]
+    V["gem_unlab_nonempty"] = str(sum(not r["empty"] for r in gem))
+    V["gem_unlab_empty"] = str(sum(r["empty"] for r in gem))
 
     # RQ1
     r1 = ["| system | patches in scope | empty | non-empty labelled | resolved | base rate (correct ÷ labelled non-empty) |",
@@ -518,6 +522,30 @@ def values():
 
     # RQ5
     fa = FM["false_accepts"]
+    nb_pairs = {r["instance_id"]: r for r in NB["pairs"]}
+    kinds = NB["summary"]["runner_summary_kinds"]
+    V["b14_runner"] = (f"{kinds['all passed']} with all tests passed, {kinds['failures or errors']} with failures, errors or "
+                       f"exceptions, and {kinds['no summary line']} with no runner summary line")
+    special, uncertain = {}, []
+    for f in fa:
+        nbp = nb_pairs.get(f["instance_id"]) if f["system"] == "gpt-4.1-mini" else None
+        if nbp is None:
+            continue
+        rs = nbp["runner_summary"]
+        named = [k for k, v in nbp["exception_types"].items() if v is True] + nbp["exception_types"]["other"]
+        need(nbp["start_marker"] and nbp["end_marker"] and not nbp["bad_codes"] and nbp["apply_command"].startswith("git apply"),
+             f"{f['instance_id']}: the grader applied the patch and both markers are present")
+        head = (f"the grader applied the patch (`{nbp['apply_command']}`); both test markers are present; "
+                + ("no Python exception appears" if not named else f"exception types between the markers: {', '.join(named)}")
+                + "; swebench 5.0.2's parser found no test result")
+        if rs["kind"] == "all passed" and not named:
+            special[f["instance_id"]] = (head + f" ({runner_text(rs)}). The tests ran and passed, but the grader's sympy parser "
+                                         "found no result, so this 'unresolved' grade is likely a grading artefact and the label is uncertain")
+            uncertain.append((f["system"], f["instance_id"]))
+        elif rs["kind"] in ("failures or errors", "no summary line"):
+            special[f["instance_id"]] = head + f" ({runner_text(rs)}). The label stands"
+        else:
+            need(False, f"{f['instance_id']}: runner summary matches neither case")
     tf = ["| system | task | rule | V2 | V4 pass / uncovered | type | FAIL_TO_PASS failed | PASS_TO_PASS failed |",
           "|---|---|---|---|---|---|---|---|"]
     short = lambda xs: "—" if not xs else ", ".join(f"`{x}`" for x in xs[:3]) + (f" and {len(xs) - 3} more" if len(xs) > 3 else "")  # noqa: E731
@@ -529,7 +557,26 @@ def values():
         text = text.replace("V2 had nothing to check (no test selected), none of them a PASS_TO_PASS test the grader saw fail "
                             "(matched by test name)", "V2 had nothing to check (no test selected), so no PASS_TO_PASS test ran")
         return text.replace("requirement(s)", "requirements").replace("passed 1 requirements", "passed 1 requirement")
-    V["fa_why"] = "\n".join(f"- {NAMES[f['system']]} {f['instance_id']}: {why(f['why_missed'])}." for f in fa)
+    V["fa_why"] = "\n".join(f"- {NAMES[f['system']]} {f['instance_id']}: "
+                            f"{special.get(f['instance_id']) or why(f['why_missed'])}." for f in fa)
+    V["uncertain_row"], V["threat_uncertain"], V["b14_note"] = "", "", ""
+    if uncertain:
+        AN = analysis_module()
+        rows = [AN.Row(system=r["system"], instance_id=r["instance_id"], empty=r["empty"], labelled=r["labelled"],
+                       correct=r["correct"], decisions=r["decisions"], v4_full_pass=r["v4_full_pass"], recall=r["recall"])
+                for r in rows_json]
+        need(AN.metrics(rows, "frozen", systems=SYSTEMS)["decisions"] == P["decisions"], "results_final rows reproduce the headline")
+        drop = set(uncertain)
+        kept = [r for r in rows if (r.system, r.instance_id) not in drop]
+        mu = AN.metrics(kept, "frozen", systems=SYSTEMS)
+        bu = AN.bootstrap(kept, "frozen", F["resamples"], F["seed"], systems=SYSTEMS)
+        ids = ", ".join(i for _, i in uncertain)
+        V["uncertain_row"] = "\n" + srow(f"headline minus {ids} (uncertain label, added after labels)", mu, bu)
+        V["threat_uncertain"] = (f"- **One uncertain gpt-4.1-mini label.** {ids} is graded unresolved, but its tests ran and passed "
+                                 "and the grader's sympy parser found no result, so the label is likely a grading artefact. It counts "
+                                 "as a false ACCEPT in the headline. Without it (a sensitivity added after labels, section 6.2), pooled "
+                                 f"precision is {ci(mu['accept_precision'])} and the false-accept rate {ci(mu['false_accept_rate'])}; {htext(bu)}.")
+        V["b14_note"] = f" The exception is {ids}, whose label is uncertain (next bullet)."
     V["fa_n"] = str(len(fa))
     repos_fa = Counter(f["repo"] for f in fa)
     V["fa_repos"] = ", ".join(f"{r} {k}" for r, k in repos_fa.most_common())
@@ -590,7 +637,6 @@ def values():
     V["spend_runs"] = ", ".join(f"`{j}` ${c:.2f}" for j, c in by_job.most_common())
     V["plan_500"] = plan_500()
     V["phase_table"] = phase_table()
-    V["earlier_work"] = earlier_work()
     V["g1"] = "pass" if A["g1"]["pass"] else "FAIL"
 
     # figures and README block
