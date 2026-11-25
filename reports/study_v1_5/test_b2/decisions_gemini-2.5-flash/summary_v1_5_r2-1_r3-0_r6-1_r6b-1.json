@@ -1,0 +1,78 @@
+{
+  "counts": {
+    "all": {
+      "decision": {
+        "ACCEPT": 11,
+        "FLAG": 11,
+        "REJECT": 26
+      },
+      "review_label": {
+        "likely_wrong": 7,
+        "none": 39,
+        "signals_disagree": 2
+      },
+      "rule": {
+        "R1": 12,
+        "R2": 10,
+        "R3": 3,
+        "R3b": 1,
+        "R4": 7,
+        "R5": 2,
+        "R6": 10,
+        "R6b": 1,
+        "R7": 1,
+        "R8": 1
+      }
+    },
+    "patch": {
+      "decision": {
+        "ACCEPT": 11,
+        "FLAG": 11,
+        "REJECT": 24
+      },
+      "review_label": {
+        "likely_wrong": 7,
+        "none": 37,
+        "signals_disagree": 2
+      },
+      "rule": {
+        "R1": 10,
+        "R2": 10,
+        "R3": 3,
+        "R3b": 1,
+        "R4": 7,
+        "R5": 2,
+        "R6": 10,
+        "R6b": 1,
+        "R7": 1,
+        "R8": 1
+      }
+    }
+  },
+  "csv": "/home/sankalp/projects/wt-study/runs/study_v1_5/phase12b_gemini-2.5-flash/decisions/decisions_v1_5_r2-1_r3-0_r6-1_r6b-1.csv",
+  "csv_sha256": "564153cc34ee3d8afd795caccc451cbed1ee3e0332233c3676f9b5a01f9ac112",
+  "frozen": {
+    "config_path": "configs/verifier/v1_5.yaml",
+    "config_sha256": "be997bc6c48d9108b0f3b0e411603677639e55b5c2d57b991b0394a6792d15cb",
+    "tag": "v1.5-frozen",
+    "tag_commit": "569bb7fc2e4cd860dbbc0fdd54c838d208af3b11"
+  },
+  "patch_tasks": 46,
+  "policy": {
+    "name": "full-v1.5",
+    "version": "v1.5.0-full"
+  },
+  "run": "/home/sankalp/projects/wt-study/runs/study_test_gemini-2.5-flash_b2",
+  "seal_sha256": "3f2dc1570fe8ab40425202269bee0b483241100f5226b07fbe7739dc189f07fa",
+  "summary_name": "summary_v1_5_r2-1_r3-0_r6-1_r6b-1.json",
+  "switch_source": "frozen",
+  "switches": {
+    "r2_v3_reject": true,
+    "r3_extended_reject": false,
+    "r6_accept_v2_not_available": true,
+    "r6b_accept_one_uncovered": true
+  },
+  "tasks": 48,
+  "v2_fallback": true,
+  "v2_fallback_removed_tasks": []
+}
