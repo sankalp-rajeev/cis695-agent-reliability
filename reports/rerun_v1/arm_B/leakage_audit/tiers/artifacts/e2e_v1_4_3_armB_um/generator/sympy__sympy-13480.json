@@ -1,0 +1,143 @@
+{
+  "archive": {
+    "base_commit": "f57fe3f4b3f2cab225749e1b3b38ae1bf80b62f0",
+    "instance_id": "sympy__sympy-13480",
+    "path": "/home/sankalp/cg_repos/task_archives/sympy__sympy-13480.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "70f23345e2ded9dac73b1db75a982e3080a40fd917a7335a5e0dedc1056589c1"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 27,
+      "occurrences": {
+        "model_output": {
+          "length": 30,
+          "line": 13,
+          "offset": 1341,
+          "text_sha256": "f8f46f0cddb66b8bd3fae3d2cb8a5f21ad858f3c27844ea27853d8f62aacd2ed",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "a66c513696353903410b90da0c370379e5b983a7c22b48e0d0d9ab613eb42ff0",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "test_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 43,
+      "occurrences": {
+        "model_output": {
+          "length": 46,
+          "line": 15,
+          "offset": 1119,
+          "text_sha256": "6b7ee9970a2fe2857c58adfd5d6241e9ac1314e73613fa6ef49bdad06f4ae3aa",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "7d0f0c025e8b29d3814f0c13bd5b3af811eba46ff16844d6ab5a17e5c99b6b7d",
+      "rule": "distinctive-content-first-occurrence"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "sympy__sympy-13480",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "b183a0b17b603439959e91a6291d8dd0b328e9e14c5cfcc85927301e90d25604",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 0,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 1,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 2,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 3,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 4,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "d3c850411ab56529e5870848f2a07a9bf0ddd0de6fa7c1590909c04542e7c70f",
+  "raw_path": "tasks/e2e_v1_4_3_armB_um/generator/sympy__sympy-13480.json",
+  "reasons": [
+    "answer-model-output-first"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "test-name-present-at-base"
+  ],
+  "run": "e2e_v1_4_3_armB_um",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sympy__sympy-13480/verification/v4/cache/sympy__sympy-13480",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "85431bb4a69aa2a0d007dd4792c162aa55eb7a08143892fc931770d293c2140b"
+  },
+  "underlying_tier": "T3"
+}

@@ -1,0 +1,97 @@
+{
+  "archive": {
+    "base_commit": "9b224579875e30203d079cc2fee83b116d98eb78",
+    "instance_id": "django__django-16631",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-16631.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "3f304d24d2539f01996a502ee8789cd957f5b284dd31dc4b06523a14d6fead32"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "command_sha256": "cc03ddb771e1007ea64c1843ba99b5a2882a01cce907c43d9dfeb90659e32dc8"
+      },
+      "kind": "git-history-search",
+      "line_no": 9,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-16631/verification/v4/cache/django__django-16631/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "be55dc9f2eb8156eecf3119416719e7c21bd19d1542b5e4b0ce1e5577462b30a"
+      },
+      "kind": "git-history-search",
+      "line_no": 17,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-16631/verification/v4/cache/django__django-16631/generation_trajectory.jsonl",
+      "rule": "history-git-fsck",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "3f304d24d2539f01996a502ee8789cd957f5b284dd31dc4b06523a14d6fead32",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 32,
+        "symbol_sha256": "29616f71964c6908845b1e2e363c3d5bb1edfefab9d60bcc0bd66d3d94233848"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-16631/verification/v4/cache/django__django-16631/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "3f304d24d2539f01996a502ee8789cd957f5b284dd31dc4b06523a14d6fead32",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 32,
+        "symbol_sha256": "de59d06d6e02ee4d98047c1172a54a29265ab2adf6a54a040487f3ae8c44b778"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-16631/verification/v4/cache/django__django-16631/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "3f304d24d2539f01996a502ee8789cd957f5b284dd31dc4b06523a14d6fead32",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 32,
+        "symbol_sha256": "31f77559cfe11575267a5355dedd13b3dc278cbb48beb9d9b9102d9b96b0e9c4"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-16631/verification/v4/cache/django__django-16631/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "3f304d24d2539f01996a502ee8789cd957f5b284dd31dc4b06523a14d6fead32",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 32,
+        "symbol_sha256": "4729ed506e971882fc4f4286c0ea22c03f2132cb8056070c73b8713120f0c25c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-16631/verification/v4/cache/django__django-16631/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "django__django-16631",
+  "legacy_findings": [],
+  "role": "generator",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-16631/verification/v4/cache/django__django-16631"
+}

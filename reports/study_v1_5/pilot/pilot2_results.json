@@ -1,0 +1,525 @@
+{
+  "all_gates_pass": true,
+  "comparison": [
+    {
+      "instance_id": "matplotlib__matplotlib-25479",
+      "pilot1_decision": "FLAG",
+      "pilot1_pass1": {
+        "R1": "PASS",
+        "R2": "PASS",
+        "R3": "PASS"
+      },
+      "pilot1_rule": "R5",
+      "pilot2": {
+        "R1": "PASS",
+        "R2": "PASS",
+        "R3": "PASS"
+      },
+      "pilot2_decision": "FLAG",
+      "pilot2_rule": "R5"
+    },
+    {
+      "instance_id": "django__django-13807",
+      "pilot1_decision": "ACCEPT",
+      "pilot1_pass1": {
+        "R1": "PASS",
+        "R2": "PASS",
+        "R3": "PASS",
+        "R4": "PASS"
+      },
+      "pilot1_rule": "R6",
+      "pilot2": {
+        "R1": "PASS",
+        "R2": "PASS",
+        "R3": "PASS"
+      },
+      "pilot2_decision": "ACCEPT",
+      "pilot2_rule": "R6"
+    },
+    {
+      "instance_id": "django__django-15572",
+      "pilot1_decision": "ACCEPT",
+      "pilot1_pass1": {
+        "R1": "PASS",
+        "R2": "PASS",
+        "R3": "PASS",
+        "R4": "PASS"
+      },
+      "pilot1_rule": "R6",
+      "pilot2": {
+        "R1": "PASS",
+        "R2": "PASS",
+        "R3": "PASS"
+      },
+      "pilot2_decision": "ACCEPT",
+      "pilot2_rule": "R6"
+    },
+    {
+      "instance_id": "django__django-16667",
+      "pilot1_decision": "FLAG",
+      "pilot1_pass1": {
+        "R1": "FAIL_SINGLE",
+        "R2": "PASS"
+      },
+      "pilot1_rule": "R4",
+      "pilot2": {
+        "R1": "PASS",
+        "R2": "PASS",
+        "R3": "PASS"
+      },
+      "pilot2_decision": "ACCEPT",
+      "pilot2_rule": "R6"
+    },
+    {
+      "instance_id": "pytest-dev__pytest-5809",
+      "pilot1_decision": "FLAG",
+      "pilot1_pass1": {
+        "R1": "PASS"
+      },
+      "pilot1_rule": "R5",
+      "pilot2": {
+        "R1": "PASS"
+      },
+      "pilot2_decision": "FLAG",
+      "pilot2_rule": "R5"
+    },
+    {
+      "instance_id": "django__django-12965",
+      "pilot1_decision": "ACCEPT",
+      "pilot1_pass1": {
+        "R1": "PASS",
+        "R2": "PASS"
+      },
+      "pilot1_rule": "R6",
+      "pilot2": {
+        "R1": "PASS",
+        "R2": "PASS"
+      },
+      "pilot2_decision": "ACCEPT",
+      "pilot2_rule": "R6"
+    },
+    {
+      "instance_id": "django__django-16631",
+      "pilot1_decision": "FLAG",
+      "pilot1_pass1": {
+        "R1": "FAIL_SINGLE",
+        "R2": "FAIL_SINGLE",
+        "R3": "PASS",
+        "R4": "PASS"
+      },
+      "pilot1_rule": "R4",
+      "pilot2": {
+        "R1": "PASS",
+        "R2": "FAIL_SINGLE"
+      },
+      "pilot2_decision": "FLAG",
+      "pilot2_rule": "R4"
+    },
+    {
+      "instance_id": "django__django-11095",
+      "pilot1_decision": "FLAG",
+      "pilot1_pass1": {
+        "R1": "NO_RESULT",
+        "R2": "PASS",
+        "R3": "PASS"
+      },
+      "pilot1_rule": "R7",
+      "pilot2": {
+        "R1": "PASS",
+        "R2": "PASS"
+      },
+      "pilot2_decision": "FLAG",
+      "pilot2_rule": "R8"
+    },
+    {
+      "instance_id": "astropy__astropy-13398",
+      "pilot1_decision": "FLAG",
+      "pilot1_pass1": {
+        "R1": "FAIL_SINGLE",
+        "R2": "FAIL_SINGLE",
+        "R3": "FAIL_SINGLE",
+        "R4": "FAIL_SINGLE"
+      },
+      "pilot1_rule": "R4",
+      "pilot2": {
+        "R1": "FAIL_SINGLE",
+        "R2": "FAIL_SINGLE",
+        "R3": "FAIL_SINGLE",
+        "R4": "FAIL_SINGLE"
+      },
+      "pilot2_decision": "FLAG",
+      "pilot2_rule": "R4"
+    },
+    {
+      "instance_id": "sympy__sympy-13480",
+      "pilot1_decision": "FLAG",
+      "pilot1_pass1": {
+        "R1": "PASS",
+        "R2": "PASS",
+        "R3": "PASS"
+      },
+      "pilot1_rule": "R8",
+      "pilot2": {
+        "R1": "PASS",
+        "R2": "PASS"
+      },
+      "pilot2_decision": "FLAG",
+      "pilot2_rule": "R8"
+    }
+  ],
+  "g3": {
+    "distinct_lines": 17,
+    "findings": 55,
+    "lines_first_outside_model": 0,
+    "per_role_findings": {
+      "assistant": 55
+    },
+    "per_task_findings": {
+      "django__django-11095": 8,
+      "django__django-12965": 3,
+      "django__django-13807": 4,
+      "django__django-15572": 5,
+      "django__django-16631": 34,
+      "matplotlib__matplotlib-25479": 1
+    },
+    "run": "/home/sankalp/projects/wt-study/runs/study_v4_pilot2"
+  },
+  "gates": {
+    "G1": {
+      "max_task_usd": 0.06646331200000002,
+      "pass": true,
+      "per_task_mean_usd": 0.033069395200000004,
+      "total_usd": 0.330693952
+    },
+    "G2": {
+      "fully_covered_tasks": 10,
+      "pass": true
+    },
+    "G3": {
+      "audit_complete": true,
+      "audit_exit": 1,
+      "distinct_gold_lines": 17,
+      "gold_line_findings": 55,
+      "lines_first_outside_model": 0,
+      "other_confirmed_findings": 0,
+      "pass": true
+    },
+    "G4": {
+      "error_tasks": [],
+      "pass": true
+    },
+    "G5": {
+      "first_pilot_pass1": {
+        "any_fail": 3,
+        "full_passes": 6
+      },
+      "gold_with_any_v4_fail": 2,
+      "pass": true,
+      "v4_full_passes": 8
+    }
+  },
+  "ledger_calls": 286,
+  "run": "/home/sankalp/projects/wt-study/runs/study_v4_pilot2",
+  "run_status": "COMPLETE",
+  "seal_check": {
+    "files": 610,
+    "run": "/home/sankalp/projects/wt-study/runs/study_v4_pilot2",
+    "run_status": "COMPLETE",
+    "seal_sha256": "ea17e98b2333cb81bae254b4a58404d421cbbe02c5c28bed0e3f6c2982d4bddb",
+    "status": "MATCH"
+  },
+  "tasks": [
+    {
+      "all_covered": true,
+      "complete": true,
+      "cost_usd": 0.06646331200000002,
+      "decision": "FLAG",
+      "error": false,
+      "infrastructure_flag": false,
+      "instance_id": "matplotlib__matplotlib-25479",
+      "kept_pass_1": 3,
+      "kept_pass_2": 0,
+      "minutes": 12.10641525,
+      "n_requirements": 3,
+      "record": true,
+      "review_label": "signals_disagree",
+      "rule_id": "R5",
+      "v2_accounting": "P_invalid_excluded",
+      "v2_outcome": "FAIL",
+      "v4_absence": null,
+      "v4_absence_reason": null,
+      "v4_any_fail": false,
+      "v4_full_pass": true,
+      "v4_generation_cost_usd": 0.066463312,
+      "v4_outcome": "PASS",
+      "verdicts": {
+        "R1": "PASS",
+        "R2": "PASS",
+        "R3": "PASS"
+      }
+    },
+    {
+      "all_covered": true,
+      "complete": true,
+      "cost_usd": 0.028992376,
+      "decision": "ACCEPT",
+      "error": false,
+      "infrastructure_flag": false,
+      "instance_id": "django__django-13807",
+      "kept_pass_1": 3,
+      "kept_pass_2": 0,
+      "minutes": 3.1074357333333333,
+      "n_requirements": 3,
+      "record": true,
+      "review_label": "none",
+      "rule_id": "R6",
+      "v2_accounting": "P_invalid_excluded",
+      "v2_outcome": "PASS",
+      "v4_absence": null,
+      "v4_absence_reason": null,
+      "v4_any_fail": false,
+      "v4_full_pass": true,
+      "v4_generation_cost_usd": 0.028992376000000004,
+      "v4_outcome": "PASS",
+      "verdicts": {
+        "R1": "PASS",
+        "R2": "PASS",
+        "R3": "PASS"
+      }
+    },
+    {
+      "all_covered": true,
+      "complete": true,
+      "cost_usd": 0.021290800000000002,
+      "decision": "ACCEPT",
+      "error": false,
+      "infrastructure_flag": false,
+      "instance_id": "django__django-15572",
+      "kept_pass_1": 3,
+      "kept_pass_2": 0,
+      "minutes": 2.5627213666666666,
+      "n_requirements": 3,
+      "record": true,
+      "review_label": "none",
+      "rule_id": "R6",
+      "v2_accounting": "P_invalid_excluded",
+      "v2_outcome": "PASS",
+      "v4_absence": null,
+      "v4_absence_reason": null,
+      "v4_any_fail": false,
+      "v4_full_pass": true,
+      "v4_generation_cost_usd": 0.021290800000000002,
+      "v4_outcome": "PASS",
+      "verdicts": {
+        "R1": "PASS",
+        "R2": "PASS",
+        "R3": "PASS"
+      }
+    },
+    {
+      "all_covered": true,
+      "complete": true,
+      "cost_usd": 0.020299192,
+      "decision": "ACCEPT",
+      "error": false,
+      "infrastructure_flag": false,
+      "instance_id": "django__django-16667",
+      "kept_pass_1": 3,
+      "kept_pass_2": 0,
+      "minutes": 2.7947688333333334,
+      "n_requirements": 3,
+      "record": true,
+      "review_label": "none",
+      "rule_id": "R6",
+      "v2_accounting": "P_invalid_excluded",
+      "v2_outcome": "PASS",
+      "v4_absence": null,
+      "v4_absence_reason": null,
+      "v4_any_fail": false,
+      "v4_full_pass": true,
+      "v4_generation_cost_usd": 0.020299192,
+      "v4_outcome": "PASS",
+      "verdicts": {
+        "R1": "PASS",
+        "R2": "PASS",
+        "R3": "PASS"
+      }
+    },
+    {
+      "all_covered": true,
+      "complete": true,
+      "cost_usd": 0.008255496,
+      "decision": "FLAG",
+      "error": false,
+      "infrastructure_flag": false,
+      "instance_id": "pytest-dev__pytest-5809",
+      "kept_pass_1": 1,
+      "kept_pass_2": 0,
+      "minutes": 1.69562105,
+      "n_requirements": 1,
+      "record": true,
+      "review_label": "signals_disagree",
+      "rule_id": "R5",
+      "v2_accounting": "P_invalid_excluded",
+      "v2_outcome": "FAIL",
+      "v4_absence": null,
+      "v4_absence_reason": null,
+      "v4_any_fail": false,
+      "v4_full_pass": true,
+      "v4_generation_cost_usd": 0.008255496000000001,
+      "v4_outcome": "PASS",
+      "verdicts": {
+        "R1": "PASS"
+      }
+    },
+    {
+      "all_covered": true,
+      "complete": true,
+      "cost_usd": 0.048320792000000015,
+      "decision": "ACCEPT",
+      "error": false,
+      "infrastructure_flag": false,
+      "instance_id": "django__django-12965",
+      "kept_pass_1": 2,
+      "kept_pass_2": 0,
+      "minutes": 4.553663516666666,
+      "n_requirements": 2,
+      "record": true,
+      "review_label": "none",
+      "rule_id": "R6",
+      "v2_accounting": "P_invalid_excluded",
+      "v2_outcome": "PASS",
+      "v4_absence": null,
+      "v4_absence_reason": null,
+      "v4_any_fail": false,
+      "v4_full_pass": true,
+      "v4_generation_cost_usd": 0.048320792,
+      "v4_outcome": "PASS",
+      "verdicts": {
+        "R1": "PASS",
+        "R2": "PASS"
+      }
+    },
+    {
+      "all_covered": true,
+      "complete": true,
+      "cost_usd": 0.053379096000000015,
+      "decision": "FLAG",
+      "error": false,
+      "infrastructure_flag": false,
+      "instance_id": "django__django-16631",
+      "kept_pass_1": 2,
+      "kept_pass_2": 0,
+      "minutes": 5.7286013166666665,
+      "n_requirements": 2,
+      "record": true,
+      "review_label": "likely_wrong",
+      "rule_id": "R4",
+      "v2_accounting": "P_invalid_excluded",
+      "v2_outcome": "PASS",
+      "v4_absence": null,
+      "v4_absence_reason": null,
+      "v4_any_fail": true,
+      "v4_full_pass": false,
+      "v4_generation_cost_usd": 0.05337909600000001,
+      "v4_outcome": "FAIL",
+      "verdicts": {
+        "R1": "PASS",
+        "R2": "FAIL_SINGLE"
+      }
+    },
+    {
+      "all_covered": true,
+      "complete": true,
+      "cost_usd": 0.014068671999999999,
+      "decision": "FLAG",
+      "error": false,
+      "infrastructure_flag": false,
+      "instance_id": "django__django-11095",
+      "kept_pass_1": 2,
+      "kept_pass_2": 0,
+      "minutes": 3.5397147166666665,
+      "n_requirements": 2,
+      "record": true,
+      "review_label": "none",
+      "rule_id": "R8",
+      "v2_accounting": "P_invalid_excluded",
+      "v2_outcome": "NOT_AVAILABLE",
+      "v4_absence": null,
+      "v4_absence_reason": null,
+      "v4_any_fail": false,
+      "v4_full_pass": true,
+      "v4_generation_cost_usd": 0.014068671999999999,
+      "v4_outcome": "PASS",
+      "verdicts": {
+        "R1": "PASS",
+        "R2": "PASS"
+      }
+    },
+    {
+      "all_covered": true,
+      "complete": true,
+      "cost_usd": 0.057984176000000005,
+      "decision": "FLAG",
+      "error": false,
+      "infrastructure_flag": false,
+      "instance_id": "astropy__astropy-13398",
+      "kept_pass_1": 4,
+      "kept_pass_2": 0,
+      "minutes": 6.0926952666666665,
+      "n_requirements": 4,
+      "record": true,
+      "review_label": "likely_wrong",
+      "rule_id": "R4",
+      "v2_accounting": "P_invalid_excluded",
+      "v2_outcome": "NOT_AVAILABLE",
+      "v4_absence": null,
+      "v4_absence_reason": null,
+      "v4_any_fail": true,
+      "v4_full_pass": false,
+      "v4_generation_cost_usd": 0.057984176000000005,
+      "v4_outcome": "FAIL",
+      "verdicts": {
+        "R1": "FAIL_SINGLE",
+        "R2": "FAIL_SINGLE",
+        "R3": "FAIL_SINGLE",
+        "R4": "FAIL_SINGLE"
+      }
+    },
+    {
+      "all_covered": true,
+      "complete": true,
+      "cost_usd": 0.01164004,
+      "decision": "FLAG",
+      "error": false,
+      "infrastructure_flag": false,
+      "instance_id": "sympy__sympy-13480",
+      "kept_pass_1": 2,
+      "kept_pass_2": 0,
+      "minutes": 40.35059613333333,
+      "n_requirements": 2,
+      "record": true,
+      "review_label": "none",
+      "rule_id": "R8",
+      "v2_accounting": "P_invalid_excluded",
+      "v2_outcome": "NOT_AVAILABLE",
+      "v4_absence": null,
+      "v4_absence_reason": null,
+      "v4_any_fail": false,
+      "v4_full_pass": true,
+      "v4_generation_cost_usd": 0.01164004,
+      "v4_outcome": "PASS",
+      "verdicts": {
+        "R1": "PASS",
+        "R2": "PASS"
+      }
+    }
+  ],
+  "totals": {
+    "gold_with_any_v4_fail": 2,
+    "max_minutes": 40.35059613333333,
+    "median_minutes": 4.046689116666666,
+    "total_cost_usd": 0.330693952,
+    "v4_full_passes": 8
+  }
+}

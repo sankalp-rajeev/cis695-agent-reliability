@@ -1,0 +1,152 @@
+{
+  "archive": {
+    "base_commit": "14c96b510ebeba40f573e512299b1976f35b620e",
+    "instance_id": "matplotlib__matplotlib-24026",
+    "path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-24026.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "6e5396b93a5319b9a062b5959c088a2d5b22464b1e0cd7d2e1ef8827524a59ce"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 30,
+      "occurrences": {
+        "model_output": {
+          "length": 32,
+          "line": 7,
+          "offset": 3586,
+          "text_sha256": "57835774f7b21ad55a5db04d0905e52e4cebfee3fd82392dee12efc94efd9d03",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "2ca5668bc2ce66fba4a53e7aebdba309d053e340c4dc731376614faa1c9f9c72",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 48,
+      "occurrences": {
+        "model_output": {
+          "length": 54,
+          "line": 7,
+          "offset": 4000,
+          "text_sha256": "57835774f7b21ad55a5db04d0905e52e4cebfee3fd82392dee12efc94efd9d03",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "605cf00dfc30d1e34e294228f8ef759cf33e86d6dbf65ced0c917f6802409f6d",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 47,
+      "occurrences": {
+        "model_output": {
+          "length": 49,
+          "line": 7,
+          "offset": 4162,
+          "text_sha256": "57835774f7b21ad55a5db04d0905e52e4cebfee3fd82392dee12efc94efd9d03",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "7f041b677ae33e252d33920f6d25c00e3ec219cebdef87d90d2eb4c6d412597a",
+      "rule": "distinctive-content-first-occurrence"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "matplotlib__matplotlib-24026",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "59edb205c2f47eaa4c46fe3f16e572ca7b4446920518fe072a06b313550f1898",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 0,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 1,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 2,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 3,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "54e1b2ae88adc850a7613b866949418454451390c5456e8357b8dda9faa23b06",
+  "raw_path": "tasks/e2e_v1_4_3_armB_um/generator/matplotlib__matplotlib-24026.json",
+  "reasons": [
+    "answer-model-output-first"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "test-name-present-at-base"
+  ],
+  "run": "e2e_v1_4_3_armB_um",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/matplotlib__matplotlib-24026/verification/v4/cache/matplotlib__matplotlib-24026",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "37abf50973d0b1839a15dc022bd02734d8657b4668dd58d026672c6c852d5281"
+  },
+  "underlying_tier": "T3"
+}

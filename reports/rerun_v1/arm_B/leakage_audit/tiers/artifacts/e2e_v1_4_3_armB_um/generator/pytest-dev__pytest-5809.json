@@ -1,0 +1,110 @@
+{
+  "archive": {
+    "base_commit": "8aba863a634f40560e25055d179220f0eefabe9a",
+    "instance_id": "pytest-dev__pytest-5809",
+    "path": "/home/sankalp/cg_repos/task_archives/pytest-dev__pytest-5809.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "8690468c8668fa44be1553d6e5742dbcbd63deaf7453f22ce2e84fa360b27d3c"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 56,
+      "occurrences": {
+        "model_output": {
+          "length": 63,
+          "line": 7,
+          "offset": 1107,
+          "text_sha256": "c160ade1eca5355a1f2132507426b720d78cc27d57dd15f6d76b3afd32b8df70",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "722ecb745fc8d4f619bb9d6d730afc3f287e755cffb79a1634f905b61d23fa9f",
+      "rule": "distinctive-content-first-occurrence"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "pytest-dev__pytest-5809",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "bc00a1e1ca828995466fce7fd19b84ad78a0f7301a0fcf4c0911ba11969b9021",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 0,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 1,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 2,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 3,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "651562d7d145ab4391415bcabf8a49795052595287548faae8fb4db930e892f6",
+  "raw_path": "tasks/e2e_v1_4_3_armB_um/generator/pytest-dev__pytest-5809.json",
+  "reasons": [
+    "answer-model-output-first"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "test-name-present-at-base"
+  ],
+  "run": "e2e_v1_4_3_armB_um",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/pytest-dev__pytest-5809/verification/v4/cache/pytest-dev__pytest-5809",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "ca5933d7b525f11d3b79eb6be385350757c3a3b5e4a7b2487489b078a81c5a7c"
+  },
+  "underlying_tier": "T3"
+}

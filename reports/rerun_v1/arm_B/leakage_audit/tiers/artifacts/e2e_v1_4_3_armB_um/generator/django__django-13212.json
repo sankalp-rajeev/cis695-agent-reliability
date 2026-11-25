@@ -1,0 +1,113 @@
+{
+  "archive": {
+    "base_commit": "f4e93919e4608cfc50849a1f764fd856e0917401",
+    "instance_id": "django__django-13212",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-13212.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "3e249f2def29df7904f2a2f9a473809d810b17cbf84d3e015b7c481bb9350cd5"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 72,
+      "occurrences": {
+        "model_output": {
+          "length": 76,
+          "line": 18,
+          "offset": 1472,
+          "text_sha256": "5492f4838a791ab29f97c4ebdd8c37bc35fe4bc0a7270d62eea2d14ba4697352",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "870845224326b48ed54469fe7dafbd5cd9d93d3551d62a21caeb4d872949a312",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 88,
+      "occurrences": {
+        "model_output": {
+          "length": 96,
+          "line": 18,
+          "offset": 2696,
+          "text_sha256": "5492f4838a791ab29f97c4ebdd8c37bc35fe4bc0a7270d62eea2d14ba4697352",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "c496d4bb790c7a4fc8a0e8c2fddda5a898df3ec03cbd34cd81f675e4e6965097",
+      "rule": "distinctive-content-first-occurrence"
+    },
+    {
+      "category": "history",
+      "command_line": 8,
+      "command_sha256": "b85bf25609ea8a18baaed500981fa37a5bd3aaad2862ed1ef44f04a4c7c4abc1",
+      "raw_finding_index": 0,
+      "rule": "history-git-log",
+      "setup_only": true,
+      "tool_line": 9
+    },
+    {
+      "category": "history",
+      "command_line": 10,
+      "command_sha256": "49651dfc09cd64754e121844f401d596b188facc979791eb8d5614443c8973e8",
+      "raw_finding_index": 2,
+      "rule": "history-git-log",
+      "setup_only": false,
+      "tool_line": 11
+    },
+    {
+      "category": "history",
+      "command_line": 12,
+      "command_sha256": "b790977b80211cbe9f4fcb0ff498bf633c4d36cb472aef99fd1afb1023218676",
+      "raw_finding_index": 3,
+      "rule": "history-git-fsck",
+      "setup_only": false,
+      "tool_line": 13
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "django__django-13212",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "704415e1ccfef3e8720682a557e87c3d40755318c26464c0f36cd8645b28f221",
+  "raw_finding_interpretations": [],
+  "raw_findings_sha256": "0c0a4b8f2473febf43de1367743bebb1a6c4f8129f5e0170c5a7ba797f7a5b3c",
+  "raw_path": "tasks/e2e_v1_4_3_armB_um/generator/django__django-13212.json",
+  "reasons": [
+    "answer-model-output-first",
+    "harmless-setup-history",
+    "history-attempt-no-distinctive-answer"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "history-git-fsck",
+    "history-git-log",
+    "history-newer-commit"
+  ],
+  "run": "e2e_v1_4_3_armB_um",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-13212/verification/v4/cache/django__django-13212",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "0e3f35f1ec48e7cd20da8baf7fec6764670542955571bfd3a8e04cd64235a99e"
+  },
+  "underlying_tier": "T3"
+}

@@ -1,0 +1,63 @@
+{
+  "A4": "PASS",
+  "live_root": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_1_checks/live_frozen",
+  "tasks": [
+    {
+      "instance_id": "django__django-13033",
+      "image_id": "sha256:45361a6ede057fd3cf72220aa2402888084464dd2cbc62b05112bea65289b6c8",
+      "archive_sha256": "234c251613841bdb25bdbd57b3785895b1b83368afdc30806b14677ddfbdc6b0",
+      "patch_sha256": "sha256:30a10e5abddfb0597339d36c7354c953f7e93377b3dafc2d0fa74c976b652519",
+      "selection_sha256": "8276affb321be62b7e10f6be4741a7be7e1d4f0c846469ba3fa65b51d841933d",
+      "pristine_receipt_sha256": "d4dd81e165efc944e2730c281ad9599a9c0e05bc9978869e710615937032b3ff",
+      "g1_receipt_sha256": {
+        "base": "52cbee7e0e18a8c37c921f01b6e808f87ac3b9d80ca46024707f5400279b34cd",
+        "patched": "3a1301424f3576c576a83ebf79bf95250c4bb5099d43bb08d046ee7d82607772"
+      },
+      "pristine_status": "VERIFIED",
+      "native_selected_and_concrete_sets_equal": true,
+      "all_four_policies_equal": true,
+      "runner": "django",
+      "skip_v4": true,
+      "decision": "FLAG"
+    },
+    {
+      "instance_id": "sympy__sympy-17318",
+      "image_id": "sha256:6ab2a7ead49c4168a9ac145bb257918d33c50c6bbdd8f98fc80d98f1c0672a83",
+      "archive_sha256": "fdbe743ca7bb7fc718d43e8bc0a635760e77bf9facfe081616f26f8ffe50e1f5",
+      "patch_sha256": "sha256:ec660195991c803d89ece67e457d400281458499814ad37f442047d29c570aff",
+      "selection_sha256": "149258afe8dc43bdf4074fa486e573c90167d28b89de3197ef141051557c262c",
+      "pristine_receipt_sha256": "c13167792f009b9c9421c1a8b97dcbdfab3f6f6cded81cd035675deb133789cd",
+      "g1_receipt_sha256": {
+        "base": "6804a9388eaac6251bf7d2d4f925042bf50895b71c6514f081341daf935924ad",
+        "patched": "1d7c3a6aca13bad0b40da98608761538ba4ed8b3fd108415fcc06a283a8b4bdf"
+      },
+      "pristine_status": "VERIFIED",
+      "native_selected_and_concrete_sets_equal": true,
+      "all_four_policies_equal": true,
+      "runner": "sympy",
+      "skip_v4": true,
+      "decision": "FLAG"
+    },
+    {
+      "instance_id": "matplotlib__matplotlib-25287",
+      "image_id": "sha256:0a721ca71f4cfd2858777c2a451a954e50fa78f2551661a4cbcd0a9d6aa71c73",
+      "archive_sha256": "2e2293cb6fd83f4f61a98628cc5753802817027454cd73cdd057a6dec18bf32f",
+      "patch_sha256": "sha256:b6aa5c4e0c6cb6bcbcdf62568e44d8b974e9f3bb726cb539ed143edf129f6871",
+      "selection_sha256": "89cab07ade78aace460c8749be10a8d38d37c88fdc2052fbbac97dd59c2aedbf",
+      "pristine_receipt_sha256": "a82cdbfdb5e2d8d40a9c407c7f62c03a63480ef38ff6f2ac594f3ed98b4c2ce4",
+      "g1_receipt_sha256": {
+        "base": "f8e792d6d30ab78e88bfefee946363258086c1fcdf5fa9018d2ca5c6afee47a0",
+        "patched": "3def1ed7f45f2fe84b8575589917fb55f82f9077e6fb05740b8a2127e13cb3c3"
+      },
+      "pristine_status": "VERIFIED",
+      "native_selected_and_concrete_sets_equal": true,
+      "all_four_policies_equal": true,
+      "runner": "pytest",
+      "skip_v4": true,
+      "decision": "FLAG"
+    }
+  ],
+  "model_calls": 0,
+  "django_parallel_one_in_freeze": false,
+  "differences": []
+}

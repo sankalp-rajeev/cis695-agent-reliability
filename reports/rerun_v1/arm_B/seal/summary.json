@@ -1,0 +1,34 @@
+{
+  "status": "COMPLETE",
+  "completed_tasks": 92,
+  "not_completed_tasks": 0,
+  "decision_counts": {
+    "ACCEPT": 5,
+    "FLAG": 42,
+    "REJECT": 45
+  },
+  "runner_no_patch_tasks": 41,
+  "no_patch_tasks_after_a1": 40,
+  "agent_infrastructure_tasks_after_a1": 0,
+  "provider_blocked_tasks_a1": 1,
+  "provider_blocked_instance_ids": [
+    "django__django-13569"
+  ],
+  "repair_filtered_calls": 1,
+  "repair_filtered_completed_tasks_with_patch": 0,
+  "ledger": {
+    "path": "/home/sankalp/projects/wt-e2e/runs/provider_spend_ledger.json",
+    "sha256": "89d168a7644074116b5b914576cbc45cf3bb106a2ea61fa4ac2698f77e811c85",
+    "job": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um",
+    "calls": 6911,
+    "states": {
+      "settled": 6911
+    },
+    "active_stage_escrows": 0,
+    "spend_usd_by_provider": {
+      "deepseek": "1.03063056",
+      "umgpt": "16.85855040"
+    },
+    "spend_usd": "17.88918096"
+  }
+}

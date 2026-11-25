@@ -39,9 +39,12 @@ Two scoping decisions that matter for the result to mean anything:
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
+import subprocess
 import shlex
+import tarfile
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
@@ -145,6 +148,10 @@ class Severity(str, Enum):
     #: stay `CONFIRMED`. This value is the unmaskable tier, listings, and
     #: compound commands whose output cannot be pinned on the masked cache.
     EXPOSED_COPY = "exposed-copy"
+    #: Reference-run gold lines the generator wrote itself (GENERATOR_RECALL)
+    #: or that sit in a kept frozen test (GOLD_LINE_IN_FROZEN_TEST). Recorded
+    #: per task under study amendment A3; not a failure.
+    RECORDED = "recorded"
 
 
 @dataclass(frozen=True, slots=True)
@@ -198,6 +205,9 @@ class AuditResult:
     scanned_files: int = 0
     scanned_tasks: int = 0
     content_checked_tasks: int = 0
+    reference_candidate_counts: dict[tuple[str, str], int] = field(default_factory=dict)
+    #: One hashes-only summary per reference task (amendment A3).
+    reference_summaries: list[dict] = field(default_factory=list)
 
     @property
     def confirmed(self) -> list[Finding]:
@@ -206,6 +216,11 @@ class AuditResult:
     @property
     def review(self) -> list[Finding]:
         return [f for f in self.findings if f.severity is Severity.REVIEW]
+
+    @property
+    def recorded(self) -> list[Finding]:
+        """Reference-run recall and frozen-test gold lines. Counted, and not a failure."""
+        return [f for f in self.findings if f.severity is Severity.RECORDED]
 
     @property
     def benchmark_awareness(self) -> list[Finding]:
@@ -1115,8 +1130,355 @@ def audit_task(
     return findings, len(files)
 
 
+@dataclass(frozen=True, slots=True)
+class ReferenceAuditTask:
+    run: Path
+    instance_id: str
+    patch_sha256: str
+    problem_statement: str
+    archive_path: Path
+    archive_sha256: str
+    reused: bool = False
+    #: Amendment B11: the task's base commit and pinned image, to verify that git
+    #: history the generator read is the base commit's own past.
+    base_commit: str | None = None
+    image_id: str | None = None
+
+
+def _normalized(text: str) -> str:
+    return " ".join(text.split())
+
+
+def gold_candidate_lines(patch: str, problem_statement: str, archive: Path) -> tuple[str, ...]:
+    """Keep only normalized additions that the generator could not see in its inputs."""
+    issue = _normalized(problem_statement)
+    removed = {_normalized(raw[1:]) for raw in patch.splitlines()
+               if raw.startswith("-") and not raw.startswith("---")}
+    candidates = {}
+    for raw in patch.splitlines():
+        if not raw.startswith("+") or raw.startswith("+++"):
+            continue
+        line = _normalized(raw[1:])
+        if len(line.replace(" ", "")) >= 20 and line not in issue and line not in removed:
+            candidates[line] = None
+    if candidates:
+        with tarfile.open(archive) as tree:
+            for member in tree:
+                if not member.isfile():
+                    continue
+                with tree.extractfile(member) as stream:
+                    base = _normalized(stream.read().decode("utf-8", errors="replace"))
+                candidates = {line: None for line in candidates if line not in base}
+                if not candidates:
+                    break
+    return tuple(candidates)
+
+
+def _generator_trajectories(task_dir, *, reused):
+    folders = [task_dir / "verification/v4", *sorted(task_dir.glob("attempts/*/verification/v4"))]
+    for folder in folders:
+        if not folder.is_dir():
+            continue
+        prefix = "" if folder == folders[0] else folder.parent.parent.name + "/"
+        phase_dirs = [(name, folder / name) for name in ("requirements", "pass_1", "pass_2")]
+        paths = [(name, directory / "generator/generation_trajectory.jsonl")
+                 for name, directory in phase_dirs if directory.is_dir()]
+        if (folder / "generator").is_dir():
+            paths.append(("legacy", folder / "generator/generation_trajectory.jsonl"))
+        manifest = folder / "frozen.json"
+        calls = json.loads(manifest.read_text()).get("generation_calls", ()) if manifest.is_file() else ()
+        expected = {call["call"] for call in calls}
+        if (paths and expected.issubset(name for name, _ in paths)
+                and all(path.is_file() for _, path in paths)):
+            for name, path in paths:
+                yield prefix + name, path, folder
+            continue
+        combined = folder / "generation_trajectory.jsonl"
+        legacy = folder / "cache" / task_dir.name / "generation_trajectory.jsonl"
+        if combined.is_file():
+            yield prefix + "combined", combined, folder
+        elif legacy.is_file():
+            yield prefix + "legacy", legacy, folder
+        elif paths or (not reused and (manifest.exists() or legacy.parent.exists())):
+            # Missing conversations cannot be treated as a clean audit.
+            raise ValueError("missing V4 generator trajectory")
+
+
+def _v4_folders(task_dir):
+    return [folder for folder in (task_dir / "verification/v4",
+                                  *sorted(task_dir.glob("attempts/*/verification/v4")))
+            if folder.is_dir()]
+
+
+def _model_written_strings(message: dict) -> tuple[str, ...]:
+    """The text the model itself wrote: assistant content, reasoning and tool-call arguments.
+
+    Everything else in a message, including the `extra` copy of the provider
+    response, is not counted as model-written, so a line seen only there is
+    treated as coming from outside the model.
+    """
+    if message.get("role") != "assistant":
+        return ()
+    values = [message.get("content"), message.get("reasoning_content")]
+    calls = message.get("tool_calls")
+    for call in calls if isinstance(calls, list) else ():
+        function = call.get("function") if isinstance(call, dict) else None
+        if isinstance(function, dict):
+            values.append(function.get("arguments"))
+    return tuple(_normalized(text) for value in values if value is not None
+                 for text in _message_strings(value))
+
+
+def _conversations(name, text):
+    """(conversation, messages) for one trajectory file; combined files are split."""
+    conversations: list[tuple[str, list[dict]]] = []
+    section = 0
+    for row in text.splitlines():
+        message = json.loads(row)
+        if not isinstance(message, dict):
+            raise ValueError("invalid V4 generator message")
+        if name.endswith("combined") and message.get("role") == "system":
+            # Older completed freezes concatenated conversations in call order.
+            phases = ("requirements", "pass_1", "pass_2")
+            conversations.append((name.removesuffix("combined") + phases[section], []))
+            section += 1
+        elif not conversations:
+            conversations.append((name, []))
+        conversations[-1][1].append(message)
+    return conversations
+
+
+def _frozen_test_findings(task, folder, digests):
+    """Gold lines in the kept frozen tests of one V4 folder. Each file must match its hash."""
+    manifest = folder / "frozen.json"
+    if not manifest.is_file():
+        return [], 0, set()
+    findings, files, lines = [], 0, set()
+    for test in json.loads(manifest.read_text(encoding="utf-8")).get("tests") or ():
+        if test.get("kept") is not True:
+            continue
+        path = folder / "tests" / Path(test["path"]).name
+        raw = path.read_bytes()
+        if "sha256:" + hashlib.sha256(raw).hexdigest() != test["sha256"]:
+            raise ValueError("kept frozen test differs from its recorded hash")
+        files += 1
+        body = _normalized(raw.decode("utf-8", errors="replace"))
+        for line, digest in digests.items():
+            if line in body:
+                lines.add(digest)
+                findings.append(Finding(
+                    severity=Severity.RECORDED, kind="GOLD_LINE_IN_FROZEN_TEST", path=str(path),
+                    detail=f"task={task.instance_id} test={path.name} sha256={digest}",
+                ))
+    return findings, files, lines
+
+
+_GIT_HISTORY = re.compile(r"^git\s+(?:-C\s+\S+\s+)?(?:--no-pager\s+)?(?:show|log)\b")
+_OUTPUT_FILTER = re.compile(
+    r"^(?:(?:head|tail)(?:\s+-n\s*\d+|\s+-\d+)?"
+    r"|sed\s+-n\s+'?\d+(?:,\d+)?p'?"
+    r"|grep(?:\s+-[A-Za-z]+)*\s+(?:\"[^\"]*\"|'[^']*'|[^\s'\"|;&]+))$")
+_REVISION = re.compile(r"^(?:[0-9a-f]{7,40}|HEAD)(?:[\^~]\d*)*$")
+_COMMIT_HEADER = re.compile(r"^commit ([0-9a-f]{40})\b")
+
+
+def history_revisions(command, output, line):
+    """Amendment B11: the git revisions whose objects produced `line` in `output`, or None.
+
+    None unless every segment of `command` is a `cd`, or a `git show` / `git log`
+    piped only through output filters that cannot add text (head, tail, sed -n
+    'N,Mp', grep). The line's revision is the nearest `commit <sha>` header above
+    its first occurrence; without one, every revision the command names.
+    """
+    if not isinstance(command, str) or not isinstance(output, str):
+        return None
+    revisions, history = set(), False
+    for segment in re.split(r"&&|\|\||;|\n", command):
+        parts = [part.strip() for part in segment.split("|")]
+        head, filters = parts[0], parts[1:]
+        if not head and not filters:
+            continue
+        if re.match(r"^cd(?:\s+\S+)?$", head) and not filters:
+            continue
+        if not _GIT_HISTORY.match(head) or not all(_OUTPUT_FILTER.match(f) for f in filters):
+            return None
+        history = True
+        try:
+            tokens = shlex.split(head)
+        except ValueError:
+            return None
+        for token in tokens[2:]:
+            if token == "--":
+                break
+            rev = token.split(":", 1)[0]
+            if _REVISION.match(rev):
+                revisions.add(rev)
+    if not history:
+        return None
+    header = None
+    for raw in output.splitlines():
+        match = _COMMIT_HEADER.match(raw)
+        if match:
+            header = match.group(1)
+        if line in _normalized(raw):
+            return {header} if header else (revisions or None)
+    return None
+
+
+def verify_ancestors(task, revisions):
+    """{revision: whether it is an ancestor of the task's base commit}, checked by git in the
+    task's pinned image (read-only, no network). Raises if it cannot be checked."""
+    if not task.base_commit or not task.image_id:
+        raise ValueError("no base commit or image to verify ancestry")
+    if not all(_REVISION.match(rev) for rev in revisions):
+        raise ValueError("unexpected revision")
+    script = ('cd /testbed && base=$1 && shift && for r in "$@"; do '
+              'c=$(git rev-parse --verify --quiet "$r^{commit}") && git merge-base --is-ancestor "$c" "$base" '
+              '&& echo "OK $r" || echo "NO $r"; done')
+    proc = subprocess.run(["docker", "run", "--rm", "--pull=never", "--network", "none", task.image_id,
+                           "bash", "-c", script, "_", task.base_commit, *sorted(revisions)],
+                          capture_output=True, text=True, timeout=600, check=False)
+    verdicts = {}
+    for row in proc.stdout.splitlines():
+        status, _, rev = row.partition(" ")
+        if status in ("OK", "NO"):
+            verdicts[rev] = status == "OK"
+    if proc.returncode or set(verdicts) != set(revisions):
+        raise RuntimeError("ancestry check failed")
+    return verdicts
+
+
+def _tool_command(messages, position):
+    """The shell command whose output is `messages[position]`, or None."""
+    message = messages[position]
+    if message.get("role") != "tool":
+        return None
+    for previous in reversed(messages[:position]):
+        if previous.get("role") != "assistant":
+            continue
+        calls = [c for c in previous.get("tool_calls") or () if isinstance(c, dict)]
+        call = next((c for c in calls if c.get("id") == message.get("tool_call_id")), None)
+        call = call or (calls[0] if len(calls) == 1 else None)
+        try:
+            return json.loads((call or {}).get("function", {}).get("arguments") or "{}").get("command")
+        except (json.JSONDecodeError, AttributeError):
+            return None
+    return None
+
+
+def _base_history(task, messages, position, line, cache):
+    """Amendment B11: the line's first appearance is a tool output of git history that is
+    verified as the base commit's own past."""
+    content = messages[position].get("content")
+    if not task.base_commit or not task.image_id:
+        return False
+    revisions = history_revisions(_tool_command(messages, position), content, line)
+    if not revisions:
+        return False
+    key = frozenset(revisions)
+    if key not in cache:
+        try:
+            verdicts = verify_ancestors(task, revisions)
+            cache[key] = all(verdicts.get(rev) is True for rev in revisions)
+        except Exception:  # noqa: BLE001 - unverifiable ancestry stays a leak
+            cache[key] = False
+    return cache[key]
+
+
+def _reference_findings(task):
+    """Amendment A3: classify each gold line by where it first appears in each conversation.
+
+    Per conversation and distinct gold line, the first message that contains
+    the line decides. Model-written text (see `_model_written_strings`) gives
+    GENERATOR_RECALL, recorded and not failing. A line in a pass prompt (the
+    messages before the conversation's first assistant turn) is model-written
+    only if it is in that V4 folder's requirements.json and the model itself
+    wrote it in the requirements conversation. Anywhere else gives
+    GOLD_LINE_LEAK, which is CONFIRMED. Kept frozen tests are scanned too
+    (GOLD_LINE_IN_FROZEN_TEST, recorded), and every generator trajectory gets
+    the agent audit's newer-copy checks with the same severities.
+    """
+    from reliability.verifier.task_specs import require_hash
+
+    task_dir = task.run / "tasks" / task.instance_id
+    patch = task_dir / "patch.diff"
+    require_hash(patch, task.patch_sha256)
+    require_hash(task.archive_path, task.archive_sha256)
+    candidates = gold_candidate_lines(patch.read_text(encoding="utf-8"), task.problem_statement,
+                                      task.archive_path)
+    digests = {line: hashlib.sha256(line.encode("utf-8")).hexdigest() for line in candidates}
+    findings, files = [], 1
+    recall, leaks, frozen_lines, base_history = set(), set(), set(), set()
+    ancestry_cache: dict = {}
+    recall_messages: list[dict] = []
+    written_in_requirements: dict[Path, set[str]] = {}
+    for name, path, folder in _generator_trajectories(task_dir, reused=task.reused):
+        if path.resolve() != path:
+            raise ValueError("unexpected V4 trajectory symlink")
+        text = path.read_text(encoding="utf-8")
+        findings.extend(scan_field_names(path, text))
+        findings.extend(scan_newer_copies(path, text, task.instance_id))
+        files += 1
+        requirements_path = folder / "requirements.json"
+        requirements_text = (_normalized(requirements_path.read_text(encoding="utf-8"))
+                             if requirements_path.is_file() else "")
+        written = written_in_requirements.setdefault(folder, set())
+        for conversation, messages in _conversations(name, text):
+            is_requirements = conversation.rsplit("/", 1)[-1] == "requirements"
+            first_assistant = next((i for i, m in enumerate(messages)
+                                    if m.get("role") == "assistant"), len(messages))
+            origin: dict[str, bool] = {}  # digest -> model-written at first appearance
+            for position, message in enumerate(messages):
+                index = position + 1
+                strings = tuple(_normalized(value) for value in _message_strings(message))
+                model = None
+                recalled_here = False
+                for line, digest in digests.items():
+                    if not any(line in value for value in strings):
+                        continue
+                    if digest not in origin:
+                        model = _model_written_strings(message) if model is None else model
+                        by_model = any(line in value for value in model) or (
+                            not is_requirements and position < first_assistant
+                            and line in requirements_text and digest in written)
+                        origin[digest] = by_model
+                        where = (f"task={task.instance_id} conversation={conversation} "
+                                 f"message_index={index} sha256={digest}")
+                        if by_model:
+                            recall.add(digest)
+                            if is_requirements:
+                                written.add(digest)
+                            findings.append(Finding(Severity.RECORDED, "GENERATOR_RECALL",
+                                                    str(path), where))
+                        elif _base_history(task, messages, position, line, ancestry_cache):
+                            base_history.add(digest)
+                            findings.append(Finding(Severity.RECORDED, "BASE_HISTORY",
+                                                    str(path), where))
+                        else:
+                            leaks.add(digest)
+                            findings.append(Finding(Severity.CONFIRMED, "GOLD_LINE_LEAK",
+                                                    str(path), where))
+                    recalled_here = recalled_here or origin[digest]
+                if recalled_here:
+                    recall_messages.append({"conversation": conversation, "message_index": index})
+    for folder in _v4_folders(task_dir):
+        test_findings, test_files, lines = _frozen_test_findings(task, folder, digests)
+        findings.extend(test_findings)
+        files += test_files
+        frozen_lines |= lines
+    summary = {
+        "run": str(task.run), "instance_id": task.instance_id,
+        "candidate_lines": len(candidates),
+        "recall_lines": sorted(recall), "recall_messages": recall_messages,
+        "frozen_test_lines": sorted(frozen_lines), "leak_lines": sorted(leaks),
+        "base_history_lines": sorted(base_history),
+    }
+    return findings, files, len(candidates), summary
+
+
 def audit(
-    task_dirs: list[Path], probes_by_instance: dict[str, OracleProbes] | None = None
+    task_dirs: list[Path], probes_by_instance: dict[str, OracleProbes] | None = None,
+    *, reference_tasks: tuple[ReferenceAuditTask, ...] = (),
 ) -> AuditResult:
     """Audit every task directory given.
 
@@ -1137,6 +1499,21 @@ def audit(
         result.scanned_tasks += 1
         if probes is not None and not probes.is_empty:
             result.content_checked_tasks += 1
+
+    for task in reference_tasks:
+        result.scanned_tasks += 1
+        try:
+            findings, files, count, summary = _reference_findings(task)
+        except (OSError, ValueError, TypeError, IndexError, KeyError, AttributeError, tarfile.TarError):
+            # Avoid including the malformed record or its content in the report.
+            result.findings.append(Finding(Severity.CONFIRMED, "reference-audit-incomplete",
+                                           str(task.run), f"could not audit task={task.instance_id}"))
+            continue
+        result.findings.extend(findings)
+        result.scanned_files += files
+        result.content_checked_tasks += 1
+        result.reference_candidate_counts[str(task.run), task.instance_id] = count
+        result.reference_summaries.append(summary)
 
     return result
 

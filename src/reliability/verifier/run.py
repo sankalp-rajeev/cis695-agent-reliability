@@ -409,6 +409,8 @@ def signal_from_regression(report: RegressionReport) -> SignalRecord:
             "confirmations": [run_to_dict(r, inline_raw=False) for r in report.confirmations],
             "confirmation_summary": list(report.confirmation_summary),
             "evidence_flags": list(report.evidence_flags),
+            # Amendment B10: present only when V2 stopped after 3 confirmed regressions.
+            **({"early_exit": report.early_exit} if getattr(report, "early_exit", None) else {}),
         },
     )
 

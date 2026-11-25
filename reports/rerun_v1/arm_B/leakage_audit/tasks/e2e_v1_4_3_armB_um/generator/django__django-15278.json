@@ -1,0 +1,41 @@
+{
+  "archive": {
+    "base_commit": "0ab58c120939093fea90822f376e1866fc714d1f",
+    "instance_id": "django__django-15278",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-15278.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "bac872228ee80da8e86cbcaf8c6126ec2c38e83b1dd0eefa12c80e714cf32db2"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "command_sha256": "21ccef36b9af214b5f13a48c06d516e19bc5e735344a7ea7acbe6b8497f8fcb3"
+      },
+      "kind": "git-history-search",
+      "line_no": 9,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-15278/verification/v4/cache/django__django-15278/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "42380ce466b2d70da302c29fe767e85784539bcaff5820f3012918e46c8df99f"
+      },
+      "kind": "git-history-search",
+      "line_no": 23,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-15278/verification/v4/cache/django__django-15278/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "django__django-15278",
+  "legacy_findings": [],
+  "role": "generator",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 4,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-15278/verification/v4/cache/django__django-15278"
+}

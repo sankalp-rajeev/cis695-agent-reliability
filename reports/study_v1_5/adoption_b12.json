@@ -1,0 +1,1441 @@
+{
+  "adopted": [
+    "r2",
+    "r6",
+    "r6b"
+  ],
+  "all_gates_pass": true,
+  "armb_seal_sha256": "8d42afb91f2f72fb0a53168554cef39a71ee6cab7701c6645493f69e4696dbd8",
+  "armb_summary": {
+    "v1.4.1 (arm B stored signals, accounting P)": {
+      "accept": 20,
+      "accept_precision": 0.8,
+      "cells": {
+        "ACCEPT_correct": 16,
+        "ACCEPT_wrong": 4,
+        "FLAG_correct": 9,
+        "FLAG_wrong": 18,
+        "REJECT_correct": 0,
+        "REJECT_wrong": 4
+      },
+      "correct_accepted": 16,
+      "correct_rejected": 0,
+      "wrong_accepted": 4,
+      "wrong_rejected": 4
+    },
+    "v1.5 adopted (r2, r6, r6b)": {
+      "accept": 24,
+      "accept_precision": 0.8333333333333334,
+      "cells": {
+        "ACCEPT_correct": 20,
+        "ACCEPT_wrong": 4,
+        "FLAG_correct": 5,
+        "FLAG_wrong": 15,
+        "REJECT_correct": 0,
+        "REJECT_wrong": 7
+      },
+      "correct_accepted": 20,
+      "correct_rejected": 0,
+      "wrong_accepted": 4,
+      "wrong_rejected": 7
+    },
+    "v1.5 switches off (new (per-requirement) V4)": {
+      "accept": 16,
+      "accept_precision": 0.8125,
+      "cells": {
+        "ACCEPT_correct": 13,
+        "ACCEPT_wrong": 3,
+        "FLAG_correct": 12,
+        "FLAG_wrong": 18,
+        "REJECT_correct": 0,
+        "REJECT_wrong": 5
+      },
+      "correct_accepted": 13,
+      "correct_rejected": 0,
+      "wrong_accepted": 3,
+      "wrong_rejected": 5
+    }
+  },
+  "dropped_by_gold_total_rule": [],
+  "dry_run": false,
+  "fallback": {
+    "gold_v2_fail_only_from_fallback": [],
+    "kept": true
+  },
+  "finished_utc": "2026-11-22T18:37:24.250525+00:00",
+  "gates": {
+    "audit": {
+      "exit": 1,
+      "nothing_in_scope": true,
+      "pass": true,
+      "reused_v4_audit_exit": "0"
+    },
+    "labels": {
+      "correct": 25,
+      "expected": [
+        25,
+        26
+      ],
+      "pass": true,
+      "source": "/home/sankalp/projects/wt-grading/reports/rerun_v1/arm_B/labels.csv",
+      "wrong": 26
+    },
+    "merge": {
+      "expected": 51,
+      "kept": 50,
+      "kept_by_run": {
+        "study_dev_armb": 11,
+        "study_dev_armb_2": 39
+      },
+      "merged": 51,
+      "pass": true,
+      "problems": [],
+      "rerun": 1,
+      "sources": {
+        "astropy__astropy-13398": "study_dev_armb",
+        "astropy__astropy-14365": "study_dev_armb",
+        "astropy__astropy-14508": "study_dev_armb",
+        "astropy__astropy-7606": "study_dev_armb",
+        "django__django-11095": "study_dev_armb",
+        "django__django-12965": "study_dev_armb",
+        "django__django-13023": "study_dev_armb_2",
+        "django__django-13158": "study_dev_armb_3",
+        "django__django-13212": "study_dev_armb",
+        "django__django-13297": "study_dev_armb",
+        "django__django-13786": "study_dev_armb",
+        "django__django-13807": "study_dev_armb",
+        "django__django-13820": "study_dev_armb",
+        "django__django-14140": "study_dev_armb_2",
+        "django__django-15103": "study_dev_armb_2",
+        "django__django-15278": "study_dev_armb_2",
+        "django__django-15499": "study_dev_armb_2",
+        "django__django-15572": "study_dev_armb_2",
+        "django__django-16082": "study_dev_armb_2",
+        "django__django-16255": "study_dev_armb_2",
+        "django__django-16612": "study_dev_armb_2",
+        "django__django-16631": "study_dev_armb_2",
+        "django__django-16667": "study_dev_armb_2",
+        "matplotlib__matplotlib-20488": "study_dev_armb_2",
+        "matplotlib__matplotlib-22871": "study_dev_armb_2",
+        "matplotlib__matplotlib-23476": "study_dev_armb_2",
+        "matplotlib__matplotlib-24026": "study_dev_armb_2",
+        "matplotlib__matplotlib-24627": "study_dev_armb_2",
+        "matplotlib__matplotlib-24637": "study_dev_armb_2",
+        "matplotlib__matplotlib-24970": "study_dev_armb_2",
+        "matplotlib__matplotlib-25122": "study_dev_armb_2",
+        "matplotlib__matplotlib-25287": "study_dev_armb_2",
+        "matplotlib__matplotlib-25332": "study_dev_armb_2",
+        "matplotlib__matplotlib-25479": "study_dev_armb_2",
+        "matplotlib__matplotlib-26291": "study_dev_armb_2",
+        "pydata__xarray-6744": "study_dev_armb_2",
+        "pylint-dev__pylint-6903": "study_dev_armb_2",
+        "pylint-dev__pylint-7277": "study_dev_armb_2",
+        "pytest-dev__pytest-5809": "study_dev_armb_2",
+        "pytest-dev__pytest-6202": "study_dev_armb_2",
+        "pytest-dev__pytest-7236": "study_dev_armb_2",
+        "pytest-dev__pytest-7432": "study_dev_armb_2",
+        "pytest-dev__pytest-7521": "study_dev_armb_2",
+        "scikit-learn__scikit-learn-10908": "study_dev_armb_2",
+        "scikit-learn__scikit-learn-12585": "study_dev_armb_2",
+        "scikit-learn__scikit-learn-14141": "study_dev_armb_2",
+        "sphinx-doc__sphinx-10323": "study_dev_armb_2",
+        "sphinx-doc__sphinx-10466": "study_dev_armb_2",
+        "sphinx-doc__sphinx-7910": "study_dev_armb_2",
+        "sympy__sympy-13480": "study_dev_armb_2",
+        "sympy__sympy-19783": "study_dev_armb_2"
+      }
+    },
+    "sealed": {
+      "kept_run_status": "study_dev_armb STOPPED_SYSTEMIC, study_dev_armb_2 COMPLETE",
+      "kept_seal_check": "study_dev_armb MATCH, study_dev_armb_2 MATCH",
+      "kept_seal_sha256": {
+        "study_dev_armb": "81fa418ab136416d59b954f336921a2425cfc60f200785052ded0b14ec452a28",
+        "study_dev_armb_2": "629c0bc0a7fc353b8f9455c2dd649e5487c79cee309077e2722cd2810de51e3b"
+      },
+      "pass": true,
+      "run_status": "COMPLETE",
+      "seal_check": "MATCH",
+      "seal_sha256": "8d42afb91f2f72fb0a53168554cef39a71ee6cab7701c6645493f69e4696dbd8"
+    },
+    "zero_generation": {
+      "account_total_usd": 4.409836372,
+      "cap_usd": 4.509836372,
+      "job_ledger_calls": 0,
+      "pass": true,
+      "v4_reuse": {
+        "study_dev_armb": {
+          "generator_calls": 0,
+          "ledger_calls": 0,
+          "ledger_cost_usd": 0.0
+        },
+        "study_dev_armb_2": {
+          "generator_calls": 0,
+          "ledger_calls": 0,
+          "ledger_cost_usd": 0.0
+        },
+        "study_dev_armb_3": {
+          "generator_calls": 0,
+          "ledger_calls": 0,
+          "ledger_cost_usd": 0.0
+        }
+      }
+    }
+  },
+  "gold_adopted": {
+    "ACCEPT": 37,
+    "FLAG": 14
+  },
+  "gold_adopted_rejects": [],
+  "infrastructure_tasks": [],
+  "late": false,
+  "notes": [],
+  "per_task": {
+    "astropy__astropy-13398": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "off": [
+        "FLAG",
+        "R8"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "source_run": "runs/study_dev_armb",
+      "v1_4_1": "FLAG"
+    },
+    "astropy__astropy-14365": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "old_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "source_run": "runs/study_dev_armb",
+      "v1_4_1": "ACCEPT"
+    },
+    "astropy__astropy-14508": {
+      "adopted": [
+        "FLAG",
+        "R7"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "FLAG",
+        "R7"
+      ],
+      "off": [
+        "FLAG",
+        "R7"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "source_run": "runs/study_dev_armb",
+      "v1_4_1": "FLAG"
+    },
+    "astropy__astropy-7606": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "old_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "source_run": "runs/study_dev_armb",
+      "v1_4_1": "ACCEPT"
+    },
+    "django__django-11095": {
+      "adopted": [
+        "FLAG",
+        "R8"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "off": [
+        "FLAG",
+        "R8"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "source_run": "runs/study_dev_armb",
+      "v1_4_1": "FLAG"
+    },
+    "django__django-12965": {
+      "adopted": [
+        "FLAG",
+        "R4"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "FLAG",
+        "R4"
+      ],
+      "off": [
+        "FLAG",
+        "R4"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R4"
+      ],
+      "source_run": "runs/study_dev_armb",
+      "v1_4_1": "FLAG"
+    },
+    "django__django-13023": {
+      "adopted": [
+        "REJECT",
+        "R1"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "REJECT",
+        "R1"
+      ],
+      "off": [
+        "REJECT",
+        "R1"
+      ],
+      "old_v4_off": [
+        "REJECT",
+        "R1"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "REJECT"
+    },
+    "django__django-13158": {
+      "adopted": [
+        "FLAG",
+        "R4"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "FLAG",
+        "R4"
+      ],
+      "off": [
+        "FLAG",
+        "R4"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R7"
+      ],
+      "source_run": "runs/study_dev_armb_3",
+      "v1_4_1": "FLAG"
+    },
+    "django__django-13212": {
+      "adopted": [
+        "FLAG",
+        "R4"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "FLAG",
+        "R4"
+      ],
+      "off": [
+        "FLAG",
+        "R4"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R4"
+      ],
+      "source_run": "runs/study_dev_armb",
+      "v1_4_1": "FLAG"
+    },
+    "django__django-13297": {
+      "adopted": [
+        "FLAG",
+        "R4"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "FLAG",
+        "R4"
+      ],
+      "off": [
+        "FLAG",
+        "R4"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R4"
+      ],
+      "source_run": "runs/study_dev_armb",
+      "v1_4_1": "FLAG"
+    },
+    "django__django-13786": {
+      "adopted": [
+        "FLAG",
+        "R5"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "FLAG",
+        "R5"
+      ],
+      "off": [
+        "FLAG",
+        "R5"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R5"
+      ],
+      "source_run": "runs/study_dev_armb",
+      "v1_4_1": "FLAG"
+    },
+    "django__django-13807": {
+      "adopted": [
+        "FLAG",
+        "R8"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "off": [
+        "FLAG",
+        "R8"
+      ],
+      "old_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "source_run": "runs/study_dev_armb",
+      "v1_4_1": "ACCEPT"
+    },
+    "django__django-13820": {
+      "adopted": [
+        "ACCEPT",
+        "R6b"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "FLAG",
+        "R7"
+      ],
+      "off": [
+        "FLAG",
+        "R7"
+      ],
+      "old_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "source_run": "runs/study_dev_armb",
+      "v1_4_1": "ACCEPT"
+    },
+    "django__django-14140": {
+      "adopted": [
+        "REJECT",
+        "R2"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "off": [
+        "FLAG",
+        "R8"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "FLAG"
+    },
+    "django__django-15103": {
+      "adopted": [
+        "REJECT",
+        "R3"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "REJECT",
+        "R3"
+      ],
+      "off": [
+        "REJECT",
+        "R3"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R4"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "FLAG"
+    },
+    "django__django-15278": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "old_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "ACCEPT"
+    },
+    "django__django-15499": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "off": [
+        "FLAG",
+        "R8"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "FLAG"
+    },
+    "django__django-15572": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "old_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "ACCEPT"
+    },
+    "django__django-16082": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "off": [
+        "FLAG",
+        "R8"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "FLAG"
+    },
+    "django__django-16255": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "old_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "ACCEPT"
+    },
+    "django__django-16612": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "old_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "ACCEPT"
+    },
+    "django__django-16631": {
+      "adopted": [
+        "REJECT",
+        "R3b"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "REJECT",
+        "R3b"
+      ],
+      "off": [
+        "REJECT",
+        "R3b"
+      ],
+      "old_v4_off": [
+        "REJECT",
+        "R3"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "REJECT"
+    },
+    "django__django-16667": {
+      "adopted": [
+        "REJECT",
+        "R1"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "REJECT",
+        "R1"
+      ],
+      "off": [
+        "REJECT",
+        "R1"
+      ],
+      "old_v4_off": [
+        "REJECT",
+        "R1"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "REJECT"
+    },
+    "matplotlib__matplotlib-20488": {
+      "adopted": [
+        "FLAG",
+        "R5"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "FLAG",
+        "R5"
+      ],
+      "off": [
+        "FLAG",
+        "R5"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R5"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "FLAG"
+    },
+    "matplotlib__matplotlib-22871": {
+      "adopted": [
+        "FLAG",
+        "R5"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "FLAG",
+        "R5"
+      ],
+      "off": [
+        "FLAG",
+        "R5"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R5"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "FLAG"
+    },
+    "matplotlib__matplotlib-23476": {
+      "adopted": [
+        "FLAG",
+        "R4"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "FLAG",
+        "R4"
+      ],
+      "off": [
+        "FLAG",
+        "R4"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R4"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "FLAG"
+    },
+    "matplotlib__matplotlib-24026": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "old_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "ACCEPT"
+    },
+    "matplotlib__matplotlib-24627": {
+      "adopted": [
+        "FLAG",
+        "R4"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "FLAG",
+        "R4"
+      ],
+      "off": [
+        "FLAG",
+        "R4"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "FLAG"
+    },
+    "matplotlib__matplotlib-24637": {
+      "adopted": [
+        "REJECT",
+        "R3"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "REJECT",
+        "R3"
+      ],
+      "off": [
+        "REJECT",
+        "R3"
+      ],
+      "old_v4_off": [
+        "REJECT",
+        "R3"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "REJECT"
+    },
+    "matplotlib__matplotlib-24970": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "old_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "ACCEPT"
+    },
+    "matplotlib__matplotlib-25122": {
+      "adopted": [
+        "FLAG",
+        "R4"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "FLAG",
+        "R4"
+      ],
+      "off": [
+        "FLAG",
+        "R4"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R4"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "FLAG"
+    },
+    "matplotlib__matplotlib-25287": {
+      "adopted": [
+        "ACCEPT",
+        "R6b"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "FLAG",
+        "R7"
+      ],
+      "off": [
+        "FLAG",
+        "R7"
+      ],
+      "old_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "ACCEPT"
+    },
+    "matplotlib__matplotlib-25332": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "old_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "ACCEPT"
+    },
+    "matplotlib__matplotlib-25479": {
+      "adopted": [
+        "FLAG",
+        "R5"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "FLAG",
+        "R5"
+      ],
+      "off": [
+        "FLAG",
+        "R5"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R5"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "FLAG"
+    },
+    "matplotlib__matplotlib-26291": {
+      "adopted": [
+        "FLAG",
+        "R4"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "FLAG",
+        "R4"
+      ],
+      "off": [
+        "FLAG",
+        "R4"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R4"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "FLAG"
+    },
+    "pydata__xarray-6744": {
+      "adopted": [
+        "FLAG",
+        "R5"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "FLAG",
+        "R5"
+      ],
+      "off": [
+        "FLAG",
+        "R5"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R5"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "FLAG"
+    },
+    "pylint-dev__pylint-6903": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "off": [
+        "FLAG",
+        "R8"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "FLAG"
+    },
+    "pylint-dev__pylint-7277": {
+      "adopted": [
+        "FLAG",
+        "R5"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "FLAG",
+        "R5"
+      ],
+      "off": [
+        "FLAG",
+        "R5"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R5"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "FLAG"
+    },
+    "pytest-dev__pytest-5809": {
+      "adopted": [
+        "FLAG",
+        "R5"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "FLAG",
+        "R5"
+      ],
+      "off": [
+        "FLAG",
+        "R5"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R5"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "FLAG"
+    },
+    "pytest-dev__pytest-6202": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "old_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "ACCEPT"
+    },
+    "pytest-dev__pytest-7236": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "off": [
+        "FLAG",
+        "R8"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "FLAG"
+    },
+    "pytest-dev__pytest-7432": {
+      "adopted": [
+        "FLAG",
+        "R4"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "FLAG",
+        "R4"
+      ],
+      "off": [
+        "FLAG",
+        "R4"
+      ],
+      "old_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "ACCEPT"
+    },
+    "pytest-dev__pytest-7521": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "old_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "ACCEPT"
+    },
+    "scikit-learn__scikit-learn-10908": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "old_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "ACCEPT"
+    },
+    "scikit-learn__scikit-learn-12585": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "old_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "ACCEPT"
+    },
+    "scikit-learn__scikit-learn-14141": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "old_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "ACCEPT"
+    },
+    "sphinx-doc__sphinx-10323": {
+      "adopted": [
+        "REJECT",
+        "R2"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "off": [
+        "FLAG",
+        "R8"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "FLAG"
+    },
+    "sphinx-doc__sphinx-10466": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "old_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "ACCEPT"
+    },
+    "sphinx-doc__sphinx-7910": {
+      "adopted": [
+        "FLAG",
+        "R4"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "FLAG",
+        "R4"
+      ],
+      "off": [
+        "FLAG",
+        "R4"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R4"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "FLAG"
+    },
+    "sympy__sympy-13480": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": true,
+      "new_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "off": [
+        "FLAG",
+        "R8"
+      ],
+      "old_v4_off": [
+        "FLAG",
+        "R8"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "FLAG"
+    },
+    "sympy__sympy-19783": {
+      "adopted": [
+        "ACCEPT",
+        "R6"
+      ],
+      "correct": false,
+      "new_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "old_v4_off": [
+        "ACCEPT",
+        "R6"
+      ],
+      "source_run": "runs/study_dev_armb_2",
+      "v1_4_1": "ACCEPT"
+    }
+  },
+  "step_a": {
+    "chosen": "new (per-requirement) V4",
+    "new_v4_off": {
+      "accept": 16,
+      "accept_precision": 0.8125,
+      "cells": {
+        "ACCEPT_correct": 13,
+        "ACCEPT_wrong": 3,
+        "FLAG_correct": 12,
+        "FLAG_wrong": 18,
+        "REJECT_correct": 0,
+        "REJECT_wrong": 5
+      },
+      "correct_accepted": 13,
+      "correct_rejected": 0,
+      "wrong_accepted": 3,
+      "wrong_rejected": 5
+    },
+    "old_v4_off": {
+      "accept": 20,
+      "accept_precision": 0.8,
+      "cells": {
+        "ACCEPT_correct": 16,
+        "ACCEPT_wrong": 4,
+        "FLAG_correct": 9,
+        "FLAG_wrong": 18,
+        "REJECT_correct": 0,
+        "REJECT_wrong": 4
+      },
+      "correct_accepted": 16,
+      "correct_rejected": 0,
+      "wrong_accepted": 4,
+      "wrong_rejected": 4
+    },
+    "rule": "old V4 only if more correct ACCEPTs and ACCEPT precision at least as high"
+  },
+  "switches": {
+    "r2": {
+      "armb_correct_newly_rejected": [],
+      "armb_wrong_newly_rejected": [
+        "django__django-14140",
+        "sphinx-doc__sphinx-10323"
+      ],
+      "gold_newly_rejected": [],
+      "gold_rejected_total": 0,
+      "kind": "REJECT",
+      "pass": true,
+      "rule": "gold newly REJECTed <= 1, arm B correct newly REJECTed <= 1, arm B wrong newly REJECTed >= 2"
+    },
+    "r3": {
+      "armb_correct_newly_rejected": [
+        "matplotlib__matplotlib-25122",
+        "pytest-dev__pytest-7432"
+      ],
+      "armb_wrong_newly_rejected": [
+        "django__django-13158",
+        "django__django-13297",
+        "matplotlib__matplotlib-23476",
+        "matplotlib__matplotlib-26291",
+        "sphinx-doc__sphinx-7910"
+      ],
+      "gold_newly_rejected": [
+        "astropy__astropy-13398",
+        "django__django-13297",
+        "pytest-dev__pytest-7432"
+      ],
+      "gold_rejected_total": 3,
+      "kind": "REJECT",
+      "pass": false,
+      "rule": "gold newly REJECTed <= 1, arm B correct newly REJECTed <= 1, arm B wrong newly REJECTed >= 2"
+    },
+    "r6": {
+      "armb_newly_accepted": [
+        "astropy__astropy-13398",
+        "django__django-15499",
+        "django__django-16082",
+        "pylint-dev__pylint-6903",
+        "pytest-dev__pytest-7236",
+        "sympy__sympy-13480"
+      ],
+      "armb_newly_accepted_correct": [
+        "django__django-15499",
+        "django__django-16082",
+        "pylint-dev__pylint-6903",
+        "pytest-dev__pytest-7236",
+        "sympy__sympy-13480"
+      ],
+      "gold_newly_accepted": [
+        "django__django-13023",
+        "django__django-13158",
+        "django__django-16082",
+        "django__django-16612",
+        "pylint-dev__pylint-6903",
+        "pytest-dev__pytest-7236",
+        "pytest-dev__pytest-7521",
+        "sympy__sympy-13480"
+      ],
+      "kind": "ACCEPT",
+      "pass": true,
+      "rule": ">= 70% of arm B patches it newly ACCEPTs are correct; none newly accepted -> off",
+      "share_correct": 0.8333333333333334
+    },
+    "r6b": {
+      "armb_newly_accepted": [
+        "django__django-13820",
+        "matplotlib__matplotlib-25287"
+      ],
+      "armb_newly_accepted_correct": [
+        "django__django-13820",
+        "matplotlib__matplotlib-25287"
+      ],
+      "gold_newly_accepted": [
+        "django__django-13820",
+        "django__django-15103",
+        "matplotlib__matplotlib-25287",
+        "pylint-dev__pylint-7277"
+      ],
+      "kind": "ACCEPT",
+      "pass": true,
+      "rule": ">= 70% of arm B patches it newly ACCEPTs are correct; none newly accepted -> off",
+      "share_correct": 1.0
+    }
+  },
+  "task_sources": {
+    "astropy__astropy-13398": "runs/study_dev_armb",
+    "astropy__astropy-14365": "runs/study_dev_armb",
+    "astropy__astropy-14508": "runs/study_dev_armb",
+    "astropy__astropy-7606": "runs/study_dev_armb",
+    "django__django-11095": "runs/study_dev_armb",
+    "django__django-12965": "runs/study_dev_armb",
+    "django__django-13023": "runs/study_dev_armb_2",
+    "django__django-13158": "runs/study_dev_armb_3",
+    "django__django-13212": "runs/study_dev_armb",
+    "django__django-13297": "runs/study_dev_armb",
+    "django__django-13786": "runs/study_dev_armb",
+    "django__django-13807": "runs/study_dev_armb",
+    "django__django-13820": "runs/study_dev_armb",
+    "django__django-14140": "runs/study_dev_armb_2",
+    "django__django-15103": "runs/study_dev_armb_2",
+    "django__django-15278": "runs/study_dev_armb_2",
+    "django__django-15499": "runs/study_dev_armb_2",
+    "django__django-15572": "runs/study_dev_armb_2",
+    "django__django-16082": "runs/study_dev_armb_2",
+    "django__django-16255": "runs/study_dev_armb_2",
+    "django__django-16612": "runs/study_dev_armb_2",
+    "django__django-16631": "runs/study_dev_armb_2",
+    "django__django-16667": "runs/study_dev_armb_2",
+    "matplotlib__matplotlib-20488": "runs/study_dev_armb_2",
+    "matplotlib__matplotlib-22871": "runs/study_dev_armb_2",
+    "matplotlib__matplotlib-23476": "runs/study_dev_armb_2",
+    "matplotlib__matplotlib-24026": "runs/study_dev_armb_2",
+    "matplotlib__matplotlib-24627": "runs/study_dev_armb_2",
+    "matplotlib__matplotlib-24637": "runs/study_dev_armb_2",
+    "matplotlib__matplotlib-24970": "runs/study_dev_armb_2",
+    "matplotlib__matplotlib-25122": "runs/study_dev_armb_2",
+    "matplotlib__matplotlib-25287": "runs/study_dev_armb_2",
+    "matplotlib__matplotlib-25332": "runs/study_dev_armb_2",
+    "matplotlib__matplotlib-25479": "runs/study_dev_armb_2",
+    "matplotlib__matplotlib-26291": "runs/study_dev_armb_2",
+    "pydata__xarray-6744": "runs/study_dev_armb_2",
+    "pylint-dev__pylint-6903": "runs/study_dev_armb_2",
+    "pylint-dev__pylint-7277": "runs/study_dev_armb_2",
+    "pytest-dev__pytest-5809": "runs/study_dev_armb_2",
+    "pytest-dev__pytest-6202": "runs/study_dev_armb_2",
+    "pytest-dev__pytest-7236": "runs/study_dev_armb_2",
+    "pytest-dev__pytest-7432": "runs/study_dev_armb_2",
+    "pytest-dev__pytest-7521": "runs/study_dev_armb_2",
+    "scikit-learn__scikit-learn-10908": "runs/study_dev_armb_2",
+    "scikit-learn__scikit-learn-12585": "runs/study_dev_armb_2",
+    "scikit-learn__scikit-learn-14141": "runs/study_dev_armb_2",
+    "sphinx-doc__sphinx-10323": "runs/study_dev_armb_2",
+    "sphinx-doc__sphinx-10466": "runs/study_dev_armb_2",
+    "sphinx-doc__sphinx-7910": "runs/study_dev_armb_2",
+    "sympy__sympy-13480": "runs/study_dev_armb_2",
+    "sympy__sympy-19783": "runs/study_dev_armb_2"
+  }
+}

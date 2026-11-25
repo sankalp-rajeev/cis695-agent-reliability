@@ -1,0 +1,272 @@
+{
+  "archive": {
+    "base_commit": "31eba1a76dd485dc633cae48227b46879eda5df4",
+    "instance_id": "sphinx-doc__sphinx-10323",
+    "path": "/home/sankalp/cg_repos/task_archives/sphinx-doc__sphinx-10323.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "9ae3a481e38d3838569b2e33fb7200e31884120e32f7f60adba00024545d1a25"
+  },
+  "findings": [
+    {
+      "evidence": {},
+      "kind": "benchmark-awareness",
+      "line_no": 71,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-ambiguous",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-listing",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {},
+      "kind": "newer-copy-ambiguous",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "legacy",
+      "severity": "exposed-copy"
+    },
+    {
+      "evidence": {
+        "command_sha256": "3fb8ea694c72d856e22eb019e7849c9eb596dd31c27703ddea2d8637ef0961b3"
+      },
+      "kind": "git-history-search",
+      "line_no": 13,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 13,
+        "command_sha256": "3fb8ea694c72d856e22eb019e7849c9eb596dd31c27703ddea2d8637ef0961b3",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 14,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "4ce1711a5ef34dfa238ec9685e8d88338847c066dfd1f0384bb17a664b4e95d0"
+      },
+      "kind": "git-history-search",
+      "line_no": 29,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "history-git-fsck",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "107baafb5e43ba0d6a38d3d8004102aaac8fcdd9b23063843453cda4100f1109"
+      },
+      "kind": "git-history-search",
+      "line_no": 49,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 49,
+        "command_sha256": "107baafb5e43ba0d6a38d3d8004102aaac8fcdd9b23063843453cda4100f1109",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 50,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "command_sha256": "21ab308bcdd24ff7d98c3fd5d3a485e0910fff05c2180c27f8e8b51bca4dca00"
+      },
+      "kind": "git-history-search",
+      "line_no": 81,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "history-git-reflog",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-reflog",
+        "command_line": 81,
+        "command_sha256": "21ab308bcdd24ff7d98c3fd5d3a485e0910fff05c2180c27f8e8b51bca4dca00",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 82,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "9ae3a481e38d3838569b2e33fb7200e31884120e32f7f60adba00024545d1a25",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 72,
+        "symbol_sha256": "e3f4eebe9881705fdd13257ad05961c004e845e3b248467d8b426e6d1d401b0c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "9ae3a481e38d3838569b2e33fb7200e31884120e32f7f60adba00024545d1a25",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 72,
+        "symbol_sha256": "9daf844584d689458d13a24fdfa96f62c96519a9f00903371d4ecb8e3f10a310"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "9ae3a481e38d3838569b2e33fb7200e31884120e32f7f60adba00024545d1a25",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 12,
+        "symbol_sha256": "ed0c548960c75a161249aa689c4bd9e0828826ae07ab1e4114be5e3cc9bf7e54"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "9ae3a481e38d3838569b2e33fb7200e31884120e32f7f60adba00024545d1a25",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 12,
+        "symbol_sha256": "4ee1494cf57f52b94c0e95b086b5548ba6d818e557ec4655960d3c39f0a642d3"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "9ae3a481e38d3838569b2e33fb7200e31884120e32f7f60adba00024545d1a25",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 12,
+        "symbol_sha256": "26de8923c056860009750d57fd574927a7196bdbdd52c1b43b579d87010074a5"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "9ae3a481e38d3838569b2e33fb7200e31884120e32f7f60adba00024545d1a25",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 10,
+        "symbol_sha256": "76fbc6e354aa50518e3e9969cf58cb9ae0770395dd66072d61225e473dde7712"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "9ae3a481e38d3838569b2e33fb7200e31884120e32f7f60adba00024545d1a25",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 10,
+        "symbol_sha256": "ac9edcc4861aae348d48cf9549168bc4a1631862dcaea943b4f37c8f798c65e6"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "9ae3a481e38d3838569b2e33fb7200e31884120e32f7f60adba00024545d1a25",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 12,
+        "symbol_sha256": "5552fd98653e40fc3e4e8f7cfe87948e64ffaa84966066e1c995488ea1493469"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "9ae3a481e38d3838569b2e33fb7200e31884120e32f7f60adba00024545d1a25",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 10,
+        "symbol_sha256": "7d268b6d9f99ef1f35aafd795cdd095fb1e54d7003b65e8f802cbd6471ae400c"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "9ae3a481e38d3838569b2e33fb7200e31884120e32f7f60adba00024545d1a25",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 10,
+        "symbol_sha256": "4cbe106dfa4fd10d9eab716bbce7f0a6d56dabaaa71c09be62213e6e405efa19"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323/generation_trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "sphinx-doc__sphinx-10323",
+  "legacy_findings": [],
+  "role": "generator",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sphinx-doc__sphinx-10323/verification/v4/cache/sphinx-doc__sphinx-10323"
+}

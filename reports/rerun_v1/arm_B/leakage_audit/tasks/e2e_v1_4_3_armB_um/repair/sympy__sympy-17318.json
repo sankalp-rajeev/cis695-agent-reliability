@@ -1,0 +1,49 @@
+{
+  "archive": {
+    "base_commit": "d4e0231b08147337745dcf601e62de7eefe2fb2d",
+    "instance_id": "sympy__sympy-17318",
+    "path": "/home/sankalp/cg_repos/task_archives/sympy__sympy-17318.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "fdbe743ca7bb7fc718d43e8bc0a635760e77bf9facfe081616f26f8ffe50e1f5"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "archive_sha256": "fdbe743ca7bb7fc718d43e8bc0a635760e77bf9facfe081616f26f8ffe50e1f5",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 31,
+        "symbol_sha256": "a127585b523bf7c66ad7b94280e57cb0d8a0e27829d0582f07c6272fa29d2ab4"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sympy__sympy-17318/repair_record.json",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    },
+    {
+      "evidence": {
+        "archive_sha256": "fdbe743ca7bb7fc718d43e8bc0a635760e77bf9facfe081616f26f8ffe50e1f5",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 33,
+        "symbol_sha256": "a127585b523bf7c66ad7b94280e57cb0d8a0e27829d0582f07c6272fa29d2ab4"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sympy__sympy-17318/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "sympy__sympy-17318",
+  "legacy_findings": [],
+  "role": "repair",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/sympy__sympy-17318"
+}

@@ -1,0 +1,98 @@
+{
+  "archive": {
+    "base_commit": "3d997697fdd166eff428ea9fd35734b6a8ba113e",
+    "instance_id": "scikit-learn__scikit-learn-14141",
+    "path": "/home/sankalp/cg_repos/task_archives/scikit-learn__scikit-learn-14141.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "17e32385bf6ca4a42cfcda214d559f76373500278d653a343d38cb147d9de3f8"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "test_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 25,
+      "occurrences": {
+        "model_output": {
+          "length": 28,
+          "line": 9,
+          "offset": 3072,
+          "text_sha256": "33cb571fc9516989b666e718f12c6c2824f252bfa5c58e52f62519e606f8a54f",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "f77343f5c9ca406745e200646cdc474c69849e548c48b4daa52a95c325919631",
+      "rule": "distinctive-content-first-occurrence"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "scikit-learn__scikit-learn-14141",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "760da1277be51136d09779b222979f5b8ae0ff9de2d84ab8946390a97bd46e67",
+  "raw_finding_interpretations": [
+    {
+      "decoded_match": false,
+      "finding_index": 0,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "fail-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 1,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    },
+    {
+      "decoded_match": false,
+      "finding_index": 2,
+      "first_seen_in": null,
+      "guard_removed": false,
+      "kind": "pass-to-pass-name",
+      "probe_sha256": [],
+      "rule": "test-name-present-at-base",
+      "rule_interpretation": "no-absent-or-effective-probe",
+      "serialization_only": false,
+      "serialized_first_line": null
+    }
+  ],
+  "raw_findings_sha256": "dbe793a836482a7c8f3b8a657b3a63b14a635f0a8e252a10eea2b702f9d0c0ff",
+  "raw_path": "tasks/e2e_v1_4_3_armB_um/generator/scikit-learn__scikit-learn-14141.json",
+  "reasons": [
+    "answer-model-output-first"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence",
+    "test-name-present-at-base"
+  ],
+  "run": "e2e_v1_4_3_armB_um",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/scikit-learn__scikit-learn-14141/verification/v4/cache/scikit-learn__scikit-learn-14141",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "b7074750426dc96c9adfbdeb0db0beadee1405abcabd450babc41a4709fc7d4a"
+  },
+  "underlying_tier": "T3"
+}

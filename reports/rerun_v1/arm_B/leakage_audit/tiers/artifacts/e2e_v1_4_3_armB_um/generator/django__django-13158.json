@@ -1,0 +1,60 @@
+{
+  "archive": {
+    "base_commit": "7af8f4127397279d19ef7c7899e93018274e2f9b",
+    "instance_id": "django__django-13158",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-13158.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "81cf2dada010bad5ed1ca669c8ae7cc1d3570e65e99968fcf08604b936146b61"
+  },
+  "comparable": true,
+  "excluded": false,
+  "facts": [
+    {
+      "artifact_names": [],
+      "base_occurrences": 0,
+      "category": "answer",
+      "field": "gold_patch",
+      "first_seen_in": "model_output",
+      "guard_pass": true,
+      "guard_rules": [],
+      "nonwhitespace_length": 32,
+      "occurrences": {
+        "model_output": {
+          "length": 35,
+          "line": 17,
+          "offset": 1384,
+          "text_sha256": "4f06306166e8319ab3aa4720bbca4c8ecaa21650577ce96ec745de97c06ed8bf",
+          "trajectory": "generation_trajectory.jsonl"
+        }
+      },
+      "probe_sha256": "60eb75918c818601adde5ee9f52094adb8b9baf5a5604b8701207407b62192ee",
+      "rule": "distinctive-content-first-occurrence"
+    }
+  ],
+  "first_seen_in": [
+    "model_output"
+  ],
+  "history_gold": [],
+  "instance_id": "django__django-13158",
+  "observed": true,
+  "raw_cache_findings": 0,
+  "raw_file_sha256": "c8ec8c67c5e50c87957d55ef2c1c3643b317beefd14fb909eef711a36f2cd45e",
+  "raw_finding_interpretations": [],
+  "raw_findings_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "raw_path": "tasks/e2e_v1_4_3_armB_um/generator/django__django-13158.json",
+  "reasons": [
+    "answer-model-output-first"
+  ],
+  "role": "generator",
+  "rule_names": [
+    "distinctive-content-first-occurrence"
+  ],
+  "run": "e2e_v1_4_3_armB_um",
+  "schema_version": 1,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-13158/verification/v4/cache/django__django-13158",
+  "tier": "T3",
+  "trajectory_sha256": {
+    "generation_trajectory.jsonl": "c17f255d7a0f2501bf80c67ebef22f8c9f356d995596bfdab6f3a8ce149cde9b"
+  },
+  "underlying_tier": "T3"
+}

@@ -7,6 +7,13 @@ or the verifier's selection path may import it.
     .venv/bin/python scripts/audit_leakage.py               # all runs
     .venv/bin/python scripts/audit_leakage.py --runs runs/9_pilot
     .venv/bin/python scripts/audit_leakage.py --no-content  # names only, FAILS
+    .venv/bin/python scripts/audit_leakage.py --runs runs/study_dev_gold \
+        --reference-summary OUT.json   # per-task gold-line summary, hashes only
+
+Reference (gold-patch) runs follow study amendment A3: a gold line whose first
+appearance in a conversation is model-written is GENERATOR_RECALL and a gold
+line in a kept frozen test is GOLD_LINE_IN_FROZEN_TEST, both recorded and not
+failing; a first appearance anywhere else is GOLD_LINE_LEAK, which is confirmed.
 
 Exit codes:
     0  every in-scope artifact scanned, both checks ran, nothing confirmed
@@ -21,12 +28,16 @@ a silent pass in Phase 5.
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
 import pathlib
+import re
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "src"))
 
 from reliability.benchmark.leakage import (
+    ReferenceAuditTask,
     Severity,
     audit,
     find_task_dirs,
@@ -37,41 +48,122 @@ from reliability.benchmark.leakage import (
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 
-def main() -> int:
+def reference_runs(runs_root):
+    headers = [runs_root / "header.json", *sorted(runs_root.glob("*/header.json")),
+               *sorted(runs_root.glob("*/*/header.json"))]
+    runs = {}
+    for path in headers:
+        if path.is_file():
+            header = json.loads(path.read_bytes())
+            if header.get("reference_patches") is True:
+                runs[path.parent] = header
+    return runs
+
+
+def load_reference_tasks(runs):
+    from reliability.benchmark.loader import load_agent_tasks
+    from reliability.verifier.admission_reference import JSONProjection
+    from reliability.verifier.task_specs import absolute
+
+    issues = {task.instance_id: task.problem_statement for task in load_agent_tasks()}
+    tasks = []
+    archive_schema = {"tasks": {"*": {"instance_id": True, "archive": {"path": True, "sha256": True},
+                                      "base_commit": True, "image": {"id": True}}}}
+    for run, header in runs.items():
+        archives = {}
+        for filename, digest in header["registry_sha256"].items():
+            raw = absolute(filename).read_bytes()
+            if hashlib.sha256(raw).hexdigest() != digest:
+                raise ValueError("reference audit task registry hash differs from run header")
+            for row in JSONProjection(raw.decode()).project(archive_schema)["tasks"]:
+                iid = row["instance_id"]
+                if iid in archives:
+                    raise ValueError("duplicate reference audit task ID")
+                archives[iid] = {**row["archive"], "base_commit": row.get("base_commit"),
+                                 "image_id": (row.get("image") or {}).get("id")}
+        run_tasks = []
+        for iid, patch in header["verify_only_inputs"].items():
+            if not re.fullmatch(r"[A-Za-z0-9_.-]+__[A-Za-z0-9_.-]+", iid):
+                raise ValueError("invalid reference audit task ID")
+            if (run / "tasks" / iid).is_dir():
+                archive = archives[iid]
+                run_tasks.append(ReferenceAuditTask(
+                    run, iid, patch["sha256"], issues[iid], absolute(archive["path"]),
+                    archive["sha256"], reused=header.get("reuse_v4_from") is not None,
+                    base_commit=archive["base_commit"], image_id=archive["image_id"],
+                ))
+        if not run_tasks:
+            raise ValueError("reference audit found no task directories")
+        tasks.extend(run_tasks)
+    return tuple(tasks)
+
+
+def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--runs", default="runs",
                         help="root to scan (default: runs/)")
+    parser.add_argument("--reference-summary", type=pathlib.Path, default=None,
+                        help="write the per-task reference gold-line summary (hashes only) here")
     parser.add_argument("--no-content", action="store_true",
                         help="skip dataset-backed content checks; still exits 1, "
                              "because a partial audit is not a pass")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     runs_root = (REPO_ROOT / args.runs).resolve()
     if not runs_root.is_dir():
         print(f"FAIL: no such runs directory: {runs_root}")
         return 1
 
-    task_dirs = find_task_dirs(runs_root)
+    try:
+        references = reference_runs(runs_root)
+        reference_tasks = load_reference_tasks(references) if references and not args.no_content else ()
+    except Exception as exc:
+        print(f"FAIL: could not bind reference audit inputs ({type(exc).__name__}).")
+        return 1
+    task_dirs = [d for d in find_task_dirs(runs_root)
+                 if not any(d.is_relative_to(run) for run in references)]
     n_generator = sum(1 for d in task_dirs if d.parent.name == "_reproduction_cache")
     print(f"scope: {len(task_dirs) - n_generator} agent task directories and "
-          f"{n_generator} V4 generator directories under {runs_root}")
+          f"{n_generator} V4 generator directories and "
+          f"{len(reference_tasks)} reference verification tasks under {runs_root}")
 
-    if not task_dirs:
+    if not task_dirs and not references:
         print("FAIL: no agent task directories found. An audit that scanned "
               "nothing has not passed — check the runs root.")
         return 1
 
-    probes, content_ok = ({}, False) if args.no_content else load_probes(task_dirs)
+    probes, content_ok = load_probes(task_dirs) if task_dirs and not args.no_content else ({}, not args.no_content)
 
-    result = audit(task_dirs, probes)
+    result = audit(task_dirs, probes, reference_tasks=reference_tasks)
 
     print(f"scanned: {result.scanned_files} files across "
           f"{result.scanned_tasks} tasks")
     print(f"content-checked: {result.content_checked_tasks}/{result.scanned_tasks} "
-          f"tasks against real oracle values")
+          f"tasks against bound reference or oracle values")
+
+    for (run, iid), count in result.reference_candidate_counts.items():
+        print(f"reference candidate lines: run={run} task={iid} count={count}")
 
     for finding in result.findings:
         print(f"  {finding}")
+
+    for row in result.reference_summaries:
+        print(f"reference summary: task={row['instance_id']} "
+              f"recall_lines={len(row['recall_lines'])} "
+              f"recall_messages={len(row['recall_messages'])} "
+              f"frozen_test_lines={len(row['frozen_test_lines'])} "
+              f"leak_lines={len(row['leak_lines'])}")
+    if args.reference_summary is not None:
+        args.reference_summary.parent.mkdir(parents=True, exist_ok=True)
+        args.reference_summary.write_text(json.dumps(
+            {"runs": sorted({row["run"] for row in result.reference_summaries}),
+             "tasks": result.reference_summaries}, indent=1) + "\n", encoding="utf-8")
+        print(f"wrote reference summary: {args.reference_summary}")
+
+    if result.recorded:
+        print(f"\n{len(result.recorded)} recorded reference finding(s) "
+              "(GENERATOR_RECALL, GOLD_LINE_IN_FROZEN_TEST). Recorded per task under "
+              "amendment A3; they do not fail the gate.")
 
     if result.review:
         print(f"\n{len(result.review)} finding(s) need review. These are not "

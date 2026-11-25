@@ -1,0 +1,62 @@
+{
+  "tested_commit": "9d5fb6a97dab8e9674b40291beeab8e2529c544c",
+  "counts": {
+    "passed": 1668,
+    "skipped": 6,
+    "failed": 6,
+    "error": 17
+  },
+  "failing_test_ids": [
+    "tests/unit/test_selection_ground_truth.py::test_django_16899_selects_admin_checks",
+    "tests/unit/test_superseded_shadow.py::test_kernel_blocks_actual_file_access_in_classifier_process",
+    "tests/unit/test_superseded_shadow_v2.py::test_v2_worker_still_cannot_open_oracle_files",
+    "tests/unit/test_superseded_shadow_v2.py::test_only_one_extra_base_reuses_patch_confirmation_and_preserves_signal",
+    "tests/unit/test_v2_scg_paired.py::test_frozen_configuration_defaults_are_unchanged",
+    "tests/unit/test_v2_scg_paired.py::test_archived_v2_inputs_are_portable_without_changing_frozen_policy"
+  ],
+  "erroring_test_ids": [
+    "tests/unit/test_v2_scg_paired.py::test_all_83_have_one_manifest_per_arm_and_original_identity",
+    "tests/unit/test_v2_scg_paired.py::test_seal_catches_all_input_classes[selection]",
+    "tests/unit/test_v2_scg_paired.py::test_seal_catches_all_input_classes[source]",
+    "tests/unit/test_v2_scg_paired.py::test_seal_catches_all_input_classes[protocol]",
+    "tests/unit/test_v2_scg_paired.py::test_seal_catches_all_input_classes[snapshot]",
+    "tests/unit/test_v2_scg_paired.py::test_seal_catches_all_input_classes[image_binding]",
+    "tests/unit/test_v2_scg_paired.py::test_resealed_selection_cannot_bypass_protocol_bound_inputs",
+    "tests/unit/test_v2_scg_paired.py::test_source_drift_detected_without_container",
+    "tests/unit/test_v2_scg_paired.py::test_end_to_end_scoped_dry_run_accounts_for_both_abstentions",
+    "tests/unit/test_v2_scg_paired.py::test_host_drift_blocks_launch_after_freeze",
+    "tests/unit/test_v2_scg_paired.py::test_binding_inventory_has_all_83_historical_records_unchanged",
+    "tests/unit/test_v2_scg_paired.py::test_validation_detects_image_drift_before_plan_creation",
+    "tests/unit/test_v2_scg_paired.py::test_validation_detects_docker_daemon_drift",
+    "tests/unit/test_v2_scg_paired.py::test_resealed_binding_still_bound_to_protocol",
+    "tests/unit/test_v2_scg_paired.py::test_new_freeze_binds_host_images_for_all_83_without_rewriting_history[host-images]",
+    "tests/unit/test_v2_scg_paired.py::test_image_inspection_error_blocks_preparation",
+    "tests/unit/test_v2_scg_paired.py::test_image_binding_cannot_change_task_cohort"
+  ],
+  "baseline_comparison": {
+    "merge_notes": "reports/next_phases/MERGE_NOTES.md",
+    "error_id_reference": "reports/next_phases/phase6b_run/unit_comparison.json",
+    "named_failure_test_ids": [
+      "tests/unit/test_selection_ground_truth.py::test_django_16899_selects_admin_checks",
+      "tests/unit/test_superseded_shadow.py::test_kernel_blocks_actual_file_access_in_classifier_process",
+      "tests/unit/test_superseded_shadow_v2.py::test_v2_worker_still_cannot_open_oracle_files",
+      "tests/unit/test_superseded_shadow_v2.py::test_only_one_extra_base_reuses_patch_confirmation_and_preserves_signal",
+      "tests/unit/test_v2_scg_paired.py::test_frozen_configuration_defaults_are_unchanged",
+      "tests/unit/test_v2_scg_paired.py::test_archived_v2_inputs_are_portable_without_changing_frozen_policy"
+    ],
+    "all_named_failures_match": true,
+    "drift_errors": {
+      "documented": 17,
+      "observed": 17
+    },
+    "hugging_face_cache_lock_errors": {
+      "allowed": true,
+      "observed": 0
+    }
+  },
+  "new_issues": [],
+  "log": {
+    "path": "runs/study_v1_5/unit_baseline_phase1.log",
+    "sha256": "b879043454f366a7f5acae1f99732fcc50b734e41a59df1a5331e75381d6b8dd"
+  }
+}

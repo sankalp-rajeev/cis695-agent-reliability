@@ -134,7 +134,8 @@ def check_integrity(patch_text, repo_root=None, *, tree=None, **kwargs):
     sections = re.split(r"(?=^diff --git )", legacy.patch.raw, flags=re.MULTILINE)
     chunks = {}
     for section in sections:
-        if section.strip():
+        # Amendment B12: text before the first file header (the grader's git apply ignores it).
+        if section.strip() and section.startswith("diff --git "):
             parsed = parse_patch(section)
             if parsed.files:
                 chunks[parsed.files[0].path] = section

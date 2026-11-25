@@ -21,13 +21,14 @@ The second half, running the frozen bytes against a patched tree, is
 from __future__ import annotations
 
 import base64
+import fcntl
 import hashlib
 import json
 import logging
 import shlex
 from collections.abc import Callable
 from contextlib import AbstractContextManager
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 from datetime import UTC, datetime
 from enum import Enum
 from pathlib import Path
@@ -160,13 +161,33 @@ class ReproductionSetup:
         section = cfg.get("reproduction") or {}
         budget = ReproductionBudget.from_config(section.get("budget") or {})
         prompt = repo_root / section["generator_prompt"]
-        return cls(
+        setup = cls(
             model=GeneratorModel.load(
                 repo_root / section["generator_model"], repo_root=repo_root),
             budget=budget,
             prompt_path=section["generator_prompt"],
             prompt_sha256=_sha256(prompt.read_bytes()),
         )
+        options = cfg.get("v1_5") or {}
+        design = options.get("v4_design", "legacy")
+        if design == "legacy":
+            return setup
+        if design != "per_requirement":
+            raise ReproductionConfigError("v4_design must be legacy or per_requirement")
+        settings = {
+            key: options.get(f"v4_{key}", default)
+            for key, default in {"passes": 1, "max_requirements": 4,
+                                 "requirements_max_steps": 40, "tests_max_steps": 80}.items()
+        }
+        if (any(type(value) is not int or value < 1 for value in settings.values())
+                or settings["passes"] not in (1, 2)):
+            raise ReproductionConfigError("Need one or two V4 passes and positive integer limits")
+        prompts = tuple(
+            (path, _sha256((repo_root / path).read_bytes()))
+            for path in ("configs/agent/v4_requirements.yaml", "configs/agent/v4_tests_per_requirement.yaml")
+        )
+        return PerRequirementSetup(setup.model, setup.budget, setup.prompt_path,
+                                   setup.prompt_sha256, **settings, prompts=prompts)
 
     def identity(self) -> dict[str, Any]:
         return {
@@ -177,6 +198,26 @@ class ReproductionSetup:
             # How outcomes are read is part of what produced the result.
             "runner_sha256": RUNNER_SHA256,
             "assertion_returncode": ASSERTION_RETURNCODE,
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class PerRequirementSetup(ReproductionSetup):
+    passes: int
+    max_requirements: int
+    requirements_max_steps: int
+    tests_max_steps: int
+    prompts: tuple[tuple[str, str], tuple[str, str]]
+
+    def identity(self) -> dict[str, Any]:
+        return {
+            **ReproductionSetup.identity(self),
+            "design": "per_requirement",
+            "passes": self.passes,
+            "max_requirements": self.max_requirements,
+            "requirements_max_steps": self.requirements_max_steps,
+            "tests_max_steps": self.tests_max_steps,
+            "prompts": {path: digest for path, digest in self.prompts},
         }
 
 
@@ -193,10 +234,59 @@ class GenerationOutcome:
     cost_usd: float = 0.0
     ignored: tuple[str, ...] = ()
     trajectory: tuple[dict[str, Any], ...] = ()
+    input_tokens: int | None = None
+    output_tokens: int | None = None
+    cached_input_tokens: int | None = None
 
 
 class ReproGenerator(Protocol):
     def generate(self, issue_text: str, instance_id: str) -> GenerationOutcome: ...
+
+
+REQUIREMENTS_PATH = f"{REPRO_DIR}/requirements.json"
+
+
+@dataclass(frozen=True, slots=True)
+class Requirement:
+    id: str
+    text: str
+
+    def evidence(self) -> dict[str, str]:
+        return {"id": self.id, "text": self.text, "sha256": _sha256(self.text.encode("utf-8"))}
+
+
+@dataclass(frozen=True, slots=True)
+class GenerationRequest:
+    """The next conversation's phase and its sole additional prompt input."""
+
+    pass_number: int | None = None
+    requirements: tuple[Requirement, ...] = ()
+
+    @property
+    def name(self) -> str:
+        return "requirements" if self.pass_number is None else f"pass_{self.pass_number}"
+
+    @property
+    def paths(self) -> set[str]:
+        if self.pass_number is None:
+            return {REQUIREMENTS_PATH}
+        return {f"{REPRO_DIR}/test_repro_{item.id}.py" for item in self.requirements}
+
+    @property
+    def prompt_variables(self) -> dict[str, str]:
+        if self.pass_number is None:
+            return {}
+        return {"requirements": "\n".join(
+            f"{item.id}: {' '.join(item.text.splitlines())}" for item in self.requirements
+        )}
+
+
+def sum_generation_usage(calls) -> dict[str, Any]:
+    totals: dict[str, Any] = {"cost_usd": sum((call["cost_usd"] for call in calls), 0.0)}
+    for key in ("input_tokens", "output_tokens", "cached_input_tokens"):
+        values = [call.get(key) for call in calls]
+        totals[key] = sum(values) if all(value is not None for value in values) else None
+    return totals
 
 
 @dataclass
@@ -268,9 +358,10 @@ class MiniSweGenerator:
                 logger.warning("generator cleanup failed for %s: %s", instance_id, exc)
 
 
-def _read_out(env, budget: ReproductionBudget) -> tuple[dict[str, bytes], tuple[str, ...]]:
+def _read_out(env, budget: ReproductionBudget, *, paths: set[str] | None = None
+              ) -> tuple[dict[str, bytes], tuple[str, ...]]:
     """Copy the permitted test files out of the generator's container."""
-    wanted = {repro_path(i) for i in range(1, budget.max_tests + 1)}
+    wanted = {repro_path(i) for i in range(1, budget.max_tests + 1)} if paths is None else paths
     listing = _env_run(env, f"find {REPRO_DIR} -type f 2>/dev/null | sort")
     present = [p.strip().removeprefix("./") for p in listing.splitlines() if p.strip()]
     ignored = tuple(p for p in present if p not in wanted)
@@ -419,14 +510,19 @@ class FrozenTest:
     base_runs: tuple[RunResult, ...]
     kept: bool
     drop_reason: DropReason | None = None
+    requirement_id: str | None = None
+    pass_number: int | None = None
 
     def as_dict(self) -> dict[str, Any]:
-        return {
+        data = {
             "path": self.path, "sha256": self.sha256, "size_bytes": self.size_bytes,
             "base_runs": [r.as_dict() for r in self.base_runs],
             "kept": self.kept,
             "drop_reason": self.drop_reason.value if self.drop_reason else None,
         }
+        if self.requirement_id is not None:
+            data.update(requirement_id=self.requirement_id, **{"pass": self.pass_number})
+        return data
 
 
 def screen_verdict(results: list[RunResult]) -> DropReason | None:
@@ -457,6 +553,10 @@ class FrozenSuite:
     ignored: tuple[str, ...] = ()
     error: str = ""
     frozen_at: str = field(default="")
+    requirements: tuple[Requirement, ...] = ()
+    requirements_sha256: str | None = None
+    requirements_truncated_from: int | None = None
+    generation_calls: tuple[dict[str, Any], ...] = ()
 
     @property
     def kept(self) -> tuple[FrozenTest, ...]:
@@ -475,7 +575,7 @@ class FrozenSuite:
         return data
 
     def as_dict(self) -> dict[str, Any]:
-        return {
+        data = {
             "instance_id": self.instance_id,
             "identity": self.identity,
             "termination": self.termination,
@@ -487,6 +587,14 @@ class FrozenSuite:
             "frozen_at": self.frozen_at,
             "suite_sha256": self.suite_sha256,
         }
+        if self.identity.get("design") == "per_requirement":
+            data.update(requirements=[r.evidence() for r in self.requirements],
+                        requirements_sha256=self.requirements_sha256,
+                        generation_calls=list(self.generation_calls),
+                        generation_totals=sum_generation_usage(self.generation_calls))
+            if self.requirements_truncated_from is not None:
+                data["requirements_truncated_from"] = self.requirements_truncated_from
+        return data
 
     @classmethod
     def read(cls, directory: Path) -> FrozenSuite:
@@ -499,15 +607,28 @@ class FrozenSuite:
                     for r in t["base_runs"]),
                 kept=t["kept"],
                 drop_reason=DropReason(t["drop_reason"]) if t["drop_reason"] else None,
+                requirement_id=t.get("requirement_id"), pass_number=t.get("pass"),
             )
             for t in data["tests"]
         )
+        requirements = tuple(Requirement(r["id"], r["text"]) for r in data.get("requirements", ()))
+        requirement_sha = data.get("requirements_sha256")
+        if requirement_sha is not None:
+            raw = (directory / "requirements.json").read_bytes()
+            if (_sha256(raw) != requirement_sha or parse_requirements(raw) != requirements
+                    or [r.evidence() for r in requirements] != data["requirements"]):
+                raise ReproductionConfigError(f"{directory}: frozen requirement list changed")
+        elif requirements:
+            raise ReproductionConfigError(f"{directory}: frozen requirement list has no hash")
         return cls(
             instance_id=data["instance_id"], directory=directory,
             identity=data["identity"], termination=data["termination"],
             n_steps=data["n_steps"], cost_usd=data["cost_usd"], tests=tests,
             ignored=tuple(data["ignored"]), error=data["error"],
             frozen_at=data["frozen_at"],
+            requirements=requirements, requirements_sha256=requirement_sha,
+            requirements_truncated_from=data.get("requirements_truncated_from"),
+            generation_calls=tuple(data.get("generation_calls", ())),
         )
 
 
@@ -515,6 +636,7 @@ MANIFEST = "frozen.json"
 
 #: Opens a base-commit sandbox for one instance. Takes no patch: there is none yet.
 BaseSandboxFactory = Callable[[str], AbstractContextManager[Sandbox]]
+GeneratorFactory = Callable[[GenerationRequest], ReproGenerator]
 
 
 def freeze_tests(
@@ -532,15 +654,118 @@ def freeze_tests(
     so a record can never attribute tests to a generator that did not write them.
     """
     directory = Path(cache_dir) / instance_id
-    if (directory / MANIFEST).is_file():
-        suite = FrozenSuite.read(directory)
-        if suite.identity != setup.identity():
-            raise ReproductionConfigError(
-                f"{directory} was frozen under a different V4 setup; "
-                "use a new experiment_id rather than mixing generators")
+    if (suite := _read_cached_suite(directory, setup)) is not None:
         return suite
 
     outcome = generator.generate(issue_text, instance_id)
+    return _freeze_outcome(instance_id, setup, directory, base_sandbox, outcome)
+
+
+def _read_cached_suite(directory: Path, setup: ReproductionSetup) -> FrozenSuite | None:
+    if not (directory / MANIFEST).is_file():
+        return None
+    suite = FrozenSuite.read(directory)
+    if suite.identity != setup.identity():
+        raise ReproductionConfigError(
+            f"{directory} was frozen under a different V4 setup; "
+            "use a new experiment_id rather than mixing generators")
+    return suite
+
+
+def parse_requirements(raw: bytes) -> tuple[Requirement, ...]:
+    data = json.loads(raw)
+    rows = data.get("requirements") if isinstance(data, dict) else None
+    if not isinstance(rows, list) or not rows:
+        raise ValueError("expected a nonempty requirements list")
+    requirements = []
+    for index, row in enumerate(rows, start=1):
+        if not isinstance(row, dict) or row.get("id") != f"R{index}":
+            raise ValueError("requirement IDs must be consecutive from R1")
+        text = row.get("text")
+        if not isinstance(text, str) or not text.strip():
+            raise ValueError("requirements must have nonempty text")
+        text.encode("utf-8")  # Reject invalid surrogate escapes before freezing.
+        requirements.append(Requirement(row["id"], text))
+    return tuple(requirements)
+
+
+def freeze_requirements(
+    issue_text: str, instance_id: str, *, setup: PerRequirementSetup, directory: Path,
+    generator_for: GeneratorFactory, base_sandbox: BaseSandboxFactory,
+) -> FrozenSuite:
+    """Freeze requirements before generating independent test passes."""
+    directory.mkdir(parents=True, exist_ok=True)
+    with (directory / ".freeze.lock").open("a") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        if (suite := _read_cached_suite(directory, setup)) is not None:
+            return suite
+        return _generate_requirements(issue_text, instance_id, setup, directory,
+                                      generator_for, base_sandbox)
+
+
+def _generate_requirements(issue_text, instance_id, setup, directory, generator_for, base_sandbox):
+    requirements_file = directory / "requirements.json"
+    if requirements_file.exists():
+        raise ReproductionConfigError(f"{directory}: incomplete V4 freeze already has a requirement list")
+
+    calls, trajectory, ignored = [], [], []
+
+    def generate(request):
+        outcome = generator_for(request).generate(issue_text, instance_id)
+        calls.append({
+            "call": request.name, "termination": outcome.termination, "n_steps": outcome.n_steps,
+            "cost_usd": outcome.cost_usd, "input_tokens": outcome.input_tokens,
+            "output_tokens": outcome.output_tokens, "cached_input_tokens": outcome.cached_input_tokens,
+        })
+        trajectory.extend(outcome.trajectory)
+        ignored.extend(outcome.ignored)
+        ignored.extend(sorted(outcome.files.keys() - request.paths))
+        return outcome
+
+    outcome = generate(GenerationRequest())
+    try:
+        requirements = parse_requirements(outcome.files[REQUIREMENTS_PATH])
+    except (KeyError, ValueError, TypeError):
+        return _freeze_outcome(
+            instance_id, setup, directory, base_sandbox,
+            replace(outcome, files={}, ignored=tuple(ignored)),
+            generation_calls=tuple(calls),
+        )
+
+    truncated_from = len(requirements) if len(requirements) > setup.max_requirements else None
+    requirements = requirements[:setup.max_requirements]
+    raw = (json.dumps({"requirements": [asdict(r) for r in requirements]}, indent=2) + "\n").encode()
+    with requirements_file.open("xb") as stream:
+        stream.write(raw)
+    digest = _sha256(raw)
+
+    files, origins = {}, {}
+    for pass_number in range(1, setup.passes + 1):
+        frozen_bytes = requirements_file.read_bytes()
+        if _sha256(frozen_bytes) != digest:
+            raise ReproductionConfigError(f"{directory}: frozen requirement list changed")
+        request = GenerationRequest(pass_number, parse_requirements(frozen_bytes))
+        outcome = generate(request)
+        for requirement in request.requirements:
+            source = f"{REPRO_DIR}/test_repro_{requirement.id}.py"
+            if source in outcome.files:
+                target = f"{REPRO_DIR}/test_repro_{requirement.id}_p{pass_number}.py"
+                files[target] = outcome.files[source]
+                origins[target] = (requirement.id, pass_number)
+    if _sha256(requirements_file.read_bytes()) != digest:
+        raise ReproductionConfigError(f"{directory}: frozen requirement list changed")
+
+    combined = GenerationOutcome(files, outcome.termination, sum(call["n_steps"] for call in calls),
+                                 sum_generation_usage(calls)["cost_usd"], tuple(ignored), tuple(trajectory))
+    return _freeze_outcome(
+        instance_id, setup, directory, base_sandbox, combined,
+        origins=origins, requirements=requirements, requirements_sha256=digest,
+        requirements_truncated_from=truncated_from, generation_calls=tuple(calls),
+    )
+
+
+def _freeze_outcome(instance_id, setup, directory, base_sandbox, outcome, *, origins=None, **metadata):
+    origins = origins or {}
 
     tests_dir = directory / "tests"
     tests_dir.mkdir(parents=True, exist_ok=True)
@@ -565,16 +790,19 @@ def freeze_tests(
                         timeout_s=setup.budget.per_run_timeout_s)
                     reason = (DropReason.NOT_IN_PLACE if not_in_place
                               else screen_verdict(results))
+                    requirement_id, pass_number = origins.get(path, (None, None))
                     screened.append(FrozenTest(
                         path=path, sha256=_sha256(data), size_bytes=len(data),
                         base_runs=tuple(results), kept=reason is None,
-                        drop_reason=reason))
+                        drop_reason=reason, requirement_id=requirement_id, pass_number=pass_number))
         except Exception as exc:  # noqa: BLE001 - a broken screen keeps nothing
             error = f"base screen failed: {type(exc).__name__}: {exc}"[:400]
             screened = [
                 FrozenTest(path=p, sha256=_sha256(d), size_bytes=len(d),
                            base_runs=(), kept=False,
-                           drop_reason=DropReason.NOT_IN_PLACE)
+                           drop_reason=DropReason.NOT_IN_PLACE,
+                           requirement_id=origins.get(p, (None, None))[0],
+                           pass_number=origins.get(p, (None, None))[1])
                 for p, d in frozen
             ]
 
@@ -583,6 +811,7 @@ def freeze_tests(
         termination=outcome.termination, n_steps=outcome.n_steps,
         cost_usd=outcome.cost_usd, tests=tuple(screened), ignored=outcome.ignored,
         error=error, frozen_at=datetime.now(tz=UTC).isoformat(),
+        **metadata,
     )
     (directory / MANIFEST).write_text(
         json.dumps(suite.as_dict(), indent=2), encoding="utf-8")

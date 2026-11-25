@@ -1,0 +1,33 @@
+# Decisions
+
+- Use Arrow IPC included_fields for the four public columns before row decoding, because the remaining dataset columns are prohibited inputs.
+- Use only the hash-verified runs/phase4_fix10_provenance/swebench-4.0.4-py3-none-any.whl through pre_install.load_specs, because the installed 5.0.2 package is not the frozen authority.
+- Copy only Verified dataset/hub cache entries to runs/hf_home and set all three HF variables, because the shared cache is read-only; allocated size is 15 MB.
+- Reuse the exact frozen four-column projection for the 83 to retain byte-identical resolve() provenance; project new tasks separately.
+- Add optional dataset_projection_row, preflight_identity and runner_provenance fields, because the shared required fields cannot express the public row, explicit identity and provenance of command defaults.
+- Preserve frozen runner metadata for the 83 after calling discover_runner, because Phase 4 keeps its historical SymPy pytest metadata while the executor selects its native SymPy adapter by repository; record discovered/effective names separately.
+- Build archives with git archive --format=tar --prefix=testbed/ at the base commit inside the pinned offline image, because this reproduces order, commit mtimes and pax headers without acquiring repositories.
+- Publish registries and archives with atomic no-replace links, because existing artifacts must never be overwritten.
+- New Django choices use prepared_default=false, because Fix 17's rule used observed run commands and every frozen Django choice is false.
+- Do not push, because the user's current instruction supersedes the pasted push request.
+- Probe versions with /opt/miniconda3/bin/python, because some historical requests task interpreters are Python 2; the probe never imports repository code.
+- Limit base version assignments to the package root (and src/lib equivalents), because vendored dependencies inside a repo are not the repo's own version.
+- Keep successful probe stdout separate from stderr in PreparationContainer, because a Pylint dependency warning otherwise corrupts JSON; retain diagnostics separately.
+- Emit new .expanded.tar files only for exact Git-describe export bytes already proven by unchanged source_integrity, because both host and image Git 2.25 leave describe:tags=true unexpanded; preserve original archives and rerun the full guard.
+- Keep Sphinx 10614 registry-free, because its tox.ini sed edit is mixed with apt-get in the pinned spec and unchanged pre_install.source_edit_commands refuses that entire sequence as a byte-proof authority.
+- Keep all preparation attempts and publish new final registries, because the no-overwrite requirement also applies to partial registries.
+- The 500-named population contains 492 tasks and nine pilot instances, because all eight Verified requests instances are excluded and one pilot belongs to requests.
+- Exact OCI layer queries hit Docker Hub's unauthenticated pull limit; use amd64 tag sizes for explicitly qualified calibrated and conservative estimates, because metadata-only alternatives remain available without image pulls.
+- Compare unit failure/error identities with the local 7fefe1d reference, because count comparisons cannot establish absence of regressions; the first complete run has exactly the same 23 failing/error IDs and none newly passing.
+- Resolve each new task's pre_install projection separately, because an unsupported task/version must create its own failure row without blocking other tasks.
+- Authoritative merged main registry includes 92 VERIFIED entries (83 frozen + nine prepared), while the main manifest keeps all 93 eligible IDs; eligibility and readiness are separate, and the remaining Sphinx failure is reported rather than silently dropped.
+- Final registries are rebuilt from committed implementation 750af1f, because built_by_commit should identify the code that produced their evidence.
+- Keep all 93 eligible IDs in the main cohort even though only 92 are ready, because a source-integrity failure must not redefine eligibility or study membership.
+- Report 200 as disk-uncertain and 492 as over capacity under current estimates, because exact OCI layer unions were rate-limited and neither estimate alone authorizes pulls.
+- Export a separate strict registry for frozen E2E v1.4.1, because that consumer rejects the three preparation-only task fields; retain them losslessly in a hash-bound sidecar.
+- Copy only the pinned wheel and nine exact per-task projections into wt-e2e/runs/task_prep_inputs, because the frozen validator must re-resolve every recorded projection hash without defaulting to the 83-row projection.
+- Preserve accepted eligibility/cohort/projection artifacts and add a 92-task execution order, because the user now excludes Sphinx 10614 from the main run and requires the comparable frozen 83 to finish first.
+- Validate using wt-e2e's own venv and frozen load_registries with bytecode writes disabled, because the immutable consumer is the integration authority and its checkout must remain clean.
+- Reconstruct the original source registry from the export and sidecar, because dropping preparation fields must not discard provenance; all original metadata and all ten stable-copy hashes verify.
+- Keep the original 83 order before sorted additions, because a budget stop must preserve the comparable Phase 4 cohort first.
+- Exclude the provenance sidecar from the independent checker's registry arguments, because it is hash-bound metadata rather than task_spec_registry/1; all nine actual registries pass.

@@ -1,0 +1,22 @@
+[
+  {
+    "model_id": "openai/gpt-4.1-mini",
+    "provider": "umgpt",
+    "api_base_host": "api.toolkit.umgpt.umich.edu",
+    "passed": false,
+    "error": {
+      "termination": "AUTH_ERROR",
+      "classification": "infrastructure",
+      "status_code": 401,
+      "response_body": "{\"status\":\"failure\",\"message\":\"Portkey Error: Invalid API Key. Error Code: 03\",\"error\":{\"message\":\"Portkey Error: Invalid API Key. Error Code: 03\",\"code\":\"03\"}}"
+    },
+    "calls": [
+      {
+        "termination": "AUTH_ERROR",
+        "classification": "infrastructure",
+        "status_code": 401,
+        "response_body": "{\"status\":\"failure\",\"message\":\"Portkey Error: Invalid API Key. Error Code: 03\",\"error\":{\"message\":\"Portkey Error: Invalid API Key. Error Code: 03\",\"code\":\"03\"}}"
+      }
+    ]
+  }
+]

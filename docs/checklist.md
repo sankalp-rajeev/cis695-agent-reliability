@@ -254,6 +254,11 @@ Legend: `[ ]` not started · `[~]` in progress · `[x]` gate passed · `[!]` blo
   - [x] Computed after the fact from stored records only (`reliability.analysis.overlap`). Selection never saw `PASS_TO_PASS`
   - **GATE:** **0 / 180** selected paths also appear in `PASS_TO_PASS` (`fraction_of_selected = 0.0`). Honest but not yet interpretable: 7/9 verified instances selected nothing (`convention: unknown`), and the 180 hits are whole test-module paths from two fall-throughs, which cannot match SWE-bench node ids. Recompute after selection produces node ids. **This pilot is also invalidated by 8.3** (see blockers)
 
+- **2026-11-19 · Proposed Policy P (paired-skip).** Added the paired-skip
+  sensitivities for V2 and an offline Arm B replay. Policy S remains primary.
+  Any promotion requires a protocol amendment frozen before Arm A and the
+  200-task run. See [Verifier policy](VERIFIER_POLICY.md#policy-p-paired-skip-proposed).
+
 ---
 
 ## Phase 6 — Verifier V3: static and build checks

@@ -1,5 +1,6 @@
 """V3 command evidence with separate byte-bounded streams, opt-in for v1.4."""
 
+import re
 import shlex
 from collections import Counter
 
@@ -54,6 +55,95 @@ def capture(executor, command, patched, timeout_s):
     return result
 
 
+_FRAME = re.compile(r'File "([^"]+)", line \d+')
+_PAREN = re.compile(r"\(([^,()]+\.py), line \d+\)")
+_EXC = re.compile(r"^(?:Sorry: )?((?:[A-Za-z_]\w*\.)*[A-Z]\w*): ")
+_SYNTAX_TYPES = ("SyntaxError", "IndentationError", "TabError")
+COUNTED = ("FAIL", "FAIL_BASE_UNKNOWN")
+
+
+def _text(result):
+    return ((result.get("stdout") or "") + "\n" + (result.get("stderr") or "")).strip()
+
+
+def _exception_type(text):
+    """The final exception type of a failed check (e.g. `TypeError`), or None."""
+    for line in reversed(text.splitlines()):
+        match = _EXC.match(line.strip())
+        if match:
+            return match.group(1)
+    return None
+
+
+def _failing_file(text, exc, targets):
+    """The repository file the failure is in, matched to a check target when possible."""
+    frames = [path[len("/testbed/"):] if path.startswith("/testbed/") else path
+              for path in _FRAME.findall(text)]
+    frames = [path for path in frames if not path.startswith(("<", "/"))]
+    if exc and exc.rsplit(".", 1)[-1] in _SYNTAX_TYPES:
+        candidates = frames[-1:] + _PAREN.findall(text)
+    else:
+        candidates = frames[:1]
+    for found in candidates:
+        for target in targets:
+            if target == found or target.endswith("/" + found) or found.endswith("/" + target):
+                return target
+        return found
+    return None
+
+
+def _check_verdict(check, added):
+    """A6 verdict for one syntax/import check; anything but FAIL keeps its status."""
+    status = check.get("status")
+    if status != "FAIL":
+        return status
+    base = check.get("base_result")
+    if base is None:
+        return "FAIL_BASE_UNKNOWN"
+    targets = [part for part in check.get("command", ()) if part.endswith(".py")]
+    if check["kind"] == "import":
+        statement = next((part for part in check.get("command", ()) if part.startswith("import ")), "")
+        targets = [m.strip()[len("import "):].replace(".", "/") + ".py"
+                   for m in statement.split(";") if m.strip().startswith("import ")]
+    patched_text, base_text = _text(check), _text(base)
+    exc = _exception_type(patched_text)
+    where = _failing_file(patched_text, exc, targets)
+    new_target = any(t in added for t in targets)
+    if where is not None and where in added:
+        # No base version to compare: only a syntax error counts for a new module.
+        return "FAIL" if check["kind"] == "syntax" else "BASE_UNKNOWN"
+    if check["kind"] == "syntax" and new_target and where is None:
+        return "FAIL"
+    if base.get("status") != "FAIL" or exc is None or _exception_type(base_text) != exc:
+        return "FAIL"
+    base_where = _failing_file(base_text, exc, targets)
+    if where is not None and base_where is not None:
+        return "PRE_EXISTING" if where == base_where else "FAIL"
+    return "FAIL" if new_target else "PRE_EXISTING"
+
+
+def paired_v3(checks, added_paths=()):
+    """Amendment A6: syntax/import failures paired with the same check on the base tree.
+
+    A failure counts (FAIL) only if the same check does not fail the same way on
+    base: base PASS, a different final exception type, or a different file.
+    Same type in the same file is PRE_EXISTING. An import failure in a module
+    the patch adds is BASE_UNKNOWN; a syntax error there always counts. Both
+    PRE_EXISTING and BASE_UNKNOWN are V3 not available for that check. A FAIL
+    with no stored base result stays a failure (FAIL_BASE_UNKNOWN).
+    """
+    added = tuple(added_paths or ())
+    verdicts = {c["kind"]: _check_verdict(c, added) for c in checks
+                if c.get("kind") in ("syntax", "import")}
+    return {
+        "failure": any(v in COUNTED for v in verdicts.values()),
+        "checks": verdicts,
+        "pre_existing": [k for k, v in verdicts.items() if v == "PRE_EXISTING"],
+        "base_unknown": [k for k, v in verdicts.items() if v == "BASE_UNKNOWN"],
+        "rule": "amendment A6",
+    }
+
+
 def bounded(result):
     return {**result, "stdout": tail(result["stdout"]), "stderr": tail(result["stderr"])}
 
@@ -100,7 +190,8 @@ def run_static_checks(patch, tree, executor, config=None):
         missing = _missing_tool_reason(kind, spec, patched["exit_code"], output)
         if missing:
             entry.update(status="NOT_AVAILABLE", reason=missing)
-        if kind in RELATIVE_CHECKS or (kind is CheckKind.IMPORT and patched["status"] == "FAIL"):
+        if kind in RELATIVE_CHECKS or (
+                kind in (CheckKind.IMPORT, CheckKind.SYNTAX) and patched["status"] == "FAIL"):
             base = capture(executor, command, False, config.timeout_s)
             entry["base_result"] = bounded(base)
             if kind in RELATIVE_CHECKS:
@@ -110,6 +201,7 @@ def run_static_checks(patch, tree, executor, config=None):
                 entry["new_findings"] = list(findings.elements())
                 entry["finding_comparison"] = "exact diagnostic-line multiset difference"
     summary = {r["kind"]: r["status"] for r in records}
+    added = sorted(f.path for f in patch if f.kind.value in ("added", "renamed"))
     available = any(s in ("PASS", "FAIL") for s in summary.values())
     failed = any(summary.get(k) == "FAIL" for k in ("syntax", "import"))
     return SignalRecord(
@@ -119,5 +211,6 @@ def run_static_checks(patch, tree, executor, config=None):
         else (SignalOutcome.PASS if available else SignalOutcome.NOT_AVAILABLE),
         absence=None if available else SignalAbsence.NOTHING_TO_CHECK,
         detail="v1.4 V3 command evidence; only syntax/import FAIL gates ACCEPT",
-        findings={"summary": summary, "checks": records, "v3_absolute_failure": failed},
+        findings={"summary": summary, "checks": records, "v3_absolute_failure": failed,
+                  "patch_added_paths": added, "v3_paired": paired_v3(records, added)},
     )

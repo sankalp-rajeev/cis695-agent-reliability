@@ -1,0 +1,284 @@
+{
+  "amendment": "B2 (AMENDMENT_2026-11-21b.md)",
+  "prereg_tag": "study-v1.5-prereg",
+  "prereg_commit": "52186c0ab1bc289d294e285e7ae271bd41154ab6",
+  "method": "Every batch 1 (configs/study_v1_5/test_batch1_final_ids.json) and batch 2 (reports/study_v1_5/inputs/test_order.json batch2) id found as a token in a .json/.csv/.txt/.yaml/.yml/.jsonl/.tsv file committed at the prereg tag, outside reports/study_v1_5/ and configs/study_v1_5/ (the study's own lists). Files that something was actually run on count: pilot, calibration, probe and study manifests, run inputs and experiment reports. Files listed under not_manifests do not count.",
+  "not_manifests": {
+    "configs/e2e/cohorts/verified500.json": "whole-dataset list",
+    "reports/next_phases/task_prep/eligibility.json": "whole-dataset list",
+    "reports/next_phases/task_prep/image_sizes.json": "whole-dataset list",
+    "reports/next_phases/task_prep/projection.json": "whole-dataset list",
+    "configs/e2e/cohorts/verified200.json": "cohort definition never run: no run header or run metadata in any local worktree names it, and reports/next_phases/task_prep/REPORT.md states no images were pulled and no archives built for the 200/492 expansion"
+  },
+  "counts": {
+    "batch1": 3,
+    "batch2": 3,
+    "total": 6,
+    "pairs_batch1": 13,
+    "pairs_batch2": 4,
+    "pairs_total": 17
+  },
+  "excluded": [
+    {
+      "instance_id": "astropy__astropy-12907",
+      "batch": 1,
+      "sources": [
+        "manifests/pilot.csv",
+        "reports/callgraph_selection/typeprop_experiment/regression_path_diagnosis/preservation_before.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_1.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_2.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_3.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_4.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_5.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_6.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/protocol.json",
+        "reports/policy_v1_4/baseline_tests.json",
+        "reports/policy_v1_4/preservation.json",
+        "reports/policy_v1_4/test_comparison.csv",
+        "reports/v2_discovery_cleanup/comparison_final/offline.json",
+        "reports/v2_discovery_cleanup/initial_state.json",
+        "reports/v2_stabilization/verdict_diff.csv"
+      ]
+    },
+    {
+      "instance_id": "django__django-16899",
+      "batch": 2,
+      "sources": [
+        "manifests/pilot.csv",
+        "manifests/umgpt_probe.csv",
+        "reports/callgraph_selection/typeprop_experiment/project_unit_tests.txt",
+        "reports/callgraph_selection/typeprop_experiment/regression_path_diagnosis/preservation_before.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_1.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_2.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_3.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_4.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_5.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_6.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/protocol.json",
+        "reports/callgraph_selection/typeprop_experiment/validation.json",
+        "reports/next_phases/phase3_fix3/preexisting_unit_failures.csv",
+        "reports/next_phases/phase3_fix4/preexisting_unit_failures.csv",
+        "reports/next_phases/phase3_fix5/preexisting_unit_failures.csv",
+        "reports/next_phases/phase3_fix8/preexisting_unit_failures.csv",
+        "reports/next_phases/phase4_posthoc/label_propagation/label_references.csv",
+        "reports/next_phases/phase4_rerun/fix15_environment/remaining_before_final_unit.json",
+        "reports/next_phases/phase4_rerun/fix15_validation/unit_suite.json",
+        "reports/next_phases/phase4_rerun/fix16_validation/unit_suite.json",
+        "reports/next_phases/phase4_rerun/fix9_integrity_preflight/preexisting_unit_failures.csv",
+        "reports/next_phases/worktree_environment/baseline_failures.csv",
+        "reports/policy_v1_4/baseline_tests.json",
+        "reports/policy_v1_4/preservation.json",
+        "reports/policy_v1_4/test_comparison.csv",
+        "reports/umgpt_probe/spend_evidence.json",
+        "reports/umgpt_probe/task_measurements.json",
+        "reports/v2_discovery_cleanup/comparison_final/offline.json",
+        "reports/v2_discovery_cleanup/initial_state.json",
+        "reports/v2_stabilization/verdict_diff.csv"
+      ]
+    },
+    {
+      "instance_id": "mwaskom__seaborn-3187",
+      "batch": 2,
+      "sources": [
+        "configs/experiments/calib_3w.yaml",
+        "manifests/calib_3w.csv",
+        "manifests/pilot.csv",
+        "reports/callgraph_selection/typeprop_experiment/regression_path_diagnosis/preservation_before.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_1.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_2.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_3.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_4.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_5.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_6.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/protocol.json",
+        "reports/next_phases/phase4_posthoc/label_propagation/label_references.csv",
+        "reports/policy_v1_4/baseline_tests.json",
+        "reports/policy_v1_4/preservation.json",
+        "reports/policy_v1_4/test_comparison.csv",
+        "reports/v2_discovery_cleanup/comparison_final/offline.json",
+        "reports/v2_discovery_cleanup/initial_state.json",
+        "reports/v2_stabilization/verdict_diff.csv"
+      ]
+    },
+    {
+      "instance_id": "pylint-dev__pylint-6386",
+      "batch": 2,
+      "sources": [
+        "configs/experiments/calib_3w.yaml",
+        "manifests/calib_3w.csv",
+        "manifests/pilot.csv",
+        "reports/callgraph_selection/typeprop_experiment/regression_path_diagnosis/preservation_before.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_1.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_2.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_3.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_4.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_5.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_6.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/protocol.json",
+        "reports/next_phases/phase4_posthoc/label_propagation/label_references.csv",
+        "reports/policy_v1_4/baseline_tests.json",
+        "reports/policy_v1_4/preservation.json",
+        "reports/policy_v1_4/test_comparison.csv",
+        "reports/v2_discovery_cleanup/comparison_final/offline.json",
+        "reports/v2_discovery_cleanup/initial_state.json",
+        "reports/v2_stabilization/verdict_diff.csv"
+      ]
+    },
+    {
+      "instance_id": "scikit-learn__scikit-learn-12973",
+      "batch": 1,
+      "sources": [
+        "configs/experiments/calib_3w.yaml",
+        "manifests/calib_3w.csv",
+        "manifests/pilot.csv",
+        "manifests/umgpt_probe.csv",
+        "reports/callgraph_selection/typeprop_experiment/regression_path_diagnosis/preservation_before.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_1.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_2.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_3.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_4.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_5.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/attempts/protocol_6.json",
+        "reports/callgraph_selection/typeprop_experiment/regression_validation/protocol.json",
+        "reports/policy_v1_4/baseline_tests.json",
+        "reports/policy_v1_4/preservation.json",
+        "reports/policy_v1_4/test_comparison.csv",
+        "reports/umgpt_probe/spend_evidence.json",
+        "reports/umgpt_probe/task_measurements.json",
+        "reports/v2_discovery_cleanup/comparison_final/offline.json",
+        "reports/v2_discovery_cleanup/initial_state.json",
+        "reports/v2_stabilization/verdict_diff.csv"
+      ]
+    },
+    {
+      "instance_id": "astropy__astropy-7671",
+      "batch": 1,
+      "amendment": "B11 (AMENDMENT_2026-11-21b.md)",
+      "reason": "In the Phase 11 gold run the V4 generator read gold lines in pre-base git history (BASE_HISTORY); decided before any exam system patch was verified.",
+      "sources": []
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "pydata__xarray-4356",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "sympy__sympy-22714",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "django__django-15695",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "django__django-14539",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "astropy__astropy-12907",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "django__django-13925",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "scikit-learn__scikit-learn-25931",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "django__django-11333",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "sympy__sympy-17630",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "django__django-12308",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "sympy__sympy-23824",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "django__django-11728",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "pydata__xarray-7393",
+      "batch": 1,
+      "reason": "the official grader applied the patch (test_output.txt present) but the grader-mirror sequence rejects it even with a final newline added",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "django__django-16662",
+      "batch": 2,
+      "reason": "file-name-only check: the official grader's apply status (test_output.txt) disagrees with our grader-mirror apply check on the normalized bytes",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "pydata__xarray-3095",
+      "batch": 2,
+      "reason": "file-name-only check: the official grader's apply status (test_output.txt) disagrees with our grader-mirror apply check on the normalized bytes",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "sphinx-doc__sphinx-8548",
+      "batch": 2,
+      "reason": "file-name-only check: the official grader's apply status (test_output.txt) disagrees with our grader-mirror apply check on the normalized bytes",
+      "amendment": "B13"
+    },
+    {
+      "system": "gemini-2.5-flash",
+      "instance_id": "sympy__sympy-13031",
+      "batch": 2,
+      "reason": "file-name-only check: the official grader's apply status (test_output.txt) disagrees with our grader-mirror apply check on the normalized bytes",
+      "amendment": "B13"
+    }
+  ],
+  "amendments": [
+    "B11 adds astropy__astropy-7671 (BASE_HISTORY in Phase 11); it stays in the all-tasks sensitivity analysis.",
+    "B13 adds 17 pair-level (system, instance_id) exclusions (13 batch 1, 4 batch 2, all gemini-2.5-flash): the official grader applied the patch but the grader-mirror sequence rejects it. The same task ids stay in the headline for every other system. Rows with a 'system' key are pair-level; 'counts.batch1/batch2/total' count task-level rows only."
+  ]
+}

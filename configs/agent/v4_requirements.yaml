@@ -1,0 +1,110 @@
+# V4 requirement extraction runs in a fresh base-commit container with network off
+# and both package-cache masks. Only v4_repro/requirements.json is read out.
+# Generation limits are supplied by the verifier.
+agent:
+  system_template: |
+    You are a helpful assistant that can read a repository to clarify the behaviours in a bug report.
+  instance_template: |
+    <issue>
+    {{task}}
+    </issue>
+
+    <instructions>
+    Read the issue and, if useful, the repository at /testbed. List the separate
+    behaviours the issue asks to change. Each behaviour must have a concrete
+    input or situation and an observable expected result that a test can assert.
+    Focus on behaviour. Omit refactors, documentation and performance changes.
+
+    Write only what the issue states or directly implies. An expected result
+    may name a specific value, message or return value only if the issue
+    gives it. If the issue only says that something must stop happening (an
+    error, a crash, a wrong result), the expected result is that it stops
+    happening, not a particular replacement value.
+
+    Write one to four items, most central first, to exactly this file:
+
+        /testbed/v4_repro/requirements.json
+
+    The file must be valid JSON in this form:
+
+        {"requirements": [{"id": "R1", "text": "Input or situation and expected result"}]}
+
+    Number the items consecutively, starting at R1. Use nonempty text. Do not
+    fix the issue, modify existing files, or write test scripts.
+
+    Every response must contain reasoning text and at least one bash tool call.
+    Use non-interactive commands. Each command runs in a new subshell, so cd and
+    environment variables do not persist. Keep command output short.
+
+    After writing and checking the JSON, submit with exactly this command on its own:
+
+        echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT
+
+    You cannot run anything after submitting.
+    </instructions>
+  step_limit: 40
+  cost_limit: 1.0
+environment:
+  cwd: /testbed
+  timeout: 60
+  interpreter:
+  - bash
+  - -c
+  env:
+    PAGER: cat
+    MANPAGER: cat
+    LESS: -R
+    PIP_PROGRESS_BAR: 'off'
+    TQDM_DISABLE: '1'
+    BASH_ENV: /root/.bashrc
+  environment_class: docker
+  run_args:
+  - --rm
+  - --network
+  - none
+  - --tmpfs
+  - /opt/miniconda3/pkgs
+  - --tmpfs
+  - /root/.cache/pip
+model:
+  observation_template: |
+    {% if output.exception_info -%}
+    <exception>{{output.exception_info}}</exception>
+    {% endif -%}
+    <returncode>{{output.returncode}}</returncode>
+    {% if output.output | length < 10000 -%}
+    <output>
+    {{ output.output -}}
+    </output>
+    {%- else -%}
+    <warning>
+    The output of your last command was too long. Use head, tail, sed or a more selective grep.
+    </warning>
+    {%- set elided_chars = output.output | length - 10000 -%}
+    <output_head>
+    {{ output.output[:5000] }}
+    </output_head>
+    <elided_chars>
+    {{ elided_chars }} characters elided
+    </elided_chars>
+    <output_tail>
+    {{ output.output[-5000:] }}
+    </output_tail>
+    {%- endif %}
+  format_error_template: |
+    {% if finish_reason is defined and (finish_reason == "length" or (finish_reason == "tool_calls" and not has_tool_calls)) -%}
+    Your previous response reached the output token limit (finish_reason={{ finish_reason }}) before you produced a tool call, so it was cut off. Respond more concisely and finish with exactly one bash tool call.
+    {%- else -%}
+    Tool call error:
+
+    <error>
+    {{error}}
+    </error>
+
+    Every response needs to use the 'bash' tool at least once. Call it with your command as the argument: {"command": "your_command_here"}
+
+    When you are done, submit with: echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT
+    {%- endif %}
+  model_kwargs:
+    drop_params: true
+    temperature: 0.0

@@ -52,9 +52,9 @@ mapfile -t GEN_DIRS < <(find "$RUNS_ROOT" -mindepth 4 -maxdepth 4 \
   -printf '%h\n' 2>/dev/null | sort)
 
 if [ "${#TASK_DIRS[@]}" -eq 0 ]; then
-  echo "FAIL: no agent task directories found under $RUNS_ROOT." >&2
-  echo "      An audit that scanned nothing has not passed." >&2
-  exit 1
+  # Verify-only reference runs have no repair records. The Python audit
+  # discovers them and applies the same fail-closed gate.
+  exec "$PY" scripts/audit_leakage.py --runs "$RUNS_ROOT"
 fi
 
 echo "scope: ${#TASK_DIRS[@]} agent task directories, ${#GEN_DIRS[@]} V4 generator directories"

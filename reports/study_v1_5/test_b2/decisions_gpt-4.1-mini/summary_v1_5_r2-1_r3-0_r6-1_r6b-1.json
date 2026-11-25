@@ -1,0 +1,80 @@
+{
+  "counts": {
+    "all": {
+      "decision": {
+        "ACCEPT": 8,
+        "FLAG": 17,
+        "REJECT": 23
+      },
+      "review_label": {
+        "likely_right": 2,
+        "likely_wrong": 11,
+        "none": 32,
+        "signals_disagree": 3
+      },
+      "rule": {
+        "R1": 12,
+        "R2": 6,
+        "R3": 4,
+        "R3b": 1,
+        "R4": 11,
+        "R5": 3,
+        "R6": 7,
+        "R6b": 1,
+        "R7": 2,
+        "R8": 1
+      }
+    },
+    "patch": {
+      "decision": {
+        "ACCEPT": 8,
+        "FLAG": 17,
+        "REJECT": 20
+      },
+      "review_label": {
+        "likely_right": 2,
+        "likely_wrong": 11,
+        "none": 29,
+        "signals_disagree": 3
+      },
+      "rule": {
+        "R1": 9,
+        "R2": 6,
+        "R3": 4,
+        "R3b": 1,
+        "R4": 11,
+        "R5": 3,
+        "R6": 7,
+        "R6b": 1,
+        "R7": 2,
+        "R8": 1
+      }
+    }
+  },
+  "csv": "/home/sankalp/projects/wt-study/runs/study_v1_5/phase12b_gpt-4.1-mini/decisions/decisions_v1_5_r2-1_r3-0_r6-1_r6b-1.csv",
+  "csv_sha256": "092bc2dcdc692ad19383e65f8e10dd207ba7cb964df52c5dbfb65f1dd70aa24b",
+  "frozen": {
+    "config_path": "configs/verifier/v1_5.yaml",
+    "config_sha256": "be997bc6c48d9108b0f3b0e411603677639e55b5c2d57b991b0394a6792d15cb",
+    "tag": "v1.5-frozen",
+    "tag_commit": "569bb7fc2e4cd860dbbc0fdd54c838d208af3b11"
+  },
+  "patch_tasks": 45,
+  "policy": {
+    "name": "full-v1.5",
+    "version": "v1.5.0-full"
+  },
+  "run": "/home/sankalp/projects/wt-study/runs/study_test_gpt-4.1-mini_b2",
+  "seal_sha256": "61e50763185d16ca2d2b28905216ab87e7d13c47b739aa0641733237ce8a5b00",
+  "summary_name": "summary_v1_5_r2-1_r3-0_r6-1_r6b-1.json",
+  "switch_source": "frozen",
+  "switches": {
+    "r2_v3_reject": true,
+    "r3_extended_reject": false,
+    "r6_accept_v2_not_available": true,
+    "r6b_accept_one_uncovered": true
+  },
+  "tasks": 48,
+  "v2_fallback": true,
+  "v2_fallback_removed_tasks": []
+}

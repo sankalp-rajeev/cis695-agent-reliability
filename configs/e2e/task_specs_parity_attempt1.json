@@ -1,0 +1,230 @@
+{
+  "built_by_commit": "7fefe1d5c7f29107dee89fc6aca54e94934df277",
+  "cohort": "parity",
+  "schema": "task_spec_registry/1",
+  "tasks": [
+    {
+      "archive": {
+        "path": "/home/sankalp/projects/wt-task-prep/runs/task_prep_parity_archives/django__django-10973.tar",
+        "pax_comment": "ddb293685235fd09e932805771ae97f72e817181",
+        "sha256": "e404015a3c65563474f8c0f8c0ca9b68adb2ba78c124484617e2ca5dc70c3caa"
+      },
+      "base_commit": "ddb293685235fd09e932805771ae97f72e817181",
+      "dataset_projection_row": {
+        "base_commit": "ddb293685235fd09e932805771ae97f72e817181",
+        "instance_id": "django__django-10973",
+        "repo": "django/django",
+        "version": "3.0"
+      },
+      "image": {
+        "id": "sha256:ee9c2383c3890dd7ff00392325aff3ee2b422eb399baf04c20648662b602624a",
+        "tag": "swebench/sweb.eval.x86_64.django_1776_django-10973:latest"
+      },
+      "instance_id": "django__django-10973",
+      "integrity_preflight": {
+        "receipt_path": "/home/sankalp/projects/wt-task-prep/configs/e2e/task_specs_parity_attempt1_evidence/django__django-10973/source_receipt.json",
+        "receipt_sha256": "754063e0977225043259d695c193d797685dcfcf1e4da4751aecc29d0645f64d",
+        "status": "VERIFIED"
+      },
+      "origin": "phase4_freeze",
+      "pre_install": {
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "spec": {
+          "commands": [],
+          "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+          "constants_path": "swebench/harness/constants/python.py",
+          "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+          "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+          "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+          "dataset_row": {
+            "base_commit": "ddb293685235fd09e932805771ae97f72e817181",
+            "instance_id": "django__django-10973",
+            "repo": "django/django",
+            "version": "3.0"
+          },
+          "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+          "project_swebench_version": "5.0.2",
+          "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+          "spec_key": [
+            "django/django",
+            "3.0",
+            "pre_install"
+          ],
+          "swebench_version": "4.0.4",
+          "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+          "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl"
+        },
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+      },
+      "preflight_identity": {
+        "archive_sha256": "e404015a3c65563474f8c0f8c0ca9b68adb2ba78c124484617e2ca5dc70c3caa",
+        "base_commit": "ddb293685235fd09e932805771ae97f72e817181",
+        "image_id": "sha256:ee9c2383c3890dd7ff00392325aff3ee2b422eb399baf04c20648662b602624a"
+      },
+      "repo": "django/django",
+      "runner": {
+        "django_parallel_one": false,
+        "evidence": "found tests/runtests.py in a Django tree",
+        "name": "django"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "found tests/runtests.py in a Django tree",
+          "name": "django"
+        },
+        "django_choice": "phase4_freeze",
+        "effective_name": "django"
+      },
+      "version": "3.0"
+    },
+    {
+      "archive": {
+        "path": "/home/sankalp/projects/wt-task-prep/runs/task_prep_parity_archives/sympy__sympy-13480.tar",
+        "pax_comment": "f57fe3f4b3f2cab225749e1b3b38ae1bf80b62f0",
+        "sha256": "70f23345e2ded9dac73b1db75a982e3080a40fd917a7335a5e0dedc1056589c1"
+      },
+      "base_commit": "f57fe3f4b3f2cab225749e1b3b38ae1bf80b62f0",
+      "dataset_projection_row": {
+        "base_commit": "f57fe3f4b3f2cab225749e1b3b38ae1bf80b62f0",
+        "instance_id": "sympy__sympy-13480",
+        "repo": "sympy/sympy",
+        "version": "1.1"
+      },
+      "image": {
+        "id": "sha256:99b0638822c415d519f20b0b0c776978d93c84eb49ada0e072fd817b2d69325e",
+        "tag": "swebench/sweb.eval.x86_64.sympy_1776_sympy-13480:latest"
+      },
+      "instance_id": "sympy__sympy-13480",
+      "integrity_preflight": {
+        "receipt_path": "/home/sankalp/projects/wt-task-prep/configs/e2e/task_specs_parity_attempt1_evidence/sympy__sympy-13480/source_receipt.json",
+        "receipt_sha256": "643af3eb591b648088825874634abdff4fcbcec8a5cdf41737a4bf1998a2115e",
+        "status": "VERIFIED"
+      },
+      "origin": "phase4_freeze",
+      "pre_install": {
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "spec": {
+          "commands": [],
+          "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+          "constants_path": "swebench/harness/constants/python.py",
+          "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+          "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+          "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+          "dataset_row": {
+            "base_commit": "f57fe3f4b3f2cab225749e1b3b38ae1bf80b62f0",
+            "instance_id": "sympy__sympy-13480",
+            "repo": "sympy/sympy",
+            "version": "1.1"
+          },
+          "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+          "project_swebench_version": "5.0.2",
+          "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+          "spec_key": [
+            "sympy/sympy",
+            "1.1",
+            "pre_install"
+          ],
+          "swebench_version": "4.0.4",
+          "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+          "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl"
+        },
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+      },
+      "preflight_identity": {
+        "archive_sha256": "70f23345e2ded9dac73b1db75a982e3080a40fd917a7335a5e0dedc1056589c1",
+        "base_commit": "f57fe3f4b3f2cab225749e1b3b38ae1bf80b62f0",
+        "image_id": "sha256:99b0638822c415d519f20b0b0c776978d93c84eb49ada0e072fd817b2d69325e"
+      },
+      "repo": "sympy/sympy",
+      "runner": {
+        "django_parallel_one": null,
+        "evidence": "pytest.ini or conftest.py",
+        "name": "pytest"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "native SymPy bin/test runner",
+          "name": "sympy"
+        },
+        "effective_name": "sympy"
+      },
+      "version": "1.1"
+    },
+    {
+      "archive": {
+        "path": "/home/sankalp/projects/wt-task-prep/runs/task_prep_parity_archives/pytest-dev__pytest-10051.tar",
+        "pax_comment": "aa55975c7d3f6c9f6d7f68accc41bb7cadf0eb9a",
+        "sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806"
+      },
+      "base_commit": "aa55975c7d3f6c9f6d7f68accc41bb7cadf0eb9a",
+      "dataset_projection_row": {
+        "base_commit": "aa55975c7d3f6c9f6d7f68accc41bb7cadf0eb9a",
+        "instance_id": "pytest-dev__pytest-10051",
+        "repo": "pytest-dev/pytest",
+        "version": "7.2"
+      },
+      "image": {
+        "id": "sha256:47249870b662ac39235d6cc8231cac31ee17fe1524ec594fe957fd205e9f33a3",
+        "tag": "swebench/sweb.eval.x86_64.pytest-dev_1776_pytest-10051:latest"
+      },
+      "instance_id": "pytest-dev__pytest-10051",
+      "integrity_preflight": {
+        "receipt_path": "/home/sankalp/projects/wt-task-prep/configs/e2e/task_specs_parity_attempt1_evidence/pytest-dev__pytest-10051/source_receipt.json",
+        "receipt_sha256": "806a926aa3bf0a040b2b1af74247bfc7c3d3064047ab4d3b4f08da23b6c7e148",
+        "status": "VERIFIED"
+      },
+      "origin": "phase4_freeze",
+      "pre_install": {
+        "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+        "spec": {
+          "commands": [],
+          "constants_mapping": "MAP_REPO_VERSION_TO_SPECS_PY (Python constituent of MAP_REPO_VERSION_TO_SPECS)",
+          "constants_path": "swebench/harness/constants/python.py",
+          "constants_sha256": "5ffc3eb97774955b9cfe8491bb5c9608ec108bf9fdfbb3354de85cf0df9ced4c",
+          "dataset_arrow_sha256": "dac1b34d5d92454c90d41ac9876448ffd2585463a70b98b204da83034c3ccab6",
+          "dataset_projection_sha256": "07ef5a6b25243c076d8841a898b3fccc22f71f9e358974591171763336c3ad20",
+          "dataset_row": {
+            "base_commit": "aa55975c7d3f6c9f6d7f68accc41bb7cadf0eb9a",
+            "instance_id": "pytest-dev__pytest-10051",
+            "repo": "pytest-dev/pytest",
+            "version": "7.2"
+          },
+          "dataset_snapshot": "78f471bf655a3137b2e8a75af1501690ec009ec3",
+          "project_swebench_version": "5.0.2",
+          "pypi_url": "https://pypi.org/project/swebench/4.0.4/",
+          "spec_key": [
+            "pytest-dev/pytest",
+            "7.2",
+            "pre_install"
+          ],
+          "swebench_version": "4.0.4",
+          "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7",
+          "wheel_url": "https://files.pythonhosted.org/packages/e4/65/bf9f45764317150c92fe9a0c37a0c4556c13eecc8878d4f92ffb3d31c861/swebench-4.0.4-py3-none-any.whl"
+        },
+        "wheel_sha256": "4e315ac60ff7b5b7186592b84d22df9befd898bba296a6b9665fdb3487fcd8f7"
+      },
+      "preflight_identity": {
+        "archive_sha256": "54b932a302f6e2a35554bbcb09651d9320de7835a4352b3374d5600df2f8e806",
+        "base_commit": "aa55975c7d3f6c9f6d7f68accc41bb7cadf0eb9a",
+        "image_id": "sha256:47249870b662ac39235d6cc8231cac31ee17fe1524ec594fe957fd205e9f33a3"
+      },
+      "repo": "pytest-dev/pytest",
+      "runner": {
+        "django_parallel_one": null,
+        "evidence": "[tool.pytest] in pyproject.toml; pytest referenced in tox.ini",
+        "name": "pytest"
+      },
+      "runner_provenance": {
+        "discovered": {
+          "django_parallel_one": false,
+          "evidence": "[tool.pytest] in pyproject.toml; pytest referenced in tox.ini",
+          "name": "pytest"
+        },
+        "effective_name": "pytest"
+      },
+      "version": "7.2"
+    }
+  ]
+}

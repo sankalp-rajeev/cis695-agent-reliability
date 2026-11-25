@@ -1,0 +1,54 @@
+{
+  "archive": {
+    "base_commit": "fa68f46289adf4a8a4bc7ba97ded8258ec9d079c",
+    "instance_id": "matplotlib__matplotlib-26291",
+    "path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-26291.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "dd2459c6e236a19cc6c427df62c03ad1b6cf9cb8718cac80dd9fba45976372db"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "command_sha256": "5a836677c4cdcf8622aee18ae4a9628f00e1bc1dd6071a32c8a2cd8fa52ed011"
+      },
+      "kind": "git-history-search",
+      "line_no": 9,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/matplotlib__matplotlib-26291/verification/v4/cache/matplotlib__matplotlib-26291/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "6825852baf2b0691cdaff2a723b7bb1c1023ebe7f2db04eb621947d716b9bfcc"
+      },
+      "kind": "git-history-search",
+      "line_no": 11,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/matplotlib__matplotlib-26291/verification/v4/cache/matplotlib__matplotlib-26291/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "attempt_rule": "history-git-log",
+        "command_line": 11,
+        "command_sha256": "6825852baf2b0691cdaff2a723b7bb1c1023ebe7f2db04eb621947d716b9bfcc",
+        "returncode": 0
+      },
+      "kind": "git-history-search",
+      "line_no": 12,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/matplotlib__matplotlib-26291/verification/v4/cache/matplotlib__matplotlib-26291/generation_trajectory.jsonl",
+      "rule": "history-newer-commit",
+      "severity": "confirmed"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "matplotlib__matplotlib-26291",
+  "legacy_findings": [],
+  "role": "generator",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 4,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/matplotlib__matplotlib-26291/verification/v4/cache/matplotlib__matplotlib-26291"
+}

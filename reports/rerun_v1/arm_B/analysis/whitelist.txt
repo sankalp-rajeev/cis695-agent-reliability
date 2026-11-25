@@ -1,0 +1,22 @@
+Stage 1 provenance and label isolation
+
+Allowed direct inputs
+- The supplied instructions and the protocol files PROTOCOL.md, AMENDMENT_A1.md, AMENDMENT_A2.md and AMENDMENT_A3.md.
+- The arm seal manifest and label-free seal summary.
+- In the sealed run: completion.json, attempt.json, header.json, and each task's verification_record.full-v1.4.1.json, verification/v2_policies.json, verification/selection.json, frozen_patch.json, patch.diff, task_completion.json, repair_record.json, provider_stop.json and agent_absence.json, where present. Hash against the seal before parsing any of these inputs.
+- The read-only provider_spend_ledger.json, repository source code and Phase 7 report material that does not contain labels.
+- Generated synthetic fixtures and their outputs.
+
+Exceptions for tools
+- sha256sum may hash the named disclosure file without displaying its contents.
+- The seal manifest check may hash every manifest entry without displaying file contents.
+- The unmodified offline audit_rerun_arm.py may read its own inputs. Its --output must point inside wt-analysis, outside the sealed run.
+
+Prohibited
+- Never run grading_status.sh or view the grading tmux pane.
+- Never access wt-grading/runs/grading_B, grading.log, real labels files, or grading output during Stage 1. Avoid the wt-grading worktree entirely after the Stage 1 escalation approval.
+- Never open or copy anything in the disclosures directory during Stage 1. Only the named sha256sum exception applies.
+- No network, pushes, Docker, containers, model calls or writes to the sealed arm.
+- Use nice -n 19. Approval covers only the specified Stage 1 actions.
+- The analysis may open labels only with both --stage 2 and --labels. Stage 1 synthetic tests use this argument pair with synthetic fixtures only.
+- Real Stage 2 requires the operator's explicit instruction and the Stage 1 freeze.

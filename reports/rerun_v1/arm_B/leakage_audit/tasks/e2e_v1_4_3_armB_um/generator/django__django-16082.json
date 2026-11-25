@@ -1,0 +1,31 @@
+{
+  "archive": {
+    "base_commit": "bf47c719719d0e190a99fa2e7f959d5bbb7caf8a",
+    "instance_id": "django__django-16082",
+    "path": "/home/sankalp/cg_repos/task_archives/django__django-16082.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "90b14df00d0e368629e6f4963e7ecb55116349d91be363dfb55ff6125f26ef64"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "command_sha256": "4b48ed902ee504fb804330e1ca94a317dd32ad4e77258b43bd1a62335d854ca6"
+      },
+      "kind": "git-history-search",
+      "line_no": 19,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-16082/verification/v4/cache/django__django-16082/generation_trajectory.jsonl",
+      "rule": "history-git-log",
+      "severity": "benchmark-awareness"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "django__django-16082",
+  "legacy_findings": [],
+  "role": "generator",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/django__django-16082/verification/v4/cache/django__django-16082"
+}

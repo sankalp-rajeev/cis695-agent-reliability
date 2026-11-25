@@ -1,0 +1,230 @@
+{
+ "pairs": 30,
+ "comparable": 10,
+ "agree": 10,
+ "agreement_rate": 1.0,
+ "per_system": {
+  "claude-sonnet-4": {
+   "agree": 10
+  },
+  "gemini-2.5-flash": {
+   "no_official_label": 7
+  },
+  "gpt-4.1-mini": {
+   "no_official_label": 13
+  }
+ },
+ "disagreements": [],
+ "rows": [
+  {
+   "system": "claude-sonnet-4",
+   "instance_id": "astropy__astropy-13453",
+   "ours": "resolved",
+   "official": true,
+   "status": "agree"
+  },
+  {
+   "system": "claude-sonnet-4",
+   "instance_id": "django__django-12193",
+   "ours": "resolved",
+   "official": true,
+   "status": "agree"
+  },
+  {
+   "system": "claude-sonnet-4",
+   "instance_id": "django__django-14493",
+   "ours": "resolved",
+   "official": true,
+   "status": "agree"
+  },
+  {
+   "system": "claude-sonnet-4",
+   "instance_id": "django__django-14559",
+   "ours": "resolved",
+   "official": true,
+   "status": "agree"
+  },
+  {
+   "system": "claude-sonnet-4",
+   "instance_id": "django__django-15863",
+   "ours": "resolved",
+   "official": true,
+   "status": "agree"
+  },
+  {
+   "system": "claude-sonnet-4",
+   "instance_id": "django__django-15957",
+   "ours": "unresolved",
+   "official": false,
+   "status": "agree"
+  },
+  {
+   "system": "claude-sonnet-4",
+   "instance_id": "matplotlib__matplotlib-25960",
+   "ours": "unresolved",
+   "official": false,
+   "status": "agree"
+  },
+  {
+   "system": "claude-sonnet-4",
+   "instance_id": "matplotlib__matplotlib-26342",
+   "ours": "resolved",
+   "official": true,
+   "status": "agree"
+  },
+  {
+   "system": "claude-sonnet-4",
+   "instance_id": "pydata__xarray-7393",
+   "ours": "resolved",
+   "official": true,
+   "status": "agree"
+  },
+  {
+   "system": "claude-sonnet-4",
+   "instance_id": "sphinx-doc__sphinx-8035",
+   "ours": "resolved",
+   "official": true,
+   "status": "agree"
+  },
+  {
+   "system": "gemini-2.5-flash",
+   "instance_id": "astropy__astropy-12907",
+   "ours": "infra_error",
+   "official": null,
+   "status": "no_official_label"
+  },
+  {
+   "system": "gemini-2.5-flash",
+   "instance_id": "django__django-12419",
+   "ours": "resolved",
+   "official": null,
+   "status": "no_official_label"
+  },
+  {
+   "system": "gemini-2.5-flash",
+   "instance_id": "pydata__xarray-3151",
+   "ours": "resolved",
+   "official": null,
+   "status": "no_official_label"
+  },
+  {
+   "system": "gemini-2.5-flash",
+   "instance_id": "pydata__xarray-4356",
+   "ours": "infra_error",
+   "official": null,
+   "status": "no_official_label"
+  },
+  {
+   "system": "gemini-2.5-flash",
+   "instance_id": "pydata__xarray-4687",
+   "ours": "unresolved",
+   "official": null,
+   "status": "no_official_label"
+  },
+  {
+   "system": "gemini-2.5-flash",
+   "instance_id": "sphinx-doc__sphinx-9658",
+   "ours": "unresolved",
+   "official": null,
+   "status": "no_official_label"
+  },
+  {
+   "system": "gemini-2.5-flash",
+   "instance_id": "sympy__sympy-22456",
+   "ours": "resolved",
+   "official": null,
+   "status": "no_official_label"
+  },
+  {
+   "system": "gpt-4.1-mini",
+   "instance_id": "astropy__astropy-13236",
+   "ours": "unresolved",
+   "official": null,
+   "status": "no_official_label"
+  },
+  {
+   "system": "gpt-4.1-mini",
+   "instance_id": "django__django-13401",
+   "ours": "patch_apply_failed",
+   "official": null,
+   "status": "no_official_label"
+  },
+  {
+   "system": "gpt-4.1-mini",
+   "instance_id": "django__django-13449",
+   "ours": "unresolved",
+   "official": null,
+   "status": "no_official_label"
+  },
+  {
+   "system": "gpt-4.1-mini",
+   "instance_id": "django__django-13512",
+   "ours": "unresolved",
+   "official": null,
+   "status": "no_official_label"
+  },
+  {
+   "system": "gpt-4.1-mini",
+   "instance_id": "django__django-13925",
+   "ours": "unresolved",
+   "official": null,
+   "status": "no_official_label"
+  },
+  {
+   "system": "gpt-4.1-mini",
+   "instance_id": "django__django-14493",
+   "ours": "resolved",
+   "official": null,
+   "status": "no_official_label"
+  },
+  {
+   "system": "gpt-4.1-mini",
+   "instance_id": "django__django-15957",
+   "ours": "patch_apply_failed",
+   "official": null,
+   "status": "no_official_label"
+  },
+  {
+   "system": "gpt-4.1-mini",
+   "instance_id": "pydata__xarray-6721",
+   "ours": "patch_apply_failed",
+   "official": null,
+   "status": "no_official_label"
+  },
+  {
+   "system": "gpt-4.1-mini",
+   "instance_id": "scikit-learn__scikit-learn-12973",
+   "ours": "unresolved",
+   "official": null,
+   "status": "no_official_label"
+  },
+  {
+   "system": "gpt-4.1-mini",
+   "instance_id": "scikit-learn__scikit-learn-25931",
+   "ours": "resolved",
+   "official": null,
+   "status": "no_official_label"
+  },
+  {
+   "system": "gpt-4.1-mini",
+   "instance_id": "scikit-learn__scikit-learn-25973",
+   "ours": "unresolved",
+   "official": null,
+   "status": "no_official_label"
+  },
+  {
+   "system": "gpt-4.1-mini",
+   "instance_id": "sphinx-doc__sphinx-8035",
+   "ours": "infra_error",
+   "official": null,
+   "status": "no_official_label"
+  },
+  {
+   "system": "gpt-4.1-mini",
+   "instance_id": "sphinx-doc__sphinx-9591",
+   "ours": "unresolved",
+   "official": null,
+   "status": "no_official_label"
+  }
+ ]
+}

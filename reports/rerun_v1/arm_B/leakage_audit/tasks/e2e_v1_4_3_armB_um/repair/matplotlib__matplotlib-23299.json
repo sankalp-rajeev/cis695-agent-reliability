@@ -1,0 +1,35 @@
+{
+  "archive": {
+    "base_commit": "3eadeacc06c9f2ddcdac6ae39819faa9fbee9e39",
+    "instance_id": "matplotlib__matplotlib-23299",
+    "path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-23299.tar",
+    "pin_origin": "historical-archive-references",
+    "sha256": "7531311200f87a71157499e9c9b4312640fdb3d488bfbded42f327afa0fe8726"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "archive_sha256": "7531311200f87a71157499e9c9b4312640fdb3d488bfbded42f327afa0fe8726",
+        "base_present": true,
+        "definition_line": null,
+        "first_appearance_line": 6,
+        "symbol_sha256": "5b6e5836aad423d67d4777b226d24d5d8358ffce1d471ea80cbc2873cbc5b00d"
+      },
+      "kind": "pass-to-pass-name",
+      "line_no": null,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/matplotlib__matplotlib-23299/trajectory.jsonl",
+      "rule": "test-name-present-at-base",
+      "severity": "review"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "matplotlib__matplotlib-23299",
+  "legacy_findings": [],
+  "role": "repair",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/matplotlib__matplotlib-23299"
+}

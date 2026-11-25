@@ -1,0 +1,12 @@
+REGISTRY configs/e2e/task_specs_main100.json: 92 tasks OK (schema, archive hash/pax, local image, receipt)
+REGISTRY configs/e2e/task_specs_main100_rest10.json: 6 tasks OK (schema, archive hash/pax, local image, receipt)
+REGISTRY configs/e2e/task_specs_main100_rest10_final.json: 9 tasks OK (schema, archive hash/pax, local image, receipt)
+REGISTRY configs/e2e/task_specs_main100_rest10_retry1.json: 1 tasks OK (schema, archive hash/pax, local image, receipt)
+REGISTRY configs/e2e/task_specs_main100_rest10_retry2.json: 2 tasks OK (schema, archive hash/pax, local image, receipt)
+REGISTRY configs/e2e/task_specs_parity_attempt1.json: 3 tasks OK (schema, archive hash/pax, local image, receipt)
+REGISTRY configs/e2e/task_specs_parity_final.json: 3 tasks OK (schema, archive hash/pax, local image, receipt)
+REGISTRY configs/e2e/task_specs_phase4.json: 83 tasks OK (schema, archive hash/pax, local image, receipt)
+GOLDEN: 3/3 task fields equal phase4_launch.validate_inputs expectations
+COHORTS: 93 < 200 <= 492; nested, duplicate-free, requests excluded, pilot rules OK
+MAIN COVERAGE: 92/93 have VERIFIED registry entries; 1 preparation failures
+PASS: 199 registry entries independently verified; no reliability imports

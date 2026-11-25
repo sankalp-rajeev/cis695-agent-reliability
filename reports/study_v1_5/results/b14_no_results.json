@@ -1,0 +1,834 @@
+{
+ "meaning": "swebench 5.0.2 sets patch_successfully_applied false whenever get_logs_eval finds no usable result: a bad code (Patch Apply Failed, Reset Failed, Tests Errored, Tests Timed Out), a missing START/END marker, or no parsable test status and no sign the suite ran. Such patches are unresolved, as in official grading.",
+ "pairs": [
+  {
+   "apply_command": "git apply --verbose --3way",
+   "bad_codes": [],
+   "batch": "b1",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": true,
+    "ImportError": false,
+    "IndentationError": false,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "REJECT",
+   "frozen_rule": "R1",
+   "instance_id": "astropy__astropy-13453",
+   "label_folder": "gpt-4.1-mini_ours",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose --3way",
+   "our_v1_outcome": "FAIL",
+   "our_v1_violations": [
+    "unexpected_config_edit"
+   ],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "1b22bd284a8b9290d61610ee17bc4d1f5940bdcd7243ac450b44d74585592e59",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b1",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": false,
+    "IndentationError": true,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": [
+     "TransactionManagementError"
+    ]
+   },
+   "frozen_decision": "REJECT",
+   "frozen_rule": "R2",
+   "instance_id": "django__django-10554",
+   "label_folder": "gpt-4.1-mini_ours",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "b442c68c8b825d3350bbef1141af3a3848657cf61cc0f56bd1775767a25dccdb",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b1",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": false,
+    "IndentationError": true,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "REJECT",
+   "frozen_rule": "R2",
+   "instance_id": "django__django-12039",
+   "label_folder": "gpt-4.1-mini_ours",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "8c75d25e874ababe2f62c584f155bb5af15ba99451bdd3d12c6ba02e70f263af",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b1",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": false,
+    "IndentationError": true,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "REJECT",
+   "frozen_rule": "R2",
+   "instance_id": "django__django-12308",
+   "label_folder": "gpt-4.1-mini_ours",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "62f7fab88bc827859fd544e800a80bd53e745d6343123cb59c5779cd2ab66d91",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b1",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": false,
+    "IndentationError": true,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "REJECT",
+   "frozen_rule": "R2",
+   "instance_id": "django__django-13343",
+   "label_folder": "gpt-4.1-mini_ours",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "4a9eca54d86f160525adcf36f9b36c56eeb8faeb98c1042068c7889ea3278f86",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b1",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": false,
+    "IndentationError": false,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "REJECT",
+   "frozen_rule": "R2",
+   "instance_id": "django__django-13401",
+   "label_folder": "gpt-4.1-mini_ours",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "941831c8c83258cf2e606d0320aec85cf955d22ccb5d748f486818b9b2f53109",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b1",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": false,
+    "IndentationError": false,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": [
+     "UnboundLocalError"
+    ]
+   },
+   "frozen_decision": "REJECT",
+   "frozen_rule": "R3",
+   "instance_id": "django__django-14434",
+   "label_folder": "gpt-4.1-mini_ours",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "427b67fde619b6dd24d62dfed493cf064dcb2e08a99caf63965026240389fc24",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b1",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": true,
+    "IndentationError": false,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "FLAG",
+   "frozen_rule": "R7",
+   "instance_id": "django__django-14539",
+   "label_folder": "gpt-4.1-mini_ours",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "d818f44fe653ef6b33d4aa7306d7ddcf6307d0160cec165944cea692a7c3f0a6",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b1",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": true,
+    "ImportError": false,
+    "IndentationError": false,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "FLAG",
+   "frozen_rule": "R4",
+   "instance_id": "django__django-14559",
+   "label_folder": "gpt-4.1-mini_ours",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "90ef76cd97e53633ada6a0135de0e9edc3edc55da9182c9ca0aa8d89681ded69",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b1",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": false,
+    "IndentationError": false,
+    "ModuleNotFoundError": false,
+    "NameError": true,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "REJECT",
+   "frozen_rule": "R1",
+   "instance_id": "django__django-15695",
+   "label_folder": "gpt-4.1-mini_ours",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "FAIL",
+   "our_v1_violations": [
+    "harness_file_edit"
+   ],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "dfa36c67060359bc85f746f9dce24e1778772341ae2899a720f76c3b7ada2a8a",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b1",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": true,
+    "IndentationError": false,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "FLAG",
+   "frozen_rule": "R4",
+   "instance_id": "django__django-15863",
+   "label_folder": "gpt-4.1-mini_ours",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "af7dbafe877c236595a463a2884f8b16415572efe8fa6feca15b8159f4321931",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b1",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": false,
+    "IndentationError": true,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "REJECT",
+   "frozen_rule": "R2",
+   "instance_id": "django__django-15957",
+   "label_folder": "gpt-4.1-mini_ours",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "317c41f1481467154461cd9813e8673ea001f5fcf3f78cb986f939f7464c2fd2",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b1",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": true,
+    "IndentationError": false,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "REJECT",
+   "frozen_rule": "R2",
+   "instance_id": "django__django-16801",
+   "label_folder": "gpt-4.1-mini_ours",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "92517673f2723689e7a28d3f96f94f664897ac63432232a22f50464f2a90f22b",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b1",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": false,
+    "IndentationError": false,
+    "ModuleNotFoundError": true,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "FLAG",
+   "frozen_rule": "R7",
+   "instance_id": "pydata__xarray-4687",
+   "label_folder": "gpt-4.1-mini_ours",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": "missing_module",
+   "report_patch_successfully_applied": false,
+   "report_sha256": "9027e89d088308946e757e070e78a3d61cfa7fb4221755d999da4dacc1360f14",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b1",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": true,
+    "IndentationError": false,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "FLAG",
+   "frozen_rule": "R7",
+   "instance_id": "pydata__xarray-6721",
+   "label_folder": "gpt-4.1-mini_ours",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "ef71462452ca3f819493a09349deddc04895b76560191cab7b77996c34ccec3d",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b1",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": false,
+    "IndentationError": true,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "REJECT",
+   "frozen_rule": "R2",
+   "instance_id": "pydata__xarray-7229",
+   "label_folder": "gpt-4.1-mini_ours",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "36281a2ffc32b87b5aba42c2b20ace1321af9b9b61fedecfc3cef08be721c2d9",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b1",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": false,
+    "IndentationError": false,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": true,
+    "other": []
+   },
+   "frozen_decision": "REJECT",
+   "frozen_rule": "R2",
+   "instance_id": "pydata__xarray-7393",
+   "label_folder": "gpt-4.1-mini_ours",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "fd21bab01103b8ae660a3464dbdd13d32133f06c35904940cb2bada303ff122e",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b1",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": true,
+    "IndentationError": false,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "REJECT",
+   "frozen_rule": "R2",
+   "instance_id": "sympy__sympy-12096",
+   "label_folder": "gpt-4.1-mini_ours",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "f757837eb1f1fdf87638558bdeddbad56bd31915ee23f2bae7943219cef494bb",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b1",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": false,
+    "IndentationError": true,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "REJECT",
+   "frozen_rule": "R2",
+   "instance_id": "sympy__sympy-14248",
+   "label_folder": "gpt-4.1-mini_ours",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "6ff48a956e016861c212501acefb4a18fc814ee3fd2031252a41fdb2bc168553",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b1",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": false,
+    "IndentationError": false,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "ACCEPT",
+   "frozen_rule": "R6",
+   "instance_id": "sympy__sympy-23824",
+   "label_folder": "gpt-4.1-mini_ours",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "f812d593e2c36278dda34c526ee924d6804aac61ab2ad07d347226df4ebc2dda",
+   "runner_summary": {
+    "kind": "all passed",
+    "passed": 4,
+    "runner": "sympy"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b2",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": false,
+    "IndentationError": true,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "REJECT",
+   "frozen_rule": "R2",
+   "instance_id": "django__django-11885",
+   "label_folder": "gpt-4.1-mini_b2",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "fb2b73a50dacca267d62345f6b1e90966a00372897b87cd018a80d61a542e323",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b2",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": true,
+    "ImportError": false,
+    "IndentationError": false,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "REJECT",
+   "frozen_rule": "R3",
+   "instance_id": "django__django-14007",
+   "label_folder": "gpt-4.1-mini_b2",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "22065cc028332f3b8a45cad8b8b6dd1dd0b4a64af6980a2ce037d25a22fca75c",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b2",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": false,
+    "IndentationError": true,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "REJECT",
+   "frozen_rule": "R2",
+   "instance_id": "django__django-14351",
+   "label_folder": "gpt-4.1-mini_b2",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "9b4ee7c26baef40d0a26e2b1eaf4906c33494e3dbbeea2eb4e41eb4c602d606d",
+   "runner_summary": {
+    "kind": "no summary line",
+    "runner": "no summary line"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  },
+  {
+   "apply_command": "git apply --verbose",
+   "bad_codes": [],
+   "batch": "b2",
+   "end_marker": true,
+   "exception_types": {
+    "AttributeError": false,
+    "ImportError": true,
+    "IndentationError": false,
+    "ModuleNotFoundError": false,
+    "NameError": false,
+    "SyntaxError": false,
+    "other": []
+   },
+   "frozen_decision": "FLAG",
+   "frozen_rule": "R4",
+   "instance_id": "sympy__sympy-13372",
+   "label_folder": "gpt-4.1-mini_b2",
+   "our_v1_apply_check": "PASS",
+   "our_v1_apply_command": "git apply --verbose",
+   "our_v1_outcome": "PASS",
+   "our_v1_violations": [],
+   "report_infra_failure_reason": null,
+   "report_patch_successfully_applied": false,
+   "report_sha256": "6dfcd9d42ef54fc5acbb50dd286b7b99772d5585057915a53a024d76dae087e2",
+   "runner_summary": {
+    "exceptions": 1,
+    "kind": "failures or errors",
+    "passed": 0,
+    "runner": "sympy"
+   },
+   "start_marker": true,
+   "test_output_present": true
+  }
+ ],
+ "script": "scripts/phase18_b14_no_results.py",
+ "script_sha256": "d20fdedf2dbbf2bd7b6b039ab138bfc1837347f78cb86e7d812070179d1f5c93",
+ "summary": {
+  "applied_both_markers_no_bad_code": 24,
+  "applied_with_any_named_exception": 21,
+  "apply_commands": {
+   "git apply --verbose": 23,
+   "git apply --verbose --3way": 1
+  },
+  "apply_failed_on_both_sides": 0,
+  "exception_types_in_applied": {
+   "AttributeError": 3,
+   "ImportError": 6,
+   "IndentationError": 9,
+   "ModuleNotFoundError": 1,
+   "NameError": 1,
+   "SyntaxError": 1
+  },
+  "frozen_decisions": {
+   "ACCEPT": 1,
+   "FLAG": 6,
+   "REJECT": 17
+  },
+  "frozen_rules": {
+   "R1": 2,
+   "R2": 13,
+   "R3": 2,
+   "R4": 3,
+   "R6": 1,
+   "R7": 3
+  },
+  "other": 0,
+  "our_v1_apply_check": {
+   "PASS": 24
+  },
+  "pairs": 24,
+  "r1_applied_on_both_sides": [
+   "astropy__astropy-13453 (unexpected_config_edit)",
+   "django__django-15695 (harness_file_edit)"
+  ],
+  "runner_summary_by_runner": {
+   "no summary line": 22,
+   "sympy": 2
+  },
+  "runner_summary_kinds": {
+   "all passed": 1,
+   "failures or errors": 1,
+   "no summary line": 22
+  }
+ }
+}

@@ -86,6 +86,14 @@ CONFIG_PATTERNS = (
     r"(^|/)Makefile$",
 )
 
+#: Amendment B8: files a patch must never add, because they would run inside the
+#: verifier's own processes. Python imports any `sitecustomize.py` on sys.path at
+#: start-up, and V4 places its frozen tests in the top-level `v4_repro/` folder.
+INJECTION_PATTERNS = (
+    r"(^|/)sitecustomize\.py$",
+    r"^v4_repro/",
+)
+
 TEST_PATTERNS = (
     r"(^|/)tests?/",
     r"(^|/)test_[^/]+\.py$",
@@ -313,6 +321,11 @@ def check_integrity(
         if change.is_binary:
             findings.append(Finding(
                 Violation.BINARY_BLOB, path, "patch contains a binary blob"))
+
+        if change.kind in (ChangeKind.ADDED, ChangeKind.RENAMED) and _matches_any(path, INJECTION_PATTERNS):
+            findings.append(Finding(
+                Violation.HARNESS_FILE_EDIT, path,
+                "patch adds sitecustomize.py or a file under v4_repro/ (amendment B8)"))
 
         if is_harness_file(path):
             findings.append(Finding(

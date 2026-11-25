@@ -1,0 +1,61 @@
+{
+  "archive": {
+    "base_commit": "9d22ab09d52d279b125d8770967569de070913b2",
+    "instance_id": "matplotlib__matplotlib-24627",
+    "path": "/home/sankalp/cg_repos/task_archives/matplotlib__matplotlib-24627.tar",
+    "pin_origin": "audit-initial-inventory",
+    "sha256": "1c5b87afd3373e503dbcff7129b1ddb988f8055a503772504ee538b5f45bb5b8"
+  },
+  "findings": [
+    {
+      "evidence": {
+        "command_sha256": "81ce7df3d1ff3f07f6af4b4b1be35f2ff43f2d3788e216fc4965aef41bdc7c62"
+      },
+      "kind": "git-history-search",
+      "line_no": 140,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/matplotlib__matplotlib-24627/trajectory.jsonl",
+      "rule": "history-git-diff",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "4ab21f916ad34bc5680dc2415e3b047ea53f118a49f322fea1c6ae0ef0ff234b"
+      },
+      "kind": "git-history-search",
+      "line_no": 148,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/matplotlib__matplotlib-24627/trajectory.jsonl",
+      "rule": "history-git-diff",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "c3ddabf5c62789449f01f1ca98e7458a4f2f383032f749f64777e21dc22efe45"
+      },
+      "kind": "git-history-search",
+      "line_no": 150,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/matplotlib__matplotlib-24627/trajectory.jsonl",
+      "rule": "history-git-diff",
+      "severity": "benchmark-awareness"
+    },
+    {
+      "evidence": {
+        "command_sha256": "c3ddabf5c62789449f01f1ca98e7458a4f2f383032f749f64777e21dc22efe45"
+      },
+      "kind": "git-history-search",
+      "line_no": 153,
+      "path": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/matplotlib__matplotlib-24627/trajectory.jsonl",
+      "rule": "history-git-diff",
+      "severity": "benchmark-awareness"
+    }
+  ],
+  "golden": {
+    "downgrades": [],
+    "violations": []
+  },
+  "instance_id": "matplotlib__matplotlib-24627",
+  "legacy_findings": [],
+  "role": "repair",
+  "run": "e2e_v1_4_3_armB_um",
+  "scanned_files": 5,
+  "source": "/home/sankalp/projects/wt-e2e/runs/e2e_v1_4_3_armB_um/tasks/matplotlib__matplotlib-24627"
+}

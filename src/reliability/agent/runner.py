@@ -320,6 +320,7 @@ def run_task(
     manifest_hash: str,
     limits: AgentLimits | None = None,
     dataset=None,
+    agent_task: AgentTask | None = None,
 ) -> RepairRecord:
     """Run one task and write its frozen patch, trajectory, and record.
 
@@ -329,7 +330,12 @@ def run_task(
     workdir = task_dir_for(run_root, entry.instance_id)
     workdir.mkdir(parents=True, exist_ok=True)
 
-    task, _oracle = load_instance(entry.instance_id, dataset)
+    if agent_task is None:
+        task, _oracle = load_instance(entry.instance_id, dataset)
+    else:
+        if agent_task.instance_id != entry.instance_id:
+            raise ValueError("agent_task does not match manifest entry")
+        task = agent_task
 
     started = _utc_now()
     t0 = datetime.now(UTC)

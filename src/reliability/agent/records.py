@@ -75,6 +75,8 @@ class Termination(str, Enum):
     TIMEOUT = "timeout"
     RATE_LIMITED = "rate_limited"
     INSUFFICIENT_BALANCE = "insufficient_balance"
+    BUDGET_CAP = "BUDGET_CAP"
+    AUTH_ERROR = "AUTH_ERROR"
     ERROR = "error"
 
 

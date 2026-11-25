@@ -81,6 +81,42 @@ class ContainerError(RuntimeError):
     pass
 
 
+class ContainerStartError(ContainerError):
+    """`docker run` failed: a machine-level failure, never the patch's (amendment B9)."""
+
+
+class PatchApplyError(ContainerError):
+    """`git apply` rejected the patch in the container: the patch does not apply (B9)."""
+
+
+# One entry per container start attempt in this process: True started, False failed.
+# The run loop reads it to stop on consecutive start failures (amendment B9, 7a).
+START_EVENTS: list[bool] = []
+
+
+#: Amendment B12: the SWE-bench 5.0.2 grader's patch application (harness/run_evaluation.py):
+#: each command in order on the patch file written with the stored bytes, the tree reset before
+#: every attempt after the first, then a reverse check. The patch applies iff one exits 0.
+HARNESS_APPLY_COMMANDS = (
+    "git apply --verbose",
+    "git apply --verbose --3way",
+    "git apply --verbose --reject",
+    "patch --batch --forward --fuzz=5 -p1 -i",
+)
+HARNESS_RESET = "git checkout -- . ; git clean -fd"
+HARNESS_REVERSE_CHECK = "git apply --check --reverse"
+HARNESS_PATCH_FILE = "/tmp/patch.diff"
+
+
+def git_apply_command(*, reverse: bool = False, check: bool = False) -> str:
+    """The one `git apply` command used to apply, revert and check a patch.
+
+    V1's apply check and the container's apply share it, so they cannot disagree.
+    """
+    flag = "-R" if reverse else "--check" if check else ""
+    return f"git apply {flag} -"
+
+
 @dataclass
 class TaskContainer:
     """A running container for one instance, with patch apply/revert.
@@ -100,6 +136,10 @@ class TaskContainer:
     _generated_pin: dict | None = field(default=None, init=False)
     _started: bool = field(default=False, init=False)
     _patch_applied: bool = field(default=False, init=False)
+    _base_saved: bool = field(default=False, init=False)
+    apply_command: str | None = field(default=None, init=False)
+    harness_patch_file: str = field(default=HARNESS_PATCH_FILE, init=False)
+    scratch_prefix: str = field(default="/tmp/verifier_", init=False)
 
     def __post_init__(self) -> None:
         self.image = self.image or image_for(self.instance_id)
@@ -130,7 +170,9 @@ class TaskContainer:
             capture_output=True, text=True, env=clean_env(), check=False,
         )
         if proc.returncode != 0:
-            raise ContainerError(f"could not start {self.image}: {proc.stderr.strip()}")
+            START_EVENTS.append(False)
+            raise ContainerStartError(f"could not start {self.image}: {proc.stderr.strip()}")
+        START_EVENTS.append(True)
         self._started = True
         if self.source_spec is not None:
             try:
@@ -220,30 +262,84 @@ class TaskContainer:
     def set_patched(self, patched: bool) -> None:
         """Move the working tree to the patched or base state.
 
-        Idempotent, so a caller can ask for the state it already has without
-        paying for a redundant apply or revert.
+        Patched: the grader's sequence (amendment B12). Base: the pristine tree saved before
+        the first application, restored exactly whichever command applied the patch.
+        Idempotent, so a caller can ask for the state it already has.
         """
         if patched == self._patch_applied:
             return
         if patched:
-            rc, out = self._apply(reverse=False)
-            if rc != 0:
-                raise ContainerError(f"patch did not apply in container: {out[:300]}")
+            applied, output, command = self._harness_apply()
+            if not applied:
+                self._restore_base()
+                raise PatchApplyError(f"patch did not apply in container: {output[-300:]}")
+            self.apply_command = command
         else:
-            rc, out = self._apply(reverse=True)
-            if rc != 0:
-                raise ContainerError(f"patch did not revert in container: {out[:300]}")
+            self._restore_base()
         self._patch_applied = patched
 
-    def _apply(self, *, reverse: bool) -> tuple[int, str]:
-        flag = "-R" if reverse else ""
-        proc = subprocess.run(
-            [_docker_bin(), "exec", "-i", "-w", WORKDIR, self.name,
-             "bash", "-lc", f"git apply {flag} -"],
-            input=self.patch_text, capture_output=True, text=True, errors="replace",
-            env=clean_env(), check=False,
-        )
-        return proc.returncode, (proc.stdout or "") + (proc.stderr or "")
+    def apply_check(self) -> tuple[bool, str, str | None]:
+        """Whether the grader's sequence applies the patch, and by which command; the tree is
+        restored afterwards. Returns (applies, output of the last command, command or None)."""
+        if self._patch_applied:
+            raise ContainerError("apply_check needs the base tree")
+        applied, output, command = self._harness_apply()
+        self._restore_base()
+        return applied, output.strip(), command
+
+    def put_file(self, path: str, data: bytes) -> None:
+        """Write `data` to `path` in the container, byte for byte."""
+        proc = subprocess.run([_docker_bin(), "exec", "-i", self.name, "bash", "-c", f"cat > {shlex.quote(path)}"],
+                              input=data, capture_output=True, env=clean_env(), check=False)
+        if proc.returncode != 0:
+            raise ContainerError(f"could not write {path} in the container")
+
+    def _harness_apply(self) -> tuple[bool, str, str | None]:
+        self._save_base()
+        path = shlex.quote(self.harness_patch_file)
+        self.put_file(self.harness_patch_file, self.patch_text.encode("utf-8"))
+        output = ""
+        for attempt, command in enumerate(HARNESS_APPLY_COMMANDS):
+            if attempt:
+                self.exec(HARNESS_RESET, timeout_s=600)
+            rc, output = self.exec(f"{command} {path}", timeout_s=600)
+            if rc == 0:
+                return True, output, command
+        rc, _ = self.exec(f"{HARNESS_REVERSE_CHECK} {path}", timeout_s=600)
+        if rc == 0:
+            return True, output, HARNESS_REVERSE_CHECK
+        return False, output, None
+
+    def _scratch(self, name):
+        return shlex.quote(self.scratch_prefix + name)
+
+    def _save_base(self) -> None:
+        """Save the pristine tree once: every non-ignored file in a private index, the list of
+        ignored files, and the real index."""
+        if self._base_saved:
+            return
+        index, ignored, real = self._scratch("base.index"), self._scratch("base.ignored"), self._scratch("real.index")
+        rc, out = self.exec(
+            f"cp .git/index {real} && rm -f {index} && GIT_INDEX_FILE={index} git add -A . "
+            f"&& git ls-files -z --others --ignored --exclude-standard | sort -z > {ignored}", timeout_s=1800)
+        if rc != 0:
+            raise ContainerError(f"could not save the base tree: {out[-300:]}")
+        self._base_saved = True
+
+    def _restore_base(self) -> None:
+        """Restore the saved pristine tree: changed or deleted files, new files and directories,
+        new ignored files (e.g. .orig backups) and the real index."""
+        if not self._base_saved:
+            return
+        index, ignored, real = self._scratch("base.index"), self._scratch("base.ignored"), self._scratch("real.index")
+        now = self._scratch("now.ignored")
+        rc, out = self.exec(
+            f"export GIT_INDEX_FILE={index} && git diff --name-only -z | xargs -0 -r git checkout-index -f -- "
+            f"&& git clean -fdq && unset GIT_INDEX_FILE "
+            f"&& git ls-files -z --others --ignored --exclude-standard | sort -z > {now} "
+            f"&& comm -z -13 {ignored} {now} | xargs -0 -r rm -f -- && cp {real} .git/index", timeout_s=1800)
+        if rc != 0:
+            raise ContainerError(f"patch did not revert in container: {out[-300:]}")
 
 
 @dataclass(frozen=True, slots=True)
