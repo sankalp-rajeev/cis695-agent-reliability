@@ -1,0 +1,2066 @@
+{
+ "empty_patch_sensitivity": {
+  "block": {
+   "bootstrap": {
+    "h1_ci": [
+     0.3196496989600438,
+     0.5285299806576402
+    ],
+    "h1_supported": true,
+    "h2_ci": [
+     0.25498269483231883,
+     0.4880793226381462
+    ],
+    "h2_supported": true,
+    "precision_ci": [
+     0.7288135593220338,
+     0.9402985074626866
+    ],
+    "resamples": 10000,
+    "resamples_used": 10000,
+    "seed": 20261126,
+    "tasks": 102
+   },
+   "bootstrap_per_system": {
+    "claude-sonnet-4": {
+     "h1_ci": [
+      0.07058823529411773,
+      0.33333333333333337
+     ],
+     "h1_supported": true,
+     "h2_ci": [
+      0.07814629713766474,
+      0.375
+     ],
+     "h2_supported": true,
+     "precision_ci": [
+      0.7391304347826086,
+      1.0
+     ],
+     "resamples": 10000,
+     "resamples_used": 10000,
+     "seed": 20261126,
+     "tasks": 102
+    },
+    "gemini-2.5-flash": {
+     "h1_ci": [
+      0.45238095238095233,
+      0.7428571428571429
+     ],
+     "h1_supported": true,
+     "h2_ci": [
+      0.36965811965811957,
+      0.7916666666666666
+     ],
+     "h2_supported": true,
+     "precision_ci": [
+      0.7777777777777778,
+      1.0
+     ],
+     "resamples": 10000,
+     "resamples_used": 10000,
+     "seed": 20261126,
+     "tasks": 70
+    },
+    "gpt-4.1-mini": {
+     "h1_ci": [
+      0.3105882352941176,
+      0.6973684210526315
+     ],
+     "h1_supported": true,
+     "h2_ci": [
+      0.3035230352303523,
+      0.7390350877192982
+     ],
+     "h2_supported": true,
+     "precision_ci": [
+      0.5,
+      0.9285714285714286
+     ],
+     "resamples": 10000,
+     "resamples_used": 10000,
+     "seed": 20261126,
+     "tasks": 100
+    }
+   },
+   "per_system": {
+    "claude-sonnet-4": {
+     "accept_precision": {
+      "ci": [
+       0.7004420607907267,
+       0.9583318284955964
+      ],
+      "k": 22,
+      "n": 25,
+      "value": 0.88
+     },
+     "accept_weighted_base_rate": 0.6764705882352942,
+     "base_rate": {
+      "ci": [
+       0.5807104316100656,
+       0.7594209346911828
+      ],
+      "k": 69,
+      "n": 102,
+      "value": 0.6764705882352942
+     },
+     "correct": 69,
+     "correct_rejected": {
+      "ci": [
+       0.07016627839603491,
+       0.2296829993958729
+      ],
+      "k": 9,
+      "n": 69,
+      "value": 0.13043478260869565
+     },
+     "coverage": {
+      "ci": [
+       0.2209476045038311,
+       0.4358412571588688
+      ],
+      "k": 22,
+      "n": 69,
+      "value": 0.3188405797101449
+     },
+     "decisions": {
+      "ACCEPT_correct": 22,
+      "ACCEPT_wrong": 3,
+      "FLAG_correct": 38,
+      "FLAG_wrong": 15,
+      "REJECT_correct": 9,
+      "REJECT_wrong": 15
+     },
+     "empty": 0,
+     "false_accept_rate": {
+      "ci": [
+       0.03140394152458165,
+       0.2357260564646973
+      ],
+      "k": 3,
+      "n": 33,
+      "value": 0.09090909090909091
+     },
+     "fisher_p": 0.013702974539510323,
+     "flag_rate": {
+      "ci": [
+       0.42371127251096535,
+       0.6140811015225066
+      ],
+      "k": 53,
+      "n": 102,
+      "value": 0.5196078431372549
+     },
+     "held_back_correct": {
+      "ci": [
+       0.5641587428411312,
+       0.779052395496169
+      ],
+      "k": 47,
+      "n": 69,
+      "value": 0.6811594202898551
+     },
+     "held_back_difference": {
+      "ci_newcombe": [
+       0.053131637235105306,
+       0.3591946646225047
+      ],
+      "value": 0.22793148880105396
+     },
+     "held_back_wrong": {
+      "ci": [
+       0.7642739435353026,
+       0.9685960584754184
+      ],
+      "k": 30,
+      "n": 33,
+      "value": 0.9090909090909091
+     },
+     "lift": 1.3008695652173912,
+     "lift_accept_weighted": 1.3008695652173912,
+     "n": 102,
+     "unlabelled": 0,
+     "wrong": 33,
+     "wrong_rejected": {
+      "ci": [
+       0.29842938513876116,
+       0.6201406146378254
+      ],
+      "k": 15,
+      "n": 33,
+      "value": 0.45454545454545453
+     }
+    },
+    "gemini-2.5-flash": {
+     "accept_precision": {
+      "ci": [
+       0.7018347012621998,
+       0.9881331045067315
+      ],
+      "k": 14,
+      "n": 15,
+      "value": 0.9333333333333333
+     },
+     "accept_weighted_base_rate": 0.32857142857142857,
+     "base_rate": {
+      "ci": [
+       0.22998869307186087,
+       0.4449906426116592
+      ],
+      "k": 23,
+      "n": 70,
+      "value": 0.32857142857142857
+     },
+     "correct": 23,
+     "correct_rejected": {
+      "ci": [
+       0.06978653563062565,
+       0.3713764764022614
+      ],
+      "k": 4,
+      "n": 23,
+      "value": 0.17391304347826086
+     },
+     "coverage": {
+      "ci": [
+       0.4078552239138171,
+       0.7784237720752205
+      ],
+      "k": 14,
+      "n": 23,
+      "value": 0.6086956521739131
+     },
+     "decisions": {
+      "ACCEPT_correct": 14,
+      "ACCEPT_wrong": 1,
+      "FLAG_correct": 5,
+      "FLAG_wrong": 14,
+      "REJECT_correct": 4,
+      "REJECT_wrong": 32
+     },
+     "empty": 0,
+     "false_accept_rate": {
+      "ci": [
+       0.0037657680385967812,
+       0.11112981041629329
+      ],
+      "k": 1,
+      "n": 47,
+      "value": 0.02127659574468085
+     },
+     "fisher_p": 5.391446286292685e-08,
+     "flag_rate": {
+      "ci": [
+       0.1811959968818828,
+       0.38544311736281056
+      ],
+      "k": 19,
+      "n": 70,
+      "value": 0.2714285714285714
+     },
+     "held_back_correct": {
+      "ci": [
+       0.22157622792477952,
+       0.592144776086183
+      ],
+      "k": 9,
+      "n": 23,
+      "value": 0.391304347826087
+     },
+     "held_back_difference": {
+      "ci_newcombe": [
+       0.3673952445121542,
+       0.7580480802563194
+      ],
+      "value": 0.5874190564292321
+     },
+     "held_back_wrong": {
+      "ci": [
+       0.8888701895837066,
+       0.996234231961403
+      ],
+      "k": 46,
+      "n": 47,
+      "value": 0.9787234042553191
+     },
+     "lift": 2.8405797101449277,
+     "lift_accept_weighted": 2.8405797101449277,
+     "n": 70,
+     "unlabelled": 16,
+     "wrong": 47,
+     "wrong_rejected": {
+      "ci": [
+       0.5383265689689715,
+       0.7960462125036255
+      ],
+      "k": 32,
+      "n": 47,
+      "value": 0.6808510638297872
+     }
+    },
+    "gpt-4.1-mini": {
+     "accept_precision": {
+      "ci": [
+       0.4912734343970254,
+       0.8750024662044601
+      ],
+      "k": 13,
+      "n": 18,
+      "value": 0.7222222222222222
+     },
+     "accept_weighted_base_rate": 0.22,
+     "base_rate": {
+      "ci": [
+       0.150012823846054,
+       0.31070353514985793
+      ],
+      "k": 22,
+      "n": 100,
+      "value": 0.22
+     },
+     "correct": 22,
+     "correct_rejected": {
+      "ci": [
+       0.04749003714055253,
+       0.33334987166571717
+      ],
+      "k": 3,
+      "n": 22,
+      "value": 0.13636363636363635
+     },
+     "coverage": {
+      "ci": [
+       0.3873481847631513,
+       0.7674418380352814
+      ],
+      "k": 13,
+      "n": 22,
+      "value": 0.5909090909090909
+     },
+     "decisions": {
+      "ACCEPT_correct": 13,
+      "ACCEPT_wrong": 5,
+      "FLAG_correct": 6,
+      "FLAG_wrong": 32,
+      "REJECT_correct": 3,
+      "REJECT_wrong": 41
+     },
+     "empty": 0,
+     "false_accept_rate": {
+      "ci": [
+       0.027689315373790935,
+       0.14143595463171177
+      ],
+      "k": 5,
+      "n": 78,
+      "value": 0.0641025641025641
+     },
+     "fisher_p": 3.5775580475038757e-07,
+     "flag_rate": {
+      "ci": [
+       0.29097599252478734,
+       0.47790244704488916
+      ],
+      "k": 38,
+      "n": 100,
+      "value": 0.38
+     },
+     "held_back_correct": {
+      "ci": [
+       0.2325581619647187,
+       0.6126518152368488
+      ],
+      "k": 9,
+      "n": 22,
+      "value": 0.4090909090909091
+     },
+     "held_back_difference": {
+      "ci_newcombe": [
+       0.3090509395034917,
+       0.7070556197055008
+      ],
+      "value": 0.5268065268065267
+     },
+     "held_back_wrong": {
+      "ci": [
+       0.8585640453682883,
+       0.9723106846262091
+      ],
+      "k": 73,
+      "n": 78,
+      "value": 0.9358974358974359
+     },
+     "lift": 3.282828282828283,
+     "lift_accept_weighted": 3.282828282828283,
+     "n": 100,
+     "unlabelled": 2,
+     "wrong": 78,
+     "wrong_rejected": {
+      "ci": [
+       0.41624765387740176,
+       0.6326273302399217
+      ],
+      "k": 41,
+      "n": 78,
+      "value": 0.5256410256410257
+     }
+    }
+   },
+   "pooled": {
+    "accept_precision": {
+     "ci": [
+      0.730660191401075,
+      0.9161550804698196
+     ],
+     "k": 49,
+     "n": 58,
+     "value": 0.8448275862068966
+    },
+    "accept_weighted_base_rate": 0.44483338162851355,
+    "base_rate": {
+     "ci": [
+      0.3620053469408236,
+      0.47848273564069504
+     ],
+     "k": 114,
+     "n": 272,
+     "value": 0.41911764705882354
+    },
+    "correct": 114,
+    "correct_rejected": {
+     "ci": [
+      0.0882740658274536,
+      0.21587575698855527
+     ],
+     "k": 16,
+     "n": 114,
+     "value": 0.14035087719298245
+    },
+    "coverage": {
+     "ci": [
+      0.3427011480788536,
+      0.5215232075925629
+     ],
+     "k": 49,
+     "n": 114,
+     "value": 0.4298245614035088
+    },
+    "decisions": {
+     "ACCEPT_correct": 49,
+     "ACCEPT_wrong": 9,
+     "FLAG_correct": 49,
+     "FLAG_wrong": 61,
+     "REJECT_correct": 16,
+     "REJECT_wrong": 88
+    },
+    "empty": 0,
+    "false_accept_rate": {
+     "ci": [
+      0.030254078914574406,
+      0.10470181545172955
+     ],
+     "k": 9,
+     "n": 158,
+     "value": 0.056962025316455694
+    },
+    "fisher_p": 8.187059732536483e-14,
+    "flag_rate": {
+     "ci": [
+      0.3478110337063673,
+      0.46367488207179103
+     ],
+     "k": 110,
+     "n": 272,
+     "value": 0.40441176470588236
+    },
+    "held_back_correct": {
+     "ci": [
+      0.4784767924074372,
+      0.6572988519211465
+     ],
+     "k": 65,
+     "n": 114,
+     "value": 0.5701754385964912
+    },
+    "held_back_difference": {
+     "ci_newcombe": [
+      0.273516792788718,
+      0.4683714682029086
+     ],
+     "value": 0.3728625360870531
+    },
+    "held_back_wrong": {
+     "ci": [
+      0.8952981845482706,
+      0.9697459210854258
+     ],
+     "k": 149,
+     "n": 158,
+     "value": 0.9430379746835443
+    },
+    "lift": 2.015728977616455,
+    "lift_accept_weighted": 1.8992000625358276,
+    "n": 272,
+    "unlabelled": 18,
+    "wrong": 158,
+    "wrong_rejected": {
+     "ci": [
+      0.4790671982051389,
+      0.6321527582334794
+     ],
+     "k": 88,
+     "n": 158,
+     "value": 0.5569620253164557
+    }
+   }
+  },
+  "empty_counts": {
+   "claude-sonnet-4": 0,
+   "gemini-2.5-flash": 5,
+   "gpt-4.1-mini": 2
+  },
+  "empty_ids": {
+   "claude-sonnet-4": [],
+   "gemini-2.5-flash": [
+    "django__django-14493",
+    "django__django-15957",
+    "pytest-dev__pytest-7571",
+    "sphinx-doc__sphinx-8035",
+    "sphinx-doc__sphinx-9461"
+   ],
+   "gpt-4.1-mini": [
+    "django__django-13513",
+    "sympy__sympy-13031"
+   ]
+  }
+ },
+ "false_accepts": [
+  {
+   "fail_to_pass_failed": [
+    "test_simplify_regex (admin_docs.test_views.AdminDocViewFunctionsTests)"
+   ],
+   "grader_applied_patch": true,
+   "instance_id": "django__django-11728",
+   "official_failures_run_by_v2": {
+    "FAIL_TO_PASS": [],
+    "PASS_TO_PASS": []
+   },
+   "pass_to_pass_failed": [
+    "test_builtin_fields (admin_docs.test_views.TestFieldType)"
+   ],
+   "reason": "all accept conditions met",
+   "repo": "django/django",
+   "report_sha256": "445bb1101025062f0cb690c7a347f7a23a13f19b084acb32ef7f7573ec5cf38f",
+   "rule": "R6",
+   "status_source": "official report.json (claude-sonnet-4)",
+   "system": "claude-sonnet-4",
+   "v2": "PASS",
+   "v4_full_pass": true,
+   "v4_pass_units": 2,
+   "v4_uncovered_units": 0,
+   "why_missed": "V2 PASS on the 7 tests it ran, none of them a PASS_TO_PASS test the grader saw fail (matched by test name); V4 passed 2 requirement(s)",
+   "wrong_type": "X"
+  },
+  {
+   "fail_to_pass_failed": [
+    "test_json_display_for_field (admin_utils.tests.UtilsTests)",
+    "test_label_for_field (admin_utils.tests.UtilsTests)"
+   ],
+   "grader_applied_patch": true,
+   "instance_id": "django__django-12308",
+   "official_failures_run_by_v2": {
+    "FAIL_TO_PASS": [
+     "test_label_for_field (admin_utils.tests.UtilsTests)"
+    ],
+    "PASS_TO_PASS": []
+   },
+   "pass_to_pass_failed": [],
+   "reason": "all accept conditions met",
+   "repo": "django/django",
+   "report_sha256": "a8ccfc9eaee0d172d48518d9ccaef307a382c6015d3b0c217f58eb704e7b7f4d",
+   "rule": "R6",
+   "status_source": "official report.json (claude-sonnet-4)",
+   "system": "claude-sonnet-4",
+   "v2": "PASS",
+   "v4_full_pass": true,
+   "v4_pass_units": 2,
+   "v4_uncovered_units": 0,
+   "why_missed": "the official failures are FAIL_TO_PASS only; V4 passed 2 requirement(s) (0 uncovered) without catching the missing behaviour; V2 PASS on the 30 tests it ran",
+   "wrong_type": "U"
+  },
+  {
+   "fail_to_pass_failed": [
+    "test_iterable_boundfield_select (forms_tests.tests.test_forms.FormsTestCase)"
+   ],
+   "grader_applied_patch": true,
+   "instance_id": "django__django-14534",
+   "official_failures_run_by_v2": {
+    "FAIL_TO_PASS": [
+     "test_iterable_boundfield_select (forms_tests.tests.test_forms.FormsTestCase)"
+    ],
+    "PASS_TO_PASS": []
+   },
+   "pass_to_pass_failed": [],
+   "reason": "all accept conditions met",
+   "repo": "django/django",
+   "report_sha256": "ade9c21c4e990402dec2eac90eb30749e3d81f4789b5bca6e972de1f8dddfe09",
+   "rule": "R6",
+   "status_source": "official report.json (claude-sonnet-4)",
+   "system": "claude-sonnet-4",
+   "v2": "PASS",
+   "v4_full_pass": true,
+   "v4_pass_units": 2,
+   "v4_uncovered_units": 0,
+   "why_missed": "the official failures are FAIL_TO_PASS only; V4 passed 2 requirement(s) (0 uncovered) without catching the missing behaviour; V2 PASS on the 452 tests it ran",
+   "wrong_type": "U"
+  },
+  {
+   "fail_to_pass_failed": [],
+   "grader_applied_patch": true,
+   "instance_id": "django__django-13568",
+   "official_failures_run_by_v2": {
+    "FAIL_TO_PASS": [],
+    "PASS_TO_PASS": []
+   },
+   "pass_to_pass_failed": [
+    "test_username_partially_unique (auth_tests.test_checks.UserModelChecksTests)"
+   ],
+   "reason": "all accept conditions met; V4: 2 requirement(s) PASS, exactly one uncovered, none failing or NO_RESULT (r6b_accept_one_uncovered)",
+   "repo": "django/django",
+   "report_sha256": "85dfe49cda8e28461f0a76136087ae87a5ac9ca515c2151d86970c4c350ba083",
+   "rule": "R6b",
+   "status_source": "official report.json (gemini-2.5-flash_b2)",
+   "system": "gemini-2.5-flash",
+   "v2": "PASS",
+   "v4_full_pass": false,
+   "v4_pass_units": 2,
+   "v4_uncovered_units": 1,
+   "why_missed": "V2 PASS on the 12 tests it ran, none of them a PASS_TO_PASS test the grader saw fail (matched by test name); V4 passed 2 requirement(s)",
+   "wrong_type": "R"
+  },
+  {
+   "fail_to_pass_failed": [
+    "test_simplify_regex (admin_docs.test_views.AdminDocViewFunctionsTests)",
+    "test_app_not_found (admin_docs.test_views.TestModelDetailView)"
+   ],
+   "grader_applied_patch": true,
+   "instance_id": "django__django-11728",
+   "official_failures_run_by_v2": {
+    "FAIL_TO_PASS": [],
+    "PASS_TO_PASS": []
+   },
+   "pass_to_pass_failed": [
+    "test_builtin_fields (admin_docs.test_views.TestFieldType)",
+    "test_custom_fields (admin_docs.test_views.TestFieldType)",
+    "test_field_name (admin_docs.test_views.TestFieldType)",
+    "test_descriptions_render_correctly (admin_docs.test_views.TestModelDetailView)",
+    "Model properties are displayed as fields.",
+    "test_method_data_types (admin_docs.test_views.TestModelDetailView)",
+    "test_method_excludes (admin_docs.test_views.TestModelDetailView)",
+    "test_methods_with_arguments (admin_docs.test_views.TestModelDetailView)",
+    "test_methods_with_arguments_display_arguments (admin_docs.test_views.TestModelDetailView)",
+    "test_methods_with_arguments_display_arguments_default_value (admin_docs.test_views.TestModelDetailView)",
+    "test_methods_with_multiple_arguments_display_arguments (admin_docs.test_views.TestModelDetailView)",
+    "test_model_detail_title (admin_docs.test_views.TestModelDetailView)",
+    "test_model_docstring_renders_correctly (admin_docs.test_views.TestModelDetailView)",
+    "test_model_not_found (admin_docs.test_views.TestModelDetailView)",
+    "test_model_with_many_to_one (admin_docs.test_views.TestModelDetailView)",
+    "test_model_with_no_backward_relations_render_only_relevant_fields (admin_docs.test_views.TestModelDetailView)",
+    "test_bookmarklets (admin_docs.test_views.AdminDocViewTests)",
+    "test_index (admin_docs.test_views.AdminDocViewTests)",
+    "test_missing_docutils (admin_docs.test_views.AdminDocViewTests)",
+    "test_model_index (admin_docs.test_views.AdminDocViewTests)",
+    "test_namespaced_view_detail (admin_docs.test_views.AdminDocViewTests)",
+    "test_no_sites_framework (admin_docs.test_views.AdminDocViewTests)",
+    "test_template_detail (admin_docs.test_views.AdminDocViewTests)",
+    "test_templatefilter_index (admin_docs.test_views.AdminDocViewTests)",
+    "test_templatetag_index (admin_docs.test_views.AdminDocViewTests)",
+    "test_view_detail (admin_docs.test_views.AdminDocViewTests)",
+    "test_view_detail_as_method (admin_docs.test_views.AdminDocViewTests)",
+    "test_view_detail_illegal_import (admin_docs.test_views.AdminDocViewTests)",
+    "test_view_index (admin_docs.test_views.AdminDocViewTests)",
+    "test_view_index_with_method (admin_docs.test_views.AdminDocViewTests)",
+    "test_bookmarklets (admin_docs.test_views.AdminDocViewWithMultipleEngines)",
+    "test_index (admin_docs.test_views.AdminDocViewWithMultipleEngines)",
+    "test_missing_docutils (admin_docs.test_views.AdminDocViewWithMultipleEngines)",
+    "test_model_index (admin_docs.test_views.AdminDocViewWithMultipleEngines)",
+    "test_namespaced_view_detail (admin_docs.test_views.AdminDocViewWithMultipleEngines)",
+    "test_no_sites_framework (admin_docs.test_views.AdminDocViewWithMultipleEngines)",
+    "test_template_detail (admin_docs.test_views.AdminDocViewWithMultipleEngines)",
+    "test_templatefilter_index (admin_docs.test_views.AdminDocViewWithMultipleEngines)",
+    "test_templatetag_index (admin_docs.test_views.AdminDocViewWithMultipleEngines)",
+    "test_view_detail (admin_docs.test_views.AdminDocViewWithMultipleEngines)",
+    "test_view_detail_as_method (admin_docs.test_views.AdminDocViewWithMultipleEngines)",
+    "test_view_detail_illegal_import (admin_docs.test_views.AdminDocViewWithMultipleEngines)",
+    "test_view_index (admin_docs.test_views.AdminDocViewWithMultipleEngines)",
+    "test_view_index_with_method (admin_docs.test_views.AdminDocViewWithMultipleEngines)"
+   ],
+   "reason": "all accept conditions met; regression NOT_AVAILABLE (nothing to check) accepted (r6_accept_v2_not_available)",
+   "repo": "django/django",
+   "report_sha256": "9ddf3df8a4f020b3fad6b436dea018112493a2fa3d02b2a4693c5b992e3c1aae",
+   "rule": "R6",
+   "status_source": "our grader (gpt-4.1-mini_ours)",
+   "system": "gpt-4.1-mini",
+   "v2": "NOT_AVAILABLE (nothing_to_check)",
+   "v4_full_pass": true,
+   "v4_pass_units": 2,
+   "v4_uncovered_units": 0,
+   "why_missed": "V2 had nothing to check (no test selected), none of them a PASS_TO_PASS test the grader saw fail (matched by test name); V4 passed 2 requirement(s)",
+   "wrong_type": "X"
+  },
+  {
+   "fail_to_pass_failed": [],
+   "grader_applied_patch": true,
+   "instance_id": "django__django-13109",
+   "official_failures_run_by_v2": {
+    "FAIL_TO_PASS": [],
+    "PASS_TO_PASS": []
+   },
+   "pass_to_pass_failed": [
+    "test_validate_foreign_key_uses_default_manager (model_forms.tests.ModelFormBasicTests)"
+   ],
+   "reason": "all accept conditions met; regression NOT_AVAILABLE (incomplete) accepted (r6_accept_v2_not_available)",
+   "repo": "django/django",
+   "report_sha256": "435389e6202ee94240b279808230021e3e8edcb26b3f9a15db70ef92989077f5",
+   "rule": "R6",
+   "status_source": "our grader (gpt-4.1-mini_ours)",
+   "system": "gpt-4.1-mini",
+   "v2": "NOT_AVAILABLE (incomplete)",
+   "v4_full_pass": true,
+   "v4_pass_units": 3,
+   "v4_uncovered_units": 0,
+   "why_missed": "V2 NOT_AVAILABLE (incomplete) on the 3115 tests it ran, none of them a PASS_TO_PASS test the grader saw fail (matched by test name); V4 passed 3 requirement(s)",
+   "wrong_type": "R"
+  },
+  {
+   "fail_to_pass_failed": [
+    "Updating the user email address invalidates the token.",
+    "test_token_with_different_secret (auth_tests.test_tokens.TokenGeneratorTest)"
+   ],
+   "grader_applied_patch": true,
+   "instance_id": "django__django-13551",
+   "official_failures_run_by_v2": {
+    "FAIL_TO_PASS": [
+     "test_token_with_different_secret (auth_tests.test_tokens.TokenGeneratorTest)"
+    ],
+    "PASS_TO_PASS": []
+   },
+   "pass_to_pass_failed": [],
+   "reason": "all accept conditions met; V4: 1 requirement(s) PASS, exactly one uncovered, none failing or NO_RESULT (r6b_accept_one_uncovered)",
+   "repo": "django/django",
+   "report_sha256": "16a57e0ea3cc8b59c2f5afaeecd953bd7408adefb0993834e11fe26ab5c87242",
+   "rule": "R6b",
+   "status_source": "our grader (gpt-4.1-mini_b2)",
+   "system": "gpt-4.1-mini",
+   "v2": "PASS",
+   "v4_full_pass": false,
+   "v4_pass_units": 1,
+   "v4_uncovered_units": 1,
+   "why_missed": "the official failures are FAIL_TO_PASS only; V4 passed 1 requirement(s) (1 uncovered) without catching the missing behaviour; V2 PASS on the 20 tests it ran",
+   "wrong_type": "U"
+  },
+  {
+   "fail_to_pass_failed": [
+    "test_ndim_array_initiation"
+   ],
+   "grader_applied_patch": true,
+   "instance_id": "sympy__sympy-15017",
+   "official_failures_run_by_v2": {
+    "FAIL_TO_PASS": [],
+    "PASS_TO_PASS": []
+   },
+   "pass_to_pass_failed": [
+    "test_ndim_array_converting",
+    "test_converting_functions"
+   ],
+   "reason": "all accept conditions met; regression NOT_AVAILABLE (nothing to check) accepted (r6_accept_v2_not_available)",
+   "repo": "sympy/sympy",
+   "report_sha256": "b461f66ecd87764440225f4c79a3476955c8e6bd2d78bdbc91902f63538c4432",
+   "rule": "R6",
+   "status_source": "our grader (gpt-4.1-mini_ours)",
+   "system": "gpt-4.1-mini",
+   "v2": "NOT_AVAILABLE (nothing_to_check)",
+   "v4_full_pass": true,
+   "v4_pass_units": 1,
+   "v4_uncovered_units": 0,
+   "why_missed": "V2 had nothing to check (no test selected), none of them a PASS_TO_PASS test the grader saw fail (matched by test name); V4 passed 1 requirement(s)",
+   "wrong_type": "X"
+  },
+  {
+   "fail_to_pass_failed": [],
+   "grader_applied_patch": false,
+   "instance_id": "sympy__sympy-23824",
+   "official_failures_run_by_v2": {
+    "FAIL_TO_PASS": [],
+    "PASS_TO_PASS": []
+   },
+   "pass_to_pass_failed": [],
+   "reason": "all accept conditions met",
+   "repo": "sympy/sympy",
+   "report_sha256": "f812d593e2c36278dda34c526ee924d6804aac61ab2ad07d347226df4ebc2dda",
+   "rule": "R6",
+   "status_source": "our grader (gpt-4.1-mini_ours)",
+   "system": "gpt-4.1-mini",
+   "v2": "PASS",
+   "v4_full_pass": true,
+   "v4_pass_units": 2,
+   "v4_uncovered_units": 0,
+   "why_missed": "the grader could not apply the patch (patch_successfully_applied false), so there is no per-test status; our verifier applied it; V2 PASS on the 4 tests it ran; V4 passed 2 requirement(s)",
+   "wrong_type": "unknown"
+  }
+ ],
+ "frozen": {
+  "config_path": "configs/verifier/v1_5.yaml",
+  "config_sha256": "be997bc6c48d9108b0f3b0e411603677639e55b5c2d57b991b0394a6792d15cb",
+  "tag": "v1.5-frozen-2",
+  "tag_commit": "26d42df0fd708bb2cf015b7da87a780dc66dd264"
+ },
+ "frozen_block": {
+  "bootstrap": {
+   "h1_ci": [
+    0.30937234944868536,
+    0.5168896321070233
+   ],
+   "h1_supported": true,
+   "h2_ci": [
+    0.25250000000000006,
+    0.4860117111255693
+   ],
+   "h2_supported": true,
+   "precision_ci": [
+    0.7288135593220338,
+    0.9402985074626866
+   ],
+   "resamples": 10000,
+   "resamples_used": 10000,
+   "seed": 20261126,
+   "tasks": 102
+  },
+  "per_system": {
+   "claude-sonnet-4": {
+    "accept_precision": {
+     "ci": [
+      0.7004420607907267,
+      0.9583318284955964
+     ],
+     "k": 22,
+     "n": 25,
+     "value": 0.88
+    },
+    "accept_weighted_base_rate": 0.6764705882352942,
+    "base_rate": {
+     "ci": [
+      0.5807104316100656,
+      0.7594209346911828
+     ],
+     "k": 69,
+     "n": 102,
+     "value": 0.6764705882352942
+    },
+    "correct": 69,
+    "correct_rejected": {
+     "ci": [
+      0.07016627839603491,
+      0.2296829993958729
+     ],
+     "k": 9,
+     "n": 69,
+     "value": 0.13043478260869565
+    },
+    "coverage": {
+     "ci": [
+      0.2209476045038311,
+      0.4358412571588688
+     ],
+     "k": 22,
+     "n": 69,
+     "value": 0.3188405797101449
+    },
+    "decisions": {
+     "ACCEPT_correct": 22,
+     "ACCEPT_wrong": 3,
+     "FLAG_correct": 38,
+     "FLAG_wrong": 15,
+     "REJECT_correct": 9,
+     "REJECT_wrong": 15
+    },
+    "empty": 0,
+    "false_accept_rate": {
+     "ci": [
+      0.03140394152458165,
+      0.2357260564646973
+     ],
+     "k": 3,
+     "n": 33,
+     "value": 0.09090909090909091
+    },
+    "fisher_p": 0.013702974539510323,
+    "flag_rate": {
+     "ci": [
+      0.42371127251096535,
+      0.6140811015225066
+     ],
+     "k": 53,
+     "n": 102,
+     "value": 0.5196078431372549
+    },
+    "held_back_correct": {
+     "ci": [
+      0.5641587428411312,
+      0.779052395496169
+     ],
+     "k": 47,
+     "n": 69,
+     "value": 0.6811594202898551
+    },
+    "held_back_difference": {
+     "ci_newcombe": [
+      0.053131637235105306,
+      0.3591946646225047
+     ],
+     "value": 0.22793148880105396
+    },
+    "held_back_wrong": {
+     "ci": [
+      0.7642739435353026,
+      0.9685960584754184
+     ],
+     "k": 30,
+     "n": 33,
+     "value": 0.9090909090909091
+    },
+    "lift": 1.3008695652173912,
+    "lift_accept_weighted": 1.3008695652173912,
+    "n": 102,
+    "unlabelled": 0,
+    "wrong": 33,
+    "wrong_rejected": {
+     "ci": [
+      0.29842938513876116,
+      0.6201406146378254
+     ],
+     "k": 15,
+     "n": 33,
+     "value": 0.45454545454545453
+    }
+   },
+   "gemini-2.5-flash": {
+    "accept_precision": {
+     "ci": [
+      0.7018347012621998,
+      0.9881331045067315
+     ],
+     "k": 14,
+     "n": 15,
+     "value": 0.9333333333333333
+    },
+    "accept_weighted_base_rate": 0.35384615384615387,
+    "base_rate": {
+     "ci": [
+      0.24875458464285766,
+      0.47524893989766986
+     ],
+     "k": 23,
+     "n": 65,
+     "value": 0.35384615384615387
+    },
+    "correct": 23,
+    "correct_rejected": {
+     "ci": [
+      0.06978653563062565,
+      0.3713764764022614
+     ],
+     "k": 4,
+     "n": 23,
+     "value": 0.17391304347826086
+    },
+    "coverage": {
+     "ci": [
+      0.4078552239138171,
+      0.7784237720752205
+     ],
+     "k": 14,
+     "n": 23,
+     "value": 0.6086956521739131
+    },
+    "decisions": {
+     "ACCEPT_correct": 14,
+     "ACCEPT_wrong": 1,
+     "FLAG_correct": 5,
+     "FLAG_wrong": 14,
+     "REJECT_correct": 4,
+     "REJECT_wrong": 27
+    },
+    "empty": 5,
+    "false_accept_rate": {
+     "ci": [
+      0.004215404134432499,
+      0.12321201573766646
+     ],
+     "k": 1,
+     "n": 42,
+     "value": 0.023809523809523808
+    },
+    "fisher_p": 1.6787146180300207e-07,
+    "flag_rate": {
+     "ci": [
+      0.19583410987679917,
+      0.41196037236500305
+     ],
+     "k": 19,
+     "n": 65,
+     "value": 0.2923076923076923
+    },
+    "held_back_correct": {
+     "ci": [
+      0.22157622792477952,
+      0.592144776086183
+     ],
+     "k": 9,
+     "n": 23,
+     "value": 0.391304347826087
+    },
+    "held_back_difference": {
+     "ci_newcombe": [
+      0.36079299365200385,
+      0.7557415181274119
+     ],
+     "value": 0.5848861283643891
+    },
+    "held_back_wrong": {
+     "ci": [
+      0.8767879842623334,
+      0.9957845958655673
+     ],
+     "k": 41,
+     "n": 42,
+     "value": 0.9761904761904762
+    },
+    "lift": 2.6376811594202896,
+    "lift_accept_weighted": 2.6376811594202896,
+    "n": 65,
+    "unlabelled": 16,
+    "wrong": 42,
+    "wrong_rejected": {
+     "ci": [
+      0.4916636571945582,
+      0.7701081168438123
+     ],
+     "k": 27,
+     "n": 42,
+     "value": 0.6428571428571429
+    }
+   },
+   "gpt-4.1-mini": {
+    "accept_precision": {
+     "ci": [
+      0.4912734343970254,
+      0.8750024662044601
+     ],
+     "k": 13,
+     "n": 18,
+     "value": 0.7222222222222222
+    },
+    "accept_weighted_base_rate": 0.22448979591836732,
+    "base_rate": {
+     "ci": [
+      0.15318242080683164,
+      0.3165816553826658
+     ],
+     "k": 22,
+     "n": 98,
+     "value": 0.22448979591836735
+    },
+    "correct": 22,
+    "correct_rejected": {
+     "ci": [
+      0.04749003714055253,
+      0.33334987166571717
+     ],
+     "k": 3,
+     "n": 22,
+     "value": 0.13636363636363635
+    },
+    "coverage": {
+     "ci": [
+      0.3873481847631513,
+      0.7674418380352814
+     ],
+     "k": 13,
+     "n": 22,
+     "value": 0.5909090909090909
+    },
+    "decisions": {
+     "ACCEPT_correct": 13,
+     "ACCEPT_wrong": 5,
+     "FLAG_correct": 6,
+     "FLAG_wrong": 32,
+     "REJECT_correct": 3,
+     "REJECT_wrong": 39
+    },
+    "empty": 2,
+    "false_accept_rate": {
+     "ci": [
+      0.028426532219532126,
+      0.14493526533703452
+     ],
+     "k": 5,
+     "n": 76,
+     "value": 0.06578947368421052
+    },
+    "fisher_p": 4.6722254613464223e-07,
+    "flag_rate": {
+     "ci": [
+      0.29726468270356593,
+      0.4867132742625256
+     ],
+     "k": 38,
+     "n": 98,
+     "value": 0.3877551020408163
+    },
+    "held_back_correct": {
+     "ci": [
+      0.2325581619647187,
+      0.6126518152368488
+     ],
+     "k": 9,
+     "n": 22,
+     "value": 0.4090909090909091
+    },
+    "held_back_difference": {
+     "ci_newcombe": [
+      0.30671380492285344,
+      0.7055629606953795
+     ],
+     "value": 0.5251196172248804
+    },
+    "held_back_wrong": {
+     "ci": [
+      0.8550647346629656,
+      0.9715734677804679
+     ],
+     "k": 71,
+     "n": 76,
+     "value": 0.9342105263157895
+    },
+    "lift": 3.217171717171717,
+    "lift_accept_weighted": 3.2171717171717176,
+    "n": 98,
+    "unlabelled": 2,
+    "wrong": 76,
+    "wrong_rejected": {
+     "ci": [
+      0.4028869302897975,
+      0.6221627122084885
+     ],
+     "k": 39,
+     "n": 76,
+     "value": 0.5131578947368421
+    }
+   }
+  },
+  "pooled": {
+   "accept_precision": {
+    "ci": [
+     0.730660191401075,
+     0.9161550804698196
+    ],
+    "k": 49,
+    "n": 58,
+    "value": 0.8448275862068966
+   },
+   "accept_weighted_base_rate": 0.4527633334500909,
+   "base_rate": {
+    "ci": [
+     0.37199507270437154,
+     0.4903773449937581
+    ],
+    "k": 114,
+    "n": 265,
+    "value": 0.43018867924528303
+   },
+   "correct": 114,
+   "correct_rejected": {
+    "ci": [
+     0.0882740658274536,
+     0.21587575698855527
+    ],
+    "k": 16,
+    "n": 114,
+    "value": 0.14035087719298245
+   },
+   "coverage": {
+    "ci": [
+     0.3427011480788536,
+     0.5215232075925629
+    ],
+    "k": 49,
+    "n": 114,
+    "value": 0.4298245614035088
+   },
+   "decisions": {
+    "ACCEPT_correct": 49,
+    "ACCEPT_wrong": 9,
+    "FLAG_correct": 49,
+    "FLAG_wrong": 61,
+    "REJECT_correct": 16,
+    "REJECT_wrong": 81
+   },
+   "empty": 7,
+   "false_accept_rate": {
+    "ci": [
+     0.03167075659834807,
+     0.10938616050281708
+    ],
+    "k": 9,
+    "n": 151,
+    "value": 0.059602649006622516
+   },
+   "fisher_p": 3.191197028700699e-13,
+   "flag_rate": {
+    "ci": [
+     0.35739492332205847,
+     0.4752201792837749
+    ],
+    "k": 110,
+    "n": 265,
+    "value": 0.41509433962264153
+   },
+   "held_back_correct": {
+    "ci": [
+     0.4784767924074372,
+     0.6572988519211465
+    ],
+    "k": 65,
+    "n": 114,
+    "value": 0.5701754385964912
+   },
+   "held_back_difference": {
+    "ci_newcombe": [
+     0.2698780677115722,
+     0.46608030966291997
+    ],
+    "value": 0.3702219123968863
+   },
+   "held_back_wrong": {
+    "ci": [
+     0.890613839497183,
+     0.9683292434016519
+    ],
+    "k": 142,
+    "n": 151,
+    "value": 0.9403973509933775
+   },
+   "lift": 1.9638535995160313,
+   "lift_accept_weighted": 1.8659364038365174,
+   "n": 265,
+   "unlabelled": 18,
+   "wrong": 151,
+   "wrong_rejected": {
+    "ci": [
+     0.4569699140140745,
+     0.6140704913384606
+    ],
+    "k": 81,
+    "n": 151,
+    "value": 0.5364238410596026
+   }
+  }
+ },
+ "git_peek": {
+  "block": {
+   "bootstrap": {
+    "h1_ci": [
+     0.3063939190699754,
+     0.516240157480315
+    ],
+    "h1_supported": true,
+    "h2_ci": [
+     0.25105485232067515,
+     0.48275401069518714
+    ],
+    "h2_supported": true,
+    "precision_ci": [
+     0.7241379310344828,
+     0.9393939393939394
+    ],
+    "resamples": 10000,
+    "resamples_used": 10000,
+    "seed": 20261126,
+    "tasks": 102
+   },
+   "per_system": {
+    "claude-sonnet-4": {
+     "accept_precision": {
+      "ci": [
+       0.7004420607907267,
+       0.9583318284955964
+      ],
+      "k": 22,
+      "n": 25,
+      "value": 0.88
+     },
+     "accept_weighted_base_rate": 0.6831683168316832,
+     "base_rate": {
+      "ci": [
+       0.587149085722759,
+       0.7657647368832343
+      ],
+      "k": 69,
+      "n": 101,
+      "value": 0.6831683168316832
+     },
+     "correct": 69,
+     "correct_rejected": {
+      "ci": [
+       0.07016627839603491,
+       0.2296829993958729
+      ],
+      "k": 9,
+      "n": 69,
+      "value": 0.13043478260869565
+     },
+     "coverage": {
+      "ci": [
+       0.2209476045038311,
+       0.4358412571588688
+      ],
+      "k": 22,
+      "n": 69,
+      "value": 0.3188405797101449
+     },
+     "decisions": {
+      "ACCEPT_correct": 22,
+      "ACCEPT_wrong": 3,
+      "FLAG_correct": 38,
+      "FLAG_wrong": 14,
+      "REJECT_correct": 9,
+      "REJECT_wrong": 15
+     },
+     "empty": 0,
+     "false_accept_rate": {
+      "ci": [
+       0.032401551298366194,
+       0.24218154728387864
+      ],
+      "k": 3,
+      "n": 32,
+      "value": 0.09375
+     },
+     "fisher_p": 0.014539203106954402,
+     "flag_rate": {
+      "ci": [
+       0.41863926595785556,
+       0.6099753683074952
+      ],
+      "k": 52,
+      "n": 101,
+      "value": 0.5148514851485149
+     },
+     "held_back_correct": {
+      "ci": [
+       0.5641587428411312,
+       0.779052395496169
+      ],
+      "k": 47,
+      "n": 69,
+      "value": 0.6811594202898551
+     },
+     "held_back_difference": {
+      "ci_newcombe": [
+       0.04728462136276465,
+       0.35719959030956355
+      ],
+      "value": 0.2250905797101449
+     },
+     "held_back_wrong": {
+      "ci": [
+       0.7578184527161212,
+       0.9675984487016337
+      ],
+      "k": 29,
+      "n": 32,
+      "value": 0.90625
+     },
+     "lift": 1.2881159420289854,
+     "lift_accept_weighted": 1.2881159420289854,
+     "n": 101,
+     "unlabelled": 0,
+     "wrong": 32,
+     "wrong_rejected": {
+      "ci": [
+       0.30869387108068835,
+       0.6355048288102536
+      ],
+      "k": 15,
+      "n": 32,
+      "value": 0.46875
+     }
+    },
+    "gemini-2.5-flash": {
+     "accept_precision": {
+      "ci": [
+       0.6853129557584889,
+       0.9872777847521093
+      ],
+      "k": 13,
+      "n": 14,
+      "value": 0.9285714285714286
+     },
+     "accept_weighted_base_rate": 0.3387096774193548,
+     "base_rate": {
+      "ci": [
+       0.23341701875208906,
+       0.4628230045064181
+      ],
+      "k": 21,
+      "n": 62,
+      "value": 0.3387096774193548
+     },
+     "correct": 21,
+     "correct_rejected": {
+      "ci": [
+       0.04981012499725268,
+       0.34636060280620945
+      ],
+      "k": 3,
+      "n": 21,
+      "value": 0.14285714285714285
+     },
+     "coverage": {
+      "ci": [
+       0.4087865377511576,
+       0.7924898863143551
+      ],
+      "k": 13,
+      "n": 21,
+      "value": 0.6190476190476191
+     },
+     "decisions": {
+      "ACCEPT_correct": 13,
+      "ACCEPT_wrong": 1,
+      "FLAG_correct": 5,
+      "FLAG_wrong": 13,
+      "REJECT_correct": 3,
+      "REJECT_wrong": 27
+     },
+     "empty": 5,
+     "false_accept_rate": {
+      "ci": [
+       0.004318531568912411,
+       0.1259506205577423
+      ],
+      "k": 1,
+      "n": 41,
+      "value": 0.024390243902439025
+     },
+     "fisher_p": 2.9091009156952464e-07,
+     "flag_rate": {
+      "ci": [
+       0.1922355728861953,
+       0.4128764573498641
+      ],
+      "k": 18,
+      "n": 62,
+      "value": 0.2903225806451613
+     },
+     "held_back_correct": {
+      "ci": [
+       0.20751011368564493,
+       0.5912134622488425
+      ],
+      "k": 8,
+      "n": 21,
+      "value": 0.38095238095238093
+     },
+     "held_back_difference": {
+      "ci_newcombe": [
+       0.36115313018521294,
+       0.7692571853129626
+      ],
+      "value": 0.59465737514518
+     },
+     "held_back_wrong": {
+      "ci": [
+       0.8740493794422576,
+       0.9956814684310874
+      ],
+      "k": 40,
+      "n": 41,
+      "value": 0.975609756097561
+     },
+     "lift": 2.741496598639456,
+     "lift_accept_weighted": 2.741496598639456,
+     "n": 62,
+     "unlabelled": 16,
+     "wrong": 41,
+     "wrong_rejected": {
+      "ci": [
+       0.5054983651982969,
+       0.7844119174261515
+      ],
+      "k": 27,
+      "n": 41,
+      "value": 0.6585365853658537
+     }
+    },
+    "gpt-4.1-mini": {
+     "accept_precision": {
+      "ci": [
+       0.4912734343970254,
+       0.8750024662044601
+      ],
+      "k": 13,
+      "n": 18,
+      "value": 0.7222222222222222
+     },
+     "accept_weighted_base_rate": 0.22448979591836732,
+     "base_rate": {
+      "ci": [
+       0.15318242080683164,
+       0.3165816553826658
+      ],
+      "k": 22,
+      "n": 98,
+      "value": 0.22448979591836735
+     },
+     "correct": 22,
+     "correct_rejected": {
+      "ci": [
+       0.04749003714055253,
+       0.33334987166571717
+      ],
+      "k": 3,
+      "n": 22,
+      "value": 0.13636363636363635
+     },
+     "coverage": {
+      "ci": [
+       0.3873481847631513,
+       0.7674418380352814
+      ],
+      "k": 13,
+      "n": 22,
+      "value": 0.5909090909090909
+     },
+     "decisions": {
+      "ACCEPT_correct": 13,
+      "ACCEPT_wrong": 5,
+      "FLAG_correct": 6,
+      "FLAG_wrong": 32,
+      "REJECT_correct": 3,
+      "REJECT_wrong": 39
+     },
+     "empty": 1,
+     "false_accept_rate": {
+      "ci": [
+       0.028426532219532126,
+       0.14493526533703452
+      ],
+      "k": 5,
+      "n": 76,
+      "value": 0.06578947368421052
+     },
+     "fisher_p": 4.6722254613464223e-07,
+     "flag_rate": {
+      "ci": [
+       0.29726468270356593,
+       0.4867132742625256
+      ],
+      "k": 38,
+      "n": 98,
+      "value": 0.3877551020408163
+     },
+     "held_back_correct": {
+      "ci": [
+       0.2325581619647187,
+       0.6126518152368488
+      ],
+      "k": 9,
+      "n": 22,
+      "value": 0.4090909090909091
+     },
+     "held_back_difference": {
+      "ci_newcombe": [
+       0.30671380492285344,
+       0.7055629606953795
+      ],
+      "value": 0.5251196172248804
+     },
+     "held_back_wrong": {
+      "ci": [
+       0.8550647346629656,
+       0.9715734677804679
+      ],
+      "k": 71,
+      "n": 76,
+      "value": 0.9342105263157895
+     },
+     "lift": 3.217171717171717,
+     "lift_accept_weighted": 3.2171717171717176,
+     "n": 98,
+     "unlabelled": 2,
+     "wrong": 76,
+     "wrong_rejected": {
+      "ci": [
+       0.4028869302897975,
+       0.6221627122084885
+      ],
+      "k": 39,
+      "n": 76,
+      "value": 0.5131578947368421
+     }
+    }
+   },
+   "pooled": {
+    "accept_precision": {
+     "ci": [
+      0.7263682305936197,
+      0.9146420402964472
+     ],
+     "k": 48,
+     "n": 57,
+     "value": 0.8421052631578947
+    },
+    "accept_weighted_base_rate": 0.4537185917753273,
+    "base_rate": {
+     "ci": [
+      0.3705283492503854,
+      0.48976542739336065
+     ],
+     "k": 112,
+     "n": 261,
+     "value": 0.42911877394636017
+    },
+    "correct": 112,
+    "correct_rejected": {
+     "ci": [
+      0.08287141976469586,
+      0.2092645664807452
+     ],
+     "k": 15,
+     "n": 112,
+     "value": 0.13392857142857142
+    },
+    "coverage": {
+     "ci": [
+      0.34079156984785586,
+      0.5210886225902789
+     ],
+     "k": 48,
+     "n": 112,
+     "value": 0.42857142857142855
+    },
+    "decisions": {
+     "ACCEPT_correct": 48,
+     "ACCEPT_wrong": 9,
+     "FLAG_correct": 49,
+     "FLAG_wrong": 59,
+     "REJECT_correct": 15,
+     "REJECT_wrong": 81
+    },
+    "empty": 6,
+    "false_accept_rate": {
+     "ci": [
+      0.032100224500152576,
+      0.11080248651307728
+     ],
+     "k": 9,
+     "n": 149,
+     "value": 0.06040268456375839
+    },
+    "fisher_p": 6.675503788263793e-13,
+    "flag_rate": {
+     "ci": [
+      0.35571428898586155,
+      0.4743727366619377
+     ],
+     "k": 108,
+     "n": 261,
+     "value": 0.41379310344827586
+    },
+    "held_back_correct": {
+     "ci": [
+      0.478911377409721,
+      0.659208430152144
+     ],
+     "k": 64,
+     "n": 112,
+     "value": 0.5714285714285714
+    },
+    "held_back_difference": {
+     "ci_newcombe": [
+      0.26694896513979804,
+      0.4649182165373621
+     ],
+     "value": 0.3681687440076702
+    },
+    "held_back_wrong": {
+     "ci": [
+      0.8891975134869227,
+      0.9678997754998474
+     ],
+     "k": 140,
+     "n": 149,
+     "value": 0.9395973154362416
+    },
+    "lift": 1.9624060150375937,
+    "lift_accept_weighted": 1.8560078392707544,
+    "n": 261,
+    "unlabelled": 18,
+    "wrong": 149,
+    "wrong_rejected": {
+     "ci": [
+      0.4635544689137371,
+      0.6215009872452554
+     ],
+     "k": 81,
+     "n": 149,
+     "value": 0.5436241610738255
+    }
+   }
+  },
+  "files": {
+   "claude-sonnet-4": {
+    "file": "reports/study_v1_5/results/git_peek/claude-sonnet-4/git_peek_suspicious_commits.md",
+    "in_headline_scope": [
+     "django__django-13513"
+    ],
+    "listed": 13,
+    "scored_in_headline": [
+     "django__django-13513"
+    ],
+    "sha256": "5ace9abcb21ffe1c45e391d68f2cc1200e2224d6090b9b3020d0897edfbae800",
+    "source": "https://raw.githubusercontent.com/SWE-bench/experiments/main/evaluation/verified/20250726_mini-v1.0.0_claude-sonnet-4-20250514/git_peek_suspicious_commits.md"
+   },
+   "gemini-2.5-flash": {
+    "file": "reports/study_v1_5/results/git_peek/gemini-2.5-flash/git_peek_suspicious_commits.md",
+    "in_headline_scope": [
+     "django__django-12143",
+     "pydata__xarray-3151",
+     "sympy__sympy-21930"
+    ],
+    "listed": 6,
+    "scored_in_headline": [
+     "django__django-12143",
+     "pydata__xarray-3151",
+     "sympy__sympy-21930"
+    ],
+    "sha256": "f24e4954ae82eafa7d0bfaccdb440ecce68a6bfa46cb2f96d46a3aa9a8ab92ff",
+    "source": "https://raw.githubusercontent.com/SWE-bench/experiments/main/evaluation/verified/20250726_mini-v1.0.0_gemini-2.5-flash/git_peek_suspicious_commits.md"
+   },
+   "gpt-4.1-mini": {
+    "file": "reports/study_v1_5/results/git_peek/gpt-4.1-mini/git_peek_suspicious_commits.md",
+    "in_headline_scope": [
+     "django__django-13513"
+    ],
+    "listed": 2,
+    "scored_in_headline": [],
+    "sha256": "4f313ab983c2f3779acfea71a65e40a9fa86b2035f315e566f689fd7063338ac",
+    "source": "https://raw.githubusercontent.com/SWE-bench/experiments/main/evaluation/verified/20250720_mini-v0.0.0_gpt-4.1-mini-2025-04-14/git_peek_suspicious_commits.md"
+   }
+  },
+  "pairs_removed": 4
+ },
+ "header": "Pre-specified in PLAN \u00a76; computed after labels were joined; not used to choose any rule.",
+ "per_repository": {
+  "astropy/astropy": {
+   "ACCEPT_correct": 0,
+   "ACCEPT_wrong": 0,
+   "FLAG_correct": 0,
+   "FLAG_wrong": 0,
+   "REJECT_correct": 3,
+   "REJECT_wrong": 5
+  },
+  "django/django": {
+   "ACCEPT_correct": 25,
+   "ACCEPT_wrong": 7,
+   "FLAG_correct": 25,
+   "FLAG_wrong": 33,
+   "REJECT_correct": 4,
+   "REJECT_wrong": 41
+  },
+  "matplotlib/matplotlib": {
+   "ACCEPT_correct": 0,
+   "ACCEPT_wrong": 0,
+   "FLAG_correct": 3,
+   "FLAG_wrong": 3,
+   "REJECT_correct": 0,
+   "REJECT_wrong": 5
+  },
+  "pydata/xarray": {
+   "ACCEPT_correct": 2,
+   "ACCEPT_wrong": 0,
+   "FLAG_correct": 5,
+   "FLAG_wrong": 7,
+   "REJECT_correct": 1,
+   "REJECT_wrong": 4
+  },
+  "pytest-dev/pytest": {
+   "ACCEPT_correct": 6,
+   "ACCEPT_wrong": 0,
+   "FLAG_correct": 0,
+   "FLAG_wrong": 1,
+   "REJECT_correct": 1,
+   "REJECT_wrong": 0
+  },
+  "scikit-learn/scikit-learn": {
+   "ACCEPT_correct": 6,
+   "ACCEPT_wrong": 0,
+   "FLAG_correct": 5,
+   "FLAG_wrong": 3,
+   "REJECT_correct": 0,
+   "REJECT_wrong": 5
+  },
+  "sphinx-doc/sphinx": {
+   "ACCEPT_correct": 0,
+   "ACCEPT_wrong": 0,
+   "FLAG_correct": 0,
+   "FLAG_wrong": 0,
+   "REJECT_correct": 7,
+   "REJECT_wrong": 15
+  },
+  "sympy/sympy": {
+   "ACCEPT_correct": 10,
+   "ACCEPT_wrong": 2,
+   "FLAG_correct": 11,
+   "FLAG_wrong": 14,
+   "REJECT_correct": 0,
+   "REJECT_wrong": 6
+  }
+ },
+ "pooled_systems": [
+  "gpt-4.1-mini",
+  "claude-sonnet-4",
+  "gemini-2.5-flash"
+ ],
+ "v4_generator_audit": {
+  "b1": {
+   "file": "reports/study_v1_5/test_gold_b1/test_gold_b1_recall.json",
+   "ids": [
+    "astropy__astropy-13453",
+    "django__django-11951",
+    "django__django-12039",
+    "django__django-12193",
+    "django__django-12308",
+    "django__django-12419",
+    "django__django-13109",
+    "django__django-13343",
+    "django__django-13346",
+    "django__django-13401",
+    "django__django-13449",
+    "django__django-13512",
+    "django__django-14534",
+    "django__django-14539",
+    "django__django-14559",
+    "django__django-15957",
+    "django__django-16801",
+    "django__django-17084",
+    "pydata__xarray-4687",
+    "pydata__xarray-6721",
+    "scikit-learn__scikit-learn-12973",
+    "sphinx-doc__sphinx-8035"
+   ],
+   "recall_lines": null,
+   "tasks": 60,
+   "tasks_with_recall": 22
+  },
+  "b2": {
+   "file": "reports/study_v1_5/test_gold_b2/test_gold_b2_recall.json",
+   "ids": [
+    "django__django-11239",
+    "django__django-11265",
+    "django__django-11734",
+    "django__django-13513",
+    "django__django-13551",
+    "django__django-13568",
+    "django__django-13837",
+    "django__django-16642",
+    "django__django-16662",
+    "django__django-16899",
+    "django__django-16950",
+    "mwaskom__seaborn-3187",
+    "pylint-dev__pylint-6386",
+    "pytest-dev__pytest-8399",
+    "scikit-learn__scikit-learn-13439",
+    "scikit-learn__scikit-learn-14053",
+    "scikit-learn__scikit-learn-25232",
+    "sphinx-doc__sphinx-9698",
+    "sphinx-doc__sphinx-9711",
+    "sympy__sympy-16792"
+   ],
+   "recall_lines": null,
+   "tasks": 48,
+   "tasks_with_recall": 20
+  },
+  "no_recall_sensitivity": {
+   "bootstrap": {
+    "h1_ci": [
+     0.3389450056116723,
+     0.6015171798304328
+    ],
+    "h1_supported": true,
+    "h2_ci": [
+     0.29116202945990177,
+     0.5986956521739131
+    ],
+    "h2_supported": true,
+    "precision_ci": [
+     0.7586206896551724,
+     1.0
+    ],
+    "resamples": 10000,
+    "resamples_used": 10000,
+    "seed": 20261126,
+    "tasks": 64
+   },
+   "pooled": {
+    "accept_precision": {
+     "ci": [
+      0.7586947827711269,
+      0.9582974265244647
+     ],
+     "k": 34,
+     "n": 38,
+     "value": 0.8947368421052632
+    },
+    "coverage": {
+     "ci": [
+      0.3783242300928733,
+      0.6079473243736349
+     ],
+     "k": 34,
+     "n": 69,
+     "value": 0.4927536231884058
+    },
+    "false_accept_rate": {
+     "ci": [
+      0.016670548150042715,
+      0.10435645781881736
+     ],
+     "k": 4,
+     "n": 94,
+     "value": 0.0425531914893617
+    },
+    "n": 163
+   },
+   "where": "results_final.md, scope 'sensitivity: headline minus tasks with generator recall'"
+  }
+ },
+ "wrong_type_by_decision": {
+  "per_system": {
+   "claude-sonnet-4": {
+    "R": {
+     "ACCEPT": 0,
+     "FLAG": 2,
+     "REJECT": 1
+    },
+    "U": {
+     "ACCEPT": 2,
+     "FLAG": 12,
+     "REJECT": 12
+    },
+    "X": {
+     "ACCEPT": 1,
+     "FLAG": 1,
+     "REJECT": 2
+    }
+   },
+   "gemini-2.5-flash": {
+    "R": {
+     "ACCEPT": 1,
+     "FLAG": 2,
+     "REJECT": 0
+    },
+    "U": {
+     "ACCEPT": 0,
+     "FLAG": 7,
+     "REJECT": 5
+    },
+    "X": {
+     "ACCEPT": 0,
+     "FLAG": 5,
+     "REJECT": 22
+    }
+   },
+   "gpt-4.1-mini": {
+    "R": {
+     "ACCEPT": 1,
+     "FLAG": 3,
+     "REJECT": 2
+    },
+    "U": {
+     "ACCEPT": 1,
+     "FLAG": 16,
+     "REJECT": 9
+    },
+    "X": {
+     "ACCEPT": 2,
+     "FLAG": 7,
+     "REJECT": 11
+    },
+    "unknown": {
+     "ACCEPT": 1,
+     "FLAG": 6,
+     "REJECT": 17
+    }
+   }
+  },
+  "pooled": {
+   "R": {
+    "ACCEPT": 2,
+    "FLAG": 7,
+    "REJECT": 3
+   },
+   "U": {
+    "ACCEPT": 3,
+    "FLAG": 35,
+    "REJECT": 26
+   },
+   "X": {
+    "ACCEPT": 3,
+    "FLAG": 13,
+    "REJECT": 35
+   },
+   "unknown": {
+    "ACCEPT": 1,
+    "FLAG": 6,
+    "REJECT": 17
+   }
+  },
+  "sources": {
+   "official report.json (claude-sonnet-4)": 57,
+   "official report.json (claude-sonnet-4_b2)": 45,
+   "official report.json (gemini-2.5-flash)": 35,
+   "official report.json (gemini-2.5-flash_b2)": 30,
+   "our grader (gpt-4.1-mini_b2)": 43,
+   "our grader (gpt-4.1-mini_ours)": 55
+  },
+  "unknown_grader_could_not_apply": [
+   "gpt-4.1-mini/astropy__astropy-13453",
+   "gpt-4.1-mini/django__django-10554",
+   "gpt-4.1-mini/django__django-11885",
+   "gpt-4.1-mini/django__django-12039",
+   "gpt-4.1-mini/django__django-12308",
+   "gpt-4.1-mini/django__django-13343",
+   "gpt-4.1-mini/django__django-13401",
+   "gpt-4.1-mini/django__django-14007",
+   "gpt-4.1-mini/django__django-14351",
+   "gpt-4.1-mini/django__django-14434",
+   "gpt-4.1-mini/django__django-14539",
+   "gpt-4.1-mini/django__django-14559",
+   "gpt-4.1-mini/django__django-15695",
+   "gpt-4.1-mini/django__django-15863",
+   "gpt-4.1-mini/django__django-15957",
+   "gpt-4.1-mini/django__django-16801",
+   "gpt-4.1-mini/pydata__xarray-4687",
+   "gpt-4.1-mini/pydata__xarray-6721",
+   "gpt-4.1-mini/pydata__xarray-7229",
+   "gpt-4.1-mini/pydata__xarray-7393",
+   "gpt-4.1-mini/sympy__sympy-12096",
+   "gpt-4.1-mini/sympy__sympy-13372",
+   "gpt-4.1-mini/sympy__sympy-14248",
+   "gpt-4.1-mini/sympy__sympy-23824"
+  ]
+ }
+}
